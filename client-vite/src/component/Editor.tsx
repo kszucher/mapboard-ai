@@ -1,8 +1,9 @@
 import {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
 import {ThemeProvider} from '@mui/material'
-import {RootState} from "../editor/EditorReducer";
+import {RootState} from "../editor/EditorReducer"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
+import {ModalCreateGptNodes} from "./ModalCreateGptNodes"
 import {SidebarLeft} from './SidebarLeft'
 import {SidebarRight} from './SidebarRight'
 import {ModalCreateTable} from './ModalCreateTable'
@@ -25,7 +26,7 @@ import {WindowListeners} from "./WindowListeners"
 import {setColors} from "../core/Colors"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {PageState} from "../core/Enums"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -68,9 +69,10 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_PROFILE && <Profile/>}
       {pageState === PageState.WS_SETTINGS && <Settings/>}
       {pageState === PageState.WS_SHARES && <Shares/>}
-      {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
+      {pageState === PageState.WS_CREATE_GPT_NODES && <ModalCreateGptNodes/>}
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
       {pageState === PageState.WS_CREATE_TASK && <ModalToggleTaskMode/>}
+      {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
       {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
     </ThemeProvider>
   )

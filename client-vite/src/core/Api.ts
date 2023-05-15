@@ -29,7 +29,7 @@ export const api = createApi({
     }),
     openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'openWorkspace' } }),
-      async onQueryStarted(arg, { dispatch, getState, getCacheEntry }) {
+      async onQueryStarted(arg, { dispatch, getState }) {
         const editor = (getState() as RootState).editor
         if (editor.mapList.length > 1) {
           console.log('saved by listener')
@@ -102,6 +102,9 @@ export const api = createApi({
         dispatch(api.util.resetApiState())
       },
       invalidatesTags: []
+    }),
+    getGptSuggestions: builder.query<any, { context: string, numNodes: number, content: string }>({query: ({ context, numNodes, content }) =>
+        ({ url: 'beta-private', method: 'POST', body: { type: 'getGptSuggestions', payload: { context, numNodes, content } } })
     }),
   })
 })
