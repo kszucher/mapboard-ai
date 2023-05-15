@@ -15,7 +15,7 @@ export const insertSL = (m: M, ip: P, payload: { gptSuggestionsItemized: string[
   makeSpaceFromS(m, ip, gptSuggestionsItemized.length)
   const newNodes = gptSuggestionsItemized.map((el: string, i: number) => ({
     nodeId: IS_TESTING ? 'z' : 'node' + genHash(8),
-    path: [...ip.slice(0, -2), 's', i],
+    path: [...ip.slice(0, -2), 's', ip.at(-1) as number + i],
     taskStatus: getNodeByPath(m, getXP(m)).taskStatus,
     content: el
   })) as GN[]
