@@ -90,7 +90,7 @@ export const SidebarRight: FC = () => {
       <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          disabled={frameId !== '' && frameIdList.length > 0}
+          disabled={frameId !== '' || frameIdList.length === 0}
           onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))}
         >
           <DynamicFeedIcon/>
