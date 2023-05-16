@@ -126,7 +126,9 @@ export const editorSlice = createSlice({
         console.log(payload)
         if (gptSuggestions) {
           console.log(gptSuggestions)
-          const gptSuggestionsItemized = ['alma', 'korte', 'banan']
+          const gptSuggestionsItemized = gptSuggestions.split(/\r?\n/).slice(1)
+          console.log(gptSuggestionsItemized)
+          // const gptSuggestionsItemized = ['alma', 'korte', 'banan']
           const pm = current(state.mapList[state.mapListIndex])
           const mapAction = mapActionResolver(pm, null, 'ae' , { type: 'insertGptSuggestions', payload: { gptSuggestionsItemized } })
           const m = mapReducer(pm, mapAction.type, mapAction.payload)
