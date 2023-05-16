@@ -16,8 +16,7 @@ const spawnProcess = async (mongoCmd, mongoParams) => {
   console.log(`process ${mongoCmd} finished`)
 }
 
-const mongoDump = async({source, comment}) => {
-  const date = + new Date()
+const mongoDump = async({date, source, comment}) => {
   const mongoParams = [
     `--uri=${baseUri}/${source}`,
     `--archive=${basePath}/date_${date}_source_${source}_comment_${comment}`,
@@ -44,28 +43,32 @@ const mongoBackup = async (mode) => {
   switch (mode) {
     case 'prod2file': {
       const comment = '2023021901'
-      await mongoDump({source: 'app_prod', comment})
+      const date = + new Date()
+      await mongoDump({date, source: 'app_prod', comment})
       break
     }
     case 'prod2file2dev': {
-      const comment = '2023021901'
-      await mongoDump({source: 'app_prod', comment})
+      const comment = '2023051601'
+      const date = + new Date()
+      await mongoDump({date, source: 'app_prod', comment})
       await mongoRestore({source:'app_prod', target:'app_dev'})
       break
     }
     case 'dev2file': {
       const comment = 'versions_and_frames_FIXED_TESTED_CLEANED'
-      await mongoDump({source: 'app_dev', comment})
+      const date = + new Date()
+      await mongoDump({date, source: 'app_dev', comment})
       break
     }
     case 'dev2file2prod': {
       const comment = ''
-      await mongoDump({source: 'app_dev', comment})
+      const date = + new Date()
+      await mongoDump({date, source: 'app_dev', comment})
       await mongoRestore({source:'app_dev', target:'app_prod'})
       break
     }
     case 'file2dev': {
-      const filename = 'date_1676993560301_source_app_prod_comment_2023022101'
+      const filename = 'date_1684229605475_source_app_prod_comment_2023051601'
       await mongoRestore({source: decodeSourceFromFilename(filename), target:'app_dev', filename })
       break
     }

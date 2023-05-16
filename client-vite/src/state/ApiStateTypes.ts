@@ -15,3 +15,11 @@ export interface DefaultUseOpenWorkspaceQueryState {
   tabMapNameList: []
   frameIdList: string[]
 }
+
+export type GptData = {
+  prompt: string
+  context: string
+  content: string
+  typeNodes: string
+  numNodes: number
+}

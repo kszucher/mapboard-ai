@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {actions, RootState} from "../editor/EditorReducer"
 import {timeoutId} from "../component/WindowListeners"
 import {backendUrl} from "./Urls"
-import {DefaultUseOpenWorkspaceQueryState} from "../state/ApiStateTypes";
+import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/ApiStateTypes";
 import {getFrameId, getMapId} from "../state/ApiState";
 import {getMap} from "../state/EditorState";
 import {mapDeInit} from "../map/MapDeInit";
@@ -103,8 +103,8 @@ export const api = createApi({
       },
       invalidatesTags: []
     }),
-    getGptSuggestions: builder.query<any, { context: string, numNodes: number, content: string }>({query: ({ context, numNodes, content }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'getGptSuggestions', payload: { context, numNodes, content } } })
+    getGptSuggestions: builder.query<any, GptData>({query: (payload) =>
+        ({ url: 'beta-private', method: 'POST', body: { type: 'getGptSuggestions', payload } })
     }),
   })
 })

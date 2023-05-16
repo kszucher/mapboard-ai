@@ -40,7 +40,16 @@ export const ModalCreateGptNodes: FC = () => {
             disabled={interactionDisabled}
             onClick={() => {
               // WARNING: if the parameters do not change, the query will not run again!!!
-              dispatch(api.endpoints.getGptSuggestions.initiate({context: '', numNodes: parseInt(numNodes), content: getX(getMap()).content}))
+              dispatch(api.endpoints.getGptSuggestions.initiate({
+                prompt: `
+                $List the top ${parseInt(numNodes)} to do for ${getX(getMap()).content}.
+                Do not exceed 10 words per list item.
+                `,
+                context: '',
+                content: getX(getMap()).content,
+                typeNodes: 's',
+                numNodes: parseInt(numNodes)})
+              )
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}

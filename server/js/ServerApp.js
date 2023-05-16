@@ -12,6 +12,7 @@ const MongoMutations = require("./MongoMutations")
 const { baseUri } = require('./MongoSecret')
 const { ACCESS_TYPES, SHARE_STATUS } = require('./Types')
 const { authAudienceUrl } = require('./Url')
+const { Configuration, OpenAIApi } = require("openai")
 
 const checkJwt = auth({
   audience: authAudienceUrl,
@@ -273,7 +274,22 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'getGptSuggestions': {
-        return res.json({gptSuggestions: 'RETURN STRING'})
+        const { gptApiKey } = user
+        if (gptApiKey) {
+          const {prompt, context, content, typeNodes, numNodes} = req.body.payload
+          const configuration = new Configuration({ apiKey: gptApiKey })
+          const openai = new OpenAIApi(configuration);
+          const completion = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt,
+            max_tokens: numNodes * 12
+          });
+          console.log(completion.data.choices[0].text)
+          const gptSuggestions = completion.data.choices[0].text
+          return res.json({gptSuggestions, ...req.body.payload})
+        } else {
+          return res.json({})
+        }
       }
     }
   } catch (err) {

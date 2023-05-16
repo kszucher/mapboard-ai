@@ -122,15 +122,18 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.getGptSuggestions.matchFulfilled,
       (state, { payload }) => {
-        const { gptSuggestions } = payload
-        // TODO parse suggestions into words
-        const gptSuggestionsItemized = ['alma', 'korte', 'banan']
-        const pm = current(state.mapList[state.mapListIndex])
-        const mapAction = mapActionResolver(pm, null, 'ae' , { type: 'insertGptSuggestions', payload: { gptSuggestionsItemized } })
-        const m = mapReducer(pm, mapAction.type, mapAction.payload)
-        if (!isEqual(pm, m)) {
-          state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-          state.mapListIndex = state.mapListIndex + 1
+        const { gptSuggestions, prompt, context, content, typeNodes, numNodes } = payload
+        console.log(payload)
+        if (gptSuggestions) {
+          console.log(gptSuggestions)
+          const gptSuggestionsItemized = ['alma', 'korte', 'banan']
+          const pm = current(state.mapList[state.mapListIndex])
+          const mapAction = mapActionResolver(pm, null, 'ae' , { type: 'insertGptSuggestions', payload: { gptSuggestionsItemized } })
+          const m = mapReducer(pm, mapAction.type, mapAction.payload)
+          if (!isEqual(pm, m)) {
+            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+            state.mapListIndex = state.mapListIndex + 1
+          }
         }
       }
     )
