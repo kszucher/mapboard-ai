@@ -88,14 +88,14 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'deleteCR': deleteReselectCR(m); break
     case 'deleteCC': deleteReselectCC(m); break
 
-    case 'moveSD': moveS(m, [...getSXI1(m), 's', getCountSXAU(m) + 1]); break
-    case 'moveST': moveS(m, [...getSXI1(m), 's', 0]); break
-    case 'moveSU': moveS(m, [...getSXI1(m), 's', getCountSXAU(m) - 1]); break
-    case 'moveSB': moveS(m, [...getSXI1(m), 's', getCountSXAD(m)]); break
-    case 'moveSO': moveS(m, [...getSXAU1(m), 's', getCountSXAU1O1(m)]); break
-    case 'moveSI': moveS(m, [...getSXI2(m), 's', getCountSXI1U(m) + 1]); break
-    case 'moveSIR': moveS(m, ['r', 0, 'd', 1, 's', getCountR0D1S(m)]); break
-    case 'moveSIL': moveS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)]); break
+    case 'moveSD': moveS(m, getSXI1(m), getCountSXAU(m) + 1); break
+    case 'moveST': moveS(m, getSXI1(m), 0); break
+    case 'moveSU': moveS(m, getSXI1(m), getCountSXAU(m) - 1); break
+    case 'moveSB': moveS(m, getSXI1(m), getCountSXAD(m)); break
+    case 'moveSO': moveS(m, getSXAU1(m), getCountSXAU1O1(m)); break
+    case 'moveSI': moveS(m, getSXI2(m), getCountSXI1U(m) + 1); break
+    case 'moveSIR': moveS(m, ['r', 0, 'd', 1], getCountR0D1S(m)); break
+    case 'moveSIL': moveS(m, ['r', 0, 'd', 0], getCountR0D0S(m)); break
     case 'moveCRD': moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) + 1, 0]); break
     case 'moveCRU': moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) - 1, 0]); break
     case 'moveCCR': moveCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) + 1]); break
@@ -104,7 +104,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'copySelection': copyS(m); break
     case 'cutSelection': cutS(m); break
     case 'insertNodesFromClipboard': pasteS(m, payload); break
-    case 'drag': moveS(m, [...payload.moveTargetPath, 's', payload.moveTargetIndex]); break
+    case 'drag': moveS(m, payload.moveTargetPath, payload.moveTargetIndex); break
 
     case 'transpose': {
       // https://stackoverflow.com/questions/872310/javascript-swap-array-elements

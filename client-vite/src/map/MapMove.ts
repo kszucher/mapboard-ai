@@ -42,14 +42,13 @@ export const pasteS = (m: M, payload: any) => {
   m.sort(sortPath)
 }
 
-export const moveS = (m: M, insertPath: P) => {
-  const insertTargetNodeId = getNodeByPath(m, getSI1(insertPath)).nodeId
-  const insertTargetNodeIndex = insertPath.at(-1)
+export const moveS = (m: M, insertTargetPath: P, insertTargetIndex: number) => {
+  const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
   const cb = m2cbS(m)
   deleteS(m)
-  const insertPathSafe = [...getNodeById(m, insertTargetNodeId).path, 's', insertTargetNodeIndex] as P
-  makeSpaceFromS(m, insertPathSafe, getXA(cb).length)
-  m.push(...cb2ipS(cb, insertPathSafe))
+  const insertPath = [...getNodeById(m, insertTargetNodeId).path, 's', insertTargetIndex] as P
+  makeSpaceFromS(m, insertPath, getXA(cb).length)
+  m.push(...cb2ipS(cb, insertPath))
   m.sort(sortPath)
 }
 
