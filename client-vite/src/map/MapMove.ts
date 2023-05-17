@@ -2,7 +2,7 @@ import {genHash} from "../core/Utils";
 import {GN, M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete";
 import {selectNode, unselectNodes} from "./MapSelect";
-import {cb2ipS, cb2ipCC, cb2ipCR, getCountSS, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath,} from "./MapUtils"
+import {cb2ipS, cb2ipCC, cb2ipCR, getCountSS, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getSI1, getNodeByPath,} from "./MapUtils"
 
 const cbSave = (cb: any) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
@@ -43,10 +43,13 @@ export const pasteS = (m: M, payload: any) => {
 }
 
 export const moveS = (m: M, insertPath: P) => {
+  const insertTargetNodeId = getNodeByPath(m, getSI1(insertPath)).nodeId
+  const insertTargetNodeIndex = insertPath.at(-1)
   const cb = m2cbS(m)
   deleteS(m)
-  makeSpaceFromS(m, insertPath, getXA(cb).length)
-  m.push(...cb2ipS(cb, insertPath))
+  const insertPathSafe = [...getNodeById(m, insertTargetNodeId).path, 's', insertTargetNodeIndex] as P
+  makeSpaceFromS(m, insertPathSafe, getXA(cb).length)
+  m.push(...cb2ipS(cb, insertPathSafe))
   m.sort(sortPath)
 }
 
