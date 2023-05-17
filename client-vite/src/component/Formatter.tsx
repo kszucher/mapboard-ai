@@ -46,7 +46,7 @@ export const Formatter: FC = () => {
   const clearFill = () => mapDispatch('clearFill', null)
   const clearLine = () => mapDispatch('clearLine', null)
   return (
-    <div className="_bg fixed w-[216px] top-[96px] right-[64px] flex flex-col gap-3 rounded-2xl p-3">
+    <div className="_bg fixed w-[216px] top-[96px] right-[64px] flex flex-col gap-3 rounded-md p-3">
       <div className="flex justify-center">
         <IconButton color='secondary' aria-label="text" onClick={(setFormatText)}><TextIcon/></IconButton>
         <IconButton color='secondary' aria-label="border" onClick={setFormatBorder}><BorderIcon selection={x.selection}/></IconButton>

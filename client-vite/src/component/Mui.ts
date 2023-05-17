@@ -4,14 +4,14 @@ export const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
     mode: colorMode as PaletteMode,
     primary: {
-      main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
+      main: colorMode === 'light' ? '#002045' : '#dddddd',
     },
     secondary: {
-      main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
+      main: colorMode === 'light' ? '#002045' : '#dddddd',
     },
   },
   spacing: 2,
   typography: {
-    fontFamily: 'Comfortaa',
+    fontFamily: 'Lexend',
   },
 })

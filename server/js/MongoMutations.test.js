@@ -188,6 +188,11 @@ describe("MongoMutationsTests", async() => {
       'deleteMapFrame', [users, maps, 'user1', 'session1', 'map1', 'f2'])).toEqual(
       getDatabase({ frameId: 'f1', frames: [ 'f1' ], framesInfo: [ {frameId: 'f1'} ] })
     )
+    expect(await resolveMutation(
+      getDatabase({ frameId: 'f2', frames: [ 'f1' ], framesInfo: [ {frameId: 'f1'} ] }),
+      'deleteMapFrame', [users, maps, 'user1', 'session1', 'map1', 'f1'])).toEqual(
+      getDatabase({ frameId: '', frames: [ ], framesInfo: [ ] })
+    )
   })
   test('saveMap', async() => {
     const database = {

@@ -11,7 +11,7 @@ export const BreadcrumbMaps: FC = () => {
   const { frameId, breadcrumbMapIdList, breadcrumbMapNameList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="_bg fixed left-1/2 -translate-x-1/2 h-[40px] flex items-center rounded-b-2xl py-1 px-4 border-2 border-mb-pink border-t-0">
+    <div className="_bg fixed left-1/2 -translate-x-1/2 h-[40px] flex items-center rounded-b-md py-1 px-4 border-2 border-mb-pink border-t-0">
       <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
         {
           breadcrumbMapNameList.map((el: { name: string }, index: number) => (

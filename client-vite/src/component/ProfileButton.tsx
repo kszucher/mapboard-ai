@@ -8,7 +8,7 @@ import {actions, AppDispatch} from "../editor/EditorReducer";
 export const ProfileButton: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="_bg fixed right-0 w-[40px] h-[40px] py-1 px-3 flex flex-row flex-center items-center border-t-0 border-r-0 rounded-bl-2xl">
+    <div className="_bg fixed right-0 w-[40px] h-[40px] py-1 px-3 flex flex-row flex-center items-center border-t-0 border-r-0 rounded-bl-md">
       <IconButton
         id='profile-button'
         color='secondary'

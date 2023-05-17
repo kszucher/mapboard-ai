@@ -113,6 +113,7 @@ export const editorSlice = createSlice({
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
         const { mapDataList } = payload
+        // console.log(payload)
         state.mapList = mapDataList.map((el) => mapReducer(el, 'LOAD', {}))
         state.mapListIndex = 0
         state.editedNodeId = ''

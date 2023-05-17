@@ -17,11 +17,11 @@ export const FrameCarousel: FC = () => {
   const nextFrameId = frameIdList[nextFrameIdPosition]
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">
+    <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-md border-2 border-mb-pink border-b-0">
       {
         frameIdList.length > 0 && frameId !=='' &&
         <MobileStepper
-          className="gap-3 rounded-t-2xl bg-mb-pink"
+          className="gap-3 rounded-t-md bg-mb-pink"
           sx={{background: 'var(--map-background-color)'}}
           variant="dots"
           steps={frameIdList.length}

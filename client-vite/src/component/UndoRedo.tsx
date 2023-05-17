@@ -17,7 +17,7 @@ export const UndoRedo: FC = () => {
   const { access } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="_bg fixed left-[272px] w-[80px] flex flex-center h-[40px] py-1 px-3 border-t-0 rounded-b-2xl">
+    <div className="_bg fixed left-[272px] w-[80px] flex flex-center h-[40px] py-1 px-3 border-t-0 rounded-b-md">
       <div style={{ display: 'flex',  }}>
         <IconButton
           color='secondary'

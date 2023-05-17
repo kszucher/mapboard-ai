@@ -39,7 +39,7 @@ export const SidebarRight: FC = () => {
 
   return (
     <>
-      <div className={crd} style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
+      <div className={crd} style={{top: topOffs1, borderRadius: '8px 0 0 0' }}>
         <IconButton
           color='secondary'
           onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_GPT_NODES))}
@@ -124,7 +124,7 @@ export const SidebarRight: FC = () => {
           <CloseIcon/>
         </IconButton>
       </div>
-      <div className={crd} style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
+      <div className={crd} style={{top: topOffs5, borderRadius: '0 0 0 8px' }}>
         <IconButton
           color='secondary'
           disabled={frameId !== ''}

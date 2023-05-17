@@ -14,7 +14,7 @@ export const Profile: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      <div className="_bg fixed left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 top-[96px] p-5 rounded-2xl">
+      <div className="_bg fixed left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 top-[96px] p-5 rounded-md">
         <Typography component="h1" variant="h5" color="primary">
           {name}
         </Typography>

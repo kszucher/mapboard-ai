@@ -12,7 +12,7 @@ import {getMapId} from "../state/ApiState";
 export const SidebarLeft: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="_bg fixed left-0 width-[40px] py-1 px-3 flex items-center border-l-0 bottom-[48px] rounded-r-2xl">
+    <div className="_bg fixed left-0 width-[40px] py-1 px-3 flex items-center border-l-0 bottom-[48px] rounded-r-md">
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <IconButton
           color='secondary'
