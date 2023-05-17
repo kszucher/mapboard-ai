@@ -12,6 +12,6 @@ export const getMuiTheme = (colorMode: string)  => createTheme({
   },
   spacing: 2,
   typography: {
-    fontFamily: 'Lexend',
+    fontFamily: 'Comfortaa',
   },
 })

@@ -46,7 +46,7 @@ export const Auth: FC = () => {
 
   return (
     <ThemeProvider theme={getMuiTheme(colorMode)}>
-      <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[384px] flex flex-col items-center inline-flex gap-4 p-5 rounded-md">
+      <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[384px] flex flex-col items-center inline-flex gap-4 p-5 rounded-lg">
         <Typography color="primary" component="h1" variant="h5">
           {'MapBoard'}
         </Typography>

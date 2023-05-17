@@ -7,7 +7,7 @@ import {actions, AppDispatch} from "../editor/EditorReducer"
 export const Logo: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="fixed w-[224px] h-[40px] py-1 rounded-br-md flex items-center justify-center bg-gradient-to-r from-mb-purple to-mb-pink text-white">
+    <div className="fixed w-[224px] h-[40px] py-1 rounded-br-lg flex items-center justify-center bg-gradient-to-r from-mb-purple to-mb-pink text-white">
       <Toolbar variant={"dense"}>
         <IconButton
           sx={{ mr: 2 }}

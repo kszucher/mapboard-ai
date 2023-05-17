@@ -13,7 +13,7 @@ export const ModalCreateGptNodes: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Modal open={true} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      <div className="_bg fixed top-[calc(48*2px)] right-[64px] w-[calc(6*32px)] flex flex-col gap-3 p-3 rounded-md">
+      <div className="_bg fixed top-[calc(48*2px)] right-[64px] w-[calc(6*32px)] flex flex-col gap-3 p-3 rounded-lg">
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
           <Typography variant='subtitle2' color='primary'>
             {'SUGGEST NODES?'}

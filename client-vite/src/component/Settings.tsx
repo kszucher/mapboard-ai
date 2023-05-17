@@ -18,7 +18,7 @@ export const Settings: FC = () => {
       onClose={_=>{}}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description">
-      <div className="_bg fixed left-1/2 -translate-x-1/2 top-[96px] width-[1000px] flex flex-col items-center gap-4 p-5 rounded-md">
+      <div className="_bg fixed left-1/2 -translate-x-1/2 top-[96px] width-[1000px] flex flex-col items-center gap-4 p-5 rounded-lg">
         <IconButton
           color='secondary'
           onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}
