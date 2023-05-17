@@ -264,9 +264,15 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
           mapId,
           {
             $cond: {
-              if: { $gt: [ getIndexOfFrameId(frameId), 0 ] },
-              then: getFrameIdOfIndex({ $subtract: [ getIndexOfFrameId(frameId), 1 ] }),
-              else: getFrameIdOfIndex(1)
+              if: { $eq: [ { $size: '$map.frames' }, 1 ]},
+              then: '',
+              else: {
+                $cond: {
+                  if: { $gt: [ getIndexOfFrameId(frameId), 0 ] },
+                  then: getFrameIdOfIndex({ $subtract: [ getIndexOfFrameId(frameId), 1 ] }),
+                  else: getFrameIdOfIndex(1)
+                }
+              }
             }
           }
         )
