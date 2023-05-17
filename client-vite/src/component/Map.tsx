@@ -1,5 +1,6 @@
 import React, {FC, useEffect, useRef} from "react"
 import {RootState} from "../editor/EditorReducer";
+import {mSelector} from "../state/EditorState";
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
 import {useSelector} from "react-redux";
@@ -13,10 +14,7 @@ const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2
 const getScrollTop = () => (window.innerHeight - 48 * 2)
 
 export const Map: FC = () => {
-  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
-  const mapList = useSelector((state: RootState) => state.editor.mapList)
-  const tm = useSelector((state: RootState) => state.editor.tempMap)
-  const m = tm.length ? tm : mapList[mapListIndex]
+  const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const { density, alignment } = g
   const { data } = useOpenWorkspaceQuery()

@@ -1,6 +1,7 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, IconButton} from '@mui/material'
+import {mSelector} from "../state/EditorState";
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
 import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
@@ -14,10 +15,7 @@ export const Formatter: FC = () => {
   const width =  o * colorList[0].length
   const height = o * colorList.length
   const formatMode = useSelector((state: RootState) => state.editor.formatMode)
-  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
-  const mapList = useSelector((state: RootState) => state.editor.mapList)
-  const tm = useSelector((state: RootState) => state.editor.tempMap)
-  const m = tm.length ? tm : mapList[mapListIndex]
+  const m = useSelector((state:RootState) => mSelector(state))
   const x = getX(m)
   const lineWidth = WidthTypes[getPropXA(m, 'lineWidth') as number || 0]
   const lineType = LineTypes[getPropXA(m, 'lineType') as number || 0]

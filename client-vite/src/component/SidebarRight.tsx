@@ -14,6 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
+import {mSelector} from "../state/EditorState";
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
@@ -31,7 +32,7 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
 
 export const SidebarRight: FC = () => {
-  const m = useSelector((state: RootState) => state.editor.mapList[state.editor.mapListIndex])
+  const m = useSelector((state:RootState) => mSelector(state))
   const { density, alignment } = m?.g || gSaveOptional
   const { data } = useOpenWorkspaceQuery()
   const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState

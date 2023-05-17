@@ -8,6 +8,7 @@ import {getX} from "../map/MapUtils"
 import {getMap} from "../state/EditorState"
 
 export const ModalCreateGptNodes: FC = () => {
+  
   const [numNodes, setNumNodes] = useState<string>('1')
   const interactionDisabled = false
   const dispatch = useDispatch<AppDispatch>()

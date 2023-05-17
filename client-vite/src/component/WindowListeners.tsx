@@ -5,7 +5,7 @@ import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {mapActionResolver} from "../map/MapActionResolver"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
-import {getMap} from "../state/EditorState"
+import {getMap, mSelector} from "../state/EditorState"
 import {mapDeInit} from "../map/MapDeInit"
 
 let namedInterval: NodeJS.Timeout
@@ -17,7 +17,7 @@ let landingAreaListener: AbortController
 export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
-  const m = useSelector((state: RootState) => state.editor.mapList[state.editor.mapListIndex])
+  const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()

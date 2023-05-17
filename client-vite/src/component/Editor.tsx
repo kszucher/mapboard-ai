@@ -2,6 +2,7 @@ import {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
 import {ThemeProvider} from '@mui/material'
 import {RootState} from "../editor/EditorReducer"
+import {mSelector} from "../state/EditorState";
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {ModalCreateGptNodes} from "./ModalCreateGptNodes"
 import {SidebarLeft} from './SidebarLeft'
@@ -31,7 +32,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
-  const m = useSelector((state: RootState) => state.editor.mapList[state.editor.mapListIndex])
+  const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
