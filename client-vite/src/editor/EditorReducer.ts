@@ -1,5 +1,6 @@
 import {combineReducers, configureStore, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
 import {getCoords} from "../component/MapDivUtils"
+import {filterEmpty} from "../core/Utils"
 import {mapActionResolver} from "../map/MapActionResolver"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapReducer} from "../map/MapReducer"
@@ -8,6 +9,7 @@ import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "../core/Enums"
 import {getEditedNode, getXP} from "../map/MapUtils"
 import isEqual from "react-fast-compare"
+import {M} from "../state/MapPropTypes"
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -113,8 +115,8 @@ export const editorSlice = createSlice({
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
         const { mapDataList } = payload
-        // console.log(payload)
-        state.mapList = mapDataList.map((el) => mapReducer(el, 'LOAD', {}))
+        console.log(payload)
+        state.mapList = mapDataList.map((el: M) => mapReducer(filterEmpty(el), 'LOAD', {}))
         state.mapListIndex = 0
         state.editedNodeId = ''
         state.pageState = PageState.WS
