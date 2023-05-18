@@ -60,7 +60,22 @@ export const ProfileMenu: FC = () => {
             }}
           >
             {'Sign Out'}
+          </MenuItem>,
+
+          <MenuItem
+            key={6}
+            onClick={() => {
+              // TODO call auth0 signOut function
+              dispatch(api.endpoints.signOutEverywhere.initiate())
+              dispatch(actions.resetState())
+              dispatch(api.util.resetApiState())
+              logout({ logoutParams: { returnTo: window.location.origin }})
+            }}
+          >
+            {'Sign Out Everywhere'}
           </MenuItem>
+
+
         ]
       }
       {

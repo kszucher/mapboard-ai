@@ -58,6 +58,13 @@ async function toggleColorMode(users, userId) {
   )
 }
 
+async function resetSessions(users, userId) {
+  await users.findOneAndUpdate(
+    { _id: userId },
+    [{ $set: { sessions: [] } }]
+  )
+}
+
 async function selectMap(users, userId, sessionId, mapId, frameId) {
   await users.aggregate([
       { $match: {_id: userId } },
@@ -645,6 +652,7 @@ async function deleteUnusedMaps(users, maps) {
 module.exports = {
   updateWorkspace,
   toggleColorMode,
+  resetSessions,
   selectMap,
   moveUpMapInTab,
   moveDownMapInTab,

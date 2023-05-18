@@ -27,6 +27,10 @@ export const api = createApi({
       query: () => ({ url: '/beta-private', method: 'POST', body: { type: 'signIn' } }),
       invalidatesTags: ['Workspace']
     }),
+    signOutEverywhere: builder.mutation<void, void>({
+      query: () => ({ url: '/beta-private', method: 'POST', body: { type: 'signOutEverywhere' } }),
+      invalidatesTags: []
+    }),
     openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'openWorkspace' } }),
       async onQueryStarted(arg, { dispatch, getState }) {

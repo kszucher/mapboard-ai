@@ -134,6 +134,10 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         await MongoMutations.updateWorkspace(users, userId, sessionId)
         return res.json({})
       }
+      case 'signOutEverywhere': {
+        await MongoMutations.resetSessions(users, userId)
+        return res.json({})
+      }
       case 'openWorkspace': {
         return res.json((await MongoQueries.openWorkspace(users, userId, sessionId)).at(0))
       }
