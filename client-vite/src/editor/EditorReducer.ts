@@ -129,15 +129,14 @@ export const editorSlice = createSlice({
         console.log(payload)
         if (gptSuggestions) {
           const pm = current(state.mapList[state.mapListIndex])
-
-          // TODO parse based on other parts of the payload
-          console.log(gptSuggestions)
-          const gptSuggestionsItemized = gptSuggestions.split(/\r?\n/).slice(1)
-          console.log(gptSuggestionsItemized)
-          // const gptSuggestionsItemized = ['alma', 'korte', 'banan']
-          const mapAction = mapActionResolver(pm, null, 'ae' , { type: 'insertGptSuggestions', payload: { gptSuggestionsItemized } })
-
-
+          let mapAction = {type: '', payload: {}}
+          if (typeNodes === 's') {
+            const gptSuggestionsItemized = gptSuggestions.split(/\r?\n/).slice(1)
+            console.log(gptSuggestionsItemized)
+            mapAction = mapActionResolver(pm, null, 'ae', {type: 'insertGptSuggestions', payload: {gptSuggestionsItemized}})
+          } else if (typeNodes === 'sc') {
+            console.log(JSON.parse(gptSuggestions))
+          }
           const m = mapReducer(pm, mapAction.type, mapAction.payload)
           if (!isEqual(pm, m)) {
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]

@@ -4,11 +4,11 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typograp
 import {api} from "../core/Api";
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
-import {getCountSC, getX, isSX} from "../map/MapUtils"
+import {getCountSC, getSXSCC0S, getSXSCR0S, getX, isSX, sortPath} from "../map/MapUtils"
 import {getMap, mSelector} from "../state/EditorState"
 
 export const ModalCreateGptNodes: FC = () => {
-  const m = useSelector((state:RootState) => mSelector(state))
+  const m = structuredClone(getMap()).sort(sortPath)
   const x = getX(m)
   const s = isSX(m)
   const hasC = getCountSC(m, x.path) > 0
@@ -71,12 +71,14 @@ export const ModalCreateGptNodes: FC = () => {
               disabled={interactionDisabled}
               fullWidth
               onClick={() => {
+                const rowHeader = getSXSCR0S(m).map(el => el.content)
+                const colHeader = getSXSCC0S(m).map(el => el.content)
                 dispatch(api.endpoints.getGptSuggestions.initiate({
-                  prompt: ` $Fill a table where header columns are [] and header rows are []`,
+                  prompt: ` $Fill a table where header columns are [${rowHeader}] and header rows are [${colHeader}] as parseable 2D javascript string array`,
                   context: '',
                   content: getX(getMap()).content,
                   typeNodes: 'sc',
-                  numNodes: 1
+                  numNodes: rowHeader.length * colHeader.length
                 }))
                 dispatch(actions.setPageState(PageState.WS))
               }}>
