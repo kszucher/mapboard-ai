@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
-import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getCountSXO1, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2, getSXFP, getSXLP, getCountSS, getCountD,} from "./MapUtils"
+import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getCountSXO1, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2, getSXFP, getSXLP, getCountSS, getCountD, getSXSCYYS0,} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -125,6 +125,11 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       //   clearSelection(m)
       //   getMapData(m, [...sc.geomHighPath, 'c', 0, 0]).selected = 1
       // }
+      break
+    }
+
+    case 'fillTable': {
+      getSXSCYYS0(m).forEach(n => Object.assign(n, {content: payload.gptSuggestionsParsed[n.path.at(-4) as number][n.path.at(-3) as number]}))
       break
     }
 

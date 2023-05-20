@@ -135,7 +135,13 @@ export const editorSlice = createSlice({
             console.log(gptSuggestionsItemized)
             mapAction = mapActionResolver(pm, null, 'ae', {type: 'insertGptSuggestions', payload: {gptSuggestionsItemized}})
           } else if (typeNodes === 'sc') {
-            console.log(JSON.parse(gptSuggestions))
+            try {
+              const gptSuggestionsParsed = JSON.parse(gptSuggestions)
+              console.log(gptSuggestionsParsed)
+              mapAction = mapActionResolver(pm, null, 'ae', {type: 'gptFillTable', payload: {gptSuggestionsParsed}})
+            } catch {
+              console.warn('unparseable:', gptSuggestions)
+            }
           }
           const m = mapReducer(pm, mapAction.type, mapAction.payload)
           if (!isEqual(pm, m)) {

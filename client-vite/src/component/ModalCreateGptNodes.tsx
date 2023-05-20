@@ -73,8 +73,15 @@ export const ModalCreateGptNodes: FC = () => {
               onClick={() => {
                 const rowHeader = getSXSCR0S(m).map(el => el.content)
                 const colHeader = getSXSCC0S(m).map(el => el.content)
+
+                console.log(rowHeader)
+                console.log(colHeader)
+
                 dispatch(api.endpoints.getGptSuggestions.initiate({
-                  prompt: ` $Fill a table where header columns are [${rowHeader}] and header rows are [${colHeader}] as parseable 2D javascript string array`,
+                  prompt: `
+                  Fill a table where header columns are [${rowHeader}] and header rows are [${colHeader}].
+                  Give me the results in a valid json.
+                  `,
                   context: '',
                   content: getX(getMap()).content,
                   typeNodes: 'sc',

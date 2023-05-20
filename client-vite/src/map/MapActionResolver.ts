@@ -140,6 +140,7 @@ export const mapActionResolver = (pm: M, e: any, et: string, ep: any) => {
 
     case (et === 'ae' && ep.type === 'insertGptSuggestions'                && r                     ): return ({type: 'insertSLOR',               payload: ep.payload})
     case (et === 'ae' && ep.type === 'insertGptSuggestions'                && s                     ): return ({type: 'insertSLO',                payload: ep.payload})
+    case (et === 'ae' && ep.type === 'gptFillTable'                        && s && hasC             ): return ({type: 'fillTable',                payload: ep.payload})
 
     default: return ({type: '', payload: ep})
   }
