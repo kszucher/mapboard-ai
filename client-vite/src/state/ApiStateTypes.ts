@@ -22,4 +22,5 @@ export type GptData = {
   content: string
   typeNodes: string
   numNodes: number
+  maxToken: number
 }

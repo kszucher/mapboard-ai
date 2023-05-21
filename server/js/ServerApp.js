@@ -280,13 +280,13 @@ app.post('/beta-private', checkJwt, async (req, res) => {
       case 'getGptSuggestions': {
         const { gptApiKey } = user
         if (gptApiKey) {
-          const {prompt, context, content, typeNodes, numNodes} = req.body.payload
+          const {prompt, context, content, typeNodes, numNodes, maxToken} = req.body.payload
           const configuration = new Configuration({ apiKey: gptApiKey })
           const openai = new OpenAIApi(configuration);
           const completion = await openai.createCompletion({
             model: "text-davinci-003",
             prompt,
-            max_tokens: numNodes * 12
+            max_tokens: maxToken
           });
           console.log(completion.data.choices[0].text)
           const gptSuggestions = completion.data.choices[0].text

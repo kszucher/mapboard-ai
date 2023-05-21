@@ -28,18 +28,19 @@ const fillTableTest = [
 
 const fillTableResult = {
   prompt: (
-    `Replace 'content' by evaluating its expression limited by 10 words per expression in the following JSON. ${
+    `Fill field 'c', then remove field 'rh' and field 'ch' in the following JSON. ${
       JSON.stringify([
-        {nodeId: 'n', content: 'Row 1 - Col 1'},
-        {nodeId: 'p', content: 'Row 1 - Col 2'},
-        {nodeId: 't', content: 'Row 2 - Col 1'},
-        {nodeId: 'v', content: 'Row 2 - Col 2'},
+        {ni: 'n', c: '', rh: 'Row 1', ch: 'Col 1'},
+        {ni: 'p', c: '', rh: 'Row 1', ch: 'Col 2'},
+        {ni: 't', c: '', rh: 'Row 2', ch: 'Col 1'},
+        {ni: 'v', c: '', rh: 'Row 2', ch: 'Col 2'},
       ])}
   `).trim(),
   context: '',
   content: '',
   typeNodes: 'sc',
-  numNodes: 9
+  numNodes: 9,
+  maxToken: 129,
 }
 
 describe("GptPrompterTests", () => {

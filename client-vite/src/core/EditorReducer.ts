@@ -141,6 +141,7 @@ export const editorSlice = createSlice({
               break
             case 'sc':
               try {
+                console.log(gptSuggestions)
                 const gptParsed = JSON.parse(gptSuggestions)
                 mapAction = mapActionResolver(pm, null, 'ae', {type: 'gptFillTable', payload: {gptParsed}})
               } catch {
