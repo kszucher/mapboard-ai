@@ -10,10 +10,10 @@ export const insertS = (m: M, ip: P, attributes: object) => {
   m.sort(sortPath)
 }
 
-export const insertSL = (m: M, ip: P, payload: { gptSuggestionsItemized: string[] }) => {
-  const { gptSuggestionsItemized } = payload
-  makeSpaceFromS(m, ip, gptSuggestionsItemized.length)
-  const newNodes = gptSuggestionsItemized.map((el: string, i: number) => ({
+export const insertSL = (m: M, ip: P, payload: { gptParsed: string[] }) => {
+  const { gptParsed } = payload
+  makeSpaceFromS(m, ip, gptParsed.length)
+  const newNodes = gptParsed.map((el: string, i: number) => ({
     nodeId: IS_TESTING ? 'z' : 'node' + genHash(8),
     path: [...ip.slice(0, -2), 's', ip.at(-1) as number + i],
     taskStatus: getNodeByPath(m, getXP(m)).taskStatus,
