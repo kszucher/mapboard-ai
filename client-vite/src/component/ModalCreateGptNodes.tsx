@@ -1,11 +1,12 @@
 import React, {FC, useState} from 'react'
-import {useDispatch, useSelector} from "react-redux"
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
+import {useDispatch} from "react-redux"
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
 import {api} from "../core/Api";
-import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
+import {gptPrompter} from "../core/GptPrompter";
+import {actions, AppDispatch} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
-import {getCountSC, getSXSCC0S, getSXSCR0S, getX, isSX, sortPath} from "../map/MapUtils"
-import {getMap, mSelector} from "../state/EditorState"
+import {getCountSC, getX, isSX, sortPath} from "../map/MapUtils"
+import {getMap} from "../state/EditorState"
 
 export const ModalCreateGptNodes: FC = () => {
   const m = structuredClone(getMap()).sort(sortPath)
@@ -23,7 +24,6 @@ export const ModalCreateGptNodes: FC = () => {
             {'GENERATIVE AI'}
           </Typography>
         </div>
-
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           {
             s && !hasC &&
@@ -34,14 +34,13 @@ export const ModalCreateGptNodes: FC = () => {
                 </InputLabel>
                 <Select
                   value={numNodes}
-                  onChange={(event: SelectChangeEvent) => setNumNodes(event.target.value as string)}>
+                  onChange={(event) => setNumNodes(event.target.value as string)}>
                   {[1,2,3,4,5,6,7,8,9,10].map((el, idx) => (
                     <MenuItem value={el} key={idx}>{el}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
             </Box>
-
           }
           {
             s && !hasC &&
@@ -51,13 +50,7 @@ export const ModalCreateGptNodes: FC = () => {
               disabled={interactionDisabled}
               fullWidth
               onClick={() => {
-                dispatch(api.endpoints.getGptSuggestions.initiate({
-                  prompt: `$List the top ${parseInt(numNodes)} to do for ${getX(getMap()).content}. Do not exceed 10 words per list item.`,
-                  context: '',
-                  content: getX(getMap()).content,
-                  typeNodes: 's',
-                  numNodes: parseInt(numNodes)
-                }))
+                dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter('genTaskNodes', {numNodes: parseInt(numNodes)})))
                 dispatch(actions.setPageState(PageState.WS))
               }}>
               {'SUGGEST NODES'}
@@ -71,22 +64,7 @@ export const ModalCreateGptNodes: FC = () => {
               disabled={interactionDisabled}
               fullWidth
               onClick={() => {
-                const rowHeader = getSXSCR0S(m).map(el => el.content)
-                const colHeader = getSXSCC0S(m).map(el => el.content)
-
-                console.log(rowHeader)
-                console.log(colHeader)
-
-                dispatch(api.endpoints.getGptSuggestions.initiate({
-                  prompt: `
-                  Fill a table where header columns are [${rowHeader}] and header rows are [${colHeader}].
-                  Give me the results in a valid json.
-                  `,
-                  context: '',
-                  content: getX(getMap()).content,
-                  typeNodes: 'sc',
-                  numNodes: rowHeader.length * colHeader.length
-                }))
+                dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter('fillTable', null)))
                 dispatch(actions.setPageState(PageState.WS))
               }}>
               {'FILL TABLE'}

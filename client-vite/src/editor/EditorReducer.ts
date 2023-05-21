@@ -130,18 +130,25 @@ export const editorSlice = createSlice({
         if (gptSuggestions) {
           const pm = current(state.mapList[state.mapListIndex])
           let mapAction = {type: '', payload: {}}
-          if (typeNodes === 's') {
-            const gptSuggestionsItemized = gptSuggestions.split(/\r?\n/).slice(1)
-            console.log(gptSuggestionsItemized)
-            mapAction = mapActionResolver(pm, null, 'ae', {type: 'insertGptSuggestions', payload: {gptSuggestionsItemized}})
-          } else if (typeNodes === 'sc') {
-            try {
-              const gptSuggestionsParsed = JSON.parse(gptSuggestions)
-              console.log(gptSuggestionsParsed)
-              mapAction = mapActionResolver(pm, null, 'ae', {type: 'gptFillTable', payload: {gptSuggestionsParsed}})
-            } catch {
-              console.warn('unparseable:', gptSuggestions)
-            }
+          switch (typeNodes) {
+            case 's':
+              try {
+                const gptSuggestionsItemized = gptSuggestions.split(/\r?\n/).slice(1)
+                console.log(gptSuggestionsItemized)
+                mapAction = mapActionResolver(pm, null, 'ae', {type: 'insertGptSuggestions', payload: {gptSuggestionsItemized}})
+              } catch {
+                console.warn('unparseable:', gptSuggestions)
+              }
+              break
+            case 'sc':
+              try {
+                const gptSuggestionsParsed = JSON.parse(gptSuggestions)
+                console.log(gptSuggestionsParsed)
+                mapAction = mapActionResolver(pm, null, 'ae', {type: 'gptFillTable', payload: {gptSuggestionsParsed}})
+              } catch {
+                console.warn('unparseable:', gptSuggestions)
+              }
+              break
           }
           const m = mapReducer(pm, mapAction.type, mapAction.payload)
           if (!isEqual(pm, m)) {
