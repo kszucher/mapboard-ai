@@ -17,7 +17,7 @@ import PaletteIcon from '@mui/icons-material/Palette'
 import {mSelector} from "../state/EditorState";
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {PageState} from "../core/Enums"
+import {PageState} from "../state/Enums"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState";
 import {gSaveOptional} from "../state/MapProps";

@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import { ModalDeleteUser } from './ModalDeleteUser'
 import {actions, AppDispatch} from "../core/EditorReducer";
-import {PageState} from "../core/Enums";
+import {PageState} from "../state/Enums";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 

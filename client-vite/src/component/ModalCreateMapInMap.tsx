@@ -2,7 +2,7 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {PageState} from "../core/Enums"
+import {PageState} from "../state/Enums"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {getX} from "../core/MapUtils"
 import {getMapId} from "../state/ApiState"

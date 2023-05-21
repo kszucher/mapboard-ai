@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {Button, ButtonGroup} from "@mui/material";
-import {AccessTypes} from "../core/Enums";
+import {AccessTypes} from "../state/Enums";
 import {RootState} from "../core/EditorReducer";
 
 export const TargetedButtonGroup = ({KEYS, value, setValue}: { KEYS: string[], value: string, setValue: Function }) => {

@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {AccessTypes, PageState} from "../core/Enums"
+import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {api, useOpenWorkspaceQuery} from "../core/Api"

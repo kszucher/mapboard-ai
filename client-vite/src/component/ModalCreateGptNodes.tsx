@@ -4,7 +4,7 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typograp
 import {api} from "../core/Api";
 import {gptPrompter} from "../core/GptPrompter";
 import {actions, AppDispatch} from "../core/EditorReducer"
-import {PageState} from "../core/Enums"
+import {PageState} from "../state/Enums"
 import {getCountSC, getX, isSX, sortPath} from "../core/MapUtils"
 import {getMap} from "../state/EditorState"
 

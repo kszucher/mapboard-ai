@@ -1,4 +1,4 @@
-import {FormatMode, PageState} from "../core/Enums"
+import {FormatMode, PageState} from "./Enums"
 import {M, N} from "./MapPropTypes"
 
 export interface EditorState {

@@ -2,7 +2,7 @@ import {FC, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {PageState} from "../core/Enums"
+import {PageState} from "../state/Enums"
 import {mapActionResolver} from "../core/MapActionResolver";
 import {mSelector} from "../state/EditorState";
 

@@ -6,7 +6,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import {actions, AppDispatch} from "../core/EditorReducer";
-import {PageState} from "../core/Enums";
+import {PageState} from "../state/Enums";
 import {api, useGetSharesQuery} from "../core/Api";
 
 export const Shares: FC = () => {

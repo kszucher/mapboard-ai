@@ -1,4 +1,4 @@
-import {LineTypes} from "../core/Enums"
+import {LineTypes} from "../state/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
 import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isCCXA, isCRXA, getG, getXP, isD} from "../core/MapUtils"

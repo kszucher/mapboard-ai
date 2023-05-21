@@ -24,9 +24,9 @@ import {ModalToggleTaskMode} from './ModalToggleTaskMode'
 import {TabMaps} from "./TabMaps"
 import {UndoRedo} from './UndoRedo'
 import {WindowListeners} from "./WindowListeners"
-import {setColors} from "../core/Colors"
+import {setColors} from "./Colors"
 import {useOpenWorkspaceQuery} from "../core/Api"
-import {PageState} from "../core/Enums"
+import {PageState} from "../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 
 export const Editor: FC = () => {

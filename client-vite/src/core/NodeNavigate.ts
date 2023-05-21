@@ -1,4 +1,4 @@
-import {Dir} from "./Enums"
+import {Dir} from "../state/Enums"
 import {M, P} from "../state/MapPropTypes"
 import {getCountSS, getNodeByPath, getSI1, isC} from "./MapUtils"
 

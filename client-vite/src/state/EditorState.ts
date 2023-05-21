@@ -1,4 +1,4 @@
-import {FormatMode, PageState} from "../core/Enums"
+import {FormatMode, PageState} from "./Enums"
 import {EditorState} from "./EditorStateTypes";
 import {RootState, store} from "../core/EditorReducer";
 

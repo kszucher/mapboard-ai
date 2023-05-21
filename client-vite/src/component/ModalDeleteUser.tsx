@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {api} from "../core/Api";
 import {actions, AppDispatch, RootState} from "../core/EditorReducer";
-import {PageState} from "../core/Enums";
+import {PageState} from "../state/Enums";
 
 export const ModalDeleteUser:FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)

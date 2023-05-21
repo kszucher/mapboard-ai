@@ -2,7 +2,7 @@
 import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getColors} from "../core/Colors"
+import {getColors} from "./Colors"
 import {mapActionResolver} from "../core/MapActionResolver";
 import {getG, getNodeById, isR, isS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"

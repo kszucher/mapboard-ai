@@ -4,7 +4,7 @@ import { Button, IconButton, Modal } from '@mui/material'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import {actions, AppDispatch} from "../core/EditorReducer"
-import {PageState} from "../core/Enums";
+import {PageState} from "../state/Enums";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 

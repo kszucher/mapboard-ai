@@ -2,7 +2,7 @@ import {FC} from "react";
 import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {actions, AppDispatch} from "../core/EditorReducer";
-import {PageState} from "../core/Enums";
+import {PageState} from "../state/Enums";
 
 export const ModalToggleTaskMode: FC = () => {
   const interactionDisabled = false
