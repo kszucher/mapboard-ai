@@ -1,6 +1,6 @@
 import {FormatMode, PageState} from "../core/Enums"
 import {EditorState} from "./EditorStateTypes";
-import {RootState, store} from "../editor/EditorReducer";
+import {RootState, store} from "../core/EditorReducer";
 
 export const editorState: EditorState = {
   token: '',

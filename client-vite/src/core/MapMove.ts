@@ -1,4 +1,4 @@
-import {genHash} from "../core/Utils";
+import {genHash} from "./Utils";
 import {GN, M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete";
 import {selectNode, unselectNodes} from "./MapSelect";

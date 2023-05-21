@@ -6,7 +6,7 @@ import MoveUpIcon from '@mui/icons-material/MoveUp'
 import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {api} from "../core/Api"
-import {AppDispatch} from "../editor/EditorReducer";
+import {AppDispatch} from "../core/EditorReducer";
 import {getMapId} from "../state/ApiState";
 
 export const SidebarLeft: FC = () => {

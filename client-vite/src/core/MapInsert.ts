@@ -1,5 +1,5 @@
 import {GN, M, P} from "../state/MapPropTypes"
-import {genHash, getTableIndices, IS_TESTING} from "../core/Utils"
+import {genHash, getTableIndices, IS_TESTING} from "./Utils"
 import {unselectNodes} from "./MapSelect";
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getCountCH, getCountCV,} from "./MapUtils"
 

@@ -1,8 +1,8 @@
 import isEqual from "react-fast-compare"
-import {shortcutColors} from "../core/Colors"
-import {Dir} from "../core/Enums"
-import {transpose} from '../core/Utils'
-import {structNavigate} from '../node/NodeNavigate'
+import {shortcutColors} from "./Colors"
+import {Dir} from "./Enums"
+import {transpose} from './Utils'
+import {structNavigate} from './NodeNavigate'
 import {nSaveOptional} from "../state/MapProps"
 import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"

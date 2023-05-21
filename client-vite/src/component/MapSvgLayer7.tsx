@@ -2,7 +2,7 @@ import React, {FC} from "react"
 import {useSelector} from "react-redux";
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {getColors} from "../core/Colors"
-import {RootState} from "../editor/EditorReducer";
+import {RootState} from "../core/EditorReducer";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 
 export const MapSvgLayer7: FC = () => {

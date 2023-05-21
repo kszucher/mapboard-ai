@@ -1,7 +1,7 @@
 import {LineTypes} from "../core/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
-import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isCCXA, isCRXA, getG, getXP, isD} from "../map/MapUtils"
+import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isCCXA, isCRXA, getG, getXP, isD} from "../core/MapUtils"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 

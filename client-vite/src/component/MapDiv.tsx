@@ -3,13 +3,13 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
-import {mapActionResolver} from "../map/MapActionResolver";
-import {getG, getNodeById, isR, isS} from "../map/MapUtils"
+import {mapActionResolver} from "../core/MapActionResolver";
+import {getG, getNodeById, isR, isS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState";
 import {setEndOfContentEditable} from "./MapDivUtils"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
+import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {N} from "../state/MapPropTypes";
 

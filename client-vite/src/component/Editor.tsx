@@ -1,7 +1,7 @@
 import {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
 import {ThemeProvider} from '@mui/material'
-import {RootState} from "../editor/EditorReducer"
+import {RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState";
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {ModalCreateGptNodes} from "./ModalCreateGptNodes"

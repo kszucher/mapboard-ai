@@ -2,7 +2,7 @@ import {FC} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {Tab, Tabs} from "@mui/material";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {AppDispatch, RootState} from "../editor/EditorReducer";
+import {AppDispatch, RootState} from "../core/EditorReducer";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 export const TabMaps: FC = () => {

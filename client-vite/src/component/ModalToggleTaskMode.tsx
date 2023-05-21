@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions, AppDispatch} from "../editor/EditorReducer";
+import {actions, AppDispatch} from "../core/EditorReducer";
 import {PageState} from "../core/Enums";
 
 export const ModalToggleTaskMode: FC = () => {

@@ -1,7 +1,7 @@
 import {GSaveOptional, GSaveNever, GPartial, NSaveAlways, NSaveOptional, NSaveNever, M, MPartial} from "../state/MapPropTypes"
 import {gSaveAlways, gSaveNever, gSaveOptional, nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapProps"
 import {getNodeByPath, isG} from "./MapUtils"
-import {genHash} from "../core/Utils"
+import {genHash} from "./Utils"
 
 export const mapInit = (m: MPartial) => {
   const g = getNodeByPath(m as M, ['g']) as GPartial

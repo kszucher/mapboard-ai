@@ -2,7 +2,7 @@ import {FC} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {api} from "../core/Api";
-import {actions, AppDispatch, RootState} from "../editor/EditorReducer";
+import {actions, AppDispatch, RootState} from "../core/EditorReducer";
 import {PageState} from "../core/Enums";
 
 export const ModalDeleteUser:FC = () => {

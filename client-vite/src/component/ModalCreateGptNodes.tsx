@@ -3,9 +3,9 @@ import {useDispatch} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
 import {api} from "../core/Api";
 import {gptPrompter} from "../core/GptPrompter";
-import {actions, AppDispatch} from "../editor/EditorReducer"
+import {actions, AppDispatch} from "../core/EditorReducer"
 import {PageState} from "../core/Enums"
-import {getCountSC, getX, isSX, sortPath} from "../map/MapUtils"
+import {getCountSC, getX, isSX, sortPath} from "../core/MapUtils"
 import {getMap} from "../state/EditorState"
 
 export const ModalCreateGptNodes: FC = () => {

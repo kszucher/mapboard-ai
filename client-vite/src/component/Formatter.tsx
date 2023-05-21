@@ -5,9 +5,9 @@ import {mSelector} from "../state/EditorState";
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
 import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
-import {actions, AppDispatch, RootState} from '../editor/EditorReducer'
+import {actions, AppDispatch, RootState} from '../core/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
-import {getPropXASSO, getPropXA, getX} from "../map/MapUtils"
+import {getPropXASSO, getPropXA, getX} from "../core/MapUtils"
 
 export const Formatter: FC = () => {
   const o = 32

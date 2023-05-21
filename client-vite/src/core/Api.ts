@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {actions, RootState} from "../editor/EditorReducer"
+import {actions, RootState} from "./EditorReducer"
 import {timeoutId} from "../component/WindowListeners"
 import {backendUrl} from "./Urls"
 import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/ApiStateTypes";
 import {getFrameId, getMapId} from "../state/ApiState";
 import {getMap} from "../state/EditorState";
-import {mapDeInit} from "../map/MapDeInit";
+import {mapDeInit} from "./MapDeInit";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({

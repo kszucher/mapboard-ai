@@ -1,5 +1,5 @@
 import isEqual from "react-fast-compare"
-import {isArrayOfEqualValues} from "../core/Utils"
+import {isArrayOfEqualValues} from "./Utils"
 import {G, GN, M, N, P} from "../state/MapPropTypes"
 
 export const sortPath = (a: GN, b: GN) => a.path.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('') > b.path.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('') ? 1 : -1

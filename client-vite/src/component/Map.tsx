@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useRef} from "react"
-import {RootState} from "../editor/EditorReducer";
+import {RootState} from "../core/EditorReducer";
 import {mSelector} from "../state/EditorState";
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
@@ -7,7 +7,7 @@ import {useSelector} from "react-redux";
 import {scrollTo} from "./MapDivUtils";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
-import {getG} from "../map/MapUtils";
+import {getG} from "../core/MapUtils";
 import {G, N} from "../state/MapPropTypes";
 
 const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2

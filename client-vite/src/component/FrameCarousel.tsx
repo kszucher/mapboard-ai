@@ -4,7 +4,7 @@ import {api, useOpenWorkspaceQuery} from "../core/Api";
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import {AppDispatch} from "../editor/EditorReducer";
+import {AppDispatch} from "../core/EditorReducer";
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../state/ApiState";
 
 export const FrameCarousel: FC = () => {

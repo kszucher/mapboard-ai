@@ -1,4 +1,4 @@
-import {isUrl} from "../core/Utils"
+import {isUrl} from "./Utils"
 import {M} from "../state/MapPropTypes";
 import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD, getCountSC, getCountSS, getPathDir, getXP} from "./MapUtils"
 

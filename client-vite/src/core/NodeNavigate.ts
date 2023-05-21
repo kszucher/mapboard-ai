@@ -1,6 +1,6 @@
-import {Dir} from "../core/Enums"
+import {Dir} from "./Enums"
 import {M, P} from "../state/MapPropTypes"
-import {getCountSS, getNodeByPath, getSI1, isC} from "../map/MapUtils"
+import {getCountSS, getNodeByPath, getSI1, isC} from "./MapUtils"
 
 export const structNavigate = (m: M, path: P, dir: Dir) => {
   let toPath = [] as P

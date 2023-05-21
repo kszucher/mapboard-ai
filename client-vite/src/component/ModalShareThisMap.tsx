@@ -1,6 +1,6 @@
 import {FC, useState} from "react";
 import {useDispatch} from "react-redux";
-import {actions, AppDispatch} from '../editor/EditorReducer'
+import {actions, AppDispatch} from '../core/EditorReducer'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
 import {AccessTypes, PageState} from "../core/Enums";
 import { useCreateShareMutation} from "../core/Api";

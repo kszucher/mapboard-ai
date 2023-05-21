@@ -1,7 +1,7 @@
 import {getNodeById, getNodeByPath, getPathPattern, isG, isR, isD, isS, getCountSC, getCountSCR, getCountSCC, getCountR0D1S, getCountR0D0S, getCountSS, getCountD} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
-import {createArray} from "../core/Utils"
+import {createArray} from "./Utils"
 
 export const mapMeasure = (pm: M, m: M) => {
   const g = getNodeByPath(m, ['g']) as G

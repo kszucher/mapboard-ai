@@ -1,6 +1,6 @@
 import React, {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
-import {RootState} from "../editor/EditorReducer";
+import {RootState} from "../core/EditorReducer";
 import {Auth} from "./Auth"
 import {PageState} from "../core/Enums";
 import {getEquationDim, getTextDim} from "./MapDivUtils";

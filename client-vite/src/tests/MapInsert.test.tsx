@@ -1,5 +1,5 @@
 import {setIsTesting} from "../core/Utils"
-import {mapReducerAtomic} from "../map/MapReducer"
+import {mapReducerAtomic} from "../core/MapReducer"
 import {M} from "../state/MapPropTypes"
 
 const insertSDTest = [

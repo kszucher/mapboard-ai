@@ -1,12 +1,12 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {AccessTypes, PageState} from "../core/Enums"
-import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
-import {mapActionResolver} from "../map/MapActionResolver"
+import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {mapActionResolver} from "../core/MapActionResolver"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
 import {getMap, mSelector} from "../state/EditorState"
-import {mapDeInit} from "../map/MapDeInit"
+import {mapDeInit} from "../core/MapDeInit"
 
 let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false

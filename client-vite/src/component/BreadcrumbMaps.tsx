@@ -3,7 +3,7 @@ import {useDispatch,} from "react-redux"
 import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {AppDispatch} from "../editor/EditorReducer";
+import {AppDispatch} from "../core/EditorReducer";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 export const BreadcrumbMaps: FC = () => {

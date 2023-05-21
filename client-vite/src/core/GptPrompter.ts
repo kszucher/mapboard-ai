@@ -1,4 +1,4 @@
-import {getSXSCC0S, getSXSCR0S, getX} from "../map/MapUtils";
+import {getSXSCC0S, getSXSCR0S, getX} from "./MapUtils";
 import {GptData} from "../state/ApiStateTypes";
 import {getMap} from "../state/EditorState";
 
