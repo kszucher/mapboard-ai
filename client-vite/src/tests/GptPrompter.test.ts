@@ -7,7 +7,7 @@ const fillTableTest = [
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 1, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
-  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0], content: 'Row 0'},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0], content: 'Col 1'},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2]},
@@ -30,10 +30,10 @@ const fillTableResult = {
   prompt: (
     `Fill field 'c', then remove field 'rh' and field 'ch' in the following JSON. ${
       JSON.stringify([
-        {ni: 'n', c: '', rh: 'Row 1', ch: 'Col 1'},
-        {ni: 'p', c: '', rh: 'Row 1', ch: 'Col 2'},
-        {ni: 't', c: '', rh: 'Row 2', ch: 'Col 1'},
-        {ni: 'v', c: '', rh: 'Row 2', ch: 'Col 2'},
+        {ni: 'n', c: '', rh: 'Row 0 - Row 1', ch: 'Col 1'},
+        {ni: 'p', c: '', rh: 'Row 0 - Row 1', ch: 'Col 2'},
+        {ni: 't', c: '', rh: 'Row 0 - Row 2', ch: 'Col 1'},
+        {ni: 'v', c: '', rh: 'Row 0 - Row 2', ch: 'Col 2'},
       ])}
   `).trim(),
   context: '',
