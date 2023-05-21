@@ -28,12 +28,12 @@ const fillTableTest = [
 
 const fillTableResult = {
   prompt: (
-    `Fill field 'c', then remove field 'rh' and field 'ch' in the following JSON. ${
+    `Fill field 'c' by replacing its content in the following JSON. Keep the format of the JSON. ${
       JSON.stringify([
-        {ni: 'n', c: '', rh: 'Row 0 - Row 1', ch: 'Col 1'},
-        {ni: 'p', c: '', rh: 'Row 0 - Row 1', ch: 'Col 2'},
-        {ni: 't', c: '', rh: 'Row 0 - Row 2', ch: 'Col 1'},
-        {ni: 'v', c: '', rh: 'Row 0 - Row 2', ch: 'Col 2'},
+        {ni: 'n', c: 'Row 0 - Row 1 - Col 1'},
+        {ni: 'p', c: 'Row 0 - Row 1 - Col 2'},
+        {ni: 't', c: 'Row 0 - Row 2 - Col 1'},
+        {ni: 'v', c: 'Row 0 - Row 2 - Col 2'},
       ])}
   `).trim(),
   context: '',

@@ -21,12 +21,10 @@ export const gptPrompter = (m: M, action: string, payload: any) => {
       const colHeader = getSXSCC0S(m).map(el => el.content)
       const MAX_ANSWER_LENGTH_IN_CHAR = 100
       const prompt = (
-        `Fill field 'c', then remove field 'rh' and field 'ch' in the following JSON. ${
+        `Fill field 'c' by replacing its content in the following JSON. Keep the format of the JSON. ${
           JSON.stringify(getSXSCYYS0(m).map((n: N) => ({
             ni: n.nodeId, //.slice(4),
-            c: '',
-            rh: colHeader[0] + ' - ' + colHeader[n.path.at(-4) as number],
-            ch: rowHeader[n.path.at(-3) as number]
+            c: colHeader[0] + ' - ' + colHeader[n.path.at(-4) as number] + ' - ' + rowHeader[n.path.at(-3) as number]
           })))}`).trim()
       const maxToken = Math.ceil(JSON.stringify(getSXSCYYS0(m).map((n: N) => ({nodeId: n.nodeId, content: 'x'.repeat(MAX_ANSWER_LENGTH_IN_CHAR)}))).length / 4)
       console.log(prompt, maxToken)

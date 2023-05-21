@@ -129,7 +129,10 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     }
 
     case 'fillTable': {
-      getSXSCYYS0(m).forEach(n => Object.assign(n, {content: payload.gptSuggestionsParsed[n.path.at(-4) as number][n.path.at(-3) as number]}))
+      // TODO: simply go ALL map, and if the nodeId is found, c is content --> DO IT
+      // console.log()
+      payload.gptParsed.forEach((n: any) => Object.assign(getNodeById(m, n.ni) || {}, {content: n.c}))
+      // getSXSCYYS0(m).forEach(n => Object.assign(n, {content: payload.gptSuggestionsParsed[n.path.at(-4) as number][n.path.at(-3) as number]}))
       break
     }
 
