@@ -1,5 +1,5 @@
 import {M, N} from "../state/MapPropTypes"
-import {getSXSCC0S, getSXSCR0S, getSXSCYYS0, getX} from "./MapUtils"
+import {getXSSCC0S, getXSSCR0S, getXSSCYYS0, getX} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
 export const gptPrompter = (m: M, action: string, payload: any) => {
@@ -17,16 +17,16 @@ export const gptPrompter = (m: M, action: string, payload: any) => {
       } as GptData
     }
     case 'fillTable': {
-      const rowHeader = getSXSCR0S(m).map(el => el.content)
-      const colHeader = getSXSCC0S(m).map(el => el.content)
+      const rowHeader = getXSSCR0S(m).map(el => el.content)
+      const colHeader = getXSSCC0S(m).map(el => el.content)
       const MAX_ANSWER_LENGTH_IN_CHAR = 100
       const prompt = (
         `Fill field 'c' by replacing its content in the following JSON. Keep the format of the JSON. ${
-          JSON.stringify(getSXSCYYS0(m).map((n: N) => ({
+          JSON.stringify(getXSSCYYS0(m).map((n: N) => ({
             ni: n.nodeId, //.slice(4),
             c: colHeader[0] + ' - ' + colHeader[n.path.at(-4) as number] + ' - ' + rowHeader[n.path.at(-3) as number]
           })))}`).trim()
-      const maxToken = Math.ceil(JSON.stringify(getSXSCYYS0(m).map((n: N) => ({nodeId: n.nodeId, content: 'x'.repeat(MAX_ANSWER_LENGTH_IN_CHAR)}))).length / 4)
+      const maxToken = Math.ceil(JSON.stringify(getXSSCYYS0(m).map((n: N) => ({nodeId: n.nodeId, content: 'x'.repeat(MAX_ANSWER_LENGTH_IN_CHAR)}))).length / 4)
       console.log(prompt, maxToken)
       return {
         prompt,

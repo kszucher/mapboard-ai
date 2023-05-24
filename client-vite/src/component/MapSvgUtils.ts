@@ -1,7 +1,7 @@
 import {LineTypes} from "../state/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
-import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isCCXA, isCRXA, getG, getXP, isD} from "../core/MapUtils"
+import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isXACC, isXACR, getG, getXP, isD} from "../core/MapUtils"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -99,13 +99,13 @@ export const getPolygonC = (m: M): PolygonPoints => {
   const n = getNodeByPath(m, ls.path)
   const dir = getPathDir(ls.path)
   let x, y, w, h
-  if (isCRXA(m)) {
+  if (isXACR(m)) {
     const i = ls.path.at(-2) as number
     x = dir === -1 ? pn.nodeEndX  : pn.nodeStartX
     y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.selfW
     h = pn.maxRowHeight[i]
-  } else if (isCCXA(m)) {
+  } else if (isXACC(m)) {
     const j = ls.path.at(-1) as number
     x = dir === -1 ? pn.nodeEndX - pn.sumMaxColWidth[j] : pn.nodeStartX + pn.sumMaxColWidth[j]
     y = pn.nodeY - pn.selfH / 2

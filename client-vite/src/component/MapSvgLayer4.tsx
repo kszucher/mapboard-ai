@@ -2,7 +2,7 @@ import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {getColors} from "./Colors"
-import {getX, isCCXA, isCRXA} from "../core/MapUtils"
+import {getX, isXACC, isXACR} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../core/EditorReducer"
@@ -21,7 +21,7 @@ export const MapSvgLayer4: FC = () => {
       {m.map((n: N) => (
         <Fragment key={n.nodeId}>
           {
-            !selectionRectCoords.length && n.selected && n.selected !== getX(m).selected && !isCRXA(m) && !isCCXA(m) &&
+            !selectionRectCoords.length && n.selected && n.selected !== getX(m).selected && !isXACR(m) && !isXACC(m) &&
             <path
               key={`${n.nodeId}_svg_selectionBorderSecondary`}
               d={getPolygonPath(n, getPolygonS(m, n, n.selection), n.selection, getSelectionMargin(m, n))}

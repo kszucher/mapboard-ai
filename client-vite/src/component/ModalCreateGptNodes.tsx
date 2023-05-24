@@ -5,13 +5,13 @@ import {api} from "../core/Api";
 import {gptPrompter} from "../core/GptPrompter";
 import {actions, AppDispatch} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
-import {getCountSC, getX, isSX, sortPath} from "../core/MapUtils"
+import {getCountSC, getX, isXS, sortPath} from "../core/MapUtils"
 import {getMap} from "../state/EditorState"
 
 export const ModalCreateGptNodes: FC = () => {
   const m = structuredClone(getMap()).sort(sortPath)
   const x = getX(m)
-  const s = isSX(m)
+  const s = isXS(m)
   const hasC = getCountSC(m, x.path) > 0
   const [numNodes, setNumNodes] = useState<string>('1')
   const interactionDisabled = false

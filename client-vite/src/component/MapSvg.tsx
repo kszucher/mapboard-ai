@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
-import {getCountSC, getG, isCCXA, isCRXA, isCX} from "../core/MapUtils"
+import {getCountSC, getG, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {MapSvgLayer0} from "./MapSvgLayer0"
@@ -28,9 +28,9 @@ export const pathCommonProps = {
 
 export const getSelectionMargin = (m: M, n: N) => (
   (
-    isCX(m) ||
-    isCRXA(m) ||
-    isCCXA(m) ||
+    isXC(m) ||
+    isXACR(m) ||
+    isXACC(m) ||
     (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
     (n.selection === 'f') ||
     n.taskStatus > 1 ||
