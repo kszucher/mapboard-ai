@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
-import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getXACR, getXACL, getXACD, getXACU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSS, getCountD, getXSSCYYS0,} from "./MapUtils"
+import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSS, getCountD, getXSSCYYS0,} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -65,10 +65,10 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCB': selectNode(m, [...getXP(m).slice(0, getXP(m).lastIndexOf('c') + 3)], 's'); break
     case 'selectCRSAME': selectNodeList(m, m.filter(n => isCV(n.path, getXP(m))).map(n => n.path), 's'); break
     case 'selectCCSAME': selectNodeList(m, m.filter(n => isCH(n.path, getXP(m))).map(n => n.path), 's'); break
-    case 'selectCRD': selectNodeList(m, getXACD(m), 's'); break
-    case 'selectCRU': selectNodeList(m, getXACU(m), 's'); break
-    case 'selectCCR': selectNodeList(m, getXACR(m), 's'); break
-    case 'selectCCL': selectNodeList(m, getXACL(m), 's'); break
+    case 'selectCRD': selectNodeList(m, getXCRD(m), 's'); break
+    case 'selectCRU': selectNodeList(m, getXCRU(m), 's'); break
+    case 'selectCCR': selectNodeList(m, getXCCR(m), 's'); break
+    case 'selectCCL': selectNodeList(m, getXCCL(m), 's'); break
     case 'selectDragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
 
     case 'insertSD': insertS(m, [...getXSI1(m), 's', getCountXASU(m) + 1], payload); break

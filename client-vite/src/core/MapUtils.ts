@@ -79,10 +79,10 @@ export const getXSSCR0S = (m: M) => m.filter(n => isSCR0S0(getXP(m), n.path))
 export const getXSSCC0S = (m: M) => m.filter(n => isSCC0S0(getXP(m), n.path))
 export const getXSSCXXS0 = (m: M) => m.filter(n => isSCXXS0(getXP(m), n.path))
 export const getXSSCYYS0 = (m: M) => m.filter(n => isSCYYS0(getXP(m), n.path))
-export const getXACD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
-export const getXACU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
-export const getXACR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
-export const getXACL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
+export const getXCRD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
+export const getXCRU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
+export const getXCCR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
+export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
 
 export const getCountXASD = (m: M) => getCountSD(m, getXSLP(m))
 export const getCountXASU = (m: M) => getCountSU(m, getXSFP(m))
@@ -118,8 +118,8 @@ export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).
 export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCFRF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
 
 export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1(m) : getXASI1(m)
-export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU(m) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
-export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL(m) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
+export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
+export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 
 export const fS = (m: M, n: N) => ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]
 export const fCR = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]
