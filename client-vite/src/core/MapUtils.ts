@@ -121,19 +121,21 @@ export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1(m) : getXASI1(m
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXCAU(m) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXCAL(m) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 
-export const m2cbS = (m: M) => structuredClone(getXSAF(m).map(n =>
-  ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const m2cbCR = (m: M) => structuredClone(getXSAF(m).map(n =>
-  ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const m2cbCC = (m: M) => structuredClone(getXSAF(m).map(n =>
-  ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountXCL(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const fS = (m: M, n: N) => ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]
+export const fCR = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]
+export const fCC = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountXCL(m), ...n.path.slice(getXP(m).length)]
 
-export const cb2ipS = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
-  ({...n, path: [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]}))) as GN[]
-export const cb2ipCR = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
-  ({...n, path: [...ip.slice(0, -3), 'c', (n.path.at(1) as number) + (ip.at(-2) as number), (n.path.at(2) as number), ...n.path.slice(3)]}))) as GN[]
-export const cb2ipCC = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
-  ({...n, path: [...ip.slice(0, -3), 'c', (n.path.at(1) as number), (n.path.at(2) as number) + (ip.at(-1) as number), ...n.path.slice(3)]}))) as GN[]
+export const m2cbS = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fS(m, n)}))) as GN[]
+export const m2cbCR = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fCR(m, n)}))) as GN[]
+export const m2cbCC = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fCC(m, n)}))) as GN[]
+
+export const tS = (ip: P, n: N) => [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]
+export const tCR = (ip: P, n: N) => [...ip.slice(0, -3), 'c', (n.path.at(1) as number) + (ip.at(-2) as number), (n.path.at(2) as number), ...n.path.slice(3)]
+export const tCC = (ip: P, n: N) => [...ip.slice(0, -3), 'c', (n.path.at(1) as number), (n.path.at(2) as number) + (ip.at(-1) as number), ...n.path.slice(3)]
+
+export const cb2ipS = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: tS(ip, n)}))) as GN[]
+export const cb2ipCR = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: tCR(ip, n)}))) as GN[]
+export const cb2ipCC = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: tCC(ip, n)}))) as GN[]
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
