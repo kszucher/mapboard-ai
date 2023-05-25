@@ -22,11 +22,6 @@ export const isD = (p: P) => getPathPattern(p).endsWith('d')
 export const isS = (p: P) => getPathPattern(p).endsWith('s')
 export const isC = (p: P) => getPathPattern(p).endsWith('c')
 
-export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
-export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
-export const getSI1 = (p: P) => getSIL(p).at(-1) as P
-export const getSI2 = (p: P) => getSIL(p).at(-2) as P
-
 export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
@@ -44,6 +39,11 @@ export const isCV = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(
 export const isCH = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
 export const isCFRF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 1)! >= p.at(-1)!
 export const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
+
+export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
+export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
+export const getSI1 = (p: P) => getSIL(p).at(-1) as P
+export const getSI2 = (p: P) => getSIL(p).at(-2) as P
 
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
