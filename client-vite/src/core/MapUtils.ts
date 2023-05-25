@@ -52,8 +52,8 @@ export const getCountSS = (m: M, p: P) => m.filter(n => isSS(p, n.path)).length
 export const getCountSC = (m: M, p: P) => m.filter(n => isSC(p, n.path)).length
 export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === 1 && isS(n.path)).length
 export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
-export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
+export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountSCR = (m: M, p: P) =>  getCountCV(m, [...p, 'c', 0, 0])
 export const getCountSCC = (m: M, p: P) =>  getCountCH(m, [...p, 'c', 0, 0])
 
