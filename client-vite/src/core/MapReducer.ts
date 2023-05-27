@@ -96,10 +96,10 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
     case 'moveSIR': moveS(m, ['r', 0, 'd', 1], getCountR0D1S(m)); break
     case 'moveSIL': moveS(m, ['r', 0, 'd', 0], getCountR0D0S(m)); break
-    case 'moveCRD': moveCR(m, [...getXSI1(m), 'c', getCountXCU(m) + 1, 0]); break
-    case 'moveCRU': moveCR(m, [...getXSI1(m), 'c', getCountXCU(m) - 1, 0]); break
-    case 'moveCCR': moveCC(m, [...getXSI1(m), 'c', 0, getCountXCL(m) + 1]); break
-    case 'moveCCL': moveCC(m, [...getXSI1(m), 'c', 0, getCountXCL(m) - 1]); break
+    case 'moveCRD': moveCR(m, getXSI1(m), getCountXCU(m) + 1); break
+    case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
+    case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
+    case 'moveCCL': moveCC(m, getXSI1(m), getCountXCL(m) - 1); break
 
     case 'copySelection': copyS(m); break
     case 'cutSelection': cutS(m); break

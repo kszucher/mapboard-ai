@@ -52,17 +52,21 @@ export const moveS = (m: M, insertTargetPath: P, insertTargetIndex: number) => {
   m.sort(sortPath)
 }
 
-export const moveCR = (m: M, insertPath: P) => {
+export const moveCR = (m: M, insertTargetPath: P, insertTargetRowIndex: number) => {
+  const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
   const cb = m2cbCR(m)
   deleteCR(m)
+  const insertPath = [...getNodeById(m, insertTargetNodeId).path, 'c', insertTargetRowIndex, 0] as P
   makeSpaceFromCR(m, insertPath)
   m.push(...cb2ipCR(cb, insertPath))
   m.sort(sortPath)
 }
 
-export const moveCC = (m: M, insertPath: P) => {
+export const moveCC = (m: M, insertTargetPath: P, insertTargetColIndex: number) => {
+  const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
   const cb = m2cbCC(m)
   deleteCC(m)
+  const insertPath = [...getNodeById(m, insertTargetNodeId).path, 'c', 0, insertTargetColIndex] as P
   makeSpaceFromCC(m, insertPath)
   m.push(...cb2ipCC(cb, insertPath))
   m.sort(sortPath)
