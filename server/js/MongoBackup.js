@@ -65,7 +65,8 @@ const mongoBackup = async (mode) => {
       const comment = ''
       const date = + new Date()
       await mongoDump({date, source: 'app_dev', comment})
-      await mongoRestore({source:'app_dev', target:'app_prod'})
+      const filename = `date_${date}_source_app_dev_comment_${comment}`
+      await mongoRestore({source: decodeSourceFromFilename(filename), target:'app_prod', filename})
       break
     }
     case 'file2dev': {

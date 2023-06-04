@@ -49,7 +49,7 @@ export const ProfileMenu: FC = () => {
           >
             {'Shares'}
           </MenuItem>,
-          // <Divider key={4} />,
+          <Divider key={4} />,
           <MenuItem
             key={5}
             onClick={() => {
