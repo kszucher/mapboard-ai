@@ -22,7 +22,7 @@ export const ProfileMenu: FC = () => {
       {
         pageState === PageState.WS && [
           <MenuItem
-            key={0}
+            key={'p'}
             onClick={() => {
               dispatch(actions.closeMoreMenu())
               dispatch(actions.setPageState(PageState.WS_PROFILE))}
@@ -31,7 +31,7 @@ export const ProfileMenu: FC = () => {
             {'Profile'}
           </MenuItem>,
           <MenuItem
-            key={1}
+            key={'se'}
             onClick={() => {
               dispatch(actions.closeMoreMenu())
               dispatch(actions.setPageState(PageState.WS_SETTINGS))}
@@ -39,9 +39,8 @@ export const ProfileMenu: FC = () => {
           >
             {'Settings'}
           </MenuItem>,
-          // <Divider key={2}/>,
           <MenuItem
-            key={3}
+            key={'sh'}
             onClick={() => {
               dispatch(actions.closeMoreMenu())
               dispatch(actions.setPageState(PageState.WS_SHARES))}
@@ -49,11 +48,14 @@ export const ProfileMenu: FC = () => {
           >
             {'Shares'}
           </MenuItem>,
-          <Divider key={4} />,
+          <Divider key={'d1'} />,
+
+
+
+          <Divider key={'d2'} />,
           <MenuItem
-            key={5}
+            key={'so'}
             onClick={() => {
-              // TODO call auth0 signOut function
               dispatch(actions.resetState())
               dispatch(api.util.resetApiState())
               logout({ logoutParams: { returnTo: window.location.origin }})
@@ -61,11 +63,9 @@ export const ProfileMenu: FC = () => {
           >
             {'Sign Out'}
           </MenuItem>,
-
           <MenuItem
-            key={6}
+            key={'soe'}
             onClick={() => {
-              // TODO call auth0 signOut function
               dispatch(api.endpoints.signOutEverywhere.initiate())
               dispatch(actions.resetState())
               dispatch(api.util.resetApiState())
@@ -74,8 +74,6 @@ export const ProfileMenu: FC = () => {
           >
             {'Sign Out Everywhere'}
           </MenuItem>
-
-
         ]
       }
       {
