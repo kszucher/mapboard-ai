@@ -278,7 +278,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'getGptSuggestions': {
-        const { gptApiKey } = user
+        const gptApiKey = user.gptApiKey || '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'
         if (gptApiKey) {
           const {prompt, context, content, typeNodes, numNodes, maxToken} = req.body.payload
           const configuration = new Configuration({ apiKey: gptApiKey })
