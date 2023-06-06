@@ -40,23 +40,6 @@ const measureText = (g: G, pn: N, n: N) => {
   n.selfH = n.dimH / 17 <= 1 ? g.defaultH + densityH : n.dimH + paddingH + densityH
 }
 
-const measureFamily = (m: M, g: G, n: N) => {
-  const countSS = getCountSS(m, n.path)
-  let sMaxW = 0
-  for (let i = 0; i < countSS; i++) {
-    const cn = getNodeByPath(m, [...n.path, 's', i]) as N
-    n.familyH += cn.maxH
-    let currMaxW = cn.maxW
-    if (currMaxW >= sMaxW) {
-      sMaxW = currMaxW
-    }
-  }
-  if (n.spacingActivated) {
-    n.familyH += (countSS - 1)*n.spacing
-  }
-  n.familyW = sMaxW + g.sLineDeltaXDefault
-}
-
 const measureTable = (m: M, g: G, n: N) => {
   const countSCR = getCountSCR(m, n.path)
   const countSCC = getCountSCC(m, n.path)
@@ -115,6 +98,23 @@ const measureTable = (m: M, g: G, n: N) => {
       cn.selfH = n.maxRowHeight[i]
     }
   }
+}
+
+const measureFamily = (m: M, g: G, n: N) => {
+  const countSS = getCountSS(m, n.path)
+  let sMaxW = 0
+  for (let i = 0; i < countSS; i++) {
+    const cn = getNodeByPath(m, [...n.path, 's', i]) as N
+    n.familyH += cn.maxH
+    let currMaxW = cn.maxW
+    if (currMaxW >= sMaxW) {
+      sMaxW = currMaxW
+    }
+  }
+  if (n.spacingActivated) {
+    n.familyH += (countSS - 1)*n.spacing
+  }
+  n.familyW = sMaxW + g.sLineDeltaXDefault
 }
 
 export const mapMeasure = (pm: M, m: M) => {
@@ -178,6 +178,7 @@ export const mapMeasure = (pm: M, m: M) => {
       n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
     } else if (isR(n.path)) {
       measureText(g, pn, n)
+      // TODO start here to utilize maxW and maxH
     } else if (isD(n.path)) {
       if (getCountSS(m, n.path)) {
         measureFamily(m, g, n)
