@@ -1,15 +1,14 @@
-import React, {FC, useState} from "react"
+import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, Modal, TextField, Typography} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {mapActionResolver} from "../core/MapActionResolver";
+import {mapActionResolver} from "../core/MapActionResolver"
 import {PageState} from "../state/Enums"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {getX} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 
 export const ModalEditNote: FC = () => {
-  const [note, setNote] = useState('')
   const m = useSelector((state:RootState) => mSelector(state))
   const { isFetching } = useOpenWorkspaceQuery()
   const dispatch = useDispatch<AppDispatch>()
@@ -29,24 +28,15 @@ export const ModalEditNote: FC = () => {
             rows={20}
             defaultValue={getX(m).note}
             variant="filled"
-            onChange={(e) => setNote(e.target.value)}
+            onChange={(e) => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', {type: 'setNote', payload: {note: e.target.value}})))}
           />
           <Button
             color="primary"
             variant='outlined'
             disabled={isFetching}
-            onClick={() => {
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', {type: 'setNote', payload: {note}})))
-              dispatch(actions.setPageState(PageState.WS))
-            }
-          }
+            onClick={() => dispatch(actions.setPageState(PageState.WS))}
           >
-            {'OK'}
-          </Button>
-          <Button
-            color="primary" variant='outlined' disabled={isFetching}
-            onClick={() => dispatch(actions.setPageState(PageState.WS))}>
-            {'CANCEL'}
+            {'CLOSE'}
           </Button>
         </div>
       </div>}
