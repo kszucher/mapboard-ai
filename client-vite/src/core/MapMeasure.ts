@@ -192,13 +192,15 @@ export const mapMeasure = (pm: M, m: M) => {
       if (getCountSS(m, n.path)) {
         measureFamily(m, g, n)
       }
+      n.maxW = n.selfW + n.familyW
+      n.maxH = Math.max(...[n.selfH, n.familyH])
     } else if (isC(n.path)) {
       if (getCountSS(m, n.path)) {
         measureFamily(m, g, n)
       }
+      n.maxW = n.familyW
+      n.maxH = n.familyH
     }
-    n.maxW = n.selfW + n.familyW
-    n.maxH = Math.max(...[n.selfH, n.familyH])
   })
   m.reverse()
 }
