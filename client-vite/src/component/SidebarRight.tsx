@@ -1,6 +1,7 @@
 import {FC} from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material'
+import EditNoteIcon from '@mui/icons-material/EditNote'
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded'
 import DensitySmallIcon from '@mui/icons-material/DensitySmall'
 import DensityMediumIcon from '@mui/icons-material/DensityMedium'
@@ -24,7 +25,7 @@ import {gSaveOptional} from "../state/MapProps";
 
 const iconSize = 40
 const topOffs1 = 48*2
-const topOffs2 = topOffs1 + iconSize + 2*4
+const topOffs2 = topOffs1 + iconSize*2 + 2*4
 const topOffs3 = topOffs2 + iconSize*4 + 2*4
 const topOffs4 = topOffs3 + iconSize*2 + 2*4
 const topOffs5 = topOffs4 + iconSize*5 + 2*4
@@ -46,6 +47,12 @@ export const SidebarRight: FC = () => {
           onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_GPT_NODES))}
         >
           <AutoAwesomeRoundedIcon/>
+        </IconButton>
+        <IconButton
+          color='secondary'
+          onClick={() => dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))}
+        >
+          <EditNoteIcon/>
         </IconButton>
       </div>
       <div className={crd} style={{top: topOffs2, borderRadius: '0 0 0 0' }}>

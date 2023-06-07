@@ -54,6 +54,7 @@ export const nSaveOptional = {
   textFontSize: 14,
   textColor: 'default',
   taskStatus: 0,
+  note: ''
 } as NSaveOptional
 
 export const nSaveNever = {

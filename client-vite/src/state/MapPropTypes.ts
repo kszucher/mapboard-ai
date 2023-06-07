@@ -48,6 +48,7 @@ export interface NSaveOptional {
   textFontSize: number
   textColor: string
   taskStatus: number
+  note: string
 }
 
 export interface NSaveNever {

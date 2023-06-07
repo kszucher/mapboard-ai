@@ -139,6 +139,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
 
+    case 'setNote': Object.assign(getX(m), { note: payload.note }); break
+
     case 'setLineWidth': getX(m).selection === 's' ? setPropXA(m, 'lineWidth', payload) : setPropXASF (m, 'lineWidth', payload); break
     case 'setLineType': getX(m).selection === 's' ? setPropXA(m, 'lineType', payload) : setPropXASF (m, 'lineType', payload); break
     case 'setLineColor': getX(m).selection === 's' ? setPropXA(m, 'lineColor', payload) : setPropXASF (m, 'lineColor', payload); break

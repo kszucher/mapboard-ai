@@ -138,6 +138,8 @@ export const mapActionResolver = (pm: M, e: any, et: string, ep: any) => {
     case (et === 'ce' && ep.type === 'insertTable'                         && r                     ): return ({type: 'insertSORTable',           payload: ep.payload})
     case (et === 'ce' && ep.type === 'insertTable'                         && s                     ): return ({type: 'insertSOTable',            payload: ep.payload})
 
+    case (et === 'ce' && ep.type === 'setNote'                             && true                  ): return ({type: 'setNote',                  payload: ep.payload})
+
     case (et === 'ae' && ep.type === 'insertGptSuggestions'                && r                     ): return ({type: 'insertSLOR',               payload: ep.payload})
     case (et === 'ae' && ep.type === 'insertGptSuggestions'                && s                     ): return ({type: 'insertSLO',                payload: ep.payload})
     case (et === 'ae' && ep.type === 'gptFillTable'                        && s && hasC             ): return ({type: 'fillTable',                payload: ep.payload})

@@ -2,9 +2,10 @@ import {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
 import {ThemeProvider} from '@mui/material'
 import {RootState} from "../core/EditorReducer"
-import {mSelector} from "../state/EditorState";
+import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {ModalCreateGptNodes} from "./ModalCreateGptNodes"
+import {ModalEditNote} from "./ModalEditNote"
 import {SidebarLeft} from './SidebarLeft'
 import {SidebarRight} from './SidebarRight'
 import {ModalCreateTable} from './ModalCreateTable'
@@ -71,6 +72,7 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_SETTINGS && <Settings/>}
       {pageState === PageState.WS_SHARES && <Shares/>}
       {pageState === PageState.WS_CREATE_GPT_NODES && <ModalCreateGptNodes/>}
+      {pageState === PageState.WS_EDIT_NOTE && <ModalEditNote/>}
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
       {pageState === PageState.WS_CREATE_TASK && <ModalToggleTaskMode/>}
       {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
