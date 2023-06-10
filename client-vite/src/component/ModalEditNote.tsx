@@ -28,7 +28,7 @@ export const ModalEditNote: FC = () => {
             rows={20}
             defaultValue={getX(m).note}
             variant="filled"
-            onChange={(e) => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', {type: 'setNote', payload: {note: e.target.value}})))}
+            onChange={(e) => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'setNote', {note: e.target.value})))}
           />
           <Button
             color="primary"

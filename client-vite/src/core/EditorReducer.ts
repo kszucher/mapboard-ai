@@ -134,7 +134,7 @@ export const editorSlice = createSlice({
             case 's':
               try {
                 const gptParsed = gptSuggestions.split(/\r?\n/).filter((el: string) => el !== '')
-                mapAction = mapActionResolver(pm, null, 'ae', {type: 'insertGptSuggestions', payload: {gptParsed}})
+                mapAction = mapActionResolver(pm, null, 'ae', 'insertGptSuggestions', {gptParsed})
               } catch {
                 console.warn('unparseable:', gptSuggestions)
               }
@@ -143,7 +143,7 @@ export const editorSlice = createSlice({
               try {
                 console.log(gptSuggestions)
                 const gptParsed = JSON.parse(gptSuggestions)
-                mapAction = mapActionResolver(pm, null, 'ae', {type: 'gptFillTable', payload: {gptParsed}})
+                mapAction = mapActionResolver(pm, null, 'ae', 'gptFillTable', {gptParsed})
               } catch {
                 console.warn('unparseable:', gptSuggestions)
               }

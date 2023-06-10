@@ -4,7 +4,7 @@ import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, is
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
-export const mapActionResolver = (pm: M, e: any, es: string, ep: any) => {
+export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, ep: any) => {
   const m = structuredClone(pm).sort(sortPath)
   const x = getX(m)
   const dr = getPathDir(x.path) === 1
@@ -136,14 +136,13 @@ export const mapActionResolver = (pm: M, e: any, es: string, ep: any) => {
     case (es === 'pi' && true                                              && r                     ): return ({type: 'insertSORImage',           payload: ep})
     case (es === 'pi' && true                                              && s                     ): return ({type: 'insertSOImage',            payload: ep})
 
-    case (es === 'ce' && ep.type === 'insertTable'                         && r                     ): return ({type: 'insertSORTable',           payload: ep.payload})
-    case (es === 'ce' && ep.type === 'insertTable'                         && s                     ): return ({type: 'insertSOTable',            payload: ep.payload})
+    case (es === 'ce' && et === 'insertTable'                              && r                     ): return ({type: 'insertSORTable',           payload: ep})
+    case (es === 'ce' && et === 'insertTable'                              && s                     ): return ({type: 'insertSOTable',            payload: ep})
+    case (es === 'ce' && et === 'setNote'                                  && true                  ): return ({type: 'setNote',                  payload: ep})
 
-    case (es === 'ce' && ep.type === 'setNote'                             && true                  ): return ({type: 'setNote',                  payload: ep.payload})
-
-    case (es === 'ae' && ep.type === 'insertGptSuggestions'                && r                     ): return ({type: 'insertSLOR',               payload: ep.payload})
-    case (es === 'ae' && ep.type === 'insertGptSuggestions'                && s                     ): return ({type: 'insertSLO',                payload: ep.payload})
-    case (es === 'ae' && ep.type === 'gptFillTable'                        && s && hasC             ): return ({type: 'fillTable',                payload: ep.payload})
+    case (es === 'ae' && et === 'insertGptSuggestions'                     && r                     ): return ({type: 'insertSLOR',               payload: ep})
+    case (es === 'ae' && et === 'insertGptSuggestions'                     && s                     ): return ({type: 'insertSLO',                payload: ep})
+    case (es === 'ae' && et === 'gptFillTable'                             && s && hasC             ): return ({type: 'fillTable',                payload: ep})
 
     default: return ({type: '', payload: ep})
   }

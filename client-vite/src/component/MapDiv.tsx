@@ -3,7 +3,7 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
-import {mapActionResolver} from "../core/MapActionResolver";
+import {mapActionResolver} from "../core/MapActionResolver"
 import {getG, getNodeById, isR, isS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState";
@@ -90,12 +90,12 @@ export const MapDiv: FC = () => {
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      dispatch(actions.mapAction(mapActionResolver(m, e, 'dmm', {n, e})))
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'dmm', null, {n, e})))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      dispatch(actions.mapAction(mapActionResolver(m, e, 'dmu', {n, e})))
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'dmu', null, {n, e})))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
@@ -107,7 +107,7 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'dmdc', {})))
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'dmdc', null, null)))
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
