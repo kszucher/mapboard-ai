@@ -126,14 +126,15 @@ export const mapActionResolver = (pm: M, e: any, et: string, ep: any) => {
     case (et === 'kd' && ckm(e, '-s-') && e.which >= 48                    && editable              ): return ({type: 'startEditReplace',         payload: ep})
 
     case (et === 'pt' && ep.substring(0, 1) === '['                        && s                     ): return ({type: 'insertNodesFromClipboard', payload: ep})
-    case (et === 'pt' && ep.substring(0, 2) === '\\['                      && r                     ): return ({type: 'insertSOR',                payload: {contentType: 'equation', content: ep}})
-    case (et === 'pt' && ep.substring(0, 2) === '\\['                      && s                     ): return ({type: 'insertSO',                 payload: {contentType: 'equation', content: ep}})
-    case (et === 'pt' && isUrl(ep)                                         && r                     ): return ({type: 'insertSOR',                payload: {contentType: 'text', content: ep, linkType: 'external', link: ep}})
-    case (et === 'pt' && isUrl(ep)                                         && s                     ): return ({type: 'insertSO',                 payload: {contentType: 'text', content: ep, linkType: 'external', link: ep}})
-    case (et === 'pt' && true                                              && r                     ): return ({type: 'insertSOR',                payload: {contentType: 'text', content: ep}})
-    case (et === 'pt' && true                                              && s                     ): return ({type: 'insertSO',                 payload: {contentType: 'text', content: ep}})
-    case (et === 'pi' && true                                              && r                     ): return ({type: 'insertSOR',                payload: {contentType: 'image', content: ep.imageId, imageW: ep.imageSize.width, imageH: ep.imageSize.height}})
-    case (et === 'pi' && true                                              && s                     ): return ({type: 'insertSO',                 payload: {contentType: 'image', content: ep.imageId, imageW: ep.imageSize.width, imageH: ep.imageSize.height}})
+    // fixme: no insertNodesFromClipboard for R
+    case (et === 'pt' && ep.substring(0, 2) === '\\['                      && r                     ): return ({type: 'insertSOREquation',        payload: ep})
+    case (et === 'pt' && ep.substring(0, 2) === '\\['                      && s                     ): return ({type: 'insertSOEquation',         payload: ep})
+    case (et === 'pt' && isUrl(ep)                                         && r                     ): return ({type: 'insertSORLink',            payload: ep})
+    case (et === 'pt' && isUrl(ep)                                         && s                     ): return ({type: 'insertSOLink',             payload: ep})
+    case (et === 'pt' && true                                              && r                     ): return ({type: 'insertSORText',            payload: ep})
+    case (et === 'pt' && true                                              && s                     ): return ({type: 'insertSOText',             payload: ep})
+    case (et === 'pi' && true                                              && r                     ): return ({type: 'insertSORImage',           payload: ep})
+    case (et === 'pi' && true                                              && s                     ): return ({type: 'insertSOImage',            payload: ep})
 
     case (et === 'ce' && ep.type === 'insertTable'                         && r                     ): return ({type: 'insertSORTable',           payload: ep.payload})
     case (et === 'ce' && ep.type === 'insertTable'                         && s                     ): return ({type: 'insertSOTable',            payload: ep.payload})
