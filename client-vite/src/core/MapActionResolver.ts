@@ -1,11 +1,13 @@
 import {isUrl} from "./Utils"
 import {M} from "../state/MapPropTypes";
-import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountSC, getCountSS, getPathDir, getXP} from "./MapUtils"
+import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountSC, getCountSS, getPathDir, getXP, getNodeByPath, isR} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
 export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, ep: any) => {
   const m = structuredClone(pm).sort(sortPath)
+  const r0d0 = getNodeByPath(m, ['r', 0, 'd', 0])
+  const r0d1 = getNodeByPath(m, ['r', 0, 'd', 1])
   const x = getX(m)
   const dr = getPathDir(x.path) === 1
   const dl = getPathDir(x.path) === -1
@@ -29,12 +31,18 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
   const editable = (r || s || c) && !cti && !hasC
 
   switch (true) {
-    case (es === 'de' && et === 'finishEdit'                               && true                  ): return ({type: 'finishEdit',               payload: ep})
-    case (es === 'de' && et === 'selectS'                                  && true                  ): return ({type: 'selectS',                  payload: ep})
-    case (es === 'de' && et === 'simulateDrag'                             && true                  ): return ({type: 'simulateDrag',             payload: ep})
-    case (es === 'de' && et === 'drag'                                     && true                  ): return ({type: 'drag',                     payload: ep})
-    case (es === 'de' && et === 'startEditAppend'                          && editable              ): return ({type: 'startEditAppend',          payload: ep})
-    case (es === 'de' && et === 'typeText'                                 && true                  ): return ({type: 'typeText',                 payload: ep})
+
+    case (es === 'de' && et === 'select' && isR(ep.path)                                            ): return ({type: 'selectR',                  payload: ep})
+    case (es === 'de' && et === 'select' && !isR(ep.path) && !ep.add                                ): return ({type: 'selectS',                  payload: ep})
+    case (es === 'de' && et === 'select' && !isR(ep.path) && ep.add                                 ): return ({type: 'selectStoo',               payload: ep})
+    case (es === 'de' && et === 'selectF' && isR(ep.path) && !r0d0.selected                         ): return ({type: 'selectR0D0F',              payload: ep})
+    case (es === 'de' && et === 'selectF' && isR(ep.path) && !!r0d0.selected && !r0d1.selected      ): return ({type: 'selectR0D1F',              payload: ep})
+    case (es === 'de' && et === 'selectF' && !isR(ep.path) && getCountSS(m, ep.path) > 0            ): return ({type: 'selectF',                  payload: ep})
+    case (es === 'de' && et === 'finishEdit'                                                        ): return ({type: 'finishEdit',               payload: ep})
+    case (es === 'de' && et === 'simulateDrag'                                                      ): return ({type: 'simulateDrag',             payload: ep})
+    case (es === 'de' && et === 'drag'                                                              ): return ({type: 'drag',                     payload: ep})
+    case (es === 'de' && et === 'startEditAppend' && editable                                       ): return ({type: 'startEditAppend',          payload: ep})
+    case (es === 'de' && et === 'typeText'                                                          ): return ({type: 'typeText',                 payload: ep})
 
     case (es === 'ce' && et === 'insertTable'                              && r                     ): return ({type: 'insertSORTable',           payload: ep})
     case (es === 'ce' && et === 'insertTable'                              && s                     ): return ({type: 'insertSOTable',            payload: ep})

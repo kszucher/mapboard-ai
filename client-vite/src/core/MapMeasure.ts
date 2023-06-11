@@ -183,6 +183,8 @@ export const mapMeasure = (pm: M, m: M) => {
       if (getCountSS(m, n.path)) {
         measureFamily(m, g, n)
       }
+      n.maxW = n.familyW
+      n.maxH = n.familyH
     } else if (isS(n.path)) {
       if (getCountSC(m, n.path)) {
         measureTable(m, g, n)

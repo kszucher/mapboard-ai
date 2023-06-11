@@ -85,7 +85,7 @@ export const MapDiv: FC = () => {
                     window.focus()
                   } else {
                     const add = e.ctrlKey
-                    dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'selectS', { add, path: n.path, selection: 's' })))
+                    dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'select', { add, path: n.path })))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
@@ -102,7 +102,7 @@ export const MapDiv: FC = () => {
                   e.preventDefault()
                 } else if (e.button === 2) {
                   const add = e.ctrlKey
-                  dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 'f' }}))
+                  dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'selectF', { add, path: n.path })))
                 }
               }}
               onDoubleClick={(e) => {

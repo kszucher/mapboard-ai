@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
-import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSS, getCountD, getXSSCYYS0,} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -21,26 +21,37 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'changeDensity': getG(m).density = getG(m).density === 'small' ? 'large' : 'small'; break
     case 'changeAlignment': getG(m).alignment = getG(m).alignment === 'centered' ? 'adaptive' : 'centered'; break
     case 'selectR': selectNode(m, ['r', 0], 's'); break
-    case 'selectS': {
-      const pm = m
-      const n = getNodeByPath(m, payload.path)
-      if (getCountD(m, n.path) || payload.selection === 's' || getCountSS(m, n.path) && payload.selection === 'f') {
-        const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
-        const r0d1 = getNodeByPath(pm, ['r', 0, 'd', 1])
-        let toPath = []
-        if (!isR(payload.path) && isEqual(n.path, payload.path) || isR(payload.path) && payload.selection === 's')
-          toPath = payload.path
-        else if (isR(payload.path) && !r0d0.selected && payload.selection === 'f')
-          toPath = ['r', 0, 'd', 0]
-        else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f')
-          toPath =['r', 0, 'd', 1]
-        payload.add ? selectNodeToo(m, toPath, payload.selection) : selectNode(m, toPath, payload.selection)
-        if (!getCountD(m, n.path)) {
-          getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
-        }
-      }
-      break
-    }
+    case 'selectS': selectNode(m, payload.path, 's'); break
+    case 'selectStoo': selectNodeToo(m, payload.path, 's'); break
+
+    // case 'selectS': {
+    //   const pm = m
+    //   const n = getNodeByPath(m, payload.path)
+    //
+    //   if (getCountD(m, n.path) || payload.selection === 's' || getCountSS(m, n.path) && payload.selection === 'f') {
+    //     const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
+    //     const r0d1 = getNodeByPath(pm, ['r', 0, 'd', 1])
+    //     let toPath = []
+    //     if (!isR(payload.path) && isEqual(n.path, payload.path) || isR(payload.path) && payload.selection === 's')
+    //       toPath = payload.path
+    //     else if (isR(payload.path) && !r0d0.selected && payload.selection === 'f')
+    //       toPath = ['r', 0, 'd', 0]
+    //     else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f')
+    //       toPath =['r', 0, 'd', 1]
+    //     payload.add ? selectNodeToo(m, toPath, payload.selection) : selectNode(m, toPath, payload.selection)
+    //
+    //     if (!getCountD(m, n.path)) {
+    //       getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
+    //     }
+    //   }
+    //
+    //   break
+    // }
+
+    case 'selectF': selectNode(m, payload.path, 'f'); break
+    case 'selectR0D0F' : selectNode(m, ['r', 0, 'd', 0], 'f'); break
+    case 'selectR0D1F' : selectNode(m, ['r', 0, 'd', 1], 'f'); break
+
     case 'selectall': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
     case 'selectSD': selectNode(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
     case 'selectSDtoo': selectNodeToo(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
