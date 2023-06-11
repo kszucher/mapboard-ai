@@ -45,16 +45,18 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'de' && et === 'insert' && r): return ({type: 'insertSOR', payload: ep})
     case (es === 'de' && et === 'insert' && s): return ({type: 'insertSO', payload: ep})
 
+    case (es === 'se' && et === 'selectR'): return ({type: 'selectR', payload: ep})
     case (es === 'se' && et === 'selectDragged'): return ({type: 'selectDragged', payload: ep})
     case (es === 'se' && et === 'setTaskStatus'): return ({type: 'setTaskStatus', payload: ep})
 
     case (es === 'ce' && et === 'undo'): return ({type: 'undo',payload: ep})
     case (es === 'ce' && et === 'redo'): return ({type: 'redo',payload: ep})
+    case (es === 'ce' && et === 'setNote'): return ({type: 'setNote', payload: ep})
     case (es === 'ce' && et === 'changeDensity'): return ({type: 'changeDensity', payload: ep})
     case (es === 'ce' && et === 'changeAlignment'): return ({type: 'changeAlignment', payload: ep})
     case (es === 'ce' && et === 'insertTable' && r): return ({type: 'insertSORTable', payload: ep})
     case (es === 'ce' && et === 'insertTable' && s): return ({type: 'insertSOTable', payload: ep})
-    case (es === 'ce' && et === 'setNote'): return ({type: 'setNote', payload: ep})
+    case (es === 'ce' && et === 'toggleTask'): return ({type: 'toggleTask', payload: ep})
 
     case (es === 'ae' && et === 'insertGptSuggestions' && r): return ({type: 'insertSLOR', payload: ep})
     case (es === 'ae' && et === 'insertGptSuggestions' && s): return ({type: 'insertSLO', payload: ep})

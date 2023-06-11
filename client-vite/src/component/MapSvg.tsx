@@ -80,7 +80,7 @@ export const MapSvg: FC = () => {
             }
           } else {
             if (e.button === 0) {
-              dispatch(actions.mapAction({type: 'selectR', payload: {}}))
+              dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectR', null)))
             }
           }
         }, { signal })
