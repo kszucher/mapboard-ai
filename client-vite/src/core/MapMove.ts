@@ -1,7 +1,7 @@
-import {genHash} from "./Utils";
+import {genHash} from "./Utils"
 import {GN, M, P} from "../state/MapPropTypes"
-import {deleteCC, deleteCR, deleteS} from "./MapDelete";
-import {selectNode, unselectNodes} from "./MapSelect";
+import {deleteCC, deleteCR, deleteS} from "./MapDelete"
+import {selectNode, unselectNodes} from "./MapSelect"
 import {cb2ipS, cb2ipCC, cb2ipCR, getCountSS, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getSI1, getNodeByPath,} from "./MapUtils"
 
 const cbSave = (cb: any) => {

@@ -1,5 +1,5 @@
-import {M} from "../state/MapPropTypes";
-import {selectNode, selectNodeList} from "./MapSelect";
+import {M} from "../state/MapPropTypes"
+import {selectNode, selectNodeList} from "./MapSelect"
 import {decPiN, getNodeByPath, getSIL, isSD, isCFDF, decPi, isCFRF, getReselectS, getReselectCR, getReselectCC, getXA, getXP} from "./MapUtils"
 
 export const deleteS = (m: M) => {

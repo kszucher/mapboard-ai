@@ -1,6 +1,6 @@
 import {GN, M, P} from "../state/MapPropTypes"
 import {genHash, getTableIndices, IS_TESTING} from "./Utils"
-import {unselectNodes} from "./MapSelect";
+import {unselectNodes} from "./MapSelect"
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getCountCH, getCountCV,} from "./MapUtils"
 
 export const insertS = (m: M, ip: P, attributes: object) => {

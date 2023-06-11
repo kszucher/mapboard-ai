@@ -2,9 +2,9 @@ import {FC} from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
 import {actions, AppDispatch, RootState} from '../core/EditorReducer'
-import {PageState} from "../state/Enums";
-import {api} from "../core/Api";
-import {useAuth0} from "@auth0/auth0-react";
+import {PageState} from "../state/Enums"
+import {api} from "../core/Api"
+import {useAuth0} from "@auth0/auth0-react"
 
 export const ProfileMenu: FC = () => {
   const moreMenu = useSelector((state: RootState) => state.editor.moreMenu)
@@ -18,7 +18,9 @@ export const ProfileMenu: FC = () => {
       keepMounted
       transformOrigin={{vertical: 'top', horizontal: 'right'}}
       open={moreMenu}
-      onClose={_=>dispatch(actions.closeMoreMenu())}>
+      onClose={() => {
+        dispatch(actions.closeMoreMenu())
+      }}>
       {
         pageState === PageState.WS && [
           <MenuItem

@@ -5,13 +5,13 @@ import {structNavigate} from './NodeNavigate'
 import {nSaveOptional} from "../state/MapProps"
 import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
-import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete";
+import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertS, insertSL, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
-import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
+import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
 import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
@@ -19,7 +19,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'LOAD': break
     case 'changeDensity': getG(m).density = getG(m).density === 'small' ? 'large' : 'small'; break
     case 'changeAlignment': getG(m).alignment = getG(m).alignment === 'centered' ? 'adaptive' : 'centered'; break
-    
+
     case 'selectR': selectNode(m, ['r', 0], 's'); break
     case 'selectS': selectNode(m, payload.path, 's'); break
     case 'selectStoo': selectNodeToo(m, payload.path, 's'); break
