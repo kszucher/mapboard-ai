@@ -2,6 +2,7 @@ import React, {FC, Fragment,} from "react"
 import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
+import {mapActionResolver} from "../core/MapActionResolver"
 import {getColors} from "./Colors"
 import {getClosestStructParentPath, getCountSC, getCountSS, getG, getNodeById, getNodeByPath, getPathPattern, isD, isR, isS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
@@ -134,8 +135,8 @@ export const MapSvgLayer3: FC = () => {
                     onMouseDown={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
-                      dispatch(actions.mapAction({type: 'setTaskStatus', payload: { taskStatus: i + 1, nodeId: n.nodeId }}))
-                    }}>
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'setTaskStatus', { taskStatus: i + 1, nodeId: n.nodeId })))
+                   }}>
                   </circle>
                 ))
               }

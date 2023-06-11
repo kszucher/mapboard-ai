@@ -1,5 +1,6 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
+import {mapActionResolver} from "../core/MapActionResolver"
 import {isChrome} from "../core/Utils"
 import {getCountSC, getG, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -73,7 +74,7 @@ export const MapSvg: FC = () => {
           const toCoords = getCoords(e)
           if (didMove) {
             if (e.button === 0) {
-              dispatch(actions.mapAction({type: 'selectDragged', payload: {nList: mapFindIntersecting(m, fromCoords, toCoords)}}))
+              dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectDragged', {nList: mapFindIntersecting(m, fromCoords, toCoords)})))
               dispatch(actions.setSelectionRectCoords([]))
               dispatch(actions.setIntersectingNodes([]))
             }
