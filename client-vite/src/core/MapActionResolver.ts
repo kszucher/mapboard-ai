@@ -29,9 +29,20 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
   const editable = (r || s || c) && !cti && !hasC
 
   switch (true) {
-    case (es === 'dmm' && ckm(e, '---')                                    && true                  ): return ({type: 'simulateDrag',             payload: ep})
-    case (es === 'dmu' && ckm(e, '---')                                    && true                  ): return ({type: 'drag',                     payload: ep})
-    case (es === 'dmdc' && ckm(e, '---')                                   && editable              ): return ({type: 'startEditAppend',          payload: ep})
+    case (es === 'de' && et === 'finishEdit'                               && true                  ): return ({type: 'finishEdit',               payload: ep})
+    case (es === 'de' && et === 'selectS'                                  && true                  ): return ({type: 'selectS',                  payload: ep})
+    case (es === 'de' && et === 'simulateDrag'                             && true                  ): return ({type: 'simulateDrag',             payload: ep})
+    case (es === 'de' && et === 'drag'                                     && true                  ): return ({type: 'drag',                     payload: ep})
+    case (es === 'de' && et === 'startEditAppend'                          && editable              ): return ({type: 'startEditAppend',          payload: ep})
+    case (es === 'de' && et === 'typeText'                                 && true                  ): return ({type: 'typeText',                 payload: ep})
+
+    case (es === 'ce' && et === 'insertTable'                              && r                     ): return ({type: 'insertSORTable',           payload: ep})
+    case (es === 'ce' && et === 'insertTable'                              && s                     ): return ({type: 'insertSOTable',            payload: ep})
+    case (es === 'ce' && et === 'setNote'                                  && true                  ): return ({type: 'setNote',                  payload: ep})
+
+    case (es === 'ae' && et === 'insertGptSuggestions'                     && r                     ): return ({type: 'insertSLOR',               payload: ep})
+    case (es === 'ae' && et === 'insertGptSuggestions'                     && s                     ): return ({type: 'insertSLO',                payload: ep})
+    case (es === 'ae' && et === 'gptFillTable'                             && s && hasC             ): return ({type: 'fillTable',                payload: ep})
 
     case (es === 'kd' && ckm(e, '---') && e.key === 'F1'                   && true                  ): return ({type: '',                         payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.key === 'F2'                   && editable              ): return ({type: 'startEditAppend',          payload: ep})
@@ -133,16 +144,9 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'pt' && isUrl(ep)                                         && s                     ): return ({type: 'insertSOLink',             payload: ep})
     case (es === 'pt' && true                                              && r                     ): return ({type: 'insertSORText',            payload: ep})
     case (es === 'pt' && true                                              && s                     ): return ({type: 'insertSOText',             payload: ep})
+
     case (es === 'pi' && true                                              && r                     ): return ({type: 'insertSORImage',           payload: ep})
     case (es === 'pi' && true                                              && s                     ): return ({type: 'insertSOImage',            payload: ep})
-
-    case (es === 'ce' && et === 'insertTable'                              && r                     ): return ({type: 'insertSORTable',           payload: ep})
-    case (es === 'ce' && et === 'insertTable'                              && s                     ): return ({type: 'insertSOTable',            payload: ep})
-    case (es === 'ce' && et === 'setNote'                                  && true                  ): return ({type: 'setNote',                  payload: ep})
-
-    case (es === 'ae' && et === 'insertGptSuggestions'                     && r                     ): return ({type: 'insertSLOR',               payload: ep})
-    case (es === 'ae' && et === 'insertGptSuggestions'                     && s                     ): return ({type: 'insertSLO',                payload: ep})
-    case (es === 'ae' && et === 'gptFillTable'                             && s && hasC             ): return ({type: 'fillTable',                payload: ep})
 
     default: return ({type: '', payload: ep})
   }

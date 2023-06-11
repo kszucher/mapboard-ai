@@ -73,7 +73,7 @@ export const MapDiv: FC = () => {
                 setEndOfContentEditable(e.currentTarget)
               }}
               onBlur={(e) => {
-                dispatch(actions.mapAction({type: 'finishEdit', payload: { path: n.path, content: e.currentTarget.innerHTML }}))
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
               }}
               onMouseDown={(e) => {
                 e.stopPropagation()
@@ -85,17 +85,17 @@ export const MapDiv: FC = () => {
                     window.focus()
                   } else {
                     const add = e.ctrlKey
-                    dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 's' }}))
+                    dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'selectS', { add, path: n.path, selection: 's' })))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      dispatch(actions.mapAction(mapActionResolver(m, e, 'dmm', null, {n, e})))
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'simulateDrag', {n, e})))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      dispatch(actions.mapAction(mapActionResolver(m, e, 'dmu', null, {n, e})))
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'drag', {n, e})))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
@@ -107,7 +107,7 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'dmdc', null, null)))
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'startEditAppend', null)))
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
@@ -118,15 +118,15 @@ export const MapDiv: FC = () => {
                   dispatch(actions.mapAction({type: 'insertSO', payload: {}}))
                 }
               }}
-              onInput={(e) =>
-                dispatch(actions.mapAction({type: 'typeText', payload: { content:  e.currentTarget.innerHTML }}))
-              }
+              onInput={(e) => {
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'typeText', { content:  e.currentTarget.innerHTML })))
+              }}
               onPaste={(e) => {
                 e.preventDefault()
                 const pasted = e.clipboardData.getData('Text')
                 e.currentTarget.innerHTML += pasted
                 setEndOfContentEditable(e.currentTarget)
-                dispatch(actions.mapAction({type: 'typeText', payload: { content:  e.currentTarget.innerHTML }}))
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'typeText', { content:  e.currentTarget.innerHTML })))
               }}
             >
             </div>
