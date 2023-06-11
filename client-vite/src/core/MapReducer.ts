@@ -1,4 +1,3 @@
-import isEqual from "react-fast-compare"
 import {shortcutColors} from "../component/Colors"
 import {Dir} from "../state/Enums"
 import {transpose} from './Utils'
@@ -20,38 +19,13 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'LOAD': break
     case 'changeDensity': getG(m).density = getG(m).density === 'small' ? 'large' : 'small'; break
     case 'changeAlignment': getG(m).alignment = getG(m).alignment === 'centered' ? 'adaptive' : 'centered'; break
+    
     case 'selectR': selectNode(m, ['r', 0], 's'); break
     case 'selectS': selectNode(m, payload.path, 's'); break
     case 'selectStoo': selectNodeToo(m, payload.path, 's'); break
-
-    // case 'selectS': {
-    //   const pm = m
-    //   const n = getNodeByPath(m, payload.path)
-    //
-    //   if (getCountD(m, n.path) || payload.selection === 's' || getCountSS(m, n.path) && payload.selection === 'f') {
-    //     const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
-    //     const r0d1 = getNodeByPath(pm, ['r', 0, 'd', 1])
-    //     let toPath = []
-    //     if (!isR(payload.path) && isEqual(n.path, payload.path) || isR(payload.path) && payload.selection === 's')
-    //       toPath = payload.path
-    //     else if (isR(payload.path) && !r0d0.selected && payload.selection === 'f')
-    //       toPath = ['r', 0, 'd', 0]
-    //     else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f')
-    //       toPath =['r', 0, 'd', 1]
-    //     payload.add ? selectNodeToo(m, toPath, payload.selection) : selectNode(m, toPath, payload.selection)
-    //
-    //     if (!getCountD(m, n.path)) {
-    //       getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
-    //     }
-    //   }
-    //
-    //   break
-    // }
-
     case 'selectF': selectNode(m, payload.path, 'f'); break
     case 'selectR0D0F' : selectNode(m, ['r', 0, 'd', 0], 'f'); break
     case 'selectR0D1F' : selectNode(m, ['r', 0, 'd', 1], 'f'); break
-
     case 'selectall': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
     case 'selectSD': selectNode(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
     case 'selectSDtoo': selectNodeToo(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
@@ -124,7 +98,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'cutSelection': cutS(m); break
     case 'insertNodesFromClipboard': pasteS(m, payload); break
     case 'drag': moveS(m, payload.moveTargetPath, payload.moveTargetIndex); break
-
     case 'transpose': {
       // https://stackoverflow.com/questions/872310/javascript-swap-array-elements
       // make swap as a utility, and then just simply map through component
@@ -148,18 +121,13 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     }
 
     case 'fillTable': payload.gptParsed.forEach((n: any) => Object.assign(getNodeById(m, n.ni) || {}, { content: n.c })); break
-
     case 'applyColorFromKey': setPropXA(m, 'textColor', shortcutColors[payload.currColor]); break
-
     case 'toggleTask': setPropXASF(m, 'taskStatus', getX(m).taskStatus === 0 ? 1 : 0); break
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
-
     case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
-
     case 'setNote': Object.assign(getX(m), { note: payload.note }); break
-
     case 'setLineWidth': getX(m).selection === 's' ? setPropXA(m, 'lineWidth', payload) : setPropXASF (m, 'lineWidth', payload); break
     case 'setLineType': getX(m).selection === 's' ? setPropXA(m, 'lineType', payload) : setPropXASF (m, 'lineType', payload); break
     case 'setLineColor': getX(m).selection === 's' ? setPropXA(m, 'lineColor', payload) : setPropXASF (m, 'lineColor', payload); break
