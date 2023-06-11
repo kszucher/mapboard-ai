@@ -25,42 +25,34 @@ export const ProfileMenu: FC = () => {
             key={'p'}
             onClick={() => {
               dispatch(actions.closeMoreMenu())
-              dispatch(actions.setPageState(PageState.WS_PROFILE))}
-            }
-          >
+              dispatch(actions.setPageState(PageState.WS_PROFILE))
+            }}>
             {'Profile'}
           </MenuItem>,
           <MenuItem
             key={'se'}
             onClick={() => {
               dispatch(actions.closeMoreMenu())
-              dispatch(actions.setPageState(PageState.WS_SETTINGS))}
-            }
-          >
+              dispatch(actions.setPageState(PageState.WS_SETTINGS))
+            }}>
             {'Settings'}
           </MenuItem>,
           <MenuItem
             key={'sh'}
             onClick={() => {
               dispatch(actions.closeMoreMenu())
-              dispatch(actions.setPageState(PageState.WS_SHARES))}
-            }
-          >
+              dispatch(actions.setPageState(PageState.WS_SHARES))
+            }}>
             {'Shares'}
           </MenuItem>,
           <Divider key={'d1'} />,
-
-
-
-          <Divider key={'d2'} />,
           <MenuItem
             key={'so'}
             onClick={() => {
               dispatch(actions.resetState())
               dispatch(api.util.resetApiState())
               logout({ logoutParams: { returnTo: window.location.origin }})
-            }}
-          >
+            }}>
             {'Sign Out'}
           </MenuItem>,
           <MenuItem
@@ -70,8 +62,7 @@ export const ProfileMenu: FC = () => {
               dispatch(actions.resetState())
               dispatch(api.util.resetApiState())
               logout({ logoutParams: { returnTo: window.location.origin }})
-            }}
-          >
+            }}>
             {'Sign Out Everywhere'}
           </MenuItem>
         ]
@@ -82,9 +73,8 @@ export const ProfileMenu: FC = () => {
             key={0}
             onClick={() => {
               dispatch(actions.closeMoreMenu())
-              dispatch(actions.setPageState(PageState.AUTH))}
-            }
-          >
+              dispatch(actions.setPageState(PageState.AUTH))
+            }}>
             Sign In / Sign Up
           </MenuItem>
         ]

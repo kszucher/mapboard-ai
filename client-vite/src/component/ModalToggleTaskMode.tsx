@@ -21,15 +21,23 @@ export const ModalToggleTaskMode: FC = () => {
           </Typography>
         </div>
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <Button color="primary" variant='outlined' disabled={interactionDisabled}
-                  onClick={()=>{
-                    dispatch(actions.mapAction({type: 'toggleTask', payload:{}}))
-                    dispatch(actions.setPageState(PageState.WS))
-                  }}>
+          <Button
+            color="primary"
+            variant='outlined'
+            disabled={interactionDisabled}
+            onClick={()=>{
+              dispatch(actions.mapAction({type: 'toggleTask', payload:{}}))
+              dispatch(actions.setPageState(PageState.WS))
+            }}>
             {'OK'}
           </Button>
-          <Button color="primary" variant='outlined' disabled={interactionDisabled}
-                  onClick={_=>dispatch(actions.setPageState(PageState.WS))}>
+          <Button
+            color="primary"
+            variant='outlined'
+            disabled={interactionDisabled}
+            onClick={() => {
+              dispatch(actions.setPageState(PageState.WS))
+            }}>
             {'CANCEL'}
           </Button>
         </div>

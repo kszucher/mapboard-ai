@@ -102,8 +102,7 @@ export const Formatter: FC = () => {
             else if (formatMode === FormatMode.border) clearBorder()
             else if (formatMode === FormatMode.fill) clearFill()
             else if (formatMode === FormatMode.line) clearLine()
-          }}
-        >
+          }}>
           {'RESET'}
         </Button>
       </div>
