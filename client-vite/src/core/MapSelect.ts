@@ -1,5 +1,5 @@
 import {M, P} from "../state/MapPropTypes"
-import {getNodeByPath, getParentNodeByPath, getSI1, getX, isR} from "./MapUtils"
+import {getNodeByPath, getSI1, getX, isR} from "./MapUtils"
 
 export const unselectNodes = (m: M) => m.forEach(n => n.path.length > 1 && Object.assign(n, {selected: 0, selection: 's'}))
 
@@ -7,7 +7,7 @@ export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
   unselectNodes(m)
   Object.assign(getNodeByPath(m, path), {selected: 1, selection})
   if (!isR(path)) {
-    // getNodeByPath(m, getSI1(path)).lastSelectedChild = path.at(-1)
+    getNodeByPath(m, getSI1(path)).lastSelectedChild = path.at(-1) as number
   }
 }
 export const selectNodeToo = (m: M, path: P, selection: 's' | 'f') => {
