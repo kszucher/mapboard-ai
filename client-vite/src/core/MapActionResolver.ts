@@ -43,6 +43,8 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'de' && et === 'drag'                                                              ): return ({type: 'drag',                     payload: ep})
     case (es === 'de' && et === 'startEditAppend' && editable                                       ): return ({type: 'startEditAppend',          payload: ep})
     case (es === 'de' && et === 'typeText'                                                          ): return ({type: 'typeText',                 payload: ep})
+    case (es === 'de' && et === 'insert' && r                                                       ): return ({type: 'insertSOR',                payload: ep})
+    case (es === 'de' && et === 'insert' && s                                                       ): return ({type: 'insertSO',                 payload: ep})
 
     case (es === 'ce' && et === 'undo'                                                              ): return ({type: 'undo',                     payload: ep})
     case (es === 'ce' && et === 'redo'                                                              ): return ({type: 'redo',                     payload: ep})
