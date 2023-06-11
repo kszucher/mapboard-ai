@@ -112,9 +112,9 @@ export const MapDiv: FC = () => {
               onKeyDown={(e) => {
                 e.stopPropagation()
                 if (e.key === 'Enter' && !e.shiftKey) {
-                  dispatch(actions.mapAction({type: 'finishEdit', payload: { path: n.path, content: e.currentTarget.innerHTML }}))
+                  dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
                 } else if (['Insert','Tab'].includes(e.key)) {
-                  dispatch(actions.mapAction({type: 'finishEdit', payload: { path: n.path, content: e.currentTarget.innerHTML }}))
+                  dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
                   dispatch(actions.mapAction({type: 'insertSO', payload: {}}))
                 }
               }}
