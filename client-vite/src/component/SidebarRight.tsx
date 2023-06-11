@@ -15,6 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
+import {mapActionResolver} from "../core/MapActionResolver";
 import {mSelector} from "../state/EditorState";
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -84,13 +85,19 @@ export const SidebarRight: FC = () => {
       <div className={crd} style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(actions.mapAction({type: 'changeDensity', payload: {}}))}>
+          onClick={() => {
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'changeDensity', null)))
+          }}
+        >
           {density === 'small' && <DensitySmallIcon/>}
           {density === 'large' && <DensityMediumIcon/>}
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(actions.mapAction({type: 'changeAlignment', payload: {}}))}>
+          onClick={() => {
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'changeAlignment', null)))
+          }}
+        >
           {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
           {alignment === 'centered' && <CenterFocusStrongIcon/>}
         </IconButton>

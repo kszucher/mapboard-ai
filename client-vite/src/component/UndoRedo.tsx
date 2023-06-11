@@ -3,12 +3,15 @@ import {useDispatch, useSelector} from 'react-redux'
 import {IconButton} from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
+import {mapActionResolver} from "../core/MapActionResolver";
+import {mSelector} from "../state/EditorState";
 import {AccessTypes} from "../state/Enums";
 import {actions, AppDispatch, RootState} from "../core/EditorReducer";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 export const UndoRedo: FC = () => {
+  const m = useSelector((state:RootState) => mSelector(state))
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const undoDisabled = mapListIndex === 0
@@ -22,14 +25,18 @@ export const UndoRedo: FC = () => {
         <IconButton
           color='secondary'
           disabled={[AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access) || undoDisabled}
-          onClick={() => dispatch(actions.mapAction({type: 'undo', payload: {}}))}
+          onClick={() => {
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'undo', null)))
+          }}
         >
           <UndoIcon/>
         </IconButton>
         <IconButton
           color='secondary'
           disabled={[AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access) || redoDisabled}
-          onClick={() => dispatch(actions.mapAction({type: 'redo', payload: {}}))}
+          onClick={() => {
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'redo', null)))
+          }}
         >
           <RedoIcon/>
         </IconButton>
