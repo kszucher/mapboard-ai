@@ -58,14 +58,12 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
 
 export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
   const R = 8
-  const ls = getX(m)
-  const pn = getParentNodeByPath(m, ls.path)
   const g = getG(m)
   const r0 = getNodeByPath(m, ['r', 0]) as N
   const dir = getPathDir(n.path)
   const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
   const xo = dir === -1 ? n.nodeStartX : n.nodeEndX
-  const selfH = isD(getXP(m)) ? pn.selfH : n.selfH
+  const selfH = isD(n.path) ? r0.selfH : n.selfH
   const yu = n.nodeY - selfH / 2
   const yd = n.nodeY + selfH / 2
   const myu = n.nodeY - n.maxH / 2
