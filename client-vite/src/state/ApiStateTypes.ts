@@ -1,5 +1,5 @@
 import {AccessTypes} from "./Enums"
-import {M} from "./MapPropTypes"
+import {M, MPartial} from "./MapPropTypes"
 
 export interface DefaultUseOpenWorkspaceQueryState {
   name: string
@@ -17,10 +17,9 @@ export interface DefaultUseOpenWorkspaceQueryState {
 }
 
 export type GptData = {
+  promptId: string
+  promptJSON: MPartial
   prompt: string
-  context: string
-  content: string
-  typeNodes: string
-  numNodes: number
   maxToken: number
+  timestamp: number
 }

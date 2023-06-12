@@ -1,12 +1,12 @@
 import React, {FC} from "react"
-import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../core/Api"
-import {mapActionResolver} from "../core/MapActionResolver";
+import {useDispatch, useSelector} from "react-redux"
+import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {gptPrompter} from "../core/GptPrompter";
 import {getColors} from "./Colors"
 import { getCountSS, getG, getX, isR, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
-import {actions, RootState} from "../core/EditorReducer"
+import {AppDispatch, RootState} from "../core/EditorReducer"
 import {getSelectionMargin, pathCommonProps} from "./MapSvg"
 import {getPolygonC, getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
@@ -18,6 +18,7 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <g id="layer5">
       {
@@ -65,7 +66,7 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
               onMouseDown={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                console.log('SCCCCCCCCCCCCCCCCCCCCCadding nodes...')
+                dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'genNodes', null)))
               }}
             />
           </svg>

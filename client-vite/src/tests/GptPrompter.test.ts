@@ -26,22 +26,12 @@ const fillTableTest = [
   {selected: 0, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 2, 's', 0]},
 ] as M
 
-const fillTableResult = {
-  prompt: (
-    `Fill field 'c' by replacing its content in the following JSON. Keep the format of the JSON. ${
-      JSON.stringify([
-        {ni: 'n', c: 'Row 0 - Row 1 - Col 1'},
-        {ni: 'p', c: 'Row 0 - Row 1 - Col 2'},
-        {ni: 't', c: 'Row 0 - Row 2 - Col 1'},
-        {ni: 'v', c: 'Row 0 - Row 2 - Col 2'},
-      ])}
-  `).trim(),
-  context: '',
-  content: '',
-  typeNodes: 'sc',
-  numNodes: 9,
-  maxToken: 129,
-}
+const fillTableResult = [
+  {nodeId: 'n', content: 'Row 0 - Row 1 - Col 1'},
+  {nodeId: 'p', content: 'Row 0 - Row 1 - Col 2'},
+  {nodeId: 't', content: 'Row 0 - Row 2 - Col 1'},
+  {nodeId: 'v', content: 'Row 0 - Row 2 - Col 2'},
+]
 
 describe("GptPrompterTests", () => {
   test('fillTable', () => expect(gptPrompter(fillTableTest, 'fillTable', {})).toEqual(fillTableResult))
