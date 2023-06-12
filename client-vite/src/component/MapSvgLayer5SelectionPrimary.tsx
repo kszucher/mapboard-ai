@@ -74,4 +74,3 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
     </g>
   )
 }
-

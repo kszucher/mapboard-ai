@@ -61,6 +61,7 @@ export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
   const ls = getX(m)
   const pn = getParentNodeByPath(m, ls.path)
   const g = getG(m)
+  const r0 = getNodeByPath(m, ['r', 0]) as N
   const dir = getPathDir(n.path)
   const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
   const xo = dir === -1 ? n.nodeStartX : n.nodeEndX
@@ -69,7 +70,7 @@ export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
   const yd = n.nodeY + selfH / 2
   const myu = n.nodeY - n.maxH / 2
   const myd = n.nodeY + n.maxH / 2
-  const w = n.maxW
+  const w = isD(n.path) ? r0.selfW + n.familyW : n.maxW
   return selection === 's' ? {
     ax: n.nodeStartX,
     bx: xo - dir * R,
