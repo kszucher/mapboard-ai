@@ -5,12 +5,12 @@ import {isChrome} from "../core/Utils"
 import {getCountSC, getG, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
-import {MapSvgLayer0} from "./MapSvgLayer0"
-import {MapSvgLayer1} from "./MapSvgLayer1"
-import {MapSvgLayer2} from "./MapSvgLayer2"
+import {MapSvgLayer0MapBackground} from "./MapSvgLayer0MapBackground"
+import {MapSvgLayer1BranchBackground} from "./MapSvgLayer1BranchBackground"
+import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
 import {MapSvgLayer3} from "./MapSvgLayer3"
-import {MapSvgLayer4} from "./MapSvgLayer4"
-import {MapSvgLayer5} from "./MapSvgLayer5"
+import {MapSvgLayer4SelectionSecondary} from "./MapSvgLayer4SelectionSecondary"
+import {MapSvgLayer5SelectionPrimary} from "./MapSvgLayer5SelectionPrimary"
 import {MapSvgLayer6} from "./MapSvgLayer6"
 import {MapSvgLayer7} from "./MapSvgLayer7"
 import {MapSvgLayer8} from "./MapSvgLayer8"
@@ -91,12 +91,12 @@ export const MapSvg: FC = () => {
         x={isChrome? 'calc(100vw)' : ''}
         y={isChrome? 'calc(100vh)' : ''}
       >
-        <MapSvgLayer0/>
-        <MapSvgLayer1/>
-        <MapSvgLayer2/>
+        <MapSvgLayer0MapBackground/>
+        <MapSvgLayer1BranchBackground/>
+        <MapSvgLayer2NodeBackground/>
         <MapSvgLayer3/>
-        <MapSvgLayer4/>
-        <MapSvgLayer5/>
+        <MapSvgLayer4SelectionSecondary/>
+        <MapSvgLayer5SelectionPrimary/>
         <MapSvgLayer6/>
         <MapSvgLayer7/>
         <MapSvgLayer8/>

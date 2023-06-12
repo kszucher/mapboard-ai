@@ -6,7 +6,7 @@ import {N} from "../state/MapPropTypes"
 import {pathCommonProps} from "./MapSvg"
 import { getPolygonPath, getPolygonS } from "./MapSvgUtils"
 
-export const MapSvgLayer1: FC = () => {
+export const MapSvgLayer1BranchBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   return (
     <g id="layer1">
