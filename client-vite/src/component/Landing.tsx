@@ -86,10 +86,10 @@ export const Landing: FC = () => {
       </div>
 
 
-      <div className="_bg relative bottom-1/2 left-1/2 -translate-x-1/2 top-[96px] w-[640px] h-[480px] flex flex-col items-center inline-flex gap-4 p-5 rounded-lg">
-        {/*<Typography color="primary" component="h1" variant="h5">*/}
-        {/*  {'mapboard'}*/}
-        {/*</Typography>*/}
+      <div className="_bg relative bottom-1/2 left-1/2 -translate-x-1/2 top-[40px] w-[640px] h-[160px] flex flex-col items-center inline-flex gap-4 p-5 rounded-lg">
+        <Typography color="primary" component="h1" variant="h5">
+          {'mapboard'}
+        </Typography>
         <Typography color="primary" component="h1" variant="h6">
           {'Private Beta'}
         </Typography>
