@@ -9,7 +9,7 @@ import {authAudienceUrl} from "../core/Urls"
 import {getMuiTheme} from "./Mui"
 import {setColors} from "./Colors"
 
-export const Auth: FC = () => {
+export const Landing: FC = () => {
   const colorMode = 'dark'
   const token = useSelector((state: RootState) => state.editor.token)
   const [isWaiting, setIsWaiting] = useState(false)
