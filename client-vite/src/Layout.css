@@ -73,3 +73,47 @@ body {
     background: var(--map-background-color);
     border: 1px solid var(--page-background-color);
 }
+
+
+.mbg {
+    position: fixed;
+
+    /*top: 20px;*/
+
+    /*position: absolute;*/
+
+    border-radius: 0 0 0 0;
+    /*background-color: green;*/
+
+
+
+    inset: 0 0 0 0;
+    /*background-color:#d1ff99;*/
+    /*background-image:*/
+    /*        radial-gradient(at 48% 77%, hsla(294,95%,76%,1) 0px, transparent 50%),*/
+    /*        radial-gradient(at 73% 23%, hsla(46,97%,78%,1) 0px, transparent 50%),*/
+    /*        radial-gradient(at 90% 91%, hsla(106,64%,68%,1) 0px, transparent 50%),*/
+    /*        radial-gradient(at 19% 35%, hsla(233,64%,60%,1) 0px, transparent 50%),*/
+    /*        radial-gradient(at 1% 91%, hsla(345,79%,60%,1) 0px, transparent 50%),*/
+    /*        radial-gradient(at 28% 28%, hsla(132,75%,63%,1) 0px, transparent 50%),*/
+    /*        radial-gradient(at 50% 23%, hsla(23,77%,75%,1) 0px, transparent 50%);*/
+
+
+    background-color:#ce99ff;
+    background-image:
+            radial-gradient(at 72% 26%, hsla(132,69%,74%,1) 0px, transparent 50%),
+            radial-gradient(at 41% 38%, hsla(236,89%,65%,1) 0px, transparent 50%),
+            radial-gradient(at 30% 47%, hsla(280,89%,68%,1) 0px, transparent 50%),
+            radial-gradient(at 58% 81%, hsla(108,87%,68%,1) 0px, transparent 50%),
+            radial-gradient(at 76% 46%, hsla(139,65%,61%,1) 0px, transparent 50%),
+            radial-gradient(at 56% 81%, hsla(326,99%,67%,1) 0px, transparent 50%),
+            radial-gradient(at 99% 72%, hsla(19,86%,71%,1) 0px, transparent 50%);
+}
+
+.mbg::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 0 0;
+    mix-blend-mode: multiply;
+    filter: url(#noiseFilter);
+}
