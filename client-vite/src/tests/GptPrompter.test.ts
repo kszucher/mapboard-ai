@@ -1,7 +1,7 @@
 import {M} from "../state/MapPropTypes"
 import {getPromptJSON, gptPrompter} from "../core/GptPrompter"
 
-const extendNotesTest = [
+const genNodesTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -13,11 +13,11 @@ const extendNotesTest = [
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 2], content: 's0s2'},
 ] as M
 
-const extendNotesResult = [
-  {keywords: ['s0', 's0s0', 's0s0s0'], suggestions: [], insertId: 'e'},
-  {keywords: ['s0', 's0s0', 's0s0s1'], suggestions: [], insertId: 'f'},
-  {keywords: ['s0', 's0s1'], suggestions: [], insertId: 'g'},
-  {keywords: ['s0', 's0s2'], suggestions: [], insertId: 'h'}
+const genNodesResult = [
+  {keywords: ['s0', 's0s0', 's0s0s0'], suggestions: [], insertParentId: 'e'},
+  {keywords: ['s0', 's0s0', 's0s0s1'], suggestions: [], insertParentId: 'f'},
+  {keywords: ['s0', 's0s1'], suggestions: [], insertParentId: 'g'},
+  {keywords: ['s0', 's0s2'], suggestions: [], insertParentId: 'h'}
 ]
 
 const fillTableTest = [
@@ -53,7 +53,7 @@ const fillTableResult = [
 ]
 
 describe("GptPrompterTests", () => {
-  test('extendNotesTest', () => expect(getPromptJSON(extendNotesTest)).toEqual(extendNotesResult))
+  test('genNodesTest', () => expect(getPromptJSON(genNodesTest)).toEqual(genNodesResult))
 
   // test('fillTable', () => expect(gptPrompter(fillTableTest, 'fillTable', {})).toEqual(fillTableResult))
 })

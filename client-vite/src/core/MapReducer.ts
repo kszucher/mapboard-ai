@@ -7,12 +7,12 @@ import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
-import {insertCC, insertCR, insertS, insertSL, insertTable} from "./MapInsert"
+import {insertCC, insertCR, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSS} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -70,8 +70,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSOImage': insertS(m, [...getXP(m), 's', getCountXSO1(m)], {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insertSORTable': insertTable(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
     case 'insertSOTable': insertTable(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
-    case 'insertSLOR': insertSL(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
-    case 'insertSLO': insertSL(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
+    // case 'insertSLOR': insertSL(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
+    // case 'insertSLO': insertSL(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
     case 'insertCRD': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m) + 1, 0]); break
     case 'insertCRU': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m), 0]); break // what
     case 'insertCCR': insertCC(m, [...getXSI1(m), 'c', 0, getCountXCL(m) + 1]); break
@@ -120,7 +120,18 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       break
     }
 
-    case 'fillTable': payload.gptParsed.forEach((n: any) => Object.assign(getNodeById(m, n.ni) || {}, { content: n.c })); break
+    case 'gptGenNodes': {
+      payload.gptParsed.forEach((el: any) => {
+        el.suggestions.forEach((suggestion: string) => {
+          const insertParentPath = getNodeById(m, el.insertParentId).path
+          insertS(m, [...insertParentPath, 's', getCountSS(m, insertParentPath)], {content: suggestion})
+        })
+      })
+      break
+    }
+    case 'gptFillTable': payload.gptParsed.forEach((n: any) => Object.assign(getNodeById(m, n.ni) || {}, { content: n.c })); break
+
+
     case 'applyColorFromKey': setPropXA(m, 'textColor', shortcutColors[payload.currColor]); break
     case 'toggleTask': setPropXASF(m, 'taskStatus', getX(m).taskStatus === 0 ? 1 : 0); break
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break

@@ -7,7 +7,7 @@ export const getPromptJSON = (m: M) => {
   return m2cbS(m).filter(n => getCountSS(cb, n.path) === 0).map(n => ({
     keywords: [...getSIL(n.path), n.path].map(p => getNodeByPath(cb, p).content),
     suggestions: [],
-    insertId: n.nodeId
+    insertParentId: n.nodeId
   }))
 }
 
@@ -20,19 +20,19 @@ const responseSchema = {
     "properties": {
       "keywords": {"type": "array", "readOnly": true},
       "suggestions": {"type": "array"},
-      "insertId": {"type": "string", "readOnly": true},
+      "insertParentId": {"type": "string", "readOnly": true},
     },
     "required": [
       "keywords",
       "suggestions",
-      "insertId"
+      "insertParentId"
     ]
   }
 }
 
 export const gptPrompter = (m: M, action: string, payload: any) => {
   switch (action) {
-    case 'genNodes': {
+    case 'gptGenNodes': {
       const promptJSON = getPromptJSON(m)
       const prompt = `
       Take the following meeting transcript: ${getX(m).note}
@@ -51,7 +51,7 @@ export const gptPrompter = (m: M, action: string, payload: any) => {
         timestamp: Date.now(),
       } as GptData
     }
-    case 'fillTable': {
+    case 'gptFillTable': {
       const rowHeader = getXSSCR0S(m).map(el => el.content)
       const colHeader = getXSSCC0S(m).map(el => el.content)
       const MAX_ANSWER_LENGTH_IN_CHAR = 100

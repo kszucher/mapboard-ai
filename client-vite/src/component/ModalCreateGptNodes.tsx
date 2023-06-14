@@ -64,7 +64,7 @@ export const ModalCreateGptNodes: FC = () => {
               disabled={interactionDisabled}
               fullWidth
               onClick={() => {
-                dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'fillTable', null)))
+                dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'gptFillTable', null)))
                 dispatch(actions.setPageState(PageState.WS))
               }}>
               {'FILL TABLE'}

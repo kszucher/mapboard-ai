@@ -301,15 +301,77 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         if (gptApiKey) {
           const {promptId, promptJSON, prompt, maxToken, timestamp} = req.body.payload
           const configuration = new Configuration({ apiKey: gptApiKey })
-          const openai = new OpenAIApi(configuration);
-          const completion = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt,
-            max_tokens: maxToken,
-            // temperature: 0
-          });
-          console.log(completion.data.choices[0].text)
-          const gptSuggestions = completion.data.choices[0].text
+          const openai = new OpenAIApi(configuration)
+          // const completion = await openai.createCompletion({
+          //   model: "text-davinci-003",
+          //   prompt,
+          //   max_tokens: maxToken,
+          //   // temperature: 0
+          // });
+          // console.log(completion.data.choices[0].text)
+          // const gptSuggestions = completion.data.choices[0].text
+
+          const gptSuggestions = JSON.stringify([
+              {
+                "keywords":[
+                  "meeting",
+                  "Topics"
+                ],
+                "suggestions":[
+                  "data analysis pipeline",
+                  "Bigquery project",
+                  "raw data",
+                  "MongoDB snapshots",
+                  "ADM",
+                  "virtual builds"
+                ],
+                "insertParentId":"node6cc1822e"
+              },
+              {
+                "keywords":[
+                  "meeting",
+                  "Actions"
+                ],
+                "suggestions":[
+                  "run pipeline",
+                  "update raw data",
+                  "look at saved queries",
+                  "run Bigquery ",
+                  "run ADM",
+                  "activate VPN connection",
+                  "decrypt GCP key",
+                  "set up Google credentials"
+                ],
+                "insertParentId":"nodebde6a4a9"
+              },
+              {
+                "keywords":[
+                  "meeting",
+                  "Decisions"
+                ],
+                "suggestions":[
+                  "pause recording",
+                  "omit parts",
+                  "run with the same username and password",
+                  "set up automation of MongoDB snapshots",
+                  "rotate passwords"
+                ],
+                "insertParentId":"nodec6138a3b"
+              },
+              {
+                "keywords":[
+                  "meeting",
+                  "Participants"
+                ],
+                "suggestions":[
+                  "AC",
+                  "BP"
+                ],
+                "insertParentId":"noded43fd96a"
+              }
+            ])
+
+
           console.log(gptSuggestions)
           return res.json({gptSuggestions, ...req.body.payload})
         } else {

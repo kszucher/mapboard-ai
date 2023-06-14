@@ -7,21 +7,26 @@ export const insertS = (m: M, ip: P, attributes: object) => {
   makeSpaceFromS(m, ip, 1)
   unselectNodes(m)
   m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'z' : 'node' + genHash(8), path: ip, taskStatus: getNodeByPath(m, getXP(m)).taskStatus, ...attributes} as GN)
+
+  console.log('logging m...')
+  console.log(m)
+
   m.sort(sortPath)
 }
 
-export const insertSL = (m: M, ip: P, payload: { gptParsed: string[] }) => {
-  const { gptParsed } = payload
-  makeSpaceFromS(m, ip, gptParsed.length)
-  const newNodes = gptParsed.map((el: string, i: number) => ({
-    nodeId: IS_TESTING ? 'z' : 'node' + genHash(8),
-    path: [...ip.slice(0, -2), 's', ip.at(-1) as number + i],
-    taskStatus: getNodeByPath(m, getXP(m)).taskStatus,
-    content: el
-  })) as GN[]
-  m.push(...newNodes)
-  m.sort(sortPath)
-}
+// export const insertSL = (m: M, ip: P, payload: { gptParsed: string[] }) => {
+//   const { gptParsed } = payload
+//
+//   makeSpaceFromS(m, ip, gptParsed.length)
+//   const newNodes = gptParsed.map((el: string, i: number) => ({
+//     nodeId: IS_TESTING ? 'z' : 'node' + genHash(8),
+//     path: [...ip.slice(0, -2), 's', ip.at(-1) as number + i],
+//     taskStatus: getNodeByPath(m, getXP(m)).taskStatus,
+//     content: el
+//   })) as GN[]
+//   m.push(...newNodes)
+//   m.sort(sortPath)
+// }
 
 export const insertCR = (m: M, ip: P) => {
   makeSpaceFromCR(m, ip)

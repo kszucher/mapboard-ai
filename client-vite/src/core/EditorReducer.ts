@@ -131,7 +131,7 @@ export const editorSlice = createSlice({
           const pm = current(state.mapList[state.mapListIndex])
           let mapAction = {type: '', payload: {}}
           switch (promptId) {
-            case 'genNodes': {
+            case 'gptGenNodes': {
               try {
                 console.log(gptSuggestions)
 
@@ -139,14 +139,15 @@ export const editorSlice = createSlice({
 
                 console.log(gptParsed)
 
-                // mapAction = mapActionResolver(pm, null, 'ae', 'insertGptSuggestions', {gptParsed})
+
+                mapAction = mapActionResolver(pm, null, 'ae', 'gptGenNodes', {gptParsed})
 
               } catch {
                 console.warn('unparseable:', gptSuggestions)
               }
               break
             }
-            case 'fillTable': {
+            case 'gptFillTable': {
               try {
                 console.log(gptSuggestions)
                 const gptParsed = JSON.parse(gptSuggestions.trim())
