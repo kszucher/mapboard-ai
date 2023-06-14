@@ -277,6 +277,25 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         await users.deleteOne({ _id: userId })
         return res.json({})
       }
+      case 'getGptChatSuggestions': {
+        const gptApiKey = user.gptApiKey || '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'
+        if (gptApiKey) {
+          const {promptId, promptJSON, prompt, maxToken, timestamp} = req.body.payload
+          const configuration = new Configuration({ apiKey: gptApiKey })
+          const openai = new OpenAIApi(configuration);
+          const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo-0613",
+            messages: [{"role": "user", "content": prompt}],
+            // functions=[],
+            // function_call="auto",
+            temperature: 0
+          });
+          const gptSuggestions = response.data.choices[0].text
+          return res.json({gptSuggestions, ...req.body.payload})
+        } else {
+          return res.json({})
+        }
+      }
       case 'getGptSuggestions': {
         const gptApiKey = user.gptApiKey || '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'
         if (gptApiKey) {
@@ -287,10 +306,11 @@ app.post('/beta-private', checkJwt, async (req, res) => {
             model: "text-davinci-003",
             prompt,
             max_tokens: maxToken,
-            temperature: 0
+            // temperature: 0
           });
           console.log(completion.data.choices[0].text)
           const gptSuggestions = completion.data.choices[0].text
+          console.log(gptSuggestions)
           return res.json({gptSuggestions, ...req.body.payload})
         } else {
           return res.json({})

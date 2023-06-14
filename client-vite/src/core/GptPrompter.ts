@@ -18,9 +18,9 @@ const responseSchema = {
   "items": {
     "type": "object",
     "properties": {
-      "keywords": {"type": "array"},
+      "keywords": {"type": "array", "readOnly": true},
       "suggestions": {"type": "array"},
-      "insertId": {"type": "string"},
+      "insertId": {"type": "string", "readOnly": true},
     },
     "required": [
       "keywords",
@@ -37,8 +37,8 @@ export const gptPrompter = (m: M, action: string, payload: any) => {
       const prompt = `
       Take the following meeting transcript: ${getX(m).note}
       Please extract information from the meeting transcript by filling "suggestions" based on "keywords" in the following JSON.
-      Only change "suggestions", keep "insertId" and "keywords" as-is.
-      ${promptJSON}
+      Do not change "readOnly" fields.
+      ${JSON.stringify(promptJSON)}
       Make sure to format the result according the following JSON schema.
       ${JSON.stringify(responseSchema)}
       Only return the JSON, no additional comments.
