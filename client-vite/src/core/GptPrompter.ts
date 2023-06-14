@@ -1,38 +1,15 @@
 import {M, MPartial, N} from "../state/MapPropTypes"
-import {getXSSCC0S, getXSSCR0S, getXSSCYYS0, getX, getXSAF, getXP} from "./MapUtils"
+import {getXSSCC0S, getXSSCR0S, getXSSCYYS0, getX, getXSAF, m2cbS, getCountSS, getSIL, getNodeByPath} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
-// const responseSchema = {
-//   "$id": "root",
-//   "$schema": "http://json-schema.org/draft-07/schema#",
-//   "type": "array",
-//   "items": {
-//     "type": "object",
-//     "properties": {
-//       "path": {
-//         "type": "array",
-//         "items": {
-//           "type": [
-//             "string",
-//             "number"
-//           ]
-//         }
-//       },
-//       "content": {
-//         "type": "string"
-//       },
-//       // "note": {
-//       //   "type": "string"
-//       // }
-//     },
-//     "required": [
-//       "path",
-//       "content",
-//       // "note"
-//     ],
-//     "additionalProperties": false
-//   }
-// }
+export const getGptJson = (m: M) => {
+  const cb = m2cbS(m)
+  return m2cbS(m).filter(n => getCountSS(cb, n.path) === 0).map(n => ({
+    keywords: [...getSIL(n.path), n.path].map(p => getNodeByPath(cb, p).content),
+    suggestions: [],
+    insertId: n.nodeId
+  }))
+}
 
 const responseSchema = {
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -41,39 +18,17 @@ const responseSchema = {
   "items": {
     "type": "object",
     "properties": {
-      "keywords": {
-        "type": "array"
-      },
-      "suggestions": {
-        "type": "array"
-      },
-      "ip": {
-        "type": "string"
-      },
+      "keywords": {"type": "array"},
+      "suggestions": {"type": "array"},
+      "insertId": {"type": "string"},
     },
     "required": [
       "keywords",
       "suggestions",
-      "ip"
+      "insertId"
     ]
   }
 }
-
-
-
-
-// You must format your output as a JSON value that adheres to a given "JSON Schema" instance.
-// "JSON Schema" is a declarative language that allows you to annotate and validate JSON documents.
-//   For example, the example "JSON Schema" instance
-// {{"properties": {{"foo": {{"description": "a list of test words", "type": "array", "items": {{"type": "string"}}}}}}, "required": ["foo"]}}}}
-// would match an object with one required property, "foo".
-//   The "type" property specifies "foo" must be an "array", and the "description" property semantically describes it as "a list of test words".
-// The items within "foo" must be strings.
-//   Thus, the object {{"foo": ["bar", "baz"]}} is a well-formatted instance of this example "JSON Schema".
-//   The object {{"properties": {{"foo": ["bar", "baz"]}}}} is not well-formatted.
-//   Your output will be parsed and type-checked according to the provided schema instance, so make sure all fields in your output match exactly!
-// Here is the JSON Schema instance your output must adhere to:
-//   ${JSON.stringify(responseSchema)}
 
 export const gptPrompter = (m: M, action: string, payload: any) => {
   switch (action) {

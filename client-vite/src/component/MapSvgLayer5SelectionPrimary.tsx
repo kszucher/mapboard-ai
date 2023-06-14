@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {gptPrompter} from "../core/GptPrompter";
 import {getColors} from "./Colors"
-import { getCountSS, getG, getX, isR, isXACC, isXACR, isXC} from "../core/MapUtils"
+import {getCountSS, getG, getX, isD, isR, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {AppDispatch, RootState} from "../core/EditorReducer"
@@ -35,7 +35,7 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
         </path>
       }
       {
-        !isR(x.path) && x.selection === 'f' &&
+        !isR(x.path) && !isD(x.path) && x.selection === 'f' &&
         <svg x={x.nodeEndX + x.familyW + 12 + .5} y={x.nodeY - 24/2 + .5} style={{transitionProperty: 'x, y'}}>
           <g width="24" height="24" viewBox="0 0 24 24">
             <rect width="24" height="24" rx={4} ry={4} fill={'#444444'}/>

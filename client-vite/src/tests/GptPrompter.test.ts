@@ -1,5 +1,24 @@
 import {M} from "../state/MapPropTypes"
-import {gptPrompter} from "../core/GptPrompter"
+import {getGptJson, gptPrompter} from "../core/GptPrompter"
+
+const extendNotesTest = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 1, selection: 'f', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0], note: 'n', content: 's0'},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0, 's', 0], note: 'n', content: 's0s0'},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 0], content: 's0s0s0'},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 1], content: 's0s0s1'},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 1], content: 's0s1'},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 2], content: 's0s2'},
+] as M
+
+const extendNotesResult = [
+  {keywords: ['s0', 's0s0', 's0s0s0'], suggestions: [], insertId: 'e'},
+  {keywords: ['s0', 's0s0', 's0s0s1'], suggestions: [], insertId: 'f'},
+  {keywords: ['s0', 's0s1'], suggestions: [], insertId: 'g'},
+  {keywords: ['s0', 's0s2'], suggestions: [], insertId: 'h'}
+]
 
 const fillTableTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
@@ -34,5 +53,7 @@ const fillTableResult = [
 ]
 
 describe("GptPrompterTests", () => {
-  test('fillTable', () => expect(gptPrompter(fillTableTest, 'fillTable', {})).toEqual(fillTableResult))
+  test('extendNotesTest', () => expect(getGptJson(extendNotesTest)).toEqual(extendNotesResult))
+
+  // test('fillTable', () => expect(gptPrompter(fillTableTest, 'fillTable', {})).toEqual(fillTableResult))
 })
