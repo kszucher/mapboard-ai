@@ -286,7 +286,8 @@ app.post('/beta-private', checkJwt, async (req, res) => {
           const completion = await openai.createCompletion({
             model: "text-davinci-003",
             prompt,
-            max_tokens: maxToken
+            max_tokens: maxToken,
+            temperature: 0
           });
           console.log(completion.data.choices[0].text)
           const gptSuggestions = completion.data.choices[0].text

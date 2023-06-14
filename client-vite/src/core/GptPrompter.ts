@@ -1,8 +1,8 @@
-import {M, MPartial, N} from "../state/MapPropTypes"
-import {getXSSCC0S, getXSSCR0S, getXSSCYYS0, getX, getXSAF, m2cbS, getCountSS, getSIL, getNodeByPath} from "./MapUtils"
+import {M, N} from "../state/MapPropTypes"
+import {getXSSCC0S, getXSSCR0S, getXSSCYYS0, getX, m2cbS, getCountSS, getSIL, getNodeByPath} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
-export const getGptJson = (m: M) => {
+export const getPromptJSON = (m: M) => {
   const cb = m2cbS(m)
   return m2cbS(m).filter(n => getCountSS(cb, n.path) === 0).map(n => ({
     keywords: [...getSIL(n.path), n.path].map(p => getNodeByPath(cb, p).content),
@@ -32,81 +32,20 @@ const responseSchema = {
 
 export const gptPrompter = (m: M, action: string, payload: any) => {
   switch (action) {
-    // case 'genTaskNodes': {
-    //   const {numNodes} = payload
-    //   const prompt = `List the top ${numNodes} to do for ${getX(m).content}. Do not exceed 10 words per list item.`
-    //   return {
-    //     timestamp
-    //     prompt,
-    //     context: '',
-    //     content: getX(m).content,
-    //     typeNodes: 's',
-    //     numNodes: numNodes,
-    //     maxToken: numNodes * 12
-    //   } as GptData
-    // }
     case 'genNodes': {
-
-      // FIXME why we need the slice???
-      const promptJSON = getXSAF(m).map(n => ({nodeId: n.nodeId, content: n.content})) as MPartial
-
-      // based on nodeId, actually I can assign the path...
-
-      // console.log(promptJSON)
-
-      // TODO- pre conditioning, and whatever...
-
+      const promptJSON = getPromptJSON(m)
       const prompt = `
       Take the following meeting transcript: ${getX(m).note}
       Please extract information from the meeting transcript by filling "suggestions" based on "keywords" in the following JSON.
-      [
-         {
-            "keywords":[
-               "Participants"
-            ],
-            "suggestions":[
-               
-            ],
-            "ip":"abba"
-         },
-         {
-            "keywords":[
-               "Topics"
-            ],
-            "suggestions":[
-               
-            ],
-            "ip":"abba"
-         },
-         {
-            "keywords":[
-               "Decisions"
-            ],
-            "suggestions":[
-               
-            ],
-            "ip":"edda"
-         },
-         {
-            "keywords":[
-               "Actions"
-            ],
-            "suggestions":[
-               
-            ],
-            "ip":"acdc"
-         }
-      ]
+      Only change "suggestions", keep "insertId" and "keywords" as-is.
+      ${promptJSON}
       Make sure to format the result according the following JSON schema.
       ${JSON.stringify(responseSchema)}
       Only return the JSON, no additional comments.
-      
-      
-      
       `
       return {
         promptId: action,
-        promptJSON: [],
+        promptJSON: promptJSON,
         prompt: prompt.trim(),
         maxToken: 1200,
         timestamp: Date.now(),

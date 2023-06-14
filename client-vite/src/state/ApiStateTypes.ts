@@ -18,7 +18,7 @@ export interface DefaultUseOpenWorkspaceQueryState {
 
 export type GptData = {
   promptId: string
-  promptJSON: MPartial
+  promptJSON: any[] // TODO define
   prompt: string
   maxToken: number
   timestamp: number

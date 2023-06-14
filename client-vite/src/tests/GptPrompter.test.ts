@@ -1,5 +1,5 @@
 import {M} from "../state/MapPropTypes"
-import {getGptJson, gptPrompter} from "../core/GptPrompter"
+import {getPromptJSON, gptPrompter} from "../core/GptPrompter"
 
 const extendNotesTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
@@ -53,7 +53,7 @@ const fillTableResult = [
 ]
 
 describe("GptPrompterTests", () => {
-  test('extendNotesTest', () => expect(getGptJson(extendNotesTest)).toEqual(extendNotesResult))
+  test('extendNotesTest', () => expect(getPromptJSON(extendNotesTest)).toEqual(extendNotesResult))
 
   // test('fillTable', () => expect(gptPrompter(fillTableTest, 'fillTable', {})).toEqual(fillTableResult))
 })

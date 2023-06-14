@@ -47,8 +47,7 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
               onMouseDown={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                console.log('CLICK')
-                // dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'genNodes', null)))
+                dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'genNodes', null)))
               }}
             />
           </g>
