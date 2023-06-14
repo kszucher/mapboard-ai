@@ -1,3 +1,5 @@
+import React from "react";
+
 const svgCommonParams = {
   viewBox:"0 0 480 480",
   width:"24px",
@@ -60,3 +62,39 @@ export const CreateMapInMapIcon = () => (
 )
 
 export const dSparkle = "M16 18a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zm0-12a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zM9 18a6 6 0 016-6 6 6 0 01-6-6 6 6 0 01-6 6 6 6 0 016 6z"
+
+export const SparkleIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    fill="none"
+    stroke="#ffffff"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    className="icon icon-tabler icon-tabler-sparkles"
+    viewBox="0 0 24 24"
+  >
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M16 18a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zm0-12a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zM9 18a6 6 0 016-6 6 6 0 01-6-6 6 6 0 01-6 6 6 6 0 016 6z"></path>
+  </svg>
+)
+
+export const CirclePlusIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    fill="none"
+    stroke="#ffffff"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    className="icon icon-tabler icon-tabler-square-rounded-plus"
+    viewBox="0 0 24 24"
+  >
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M12 5v14M5 12h14"></path>
+  </svg>
+)
