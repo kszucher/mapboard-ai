@@ -36,25 +36,39 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
       }
       {
         !isR(x.path) && (x.selection === 's' && getCountSS(m, x.path) === 0 || x.selection === 'f') &&
-        <svg
-          x={x.selection === 's' ? x.nodeEndX + 6 : x.nodeEndX + x.familyW + 12}
-          y={x.nodeY - 24/2}
-          style={{transitionProperty: 'x, y'}}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="24" height="24" viewBox="0 0 24 24">
-            <rect width="24" height="24" rx={4} ry={4} fill={'#444444'}/>
-            <path d={dSparkle} fill="#ffffff" strokeWidth="0">
-            </path>
-            <rect width="24" height="24" style={{opacity: 0}}
-              onMouseDown={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                console.log('CLICK')
-                // dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'genNodes', null)))
-              }}
-            />
+        <svg>
+          <svg x={x.selection === 's' ? x.nodeEndX + 12 : x.nodeEndX + x.familyW + 12} y={x.nodeY - 24/2} style={{transitionProperty: 'x, y'}}>
+            <g width="24" height="24" viewBox="0 0 24 24">
+              <rect width="24" height="24" rx={4} ry={4} fill={'#444444'}/>
+              <path d={dSparkle} fill="#ffffff" strokeWidth="0">
+              </path>
+              <rect width="24" height="24" style={{opacity: 0}}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      console.log('CLICK')
+                      // dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'genNodes', null)))
+                    }}
+              />
+            </g>
+          </svg>
+          <svg x={x.selection === 's' ? x.nodeEndX + 42 : x.nodeEndX + x.familyW + 42} y={x.nodeY - 24/2} style={{transitionProperty: 'x, y'}}>
+            <g width="24" height="24" viewBox="0 0 24 24">
+              <rect width="24" height="24" rx={4} ry={4} fill={'#444444'}/>
+              <path d={dSparkle} fill="#ffffff" strokeWidth="0">
+              </path>
+              <rect width="24" height="24" style={{opacity: 0}}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      console.log('CLICK')
+                      // dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'genNodes', null)))
+                    }}
+              />
+            </g>
           </svg>
         </svg>
+
       }
     </g>
   )
