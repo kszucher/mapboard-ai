@@ -20,7 +20,7 @@ const genNodesResult = [
   {keywords: ['s0', 's0s2'], suggestions: [], insertParentId: 'h'}
 ]
 
-const fillTableTest = [
+const fillTableTest = [ // fixme: genNodesTable
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -44,6 +44,21 @@ const fillTableTest = [
   {selected: 0, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 2]},
   {selected: 0, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 2, 's', 0]},
 ] as M
+
+// TODO: combine
+//  getXSSCYYS0(m).map((n: N) => ({
+//         nodeId: n.nodeId,
+//         content: colHeader[0] + ' - ' + colHeader[n.path.at(-4) as number] + ' - ' + rowHeader[n.path.at(-3) as number]
+//       }))
+
+// AND
+//   const cb = m2cbS(m)
+//   return m2cbS(m).filter(n => getCountSS(cb, n.path) === 0).map(n => ({
+//     keywords: [...getSIL(n.path), n.path].map(p => getNodeByPath(cb, p).content),
+//     suggestions: [],
+//     insertParentId: n.nodeId
+//   }))
+//  but start with intended result first.... and fix table
 
 const fillTableResult = [
   {nodeId: 'n', content: 'Row 0 - Row 1 - Col 1'},
