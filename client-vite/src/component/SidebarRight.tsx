@@ -45,6 +45,7 @@ export const SidebarRight: FC = () => {
       <div className={crd} style={{top: topOffs1, borderRadius: '8px 0 0 0' }}>
         <IconButton
           color='secondary'
+          disabled
           onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_GPT_NODES))}
         >
           <AutoAwesomeRoundedIcon/>
