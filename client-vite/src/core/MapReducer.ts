@@ -70,8 +70,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSOImage': insertS(m, [...getXP(m), 's', getCountXSO1(m)], {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insertSORTable': insertTable(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
     case 'insertSOTable': insertTable(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
-    // case 'insertSLOR': insertSL(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
-    // case 'insertSLO': insertSL(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
     case 'insertCRD': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m) + 1, 0]); break
     case 'insertCRU': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m), 0]); break // what
     case 'insertCCR': insertCC(m, [...getXSI1(m), 'c', 0, getCountXCL(m) + 1]); break

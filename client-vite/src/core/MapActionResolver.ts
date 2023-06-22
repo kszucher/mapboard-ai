@@ -40,9 +40,6 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'ce' && et === 'insertTable' && isXS(m)): return ({type: 'insertSOTable', payload: ep})
     case (es === 'ce' && et === 'toggleTask'): return ({type: 'toggleTask', payload: ep})
 
-    // case (es === 'ae' && et === 'insertGptSuggestions' && isXR(m)): return ({type: 'insertSLOR', payload: ep})
-    // case (es === 'ae' && et === 'insertGptSuggestions' && isXS(m)): return ({type: 'insertSLO', payload: ep})
-
     case (es === 'ae' && et === 'gptGenNodes' && isXS(m)): return ({type: 'gptGenNodes', payload: ep})
     case (es === 'ae' && et === 'gptFillTable' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'gptFillTable', payload: ep})
 
