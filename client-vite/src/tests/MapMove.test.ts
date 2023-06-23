@@ -307,6 +307,32 @@ const moveCCL_result = [
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
 ] as M
 
+const moveS2T_test = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, '  d', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
+
+] as M
+
+const moveS2T_result = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'zc00', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: '', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'zc01', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 1, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'zc10', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'zc11', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 1]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 1, 's', 0]},
+] as M
+
 describe("Move_tests", () => {
   test('moveSD', () => {mapReducerAtomic(moveSD_test, 'moveSD', {}); expect(moveSD_test).toEqual(moveSD_result)})
   test('moveST', () => {mapReducerAtomic(moveST_test, 'moveST', {}); expect(moveST_test).toEqual(moveST_result)})

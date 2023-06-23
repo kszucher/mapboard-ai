@@ -92,6 +92,18 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
     case 'moveCCL': moveCC(m, getXSI1(m), getCountXCL(m) - 1); break
 
+    case 'moveS2T': {
+      // we do an insertSelectSO table here... and will take the clipboard items and assigning them SAW-like, but how so???
+      // valahogy a foreach-ben le lehetne másolni a másolt kontent tartalmának sX részét, ahol cX0sX kialakítás lesz tehát adott sorba adott cuccot
+
+      // if (!sc.isRootIncluded && sc.haveSameParent) {
+      //   structMove(m, 'struct2cell')
+      //   clearSelection(m)
+      //   getMapData(m, [...sc.geomHighPath, 'c', 0, 0]).selected = 1
+      // }
+      break
+    }
+
     case 'copySelection': copyS(m); break
     case 'cutSelection': cutS(m); break
     case 'insertNodesFromClipboard': pasteS(m, payload); break
@@ -106,17 +118,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       break
     }
 
-    case 'cellify': {
-      // we do an insertSelectSO table here... and will take the clipboard items and assigning them SAW-like, but how so???
-      // valahogy a foreach-ben le lehetne másolni a másolt kontent tartalmának sX részét, ahol cX0sX kialakítás lesz tehát adott sorba adott cuccot
 
-      // if (!sc.isRootIncluded && sc.haveSameParent) {
-      //   structMove(m, 'struct2cell')
-      //   clearSelection(m)
-      //   getMapData(m, [...sc.geomHighPath, 'c', 0, 0]).selected = 1
-      // }
-      break
-    }
 
     case 'gptGenNodes': {
       payload.gptParsed.forEach((el: any) => {

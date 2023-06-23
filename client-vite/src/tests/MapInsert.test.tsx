@@ -2,7 +2,7 @@ import {setIsTesting} from "../core/Utils"
 import {mapReducerAtomic} from "../core/MapReducer"
 import {M} from "../state/MapPropTypes"
 
-const insertSDTest = [
+const insertSD_test = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -13,7 +13,7 @@ const insertSDTest = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 3]},
 ] as M
 
-const insertSDResult = [
+const insertSD_result = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -25,7 +25,7 @@ const insertSDResult = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 4]},
 ] as M
 
-const insertSUTest = [
+const insertSU_test = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -36,7 +36,7 @@ const insertSUTest = [
   {selected: 1, selection: 's', taskStatus: 0, nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 3]},
 ] as M
 
-const insertSUResult = [
+const insertSU_result = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -48,14 +48,14 @@ const insertSUResult = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 4]},
 ] as M
 
-const insertSORTest = [
+const insertSOR_test = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
   {selected: 1, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
 ] as M
 
-const insertSORResult = [
+const insertSOR_result = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -63,7 +63,7 @@ const insertSORResult = [
   {selected: 1, selection: 's', taskStatus: 0, nodeId: 'z', path: ['r', 0, 'd', 0, 's', 1]},
 ] as M
 
-const insertSOTest = [
+const insertSO_test = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -71,7 +71,7 @@ const insertSOTest = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
 ] as M
 
-const insertSOResult = [
+const insertSO_result = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -80,7 +80,7 @@ const insertSOResult = [
   {selected: 1, selection: 's', taskStatus: 0, nodeId: 'z', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
 ] as M
 
-const insertCRDTest = [
+const insertCRD_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -95,7 +95,7 @@ const insertCRDTest = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
 ] as M
 
-const insertCRDResult = [
+const insertCRD_result = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -105,16 +105,14 @@ const insertCRDResult = [
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
   {selected: 1, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
-  {selected: 0, selection: 's', nodeId: 'zcs0', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
   {selected: 1, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
-  {selected: 0, selection: 's', nodeId: 'zcs1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1, 's', 0]},
 ] as M
 
-const insertCRUTest = [
+const insertCRU_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -129,7 +127,7 @@ const insertCRUTest = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
 ] as M
 
-const insertCRUResult = [
+const insertCRU_result = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -139,16 +137,14 @@ const insertCRUResult = [
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
   {selected: 1, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
-  {selected: 0, selection: 's', nodeId: 'zcs0', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
   {selected: 1, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
-  {selected: 0, selection: 's', nodeId: 'zcs1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1, 's', 0]},
 ] as M
 
-const insertCCRTest = [
+const insertCCR_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -163,7 +159,7 @@ const insertCCRTest = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
 ] as M
 
-const insertCCRResult = [
+const insertCCR_result = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -171,18 +167,16 @@ const insertCCRResult = [
   {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
   {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
   {selected: 1, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
-  {selected: 0, selection: 's', nodeId: 'zcs0', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2]},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
   {selected: 1, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
-  {selected: 0, selection: 's', nodeId: 'zcs1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
 ] as M
 
-const insertCCLTest = [
+const insertCCL_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -197,7 +191,7 @@ const insertCCLTest = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
 ] as M
 
-const insertCCLResult = [
+const insertCCL_result = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -205,50 +199,43 @@ const insertCCLResult = [
   {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
   {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
   {selected: 1, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
-  {selected: 0, selection: 's', nodeId: 'zcs0', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2]},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
   {selected: 1, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
-  {selected: 0, selection: 's', nodeId: 'zcs1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
 ] as M
 
-const insertSORTableTest = [
+const insertSORTable_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 1, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
 ] as M
 
-const insertSORTableResult = [
+const insertSORTable_result = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {selected: 1, selection: 's', nodeId: 'z', path: ['r', 0, 'd', 0, 's', 1]},
   {selected: 0, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 0]},
-  {selected: 0, selection: 's', nodeId: 'zcs0', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 1]},
-  {selected: 0, selection: 's', nodeId: 'zcs1', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 1, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'zc2', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 0]},
-  {selected: 0, selection: 's', nodeId: 'zcs2', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'zc3', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 1]},
-  {selected: 0, selection: 's', nodeId: 'zcs3', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 1, 's', 0]},
 ] as M
 
 describe("InsertTests", () => {
   beforeEach(() => setIsTesting())
-  test('insertSD', () => {mapReducerAtomic(insertSDTest, 'insertSD', {}); expect(insertSDTest).toEqual(insertSDResult)})
-  test('insertSU', () => {mapReducerAtomic(insertSUTest, 'insertSU', {}); expect(insertSUTest).toEqual(insertSUResult)})
-  test('insertSOR', () => {mapReducerAtomic(insertSORTest, 'insertSOR', {}); expect(insertSORTest).toEqual(insertSORResult)})
-  test('insertSO', () => {mapReducerAtomic(insertSOTest, 'insertSO', {}); expect(insertSOTest).toEqual(insertSOResult)})
-  test('insertCRD', () => {mapReducerAtomic(insertCRDTest, 'insertCRD', {}); expect(insertCRDTest).toEqual(insertCRDResult)})
-  test('insertCRU', () => {mapReducerAtomic(insertCRUTest, 'insertCRU', {}); expect(insertCRUTest).toEqual(insertCRUResult)})
-  test('insertCCR', () => {mapReducerAtomic(insertCCRTest, 'insertCCR', {}); expect(insertCCRTest).toEqual(insertCCRResult)})
-  test('insertCCL', () => {mapReducerAtomic(insertCCLTest, 'insertCCL', {}); expect(insertCCLTest).toEqual(insertCCLResult)})
-  test('insertSORTable', () => {mapReducerAtomic(insertSORTableTest, 'insertSORTable', {rowLen: 2, colLen: 2}); expect(insertSORTableTest).toEqual(insertSORTableResult)})
-
+  test('insertSD', () => {mapReducerAtomic(insertSD_test, 'insertSD', {}); expect(insertSD_test).toEqual(insertSD_result)})
+  test('insertSU', () => {mapReducerAtomic(insertSU_test, 'insertSU', {}); expect(insertSU_test).toEqual(insertSU_result)})
+  test('insertSOR', () => {mapReducerAtomic(insertSOR_test, 'insertSOR', {}); expect(insertSOR_test).toEqual(insertSOR_result)})
+  test('insertSO', () => {mapReducerAtomic(insertSO_test, 'insertSO', {}); expect(insertSO_test).toEqual(insertSO_result)})
+  test('insertCRD', () => {mapReducerAtomic(insertCRD_test, 'insertCRD', {}); expect(insertCRD_test).toEqual(insertCRD_result)})
+  test('insertCRU', () => {mapReducerAtomic(insertCRU_test, 'insertCRU', {}); expect(insertCRU_test).toEqual(insertCRU_result)})
+  test('insertCCR', () => {mapReducerAtomic(insertCCR_test, 'insertCCR', {}); expect(insertCCR_test).toEqual(insertCCR_result)})
+  test('insertCCL', () => {mapReducerAtomic(insertCCL_test, 'insertCCL', {}); expect(insertCCL_test).toEqual(insertCCL_result)})
+  test('insertSORTable', () => {mapReducerAtomic(insertSORTable_test, 'insertSORTable', {rowLen: 2, colLen: 2}); expect(insertSORTable_test).toEqual(insertSORTable_result)})
 })
