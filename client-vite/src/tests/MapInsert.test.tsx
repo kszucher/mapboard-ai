@@ -19,7 +19,7 @@ const insertSD_result = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
-  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'z', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
+  {selected: 1, selection: 's', taskStatus: 0, nodeId: 't', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 3]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 4]},
@@ -44,7 +44,7 @@ const insertSU_result = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
-  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'z', path: ['r', 0, 'd', 0, 's', 0, 's', 3]},
+  {selected: 1, selection: 's', taskStatus: 0, nodeId: 't', path: ['r', 0, 'd', 0, 's', 0, 's', 3]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 4]},
 ] as M
 
@@ -60,7 +60,7 @@ const insertSOR_result = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'z', path: ['r', 0, 'd', 0, 's', 1]},
+  {selected: 1, selection: 's', taskStatus: 0, nodeId: 't', path: ['r', 0, 'd', 0, 's', 1]},
 ] as M
 
 const insertSO_test = [
@@ -77,7 +77,7 @@ const insertSO_result = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
-  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'z', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
+  {selected: 1, selection: 's', taskStatus: 0, nodeId: 't', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
 ] as M
 
 const insertCRD_test = [
@@ -104,8 +104,8 @@ const insertCRD_result = [
   {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
-  {selected: 1, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+  {selected: 1, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 1, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
@@ -136,8 +136,8 @@ const insertCRU_result = [
   {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
-  {selected: 1, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+  {selected: 1, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 1, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
@@ -166,12 +166,12 @@ const insertCCR_result = [
   {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
   {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
+  {selected: 1, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2]},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+  {selected: 1, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
 ] as M
@@ -198,12 +198,12 @@ const insertCCL_result = [
   {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
   {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
+  {selected: 1, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2]},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+  {selected: 1, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
 ] as M
@@ -220,11 +220,11 @@ const insertSORTable_result = [
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'z', path: ['r', 0, 'd', 0, 's', 1]},
-  {selected: 0, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 0]},
-  {selected: 0, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 1]},
-  {selected: 0, selection: 's', nodeId: 'zc2', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 0]},
-  {selected: 0, selection: 's', nodeId: 'zc3', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 1]},
+  {selected: 1, selection: 's', nodeId: 't', path: ['r', 0, 'd', 0, 's', 1]},
+  {selected: 0, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'w', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'x', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 1]},
 ] as M
 
 describe("InsertTests", () => {

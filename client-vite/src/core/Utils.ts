@@ -15,3 +15,4 @@ export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(
 export const adjust = (x: number) => Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5
 export const getTableIndices = (r: number, c: number) => Array(r*c).fill(null).map((el, i) => [Math.floor(i/c), i%c])
 export const filterEmpty = (array: any[]) => array.filter(value => Object.keys(value).length !== 0)
+export const generateCharacter = (index: number) => String.fromCharCode('u'.charCodeAt(0) + index)

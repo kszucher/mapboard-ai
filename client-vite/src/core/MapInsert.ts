@@ -1,5 +1,5 @@
 import {GN, M, P} from "../state/MapPropTypes"
-import {genHash, getTableIndices, IS_TESTING} from "./Utils"
+import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 import {unselectNodes} from "./MapSelect"
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getCountCH, getCountCV,} from "./MapUtils"
 
@@ -9,7 +9,7 @@ export const insertS = (m: M, ip: P, attributes: object) => {
   m.push({
     selected: 1,
     selection: 's',
-    nodeId: IS_TESTING ? 'z' : 'node' + genHash(8),
+    nodeId: IS_TESTING ? 't' : 'node' + genHash(8),
     path: ip,
     taskStatus: getNodeByPath(m, getXP(m)).taskStatus,
     ...attributes
@@ -24,7 +24,7 @@ export const insertCR = (m: M, ip: P) => {
   m.push(...rowIndices.map((el, i) => ({
     selected: 1,
     selection: 's',
-    nodeId: IS_TESTING ? 'zc' + i : 'node' + genHash(8),
+    nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8),
     path: [...ip.slice(0, -3), 'c', ...el]
   }  as GN)))
   m.sort(sortPath)
@@ -37,7 +37,7 @@ export const insertCC = (m: M, ip: P) => {
   m.push(...colIndices.map((el, i) => ({
     selected: 1,
     selection: 's',
-    nodeId: IS_TESTING ? 'zc' + i : 'node' + genHash(8),
+    nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8),
     path: [...ip.slice(0, -3), 'c', ...el]
   }  as GN)))
   m.sort(sortPath)
@@ -50,13 +50,13 @@ export const insertTable = (m: M, ip: P, payload: {rowLen: number, colLen: numbe
   m.push({
     selected: 1,
     selection: 's',
-    nodeId: IS_TESTING ? 'z' : 'node' + genHash(8),
+    nodeId: IS_TESTING ? 't' : 'node' + genHash(8),
     path: ip
   } as GN)
   m.push(...tableIndices.map((el, i) => ({
     selected: 0,
     selection: 's',
-    nodeId: IS_TESTING ? 'zc' + i : 'node' + genHash(8),
+    nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8),
     path: [...ip, 'c', ...el]
   }  as GN)))
   m.sort(sortPath)
