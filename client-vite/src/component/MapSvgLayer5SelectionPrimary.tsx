@@ -4,7 +4,7 @@ import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {gptPrompter} from "../core/GptPrompter";
 import {mapActionResolver} from "../core/MapActionResolver";
 import {getColors} from "./Colors"
-import {getCountSS, getG, getPathDir, getX, isD, isR, isS, isXACC, isXACR, isXC} from "../core/MapUtils"
+import {getCountSS, getCountSSC, getCountSSS, getG, getPathDir, getX, isR, isS, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -73,7 +73,7 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
         </svg>
       }
       {
-        isS(x.path) && x.selection === 'f' &&
+        isS(x.path) && x.selection === 'f' && getCountSSS(m, x.path) === 0 && getCountSSC(m, x.path) === 0 &&
         <svg x={(getPathDir(x.path) === -1 ? x.nodeStartX - x.familyW - 4 - 24 - 36 - .5 : x.nodeEndX + x.familyW + 4 + 36 + .5)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
           <g width="24" height="24" viewBox="0 0 24 24">
             <rect width="24" height="24" rx={4} ry={4} fill={'#444444'}/>

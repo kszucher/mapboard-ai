@@ -345,5 +345,5 @@ describe("Move_tests", () => {
   test('moveCRU', () => {mapReducerAtomic(moveCRU_test, 'moveCRU', {}); expect(moveCRU_test).toEqual(moveCRU_result)})
   test('moveCCR', () => {mapReducerAtomic(moveCCR_test, 'moveCCR', {}); expect(moveCCR_test).toEqual(moveCCR_result)})
   test('moveCCL', () => {mapReducerAtomic(moveCCL_test, 'moveCCL', {}); expect(moveCCL_test).toEqual(moveCCL_result)})
-  test('moveS2T', () => {mapReducerAtomic(moveS2T_test, 'moveCCL', {}); expect(moveS2T_test).toEqual(moveS2T_result)})
+  test('moveS2T', () => {mapReducerAtomic(moveS2T_test, 'moveS2T', {}); expect(moveS2T_test).toEqual(moveS2T_result)})
 })

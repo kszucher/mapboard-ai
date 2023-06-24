@@ -1,8 +1,8 @@
 import {genHash} from "./Utils"
-import {GN, M, P} from "../state/MapPropTypes"
+import {M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
-import {selectNode, unselectNodes} from "./MapSelect"
-import {cb2ipS, cb2ipCC, cb2ipCR, getCountSS, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getSI1, getNodeByPath,} from "./MapUtils"
+import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
+import {cb2ipS, cb2ipCC, cb2ipCR, getCountSS, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSO} from "./MapUtils"
 
 const cbSave = (cb: any) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
@@ -72,8 +72,11 @@ export const moveCC = (m: M, insertTargetPath: P, insertTargetColIndex: number) 
   m.sort(sortPath)
 }
 
-export const moveS2T = (m: M, insertTargetPath: P, insertTargetColIndex: number) => {
-  // move all S into the clipboard
-  // insert cells using the length of stuff
-  // use cb2ipCC --> theoretically I can, if I select IP properly...
+export const moveS2T = (m: M) => {
+  selectNodeList(m, getXSO(m).map(n => n.path), 's')
+
+  // select all children
+  // cut (move to clipboard)
+  // insert cells using the length of clipboard
+  // use cb2ipCC --> theoretically I can, if I select IP properly... but we'll see
 }
