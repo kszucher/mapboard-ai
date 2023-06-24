@@ -5,22 +5,27 @@ export const mapPlace = (m: M) => {
   const g = getNodeByPath(m, ['g']) as G
   const r0 = getNodeByPath(m, ['r', 0]) as N
   m.forEach(n => {
-    if (isG(n.path)) {
-      // do nothing
-    } else if (isR(n.path)) {
-      n.nodeStartX = g.mapStartCenterX - n.selfW / 2 + 1
-      n.nodeEndX = g.mapStartCenterX + n.selfW / 2 + 1
-      n.nodeY = g.mapHeight / 2 - 0.5
-    } else if (isD(n.path)) {
-      n.nodeStartX = r0.nodeStartX
-      n.nodeEndX = r0.nodeEndX
-      n.nodeY = g.mapHeight / 2 - 0.5
-      n.isTop = 1
-      n.isBottom = 1
-    } else {
-      const p1 = getNodeByPath(m, getSI1(n.path)) as N
-      const p2 = getNodeByPath(m, getSI2(n.path)) as N
-      if (isS(n.path)) {
+    switch (true) {
+      case isG(n.path): {
+        // do nothing
+        break
+      }
+      case isR(n.path): {
+        n.nodeStartX = g.mapStartCenterX - n.selfW / 2 + 1
+        n.nodeEndX = g.mapStartCenterX + n.selfW / 2 + 1
+        n.nodeY = g.mapHeight / 2 - 0.5
+        break
+      }
+      case isD(n.path): {
+        n.nodeStartX = r0.nodeStartX
+        n.nodeEndX = r0.nodeEndX
+        n.nodeY = g.mapHeight / 2 - 0.5
+        n.isTop = 1
+        n.isBottom = 1
+        break
+      }
+      case isS(n.path): {
+        const p1 = getNodeByPath(m, getSI1(n.path)) as N
         const i = n.path.at(-1) as number
         const sumUpperSiblingMaxH = m.filter(nt => isSU(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * + Boolean(getCountSSS(m, p1.path) || getCountSSC(m, p1.path))
@@ -34,7 +39,11 @@ export const mapPlace = (m: M) => {
         n.nodeY = p1.nodeY - p1.familyH / 2 + n.maxH / 2 + sumElapsedY
         n.isTop = i === 0 && p1.isTop ? 1 : 0
         n.isBottom = i === getCountSS(m, p1.path) - 1 && p1.isBottom === 1 ? 1 : 0
-      } else if (isC(n.path)) {
+        break
+      }
+      case isC(n.path): {
+        const p1 = getNodeByPath(m, getSI1(n.path)) as N
+        const p2 = getNodeByPath(m, getSI2(n.path)) as N
         const i = n.path.at(-2) as number
         const j = n.path.at(-1) as number
         if (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) {
@@ -45,6 +54,7 @@ export const mapPlace = (m: M) => {
           n.nodeEndX = n.path[3] === 0 ? p2.nodeStartX + 2 + n.selfW : p2.nodeEndX
         }
         n.nodeY = p1.nodeY + p1.sumMaxRowHeight[i] + p1.maxRowHeight[i]/2 - p1.selfH/2
+        break
       }
     }
     if (Number.isInteger(n.nodeStartX)) {
