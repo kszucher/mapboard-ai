@@ -1,4 +1,4 @@
-import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSS} from "./MapUtils"
+import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSS, getCountSSS, getCountSSC} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
@@ -23,7 +23,7 @@ export const mapPlace = (m: M) => {
       if (isS(n.path)) {
         const i = n.path.at(-1) as number
         const sumUpperSiblingMaxH = m.filter(nt => isSU(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
-        const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * p1.spacingActivated
+        const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * + Boolean(getCountSSS(m, p1.path) || getCountSSC(m, p1.path))
         if (getPathPattern(n.path).endsWith('ds') || getPathPattern(n.path).endsWith('ss')) {
           n.nodeStartX = n.path[3] === 0 ? p1.nodeEndX + g.sLineDeltaXDefault : p1.nodeStartX - g.sLineDeltaXDefault - n.selfW
           n.nodeEndX = n.path[3] === 0 ? p1.nodeEndX + g.sLineDeltaXDefault + n.selfW : p1.nodeStartX - g.sLineDeltaXDefault

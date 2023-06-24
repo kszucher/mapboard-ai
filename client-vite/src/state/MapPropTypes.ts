@@ -64,7 +64,6 @@ export interface NSaveNever {
   maxW: number
   maxH: number
   spacing: number
-  spacingActivated: number
   // mapPlace
   nodeStartX: number
   nodeEndX: number

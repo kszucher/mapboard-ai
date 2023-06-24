@@ -310,12 +310,11 @@ const moveCCL_result = [
 const moveS2T_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
-  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, '  d', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
-
 ] as M
 
 const moveS2T_result = [
@@ -323,13 +322,13 @@ const moveS2T_result = [
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'zc00', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 0]},
-  {selected: 0, selection: 's', nodeId: '', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 0, 's', 0]},
-  {selected: 0, selection: 's', nodeId: 'zc01', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 't', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 1]},
   {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 0, 1, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'zc10', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 0]},
+  {selected: 1, selection: 's', nodeId: 'w', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 0]},
   {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 0, 's', 0]},
-  {selected: 0, selection: 's', nodeId: 'zc11', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 1]},
+  {selected: 0, selection: 's', nodeId: 'x', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 1]},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 1, 1, 's', 0]},
 ] as M
 
@@ -346,4 +345,5 @@ describe("Move_tests", () => {
   test('moveCRU', () => {mapReducerAtomic(moveCRU_test, 'moveCRU', {}); expect(moveCRU_test).toEqual(moveCRU_result)})
   test('moveCCR', () => {mapReducerAtomic(moveCCR_test, 'moveCCR', {}); expect(moveCCR_test).toEqual(moveCCR_result)})
   test('moveCCL', () => {mapReducerAtomic(moveCCL_test, 'moveCCL', {}); expect(moveCCL_test).toEqual(moveCCL_result)})
+  test('moveS2T', () => {mapReducerAtomic(moveS2T_test, 'moveCCL', {}); expect(moveS2T_test).toEqual(moveS2T_result)})
 })

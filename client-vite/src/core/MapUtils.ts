@@ -26,6 +26,9 @@ export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(
 export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 export const isSS = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
+export const isSSS = (p: P, pt: P) => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
+export const isSSC = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
+
 export const isSC = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 export const isSCXXS0 = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-1) === 0
 export const isSCYYS0 = (p: P, pt: P) => isSCXXS0(p, pt) && pt.at(-4) as number > 0 && pt.at(-3) as number > 0
@@ -49,7 +52,9 @@ export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
 export const getCountSS = (m: M, p: P) => m.filter(n => isSS(p, n.path)).length
+export const getCountSSS = (m: M, p: P) => m.filter(n => isSSS(p, n.path)).length
 export const getCountSC = (m: M, p: P) => m.filter(n => isSC(p, n.path)).length
+export const getCountSSC = (m: M, p: P) => m.filter(n => isSSC(p, n.path)).length
 export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === 1 && isS(n.path)).length
 export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length

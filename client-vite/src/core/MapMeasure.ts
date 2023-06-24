@@ -1,5 +1,5 @@
-import {getNodeById, getNodeByPath, getPathPattern, isG, isR, isD, isS, getCountSC, getCountSCR, getCountSCC, getCountR0D1S, getCountR0D0S, getCountSS, getCountD, isC} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
+import {getNodeById, getNodeByPath, isG, isR, isD, isS, getCountSC, getCountSCR, getCountSCC, getCountR0D1S, getCountR0D0S, getCountSS, getCountD, isC, getCountSSS, getCountSSC} from "./MapUtils"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "./Utils"
 
@@ -111,7 +111,7 @@ const measureFamily = (m: M, g: G, n: N) => {
       sMaxW = currMaxW
     }
   }
-  if (n.spacingActivated) {
+  if (getCountSSS(m, n.path) || getCountSSC(m, n.path)) {
     n.familyH += (countSS - 1)*n.spacing
   }
   n.familyW = sMaxW + g.sLineDeltaXDefault
@@ -122,13 +122,6 @@ export const mapMeasure = (pm: M, m: M) => {
   m.reverse()
   m.forEach(n => {
     const pn = getNodeById(pm, n.nodeId)
-    if (m.find(nt => ( // TODO use isSubNode for the following two lines...
-      n.path.length < nt.path.length  &&
-      n.path.join('') === nt.path.slice(0, n.path.length).join('') &&
-      ['ss', 'sc'].includes(getPathPattern(nt.path.slice(n.path.length))))
-    )) {
-      n.spacingActivated = 1
-    }
     switch (true) {
       case isG(n.path): {
         const {alignment, taskConfigWidth, margin, sLineDeltaXDefault} = g

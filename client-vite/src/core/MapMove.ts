@@ -33,7 +33,7 @@ export const copyS = (m: M) => {
 }
 
 export const pasteS = (m: M, payload: any) => {
-  const cb = JSON.parse(payload) as GN[]
+  const cb = JSON.parse(payload) as M
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
   const insertPath = [...getXP(m), 's', getCountSS(m, getXP(m))] as P
   unselectNodes(m)
@@ -70,4 +70,10 @@ export const moveCC = (m: M, insertTargetPath: P, insertTargetColIndex: number) 
   makeSpaceFromCC(m, insertPath)
   m.push(...cb2ipCC(cb, insertPath))
   m.sort(sortPath)
+}
+
+export const moveS2T = (m: M, insertTargetPath: P, insertTargetColIndex: number) => {
+  // move all S into the clipboard
+  // insert cells using the length of stuff
+  // use cb2ipCC --> theoretically I can, if I select IP properly...
 }

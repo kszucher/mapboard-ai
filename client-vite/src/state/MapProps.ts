@@ -70,7 +70,6 @@ export const nSaveNever = {
   maxW: 0,
   maxH: 0,
   spacing: 10,
-  spacingActivated: 0,
   // mapPlace
   nodeStartX: 0,
   nodeEndX: 0,
