@@ -210,21 +210,14 @@ export const getGridPath = (n: N) => {
 const getTaskStartPoint = (m: M, g: G, n: N) => {
   const { mapWidth, margin, taskConfigWidth } = g
   const dir = getPathDir(n.path)
-  let startX
   if (n.path.includes('c')) {
-    const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
     const currCol = n.path[n.path.lastIndexOf('c') + 2] as number
+    const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
     const coverCellRef = getNodeByPath(m, coverCellPath) as N
-    startX =
-      (dir === - 1
-        ? coverCellRef.nodeEndX
-        : coverCellRef.nodeStartX
-      ) +
-      dir * (coverCellRef.sumMaxColWidth[currCol] + coverCellRef.maxColWidth[currCol] - 120)
+    return (dir === - 1 ? coverCellRef.nodeEndX : coverCellRef.nodeStartX) + dir * (coverCellRef.sumMaxColWidth[currCol] + coverCellRef.maxColWidth[currCol] - 120)
   } else {
-    startX = (dir === 1 ? mapWidth : 0) - dir * (margin + taskConfigWidth)
+    return (dir === 1 ? mapWidth : 0) - dir * (margin + taskConfigWidth)
   }
-  return startX
 }
 
 export const getTaskPath = (m: M, g: G, n: N) => {

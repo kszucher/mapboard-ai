@@ -27,6 +27,15 @@ export const pathCommonProps = {
   }
 }
 
+export const iconCommonProps = {
+  vectorEffect: 'non-scaling-stroke',
+  style: {
+    transition: 'all 0.3s',
+    transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
+    transitionProperty: 'all'
+  }
+}
+
 export const getSelectionMargin = (m: M, n: N) => (
   (
     isXC(m) ||
