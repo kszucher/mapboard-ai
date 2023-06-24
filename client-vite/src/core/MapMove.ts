@@ -1,8 +1,9 @@
+import {insertTable} from "./MapInsert"
 import {genHash} from "./Utils"
 import {M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {cb2ipS, cb2ipCC, cb2ipCR, getCountSS, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSO} from "./MapUtils"
+import {cb2ipS, cb2ipCC, cb2ipCR, getCountSS, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSS} from "./MapUtils"
 
 const cbSave = (cb: any) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
@@ -73,10 +74,13 @@ export const moveCC = (m: M, insertTargetPath: P, insertTargetColIndex: number) 
 }
 
 export const moveS2T = (m: M) => {
-  selectNodeList(m, getXSO(m).map(n => n.path), 's')
-
-  // select all children
-  // cut (move to clipboard)
-  // insert cells using the length of clipboard
-  // use cb2ipCC --> theoretically I can, if I select IP properly... but we'll see
+  const insertTargetNodeId = getNodeByPath(m, getXP(m)).nodeId
+  const rowLen = getXSS(m).length
+  selectNodeList(m, getXSS(m).map(n => n.path), 's')
+  const cb = m2cbS(m)
+  deleteS(m)
+  insertTable(m, [...getNodeById(m, insertTargetNodeId).path, 's', 0], {rowLen, colLen: 1})
+  cb.forEach(n => Object.assign(n, {selected: 0, selection: 's', path: [...getXP(m), 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P}))
+  m.push(...cb)
+  m.sort(sortPath)
 }

@@ -73,7 +73,7 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
         </svg>
       }
       {
-        isS(x.path) && x.selection === 'f' && getCountSSS(m, x.path) === 0 && getCountSSC(m, x.path) === 0 &&
+        isS(x.path) && x.selection === 'f' && //getCountSSS(m, x.path) === 0 && getCountSSC(m, x.path) === 0 &&
         <svg x={(getPathDir(x.path) === -1 ? x.nodeStartX - x.familyW - 4 - 24 - 36 - .5 : x.nodeEndX + x.familyW + 4 + 36 + .5)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
           <g width="24" height="24" viewBox="0 0 24 24">
             <rect width="24" height="24" rx={4} ry={4} fill={'#444444'}/>
