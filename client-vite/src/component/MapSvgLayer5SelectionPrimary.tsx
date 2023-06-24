@@ -2,12 +2,13 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {gptPrompter} from "../core/GptPrompter";
+import {mapActionResolver} from "../core/MapActionResolver";
 import {getColors} from "./Colors"
-import {getCountSS, getG, getPathDir, getX, isD, isR, isXACC, isXACR, isXC} from "../core/MapUtils"
+import {getCountSS, getG, getPathDir, getX, isD, isR, isS, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
-import {AppDispatch, RootState} from "../core/EditorReducer"
-import {CirclePlusIcon, dSparkle, SparkleIcon} from "./Icons";
+import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {CirclePlusIcon, SparkleIcon, TableIcon} from "./Icons";
 import {getSelectionMargin, iconCommonProps, pathCommonProps} from "./MapSvg"
 import {getPolygonC, getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
@@ -36,7 +37,7 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
       }
       {
         !isR(x.path) && (x.selection === 's' && getCountSS(m, x.path) === 0) &&
-        <svg x={(getPathDir(x.path) === -1 ? x.nodeStartX - x.familyW - 4 - 24 - 0.5 : x.nodeEndX + x.familyW + 4 + .5)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        <svg x={(getPathDir(x.path) === -1 ? x.nodeStartX - x.familyW - 4 - 24 - 6 - .5 : x.nodeEndX + x.familyW + 4 + 6 + .5)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
           <g width="24" height="24" viewBox="0 0 24 24">
             <rect width="24" height="24" rx={4} ry={4} fill={'#444444'}/>
             <CirclePlusIcon/>
@@ -47,16 +48,14 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
               onMouseDown={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                console.log('CLICK')
-                // dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'gptGenNodes', null)))
               }}
             />
           </g>
         </svg>
       }
       {
-        !isR(x.path) && !isD(x.path) && x.selection === 'f' &&
-        <svg x={(getPathDir(x.path) === -1 ? x.nodeStartX - x.familyW - 4 - 24 - 0.5 : x.nodeEndX + x.familyW + 4 + .5)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        isS(x.path) && x.selection === 'f' &&
+        <svg x={(getPathDir(x.path) === -1 ? x.nodeStartX - x.familyW - 4 - 24 - 6 - .5 : x.nodeEndX + x.familyW + 4 + 6 + .5)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
           <g width="24" height="24" viewBox="0 0 24 24">
             <rect width="24" height="24" rx={4} ry={4} fill={'#444444'}/>
             <SparkleIcon/>
@@ -68,6 +67,25 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
                 e.preventDefault()
                 e.stopPropagation()
                 dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'gptGenNodes', null)))
+              }}
+            />
+          </g>
+        </svg>
+      }
+      {
+        isS(x.path) && x.selection === 'f' &&
+        <svg x={(getPathDir(x.path) === -1 ? x.nodeStartX - x.familyW - 4 - 24 - 36 - .5 : x.nodeEndX + x.familyW + 4 + 36 + .5)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+          <g width="24" height="24" viewBox="0 0 24 24">
+            <rect width="24" height="24" rx={4} ry={4} fill={'#444444'}/>
+            <TableIcon/>
+            <rect
+              width="24"
+              height="24"
+              style={{opacity: 0}}
+              onMouseDown={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'ce', 'moveS2T', null)))
               }}
             />
           </g>

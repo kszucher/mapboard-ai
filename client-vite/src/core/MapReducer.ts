@@ -9,7 +9,7 @@ import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
+import {copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
 import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSS} from "./MapUtils"
@@ -91,18 +91,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
     case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
     case 'moveCCL': moveCC(m, getXSI1(m), getCountXCL(m) - 1); break
-
-    case 'moveS2T': {
-      // we do an insertSelectSO table here... and will take the clipboard items and assigning them SAW-like, but how so???
-      // valahogy a foreach-ben le lehetne másolni a másolt kontent tartalmának sX részét, ahol cX0sX kialakítás lesz tehát adott sorba adott cuccot
-
-      // if (!sc.isRootIncluded && sc.haveSameParent) {
-      //   structMove(m, 'struct2cell')
-      //   clearSelection(m)
-      //   getMapData(m, [...sc.geomHighPath, 'c', 0, 0]).selected = 1
-      // }
-      break
-    }
+    case 'moveS2T': moveS2T(m, [...getXP(m)], 0); break
 
     case 'copySelection': copyS(m); break
     case 'cutSelection': cutS(m); break
