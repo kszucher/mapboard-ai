@@ -125,17 +125,17 @@ export const fS = (m: M, n: N) => ['s', (n.path.at(getXP(m).length - 1) as numbe
 export const fCR = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]
 export const fCC = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountXCL(m), ...n.path.slice(getXP(m).length)]
 
-export const m2cbS = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fS(m, n)}))) as GN[]
-export const m2cbCR = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fCR(m, n)}))) as GN[]
-export const m2cbCC = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fCC(m, n)}))) as GN[]
+export const m2cbS = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fS(m, n)}))) as M
+export const m2cbCR = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fCR(m, n)}))) as M
+export const m2cbCC = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fCC(m, n)}))) as M
 
 export const tS = (ip: P, n: N) => [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]
 export const tCR = (ip: P, n: N) => [...ip.slice(0, -3), 'c', (n.path.at(1) as number) + (ip.at(-2) as number), (n.path.at(2) as number), ...n.path.slice(3)]
 export const tCC = (ip: P, n: N) => [...ip.slice(0, -3), 'c', (n.path.at(1) as number), (n.path.at(2) as number) + (ip.at(-1) as number), ...n.path.slice(3)]
 
-export const cb2ipS = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: tS(ip, n)}))) as GN[]
-export const cb2ipCR = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: tCR(ip, n)}))) as GN[]
-export const cb2ipCC = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: tCC(ip, n)}))) as GN[]
+export const cb2ipS = (cb: M, ip: P) => structuredClone(cb.map(n => ({...n, path: tS(ip, n)}))) as M
+export const cb2ipCR = (cb: M, ip: P) => structuredClone(cb.map(n => ({...n, path: tCR(ip, n)}))) as M
+export const cb2ipCC = (cb: M, ip: P) => structuredClone(cb.map(n => ({...n, path: tCC(ip, n)}))) as M
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
