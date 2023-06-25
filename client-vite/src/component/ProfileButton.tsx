@@ -1,9 +1,9 @@
-import {FC} from "react";
+import {FC} from "react"
 import { useDispatch } from 'react-redux'
 import { IconButton } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
 import {ProfileMenu} from './ProfileMenu'
-import {actions, AppDispatch} from "../core/EditorReducer";
+import {actions, AppDispatch} from "../core/EditorReducer"
 
 export const ProfileButton: FC = () => {
   const dispatch = useDispatch<AppDispatch>()

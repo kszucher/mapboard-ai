@@ -3,11 +3,11 @@ import user from "@testing-library/user-event"
 import {Provider} from "react-redux"
 import {Formatter} from "../component/Formatter"
 import { describe, it } from 'vitest'
-import {actions, store} from "../core/EditorReducer";
-import {colorList} from "../component/Colors";
+import {actions, store} from "../core/EditorReducer"
+import {colorList} from "../component/Colors"
 import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../state/Enums"
-import {getMap} from "../state/EditorState";
-import {nSaveOptional} from "../state/MapProps";
+import {getMap} from "../state/EditorState"
+import {nSaveOptional} from "../state/MapProps"
 
 describe("Formatter test", () => {
   // beforeEach(() => {

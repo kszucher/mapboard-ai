@@ -4,7 +4,7 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typograp
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
 import {mapActionResolver} from "../core/MapActionResolver"
-import {mSelector} from "../state/EditorState";
+import {mSelector} from "../state/EditorState"
 
 export const ModalCreateTable: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

@@ -1,5 +1,5 @@
 import {mapReducerAtomic} from "../core/MapReducer"
-import {setIsTesting} from "../core/Utils";
+import {setIsTesting} from "../core/Utils"
 import {M} from "../state/MapPropTypes"
 
 const moveSD_test = [

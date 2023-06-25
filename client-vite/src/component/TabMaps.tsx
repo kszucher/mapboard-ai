@@ -1,9 +1,9 @@
-import {FC} from "react";
-import {useSelector, useDispatch} from "react-redux";
-import {Tab, Tabs} from "@mui/material";
-import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {AppDispatch, RootState} from "../core/EditorReducer";
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
+import {FC} from "react"
+import {useSelector, useDispatch} from "react-redux"
+import {Tab, Tabs} from "@mui/material"
+import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {AppDispatch, RootState} from "../core/EditorReducer"
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 
 export const TabMaps: FC = () => {
   const tabShrink = useSelector((state: RootState) => state.editor.tabShrink)

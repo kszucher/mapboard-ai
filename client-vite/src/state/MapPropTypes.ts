@@ -1,4 +1,4 @@
-import {LineTypes} from "./Enums";
+import {LineTypes} from "./Enums"
 
 export interface GSaveAlways {
   path: P

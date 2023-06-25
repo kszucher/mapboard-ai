@@ -1,5 +1,5 @@
-import {GSaveAlways, GSaveNever, GSaveOptional, NSaveAlways, NSaveNever, NSaveOptional} from "./MapPropTypes";
-import {LineTypes} from "./Enums";
+import {GSaveAlways, GSaveNever, GSaveOptional, NSaveAlways, NSaveNever, NSaveOptional} from "./MapPropTypes"
+import {LineTypes} from "./Enums"
 
 export const gSaveAlways = {
   path: ['g'],

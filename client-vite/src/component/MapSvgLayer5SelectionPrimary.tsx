@@ -3,14 +3,14 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
-import {N} from "../state/MapPropTypes";
+import {N} from "../state/MapPropTypes"
 import {getColors} from "./Colors"
 import {getCountSS, getG, getPathDir, getX, isXACC, isXACR, isXC, isXS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {getSelectionMargin, iconCommonProps, pathCommonProps} from "./MapSvg"
-import {MapSvgIconWrapper} from "./MapSvgIconWrapper";
+import {MapSvgIconWrapper} from "./MapSvgIconWrapper"
 import {getPolygonC, getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
 const calcSvgIconOffsetX = (n: N) => (getPathDir(n.path) === -1 ? n.nodeStartX - n.familyW - 4 - 24 - 6 - .5 : n.nodeEndX + n.familyW + 4 + 6 + .5)

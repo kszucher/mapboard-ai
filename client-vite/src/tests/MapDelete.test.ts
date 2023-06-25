@@ -1,7 +1,7 @@
-import {mapReducerAtomic} from "../core/MapReducer";
+import {mapReducerAtomic} from "../core/MapReducer"
 import {M} from "../state/MapPropTypes"
 import {deleteS, deleteCR, deleteCC} from "../core/MapDelete"
-import {sortNode} from "../core/MapUtils";
+import {sortNode} from "../core/MapUtils"
 
 const deleteSTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},

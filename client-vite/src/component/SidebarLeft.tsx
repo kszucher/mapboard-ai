@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC} from "react"
 import {useDispatch} from 'react-redux'
 import { IconButton } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
@@ -6,8 +6,8 @@ import MoveUpIcon from '@mui/icons-material/MoveUp'
 import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {api} from "../core/Api"
-import {AppDispatch} from "../core/EditorReducer";
-import {getMapId} from "../state/ApiState";
+import {AppDispatch} from "../core/EditorReducer"
+import {getMapId} from "../state/ApiState"
 
 export const SidebarLeft: FC = () => {
   const dispatch = useDispatch<AppDispatch>()

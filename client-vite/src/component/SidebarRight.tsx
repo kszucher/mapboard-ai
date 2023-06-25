@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC} from "react"
 import {useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material'
 import EditNoteIcon from '@mui/icons-material/EditNote'
@@ -16,13 +16,13 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import {mapActionResolver} from "../core/MapActionResolver"
-import {mSelector} from "../state/EditorState";
+import {mSelector} from "../state/EditorState"
 import { CreateMapInMapIcon, TaskIcon } from './MuiSvgIcons'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
-import {gSaveOptional} from "../state/MapProps";
+import {gSaveOptional} from "../state/MapProps"
 
 const iconSize = 40
 const topOffs1 = 48*2

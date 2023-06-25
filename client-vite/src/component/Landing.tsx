@@ -29,7 +29,7 @@ export const Landing: FC = () => {
             audience: authAudienceUrl,
             scope: 'openid profile email',
           },
-        });
+        })
         dispatch(actions.setToken(token))
       } catch (e) {
         setIsWaiting(false)

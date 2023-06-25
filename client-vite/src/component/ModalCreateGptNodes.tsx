@@ -1,8 +1,8 @@
 import React, {FC, useState} from 'react'
 import {useDispatch} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
-import {api} from "../core/Api";
-import {gptPrompter} from "../core/GptPrompter";
+import {api} from "../core/Api"
+import {gptPrompter} from "../core/GptPrompter"
 import {actions, AppDispatch} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
 import {getCountSC, getX, isXS, sortPath} from "../core/MapUtils"

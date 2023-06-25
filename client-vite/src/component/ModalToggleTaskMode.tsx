@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"

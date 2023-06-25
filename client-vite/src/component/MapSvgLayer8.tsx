@@ -2,7 +2,7 @@ import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {getColors} from "./Colors"
-import {getG} from "../core/MapUtils";
+import {getG} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../core/EditorReducer"

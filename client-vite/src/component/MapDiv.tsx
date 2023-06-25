@@ -6,12 +6,12 @@ import {getColors} from "./Colors"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {getG, getNodeById, isR, isS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
-import {mSelector} from "../state/EditorState";
+import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
-import {N} from "../state/MapPropTypes";
+import {N} from "../state/MapPropTypes"
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {

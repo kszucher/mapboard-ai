@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const svgCommonParams = {
   viewBox:"0 0 480 480",

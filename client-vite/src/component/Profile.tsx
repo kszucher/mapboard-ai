@@ -1,11 +1,11 @@
 import {FC, useState} from 'react'
-import {useDispatch} from "react-redux";
+import {useDispatch} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
 import { ModalDeleteUser } from './ModalDeleteUser'
-import {actions, AppDispatch} from "../core/EditorReducer";
-import {PageState} from "../state/Enums";
-import {useOpenWorkspaceQuery} from "../core/Api";
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
+import {actions, AppDispatch} from "../core/EditorReducer"
+import {PageState} from "../state/Enums"
+import {useOpenWorkspaceQuery} from "../core/Api"
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 
 export const Profile: FC = () => {
   const [childModalOpen, setChildModalOpen] = useState(false)

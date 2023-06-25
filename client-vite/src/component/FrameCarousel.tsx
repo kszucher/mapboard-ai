@@ -1,11 +1,11 @@
-import {FC} from "react";
+import {FC} from "react"
 import {useDispatch} from 'react-redux'
-import {api, useOpenWorkspaceQuery} from "../core/Api";
+import {api, useOpenWorkspaceQuery} from "../core/Api"
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import {AppDispatch} from "../core/EditorReducer";
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../state/ApiState";
+import {AppDispatch} from "../core/EditorReducer"
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../state/ApiState"
 
 export const FrameCarousel: FC = () => {
   const { data, isFetching } = useOpenWorkspaceQuery()

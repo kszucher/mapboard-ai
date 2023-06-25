@@ -1,11 +1,11 @@
-import {FC, useState} from "react";
-import {useDispatch} from "react-redux";
+import {FC, useState} from "react"
+import {useDispatch} from "react-redux"
 import {actions, AppDispatch} from '../core/EditorReducer'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
-import {AccessTypes, PageState} from "../state/Enums";
-import { useCreateShareMutation} from "../core/Api";
-import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
-import {getMapId} from "../state/ApiState";
+import {AccessTypes, PageState} from "../state/Enums"
+import { useCreateShareMutation} from "../core/Api"
+import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes"
+import {getMapId} from "../state/ApiState"
 
 export const ModalShareThisMap: FC = () => {
   const [ createShare,  response ] = useCreateShareMutation()

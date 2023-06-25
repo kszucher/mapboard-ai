@@ -1,6 +1,6 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
-import {getG} from "../core/MapUtils";
+import {getG} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../core/EditorReducer"
 import {N} from "../state/MapPropTypes"

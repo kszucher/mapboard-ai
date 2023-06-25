@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC} from "react"
 import { IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useDispatch } from 'react-redux'

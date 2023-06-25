@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, IconButton} from '@mui/material'
-import {mSelector} from "../state/EditorState";
+import {mSelector} from "../state/EditorState"
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './MuiSvgIcons'
 import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from './Colors'

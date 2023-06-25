@@ -3,9 +3,9 @@ import {useDispatch,} from "react-redux"
 import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {AppDispatch} from "../core/EditorReducer";
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
-import TreeItem from '@mui/lab/TreeItem';
+import {AppDispatch} from "../core/EditorReducer"
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import TreeItem from '@mui/lab/TreeItem'
 
 export const BreadcrumbMaps: FC = () => {
   const { data } = useOpenWorkspaceQuery()

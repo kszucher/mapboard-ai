@@ -5,9 +5,9 @@ import { Button, IconButton, Modal, Typography } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
-import {actions, AppDispatch} from "../core/EditorReducer";
-import {PageState} from "../state/Enums";
-import {api, useGetSharesQuery} from "../core/Api";
+import {actions, AppDispatch} from "../core/EditorReducer"
+import {PageState} from "../state/Enums"
+import {api, useGetSharesQuery} from "../core/Api"
 
 export const Shares: FC = () => {
   const { data, isFetching } = useGetSharesQuery()

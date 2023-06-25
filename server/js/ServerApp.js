@@ -282,7 +282,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         if (gptApiKey) {
           const {promptId, promptJSON, prompt, maxToken, timestamp} = req.body.payload
           const configuration = new Configuration({ apiKey: gptApiKey })
-          const openai = new OpenAIApi(configuration);
+          const openai = new OpenAIApi(configuration)
           const response = await openai.createChatCompletion({
             model: "gpt-3.5-turbo-0613",
             messages: [{"role": "user", "content": prompt}],

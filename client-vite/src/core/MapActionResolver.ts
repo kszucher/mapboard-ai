@@ -1,5 +1,5 @@
 import {isUrl} from "./Utils"
-import {M} from "../state/MapPropTypes";
+import {M} from "../state/MapPropTypes"
 import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountSC, getCountSS, getPathDir, getXP, getNodeByPath, isR} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
