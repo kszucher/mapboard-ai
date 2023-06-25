@@ -4,7 +4,7 @@ import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {N} from "../state/MapPropTypes"
-import {getCountSS, getPathDir, getX, isXS} from "../core/MapUtils"
+import {getCountSC, getCountSS, getPathDir, getX, isXS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -27,7 +27,7 @@ export const MapSvgLayer4SelectionIcons: FC = () => {
     <g>
       {
         isXS(m) && x.selection === 's' && getCountSS(m, x.path) === 0 &&
-        <svg x={calcSvgIconOffsetX(x, 1)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        <svg x={calcSvgIconOffsetX(x, getCountSC(m, x.path) ? 5 : 1)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'CirclePlusIcon'} onMouseDownGuarded={() => console.log('plus')}/>
         </svg>
       }
@@ -39,8 +39,32 @@ export const MapSvgLayer4SelectionIcons: FC = () => {
       }
       {
         isXS(m) && x.selection === 'f' &&
-        <svg x={(getPathDir(x.path) === -1 ? x.nodeStartX - x.familyW - 4 - 24 - 36 - .5 : x.nodeEndX + x.familyW + 4 + 36 + .5)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        <svg x={calcSvgIconOffsetX(x, 2)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'TableIcon'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'moveS2T', null)))}/>
+        </svg>
+      }
+      {
+        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
+        <svg x={calcSvgIconOffsetX(x, 1)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+          <MapSvgIconWrapper m={m} iconName={'ColumnInsertLeft'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCL', null)))}/>
+        </svg>
+      }
+      {
+        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
+        <svg x={calcSvgIconOffsetX(x, 2)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+          <MapSvgIconWrapper m={m} iconName={'ColumnInsertRight'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCR', null)))}/>
+        </svg>
+      }
+      {
+        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
+        <svg x={calcSvgIconOffsetX(x, 3)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+          <MapSvgIconWrapper m={m} iconName={'RowInsertTop'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCRU', null)))}/>
+        </svg>
+      }
+      {
+        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
+        <svg x={calcSvgIconOffsetX(x, 4)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+          <MapSvgIconWrapper m={m} iconName={'RowInsertBottom'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCRD', null)))}/>
         </svg>
       }
     </g>
