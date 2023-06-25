@@ -21,7 +21,6 @@ export const MapSvgLayer2NodeBackground: FC = () => {
           {
             (n.sFillColor || n.taskStatus > 1) &&
             <path
-              key={`${n.nodeId}_svg_nodeFill`}
               d={getArcPath(n, -2, true)}
               fill={n.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(n.taskStatus - 2) : n.sFillColor}
               {...pathCommonProps}

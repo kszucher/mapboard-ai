@@ -15,7 +15,6 @@ export const MapSvgLayer1NodeFamilyBackground: FC = () => {
           {
             n.fFillColor &&
             <path
-              key={`${n.nodeId}_svg_familyFill`}
               d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)}
               fill={n.fFillColor}
               {...pathCommonProps}

@@ -16,7 +16,6 @@ export const MapSvgLayer0MapBackground: FC = () => {
   return (
     <g>
       <rect
-        key={`${g.nodeId}_svg_backgroundRect`}
         x={0}
         y={0}
         width={g.mapWidth}

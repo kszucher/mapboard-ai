@@ -23,7 +23,6 @@ export const MapSvgLayer5SelectionSecondary: FC = () => {
           {
             !selectionRectCoords.length && n.selected && n.selected !== getX(m).selected && !isXACR(m) && !isXACC(m) &&
             <path
-              key={`${n.nodeId}_svg_selectionBorderSecondary`}
               d={getPolygonPath(n, getPolygonS(m, n, n.selection), n.selection, getSelectionMargin(m, n))}
               stroke={C.SELECTION_COLOR}
               strokeWidth={1}

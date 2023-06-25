@@ -28,7 +28,6 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           {
             n.fBorderColor &&
             <path
-              key={`${n.nodeId}_svg_familyBorder`}
               d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)}
               stroke={n.fBorderColor}
               strokeWidth={n.fBorderWidth}
@@ -40,7 +39,6 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           {
             n.sBorderColor && !getCountSC(m, n.path) &&
             <path
-              key={`${n.nodeId}_svg_nodeBorder`}
               d={getArcPath(n, -2, true)}
               stroke={n.sBorderColor}
               strokeWidth={n.sBorderWidth}
@@ -55,7 +53,6 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) && n.path.at(-2) as number > -1 && n.path.at(-1) === 0
             ) &&
             <path
-              key={`${n.nodeId}_svg_line`}
               d={
                 !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path))
                   ? getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)
@@ -83,7 +80,6 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           {
             isS(n.path) && getCountSC(m, n.path) &&
             <path
-              key={`${n.nodeId}_svg_tableFrame`}
               d={getArcPath(n, 0, false)}
               stroke={n.sBorderColor ? n.sBorderColor : C.TABLE_FRAME_COLOR}
               strokeWidth={n.sBorderWidth}
@@ -95,7 +91,6 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           {
             isS(n.path) && getCountSC(m, n.path) &&
             <path
-              key={`${n.nodeId}_svg_tableGrid`}
               d={getGridPath(n)}
               stroke={C.TABLE_GRID}
               strokeWidth={1}
@@ -110,7 +105,6 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               {
                 !isEqual(n.nodeId, editedNodeId) &&
                 <path
-                  key={`${n.nodeId}_svg_taskLine`}
                   d={getTaskPath(m, g, n)}
                   stroke={C.TASK_LINE}
                   strokeWidth={1}
