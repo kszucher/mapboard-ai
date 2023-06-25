@@ -19,7 +19,7 @@ const calcSvgIconOffsetX = (n: N, i: number) => (
     : n.nodeEndX + n.familyW + 4 + (i - 1) * 24 +  i * 6 + .5
 )
 
-export const MapSvgLayer5SelectionPrimary: FC = () => {
+export const MapSvgLayer6SelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const x = getX(m)

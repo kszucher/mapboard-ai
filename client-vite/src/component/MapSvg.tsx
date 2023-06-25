@@ -9,11 +9,11 @@ import {MapSvgLayer0MapBackground} from "./MapSvgLayer0MapBackground"
 import {MapSvgLayer1NodeFamilyBackground} from "./MapSvgLayer1NodeFamilyBackground"
 import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
 import {MapSvgLayer3NodeAttributes} from "./MapSvgLayer3NodeAttributes"
-import {MapSvgLayer4SelectionSecondary} from "./MapSvgLayer4SelectionSecondary"
-import {MapSvgLayer5SelectionPrimary} from "./MapSvgLayer5SelectionPrimary"
-import {MapSvgLayer6SelectionPreview} from "./MapSvgLayer6SelectionPreview"
-import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
-import {MapSvgLayer8Move} from "./MapSvgLayer8Move"
+import {MapSvgLayer5SelectionSecondary} from "./MapSvgLayer5SelectionSecondary"
+import {MapSvgLayer6SelectionPrimary} from "./MapSvgLayer6SelectionPrimary"
+import {MapSvgLayer7SelectionPreview} from "./MapSvgLayer7SelectionPreview"
+import {MapSvgLayer8SelectionArea} from "./MapSvgLayer8SelectionArea"
+import {MapSvgLayer9Move} from "./MapSvgLayer9Move"
 import {getCoords} from "./MapDivUtils"
 import {mapFindIntersecting} from "../core/MapFindIntersecting"
 import {M, N} from "../state/MapPropTypes"
@@ -104,11 +104,11 @@ export const MapSvg: FC = () => {
         <MapSvgLayer1NodeFamilyBackground/>
         <MapSvgLayer2NodeBackground/>
         <MapSvgLayer3NodeAttributes/>
-        <MapSvgLayer4SelectionSecondary/>
-        <MapSvgLayer5SelectionPrimary/>
-        <MapSvgLayer6SelectionPreview/>
-        <MapSvgLayer7SelectionArea/>
-        <MapSvgLayer8Move/>
+        <MapSvgLayer5SelectionSecondary/>
+        <MapSvgLayer6SelectionPrimary/>
+        <MapSvgLayer7SelectionPreview/>
+        <MapSvgLayer8SelectionArea/>
+        <MapSvgLayer9Move/>
       </svg>
     </svg>
   )
