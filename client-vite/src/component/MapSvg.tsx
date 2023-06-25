@@ -105,11 +105,11 @@ export const MapSvg: FC = () => {
         <MapSvgLayer1NodeFamilyBackground/>
         <MapSvgLayer2NodeBackground/>
         <MapSvgLayer3NodeAttributes/>
-        <MapSvgLayer4SelectionIcons/>
         <MapSvgLayer5SelectionSecondary/>
         <MapSvgLayer6SelectionPrimary/>
         <MapSvgLayer7SelectionPreview/>
         <MapSvgLayer8SelectionArea/>
+        <MapSvgLayer4SelectionIcons/>
         <MapSvgLayer9Move/>
       </svg>
     </svg>
