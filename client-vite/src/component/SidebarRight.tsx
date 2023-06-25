@@ -17,7 +17,7 @@ import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import {mapActionResolver} from "../core/MapActionResolver"
 import {mSelector} from "../state/EditorState";
-import { CreateMapInMapIcon, TaskIcon } from './Icons'
+import { CreateMapInMapIcon, TaskIcon } from './MuiSvgIcons'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
