@@ -12,7 +12,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSS} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSS, getCountSCR, getCountSCC} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -71,9 +71,15 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSORTable': insertTable(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
     case 'insertSOTable': insertTable(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
     case 'insertCRD': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m) + 1, 0]); break
-    case 'insertCRU': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m), 0]); break // what
+    case 'insertCRU': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m), 0]); break
     case 'insertCCR': insertCC(m, [...getXSI1(m), 'c', 0, getCountXCL(m) + 1]); break
     case 'insertCCL': insertCC(m, [...getXSI1(m), 'c', 0, getCountXCL(m)]); break
+
+    // TODO: make the row/col creator icons and test if the following works... and then do the TABLE FILL... and then the NEW VIDEO... and then the LANDING PAGE
+    case 'insertSCRD': insertCR(m, [...getXP(m), 'c', getCountSCR(m, getXP(m)) + 1, 0]); break
+    case 'insertSCRU': insertCR(m, [...getXP(m), 'c', 0, 0]); break
+    case 'insertSCCR': insertCC(m, [...getXP(m), 'c', 0, getCountSCC(m, getXP(m)) + 1]); break
+    case 'insertSCCL': insertCC(m, [...getXP(m), 'c', 0, 0]); break
 
     case 'deleteS': deleteReselectS(m); break
     case 'deleteCR': deleteReselectCR(m); break
