@@ -12,7 +12,7 @@ import {N} from "../state/MapPropTypes"
 import {pathCommonProps} from "./MapSvg"
 import {getArcPath, getGridPath, getLinePathBetweenNodes, getPolygonPath, getPolygonS, getTaskCircle, getTaskPath} from "./MapSvgUtils"
 
-export const MapSvgLayer3: FC = () => {
+export const MapSvgLayer3NodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const pm = useSelector((state:RootState) => pmSelector(state))
   const g = getG(m)
