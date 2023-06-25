@@ -110,9 +110,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       // }
       break
     }
-
-
-
+    
     case 'gptGenNodes': {
       payload.gptParsed.forEach((el: any) => {
         el.suggestions.forEach((suggestion: string) => {
