@@ -4,7 +4,7 @@ import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
 import {mapActionResolver} from "../core/MapActionResolver"
-import {getG, getNodeById, isR, isS} from "../core/MapUtils"
+import {getCountSC, getG, getNodeById, isR, isS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -61,7 +61,8 @@ export const MapDiv: FC = () => {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 userSelect: 'none',
-                zIndex: n.path.length
+                zIndex: n.path.length,
+                pointerEvents: n.selected && getCountSC(m, n.path) > 0 ? 'none' : 'auto'
               }}
               spellCheck={false}
               dangerouslySetInnerHTML={n.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(n) }}
