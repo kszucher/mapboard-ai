@@ -11,9 +11,9 @@ import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
 import {MapSvgLayer3NodeAttributes} from "./MapSvgLayer3NodeAttributes"
 import {MapSvgLayer4SelectionSecondary} from "./MapSvgLayer4SelectionSecondary"
 import {MapSvgLayer5SelectionPrimary} from "./MapSvgLayer5SelectionPrimary"
-import {MapSvgLayer6} from "./MapSvgLayer6"
-import {MapSvgLayer7} from "./MapSvgLayer7"
-import {MapSvgLayer8} from "./MapSvgLayer8"
+import {MapSvgLayer6SelectionPreview} from "./MapSvgLayer6SelectionPreview"
+import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
+import {MapSvgLayer8Move} from "./MapSvgLayer8Move"
 import {getCoords} from "./MapDivUtils"
 import {mapFindIntersecting} from "../core/MapFindIntersecting"
 import {M, N} from "../state/MapPropTypes"
@@ -106,9 +106,9 @@ export const MapSvg: FC = () => {
         <MapSvgLayer3NodeAttributes/>
         <MapSvgLayer4SelectionSecondary/>
         <MapSvgLayer5SelectionPrimary/>
-        <MapSvgLayer6/>
-        <MapSvgLayer7/>
-        <MapSvgLayer8/>
+        <MapSvgLayer6SelectionPreview/>
+        <MapSvgLayer7SelectionArea/>
+        <MapSvgLayer8Move/>
       </svg>
     </svg>
   )

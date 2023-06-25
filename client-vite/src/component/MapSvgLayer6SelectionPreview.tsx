@@ -7,7 +7,7 @@ import {N} from "../state/MapPropTypes"
 import {getSelectionMargin, pathCommonProps} from "./MapSvg"
 import {getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
-export const MapSvgLayer6: FC = () => {
+export const MapSvgLayer6SelectionPreview: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const intersectingNodes = useSelector((state: RootState) => state.editor.intersectingNodes)
@@ -16,7 +16,6 @@ export const MapSvgLayer6: FC = () => {
       {intersectingNodes.map((n: N) => (
         <Fragment key={n.nodeId}>
           <path
-            key={`${g.nodeId}_svg_selectionByRect`}
             d={getPolygonPath(n, getPolygonS(m, n, 's'), 's', getSelectionMargin(m, n))}
             stroke={'#555555'}
             strokeWidth={1}

@@ -8,7 +8,7 @@ import {mSelector} from "../state/EditorState"
 import {RootState} from "../core/EditorReducer"
 import {getBezierLinePath, getBezierLinePoints} from "./MapSvgUtils"
 
-export const MapSvgLayer8: FC = () => {
+export const MapSvgLayer8Move: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const moveCoords = useSelector((state: RootState) => state.editor.moveCoords)
   const g = getG(m)
@@ -21,7 +21,6 @@ export const MapSvgLayer8: FC = () => {
         moveCoords.length &&
         <Fragment>
           <path
-            key={`${g.nodeId}_svg_moveLine`}
             d={getBezierLinePath('M', getBezierLinePoints(moveCoords))}
             stroke={C.MOVE_LINE_COLOR}
             strokeWidth={1}
