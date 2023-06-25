@@ -1,7 +1,7 @@
 import {GN, M, P} from "../state/MapPropTypes"
 import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 import {unselectNodes} from "./MapSelect"
-import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getCountCH, getCountCV,} from "./MapUtils"
+import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getCountCH, getCountCV, getSI1,} from "./MapUtils"
 
 export const insertS = (m: M, ip: P, attributes: object) => {
   makeSpaceFromS(m, ip, 1)
@@ -12,7 +12,8 @@ export const insertS = (m: M, ip: P, attributes: object) => {
 
 export const insertCR = (m: M, ip: P) => {
   makeSpaceFromCR(m, ip)
-  const rowIndices = Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [ip.at(-2), i])
+  const rowCount = getCountCH(m, getSI1(ip))
+  const rowIndices = Array(rowCount + 1).fill(null).map((el, i) => [ip.at(-2), i])
   unselectNodes(m)
   m.push(...rowIndices.map((el, i) => ({selected: 1, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el]}  as GN)))
   m.sort(sortPath)
@@ -20,7 +21,8 @@ export const insertCR = (m: M, ip: P) => {
 
 export const insertCC = (m: M, ip: P) => {
   makeSpaceFromCC(m, ip)
-  const colIndices = Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, ip.at(-1)])
+  const colCount = getCountCV(m, getSI1(ip))
+  const colIndices = Array(colCount + 1).fill(null).map((el, i) => [i, ip.at(-1)])
   unselectNodes(m)
   m.push(...colIndices.map((el, i) => ({selected: 1, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el]}  as GN)))
   m.sort(sortPath)

@@ -208,6 +208,62 @@ const insertCCL_result = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
 ] as M
 
+const insertSCRD_test = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 1, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+] as M
+
+const insertSCRD_result = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+  {selected: 1, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
+  {selected: 1, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
+] as M
+
+const insertSCRU_test = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 1, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+] as M
+
+const insertSCRU_result = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
+  {selected: 1, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
+] as M
+
+
+
+
+
+
+
+
+
 const insertSORTable_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 1, selection: 's', nodeId: 'b', path: ['r', 0]},
@@ -237,5 +293,11 @@ describe("InsertTests", () => {
   test('insertCRU', () => {mapReducerAtomic(insertCRU_test, 'insertCRU', {}); expect(insertCRU_test).toEqual(insertCRU_result)})
   test('insertCCR', () => {mapReducerAtomic(insertCCR_test, 'insertCCR', {}); expect(insertCCR_test).toEqual(insertCCR_result)})
   test('insertCCL', () => {mapReducerAtomic(insertCCL_test, 'insertCCL', {}); expect(insertCCL_test).toEqual(insertCCL_result)})
+
+  test('insertSCRD', () => {mapReducerAtomic(insertSCRD_test, 'insertSCRD', {}); expect(insertSCRD_test).toEqual(insertSCRD_result)})
+  test('insertSCRU', () => {mapReducerAtomic(insertSCRU_test, 'insertSCRU', {}); expect(insertSCRU_test).toEqual(insertSCRU_result)})
+  test('insertSCRD', () => {mapReducerAtomic(insertSCRD_test, 'insertSCRD', {}); expect(insertSCRD_test).toEqual(insertSCRD_result)})
+  test('insertSCRD', () => {mapReducerAtomic(insertSCRD_test, 'insertSCRD', {}); expect(insertSCRD_test).toEqual(insertSCRD_result)})
+
   test('insertSORTable', () => {mapReducerAtomic(insertSORTable_test, 'insertSORTable', {rowLen: 2, colLen: 2}); expect(insertSORTable_test).toEqual(insertSORTable_result)})
 })

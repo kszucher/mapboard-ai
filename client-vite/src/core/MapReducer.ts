@@ -74,9 +74,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertCRU': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m), 0]); break
     case 'insertCCR': insertCC(m, [...getXSI1(m), 'c', 0, getCountXCL(m) + 1]); break
     case 'insertCCL': insertCC(m, [...getXSI1(m), 'c', 0, getCountXCL(m)]); break
-    case 'insertSCRD': insertCR(m, [...getXP(m), 'c', getCountSCR(m, getXP(m)) + 1, 0]); break
+    case 'insertSCRD': insertCR(m, [...getXP(m), 'c', getCountSCR(m, getXP(m)), 0]); break
     case 'insertSCRU': insertCR(m, [...getXP(m), 'c', 0, 0]); break
-    case 'insertSCCR': insertCC(m, [...getXP(m), 'c', 0, getCountSCC(m, getXP(m)) + 1]); break
+    case 'insertSCCR': insertCC(m, [...getXP(m), 'c', 0, getCountSCC(m, getXP(m))]); break
     case 'insertSCCL': insertCC(m, [...getXP(m), 'c', 0, 0]); break
 
     case 'deleteS': deleteReselectS(m); break
