@@ -60,6 +60,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSU': insertS(m, [...getXP(m)], payload); break
     case 'insertSOR': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
     case 'insertSO': insertS(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
+    case 'insertSCSO': insertS(m, [...getXP(m), 'c', payload.rowIndex, payload.colIndex, 's', 0], {}); break
     case 'insertSORText': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], {contentType: 'text', content: payload}); break
     case 'insertSOText': insertS(m, [...getXP(m), 's', getCountXSO1(m)], {contentType: 'text', content: payload}); break
     case 'insertSORLink': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], {contentType: 'text', content: payload, linkType: 'external', link: payload}); break
@@ -110,7 +111,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       // }
       break
     }
-    
+
     case 'gptGenNodes': {
       payload.gptParsed.forEach((el: any) => {
         el.suggestions.forEach((suggestion: string) => {
