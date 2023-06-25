@@ -45,14 +45,8 @@ export const MapSvgLayer4SelectionIcons: FC = () => {
       }
       {
         isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
-        <svg x={calcSvgIconOffsetX(x, 1)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
-          <MapSvgIconWrapper m={m} iconName={'ColumnInsertLeft'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCL', null)))}/>
-        </svg>
-      }
-      {
-        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
-        <svg x={calcSvgIconOffsetX(x, 2)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
-          <MapSvgIconWrapper m={m} iconName={'ColumnInsertRight'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCR', null)))}/>
+        <svg x={calcSvgIconOffsetX(x, 4)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+          <MapSvgIconWrapper m={m} iconName={'RowInsertBottom'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCRD', null)))}/>
         </svg>
       }
       {
@@ -63,8 +57,14 @@ export const MapSvgLayer4SelectionIcons: FC = () => {
       }
       {
         isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
-        <svg x={calcSvgIconOffsetX(x, 4)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
-          <MapSvgIconWrapper m={m} iconName={'RowInsertBottom'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCRD', null)))}/>
+        <svg x={calcSvgIconOffsetX(x, 2)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+          <MapSvgIconWrapper m={m} iconName={'ColumnInsertRight'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCR', null)))}/>
+        </svg>
+      }
+      {
+        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
+        <svg x={calcSvgIconOffsetX(x, 1)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+          <MapSvgIconWrapper m={m} iconName={'ColumnInsertLeft'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCL', null)))}/>
         </svg>
       }
     </g>
