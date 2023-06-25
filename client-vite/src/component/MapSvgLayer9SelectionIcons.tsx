@@ -17,7 +17,7 @@ const calcSvgIconOffsetX = (n: N, i: number) => (
     : n.nodeEndX + n.familyW + 4 + (i - 1) * 24 +  i * 6 + .5
 )
 
-export const MapSvgLayer4SelectionIcons: FC = () => {
+export const MapSvgLayer9SelectionIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const x = getX(m)
   const { data } = useOpenWorkspaceQuery()

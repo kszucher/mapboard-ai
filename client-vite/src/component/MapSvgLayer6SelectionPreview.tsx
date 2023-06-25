@@ -6,7 +6,7 @@ import {N} from "../state/MapPropTypes"
 import {getSelectionMargin, pathCommonProps} from "./MapSvg"
 import {getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
-export const MapSvgLayer7SelectionPreview: FC = () => {
+export const MapSvgLayer6SelectionPreview: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const intersectingNodes = useSelector((state: RootState) => state.editor.intersectingNodes)
   return (

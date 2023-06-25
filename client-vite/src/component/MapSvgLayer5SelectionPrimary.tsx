@@ -9,7 +9,7 @@ import {RootState} from "../core/EditorReducer"
 import {getSelectionMargin, pathCommonProps} from "./MapSvg"
 import {getPolygonC, getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
-export const MapSvgLayer6SelectionPrimary: FC = () => {
+export const MapSvgLayer5SelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const x = getX(m)
