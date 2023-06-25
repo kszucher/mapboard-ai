@@ -14,7 +14,7 @@ export const MapSvgLayer0MapBackground: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g id="layer0">
+    <g>
       <rect
         key={`${g.nodeId}_svg_backgroundRect`}
         x={0}

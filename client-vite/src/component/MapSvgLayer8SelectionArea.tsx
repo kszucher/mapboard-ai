@@ -11,7 +11,7 @@ export const MapSvgLayer8SelectionArea: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g id="layer7">
+    <g>
       {
         selectionRectCoords.length &&
         <rect

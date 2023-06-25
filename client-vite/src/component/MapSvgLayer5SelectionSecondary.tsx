@@ -17,7 +17,7 @@ export const MapSvgLayer5SelectionSecondary: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g id="layer4">
+    <g>
       {m.map((n: N) => (
         <Fragment key={n.nodeId}>
           {

@@ -22,7 +22,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <g id="layer3">
+    <g>
       {m.map((n: N) => (
         <Fragment key={n.nodeId}>
           {

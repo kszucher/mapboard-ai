@@ -16,7 +16,7 @@ export const MapSvgLayer9Move: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g id="layer8">
+    <g>
       {
         moveCoords.length &&
         <Fragment>

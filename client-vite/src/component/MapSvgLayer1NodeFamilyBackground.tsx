@@ -9,7 +9,7 @@ import { getPolygonPath, getPolygonS } from "./MapSvgUtils"
 export const MapSvgLayer1NodeFamilyBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   return (
-    <g id="layer1">
+    <g>
       {m.map((n: N) => (
         <Fragment key={n.nodeId}>
           {

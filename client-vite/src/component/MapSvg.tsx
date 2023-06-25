@@ -9,6 +9,7 @@ import {MapSvgLayer0MapBackground} from "./MapSvgLayer0MapBackground"
 import {MapSvgLayer1NodeFamilyBackground} from "./MapSvgLayer1NodeFamilyBackground"
 import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
 import {MapSvgLayer3NodeAttributes} from "./MapSvgLayer3NodeAttributes"
+import {MapSvgLayer4SelectionIcons} from "./MapSvgLayer4SelectionIcons"
 import {MapSvgLayer5SelectionSecondary} from "./MapSvgLayer5SelectionSecondary"
 import {MapSvgLayer6SelectionPrimary} from "./MapSvgLayer6SelectionPrimary"
 import {MapSvgLayer7SelectionPreview} from "./MapSvgLayer7SelectionPreview"
@@ -104,6 +105,7 @@ export const MapSvg: FC = () => {
         <MapSvgLayer1NodeFamilyBackground/>
         <MapSvgLayer2NodeBackground/>
         <MapSvgLayer3NodeAttributes/>
+        <MapSvgLayer4SelectionIcons/>
         <MapSvgLayer5SelectionSecondary/>
         <MapSvgLayer6SelectionPrimary/>
         <MapSvgLayer7SelectionPreview/>
