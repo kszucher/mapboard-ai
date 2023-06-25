@@ -6,7 +6,7 @@ import {N} from "../state/MapPropTypes"
 import {pathCommonProps} from "./MapSvg"
 import { getPolygonPath, getPolygonS } from "./MapSvgUtils"
 
-export const MapSvgLayer1BranchBackground: FC = () => {
+export const MapSvgLayer1FamilyBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   return (
     <g id="layer1">
@@ -15,7 +15,7 @@ export const MapSvgLayer1BranchBackground: FC = () => {
           {
             n.fFillColor &&
             <path
-              key={`${n.nodeId}_svg_branchFill`}
+              key={`${n.nodeId}_svg_familyFill`}
               d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)}
               fill={n.fFillColor}
               {...pathCommonProps}

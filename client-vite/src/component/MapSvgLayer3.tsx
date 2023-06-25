@@ -28,7 +28,7 @@ export const MapSvgLayer3: FC = () => {
           {
             n.fBorderColor &&
             <path
-              key={`${n.nodeId}_svg_branchBorder`}
+              key={`${n.nodeId}_svg_familyBorder`}
               d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)}
               stroke={n.fBorderColor}
               strokeWidth={n.fBorderWidth}

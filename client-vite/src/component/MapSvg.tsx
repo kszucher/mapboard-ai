@@ -6,7 +6,7 @@ import {getCountSC, getG, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {MapSvgLayer0MapBackground} from "./MapSvgLayer0MapBackground"
-import {MapSvgLayer1BranchBackground} from "./MapSvgLayer1BranchBackground"
+import {MapSvgLayer1FamilyBackground} from "./MapSvgLayer1FamilyBackground"
 import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
 import {MapSvgLayer3} from "./MapSvgLayer3"
 import {MapSvgLayer4SelectionSecondary} from "./MapSvgLayer4SelectionSecondary"
@@ -101,7 +101,7 @@ export const MapSvg: FC = () => {
         y={isChrome? 'calc(100vh)' : ''}
       >
         <MapSvgLayer0MapBackground/>
-        <MapSvgLayer1BranchBackground/>
+        <MapSvgLayer1FamilyBackground/>
         <MapSvgLayer2NodeBackground/>
         <MapSvgLayer3/>
         <MapSvgLayer4SelectionSecondary/>

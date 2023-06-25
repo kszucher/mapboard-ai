@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
+import {N} from "../state/MapPropTypes";
 import {getColors} from "./Colors"
 import {getCountSS, getG, getPathDir, getX, isXACC, isXACR, isXC, isXS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
@@ -11,6 +12,8 @@ import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {getSelectionMargin, iconCommonProps, pathCommonProps} from "./MapSvg"
 import {MapSvgIconWrapper} from "./MapSvgIconWrapper";
 import {getPolygonC, getPolygonPath, getPolygonS} from "./MapSvgUtils"
+
+const calcSvgIconOffsetX = (n: N) => (getPathDir(n.path) === -1 ? n.nodeStartX - n.familyW - 4 - 24 - 6 - .5 : n.nodeEndX + n.familyW + 4 + 6 + .5)
 
 export const MapSvgLayer5SelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -53,6 +56,7 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
           <MapSvgIconWrapper m={m} iconName={'TableIcon'} onMouseDownGuarded={() => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'moveS2T', null)))}/>
         </svg>
       }
+
     </g>
   )
 }
