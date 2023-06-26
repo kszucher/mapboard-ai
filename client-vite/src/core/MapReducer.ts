@@ -1,5 +1,6 @@
 import {shortcutColors} from "../component/Colors"
 import {Dir} from "../state/Enums"
+import {gptParser} from "./GptParser"
 import {transpose} from './Utils'
 import {structNavigate} from './NodeNavigate'
 import {nSaveOptional} from "../state/MapProps"
@@ -111,19 +112,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       // }
       break
     }
-
-    case 'gptGenNodes': {
-      payload.gptParsed.forEach((el: any) => {
-        el.suggestions.forEach((suggestion: string) => {
-          const insertParentPath = getNodeById(m, el.insertParentId).path
-          insertS(m, [...insertParentPath, 's', getCountSS(m, insertParentPath)], {content: suggestion})
-        })
-      })
-      break
-    }
-    case 'gptFillTable': payload.gptParsed.forEach((n: any) => Object.assign(getNodeById(m, n.ni) || {}, { content: n.c })); break
-
-
     case 'applyColorFromKey': setPropXA(m, 'textColor', shortcutColors[payload.currColor]); break
     case 'toggleTask': setPropXASF(m, 'taskStatus', getX(m).taskStatus === 0 ? 1 : 0); break
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
@@ -160,6 +148,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       getX(m).selection === 's' ? setPropXA(m, 'textFontSize', nSaveOptional.textFontSize) : setPropXASF(m, 'textFontSize', nSaveOptional.textFontSize)
       break
     }
+    case 'gptParser': gptParser(m, payload.gptParsed); break
   }
 }
 

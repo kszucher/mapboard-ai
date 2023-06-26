@@ -1,7 +1,7 @@
 import {M} from "../state/MapPropTypes"
-import {getPromptJSON, gptPrompter} from "../core/GptPrompter"
+import {genPromptJsonS, genPromptJsonT} from "../core/GptPrompter"
 
-const genNodesTest = [
+const genPromptJsonS_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -13,62 +13,42 @@ const genNodesTest = [
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 2], content: 's0s2'},
 ] as M
 
-const genNodesResult = [
+const genPromptJsonS_result = [
   {keywords: ['s0', 's0s0', 's0s0s0'], suggestions: [], insertParentId: 'e'},
   {keywords: ['s0', 's0s0', 's0s0s1'], suggestions: [], insertParentId: 'f'},
   {keywords: ['s0', 's0s1'], suggestions: [], insertParentId: 'g'},
   {keywords: ['s0', 's0s2'], suggestions: [], insertParentId: 'h'}
 ]
 
-const fillTableTest = [ // fixme: genNodesTable
+const genPromptJsonT_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 1, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
-  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0], content: 'Row 0'},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0], content: 'c00s0'},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
-  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0], content: 'Col 1'},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0], content: 'c01s0'},
   {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2]},
-  {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2, 's', 0], content: 'Col 2'},
+  {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2, 's', 0], content: 'c02s0'},
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
-  {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0], content: 'Row 1'},
+  {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0], content: 'c10s0'},
   {selected: 0, selection: 's', nodeId: 'm', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
-  {selected: 0, selection: 's', nodeId: 'n', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
-  {selected: 0, selection: 's', nodeId: 'o', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
-  {selected: 0, selection: 's', nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
-  {selected: 0, selection: 's', nodeId: 'q', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
-  {selected: 0, selection: 's', nodeId: 'r', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0], content: 'Row 2'},
-  {selected: 0, selection: 's', nodeId: 's', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
-  {selected: 0, selection: 's', nodeId: 't', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1, 's', 0]},
-  {selected: 0, selection: 's', nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 2]},
-  {selected: 0, selection: 's', nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 2, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'n', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
+  {selected: 0, selection: 's', nodeId: 'o', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
+  {selected: 0, selection: 's', nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0], content: 'c20s0'},
+  {selected: 0, selection: 's', nodeId: 'q', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
+  {selected: 0, selection: 's', nodeId: 'r', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 2]},
 ] as M
 
-// TODO: combine
-//  getXSSCYYS0(m).map((n: N) => ({
-//         nodeId: n.nodeId,
-//         content: colHeader[0] + ' - ' + colHeader[n.path.at(-4) as number] + ' - ' + rowHeader[n.path.at(-3) as number]
-//       }))
-
-// AND
-//   const cb = m2cbS(m)
-//   return m2cbS(m).filter(n => getCountSS(cb, n.path) === 0).map(n => ({
-//     keywords: [...getSIL(n.path), n.path].map(p => getNodeByPath(cb, p).content),
-//     suggestions: [],
-//     insertParentId: n.nodeId
-//   }))
-//  but start with intended result first.... and fix table
-
-const fillTableResult = [
-  {nodeId: 'n', content: 'Row 0 - Row 1 - Col 1'},
-  {nodeId: 'p', content: 'Row 0 - Row 1 - Col 2'},
-  {nodeId: 't', content: 'Row 0 - Row 2 - Col 1'},
-  {nodeId: 'v', content: 'Row 0 - Row 2 - Col 2'},
+const genPromptJsonT_result = [
+  {keywords: ['c00s0', 'c10s0', 'c01s0'], suggestions: [], insertParentId: 'm'},
+  {keywords: ['c00s0', 'c10s0', 'c02s0'], suggestions: [], insertParentId: 'n'},
+  {keywords: ['c00s0', 'c20s0', 'c01s0'], suggestions: [], insertParentId: 'o'},
+  {keywords: ['c00s0', 'c20s0', 'c02s0'], suggestions: [], insertParentId: 'p'},
 ]
 
 describe("GptPrompterTests", () => {
-  test('genNodesTest', () => expect(getPromptJSON(genNodesTest)).toEqual(genNodesResult))
-
-  // test('fillTable', () => expect(gptPrompter(fillTableTest, 'fillTable', {})).toEqual(fillTableResult))
+  test('genPromptJsonS_test', () => expect(genPromptJsonS(genPromptJsonS_test)).toEqual(genPromptJsonS_result))
+  test('genPromptJsonS_test', () => expect(genPromptJsonT(genPromptJsonT_test)).toEqual(genPromptJsonT_result))
 })

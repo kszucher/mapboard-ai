@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {gptPrompter} from "../core/GptPrompter"
+import {genPromptJsonS, gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {N} from "../state/MapPropTypes"
 import {getCountSC, getCountSS, getPathDir, getX, getXSSCXX, isXS} from "../core/MapUtils"
@@ -37,7 +37,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         isXS(m) && nx.selection === 'f' &&
         <svg x={calcSvgIconOffsetX(nx, 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'SparkleIcon'} onMouseDownGuarded={() =>
-            dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'gptGenNodes', null)))
+            dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonS(m))))
           }/>
         </svg>
       }

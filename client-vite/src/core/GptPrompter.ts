@@ -1,13 +1,23 @@
 import {M, N} from "../state/MapPropTypes"
-import {getXSSCC0S, getXSSCR0S, getXSSCYYS0, getX, m2cbS, getCountSS, getSIL, getNodeByPath} from "./MapUtils"
+import {getXSSCC0S, getXSSCR0S, getXSSCYYS0, m2cbS, getCountSS, getSIL, getNodeByPath} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
-export const getPromptJSON = (m: M) => {
+export const genPromptJsonS = (m: M) => {
   const cb = m2cbS(m)
   return m2cbS(m).filter(n => getCountSS(cb, n.path) === 0).map(n => ({
     keywords: [...getSIL(n.path), n.path].map(p => getNodeByPath(cb, p).content),
     suggestions: [],
     insertParentId: n.nodeId
+  }))
+}
+
+export const genPromptJsonT = (m: M) => {
+  const rowHeader = getXSSCR0S(m).map(el => el.content)
+  const colHeader = getXSSCC0S(m).map(el => el.content)
+  getXSSCYYS0(m).map((n: N) => ({
+    keywords: [colHeader[0], colHeader[n.path.at(-4) as number], rowHeader[n.path.at(-3) as number]],
+    suggestions: [],
+    insertParentId: 'e'
   }))
 }
 
@@ -30,51 +40,21 @@ const responseSchema = {
   }
 }
 
-export const gptPrompter = (m: M, action: string, payload: any) => {
-  switch (action) {
-    case 'gptGenNodes': {
-      const promptJSON = getPromptJSON(m)
-      const prompt = `
-      Take the following meeting transcript: ${getX(m).note}
-      Please extract information from the meeting transcript by filling "suggestions" based on "keywords" in the following JSON.
-      Do not change "readOnly" fields.
-      ${JSON.stringify(promptJSON)}
-      Make sure to format the result according the following JSON schema.
-      ${JSON.stringify(responseSchema)}
-      Only return the JSON, no additional comments.
-      `
-      return {
-        promptId: action,
-        promptJSON: promptJSON,
-        prompt: prompt.trim(),
-        maxToken: 1200,
-        timestamp: Date.now(),
-      } as GptData
-    }
-    case 'gptFillTable': {
-      const rowHeader = getXSSCR0S(m).map(el => el.content)
-      const colHeader = getXSSCC0S(m).map(el => el.content)
-      const MAX_ANSWER_LENGTH_IN_CHAR = 100
-      const promptJSON = getXSSCYYS0(m).map((n: N) => ({
-        nodeId: n.nodeId,
-        content: colHeader[0] + ' - ' + colHeader[n.path.at(-4) as number] + ' - ' + rowHeader[n.path.at(-3) as number]
-      }))
-      const prompt = `
-      Fill field 'c' by replacing its content in the following JSON. Keep the format of the JSON. ${JSON.stringify(promptJSON)}
-      `
-      const maxToken = Math.ceil(getXSSCYYS0(m).map((n: N) => ({
-        nodeId: n.nodeId,
-        content: 'x'.repeat(MAX_ANSWER_LENGTH_IN_CHAR)
-      })).length / 4)
-      console.log(prompt, maxToken)
-      return {
-        promptId: action,
-        promptJSON,
-        prompt: prompt.trim(),
-        maxToken,
-        timestamp: Date.now(),
-      } as GptData
-    }
-    default: { return {} as GptData }
-  }
+export const gptPrompter = (m: M, promptJson: any) => {
+  const prompt = `
+    Take the following meeting transcript: ${getNodeByPath(m, ['r', 0, 'd', 0, 's', 0]).note}
+    Please extract information from the meeting transcript by filling "suggestions" based on "keywords" in the following JSON.
+    Do not change "readOnly" fields.
+    ${JSON.stringify(promptJson)}
+    Make sure to format the result according the following JSON schema.
+    ${JSON.stringify(responseSchema)}
+    Only return the JSON, no additional comments.
+  `
+  return {
+    promptId: 'gptGenNodes',
+    promptJson,
+    prompt: prompt.trim(),
+    maxToken: 1200,
+    timestamp: Date.now(),
+  } as GptData
 }

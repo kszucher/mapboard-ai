@@ -50,7 +50,6 @@ export const ModalCreateGptNodes: FC = () => {
               disabled={interactionDisabled}
               fullWidth
               onClick={() => {
-                dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'genTaskNodes', {numNodes: parseInt(numNodes)})))
                 dispatch(actions.setPageState(PageState.WS))
               }}>
               {'SUGGEST NODES'}
@@ -64,7 +63,6 @@ export const ModalCreateGptNodes: FC = () => {
               disabled={interactionDisabled}
               fullWidth
               onClick={() => {
-                dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'gptFillTable', null)))
                 dispatch(actions.setPageState(PageState.WS))
               }}>
               {'FILL TABLE'}
@@ -75,7 +73,9 @@ export const ModalCreateGptNodes: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             fullWidth
-            onClick={_=>dispatch(actions.setPageState(PageState.WS))}>
+            onClick={() => {
+              dispatch(actions.setPageState(PageState.WS))
+            }}>
             {'CANCEL'}
           </Button>
         </div>

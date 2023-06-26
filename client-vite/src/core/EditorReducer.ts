@@ -125,7 +125,7 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.getGptSuggestions.matchFulfilled,
       (state, { payload }) => {
-        const { promptId, promptJSON, prompt, maxToken, gptSuggestions } = payload
+        const { promptId, promptJson, prompt, maxToken, gptSuggestions } = payload
         console.log(payload)
         if (gptSuggestions) {
           const pm = current(state.mapList[state.mapListIndex])
@@ -133,25 +133,9 @@ export const editorSlice = createSlice({
           switch (promptId) {
             case 'gptGenNodes': {
               try {
-                console.log(gptSuggestions)
-
                 const gptParsed = JSON.parse(gptSuggestions)
-
                 console.log(gptParsed)
-
-
-                mapAction = mapActionResolver(pm, null, 'ae', 'gptGenNodes', {gptParsed})
-
-              } catch {
-                console.warn('unparseable:', gptSuggestions)
-              }
-              break
-            }
-            case 'gptFillTable': {
-              try {
-                console.log(gptSuggestions)
-                const gptParsed = JSON.parse(gptSuggestions.trim())
-                mapAction = mapActionResolver(pm, null, 'ae', 'gptFillTable', {gptParsed})
+                mapAction = mapActionResolver(pm, null, 'ae', 'gptParser', {gptParsed})
               } catch {
                 console.warn('unparseable:', gptSuggestions)
               }
