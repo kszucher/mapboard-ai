@@ -49,13 +49,13 @@ export const gptPrompter = (m: M, promptJson: any) => {
     ${JSON.stringify(promptJson)}
     Make sure to format the result according the following JSON schema.
     ${JSON.stringify(responseSchema)}
-    Only return the JSON, no additional comments.
+    Only return the JSON, no additional comments, no extra characters.
   `
   return {
     promptId: 'gptGenNodes',
     promptJson,
     prompt: prompt.trim(),
-    maxToken: 2400,
+    maxToken: 4000,
     timestamp: Date.now(),
   } as GptData
 }
