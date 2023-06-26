@@ -14,11 +14,20 @@ export const genPromptJsonS = (m: M) => {
 export const genPromptJsonT = (m: M) => {
   const rowHeader = getXSSCR0S(m).map(el => el.content)
   const colHeader = getXSSCC0S(m).map(el => el.content)
-  return getXSSCYY(m).map((n: N) => ({
+
+
+
+  const result = getXSSCYY(m).map((n: N) => ({
     keywords: [colHeader[0], colHeader[n.path.at(-2) as number], rowHeader[n.path.at(-1) as number]],
     suggestions: [],
     insertParentId: n.nodeId
   }))
+
+  console.log(rowHeader)
+  console.log(colHeader)
+  console.log(result)
+
+
 }
 
 const responseSchema = {
@@ -54,7 +63,7 @@ export const gptPrompter = (m: M, promptJson: any) => {
     promptId: 'gptGenNodes',
     promptJson,
     prompt: prompt.trim(),
-    maxToken: 1200,
+    maxToken: 10000,
     timestamp: Date.now(),
   } as GptData
 }

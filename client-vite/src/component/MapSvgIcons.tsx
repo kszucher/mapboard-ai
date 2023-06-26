@@ -13,22 +13,22 @@ export const MapSvgIcon = ({iconName} : {iconName : string}) => (
     className="icon icon-tabler icon-tabler-square-rounded-plus"
     viewBox="0 0 24 24"
   >
-    {iconName === 'CirclePlusIcon' &&
+    {iconName === 'CirclePlus' &&
       <g>
         <path stroke="none" d="M0 0h24v24H0z"></path>
         <path d="M12 5v14M5 12h14"></path>
       </g>
     }
-    {iconName === 'SparkleIcon' &&
+    {iconName === 'Sparkle' &&
       <g>
         <path stroke="none" d="M0 0h24v24H0z"></path>
         <path d="M16 18a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zm0-12a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zM9 18a6 6 0 016-6 6 6 0 01-6-6 6 6 0 01-6 6 6 6 0 016 6z"></path>
       </g>
     }
-    {iconName === 'TableIcon' &&
+    {iconName === 'TableExport' &&
       <g>
         <path stroke="none" d="M0 0h24v24H0z"></path>
-        <path fill="#ffffff" stroke="none" d="M4 11h4a1 1 0 011 1v8a1 1 0 01-1 1H6a3 3 0 01-2.995-2.824L3 18v-6a1 1 0 011-1zM21 12v6a3 3 0 01-2.824 2.995L18 21h-6a1 1 0 01-1-1v-8a1 1 0 011-1h8a1 1 0 011 1zM18 3a3 3 0 012.995 2.824L21 6v2a1 1 0 01-1 1h-8a1 1 0 01-1-1V4a1 1 0 011-1h6zM9 4v4a1 1 0 01-1 1H4a1 1 0 01-1-1V6a3 3 0 012.824-2.995L6 3h2a1 1 0 011 1z"></path>
+        <path d="M12.5 21H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v7.5M3 10h18M10 3v18M16 19h6M19 16l3 3-3 3"></path>
       </g>
     }
     {iconName === 'RowInsertBottom' &&
@@ -53,6 +53,12 @@ export const MapSvgIcon = ({iconName} : {iconName : string}) => (
       <g>
         <path stroke="none" d="M0 0h24v24H0z"></path>
         <path d="M14 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4a1 1 0 01-1-1V5a1 1 0 011-1zM5 12h4M7 10v4"></path>
+      </g>
+    }
+    {iconName === 'TablePlus' &&
+      <g>
+        <path stroke="none" d="M0 0h24v24H0z"></path>
+        <path d="M12.5 21H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v7.5M3 10h18M10 3v18M16 19h6M19 16v6"></path>
       </g>
     }
   </svg>
