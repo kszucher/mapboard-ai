@@ -16,13 +16,13 @@ export const Formatter: FC = () => {
   const height = o * colorList.length
   const formatMode = useSelector((state: RootState) => state.editor.formatMode)
   const m = useSelector((state:RootState) => mSelector(state))
-  const x = getX(m)
+  const nx = getX(m)
   const lineWidth = WidthTypes[getPropXA(m, 'lineWidth') as number || 0]
   const lineType = LineTypes[getPropXA(m, 'lineType') as number || 0]
   const lineColor = getPropXA(m, 'lineColor')
-  const borderWidth = WidthTypes[x.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXASSO(m, 'fBorderWidth') as number || 0]
-  const borderColor = x.selection === 's' ? getPropXA(m, 'sBorderColor') : getPropXASSO(m, 'fBorderColor')
-  const fillColor = x.selection === 's' ? getPropXA(m, 'sFillColor') : getPropXASSO(m, 'fFillColor')
+  const borderWidth = WidthTypes[nx.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXASSO(m, 'fBorderWidth') as number || 0]
+  const borderColor = nx.selection === 's' ? getPropXA(m, 'sBorderColor') : getPropXASSO(m, 'fBorderColor')
+  const fillColor = nx.selection === 's' ? getPropXA(m, 'sFillColor') : getPropXASSO(m, 'fFillColor')
   const textFontSize = TextTypes[getPropXA(m, 'textFontSize') as number || 0]
   const textColor = getPropXA(m, 'textColor')
   const dispatch = useDispatch<AppDispatch>()
@@ -46,8 +46,8 @@ export const Formatter: FC = () => {
     <div className="_bg fixed w-[216px] top-[96px] right-[64px] flex flex-col gap-3 rounded-lg p-3">
       <div className="flex justify-center">
         <IconButton color='secondary' aria-label="text" onClick={(setFormatText)}><TextIcon/></IconButton>
-        <IconButton color='secondary' aria-label="border" onClick={setFormatBorder}><BorderIcon selection={x.selection}/></IconButton>
-        <IconButton color='secondary' aria-label="fill" onClick={setFormatFill}><FillIcon selection={x.selection}/></IconButton>
+        <IconButton color='secondary' aria-label="border" onClick={setFormatBorder}><BorderIcon selection={nx.selection}/></IconButton>
+        <IconButton color='secondary' aria-label="fill" onClick={setFormatFill}><FillIcon selection={nx.selection}/></IconButton>
         <IconButton color='secondary' aria-label="line" onClick={setFormatLine}><LineIcon/></IconButton>
         <span className="fixed top-[97px] w-[40px] h-[2px] bg-[color:var(--main-color)]" style={{right: 225 - 40* formatMode}}/>
       </div>
@@ -87,10 +87,10 @@ export const Formatter: FC = () => {
         </div>
       </div>
       <div className="flex flex-col items-center">
-        {formatMode === FormatMode.text && <TargetedButtonGroup KEYS={Object.keys(TextTypes).filter(x => !(parseInt(x) >= 0))} value={textFontSize} setValue={(v: number) => setTextFontSize(v)}/>}
-        {formatMode === FormatMode.border && <TargetedButtonGroup KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))} value={borderWidth} setValue={(v: number) => setBorderWidth(v)}/>}
-        {formatMode === FormatMode.line && <TargetedButtonGroup KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))} value={lineWidth} setValue={(v: number) => setLineWidth(v)}/>}
-        {formatMode === FormatMode.line && <TargetedButtonGroup KEYS={Object.keys(LineTypes).filter(x => !(parseInt(x) >= 0))} value={lineType} setValue={(v: number) => setLineType(v)}/>
+        {formatMode === FormatMode.text && <TargetedButtonGroup KEYS={Object.keys(TextTypes).filter(nx => !(parseInt(nx) >= 0))} value={textFontSize} setValue={(v: number) => setTextFontSize(v)}/>}
+        {formatMode === FormatMode.border && <TargetedButtonGroup KEYS={Object.keys(WidthTypes).filter(nx => !(parseInt(nx) >= 0))} value={borderWidth} setValue={(v: number) => setBorderWidth(v)}/>}
+        {formatMode === FormatMode.line && <TargetedButtonGroup KEYS={Object.keys(WidthTypes).filter(nx => !(parseInt(nx) >= 0))} value={lineWidth} setValue={(v: number) => setLineWidth(v)}/>}
+        {formatMode === FormatMode.line && <TargetedButtonGroup KEYS={Object.keys(LineTypes).filter(nx => !(parseInt(nx) >= 0))} value={lineType} setValue={(v: number) => setLineType(v)}/>
         }
       </div>
       <div className="flex flex-row justify-center">

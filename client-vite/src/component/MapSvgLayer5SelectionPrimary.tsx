@@ -12,7 +12,7 @@ import {getPolygonC, getPolygonPath, getPolygonS} from "./MapSvgUtils"
 export const MapSvgLayer5SelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
-  const x = getX(m)
+  const nx = getX(m)
   const selectionRectCoords = useSelector((state: RootState) => state.editor.selectionRectCoords)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
@@ -23,7 +23,7 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
         !selectionRectCoords.length &&
         <path
           key={`${g.nodeId}_svg_selectionBorderPrimary`}
-          d={getPolygonPath(x, (isXC(m) || isXACR(m) || isXACC(m)) ? getPolygonC(m) : getPolygonS(m, x, x.selection), x.selection, getSelectionMargin(m, x))}
+          d={getPolygonPath(nx, (isXC(m) || isXACR(m) || isXACC(m)) ? getPolygonC(m) : getPolygonS(m, nx, nx.selection), nx.selection, getSelectionMargin(m, nx))}
           stroke={C.SELECTION_COLOR}
           strokeWidth={1}
           fill={'none'}

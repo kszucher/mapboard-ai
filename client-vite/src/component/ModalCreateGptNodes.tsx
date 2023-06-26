@@ -10,9 +10,9 @@ import {getMap} from "../state/EditorState"
 
 export const ModalCreateGptNodes: FC = () => {
   const m = structuredClone(getMap()).sort(sortPath)
-  const x = getX(m)
+  const nx = getX(m)
   const s = isXS(m)
-  const hasC = getCountSC(m, x.path) > 0
+  const hasC = getCountSC(m, nx.path) > 0
   const [numNodes, setNumNodes] = useState<string>('1')
   const interactionDisabled = false
   const dispatch = useDispatch<AppDispatch>()

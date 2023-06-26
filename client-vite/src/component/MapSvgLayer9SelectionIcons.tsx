@@ -19,70 +19,70 @@ const calcSvgIconOffsetX = (n: N, i: number) => (
 
 export const MapSvgLayer9SelectionIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
-  const x = getX(m)
+  const nx = getX(m)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
       {
-        isXS(m) && x.selection === 's' && getCountSS(m, x.path) === 0 &&
-        <svg x={calcSvgIconOffsetX(x, getCountSC(m, x.path) ? 5 : 1)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        isXS(m) && nx.selection === 's' && getCountSS(m, nx.path) === 0 &&
+        <svg x={calcSvgIconOffsetX(nx, getCountSC(m, nx.path) ? 5 : 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'CirclePlusIcon'} onMouseDownGuarded={() =>
             dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSO', null)))
           }/>
         </svg>
       }
       {
-        isXS(m) && x.selection === 'f' &&
-        <svg x={calcSvgIconOffsetX(x, 1)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        isXS(m) && nx.selection === 'f' &&
+        <svg x={calcSvgIconOffsetX(nx, 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'SparkleIcon'} onMouseDownGuarded={() =>
             dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, 'gptGenNodes', null)))
           }/>
         </svg>
       }
       {
-        isXS(m) && x.selection === 'f' &&
-        <svg x={calcSvgIconOffsetX(x, 2)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        isXS(m) && nx.selection === 'f' &&
+        <svg x={calcSvgIconOffsetX(nx, 2)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'TableIcon'} onMouseDownGuarded={() =>
             dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'moveS2T', null)))
           }/>
         </svg>
       }
       {
-        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
-        <svg x={calcSvgIconOffsetX(x, 4)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
+        <svg x={calcSvgIconOffsetX(nx, 4)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'RowInsertBottom'} onMouseDownGuarded={() =>
             dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCRD', null)))
           }/>
         </svg>
       }
       {
-        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
-        <svg x={calcSvgIconOffsetX(x, 3)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
+        <svg x={calcSvgIconOffsetX(nx, 3)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'RowInsertTop'} onMouseDownGuarded={() =>
             dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCRU', null)))
           }/>
         </svg>
       }
       {
-        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
-        <svg x={calcSvgIconOffsetX(x, 2)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
+        <svg x={calcSvgIconOffsetX(nx, 2)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'ColumnInsertRight'} onMouseDownGuarded={() =>
             dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCR', null)))
           }/>
         </svg>
       }
       {
-        isXS(m) && x.selection === 's' && getCountSC(m, x.path) &&
-        <svg x={calcSvgIconOffsetX(x, 1)} y={x.nodeY - 12 + .5} {...iconCommonProps}>
+        isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
+        <svg x={calcSvgIconOffsetX(nx, 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'ColumnInsertLeft'} onMouseDownGuarded={() =>
             dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCL', null)))
           }/>
         </svg>
       }
       {
-        isXS(m) && x.selection === 's' && getCountSS(m, x.path) === 0 &&
+        isXS(m) && nx.selection === 's' && getCountSS(m, nx.path) === 0 &&
         getXSSCXX(m).map((n) => (
             getCountSS(m, n.path) === 0 &&
             <svg key={n.nodeId} x={n.nodeStartX + 10} y={n.nodeY - 12 + .5} {...iconCommonProps}>
