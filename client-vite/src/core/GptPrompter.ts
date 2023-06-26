@@ -13,24 +13,13 @@ export const genPromptJsonS = (m: M) => {
 
 export const genPromptJsonT = (m: M) => {
   const cb = m2cbS(m).sort(sortPath)
-
   const rowHeader = getXSSCR0(cb).map(n => getNodeByPath(cb, [...n.path, 's', 0])?.content || '')
   const colHeader = getXSSCC0(cb).map(n => getNodeByPath(cb, [...n.path, 's', 0])?.content || '')
-
-
-
-  const result = getXSSCYY(cb).map((n: N) => ({
+  return getXSSCYY(cb).map((n: N) => ({
     keywords: [colHeader[0], colHeader[n.path.at(-2) as number], rowHeader[n.path.at(-1) as number]],
     suggestions: [],
     insertParentId: n.nodeId
   }))
-
-  console.log(rowHeader)
-  console.log(colHeader)
-  console.log(result)
-
-
-  return result
 }
 
 const responseSchema = {
@@ -66,7 +55,7 @@ export const gptPrompter = (m: M, promptJson: any) => {
     promptId: 'gptGenNodes',
     promptJson,
     prompt: prompt.trim(),
-    maxToken: 10000,
+    maxToken: 2400,
     timestamp: Date.now(),
   } as GptData
 }
