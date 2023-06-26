@@ -31,10 +31,9 @@ export const isSSC = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.s
 
 export const isSC = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 export const isSCXX = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p)
-export const isSCXXS0 = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-1) === 0
 export const isSCYY = (p: P, pt: P) => isSCXX(p, pt) && pt.at(-2) as number > 0 && pt.at(-1) as number > 0
-export const isSCR0S0 = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-4) === 0 && pt.at(-1) === 0
-export const isSCC0S0 = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 0 && pt.at(-1) === 0
+export const isSCR0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) === 0
+export const isSCC0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-1) === 0
 export const isSF = (p: P, pt: P) => isEqual(p, pt) || isSO(p, pt)
 export const isSDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
 export const isSFDF = (p: P, pt: P) => isSF(p, pt) || isSDF(p, pt)
@@ -82,8 +81,8 @@ export const getXA = (m: M) => m.filter(n => n.selected)
 export const getXASU1 = (m: M) => getSU1(getXSFP(m))
 export const getXASI1 = (m: M) => getSI1(getXSFP(m))
 export const getXSAF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
-export const getXSSCR0S = (m: M) => m.filter(n => isSCR0S0(getXP(m), n.path))
-export const getXSSCC0S = (m: M) => m.filter(n => isSCC0S0(getXP(m), n.path))
+export const getXSSCR0 = (m: M) => m.filter(n => isSCR0(getXP(m), n.path))
+export const getXSSCC0 = (m: M) => m.filter(n => isSCC0(getXP(m), n.path))
 export const getXSSCXX = (m: M) => m.filter(n => isSCXX(getXP(m), n.path))
 export const getXSSCYY = (m: M) => m.filter(n => isSCYY(getXP(m), n.path))
 export const getXCRD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))

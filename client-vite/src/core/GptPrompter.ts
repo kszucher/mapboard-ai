@@ -1,5 +1,5 @@
 import {M, N} from "../state/MapPropTypes"
-import {getXSSCC0S, getXSSCR0S, m2cbS, getCountSS, getSIL, getNodeByPath, getXSSCYY} from "./MapUtils"
+import {getXSSCC0, getXSSCR0, m2cbS, getCountSS, getSIL, getNodeByPath, getXSSCYY, sortPath} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
 export const genPromptJsonS = (m: M) => {
@@ -12,12 +12,14 @@ export const genPromptJsonS = (m: M) => {
 }
 
 export const genPromptJsonT = (m: M) => {
-  const rowHeader = getXSSCR0S(m).map(el => el.content)
-  const colHeader = getXSSCC0S(m).map(el => el.content)
+  const cb = m2cbS(m).sort(sortPath)
+
+  const rowHeader = getXSSCR0(cb).map(n => getNodeByPath(cb, [...n.path, 's', 0])?.content || '')
+  const colHeader = getXSSCC0(cb).map(n => getNodeByPath(cb, [...n.path, 's', 0])?.content || '')
 
 
 
-  const result = getXSSCYY(m).map((n: N) => ({
+  const result = getXSSCYY(cb).map((n: N) => ({
     keywords: [colHeader[0], colHeader[n.path.at(-2) as number], rowHeader[n.path.at(-1) as number]],
     suggestions: [],
     insertParentId: n.nodeId
@@ -28,6 +30,7 @@ export const genPromptJsonT = (m: M) => {
   console.log(result)
 
 
+  return result
 }
 
 const responseSchema = {
