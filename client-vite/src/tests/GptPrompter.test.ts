@@ -44,11 +44,11 @@ const genPromptJsonT_test = [
 const genPromptJsonT_result = [
   {keywords: ['c00s0', 'c10s0', 'c01s0'], suggestions: [], insertParentId: 'm'},
   {keywords: ['c00s0', 'c10s0', 'c02s0'], suggestions: [], insertParentId: 'n'},
-  {keywords: ['c00s0', 'c20s0', 'c01s0'], suggestions: [], insertParentId: 'o'},
-  {keywords: ['c00s0', 'c20s0', 'c02s0'], suggestions: [], insertParentId: 'p'},
+  {keywords: ['c00s0', 'c20s0', 'c01s0'], suggestions: [], insertParentId: 'q'},
+  {keywords: ['c00s0', 'c20s0', 'c02s0'], suggestions: [], insertParentId: 'r'},
 ]
 
-describe("GptPrompterTests", () => {
+describe("GenPromptJsonTests", () => {
   test('genPromptJsonS_test', () => expect(genPromptJsonS(genPromptJsonS_test)).toEqual(genPromptJsonS_result))
-  test('genPromptJsonS_test', () => expect(genPromptJsonT(genPromptJsonT_test)).toEqual(genPromptJsonT_result))
+  test('genPromptJsonT_test', () => expect(genPromptJsonT(genPromptJsonT_test)).toEqual(genPromptJsonT_result))
 })
