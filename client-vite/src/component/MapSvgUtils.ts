@@ -1,7 +1,7 @@
 import {LineTypes} from "../state/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
-import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isXACC, isXACR, getG, getXP, isD} from "../core/MapUtils"
+import {getX, getNodeByPath, getPathDir, isXACC, isXACR, getG, isD, getSI1} from "../core/MapUtils"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -93,30 +93,30 @@ export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
 }
 
 export const getPolygonC = (m: M): PolygonPoints => {
-  const ls = getX(m)
-  const pn = getParentNodeByPath(m, ls.path)
-  const n = getNodeByPath(m, ls.path)
-  const dir = getPathDir(ls.path)
+  const nx = getX(m)
+  const ni = getNodeByPath(m, getSI1(nx.path)) as N
+  const n = getNodeByPath(m, nx.path)
+  const dir = getPathDir(nx.path)
   let x, y, w, h
   if (isXACR(m)) {
-    const i = ls.path.at(-2) as number
-    x = dir === -1 ? pn.nodeEndX  : pn.nodeStartX
-    y = - pn.maxRowHeight[i] / 2 + n.nodeY
-    w = pn.selfW
-    h = pn.maxRowHeight[i]
+    const i = nx.path.at(-2) as number
+    x = dir === -1 ? ni.nodeEndX  : ni.nodeStartX
+    y = - ni.maxRowHeight[i] / 2 + n.nodeY
+    w = ni.selfW
+    h = ni.maxRowHeight[i]
   } else if (isXACC(m)) {
-    const j = ls.path.at(-1) as number
-    x = dir === -1 ? pn.nodeEndX - pn.sumMaxColWidth[j] : pn.nodeStartX + pn.sumMaxColWidth[j]
-    y = pn.nodeY - pn.selfH / 2
-    w = pn.maxColWidth[j]
-    h = pn.selfH
+    const j = nx.path.at(-1) as number
+    x = dir === -1 ? ni.nodeEndX - ni.sumMaxColWidth[j] : ni.nodeStartX + ni.sumMaxColWidth[j]
+    y = ni.nodeY - ni.selfH / 2
+    w = ni.maxColWidth[j]
+    h = ni.selfH
   } else {
-    const i = ls.path.at(-2) as number
-    const j = ls.path.at(-1) as number
-    x = dir === -1 ? pn.nodeEndX - pn.sumMaxColWidth[j] : pn.nodeStartX + pn.sumMaxColWidth[j]
-    y = - pn.maxRowHeight[i] / 2 + n.nodeY
-    w = pn.maxColWidth[j]
-    h = pn.maxRowHeight[i]
+    const i = nx.path.at(-2) as number
+    const j = nx.path.at(-1) as number
+    x = dir === -1 ? ni.nodeEndX - ni.sumMaxColWidth[j] : ni.nodeStartX + ni.sumMaxColWidth[j]
+    y = - ni.maxRowHeight[i] / 2 + n.nodeY
+    w = ni.maxColWidth[j]
+    h = ni.maxRowHeight[i]
   }
   return {
     ax: x + (dir === -1 ? -w : 0),

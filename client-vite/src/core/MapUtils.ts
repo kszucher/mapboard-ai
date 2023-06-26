@@ -147,5 +147,4 @@ export const cb2ipCC = (cb: M, ip: P) => structuredClone(cb.map(n => ({...n, pat
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
-export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getSI1(p)) as N
 export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
