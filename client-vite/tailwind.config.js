@@ -12,7 +12,9 @@ module.exports = {
       },
     }
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
   corePlugins: {
     preflight: false, // https://tailwindcss.com/docs/preflight
   }
