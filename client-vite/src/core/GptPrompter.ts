@@ -44,13 +44,9 @@ const responseSchema = {
 export const gptPrompter = (m: M, promptJson: any) => {
   const prompt = `
     Take the following meeting transcript: ${getNodeByPath(m, ['r', 0, 'd', 0, 's', 0]).note}
-    Please extract information from the meeting transcript by filling "suggestions" based on "keywords" in the following JSON.
-    Do not change "readOnly" fields.
-    ${JSON.stringify(promptJson)}
-    Make sure to format the result according the following JSON schema.
+    While keeping the following JSON schema, extract information from the meeting transcript by filling "suggestions" based on "keywords":
     ${JSON.stringify(responseSchema)}
-    Only return the JSON, no additional comments, no extra characters.
-    Make sure that the result is a valid JSON.
+    ${JSON.stringify(promptJson)}
   `
   return {
     promptId: 'gptGenNodes',
