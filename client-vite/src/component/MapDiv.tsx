@@ -47,8 +47,10 @@ export const MapDiv: FC = () => {
                 top: 1 + adjust( n.nodeY - n.selfH / 2),
                 minWidth: (g.density === 'large'? 0 : -3) + n.selfW - g.padding - 2,
                 minHeight: (g.density === 'large'? -2 : -1) + n.selfH - g.padding,
-                paddingLeft: (g.density === 'large'? 0 : 3) + g.padding - 2,
-                paddingTop: (g.density === 'large'? 0 : 0) + g.padding - 2,
+                paddingLeft: (g.density === 'large'? 1 : 4) + g.padding - 2,
+                paddingTop: (g.density === 'large'? 1 : 1) + g.padding - 2,
+                paddingBottom: 0,
+                paddingRight :0,
                 position: 'absolute',
                 fontSize: n.textFontSize,
                 fontFamily: 'Roboto',
@@ -62,6 +64,9 @@ export const MapDiv: FC = () => {
                 textOverflow: 'ellipsis',
                 userSelect: 'none',
                 zIndex: n.path.length,
+                border: 0,
+                // padding: 0,
+                margin: 0,
                 pointerEvents: n.selected && getCountSC(m, n.path) > 0 ? 'none' : 'auto'
               }}
               spellCheck={false}

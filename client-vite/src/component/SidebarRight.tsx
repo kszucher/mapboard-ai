@@ -31,7 +31,7 @@ const topOffs3 = topOffs2 + iconSize*4 + 2*4
 const topOffs4 = topOffs3 + iconSize*2 + 2*4
 const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
-const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
+const crd = "_bg fixed right-0 w-[48px] flex flex-col items-center py-1 px-1 border-r-0"
 
 export const SidebarRight: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
