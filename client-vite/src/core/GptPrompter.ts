@@ -50,6 +50,7 @@ export const gptPrompter = (m: M, promptJson: any) => {
     Make sure to format the result according the following JSON schema.
     ${JSON.stringify(responseSchema)}
     Only return the JSON, no additional comments, no extra characters.
+    Make sure that the result is a valid JSON.
   `
   return {
     promptId: 'gptGenNodes',
