@@ -11,7 +11,7 @@ import {getG} from "../core/MapUtils"
 import {G, N} from "../state/MapPropTypes"
 
 const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2
-const getScrollTop = () => (window.innerHeight - 48 * 2)
+const getScrollTop = () => (window.innerHeight - 40 * 2)
 
 export const Map: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

@@ -12,7 +12,7 @@ export const TabMaps: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <div
-      className="_bg fixed top-[96px] border-l-0"
+      className="_bg fixed top-[80px] border-l-0"
       style={{
         width: tabShrink ? 48 : 224,
         borderTopRightRadius: tabId === 0 ? 0 : 8,

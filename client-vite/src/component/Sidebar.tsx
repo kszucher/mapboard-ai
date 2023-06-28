@@ -25,7 +25,7 @@ import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/
 import {gSaveOptional} from "../state/MapProps"
 
 const iconSize = 40
-const topOffs1 = 48*2
+const topOffs1 = 40*2
 const topOffs2 = topOffs1 + iconSize*2 + 2*4
 const topOffs3 = topOffs2 + iconSize*4 + 2*4
 const topOffs4 = topOffs3 + iconSize*2 + 2*4

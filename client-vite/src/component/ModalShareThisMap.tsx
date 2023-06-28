@@ -15,7 +15,7 @@ export const ModalShareThisMap: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[384px] flex flex-col items-center inline-flex gap-4 p-5 rounded-lg">
+      <div className="_bg relative left-1/2 -translate-x-1/2 top-[80px] w-[384px] flex flex-col items-center inline-flex gap-4 p-5 rounded-lg">
         <Typography component="h1" variant="h5" color="primary">
           {'Share This Map'}
         </Typography>
