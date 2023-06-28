@@ -28,8 +28,8 @@ const measureText = (g: G, pn: N, n: N) => {
       n.dimH = dim[1]
     }
   }
-  n.selfW = (n.dimW > 20 ? n.dimW : 20) +  g.padding * 2 + (g.density === 'large' ? 0 : 12)
-  n.selfH = (n.dimH / 17 > 1 ? n.dimH + g.padding : g.defaultH) + (g.density === 'large' ? 0 : 2)
+  n.selfW = (n.dimW > 20 ? n.dimW : 20) + (g.density === 'large' ? 16 : 18)
+  n.selfH = n.dimH / 17 > 1 ? n.dimH + (g.density === 'large' ? 8 : 5) : (g.density === 'large' ? 30 : 22)
 }
 
 const measureTable = (m: M, g: G, n: N) => {
