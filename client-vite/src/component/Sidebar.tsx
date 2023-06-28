@@ -33,7 +33,7 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
 const crd = "_bg fixed right-0 w-[48px] flex flex-col items-center py-1 px-1 border-r-0"
 
-export const SidebarRight: FC = () => {
+export const Sidebar: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const { density, alignment } = m?.g || gSaveOptional
   const { data } = useOpenWorkspaceQuery()

@@ -6,8 +6,7 @@ import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {ModalCreateGptNodes} from "./ModalCreateGptNodes"
 import {ModalEditNote} from "./ModalEditNote"
-import {SidebarLeft} from './SidebarLeft'
-import {SidebarRight} from './SidebarRight'
+import {Sidebar} from './Sidebar'
 import {ModalCreateTable} from './ModalCreateTable'
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -56,8 +55,7 @@ export const Editor: FC = () => {
           <UndoRedo/>
           <BreadcrumbMaps/>
           <TabMaps/>
-          <SidebarLeft/>
-          <SidebarRight/>
+          <Sidebar/>
           {
             formatterVisible &&
             <Formatter/>
