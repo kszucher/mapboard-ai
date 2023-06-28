@@ -19,8 +19,6 @@ export const gSaveNever = {
   mapHeight: 0,
   mapStartCenterX: 0,
   sLineDeltaXDefault: 0,
-  padding: 0,
-  defaultH: 0,
   taskConfigD: 0,
   taskConfigWidth: 0,
 } as GSaveNever

@@ -20,8 +20,6 @@ export const mapInit = (m: MPartial) => {
       }
       // 30 = 14 + 2*8, 20 = 14 + 2*3
       g.sLineDeltaXDefault = g.density === 'large' ? 30 : 20
-      g.padding = g.density === 'large' ? 8 : 3
-      g.defaultH = g.density === 'large' ? 30 : 20
       g.taskConfigD = g.density === 'large' ? 24 : 20
       g.taskConfigWidth =
         (g.taskConfigN || gSaveNever.taskConfigWidth) * g.taskConfigD +

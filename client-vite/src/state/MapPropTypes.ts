@@ -18,8 +18,6 @@ export interface GSaveNever {
   mapHeight: number
   mapStartCenterX: number
   sLineDeltaXDefault: number
-  padding: number
-  defaultH: number
   taskConfigD: number
   taskConfigWidth: number
 }

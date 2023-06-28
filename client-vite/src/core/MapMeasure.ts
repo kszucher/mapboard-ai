@@ -29,7 +29,7 @@ const measureText = (g: G, pn: N, n: N) => {
     }
   }
   n.selfW = (n.dimW > 20 ? n.dimW : 20) + (g.density === 'large' ? 16 : 18)
-  n.selfH = n.dimH / 17 > 1 ? n.dimH + (g.density === 'large' ? 8 : 5) : (g.density === 'large' ? 30 : 22)
+  n.selfH = (n.dimH / 17 > 1 ? n.dimH : 20) + (g.density === 'large' ? 8 : 4)
 }
 
 const measureTable = (m: M, g: G, n: N) => {
@@ -43,7 +43,7 @@ const measureTable = (m: M, g: G, n: N) => {
       const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as N
       maxCellHeightMat[i][j] = cn.maxH
       maxCellWidthMat[i][j] = cn.maxW
-      if (cn.maxH > g.defaultH) {
+      if (cn.maxH > 20) {
         isCellSpacingActivated = 1
       }
     }
