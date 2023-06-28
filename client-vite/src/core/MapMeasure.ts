@@ -29,15 +29,11 @@ const measureText = (g: G, pn: N, n: N) => {
     }
   }
   let paddingW = g.padding * 2
-  let paddingH = g.padding * 2
-  let densityW = 0
-  let densityH = 0
-  if (n.contentType === 'text') {
-    densityW = g.density === 'large' ? 0 : 8
-    densityH = g.density === 'large' ? 1 : 2
-  }
+  let paddingH = g.padding
+  let densityW = g.density === 'large' ? 0 : 12
+  let densityH = g.density === 'large' ? 0 : 2
   n.selfW = (n.dimW > 20 ? n.dimW : 20) + paddingW + densityW
-  n.selfH = n.dimH / 17 <= 1 ? g.defaultH + densityH : n.dimH + paddingH + densityH
+  n.selfH = (n.dimH / 17 <= 1 ? g.defaultH  : n.dimH + paddingH ) + densityH
 }
 
 const measureTable = (m: M, g: G, n: N) => {
