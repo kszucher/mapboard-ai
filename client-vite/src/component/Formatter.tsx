@@ -49,7 +49,7 @@ export const Formatter: FC = () => {
         <IconButton color='secondary' aria-label="border" onClick={setFormatBorder}><BorderIcon selection={nx.selection}/></IconButton>
         <IconButton color='secondary' aria-label="fill" onClick={setFormatFill}><FillIcon selection={nx.selection}/></IconButton>
         <IconButton color='secondary' aria-label="line" onClick={setFormatLine}><LineIcon/></IconButton>
-        <span className="fixed top-[97px] w-[40px] h-[2px] bg-[color:var(--main-color)]" style={{right: 225 - 40* formatMode}}/>
+        <span className="fixed top-[82px] w-[40px] h-[2px] bg-[color:var(--main-color)]" style={{right: 196 - 40* formatMode}}/>
       </div>
       <div className="flex justify-center">
         <div style={{ width, height }}>
