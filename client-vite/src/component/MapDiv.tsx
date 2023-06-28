@@ -45,8 +45,7 @@ export const MapDiv: FC = () => {
               style={{
                 left: adjust(n.nodeStartX),
                 top: adjust( n.nodeY - n.selfH / 2),
-                minWidth: n.selfW + (g.density === 'large'? -10 : -8),
-                minHeight: n.selfH + (g.density === 'large'? -10 : 0),
+                minWidth: n.selfW,
                 paddingLeft: g.density === 'large'? 8 : 8,
                 paddingTop: g.density === 'large'? 4 : 2,
                 position: 'absolute',
