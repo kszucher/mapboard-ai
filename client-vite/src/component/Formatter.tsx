@@ -1,12 +1,12 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {Button, IconButton} from '@mui/material'
+import {Button, ButtonGroup, IconButton} from '@mui/material'
 import {mSelector} from "../state/EditorState"
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './MuiSvgIcons'
 import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from './Colors'
 import {actions, AppDispatch, RootState} from '../core/EditorReducer'
-import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
+import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
 import {getPropXASSO, getPropXA, getX} from "../core/MapUtils"
 
 export const Formatter: FC = () => {
@@ -16,6 +16,9 @@ export const Formatter: FC = () => {
   const height = o * colorList.length
   const formatMode = useSelector((state: RootState) => state.editor.formatMode)
   const m = useSelector((state:RootState) => mSelector(state))
+  const access = useSelector((state: RootState) => state.editor.access)
+  const disabled = [AccessTypes.UNAUTHORIZED, AccessTypes.VIEW].includes(access)
+
   const nx = getX(m)
   const lineWidth = WidthTypes[getPropXA(m, 'lineWidth') as number || 0]
   const lineType = LineTypes[getPropXA(m, 'lineType') as number || 0]
@@ -23,7 +26,6 @@ export const Formatter: FC = () => {
   const borderWidth = WidthTypes[nx.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXASSO(m, 'fBorderWidth') as number || 0]
   const borderColor = nx.selection === 's' ? getPropXA(m, 'sBorderColor') : getPropXASSO(m, 'fBorderColor')
   const fillColor = nx.selection === 's' ? getPropXA(m, 'sFillColor') : getPropXASSO(m, 'fFillColor')
-  const textFontSize = TextTypes[getPropXA(m, 'textFontSize') as number || 0]
   const textColor = getPropXA(m, 'textColor')
   const dispatch = useDispatch<AppDispatch>()
   const setFormatText = () => dispatch(actions.setFormatMode(FormatMode.text))
@@ -32,16 +34,10 @@ export const Formatter: FC = () => {
   const setFormatLine = () => dispatch(actions.setFormatMode(FormatMode.line))
   const setLineWidth = (v: number) => dispatch(actions.mapAction({type: 'setLineWidth', payload: WidthTypes[v]}))
   const setLineType = (v: number) => dispatch(actions.mapAction({type: 'setLineType', payload: LineTypes[v]}))
-  const setLineColor = (v: string) => dispatch(actions.mapAction({type: 'setLineColor', payload: v}))
   const setBorderWidth = (v: number) => dispatch(actions.mapAction({type: 'setBorderWidth', payload:WidthTypes[v]}))
-  const setBorderColor = (v: string) => dispatch(actions.mapAction({type: 'setBorderColor', payload: v}))
-  const setFillColor = (v: string) => dispatch(actions.mapAction({type: 'setFillColor', payload: v}))
-  const setTextFontSize = (v: number) => dispatch(actions.mapAction({type: 'setTextFontSize', payload: TextTypes[v]}))
-  const setTextColor = (v: string) => dispatch(actions.mapAction({type: 'setTextColor', payload: v}))
-  const clearText = () => dispatch(actions.mapAction({type: 'clearText', payload: null}))
-  const clearBorder = () => dispatch(actions.mapAction({type: 'clearBorder', payload: null}))
-  const clearFill = () => dispatch(actions.mapAction({type: 'clearFill', payload: null}))
-  const clearLine = () => dispatch(actions.mapAction({type: 'clearLine', payload: null}))
+
+  const getKeys = (type: object) => Object.keys(type).filter(nx => !(parseInt(nx) >= 0))
+
   return (
     <div className="_bg fixed w-[216px] top-[80px] right-[47px] flex flex-col gap-3 rounded-lg p-3">
       <div className="flex justify-center">
@@ -72,10 +68,15 @@ export const Formatter: FC = () => {
                       strokeWidth={"2%"}
                       onClick={() => {
                         const color = colorList[i][j]
-                        if (formatMode === FormatMode.text) setTextColor(color)
-                        else if (formatMode === FormatMode.border) setBorderColor(color)
-                        else if (formatMode === FormatMode.fill) setFillColor(color)
-                        else if (formatMode === FormatMode.line) setLineColor(color)
+                        if (formatMode === FormatMode.text) {
+                          dispatch(actions.mapAction({type: 'setTextColor', payload: color}))
+                        } else if (formatMode === FormatMode.border) {
+                          dispatch(actions.mapAction({type: 'setBorderColor', payload: color}))
+                        } else if (formatMode === FormatMode.fill) {
+                          dispatch(actions.mapAction({type: 'setFillColor', payload: color}))
+                        } else if (formatMode === FormatMode.line) {
+                          dispatch(actions.mapAction({type: 'setLineColor', payload: color}))
+                        }
                       }}
                     />
                   )
@@ -87,10 +88,48 @@ export const Formatter: FC = () => {
         </div>
       </div>
       <div className="flex flex-col items-center">
-        {formatMode === FormatMode.text && <TargetedButtonGroup KEYS={Object.keys(TextTypes).filter(nx => !(parseInt(nx) >= 0))} value={textFontSize} setValue={(v: number) => setTextFontSize(v)}/>}
-        {formatMode === FormatMode.border && <TargetedButtonGroup KEYS={Object.keys(WidthTypes).filter(nx => !(parseInt(nx) >= 0))} value={borderWidth} setValue={(v: number) => setBorderWidth(v)}/>}
-        {formatMode === FormatMode.line && <TargetedButtonGroup KEYS={Object.keys(WidthTypes).filter(nx => !(parseInt(nx) >= 0))} value={lineWidth} setValue={(v: number) => setLineWidth(v)}/>}
-        {formatMode === FormatMode.line && <TargetedButtonGroup KEYS={Object.keys(LineTypes).filter(nx => !(parseInt(nx) >= 0))} value={lineType} setValue={(v: number) => setLineType(v)}/>
+        {formatMode === FormatMode.text &&
+          // <TargetedButtonGroup
+          //   KEYS={Object.keys(TextTypes).filter(nx => !(parseInt(nx) >= 0))}
+          //   value={textFontSize}
+          //   setValue={(v: number) => setTextFontSize(v)}
+          // />
+
+          <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
+            {getKeys(TextTypes).map((name, idx) =>
+              <Button
+                key={idx}
+                style={{
+                  backgroundColor: name === TextTypes[getPropXA(m, 'textFontSize') as number || 0] ? 'var(--button-color)' : ''
+                }}
+                onClick={() =>
+                  dispatch(actions.mapAction({type: 'setTextFontSize', payload: TextTypes[name as keyof typeof TextTypes]}))
+                }>
+                {name}
+              </Button>
+            )}
+          </ButtonGroup>
+
+        }
+        {formatMode === FormatMode.border &&
+          <TargetedButtonGroup
+            KEYS={Object.keys(WidthTypes).filter(nx => !(parseInt(nx) >= 0))}
+            value={borderWidth}
+            setValue={(v: number) => setBorderWidth(v)}
+          />
+        }
+        {formatMode === FormatMode.line &&
+          <TargetedButtonGroup
+            KEYS={Object.keys(WidthTypes).filter(nx => !(parseInt(nx) >= 0))}
+            value={lineWidth}
+            setValue={(v: number) => setLineWidth(v)}
+          />}
+        {formatMode === FormatMode.line &&
+          <TargetedButtonGroup
+            KEYS={Object.keys(LineTypes).filter(nx => !(parseInt(nx) >= 0))}
+            value={lineType}
+            setValue={(v: number) => setLineType(v)}
+          />
         }
       </div>
       <div className="flex flex-row justify-center">
@@ -98,10 +137,14 @@ export const Formatter: FC = () => {
           color="primary"
           variant='outlined'
           onClick={() => {
-            if (formatMode === FormatMode.text) clearText()
-            else if (formatMode === FormatMode.border) clearBorder()
-            else if (formatMode === FormatMode.fill) clearFill()
-            else if (formatMode === FormatMode.line) clearLine()
+            if (formatMode === FormatMode.text)
+              dispatch(actions.mapAction({type: 'clearText', payload: null}))
+            else if (formatMode === FormatMode.border)
+              dispatch(actions.mapAction({type: 'clearBorder', payload: null}))
+            else if (formatMode === FormatMode.fill)
+              dispatch(actions.mapAction({type: 'clearFill', payload: null}))
+            else if (formatMode === FormatMode.line)
+              dispatch(actions.mapAction({type: 'clearLine', payload: null}))
           }}>
           {'RESET'}
         </Button>
@@ -118,5 +161,3 @@ export const Formatter: FC = () => {
     </div>
   )
 }
-
-// TODO - dissolve TargetedButtonGroup, and use the proper mapActionResolver
