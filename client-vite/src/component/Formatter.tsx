@@ -6,7 +6,7 @@ import {BorderIcon, FillIcon, LineIcon, TextIcon} from './MuiSvgIcons'
 import {colorList} from './Colors'
 import {actions, AppDispatch, RootState} from '../core/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
-import {getPropXASSO, getPropXA, getX} from "../core/MapUtils"
+import {getPropXA, getX} from "../core/MapUtils"
 
 const getKeys = (type: object) => Object.keys(type).filter(nx => !(parseInt(nx) >= 0))
 
@@ -56,8 +56,8 @@ export const Formatter: FC = () => {
                       fill={jEl}
                       stroke={colorList[i][j] === (() => {
                         if (formatMode === FormatMode.text) return getPropXA(m, 'textColor')
-                        if (formatMode === FormatMode.border) return nx.selection === 's' ? getPropXA(m, 'sBorderColor') : getPropXASSO(m, 'fBorderColor')
-                        if (formatMode === FormatMode.fill) return nx.selection === 's' ? getPropXA(m, 'sFillColor') : getPropXASSO(m, 'fFillColor')
+                        if (formatMode === FormatMode.border) return nx.selection === 's' ? getPropXA(m, 'sBorderColor') : getPropXA(m, 'fBorderColor')
+                        if (formatMode === FormatMode.fill) return nx.selection === 's' ? getPropXA(m, 'sFillColor') : getPropXA(m, 'fFillColor')
                         if (formatMode === FormatMode.line) return getPropXA(m, 'lineColor')
                       })() ? '#9040b8' : 'none'}
                       strokeWidth={"2%"}
@@ -96,7 +96,7 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.border &&
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(WidthTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === WidthTypes[nx.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXASSO(m, 'fBorderWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
+              <Button key={idx} style={{backgroundColor: name === WidthTypes[nx.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXA(m, 'fBorderWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
                 dispatch(actions.mapAction({type: 'setBorderWidth', payload: WidthTypes[name as keyof typeof WidthTypes]}))
               }>{name}
               </Button>
