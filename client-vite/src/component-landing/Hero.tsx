@@ -38,7 +38,7 @@ export const Hero: FC = () => {
               </span>
               </div>
             </h1>
-            <h1 className="flex justify-start">as visual boards</h1>
+            <h1 className="flex justify-start">on a visual board</h1>
           </div>
 
         </div>
