@@ -23,13 +23,20 @@ export const Hero: FC = () => {
               clipRule="evenodd"></path>
           </svg>
         </a>
-        <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-          Convert your meeting notes into <br/> visual boards
-        </h1>
-        <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-          Here at MapBoard we focus on creating hybrid visual workspaces,
+        <div className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+          <h1 className="leading-tight">Convert your</h1>
+            <div className="rotatingText flex justify-center leading-normal">
+              <h1 className="rotatingText-adjective text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">meeting notes</h1>
+              <h1 className="rotatingText-adjective text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">team documents</h1>
+              <h1 className="rotatingText-adjective text-transparent bg-clip-text bg-gradient-to-r to-orange-600 from-amber-400">strategic plans</h1>
+            </div>
           <br/>
-          to unlock new dimensions of team collaboration.
+          <h1 className="leading-loose">into visual boards</h1>
+        </div>
+        <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+          Here at MapBoard we focus on crafting hybrid AI-visual workspaces,
+          <br/>
+          to unlock new dimensions of AI-powered team collaboration.
         </p>
         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a href="#"

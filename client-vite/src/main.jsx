@@ -5,6 +5,7 @@ import {Provider} from "react-redux";
 import {store} from "./core/EditorReducer";
 import {Page} from "./component/Page";
 import './Layout.css';
+import './RotatingText.css'
 import './input.css';
 import { Auth0Provider } from '@auth0/auth0-react'
 
