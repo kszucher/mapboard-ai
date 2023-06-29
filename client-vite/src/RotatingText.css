@@ -1,9 +1,9 @@
 .rotate-wrap {
     /*display: inline;*/
     position: relative;
-    overflow: hidden;
+    overflow-y: hidden;
     /*width: 800px;*/
-    height: 100px;
+    /*height: 100px;*/
 }
 
 
@@ -40,10 +40,10 @@
 }
 
 @keyframes rotate {
-    0% {transform: translate3d(0, 100px, 0);}
+    0% {transform: translate3d(0, 200px, 0);}
     2.5% {transform: translate3d(0, 0, 0);}
     25% {transform: translate3d(0, 0, 0);}
-    27.5% {transform: translate3d(0, -100px, 0);}
-    99.9999% {transform: translate3d(0, -100px, 0);}
-    100% {transform: translate3d(0, 100px, 0);}
+    27.5% {transform: translate3d(0, -200px, 0);}
+    99.9999% {transform: translate3d(0, -200px, 0);}
+    100% {transform: translate3d(0, 200px, 0);}
 }
