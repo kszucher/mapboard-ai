@@ -25,12 +25,12 @@ export const Hero: FC = () => {
         </a>
         <div className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
           <h1 className="leading-tight">Convert your</h1>
-            <div className="rotatingText flex justify-center leading-normal">
-              <h1 className="rotatingText-adjective text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">meeting notes</h1>
-              <h1 className="rotatingText-adjective text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">team documents</h1>
-              <h1 className="rotatingText-adjective text-transparent bg-clip-text bg-gradient-to-r to-orange-600 from-amber-400">strategic plans</h1>
-            </div>
-          <br/>
+          <section className="rotate-wrap flex flex-row justify-center leading-loose">
+            <h1 className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Meeting Notes</h1>
+            <h1 className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-teal-600 from-green-400">Team Documents</h1>
+            <h1 className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-orange-600 from-amber-400">Strategic Plans</h1>
+            <h1 className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-sky-600 from-indigo-400">Numerical Forecasts</h1>
+          </section>
           <h1 className="leading-loose">into visual boards</h1>
         </div>
         <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
