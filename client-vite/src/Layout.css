@@ -76,10 +76,14 @@ body {
 
 
 .mbg {
-    position: fixed;
+    /*position: relative;*/
 
-    /*top: 20px;*/
+    height: 200px;
+    /*top: 300px;*/
 
+    /*border: 0;*/
+    /*padding: 0;*/
+    /*margin: 0;*/
     /*position: absolute;*/
 
     border-radius: 0 0 0 0;
@@ -108,11 +112,15 @@ body {
             radial-gradient(at 76% 46%, hsla(139,65%,61%,1) 0px, transparent 50%),
             radial-gradient(at 56% 81%, hsla(326,99%,67%,1) 0px, transparent 50%),
             radial-gradient(at 99% 72%, hsla(19,86%,71%,1) 0px, transparent 50%);
+
+
+    /*mix-blend-mode: multiply;*/
+    /*filter: url(#noiseFilter);*/
 }
 
 .mbg::before {
     content: '';
-    position: absolute;
+    /*position: absolute;*/
     inset: 0 0 0 0;
     mix-blend-mode: multiply;
     filter: url(#noiseFilter);
