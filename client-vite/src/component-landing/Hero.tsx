@@ -52,11 +52,17 @@ export const Hero: FC = () => {
 
               </div>
               <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-                <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/phone-mockup.png" alt="mockup" id="img"/>
+                <img src="https://lh3.googleusercontent.com/drive-viewer/AFGJ81o4ierqrkzojD9lu5fvJWjgVaRqbfJfkJhjQyuZN8V7ZCbXCtSq2s3FstHw9s1n-LNOdK7Ct7LwGJcQUtlrc2Odiztp=w2559-h1315" alt="mockup" id="img"/>
               </div>
             </div>
           </section>
         </div>
+        <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
+          <img src="https://lh3.googleusercontent.com/drive-viewer/AFGJ81o4ierqrkzojD9lu5fvJWjgVaRqbfJfkJhjQyuZN8V7ZCbXCtSq2s3FstHw9s1n-LNOdK7Ct7LwGJcQUtlrc2Odiztp=w2559-h1315" alt="mockup" id="img"/>
+        </div>
+
+        <br/>
+        <br/>
         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a href="#"
              className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
