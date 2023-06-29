@@ -1,5 +1,6 @@
 import {useDispatch, useSelector} from "react-redux"
 import {Button, CircularProgress, Link, ThemeProvider, Typography} from '@mui/material'
+import {Features} from "../component-landing/Features";
 import {Hero} from "../component-landing/Hero";
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import React, {FC, useEffect, useState} from "react"
@@ -54,7 +55,7 @@ export const Landing: FC = () => {
 
 
       <Hero/>
-
+      <Features/>
 
       <div className="mbg">
 
