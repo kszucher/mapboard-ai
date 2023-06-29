@@ -76,9 +76,10 @@ body {
 
 
 .mbg {
-    /*position: relative;*/
+    position: absolute;
+    z-index: -1;
 
-    height: 200px;
+    /*height: 200px;*/
     /*top: 300px;*/
 
     /*border: 0;*/
@@ -120,7 +121,7 @@ body {
 
 .mbg::before {
     content: '';
-    /*position: absolute;*/
+    position: absolute;
     inset: 0 0 0 0;
     mix-blend-mode: multiply;
     filter: url(#noiseFilter);

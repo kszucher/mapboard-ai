@@ -19,6 +19,10 @@ export const Landing: FC = () => {
 
   useEffect(() => {
     setColors(colorMode)
+
+    document.documentElement.classList.add('dark');
+
+
   }, [])
 
   useEffect(() => {
