@@ -49,6 +49,7 @@ export const getSI1 = (p: P) => getSIL(p).at(-1) as P
 export const getSI2 = (p: P) => getSIL(p).at(-2) as P
 
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
+export const getCountD0S = (m: M) => getCountSS(m, ['r', 0, 'd', 0, 's'])
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
 export const getCountSS = (m: M, p: P) => m.filter(n => isSS(p, n.path)).length
