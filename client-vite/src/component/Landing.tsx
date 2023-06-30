@@ -59,7 +59,7 @@ export const Landing: FC = () => {
 
 
 
-      <Features/>
+      {/*<Features/>*/}
 
       <div className="mbg">
 
