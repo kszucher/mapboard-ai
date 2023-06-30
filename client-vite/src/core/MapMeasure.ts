@@ -161,7 +161,7 @@ export const mapMeasure = (pm: M, m: M) => {
         }
         const rightMapHeight = getCountD(m, ['r', 0]) > 0 ? r0d0.familyH : 0
         const leftMapHeight = getCountD(m, ['r', 0]) > 1 ? r0d1.familyH : 0
-        n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
+        n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 120
         break
       }
       case isR(n.path): {

@@ -4,7 +4,7 @@ import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {N} from "../state/MapPropTypes"
-import {getCountSC, getCountSS, getPathDir, getX, getXSSCXX, isXS} from "../core/MapUtils"
+import {getCountSC, getCountSS, getPathDir, getX, getXSSCXX, isXR, isXS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -26,10 +26,18 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
   return (
     <g>
       {
-        isXS(m) && nx.selection === 's' && getCountSS(m, nx.path) === 0 &&
+        isXR(m) && nx.selection === 's' &&
         <svg x={calcSvgIconOffsetX(nx, getCountSC(m, nx.path) ? 6 : 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'CirclePlus'} onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSO', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', '', null)))
+          }}/>
+        </svg>
+      }
+      {
+        (isXR(m) || isXS(m)) && nx.selection === 's' && getCountSS(m, nx.path) === 0 &&
+        <svg x={calcSvgIconOffsetX(nx, getCountSC(m, nx.path) ? 6 : 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
+          <MapSvgIconWrapper m={m} iconName={'CirclePlus'} onMouseDownGuarded={() => {
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertS', null)))
           }}/>
         </svg>
       }

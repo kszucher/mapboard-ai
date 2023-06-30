@@ -80,6 +80,7 @@ export const getXCL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
 export const getXA = (m: M) => m.filter(n => n.selected)
 export const getXASU1 = (m: M) => getSU1(getXSFP(m))
 export const getXASI1 = (m: M) => getSI1(getXSFP(m))
+export const getXASI2 = (m: M) => getSI2(getXSFP(m))
 export const getXSAF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
 export const getXSSCR0 = (m: M) => m.filter(n => isSCR0(getXP(m), n.path))
 export const getXSSCC0 = (m: M) => m.filter(n => isSCC0(getXP(m), n.path))
@@ -123,7 +124,7 @@ export const makeSpaceFromS = (m: M, p: P, length: number) => m.filter(n => isSF
 export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 2))
 export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCFRF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
 
-export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1(m) : getXASI1(m)
+export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1(m) : (isXDS(m) ? getXASI2(m): getXASI1(m))
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 
