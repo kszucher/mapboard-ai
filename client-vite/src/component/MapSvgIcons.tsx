@@ -61,6 +61,21 @@ export const MapSvgIcon = ({iconName} : {iconName : string}) => (
         <path d="M12.5 21H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v7.5M3 10h18M10 3v18M16 19h6M19 16v6"></path>
       </g>
     }
+    {iconName === 'FileUpload' &&
+      <g>
+        <path stroke="none" d="M0 0h24v24H0z"></path>
+        <path d="M14 3v4a1 1 0 001 1h4"></path>
+        <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2zM12 11v6"></path>
+        <path d="M9.5 13.5L12 11l2.5 2.5"></path>
+      </g>
+    }
+    {iconName === 'FileText' &&
+      <g>
+        <path stroke="none" d="M0 0h24v24H0z"></path>
+        <path d="M14 3v4a1 1 0 001 1h4"></path>
+        <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2zM9 9h1M9 13h6M9 17h6"></path>
+      </g>
+    }
   </svg>
 )
 

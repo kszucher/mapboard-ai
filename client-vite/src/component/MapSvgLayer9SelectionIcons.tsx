@@ -3,8 +3,9 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
+import {PageState} from "../state/Enums";
 import {N} from "../state/MapPropTypes"
-import {getCountD0S, getCountSC, getCountSS, getPathDir, getX, getXSSCXX, isXR, isXS} from "../core/MapUtils"
+import {getCountD0S, getCountSC, getCountSS, getPathDir, getR0, getX, getXSSCXX, isXR, isXS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -20,21 +21,21 @@ const calcSvgIconOffsetX = (n: N, i: number) => (
 export const MapSvgLayer9SelectionIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const nx = getX(m)
+  const r0 = getR0(m)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
-      {/*{*/}
-      {/*  isXR(m) && nx.selection === 's' &&*/}
-      {/*  <svg x={calcSvgIconOffsetX(nx, getCountSC(m, nx.path) ? 6 : 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>*/}
-      {/*    <MapSvgIconWrapper m={m} iconName={'CirclePlus'} onMouseDownGuarded={() => {*/}
-      {/*      dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', '', null)))*/}
-      {/*    }}/>*/}
-      {/*  </svg>*/}
-      {/*}*/}
       {
-        (isXR(m) && getCountD0S(m) === 0 || isXS(m) && getCountSS(m, nx.path) === 0) && nx.selection === 's' &&
+        <svg x={r0.nodeStartX + r0.selfW / 2 -12 - .5} y={r0.nodeY - r0.selfH /2 - 24  - 12 + .5} {...iconCommonProps}>
+          <MapSvgIconWrapper m={m} iconName={r0.note === '' ? 'FileUpload' : 'FileText'} onMouseDownGuarded={() => {
+            dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
+          }}/>
+        </svg>
+      }
+      {
+        ((isXR(m) && getCountD0S(m) === 0) || isXS(m) && getCountSS(m, nx.path) === 0) && nx.selection === 's' &&
         <svg x={calcSvgIconOffsetX(nx, getCountSC(m, nx.path) ? 6 : 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'CirclePlus'} onMouseDownGuarded={() => {
             dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertS', null)))
