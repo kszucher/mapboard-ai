@@ -32,7 +32,7 @@ export const Hero: FC = () => {
                   <h1 className="rotate-wrap leading-normal flex justify-center ">
                     <span> &nbsp;</span>
                     <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Roadmaps</span>
-                    <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-teal-600 from-green-400">Actionnable Insights</span>
+                    <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-teal-600 from-green-400">Actionable Insights</span>
                     <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-orange-600 from-amber-400">Step-by-Step Plans</span>
                     <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-sky-600 from-indigo-400">Detailed Forecasts</span>
                   </h1>
