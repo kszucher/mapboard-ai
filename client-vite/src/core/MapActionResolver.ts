@@ -176,7 +176,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'ce' && et === 'insertSCCR' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'insertSCCR', payload: ep})
     case (es === 'ce' && et === 'insertSCCL' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'insertSCCL', payload: ep})
 
-    case (es === 'ae' && et === 'gptParser' && isXD(m)): return ({type: 'gptParser', payload: ep})
+    case (es === 'ae' && et === 'gptParser'): return ({type: 'gptParser', payload: ep})
 
     default: return ({type: '', payload: ep})
   }
