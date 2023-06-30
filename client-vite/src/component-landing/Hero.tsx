@@ -42,7 +42,7 @@ export const Hero: FC = () => {
               <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
                 We craft AI-powered visual workflows,
                 <br/>
-                to unlock new dimensions of knowledge-driven team collaboration.
+                unlocking new dimensions of knowledge-driven team collaboration.
               </p>
               <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                 <a href="#"
