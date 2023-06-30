@@ -51,7 +51,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         </svg>
       }
       {
-        isXS(m) && nx.selection === 'f' && nx.path.length !== 6 &&
+        isXS(m) && nx.selection === 'f' &&
         <svg x={calcSvgIconOffsetX(nx, 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'TableExport'} onMouseDownGuarded={() => {
             dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'moveS2T', null)))
