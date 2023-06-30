@@ -1,6 +1,29 @@
 import {isUrl} from "./Utils"
 import {M} from "../state/MapPropTypes"
-import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountSC, getCountSS, getPathDir, getXP, getNodeByPath, isR} from "./MapUtils"
+import {
+  getX,
+  isXACC,
+  isXACR,
+  isXC,
+  isXDS,
+  isXR,
+  isXS,
+  isXASVN,
+  isXCR,
+  isXCL,
+  isXCB,
+  isXCT,
+  sortPath,
+  getCountXASU,
+  getCountXASD,
+  getCountSC,
+  getCountSS,
+  getPathDir,
+  getXP,
+  getNodeByPath,
+  isR,
+  isXD
+} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
@@ -153,7 +176,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'ce' && et === 'insertSCCR' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'insertSCCR', payload: ep})
     case (es === 'ce' && et === 'insertSCCL' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'insertSCCL', payload: ep})
 
-    case (es === 'ae' && et === 'gptParser' && isXS(m)): return ({type: 'gptParser', payload: ep})
+    case (es === 'ae' && et === 'gptParser' && isXD(m)): return ({type: 'gptParser', payload: ep})
 
     default: return ({type: '', payload: ep})
   }

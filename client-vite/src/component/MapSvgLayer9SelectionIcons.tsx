@@ -5,7 +5,7 @@ import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {PageState} from "../state/Enums";
 import {N} from "../state/MapPropTypes"
-import {getCountD0S, getCountSC, getCountSS, getPathDir, getR0, getX, getXSSCXX, isXR, isXS} from "../core/MapUtils"
+import {getCountD0S, getCountSC, getCountSS, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -43,8 +43,8 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         </svg>
       }
       {
-        isXS(m) && nx.selection === 'f' && nx.path.length === 6 &&
-        <svg x={calcSvgIconOffsetX(nx, 1)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
+        isXD(m) && nx.selection === 'f' &&
+        <svg x={calcSvgIconOffsetX(nx, 1)} y={r0.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'Sparkle'} onMouseDownGuarded={() => {
             dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonS(m))))
           }}/>

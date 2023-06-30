@@ -107,6 +107,7 @@ export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).
 export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXSAF(m).map(n => n[prop])) ? getX(m)[prop] : null
 
 export const isXR = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
+export const isXD = (m: M) => isD(getXP(m)) && !m.find(n => n.selected && !isD(n.path))
 export const isXS = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
 export const isXDS = (m: M) => getXP(m).length === 6
 export const isXASV = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
