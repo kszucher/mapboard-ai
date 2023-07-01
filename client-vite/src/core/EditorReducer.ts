@@ -127,6 +127,7 @@ export const editorSlice = createSlice({
       (state, { payload }) => {
         const { promptId, promptJson, prompt, maxToken, gptSuggestions } = payload
         console.log(payload)
+        state.pageState = PageState.WS
         if (gptSuggestions) {
           const pm = current(state.mapList[state.mapListIndex])
           let mapAction = {type: '', payload: {}}

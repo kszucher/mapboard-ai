@@ -10,6 +10,7 @@ export enum PageState {
   WS_CREATE_TASK,
   WS_CREATE_MAP_IN_MAP,
   WS_SHARE_THIS_MAP,
+  WS_LOADING
 }
 
 export enum AccessTypes {

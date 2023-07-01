@@ -1,6 +1,6 @@
-import {FC, useEffect} from 'react'
+import React, {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
-import {ThemeProvider} from '@mui/material'
+import {Backdrop, CircularProgress, ThemeProvider} from '@mui/material'
 import {RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
@@ -73,6 +73,11 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_CREATE_TASK && <ModalToggleTaskMode/>}
       {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
       {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
+      {pageState === PageState.WS_LOADING &&
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      }
     </ThemeProvider>
   )
 }
