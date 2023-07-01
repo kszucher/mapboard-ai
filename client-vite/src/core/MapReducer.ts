@@ -13,45 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {
-  sortNode,
-  sortPath,
-  isCH,
-  isCV,
-  getEditedNode,
-  getG,
-  getX,
-  getXP,
-  setPropXA,
-  setPropXASF,
-  getXCCR,
-  getXCCL,
-  getXCRD,
-  getXCRU,
-  getXCR,
-  getXCL,
-  getXCU,
-  getXCD,
-  getNodeById,
-  getXSI1,
-  getCountXASU,
-  getCountXSO1,
-  getXASU1,
-  getCountXASD,
-  getCountXASU1O1,
-  getCountXSI1U,
-  getCountR0D1S,
-  getCountR0D0S,
-  getCountXCU,
-  getCountXCL,
-  getXSI2,
-  getXSFP,
-  getXSLP,
-  getCountSS,
-  getCountSCR,
-  getCountSCC,
-  getR0
-} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
