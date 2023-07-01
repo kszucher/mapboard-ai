@@ -21,21 +21,12 @@ export const ModalEditNote: FC = () => {
           </Typography>
         </div>
         <div style={{ display: "flex", flexDirection: 'column', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <TextField
-            id="filled-multiline-static"
-            label="Multiline"
-            multiline
-            rows={20}
-            defaultValue={getR0(m).note}
-            variant="filled"
-            onChange={(e) => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'setNote', {note: e.target.value})))}
-          />
-          <Button
-            color="primary"
-            variant='outlined'
-            disabled={isFetching}
-            onClick={() => dispatch(actions.setPageState(PageState.WS))}
-          >
+          <TextField id="filled-multiline-static" label="Multiline" multiline rows={20} defaultValue={getR0(m).note} variant="filled" onChange={(e) =>
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'setNote', {note: e.target.value})))
+          }/>
+          <Button color="primary" variant='outlined' disabled={isFetching} onClick={() =>
+            dispatch(actions.setPageState(PageState.WS))
+          }>
             {'CLOSE'}
           </Button>
         </div>

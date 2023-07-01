@@ -4,7 +4,6 @@ import {ThemeProvider} from '@mui/material'
 import {RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
-import {ModalCreateGptNodes} from "./ModalCreateGptNodes"
 import {ModalEditNote} from "./ModalEditNote"
 import {Sidebar} from './Sidebar'
 import {ModalCreateTable} from './ModalCreateTable'
@@ -69,7 +68,6 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_PROFILE && <Profile/>}
       {pageState === PageState.WS_SETTINGS && <Settings/>}
       {pageState === PageState.WS_SHARES && <Shares/>}
-      {pageState === PageState.WS_CREATE_GPT_NODES && <ModalCreateGptNodes/>}
       {pageState === PageState.WS_EDIT_NOTE && <ModalEditNote/>}
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
       {pageState === PageState.WS_CREATE_TASK && <ModalToggleTaskMode/>}
