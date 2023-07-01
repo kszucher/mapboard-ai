@@ -43,7 +43,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         </svg>
       }
       {
-        isXD(m) && nx.selection === 'f' &&
+        isXD(m) && nx.selection === 'f' && getR0(m).note !== '' &&
         <svg x={calcSvgIconOffsetX(nx, 1)} y={r0.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'Sparkle'} onMouseDownGuarded={() => {
             dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonS(m))))

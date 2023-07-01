@@ -5,7 +5,7 @@ import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {PageState} from "../state/Enums"
 import {useOpenWorkspaceQuery} from "../core/Api"
-import {getX} from "../core/MapUtils"
+import {getR0} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 
 export const ModalEditNote: FC = () => {
@@ -26,7 +26,7 @@ export const ModalEditNote: FC = () => {
             label="Multiline"
             multiline
             rows={20}
-            defaultValue={getX(m).note}
+            defaultValue={getR0(m).note}
             variant="filled"
             onChange={(e) => dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'setNote', {note: e.target.value})))}
           />

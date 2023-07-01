@@ -13,7 +13,45 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSS, getCountSCR, getCountSCC} from "./MapUtils"
+import {
+  sortNode,
+  sortPath,
+  isCH,
+  isCV,
+  getEditedNode,
+  getG,
+  getX,
+  getXP,
+  setPropXA,
+  setPropXASF,
+  getXCCR,
+  getXCCL,
+  getXCRD,
+  getXCRU,
+  getXCR,
+  getXCL,
+  getXCU,
+  getXCD,
+  getNodeById,
+  getXSI1,
+  getCountXASU,
+  getCountXSO1,
+  getXASU1,
+  getCountXASD,
+  getCountXASU1O1,
+  getCountXSI1U,
+  getCountR0D1S,
+  getCountR0D0S,
+  getCountXCU,
+  getCountXCL,
+  getXSI2,
+  getXSFP,
+  getXSLP,
+  getCountSS,
+  getCountSCR,
+  getCountSCC,
+  getR0
+} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -118,7 +156,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
-    case 'setNote': Object.assign(getX(m), { note: payload.note }); break
+    case 'setNote': Object.assign(getR0(m), { note: payload.note }); break
 
     // TODO get to oneliners: 1) instead of ternary make a switch in mapActionResolver 2) upgrade setPropXA to accept multiple props
 
