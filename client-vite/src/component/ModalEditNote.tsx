@@ -14,23 +14,23 @@ export const ModalEditNote: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return(
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      {<div className="_bg fixed top-[80px] right-[64px] w-[400px] flex flex-col gap-4 p-4 rounded-lg">
+      <div className="_bg fixed top-[80px] right-[64px] w-[400px] flex flex-col gap-4 p-4 rounded-lg">
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
           <Typography variant="subtitle2" color='primary'>
-            {'EDIT NOTE?'}
+            {'DATA (max. 6000 characters):'}
           </Typography>
         </div>
         <div style={{ display: "flex", flexDirection: 'column', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <TextField id="filled-multiline-static" label="Multiline" multiline rows={20} defaultValue={getR0(m).note} variant="filled" onChange={(e) =>
+          <TextField id="filled-multiline-static" label="Multiline" multiline rows={20} defaultValue={getR0(m).note} variant="filled" inputProps={{ maxLength: 6000 }} onChange={(e) => {
             dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'setNote', {note: e.target.value})))
-          }/>
+          }}/>
           <Button color="primary" variant='outlined' disabled={isFetching} onClick={() =>
             dispatch(actions.setPageState(PageState.WS))
           }>
             {'CLOSE'}
           </Button>
         </div>
-      </div>}
+      </div>
     </Modal>
   )
 }
