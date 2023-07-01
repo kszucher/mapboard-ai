@@ -95,6 +95,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
         <svg x={calcSvgIconOffsetX(nx, 5)} y={nx.nodeY - 12 + .5} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={'TablePlus'} onMouseDownGuarded={() => {
+            dispatch(actions.setPageState(PageState.WS_LOADING))
             dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonT(m))))
           }}/>
         </svg>
