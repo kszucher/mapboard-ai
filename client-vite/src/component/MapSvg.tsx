@@ -1,7 +1,6 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {mapActionResolver} from "../core/MapActionResolver"
-import {isChrome} from "../core/Utils"
 import {getCountSC, getG, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
@@ -54,64 +53,56 @@ export const MapSvg: FC = () => {
   const g = getG(m)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <svg
-      style={{position: 'absolute', left: 0, top: 0, width: 'calc(200vw + ' + g.mapWidth + 'px)', height: 'calc(200vh + ' + g.mapHeight + 'px)'}}
-      onMouseDown={(e) => {
-        if (e.button === 1) {
-          e.preventDefault()
-        }
-        const fromCoords = getCoords(e)
-        let didMove = false
-        const abortController = new AbortController()
-        const { signal } = abortController
-        window.addEventListener('mousemove', (e) => {
-          e.preventDefault()
-          didMove = true
-          if (e.buttons === 1) {
-            const toCoords = getCoords(e)
-            dispatch(actions.setSelectionRectCoords([
-              Math.min(fromCoords.x, toCoords.x),
-              Math.min(fromCoords.y, toCoords.y),
-              Math.abs(toCoords.x - fromCoords.x),
-              Math.abs(toCoords.y - fromCoords.y)
-            ]))
-            dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromCoords, toCoords)))
-          }
-        }, { signal })
-        window.addEventListener('mouseup', (e) => {
-          e.preventDefault()
-          abortController.abort()
+    <svg width={g.mapWidth} height={g.mapHeight} onMouseDown={(e) => {
+      if (e.button === 1) {
+        e.preventDefault()
+      }
+      const fromCoords = getCoords(e)
+      let didMove = false
+      const abortController = new AbortController()
+      const { signal } = abortController
+      window.addEventListener('mousemove', (e) => {
+        e.preventDefault()
+        didMove = true
+        if (e.buttons === 1) {
           const toCoords = getCoords(e)
-          if (didMove) {
-            if (e.button === 0) {
-              dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectDragged', {nList: mapFindIntersecting(m, fromCoords, toCoords)})))
-              dispatch(actions.setSelectionRectCoords([]))
-              dispatch(actions.setIntersectingNodes([]))
-            }
-          } else {
-            if (e.button === 0) {
-              dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectR', null)))
-            }
+          dispatch(actions.setSelectionRectCoords([
+            Math.min(fromCoords.x, toCoords.x),
+            Math.min(fromCoords.y, toCoords.y),
+            Math.abs(toCoords.x - fromCoords.x),
+            Math.abs(toCoords.y - fromCoords.y)
+          ]))
+          dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromCoords, toCoords)))
+        }
+      }, { signal })
+      window.addEventListener('mouseup', (e) => {
+        e.preventDefault()
+        abortController.abort()
+        const toCoords = getCoords(e)
+        if (didMove) {
+          if (e.button === 0) {
+            dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectDragged', {nList: mapFindIntersecting(m, fromCoords, toCoords)})))
+            dispatch(actions.setSelectionRectCoords([]))
+            dispatch(actions.setIntersectingNodes([]))
           }
-        }, { signal })
-      }}
+        } else {
+          if (e.button === 0) {
+            dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectR', null)))
+          }
+        }
+      }, { signal })
+    }}
     >
-      <svg
-        style={{overflow: 'visible', transform: isChrome ? '' : 'translate(calc(100vw), calc(100vh))'}}
-        x={isChrome? 'calc(100vw)' : ''}
-        y={isChrome? 'calc(100vh)' : ''}
-      >
-        <MapSvgLayer0MapBackground/>
-        <MapSvgLayer1NodeFamilyBackground/>
-        <MapSvgLayer2NodeBackground/>
-        <MapSvgLayer3NodeAttributes/>
-        <MapSvgLayer4SelectionSecondary/>
-        <MapSvgLayer5SelectionPrimary/>
-        <MapSvgLayer6SelectionPreview/>
-        <MapSvgLayer7SelectionArea/>
-        <MapSvgLayer8SelectionMove/>
-        <MapSvgLayer9SelectionIcons/>
-      </svg>
+      <MapSvgLayer0MapBackground/>
+      <MapSvgLayer1NodeFamilyBackground/>
+      <MapSvgLayer2NodeBackground/>
+      <MapSvgLayer3NodeAttributes/>
+      <MapSvgLayer4SelectionSecondary/>
+      <MapSvgLayer5SelectionPrimary/>
+      <MapSvgLayer6SelectionPreview/>
+      <MapSvgLayer7SelectionArea/>
+      <MapSvgLayer8SelectionMove/>
+      <MapSvgLayer9SelectionIcons/>
     </svg>
   )
 }

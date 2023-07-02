@@ -15,9 +15,9 @@ export const Page: FC = () => {
   }, [])
 
   return (
-    <div id="page">
+    <>
       {pageState === PageState.AUTH && <Landing/>}
       {pageState!== PageState.AUTH && <Editor/>}
-    </div>
+    </>
   )
 }

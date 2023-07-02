@@ -34,7 +34,7 @@ export const MapDiv: FC = () => {
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div style={{position: 'absolute', display: 'flex'}}>
+    <>
       {m.map((n: N) => (
         <Fragment key={n.nodeId}>
           {
@@ -136,6 +136,6 @@ export const MapDiv: FC = () => {
           }
         </Fragment>
       ))}
-    </div>
+    </>
   )
 }

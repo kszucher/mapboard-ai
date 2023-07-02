@@ -51,6 +51,8 @@ export const Map: FC = () => {
       ref={mainMapDiv}
       id={'mainMapDiv'}
       onMouseDown={() => {
+
+        console.log('MMD')
         const abortController = new AbortController()
         const { signal } = abortController
         window.addEventListener('mousemove', (e) => {
@@ -73,11 +75,11 @@ export const Map: FC = () => {
         }
       }}
     >
-      <div
-        style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}
-      >
-        <MapSvg/>
-        <MapDiv/>
+      <div style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
+        <div style={{ position: 'absolute', display: 'flex', width: 'calc(100vw + ' + g.mapWidth + 'px)', height: 'calc(100vh + ' + g.mapHeight + 'px)'}}>
+          <MapSvg/>
+          <MapDiv/>
+        </div>
       </div>
     </div>
   )

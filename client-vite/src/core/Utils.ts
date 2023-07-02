@@ -11,7 +11,6 @@ export const genHash = (len: number) => {
   return Array.from(arr, dec2hex).join('')
 }
 export const getLatexString = (s: string) => '\\Large ' + s.substring(2, s.length - 2).replace(/\s/g, '')
-export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
 export const adjust = (x: number) => Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5
 export const getTableIndices = (r: number, c: number) => Array(r*c).fill(null).map((el, i) => [Math.floor(i/c), i%c])
 export const filterEmpty = (array: any[]) => array.filter(value => Object.keys(value).length !== 0)

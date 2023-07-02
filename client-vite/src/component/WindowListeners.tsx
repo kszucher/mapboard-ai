@@ -52,6 +52,12 @@ export const WindowListeners: FC = () => {
   }
 
   // MAP LISTENERS
+
+  const omd = (e: MouseEvent) => {
+    console.log(e)
+    console.log('WL win')
+  }
+
   const contextmenu = (e: MouseEvent) => {
     e.preventDefault()
   }
@@ -111,6 +117,11 @@ export const WindowListeners: FC = () => {
     window.addEventListener("contextmenu", contextmenu, {signal})
     window.addEventListener("keydown", keydown, {signal})
     window.addEventListener("paste", paste, {signal})
+    window.addEventListener("mousedown", omd, {signal})
+
+
+
+
   }
 
   const removeMapListeners = () => {
