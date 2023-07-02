@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {mapActionResolver} from "../core/MapActionResolver"
-import {getCountSC, getG, isXACC, isXACR, isXC} from "../core/MapUtils"
+import {getCountSC, getG, getR0, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {MapSvgLayer0MapBackground} from "./MapSvgLayer0MapBackground"
@@ -50,10 +50,12 @@ export const getSelectionMargin = (m: M, n: N) => (
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
+  const r0 = getR0(m)
   const g = getG(m)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <svg
+      key={r0.nodeId}
       width={g.mapWidth}
       height={g.mapHeight}
       style={{transition: '0.3s ease-out'}}
