@@ -50,24 +50,17 @@ export const Map: FC = () => {
       style={{overflowY: 'scroll', overflowX: 'scroll'}}
       ref={mainMapDiv}
       id={'mainMapDiv'}
-      onMouseDown={() => {
-
-        console.log('MMD')
-        const abortController = new AbortController()
-        const { signal } = abortController
-        window.addEventListener('mousemove', (e) => {
-          e.preventDefault()
-          if (e.buttons === 4) {
-            if (mainMapDiv.current) {
-              mainMapDiv.current.scrollLeft -= e.movementX
-              mainMapDiv.current.scrollTop -= e.movementY
-            }
+      onMouseDown={(e) => {
+        e.preventDefault()}
+      }
+      onMouseMove={(e) => {
+        e.preventDefault()
+        if (e.buttons === 4) {
+          if (mainMapDiv.current) {
+            mainMapDiv.current.scrollLeft -= e.movementX
+            mainMapDiv.current.scrollTop -= e.movementY
           }
-        }, { signal })
-        window.addEventListener('mouseup', (e) => {
-          e.preventDefault()
-          abortController.abort()
-        }, { signal })
+        }
       }}
       onDoubleClick={() => {
         if (mainMapDiv.current) {
