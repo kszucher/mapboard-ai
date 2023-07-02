@@ -1,7 +1,7 @@
 import React from "react"
 
 export const MapSvgIcon = ({iconName} : {iconName : string}) => (
-  <svg
+  <g
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
@@ -76,7 +76,7 @@ export const MapSvgIcon = ({iconName} : {iconName : string}) => (
         <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2zM9 9h1M9 13h6M9 17h6"></path>
       </g>
     }
-  </svg>
+  </g>
 )
 
 // https://tabler-icons.io/

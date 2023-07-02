@@ -28,11 +28,11 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
   return (
     <g>
       {
-        <svg x={r0.nodeStartX + r0.selfW / 2 -12 - .5} y={r0.nodeY - r0.selfH /2 - 24  - 12 + .5} {...iconCommonProps}>
+        <g transform={`translate(${r0.nodeStartX + r0.selfW / 2 -12 - .5}, ${r0.nodeY - r0.selfH /2 - 24  - 12 + .5})`} {...iconCommonProps}>
           <MapSvgIconWrapper m={m} iconName={r0.note === '' ? 'FileUpload' : 'FileText'} onMouseDownGuarded={() => {
             dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
           }}/>
-        </svg>
+        </g>
       }
       {
         ((isXR(m) && getCountD0S(m) === 0) || isXS(m) && getCountSS(m, nx.path) === 0) && nx.selection === 's' &&
