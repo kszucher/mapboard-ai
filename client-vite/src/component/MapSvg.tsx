@@ -53,7 +53,8 @@ export const MapSvg: FC = () => {
   const g = getG(m)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <svg width={g.mapWidth} height={g.mapHeight} onMouseDown={(e) => {
+    <svg width={g.mapWidth} height={g.mapHeight} style={{transition: '0.3s ease-out'}}
+         onMouseDown={(e) => {
       if (e.button === 1) {
         e.preventDefault()
       }
