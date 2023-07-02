@@ -53,46 +53,49 @@ export const MapSvg: FC = () => {
   const g = getG(m)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <svg width={g.mapWidth} height={g.mapHeight} style={{transition: '0.3s ease-out'}}
-         onMouseDown={(e) => {
-      if (e.button === 1) {
-        e.preventDefault()
-      }
-      const fromCoords = getCoords(e)
-      let didMove = false
-      const abortController = new AbortController()
-      const { signal } = abortController
-      window.addEventListener('mousemove', (e) => {
-        e.preventDefault()
-        didMove = true
-        if (e.buttons === 1) {
+    <svg
+      width={g.mapWidth}
+      height={g.mapHeight}
+      style={{transition: '0.3s ease-out'}}
+      onMouseDown={(e) => {
+        if (e.button === 1) {
+          e.preventDefault()
+        }
+        const fromCoords = getCoords(e)
+        let didMove = false
+        const abortController = new AbortController()
+        const { signal } = abortController
+        window.addEventListener('mousemove', (e) => {
+          e.preventDefault()
+          didMove = true
+          if (e.buttons === 1) {
+            const toCoords = getCoords(e)
+            dispatch(actions.setSelectionRectCoords([
+              Math.min(fromCoords.x, toCoords.x),
+              Math.min(fromCoords.y, toCoords.y),
+              Math.abs(toCoords.x - fromCoords.x),
+              Math.abs(toCoords.y - fromCoords.y)
+            ]))
+            dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromCoords, toCoords)))
+          }
+        }, { signal })
+        window.addEventListener('mouseup', (e) => {
+          e.preventDefault()
+          abortController.abort()
           const toCoords = getCoords(e)
-          dispatch(actions.setSelectionRectCoords([
-            Math.min(fromCoords.x, toCoords.x),
-            Math.min(fromCoords.y, toCoords.y),
-            Math.abs(toCoords.x - fromCoords.x),
-            Math.abs(toCoords.y - fromCoords.y)
-          ]))
-          dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromCoords, toCoords)))
-        }
-      }, { signal })
-      window.addEventListener('mouseup', (e) => {
-        e.preventDefault()
-        abortController.abort()
-        const toCoords = getCoords(e)
-        if (didMove) {
-          if (e.button === 0) {
-            dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectDragged', {nList: mapFindIntersecting(m, fromCoords, toCoords)})))
-            dispatch(actions.setSelectionRectCoords([]))
-            dispatch(actions.setIntersectingNodes([]))
+          if (didMove) {
+            if (e.button === 0) {
+              dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectDragged', {nList: mapFindIntersecting(m, fromCoords, toCoords)})))
+              dispatch(actions.setSelectionRectCoords([]))
+              dispatch(actions.setIntersectingNodes([]))
+            }
+          } else {
+            if (e.button === 0) {
+              dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectR', null)))
+            }
           }
-        } else {
-          if (e.button === 0) {
-            dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectR', null)))
-          }
-        }
-      }, { signal })
-    }}
+        }, { signal })
+      }}
     >
       <MapSvgLayer0MapBackground/>
       <MapSvgLayer1NodeFamilyBackground/>
