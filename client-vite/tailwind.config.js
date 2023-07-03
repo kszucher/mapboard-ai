@@ -64,7 +64,8 @@ module.exports = {
     }
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    require('flowbite-typography'),
   ],
   corePlugins: {
     preflight: false, // https://tailwindcss.com/docs/preflight
