@@ -19,7 +19,7 @@ export const Docs: FC = () => {
                 <div className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                   <img
                     className="mr-4 w-16 h-16 rounded-full"
-                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                    src="https://media.licdn.com/dms/image/C4D03AQF_a-RORoAagA/profile-displayphoto-shrink_800_800/0/1551391045195?e=2147483647&v=beta&t=Q81cnGSoIYCNJVSJtBxSD8wsXMPpVp-qBfmJ4gQBG8o"
                     alt="Jese Leos"
                   />
                   <div>
@@ -28,10 +28,10 @@ export const Docs: FC = () => {
                       rel="author"
                       className="text-xl font-bold text-gray-900 dark:text-white"
                     >
-                      Jese Leos
+                      Krisztian Szucher
                     </a>
                     <p className="text-base font-light text-gray-500 dark:text-gray-400">
-                      Graphic Designer, educator &amp; CEO Flowbite
+                      Co-founder at MapBoard
                     </p>
                     <p className="text-base font-light text-gray-500 dark:text-gray-400">
                       {/*<time*/}
@@ -46,18 +46,30 @@ export const Docs: FC = () => {
                 </div>
               </address>
               <h1 className="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">
-                Best practices for successful prototypes
+                How to extract information from you meeting notes
               </h1>
             </header>
             <p className="lead">
-              Flowbite is an open-source library of UI components built with the
-              utility-first classes from Tailwind CSS. It also includes interactive
-              elements such as dropdowns, modals, datepickers.
+              MapBoard is a visual productivity tool, that can be fed with a text document, just like ChatGpt,
+              but unlike with strictly text based tools, information can be extracted in a user-defined visual format.
             </p>
             <p>
-              Before going digital, you might benefit from scribbling down some
-              ideas in a sketchbook. This way, you can think things through before
-              committing to an actual design project.
+              Disclaimer:
+              We are using openAI's GPT3.5 engine with default privacy settings - which by default does not use data for
+              trailing or any other purposes. You can read more here about
+              &nbsp;
+              <a href="https://openai.com/policies/privacy-policy">
+                OpenAI's privacy policy
+              </a>
+              &nbsp;
+              Please do not use our service in case you have any privacy concerns, and if you look for further info,
+              please contact us at
+              &nbsp;
+              <a href="mailto:info@mapboard.io">
+                info@mapboard.io
+              </a>
+
+
             </p>
             <p>
               But then I found a{" "}

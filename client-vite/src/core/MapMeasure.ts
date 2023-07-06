@@ -145,7 +145,7 @@ export const mapMeasure = (pm: M, m: M) => {
         } else if (alignment === 'centered') {
           sumWidth = 2 * Math.max(...[leftWidth, rightWidth]) + r0.selfW
         }
-        const divMinWidth = window.screen.availWidth > 1280 ? 1280 : 800
+        const divMinWidth = window.screen.availWidth > 400 ? 400 : 400
         n.mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth
         if (alignment === 'centered') {
           n.mapStartCenterX = n.mapWidth / 2
