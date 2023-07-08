@@ -1,6 +1,6 @@
 import {isUrl} from "./Utils"
 import {M} from "../state/MapPropTypes"
-import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountSC, getCountSS, getPathDir, getXP, getNodeByPath, isR, isXD} from "./MapUtils"
+import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountSC, getCountSS, getPathDir, getXP, getNodeByPath, isR, getCountR0D1S, getCountR0D0S} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
@@ -63,8 +63,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowUp' && isXC(m)): return ({type: 'selectCCSAME', payload: ep})
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowUp' && isXACR(m)): return ({type: 'insertCRU', payload: ep})
 
-    // fixme add condition no d child
-    case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && isXR(m)): return ({type: 'selectSOR', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && isXR(m) && getCountR0D0S(m) > 0): return ({type: 'selectSOR', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && dr && isXS(m)): return ({type: 'selectSO', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && dl && isXDS(m)): return ({type: 'selectR', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && dl && isXS(m)): return ({type: 'selectSI', payload: ep})
@@ -83,8 +82,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowRight' && dr && isXACC(m)): return ({type: 'insertCCR', payload: ep})
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowRight' && dl && isXACC(m)): return ({type: 'insertCCL', payload: ep})
 
-    // fixme add condition no d child
-    case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && isXR(m)): return ({type: 'selectSOL', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && isXR(m) && getCountR0D1S(m) > 0): return ({type: 'selectSOL', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && dr && isXDS(m)): return ({type: 'selectR', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && dr && isXS(m)): return ({type: 'selectSI', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && dl && isXS(m)): return ({type: 'selectSO', payload: ep})
