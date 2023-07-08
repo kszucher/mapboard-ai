@@ -136,7 +136,7 @@ export const editorSlice = createSlice({
               try {
                 const gptParsed = JSON.parse(gptSuggestions)
                 console.log(gptParsed)
-                mapAction = mapActionResolver(pm, null, 'ae', 'gptParser', {gptParsed})
+                mapAction = mapActionResolver(pm, null, 'a', 'gptParser', {gptParsed})
               } catch {
                 console.warn('unparseable:', gptSuggestions)
               }
