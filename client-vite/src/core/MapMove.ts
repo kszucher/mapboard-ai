@@ -3,7 +3,7 @@ import {genHash} from "./Utils"
 import {M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {cb2ipS, cb2ipCC, cb2ipCR, getCountSS, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSS} from "./MapUtils"
+import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSS} from "./MapUtils"
 
 const cbSave = (cb: any) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
@@ -33,10 +33,11 @@ export const copyS = (m: M) => {
   cbSave(cb)
 }
 
-export const pasteS = (m: M, payload: any) => {
+export const pasteS = (m: M, insertTargetPath: P, insertTargetIndex: number, payload: any) => {
+  const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
   const cb = JSON.parse(payload) as M
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
-  const insertPath = [...getXP(m), 's', getCountSS(m, getXP(m))] as P
+  const insertPath = [...getNodeById(m, insertTargetNodeId).path, 's', insertTargetIndex] as P
   unselectNodes(m)
   makeSpaceFromS(m, insertPath, getXA(cb).length)
   m.push(...cb2ipS(cb, insertPath))

@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0, getCountSS} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -99,9 +99,10 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveCCL': moveCC(m, getXSI1(m), getCountXCL(m) - 1); break
     case 'moveS2T': moveS2T(m); break
 
-    case 'copySelection': copyS(m); break
-    case 'cutSelection': cutS(m); break
-    case 'insertNodesFromClipboard': pasteS(m, payload); break
+    case 'copyS': copyS(m); break
+    case 'cutS': cutS(m); break
+    case 'pasteSOR': pasteS(m, ['r', 0, 'd', 0], getCountR0D0S(m), payload); break
+    case 'pasteSO': pasteS(m, getXP(m), getCountSS(m, getXP(m)), payload); break
     case 'drag': moveS(m, payload.moveTargetPath, payload.moveTargetIndex); break
     case 'transpose': {
       // https://stackoverflow.com/questions/872310/javascript-swap-array-elements

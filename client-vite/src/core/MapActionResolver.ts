@@ -37,8 +37,8 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, '---') && e.code === 'Escape'): return ({type: 'selectR', payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyA'): return ({type: 'selectall', payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyM'): return ({type: 'createMapInMapDialog', payload: ep})
-    case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyC' && isXASVN(m)): return ({type: 'copySelection', payload: ep})
-    case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyX' && isXASVN(m)): return ({type: 'cutSelection', payload: ep})
+    case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyC' && isXASVN(m)): return ({type: 'copyS', payload: ep})
+    case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyX' && isXASVN(m)): return ({type: 'cutS', payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyZ'): return ({type: 'redo',payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyY'): return ({type: 'undo',payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyE' && isXS(m)): return ({type: 'transpose', payload: ep})
@@ -105,8 +105,8 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, '---') && e.which >= 48 && editable): return ({type: 'startEditReplace', payload: ep})
     case (es === 'kd' && ckm(e, '-s-') && e.which >= 48 && editable): return ({type: 'startEditReplace', payload: ep})
 
-    case (es === 'pt' && ep.substring(0, 1) === '[' && isXS(m)): return ({type: 'insertNodesFromClipboard', payload: ep})
-    // fixme: no insertNodesFromClipboard for R
+    case (es === 'pt' && ep.substring(0, 1) === '[' && isXR(m)): return ({type: 'pasteSOR', payload: ep})
+    case (es === 'pt' && ep.substring(0, 1) === '[' && isXS(m)): return ({type: 'pasteSO', payload: ep})
     case (es === 'pt' && ep.substring(0, 2) === '\\[' && isXR(m)): return ({type: 'insertSOREquation', payload: ep})
     case (es === 'pt' && ep.substring(0, 2) === '\\[' && isXS(m)): return ({type: 'insertSOEquation', payload: ep})
     case (es === 'pt' && isUrl(ep) && isXR(m)): return ({type: 'insertSORLink', payload: ep})
