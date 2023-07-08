@@ -69,7 +69,7 @@ export const Sidebar: FC = () => {
         <IconButton
           color='secondary'
           onClick={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'changeDensity', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'changeDensity', null)))
           }}
         >
           {density === 'small' && <DensitySmallIcon/>}
@@ -78,7 +78,7 @@ export const Sidebar: FC = () => {
         <IconButton
           color='secondary'
           onClick={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'changeAlignment', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'changeAlignment', null)))
           }}
         >
           {alignment === 'adaptive' && <CenterFocusWeakIcon/>}

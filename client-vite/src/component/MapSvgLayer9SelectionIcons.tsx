@@ -44,7 +44,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           y={nx.nodeY - 12 + .5}
           iconName={'CirclePlus'}
           onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertS', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertS', null)))
           }}/>
       }
       {
@@ -64,7 +64,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           y={nx.nodeY - 12 + .5}
           iconName={'TableExport'}
           onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'moveS2T', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'moveS2T', null)))
           }}/>
       }
       {
@@ -74,7 +74,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           y={nx.nodeY - 12 + .5}
           iconName={'ColumnInsertLeft'}
           onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCL', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCCL', null)))
           }}/>
       }
       {
@@ -84,7 +84,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           y={nx.nodeY - 12 + .5}
           iconName={'ColumnInsertRight'}
           onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCCR', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCCR', null)))
           }}/>
       }
       {
@@ -94,7 +94,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           y={nx.nodeY - 12 + .5}
           iconName={'RowInsertTop'}
           onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCRU', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCRU', null)))
           }}/>
       }
       {
@@ -104,7 +104,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           y={nx.nodeY - 12 + .5}
           iconName={'RowInsertBottom'}
           onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCRD', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCRD', null)))
           }}/>
       }
       {
@@ -128,7 +128,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
                 y={n.nodeY - 12 + .5}
                 iconName={'CirclePlus'}
                 onMouseDownGuarded={() => {
-                  dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertSCSO', {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number})))
+                  dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCSO', {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number})))
                 }}/>
             </Fragment>
           )

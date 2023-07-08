@@ -29,7 +29,7 @@ export const ModalToggleTaskMode: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'toggleTask', null)))
+              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'toggleTask', null)))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}

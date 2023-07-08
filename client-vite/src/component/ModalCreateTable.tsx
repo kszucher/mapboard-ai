@@ -54,7 +54,7 @@ export const ModalCreateTable: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'insertTable', {rowLen: parseInt(row), colLen: parseInt(col)})))
+              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertTable', {rowLen: parseInt(row), colLen: parseInt(col)})))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}

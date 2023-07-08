@@ -42,9 +42,9 @@ export const WindowListeners: FC = () => {
         clearInterval(namedInterval)
         isIntervalRunning = false
         if (Math.sign(e.deltaY) === 1) {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'redo', null)))
+          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'redo', null)))
         } else {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', 'undo', null)))
+          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'undo', null)))
         }
       }, 100)
     }

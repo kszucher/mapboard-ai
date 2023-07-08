@@ -87,13 +87,13 @@ export const MapSvg: FC = () => {
           const toCoords = getCoords(e)
           if (didMove) {
             if (e.button === 0) {
-              dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectDragged', {nList: mapFindIntersecting(m, fromCoords, toCoords)})))
+              dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'selectDragged', {nList: mapFindIntersecting(m, fromCoords, toCoords)})))
               dispatch(actions.setSelectionRectCoords([]))
               dispatch(actions.setIntersectingNodes([]))
             }
           } else {
             if (e.button === 0) {
-              dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'selectR', null)))
+              dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'selectR', null)))
             }
           }
         }, { signal })

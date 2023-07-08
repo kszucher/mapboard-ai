@@ -129,7 +129,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
                     onMouseDown={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
-                      dispatch(actions.mapAction(mapActionResolver(m, e, 'se', 'setTaskStatus', { taskStatus: i + 1, nodeId: n.nodeId })))
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'setTaskStatus', { taskStatus: i + 1, nodeId: n.nodeId })))
                    }}>
                   </circle>
                 ))

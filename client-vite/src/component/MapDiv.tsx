@@ -76,7 +76,7 @@ export const MapDiv: FC = () => {
                 setEndOfContentEditable(e.currentTarget)
               }}
               onBlur={(e) => {
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
               }}
               onMouseDown={(e) => {
                 e.stopPropagation()
@@ -88,48 +88,48 @@ export const MapDiv: FC = () => {
                     window.focus()
                   } else {
                     const add = e.ctrlKey
-                    dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'select', { add, path: n.path })))
+                    dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'select', { add, path: n.path })))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'simulateDrag', {n, e})))
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'simulateDrag', {n, e})))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'drag', {n, e})))
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'drag', {n, e})))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
                   const add = e.ctrlKey
-                  dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'selectF', { add, path: n.path })))
+                  dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'selectF', { add, path: n.path })))
                 }
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'startEditAppend', null)))
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'startEditAppend', null)))
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
                 if (e.key === 'Enter' && !e.shiftKey) {
-                  dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
+                  dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
                 } else if (['Insert','Tab'].includes(e.key)) {
-                  dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
-                  dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'insert', null)))
+                  dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
+                  dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'insert', null)))
                 }
               }}
               onInput={(e) => {
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'typeText', { content:  e.currentTarget.innerHTML })))
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'typeText', { content:  e.currentTarget.innerHTML })))
               }}
               onPaste={(e) => {
                 e.preventDefault()
                 const pasted = e.clipboardData.getData('Text')
                 e.currentTarget.innerHTML += pasted
                 setEndOfContentEditable(e.currentTarget)
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'de', 'typeText', { content:  e.currentTarget.innerHTML })))
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'typeText', { content:  e.currentTarget.innerHTML })))
               }}
             >
             </div>

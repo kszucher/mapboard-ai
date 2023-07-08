@@ -8,6 +8,7 @@ export const mapCalcTask = (m: M) => {
   m.forEach(n => {
     if (getCountD(m, n.path)) {
       n.taskStatus = 0
+      // todo: use current r conditionally!!! not a high level r iterator, but a local query, getRXD0 --> getX.rIndex based
       const taskStatusRight = r0d0.taskStatus
       const taskStatusLeft = r0d1.taskStatus
       if (getCountR0D0S(m) && getCountR0D1S(m)) {
