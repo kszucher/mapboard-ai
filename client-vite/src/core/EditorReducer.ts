@@ -1,15 +1,15 @@
 import {combineReducers, configureStore, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
+import isEqual from "react-fast-compare"
 import {getCoords} from "../component/MapDivUtils"
-import {filterEmpty} from "./Utils"
+import {editorState} from "../state/EditorState"
+import {FormatMode, PageState} from "../state/Enums"
+import {M} from "../state/MapPropTypes"
+import {api} from "./Api"
 import {mapActionResolver} from "./MapActionResolver"
 import {mapFindNearest} from "./MapFindNearest"
 import {mapReducer} from "./MapReducer"
-import {api} from "./Api"
-import {editorState} from "../state/EditorState"
-import {FormatMode, PageState} from "../state/Enums"
 import {getEditedNode, getXP} from "./MapUtils"
-import isEqual from "react-fast-compare"
-import {M} from "../state/MapPropTypes"
+import {filterEmpty} from "./Utils"
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -79,8 +79,7 @@ export const editorSlice = createSlice({
           break
         }
         case 'typeText': {
-          const m = mapReducer(pm, 'typeText', action.payload.payload)
-          state.tempMap = m
+          state.tempMap = mapReducer(pm, 'typeText', action.payload.payload)
           break
         }
         case 'finishEdit': {

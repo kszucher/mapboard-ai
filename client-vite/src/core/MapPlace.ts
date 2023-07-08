@@ -1,9 +1,8 @@
-import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSO1, getCountSO2, getCountCO2} from "./MapUtils"
+import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSO1, getCountSO2, getCountCO2, getRi} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
   const g = getNodeByPath(m, ['g']) as G
-  const r0 = getNodeByPath(m, ['r', 0]) as N
   m.forEach(n => {
     switch (true) {
       case isG(n.path): {
@@ -17,8 +16,10 @@ export const mapPlace = (m: M) => {
         break
       }
       case isD(n.path): {
-        n.nodeStartX = r0.nodeStartX
-        n.nodeEndX = r0.nodeEndX
+        const ri = getRi(n.path)
+        const rx = getNodeByPath(m, ['r', ri]) as N
+        n.nodeStartX = rx.nodeStartX
+        n.nodeEndX = rx.nodeEndX
         n.nodeY = g.mapHeight / 2 - 0.5
         n.isTop = 1
         n.isBottom = 1

@@ -1,6 +1,6 @@
 import {M, GN, P, N} from "../state/MapPropTypes"
 import isEqual from "react-fast-compare"
-import {getCountSO1, getNodeById, getNodeByPath, getSI1, isD, isS, isSO, sortPath} from "./MapUtils"
+import {getCountSO1, getNodeById, getNodeByPath, getSI1, getRi, isD, isS, isSO, sortPath} from "./MapUtils"
 
 export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => {
   const m = structuredClone(pm).sort(sortPath)
@@ -13,9 +13,10 @@ export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => 
     moveNode.nodeY - moveNode.selfH / 2 < toY &&
     toY < moveNode.nodeY + moveNode.selfH / 2)
   ) {
-    const r0 = getNodeByPath(m, ['r', 0]) as N
-    const aboveRoot = toY >= r0.nodeY
-    const belowRoot = toY < r0.nodeY
+    const ri = getRi(moveNode.path)
+    const rx = getNodeByPath(m, ['r', ri]) as N
+    const aboveRoot = toY >= rx.nodeY
+    const belowRoot = toY < rx.nodeY
     const overlap = 6
     let moveTargetNodeId = ''
     m.forEach(n => {

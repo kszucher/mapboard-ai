@@ -5,7 +5,7 @@ import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {PageState} from "../state/Enums";
 import {N} from "../state/MapPropTypes"
-import {getCountD0S, getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS} from "../core/MapUtils"
+import {getCountD0S, getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -20,18 +20,19 @@ const calcSvgIconOffsetX = (n: N, i: number) => (
 export const MapSvgLayer9SelectionIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const nx = getX(m)
-  const r0 = getR0(m)
+  const ri = getXRi(m)
+  const rx = getNodeByPath(m, ['r', ri]) as N
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
       {
-        <Fragment key={r0.nodeId}>
+        <Fragment key={rx.nodeId}>
           <MapSvgIconWrapper
-            x={r0.nodeStartX + r0.selfW / 2 -12 - .5}
-            y={r0.nodeY - r0.selfH /2 - 24  - 12 + .5}
-            iconName={r0.note === '' ? 'FileUpload' : 'FileText'}
+            x={rx.nodeStartX + rx.selfW / 2 -12 - .5}
+            y={rx.nodeY - rx.selfH /2 - 24  - 12 + .5}
+            iconName={rx.note === '' ? 'FileUpload' : 'FileText'}
             onMouseDownGuarded={() => {
               dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
             }}/>
@@ -51,7 +52,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         isXD(m) && nx.selection === 'f' && getR0(m).note !== '' &&
         <MapSvgIconWrapper
           x={calcSvgIconOffsetX(nx, 1)}
-          y={r0.nodeY - 12 + .5}
+          y={rx.nodeY - 12 + .5}
           iconName={'Sparkle'} onMouseDownGuarded={() => {
           dispatch(actions.setPageState(PageState.WS_LOADING))
           dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonS(m))))

@@ -1,5 +1,5 @@
 import {G, M, N} from "../state/MapPropTypes"
-import {getNodeById, getNodeByPath, isG, isR, isD, isS, getCountCO1, getCountSCR, getCountSCC, getCountR0D1S, getCountR0D0S, getCountSO1, getCountD, isC, getCountSO2, getCountCO2} from "./MapUtils"
+import {getNodeById, getNodeByPath, isG, isR, isD, isS, getCountCO1, getCountSCR, getCountSCC, getCountRXD1S, getCountRXD0S, getCountSO1, getCountD, isC, getCountSO2, getCountCO2, getXRi, getRi} from "./MapUtils"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "./Utils"
 
@@ -117,33 +117,34 @@ export const mapMeasure = (pm: M, m: M) => {
     switch (true) {
       case isG(n.path): {
         const {alignment, taskConfigWidth, margin, sLineDeltaXDefault} = g
-        const r0 = getNodeByPath(m, ['r', 0]) as N
-        const r0d0 = getNodeByPath(m, ['r', 0, 'd', 0]) as N
-        const r0d1 = getNodeByPath(m, ['r', 0, 'd', 1]) as N
-        const countR0D0S = getCountR0D0S(m)
-        const countR0D1S = getCountR0D1S(m)
+        const ri = 0 //getRi(n.path) // TODO we will need to iterate through all r-s here later
+        const rx = getNodeByPath(m, ['r', ri]) as N
+        const rxd0 = getNodeByPath(m, ['r', ri, 'd', 0]) as N
+        const rxd1 = getNodeByPath(m, ['r', ri, 'd', 1]) as N
+        const countRXD0S = getCountRXD0S(m, getXRi(m))
+        const countRXD1S = getCountRXD1S(m, getXRi(m))
         const taskRight = m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
         const taskLeft = m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
-        const leftTaskWidth = countR0D1S > 0 && taskLeft ? taskConfigWidth : 0
-        const leftMapWidth = countR0D1S > 0 ? sLineDeltaXDefault + r0d1.familyW : 0
-        const rightMapWidth = countR0D0S > 0 ? sLineDeltaXDefault + r0d0.familyW : 0
-        const rightTaskWidth = countR0D0S > 0 && taskRight ? taskConfigWidth : 0
+        const leftTaskWidth = countRXD1S > 0 && taskLeft ? taskConfigWidth : 0
+        const leftMapWidth = countRXD1S > 0 ? sLineDeltaXDefault + rxd1.familyW : 0
+        const rightMapWidth = countRXD0S > 0 ? sLineDeltaXDefault + rxd0.familyW : 0
+        const rightTaskWidth = countRXD0S > 0 && taskRight ? taskConfigWidth : 0
         const leftWidth = leftMapWidth + leftTaskWidth + margin
         const rightWidth = rightMapWidth + rightTaskWidth + margin
         let flow = 'both'
-        if (countR0D0S && !countR0D1S) flow = 'right'
-        if (!countR0D0S && countR0D1S) flow = 'left'
+        if (countRXD0S && !countRXD1S) flow = 'right'
+        if (!countRXD0S && countRXD1S) flow = 'left'
         let sumWidth = 0
         if (alignment === 'adaptive') {
           if (flow === 'right') {
-            sumWidth = margin + r0.selfW + rightWidth
+            sumWidth = margin + rx.selfW + rightWidth
           } else if (flow === 'left') {
-            sumWidth = leftWidth + r0.selfW + margin
+            sumWidth = leftWidth + rx.selfW + margin
           } else if (flow === 'both') {
-            sumWidth = leftWidth + r0.selfW + rightWidth
+            sumWidth = leftWidth + rx.selfW + rightWidth
           }
         } else if (alignment === 'centered') {
-          sumWidth = 2 * Math.max(...[leftWidth, rightWidth]) + r0.selfW
+          sumWidth = 2 * Math.max(...[leftWidth, rightWidth]) + rx.selfW
         }
         const divMinWidth = window.screen.availWidth > 400 ? 400 : 400
         n.mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth
@@ -152,15 +153,15 @@ export const mapMeasure = (pm: M, m: M) => {
         } else if (alignment === 'adaptive') {
           if (flow === 'both') {
             let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0
-            n.mapStartCenterX = leftSpace + leftWidth + r0.selfW / 2
+            n.mapStartCenterX = leftSpace + leftWidth + rx.selfW / 2
           } else if (flow === 'right') {
-            n.mapStartCenterX = margin + r0.selfW / 2
+            n.mapStartCenterX = margin + rx.selfW / 2
           } else if (flow === 'left') {
-            n.mapStartCenterX = n.mapWidth - margin - r0.selfW / 2
+            n.mapStartCenterX = n.mapWidth - margin - rx.selfW / 2
           }
         }
-        const rightMapHeight = getCountD(m, ['r', 0]) > 0 ? r0d0.familyH : 0
-        const leftMapHeight = getCountD(m, ['r', 0]) > 1 ? r0d1.familyH : 0
+        const rightMapHeight = getCountD(m, ['r', ri]) > 0 ? rxd0.familyH : 0
+        const leftMapHeight = getCountD(m, ['r', ri]) > 1 ? rxd1.familyH : 0
         n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 150
         break
       }

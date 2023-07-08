@@ -1,7 +1,7 @@
 import {LineTypes} from "../state/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
-import {getX, getNodeByPath, getPathDir, isXACC, isXACR, getG, isD, getSI1} from "../core/MapUtils"
+import {getX, getNodeByPath, getPathDir, isXACC, isXACR, getG, isD, getSI1, getRi} from "../core/MapUtils"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -59,16 +59,17 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
 export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
   const R = 8
   const g = getG(m)
-  const r0 = getNodeByPath(m, ['r', 0]) as N
+  const ri = getRi(n.path)
+  const rx = getNodeByPath(m, ['r', ri]) as N
   const dir = getPathDir(n.path)
   const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
   const xo = dir === -1 ? n.nodeStartX : n.nodeEndX
-  const selfH = isD(n.path) ? r0.selfH : n.selfH
+  const selfH = isD(n.path) ? rx.selfH : n.selfH
   const yu = n.nodeY - selfH / 2
   const yd = n.nodeY + selfH / 2
   const myu = n.nodeY - n.maxH / 2
   const myd = n.nodeY + n.maxH / 2
-  const w = isD(n.path) ? r0.selfW + n.familyW : n.maxW
+  const w = isD(n.path) ? rx.selfW + n.familyW : n.maxW
   return selection === 's' ? {
     ax: n.nodeStartX,
     bx: xo - dir * R,

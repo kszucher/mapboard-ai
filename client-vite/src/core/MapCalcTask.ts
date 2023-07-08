@@ -1,21 +1,19 @@
-import {getCountD, getCountR0D0S, getCountR0D1S, getCountSO1, getNodeByPath} from "./MapUtils"
+import {getCountRXD0S, getCountRXD1S, getCountSO1, getNodeByPath, getRi, isR} from "./MapUtils"
 import {M} from "../state/MapPropTypes"
 
 export const mapCalcTask = (m: M) => {
-  const r0d0 = getNodeByPath(m, ['r', 0, 'd', 0])
-  const r0d1 = getNodeByPath(m, ['r', 0, 'd', 1])
   m.reverse()
   m.forEach(n => {
-    if (getCountD(m, n.path)) {
+    if (isR(n.path)) {
+      const ri = getRi(n.path)
+      const taskStatusRight = getNodeByPath(m, ['r', ri, 'd', 0]).taskStatus
+      const taskStatusLeft = getNodeByPath(m, ['r', ri, 'd', 1]).taskStatus
       n.taskStatus = 0
-      // todo: use current r conditionally!!! not a high level r iterator, but a local query, getRXD0 --> getX.rIndex based
-      const taskStatusRight = r0d0.taskStatus
-      const taskStatusLeft = r0d1.taskStatus
-      if (getCountR0D0S(m) && getCountR0D1S(m)) {
+      if (getCountRXD0S(m, ri) && getCountRXD1S(m, ri)) {
         n.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
-      } else if (getCountR0D0S(m)) {
+      } else if (getCountRXD0S(m, ri)) {
         n.taskStatus = taskStatusRight
-      } else if (getCountR0D1S(m)) {
+      } else if (getCountRXD1S(m, ri)) {
         n.taskStatus = taskStatusLeft
       }
     } else if (getCountSO1(m, n.path)) {

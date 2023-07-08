@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountR0D1S, getCountR0D0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0, getCountSO1} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountRXD1S, getCountRXD0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0, getCountSO1, getXRi} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -25,20 +25,20 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectS': selectNode(m, payload.path, 's'); break
     case 'selectStoo': selectNodeToo(m, payload.path, 's'); break
     case 'selectF': selectNode(m, payload.path, 'f'); break
-    case 'selectR0D0F': selectNode(m, ['r', 0, 'd', 0], 'f'); break
-    case 'selectR0D1F': selectNode(m, ['r', 0, 'd', 1], 'f'); break
+    case 'selectRXD0F': selectNode(m, ['r', getXRi(m), 'd', 0], 'f'); break
+    case 'selectRXD1F': selectNode(m, ['r', getXRi(m), 'd', 1], 'f'); break
     case 'selectall': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
     case 'selectSD': selectNode(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
     case 'selectSDtoo': selectNodeToo(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
     case 'selectSU': selectNode(m, structNavigate(m, getXSFP(m), Dir.U), 's'); break
     case 'selectSUtoo': selectNodeToo(m, structNavigate(m, getXSFP(m), Dir.U), 's'); break
     case 'selectSO': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break
-    case 'selectSOR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break
-    case 'selectSOL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break
+    case 'selectSOR': selectNode(m, structNavigate(m, ['r', getXRi(m), 'd', 0], Dir.OR), 's'); break
+    case 'selectSOL': selectNode(m, structNavigate(m, ['r', getXRi(m), 'd', 1], Dir.OL), 's'); break
     case 'selectSI': selectNode(m, structNavigate(m, getXP(m), Dir.I), 's'); break
     case 'selectSfamilyO': getX(m).selection = 'f'; break
-    case 'selectSfamilyOR': selectNode(m, ['r', 0, 'd', 0], 'f'); break
-    case 'selectSfamilyOL': selectNode(m, ['r', 0, 'd', 1], 'f'); break
+    case 'selectSfamilyOR': selectNode(m, ['r', getXRi(m), 'd', 0], 'f'); break
+    case 'selectSfamilyOL': selectNode(m, ['r', getXRi(m), 'd', 1], 'f'); break
     case 'selectSF': selectNode(m, [...getXP(m), 's', 0], 's'); break
     case 'selectSB': selectNode(m, getXP(m).slice(0, -3), 's'); break
     case 'selectCD': selectNode(m, getXCD(m), 's'); break
@@ -59,18 +59,18 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
 
     case 'insertSD': insertS(m, [...getXSI1(m), 's', getCountXASU(m) + 1], payload); break
     case 'insertSU': insertS(m, [...getXP(m)], payload); break
-    case 'insertSOR': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
+    case 'insertSOR': insertS(m, ['r', getXRi(m), 'd', 0, 's', getCountRXD0S(m, getXRi(m))], payload); break
     case 'insertSO': insertS(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
     case 'insertSCSO': insertS(m, [...getXP(m), 'c', payload.rowIndex, payload.colIndex, 's', 0], {}); break
-    case 'insertSORText': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], {contentType: 'text', content: payload}); break
+    case 'insertSORText': insertS(m, ['r', getXRi(m), 'd', 0, 's', getCountRXD0S(m, getXRi(m))], {contentType: 'text', content: payload}); break
     case 'insertSOText': insertS(m, [...getXP(m), 's', getCountXSO1(m)], {contentType: 'text', content: payload}); break
-    case 'insertSORLink': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], {contentType: 'text', content: payload, linkType: 'external', link: payload}); break
+    case 'insertSORLink': insertS(m, ['r', getXRi(m), 'd', 0, 's', getCountRXD0S(m, getXRi(m))], {contentType: 'text', content: payload, linkType: 'external', link: payload}); break
     case 'insertSOLink': insertS(m, [...getXP(m), 's', getCountXSO1(m)], {contentType: 'text', content: payload, linkType: 'external', link: payload}); break
-    case 'insertSOREquation': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], {contentType: 'equation', content: payload}); break
+    case 'insertSOREquation': insertS(m, ['r', getXRi(m), 'd', 0, 's', getCountRXD0S(m, getXRi(m))], {contentType: 'equation', content: payload}); break
     case 'insertSOEquation': insertS(m, [...getXP(m), 's', getCountXSO1(m)], {contentType: 'equation', content: payload}); break
-    case 'insertSORImage': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
+    case 'insertSORImage': insertS(m, ['r', getXRi(m), 'd', 0, 's', getCountRXD0S(m, getXRi(m))], {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insertSOImage': insertS(m, [...getXP(m), 's', getCountXSO1(m)], {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
-    case 'insertSORTable': insertTable(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
+    case 'insertSORTable': insertTable(m, ['r', getXRi(m), 'd', 0, 's', getCountRXD0S(m, getXRi(m))], payload); break
     case 'insertSOTable': insertTable(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
     case 'insertCRD': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m) + 1, 0]); break
     case 'insertCRU': insertCR(m, [...getXSI1(m), 'c', getCountXCU(m), 0]); break
@@ -91,8 +91,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveSB': moveS(m, getXSI1(m), getCountXASD(m)); break
     case 'moveSO': moveS(m, getXASU1(m), getCountXASU1O1(m)); break
     case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
-    case 'moveSIR': moveS(m, ['r', 0, 'd', 1], getCountR0D1S(m)); break
-    case 'moveSIL': moveS(m, ['r', 0, 'd', 0], getCountR0D0S(m)); break
+    case 'moveSIR': moveS(m, ['r', getXRi(m), 'd', 1], getCountRXD1S(m, getXRi(m))); break
+    case 'moveSIL': moveS(m, ['r', getXRi(m), 'd', 0], getCountRXD0S(m, getXRi(m))); break
     case 'moveCRD': moveCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
     case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
@@ -101,7 +101,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
 
     case 'copyS': copyS(m); break
     case 'cutS': cutS(m); break
-    case 'pasteSOR': pasteS(m, ['r', 0, 'd', 0], getCountR0D0S(m), payload); break
+    case 'pasteSOR': pasteS(m, ['r', getXRi(m), 'd', 0], getCountRXD0S(m, getXRi(m)), payload); break
     case 'pasteSO': pasteS(m, getXP(m), getCountSO1(m, getXP(m)), payload); break
     case 'drag': moveS(m, payload.moveTargetPath, payload.moveTargetIndex); break
     case 'transpose': {

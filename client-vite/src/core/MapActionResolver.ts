@@ -1,13 +1,11 @@
 import {isUrl} from "./Utils"
 import {M} from "../state/MapPropTypes"
-import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountCO1, getCountSO1, getPathDir, getXP, getNodeByPath, isR, getCountR0D1S, getCountR0D0S} from "./MapUtils"
+import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountCO1, getCountSO1, getPathDir, getXP, isR, getCountRXD1S, getCountRXD0S, getXRi, getRXD0, getRXD1} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
 export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, ep: any) => {
   const m = structuredClone(pm).sort(sortPath)
-  const r0d0 = getNodeByPath(m, ['r', 0, 'd', 0])
-  const r0d1 = getNodeByPath(m, ['r', 0, 'd', 1])
   const dr = getPathDir(getXP(m)) === 1
   const dl = getPathDir(getXP(m)) === -1
   const editable = (isXR(m) || isXS(m) || isXC(m)) && getX(m).contentType !== 'image' && getCountCO1(m, getXP(m)) === 0
@@ -63,7 +61,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowUp' && isXC(m)): return ({type: 'selectCCSAME', payload: ep})
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowUp' && isXACR(m)): return ({type: 'insertCRU', payload: ep})
 
-    case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && isXR(m) && getCountR0D0S(m) > 0): return ({type: 'selectSOR', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && isXR(m) && getCountRXD0S(m, getXRi(m)) > 0): return ({type: 'selectSOR', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && dr && isXS(m)): return ({type: 'selectSO', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && dl && isXDS(m)): return ({type: 'selectR', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowRight' && dl && isXS(m)): return ({type: 'selectSI', payload: ep})
@@ -82,7 +80,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowRight' && dr && isXACC(m)): return ({type: 'insertCCR', payload: ep})
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowRight' && dl && isXACC(m)): return ({type: 'insertCCL', payload: ep})
 
-    case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && isXR(m) && getCountR0D1S(m) > 0): return ({type: 'selectSOL', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && isXR(m) && getCountRXD1S(m, getXRi(m)) > 0): return ({type: 'selectSOL', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && dr && isXDS(m)): return ({type: 'selectR', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && dr && isXS(m)): return ({type: 'selectSI', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft' && dl && isXS(m)): return ({type: 'selectSO', payload: ep})
@@ -120,8 +118,8 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'select' && isR(ep.path)): return ({type: 'selectR', payload: ep})
     case (es === 'c' && et === 'select' && !isR(ep.path) && !ep.add): return ({type: 'selectS', payload: ep})
     case (es === 'c' && et === 'select' && !isR(ep.path) && ep.add): return ({type: 'selectStoo', payload: ep})
-    case (es === 'c' && et === 'selectF' && isR(ep.path) && getCountR0D0S(m) > 0 && !r0d0.selected): return ({type: 'selectR0D0F', payload: ep})
-    case (es === 'c' && et === 'selectF' && isR(ep.path) && !!r0d0.selected && !r0d1.selected && getCountSO1(m, r0d1.path) > 0): return ({type: 'selectR0D1F', payload: ep})
+    case (es === 'c' && et === 'selectF' && isR(ep.path) && getCountRXD0S(m, getXRi(m)) > 0 && !getRXD0(m).selected): return ({type: 'selectRXD0F', payload: ep})
+    case (es === 'c' && et === 'selectF' && isR(ep.path) && !!getRXD0(m).selected && !getRXD1(m).selected && getCountSO1(m, getRXD1(m).path) > 0): return ({type: 'selectRXD1F', payload: ep})
     case (es === 'c' && et === 'selectF' && !isR(ep.path) && getCountSO1(m, ep.path) > 0): return ({type: 'selectF', payload: ep})
     case (es === 'c' && et === 'selectR'): return ({type: 'selectR', payload: ep})
     case (es === 'c' && et === 'selectDragged'): return ({type: 'selectDragged', payload: ep})
