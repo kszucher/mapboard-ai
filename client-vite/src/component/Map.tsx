@@ -51,8 +51,8 @@ export const Map: FC = () => {
       ref={mainMapDiv}
       id={'mainMapDiv'}
       onMouseDown={(e) => {
-        e.preventDefault()}
-      }
+        e.preventDefault()
+      }}
       onMouseMove={(e) => {
         e.preventDefault()
         if (e.buttons === 4) {

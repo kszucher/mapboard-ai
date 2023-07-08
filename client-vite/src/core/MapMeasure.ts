@@ -116,8 +116,17 @@ export const mapMeasure = (pm: M, m: M) => {
     const pn = getNodeById(pm, n.nodeId)
     switch (true) {
       case isG(n.path): {
+
+        // add the following to nSaveNever: offsetX, offsetY, centerX, remove mapStartCenterX, redefine mapW, mapH
+        // offsetXY is 00 for r0, and for the rest, nodeStartEndXY will be calculated dynamically based on every r-s data
+
+        // HERE IN G
+        // mapWidth and mapHeight will be calculated as: max (offsetX + maxW), max (offsetY + maxH)
+
+        // MOVE THIS TO R
+        // assing maxW, maxH to previous mapWidth, mapHeight
         const {alignment, taskConfigWidth, margin, sLineDeltaXDefault} = g
-        const ri = 0 //getRi(n.path) // TODO we will need to iterate through all r-s here later
+        const ri = 0 //REPLACE to getRi(n.path) once moved to isR
         const rx = getNodeByPath(m, ['r', ri]) as N
         const rxd0 = getNodeByPath(m, ['r', ri, 'd', 0]) as N
         const rxd1 = getNodeByPath(m, ['r', ri, 'd', 1]) as N
