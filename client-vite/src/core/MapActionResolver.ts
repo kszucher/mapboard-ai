@@ -120,7 +120,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'select' && isR(ep.path)): return ({type: 'selectR', payload: ep})
     case (es === 'c' && et === 'select' && !isR(ep.path) && !ep.add): return ({type: 'selectS', payload: ep})
     case (es === 'c' && et === 'select' && !isR(ep.path) && ep.add): return ({type: 'selectStoo', payload: ep})
-    case (es === 'c' && et === 'selectF' && isR(ep.path) && !r0d0.selected): return ({type: 'selectR0D0F', payload: ep})
+    case (es === 'c' && et === 'selectF' && isR(ep.path) && getCountR0D0S(m) > 0 && !r0d0.selected): return ({type: 'selectR0D0F', payload: ep})
     case (es === 'c' && et === 'selectF' && isR(ep.path) && !!r0d0.selected && !r0d1.selected && getCountSO1(m, r0d1.path) > 0): return ({type: 'selectR0D1F', payload: ep})
     case (es === 'c' && et === 'selectF' && !isR(ep.path) && getCountSO1(m, ep.path) > 0): return ({type: 'selectF', payload: ep})
     case (es === 'c' && et === 'selectR'): return ({type: 'selectR', payload: ep})
