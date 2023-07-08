@@ -1,6 +1,6 @@
 import {isUrl} from "./Utils"
 import {M} from "../state/MapPropTypes"
-import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountSC, getCountSS, getPathDir, getXP, getNodeByPath, isR, getCountR0D1S, getCountR0D0S} from "./MapUtils"
+import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountCO1, getCountSO1, getPathDir, getXP, getNodeByPath, isR, getCountR0D1S, getCountR0D0S} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
@@ -10,7 +10,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
   const r0d1 = getNodeByPath(m, ['r', 0, 'd', 1])
   const dr = getPathDir(getXP(m)) === 1
   const dl = getPathDir(getXP(m)) === -1
-  const editable = (isXR(m) || isXS(m) || isXC(m)) && getX(m).contentType !== 'image' && getCountSC(m, getXP(m)) === 0
+  const editable = (isXR(m) || isXS(m) || isXC(m)) && getX(m).contentType !== 'image' && getCountCO1(m, getXP(m)) === 0
 
   switch (true) {
     case (es === 'kd' && ckm(e, '---') && e.key === 'F1'): return ({type: '', payload: ep})
@@ -27,9 +27,9 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, '---') && e.key === 'Delete' && isXS(m)): return ({type: 'deleteS', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.key === 'Delete' && isXACR(m)): return ({type: 'deleteCR', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.key === 'Delete' && isXACC(m)): return ({type: 'deleteCC', payload: ep})
-    case (es === 'kd' && ckm(e, '---') && e.code === 'Space' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'selectCFF', payload: ep})
-    case (es === 'kd' && ckm(e, '---') && e.code === 'Space' && isXC(m) && getCountSS(m, getXP(m)) > 0): return ({type: 'selectSF', payload: ep})
-    case (es === 'kd' && ckm(e, '---') && e.code === 'Space' && isXC(m) && !(getCountSS(m, getXP(m)) > 0)): return ({type: 'insertSO', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.code === 'Space' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'selectCFF', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.code === 'Space' && isXC(m) && getCountSO1(m, getXP(m)) > 0): return ({type: 'selectSF', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.code === 'Space' && isXC(m) && !(getCountSO1(m, getXP(m)) > 0)): return ({type: 'insertSO', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'Space' && isXACR(m)): return ({type: 'selectCFfirstCol', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'Space' && isXACC(m)): return ({type: 'selectCFfirstRow', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'Backspace' && isXS(m) && getXP(m).includes('c')): return ({type: 'selectCB', payload: ep})
@@ -77,7 +77,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'ArrowRight' && dr && isXACC(m) && !isXCR(m)): return ({type: 'moveCCR', payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'ArrowRight' && dl && isXACC(m) && !isXCL(m)): return ({type: 'moveCCL', payload: ep})
     case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowRight' && isXR(m)): return ({type: 'selectSfamilyOR', payload: ep})
-    case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowRight' && dr && isXS(m) && getCountSS(m, getXP(m)) > 0): return ({type: 'selectSfamilyO', payload: ep})
+    case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowRight' && dr && isXS(m) && getCountSO1(m, getXP(m)) > 0): return ({type: 'selectSfamilyO', payload: ep})
     case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowRight' && isXC(m)): return ({type: 'selectCRSAME', payload: ep})
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowRight' && dr && isXACC(m)): return ({type: 'insertCCR', payload: ep})
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowRight' && dl && isXACC(m)): return ({type: 'insertCCL', payload: ep})
@@ -96,7 +96,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'ArrowLeft' && dr && isXACC(m) && !isXCL(m)): return ({type: 'moveCCL', payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'ArrowLeft' && dl && isXACC(m) && !isXCR(m)): return ({type: 'moveCCR', payload: ep})
     case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowLeft' && isXR(m)): return ({type: 'selectSfamilyOL', payload: ep})
-    case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowLeft' && dl && isXS(m) && getCountSS(m, getXP(m)) > 0): return ({type: 'selectSfamilyO', payload: ep})
+    case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowLeft' && dl && isXS(m) && getCountSO1(m, getXP(m)) > 0): return ({type: 'selectSfamilyO', payload: ep})
     case (es === 'kd' && ckm(e, '-s-') && e.code === 'ArrowLeft' && isXC(m)): return ({type: 'selectCRSAME', payload: ep})
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowLeft' && dr && isXACC(m)): return ({type: 'insertCCL', payload: ep})
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowLeft' && dl && isXACC(m)): return ({type: 'insertCCR', payload: ep})
@@ -121,8 +121,8 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'select' && !isR(ep.path) && !ep.add): return ({type: 'selectS', payload: ep})
     case (es === 'c' && et === 'select' && !isR(ep.path) && ep.add): return ({type: 'selectStoo', payload: ep})
     case (es === 'c' && et === 'selectF' && isR(ep.path) && !r0d0.selected): return ({type: 'selectR0D0F', payload: ep})
-    case (es === 'c' && et === 'selectF' && isR(ep.path) && !!r0d0.selected && !r0d1.selected && getCountSS(m, r0d1.path) > 0): return ({type: 'selectR0D1F', payload: ep})
-    case (es === 'c' && et === 'selectF' && !isR(ep.path) && getCountSS(m, ep.path) > 0): return ({type: 'selectF', payload: ep})
+    case (es === 'c' && et === 'selectF' && isR(ep.path) && !!r0d0.selected && !r0d1.selected && getCountSO1(m, r0d1.path) > 0): return ({type: 'selectR0D1F', payload: ep})
+    case (es === 'c' && et === 'selectF' && !isR(ep.path) && getCountSO1(m, ep.path) > 0): return ({type: 'selectF', payload: ep})
     case (es === 'c' && et === 'selectR'): return ({type: 'selectR', payload: ep})
     case (es === 'c' && et === 'selectDragged'): return ({type: 'selectDragged', payload: ep})
 
@@ -131,10 +131,10 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'insertS' && isXR(m)): return ({type: 'insertSOR', payload: ep})
     case (es === 'c' && et === 'insertS' && isXS(m)): return ({type: 'insertSO', payload: ep})
     case (es === 'c' && et === 'insertSCSO'): return ({type: 'insertSCSO', payload: ep})
-    case (es === 'c' && et === 'insertSCRD' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'insertSCRD', payload: ep})
-    case (es === 'c' && et === 'insertSCRU' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'insertSCRU', payload: ep})
-    case (es === 'c' && et === 'insertSCCR' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'insertSCCR', payload: ep})
-    case (es === 'c' && et === 'insertSCCL' && isXS(m) && getCountSC(m, getXP(m)) > 0): return ({type: 'insertSCCL', payload: ep})
+    case (es === 'c' && et === 'insertSCRD' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCRD', payload: ep})
+    case (es === 'c' && et === 'insertSCRU' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCRU', payload: ep})
+    case (es === 'c' && et === 'insertSCCR' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCCR', payload: ep})
+    case (es === 'c' && et === 'insertSCCL' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCCL', payload: ep})
     case (es === 'c' && et === 'insertTable' && isXR(m)): return ({type: 'insertSORTable', payload: ep})
     case (es === 'c' && et === 'insertTable' && isXS(m)): return ({type: 'insertSOTable', payload: ep})
 
@@ -150,7 +150,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'changeDensity'): return ({type: 'changeDensity', payload: ep})
     case (es === 'c' && et === 'changeAlignment'): return ({type: 'changeAlignment', payload: ep})
     case (es === 'c' && et === 'toggleTask'): return ({type: 'toggleTask', payload: ep})
-    case (es === 'c' && et === 'moveS2T' && isXS(m) && getCountSS(m, getXP(m)) > 0): return ({type: 'moveS2T', payload: ep})
+    case (es === 'c' && et === 'moveS2T' && isXS(m) && getCountSO1(m, getXP(m)) > 0): return ({type: 'moveS2T', payload: ep})
 
     case (es === 'a' && et === 'gptParser'): return ({type: 'gptParser', payload: ep})
 

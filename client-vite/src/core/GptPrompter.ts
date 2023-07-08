@@ -1,10 +1,10 @@
 import {M, N} from "../state/MapPropTypes"
-import {getXSSCC0, getXSSCR0, m2cbS, getCountSS, getSIL, getNodeByPath, getXSSCYY, sortPath} from "./MapUtils"
+import {getXSSCC0, getXSSCR0, m2cbS, getCountSO1, getSIL, getNodeByPath, getXSSCYY, sortPath} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
 export const genPromptJsonS = (m: M) => {
   const cb = m2cbS(m)
-  return m2cbS(m).filter(n => getCountSS(cb, n.path) === 0).map(n => ({
+  return m2cbS(m).filter(n => getCountSO1(cb, n.path) === 0).map(n => ({
     keywords: [...getSIL(n.path), n.path].map(p => getNodeByPath(cb, p).content),
     suggestions: [],
     insertParentId: n.nodeId

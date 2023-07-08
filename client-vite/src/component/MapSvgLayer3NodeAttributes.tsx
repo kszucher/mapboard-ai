@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {getColors} from "./Colors"
-import {getClosestStructParentPath, getCountSC, getCountSS, getG, getNodeById, getNodeByPath, getPathPattern, isD, isR, isS} from "../core/MapUtils"
+import {getClosestStructParentPath, getCountCO1, getCountSO1, getG, getNodeById, getNodeByPath, getPathPattern, isD, isR, isS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -37,7 +37,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             </path>
           }
           {
-            n.sBorderColor && !getCountSC(m, n.path) &&
+            n.sBorderColor && !getCountCO1(m, n.path) &&
             <path
               d={getArcPath(n, -2, true)}
               stroke={n.sBorderColor}
@@ -49,7 +49,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           }
           {(
               getPathPattern(n.path).endsWith('ds') ||
-              (getPathPattern(n.path).endsWith('ss') && !getCountSC(m, n.path)) ||
+              (getPathPattern(n.path).endsWith('ss') && !getCountCO1(m, n.path)) ||
               (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) && n.path.at(-2) as number > -1 && n.path.at(-1) === 0
             ) &&
             <path
@@ -78,7 +78,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             </path>
           }
           {
-            isS(n.path) && getCountSC(m, n.path) &&
+            isS(n.path) && getCountCO1(m, n.path) &&
             <path
               d={getArcPath(n, 0, false)}
               stroke={n.sBorderColor ? n.sBorderColor : C.TABLE_FRAME_COLOR}
@@ -89,7 +89,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             </path>
           }
           {
-            isS(n.path) && getCountSC(m, n.path) &&
+            isS(n.path) && getCountCO1(m, n.path) &&
             <path
               d={getGridPath(n)}
               stroke={C.TABLE_GRID}
@@ -100,7 +100,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             </path>
           }
           {
-            n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && !getCountSS(m, n.path) && !getCountSC(m, n.path) && n.contentType !== 'image' &&
+            n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && !getCountSO1(m, n.path) && !getCountCO1(m, n.path) && n.contentType !== 'image' &&
             <Fragment key={`${n.nodeId}_svg_task`}>
               {
                 !isEqual(n.nodeId, editedNodeId) &&

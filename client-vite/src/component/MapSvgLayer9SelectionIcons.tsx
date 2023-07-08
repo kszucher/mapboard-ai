@@ -5,7 +5,7 @@ import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {PageState} from "../state/Enums";
 import {N} from "../state/MapPropTypes"
-import {getCountD0S, getCountSC, getCountSS, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS} from "../core/MapUtils"
+import {getCountD0S, getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -38,9 +38,9 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         </Fragment>
       }
       {
-        ((isXR(m) && getCountD0S(m) === 0) || isXS(m) && getCountSS(m, nx.path) === 0) && nx.selection === 's' &&
+        ((isXR(m) && getCountD0S(m) === 0) || isXS(m) && getCountSO1(m, nx.path) === 0) && nx.selection === 's' &&
         <MapSvgIconWrapper
-          x={calcSvgIconOffsetX(nx, getCountSC(m, nx.path) ? 6 : 1)}
+          x={calcSvgIconOffsetX(nx, getCountCO1(m, nx.path) ? 6 : 1)}
           y={nx.nodeY - 12 + .5}
           iconName={'CirclePlus'}
           onMouseDownGuarded={() => {
@@ -68,7 +68,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           }}/>
       }
       {
-        isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
+        isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
         <MapSvgIconWrapper
           x={calcSvgIconOffsetX(nx, 1)}
           y={nx.nodeY - 12 + .5}
@@ -78,7 +78,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           }}/>
       }
       {
-        isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
+        isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
         <MapSvgIconWrapper
           x={calcSvgIconOffsetX(nx, 2)}
           y={nx.nodeY - 12 + .5}
@@ -88,7 +88,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           }}/>
       }
       {
-        isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
+        isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
         <MapSvgIconWrapper
           x={calcSvgIconOffsetX(nx, 3)}
           y={nx.nodeY - 12 + .5}
@@ -98,7 +98,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           }}/>
       }
       {
-        isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
+        isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
         <MapSvgIconWrapper
           x={calcSvgIconOffsetX(nx, 4)}
           y={nx.nodeY - 12 + .5}
@@ -108,7 +108,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           }}/>
       }
       {
-        isXS(m) && nx.selection === 's' && getCountSC(m, nx.path) &&
+        isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
         <MapSvgIconWrapper
           x={calcSvgIconOffsetX(nx, 5)}
           y={nx.nodeY - 12 + .5}
@@ -119,9 +119,9 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           }}/>
       }
       {
-        isXS(m) && nx.selection === 's' && getCountSS(m, nx.path) === 0 &&
+        isXS(m) && nx.selection === 's' && getCountSO1(m, nx.path) === 0 &&
         getXSSCXX(m).map((n) => (
-            getCountSS(m, n.path) === 0 &&
+            getCountSO1(m, n.path) === 0 &&
             <Fragment key={n.nodeId}>
               <MapSvgIconWrapper
                 x={n.nodeStartX + 10}

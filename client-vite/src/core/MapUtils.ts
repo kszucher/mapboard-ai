@@ -25,11 +25,11 @@ export const isC = (p: P) => getPathPattern(p).endsWith('c')
 export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
-export const isSS = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
-export const isSSS = (p: P, pt: P) => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
-export const isSSC = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
+export const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
+export const isSO2 = (p: P, pt: P) => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
+export const isCO1 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
+export const isCO2 = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
 
-export const isSC = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 export const isSCXX = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p)
 export const isSCYY = (p: P, pt: P) => isSCXX(p, pt) && pt.at(-2) as number > 0 && pt.at(-1) as number > 0
 export const isSCR0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) === 0
@@ -49,13 +49,13 @@ export const getSI1 = (p: P) => getSIL(p).at(-1) as P
 export const getSI2 = (p: P) => getSIL(p).at(-2) as P
 
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
-export const getCountD0S = (m: M) => getCountSS(m, ['r', 0, 'd', 0])
+export const getCountD0S = (m: M) => getCountSO1(m, ['r', 0, 'd', 0])
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
-export const getCountSS = (m: M, p: P) => m.filter(n => isSS(p, n.path)).length
-export const getCountSSS = (m: M, p: P) => m.filter(n => isSSS(p, n.path)).length
-export const getCountSC = (m: M, p: P) => m.filter(n => isSC(p, n.path)).length
-export const getCountSSC = (m: M, p: P) => m.filter(n => isSSC(p, n.path)).length
+export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
+export const getCountSO2 = (m: M, p: P) => m.filter(n => isSO2(p, n.path)).length
+export const getCountCO1 = (m: M, p: P) => m.filter(n => isCO1(p, n.path)).length
+export const getCountCO2 = (m: M, p: P) => m.filter(n => isCO2(p, n.path)).length
 export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === 1 && isS(n.path)).length
 export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
@@ -73,7 +73,7 @@ export const getXSL = (m: M) => m.findLast(n => n.selected)!
 export const getXSLP = (m: M) => getXSL(m).path
 export const getXSI1  = (m: M) => getSI1(getXP(m))
 export const getXSI2 = (m: M) => getSI2(getXP(m))
-export const getXSS = (m: M) => m.filter(n => isSS(getXP(m), n.path))
+export const getXSS = (m: M) => m.filter(n => isSO1(getXP(m), n.path))
 export const getXCD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
 export const getXCU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
 export const getXCR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
@@ -95,8 +95,8 @@ export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 
 export const getCountXASD = (m: M) => getCountSD(m, getXSLP(m))
 export const getCountXASU = (m: M) => getCountSU(m, getXSFP(m))
-export const getCountXASU1O1 = (m: M) => getCountSS(m, getXASU1(m))
-export const getCountXSO1 = (m: M) => getCountSS(m, getXP(m))
+export const getCountXASU1O1 = (m: M) => getCountSO1(m, getXASU1(m))
+export const getCountXSO1 = (m: M) => getCountSO1(m, getXP(m))
 export const getCountXSI1U = (m: M) => getCountSU(m, getSI1(getXP(m)))
 export const getCountXCU = (m: M) => getXP(m).at(-2) as number
 export const getCountXCL = (m: M) => getXP(m).at(-1) as number

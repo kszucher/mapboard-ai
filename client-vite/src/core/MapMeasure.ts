@@ -1,5 +1,5 @@
 import {G, M, N} from "../state/MapPropTypes"
-import {getNodeById, getNodeByPath, isG, isR, isD, isS, getCountSC, getCountSCR, getCountSCC, getCountR0D1S, getCountR0D0S, getCountSS, getCountD, isC, getCountSSS, getCountSSC} from "./MapUtils"
+import {getNodeById, getNodeByPath, isG, isR, isD, isS, getCountCO1, getCountSCR, getCountSCC, getCountR0D1S, getCountR0D0S, getCountSO1, getCountD, isC, getCountSO2, getCountCO2} from "./MapUtils"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "./Utils"
 
@@ -93,7 +93,7 @@ const measureTable = (m: M, g: G, n: N) => {
 }
 
 const measureFamily = (m: M, g: G, n: N) => {
-  const countSS = getCountSS(m, n.path)
+  const countSS = getCountSO1(m, n.path)
   let sMaxW = 0
   for (let i = 0; i < countSS; i++) {
     const cn = getNodeByPath(m, [...n.path, 's', i]) as N
@@ -103,7 +103,7 @@ const measureFamily = (m: M, g: G, n: N) => {
       sMaxW = currMaxW
     }
   }
-  if (getCountSSS(m, n.path) || getCountSSC(m, n.path)) {
+  if (getCountSO2(m, n.path) || getCountCO2(m, n.path)) {
     n.familyH += (countSS - 1)*n.spacing
   }
   n.familyW = sMaxW + g.sLineDeltaXDefault
@@ -170,7 +170,7 @@ export const mapMeasure = (pm: M, m: M) => {
         break
       }
       case isD(n.path): {
-        if (getCountSS(m, n.path)) {
+        if (getCountSO1(m, n.path)) {
           measureFamily(m, g, n)
         }
         n.maxW = n.familyW
@@ -178,12 +178,12 @@ export const mapMeasure = (pm: M, m: M) => {
         break
       }
       case isS(n.path): {
-        if (getCountSC(m, n.path)) {
+        if (getCountCO1(m, n.path)) {
           measureTable(m, g, n)
         } else {
           measureText(g, pn, n)
         }
-        if (getCountSS(m, n.path)) {
+        if (getCountSO1(m, n.path)) {
           measureFamily(m, g, n)
         }
         n.maxW = n.selfW + n.familyW
@@ -191,7 +191,7 @@ export const mapMeasure = (pm: M, m: M) => {
         break
       }
       case isC(n.path): {
-        if (getCountSS(m, n.path)) {
+        if (getCountSO1(m, n.path)) {
           measureFamily(m, g, n)
         }
         n.maxW = n.familyW || 60
