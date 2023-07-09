@@ -216,7 +216,7 @@ const getTaskStartPoint = (m: M, g: G, n: N) => {
     const coverCellRef = getNodeByPath(m, coverCellPath) as N
     return (dir === - 1 ? coverCellRef.nodeEndX : coverCellRef.nodeStartX) + dir * (coverCellRef.sumMaxColWidth[currCol] + coverCellRef.maxColWidth[currCol] - 120)
   } else {
-    return (dir === 1 ? g.mapWidth + 20 : -20) - dir * getTaskWidth(g)
+    return (dir === 1 ? g.mapWidth : 0) - dir * getTaskWidth(g)
   }
 }
 
