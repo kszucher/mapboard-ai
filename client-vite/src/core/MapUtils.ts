@@ -62,6 +62,7 @@ export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r
 export const getSI1 = (p: P) => getSIL(p).at(-1) as P
 export const getSI2 = (p: P) => getSIL(p).at(-2) as P
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
+export const getRL = (m: M) => m.filter(n => n.path.length === 2)
 export const getR0 = (m: M) => m.filter(n => n.path.length === 2).at(0) as N
 export const getX = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getXP = (m: M) => getX(m).path
@@ -92,7 +93,6 @@ export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 export const getRXD0 = (m: M) => getNodeByPath(m, ['r', getXRi(m), 'd', 0])
 export const getRXD1 = (m: M) => getNodeByPath(m, ['r', getXRi(m), 'd', 1])
 
-export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountD0S = (m: M) => getCountSO1(m, ['r', 0, 'd', 0])
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length

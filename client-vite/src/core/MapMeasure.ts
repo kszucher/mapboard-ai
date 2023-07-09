@@ -1,5 +1,5 @@
 import {G, M, N} from "../state/MapPropTypes"
-import {getNodeById, getNodeByPath, isG, isR, isD, isS, getCountCO1, getCountSCR, getCountSCC, getCountRXD1S, getCountRXD0S, getCountSO1, getCountD, isC, getCountSO2, getCountCO2, getXRi, getRi} from "./MapUtils"
+import {getNodeById, getNodeByPath, isG, isR, isD, isS, getCountCO1, getCountSCR, getCountSCC, getCountSO1, isC, getCountSO2, getCountCO2, getRL, getRi} from "./MapUtils"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "./Utils"
 
@@ -116,67 +116,24 @@ export const mapMeasure = (pm: M, m: M) => {
     const pn = getNodeById(pm, n.nodeId)
     switch (true) {
       case isG(n.path): {
-
-        // add the following to nSaveNever: offsetX, offsetY, centerX, remove mapStartCenterX, redefine mapW, mapH
-        // offsetXY is 00 for r0, and for the rest, nodeStartEndXY will be calculated dynamically based on every r-s data
-
-        // HERE IN G
-        // mapWidth and mapHeight will be calculated as: max (offsetX + maxW), max (offsetY + maxH)
-
-        // MOVE THIS TO R
-        // assing maxW, maxH to previous mapWidth, mapHeight
-        const {alignment, taskConfigWidth, margin, sLineDeltaXDefault} = g
-        const ri = 0 //REPLACE to getRi(n.path) once moved to isR
-        const rx = getNodeByPath(m, ['r', ri]) as N
-        const rxd0 = getNodeByPath(m, ['r', ri, 'd', 0]) as N
-        const rxd1 = getNodeByPath(m, ['r', ri, 'd', 1]) as N
-        const countRXD0S = getCountRXD0S(m, getXRi(m))
-        const countRXD1S = getCountRXD1S(m, getXRi(m))
-        const taskRight = m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
-        const taskLeft = m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
-        const leftTaskWidth = countRXD1S > 0 && taskLeft ? taskConfigWidth : 0
-        const leftMapWidth = countRXD1S > 0 ? sLineDeltaXDefault + rxd1.familyW : 0
-        const rightMapWidth = countRXD0S > 0 ? sLineDeltaXDefault + rxd0.familyW : 0
-        const rightTaskWidth = countRXD0S > 0 && taskRight ? taskConfigWidth : 0
-        const leftWidth = leftMapWidth + leftTaskWidth + margin
-        const rightWidth = rightMapWidth + rightTaskWidth + margin
-        let flow = 'both'
-        if (countRXD0S && !countRXD1S) flow = 'right'
-        if (!countRXD0S && countRXD1S) flow = 'left'
-        let sumWidth = 0
-        if (alignment === 'adaptive') {
-          if (flow === 'right') {
-            sumWidth = margin + rx.selfW + rightWidth
-          } else if (flow === 'left') {
-            sumWidth = leftWidth + rx.selfW + margin
-          } else if (flow === 'both') {
-            sumWidth = leftWidth + rx.selfW + rightWidth
-          }
-        } else if (alignment === 'centered') {
-          sumWidth = 2 * Math.max(...[leftWidth, rightWidth]) + rx.selfW
-        }
-        const divMinWidth = window.screen.availWidth > 400 ? 400 : 400
-        n.mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth
-        if (alignment === 'centered') {
-          n.mapStartCenterX = n.mapWidth / 2
-        } else if (alignment === 'adaptive') {
-          if (flow === 'both') {
-            let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0
-            n.mapStartCenterX = leftSpace + leftWidth + rx.selfW / 2
-          } else if (flow === 'right') {
-            n.mapStartCenterX = margin + rx.selfW / 2
-          } else if (flow === 'left') {
-            n.mapStartCenterX = n.mapWidth - margin - rx.selfW / 2
-          }
-        }
-        const rightMapHeight = getCountD(m, ['r', ri]) > 0 ? rxd0.familyH : 0
-        const leftMapHeight = getCountD(m, ['r', ri]) > 1 ? rxd1.familyH : 0
-        n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 150
+        getRL(m).forEach(r => {
+          const ri = getRi(r.path)
+          const rx = getNodeByPath(m, ['r', ri]) as N
+          const rxd0 = getNodeByPath(m, ['r', ri, 'd', 0]) as N
+          const rxd1 = getNodeByPath(m, ['r', ri, 'd', 1]) as N
+          if ((rx.offsetH + rxd0.familyH / 2) > n.maxD) {n.maxD = rx.offsetH + rxd0.familyH / 2}
+          if ((rx.offsetH + rxd1.familyH / 2) > n.maxD) {n.maxD = rx.offsetH + rxd1.familyH / 2}
+          if ((rx.offsetH - rxd0.familyH / 2) < n.maxU) {n.maxU = rx.offsetH - rxd0.familyH / 2}
+          if ((rx.offsetH - rxd1.familyH / 2) < n.maxU) {n.maxU = rx.offsetH - rxd1.familyH / 2}
+          if ((rx.offsetW + rx.selfW / 2 + rxd0.familyW) > n.maxR) {n.maxR = rx.offsetW + rx.selfW / 2 + rxd0.familyW}
+          if ((rx.offsetW - rx.selfW / 2 - rxd1.familyW) < n.maxL) {n.maxL = rx.offsetW - rx.selfW / 2 - rxd1.familyW}
+        })
+        n.mapWidth = n.maxR - n.maxL
+        n.mapHeight = n.maxD - n.maxU
         break
       }
       case isR(n.path): {
         measureText(g, pn, n)
-        // TODO start here to utilize maxW and maxH
         break
       }
       case isD(n.path): {

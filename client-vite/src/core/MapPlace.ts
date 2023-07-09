@@ -1,4 +1,4 @@
-import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSO1, getCountSO2, getCountCO2, getRi} from "./MapUtils"
+import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSO1, getCountSO2, getCountCO2, getRi, getG} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
@@ -10,9 +10,10 @@ export const mapPlace = (m: M) => {
         break
       }
       case isR(n.path): {
-        n.nodeStartX = g.mapStartCenterX - n.selfW / 2 + 1
-        n.nodeEndX = g.mapStartCenterX + n.selfW / 2 + 1
-        n.nodeY = g.mapHeight / 2 - 0.5
+        const g = getG(m)
+        n.nodeStartX = n.offsetW + Math.abs(g.maxL) - n.selfW / 2 + 1
+        n.nodeEndX = n.offsetW + Math.abs(g.maxL) + n.selfW / 2 + 1
+        n.nodeY = n.offsetH + Math.abs(g.maxU) - n.selfH / 2 - 0.5
         break
       }
       case isD(n.path): {
@@ -20,7 +21,7 @@ export const mapPlace = (m: M) => {
         const rx = getNodeByPath(m, ['r', ri]) as N
         n.nodeStartX = rx.nodeStartX
         n.nodeEndX = rx.nodeEndX
-        n.nodeY = g.mapHeight / 2 - 0.5
+        n.nodeY = rx.nodeY
         n.isTop = 1
         n.isBottom = 1
         break

@@ -16,7 +16,10 @@ export interface GSaveOptional {
 export interface GSaveNever {
   mapWidth: number
   mapHeight: number
-  mapStartCenterX: number
+  maxD: number
+  maxU: number
+  maxR: number
+  maxL: number
   sLineDeltaXDefault: number
   taskConfigD: number
   taskConfigWidth: number
@@ -31,6 +34,8 @@ export interface NSaveOptional {
   imageH: number
   dimW: number
   dimH: number
+  offsetW: number
+  offsetH: number
   selected: number
   selection: string
   lastSelectedChild: number
