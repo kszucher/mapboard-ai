@@ -11,7 +11,7 @@ export const gSaveOptional = {
   density: 'large',
   taskConfigN: 4,
   taskConfigGap: 4,
-  margin: 32,
+  margin: 4*24+3*4+2*20,
 } as GSaveOptional
 
 export const gSaveNever = {
