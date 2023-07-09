@@ -8,9 +8,6 @@ export interface GSaveAlways {
 export interface GSaveOptional {
   alignment: string
   density: string
-  taskConfigN: number
-  taskConfigGap: number
-  margin: number
 }
 
 export interface GSaveNever {
@@ -21,8 +18,6 @@ export interface GSaveNever {
   maxR: number
   maxL: number
   sLineDeltaXDefault: number
-  taskConfigD: number
-  taskConfigWidth: number
 }
 
 export interface NSaveOptional {

@@ -9,9 +9,6 @@ export const gSaveAlways = {
 export const gSaveOptional = {
   alignment: 'adaptive',
   density: 'large',
-  taskConfigN: 4,
-  taskConfigGap: 4,
-  margin: 4*24+3*4+2*20,
 } as GSaveOptional
 
 export const gSaveNever = {
@@ -22,8 +19,6 @@ export const gSaveNever = {
   maxR: 0,
   maxL: 0,
   sLineDeltaXDefault: 0,
-  taskConfigD: 0,
-  taskConfigWidth: 0,
 } as GSaveNever
 
 export const nSaveAlways = {

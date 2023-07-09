@@ -18,12 +18,7 @@ export const mapInit = (m: MPartial) => {
       for (const prop in gSaveNever) {
         Object.assign(g, {[prop]: structuredClone(gSaveNever[prop as keyof GSaveNever])})
       }
-      // 30 = 14 + 2*8, 20 = 14 + 2*3
-      g.sLineDeltaXDefault = g.density === 'large' ? 30 : 20
-      g.taskConfigD = g.density === 'large' ? 24 : 20
-      g.taskConfigWidth =
-        (g.taskConfigN || gSaveNever.taskConfigWidth) * g.taskConfigD +
-        ((g.taskConfigN || gSaveNever.taskConfigWidth) - 1) * (g.taskConfigGap || gSaveOptional.taskConfigGap)
+      g.sLineDeltaXDefault = g.density === 'large' ? 30 : 20 // 30 = 14 + 2*8, 20 = 14 + 2*3
     } else {
       for (const prop in nSaveAlways) {
         if (!n.hasOwnProperty(prop)) {

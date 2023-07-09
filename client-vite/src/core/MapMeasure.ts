@@ -1,6 +1,6 @@
 import {G, M, N} from "../state/MapPropTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils";
-import {getCountCO1, getCountSO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS} from "./MapUtils"
+import {getCountCO1, getCountSO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getTaskWidth} from "./MapUtils"
 
 export const mapMeasure = (pm: M, m: M) => {
   const g = getNodeByPath(m, ['g']) as G
@@ -21,7 +21,7 @@ export const mapMeasure = (pm: M, m: M) => {
           if ((rx.offsetW + rx.selfW / 2 + rxd0.familyW) > n.maxR) {n.maxR = rx.offsetW + rx.selfW / 2 + rxd0.familyW}
           if ((rx.offsetW - rx.selfW / 2 - rxd1.familyW) < n.maxL) {n.maxL = rx.offsetW - rx.selfW / 2 - rxd1.familyW}
         })
-        n.mapWidth = n.maxR - n.maxL + n.margin * 2 // if task exists on left, +150, if task exists on the right, another +150
+        n.mapWidth = n.maxR - n.maxL + getTaskWidth(n)  * (+hasTaskLeft(m) + +hasTaskRight(m))
         n.mapHeight = n.maxD - n.maxU
         break
       }

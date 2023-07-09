@@ -114,7 +114,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
                 </path>
               }
               {
-                [...Array(g.taskConfigN)].map((el, i) => (
+                [...Array(4)].map((el, i) => (
                   <circle
                     key={`${n.nodeId}_svg_taskCircle${i + 1}`}
                     id={'taskCircle'}

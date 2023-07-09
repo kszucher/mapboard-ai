@@ -1,7 +1,7 @@
 import {LineTypes} from "../state/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
-import {getX, getNodeByPath, getPathDir, isXACC, isXACR, getG, isD, getSI1, getRi} from "../core/MapUtils"
+import {getX, getNodeByPath, getPathDir, isXACC, isXACR, getG, isD, getSI1, getRi, getTaskWidth} from "../core/MapUtils"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -209,7 +209,6 @@ export const getGridPath = (n: N) => {
 }
 
 const getTaskStartPoint = (m: M, g: G, n: N) => {
-  const { mapWidth, taskConfigWidth } = g
   const dir = getPathDir(n.path)
   if (n.path.includes('c')) {
     const currCol = n.path[n.path.lastIndexOf('c') + 2] as number
@@ -217,7 +216,7 @@ const getTaskStartPoint = (m: M, g: G, n: N) => {
     const coverCellRef = getNodeByPath(m, coverCellPath) as N
     return (dir === - 1 ? coverCellRef.nodeEndX : coverCellRef.nodeStartX) + dir * (coverCellRef.sumMaxColWidth[currCol] + coverCellRef.maxColWidth[currCol] - 120)
   } else {
-    return (dir === 1 ? mapWidth : 0) - dir * (20 + taskConfigWidth)
+    return (dir === 1 ? g.mapWidth + 20 : -20) - dir * getTaskWidth(g)
   }
 }
 
@@ -232,9 +231,10 @@ export const getTaskPath = (m: M, g: G, n: N) => {
 
 export const getTaskCircle = (m: M, g: G, n: N, i: number) => {
   const dir = getPathDir(n.path)
-  const { taskConfigD, taskConfigGap } = g
-  const cx = getTaskStartPoint(m, g, n) + dir * ( taskConfigD/2 + i * (taskConfigD + taskConfigGap))
+  const taskRadius = g.density === 'large' ? 24 : 20
+  const GAP = 4
+  const cx = getTaskStartPoint(m, g, n) + dir * ( taskRadius/2 + i * (taskRadius + GAP))
   const cy = n.nodeY
-  const r = taskConfigD / 2
+  const r = taskRadius / 2
   return { cx, cy, r }
 }
