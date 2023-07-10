@@ -1,6 +1,6 @@
 import {isUrl} from "./Utils"
 import {M} from "../state/MapPropTypes"
-import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountCO1, getCountSO1, getPathDir, getXP, isR, getCountRXD1S, getCountRXD0S, getXRi, getRXD0, getRXD1} from "./MapUtils"
+import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountCO1, getCountSO1, getPathDir, getXP, isR, getCountRXD1S, getCountRXD0S, getXRi, getRXD0, getRXD1, getRi} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
@@ -115,10 +115,10 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'pi' && isXR(m)): return ({type: 'insertSORImage', payload: ep})
     case (es === 'pi' && isXS(m)): return ({type: 'insertSOImage', payload: ep})
 
-    case (es === 'c' && et === 'select' && isR(ep.path)): return ({type: 'selectR', payload: ep})
+    case (es === 'c' && et === 'select' && isR(ep.path)): return ({type: 'selectRi', payload: ep})
     case (es === 'c' && et === 'select' && !isR(ep.path) && !ep.add): return ({type: 'selectS', payload: ep})
     case (es === 'c' && et === 'select' && !isR(ep.path) && ep.add): return ({type: 'selectStoo', payload: ep})
-    case (es === 'c' && et === 'selectF' && isR(ep.path) && getCountRXD0S(m, getXRi(m)) > 0 && !getRXD0(m).selected): return ({type: 'selectRXD0F', payload: ep})
+    case (es === 'c' && et === 'selectF' && isR(ep.path) && getCountRXD0S(m, getRi(ep.path)) > 0 && !getRXD0(m).selected): return ({type: 'selectRXD0F', payload: ep})
     case (es === 'c' && et === 'selectF' && isR(ep.path) && !!getRXD0(m).selected && !getRXD1(m).selected && getCountSO1(m, getRXD1(m).path) > 0): return ({type: 'selectRXD1F', payload: ep})
     case (es === 'c' && et === 'selectF' && !isR(ep.path) && getCountSO1(m, ep.path) > 0): return ({type: 'selectF', payload: ep})
     case (es === 'c' && et === 'selectR'): return ({type: 'selectR', payload: ep})

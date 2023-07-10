@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountRXD1S, getCountRXD0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0, getCountSO1, getXRi} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountRXD1S, getCountRXD0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0, getCountSO1, getXRi, getRi} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -22,11 +22,12 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'changeAlignment': getG(m).alignment = getG(m).alignment === 'centered' ? 'adaptive' : 'centered'; break
 
     case 'selectR': selectNode(m, ['r', 0], 's'); break
+    case 'selectRi': selectNode(m, payload.path, 's'); break
     case 'selectS': selectNode(m, payload.path, 's'); break
     case 'selectStoo': selectNodeToo(m, payload.path, 's'); break
     case 'selectF': selectNode(m, payload.path, 'f'); break
-    case 'selectRXD0F': selectNode(m, ['r', getXRi(m), 'd', 0], 'f'); break
-    case 'selectRXD1F': selectNode(m, ['r', getXRi(m), 'd', 1], 'f'); break
+    case 'selectRXD0F': selectNode(m, ['r', getRi(payload.path), 'd', 0], 'f'); break
+    case 'selectRXD1F': selectNode(m, ['r', getRi(payload.path), 'd', 1], 'f'); break
     case 'selectall': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
     case 'selectSD': selectNode(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
     case 'selectSDtoo': selectNodeToo(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
