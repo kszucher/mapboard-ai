@@ -2,8 +2,10 @@ import {FC} from "react"
 import {useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
 import {actions, AppDispatch, RootState} from '../core/EditorReducer'
-import {genHash} from "../core/Utils";
-import {getMapId} from "../state/ApiState";
+import {mapActionResolver} from "../core/MapActionResolver"
+import {genHash} from "../core/Utils"
+import {getMapId} from "../state/ApiState"
+import {mSelector} from "../state/EditorState"
 import {PageState} from "../state/Enums"
 import {api} from "../core/Api"
 import {useAuth0} from "@auth0/auth0-react"
@@ -11,6 +13,7 @@ import {useAuth0} from "@auth0/auth0-react"
 export const ProfileMenu: FC = () => {
   const moreMenu = useSelector((state: RootState) => state.editor.moreMenu)
   const pageState = useSelector((state: RootState) => state.editor.pageState)
+  const m = useSelector((state:RootState) => mSelector(state))
   const { logout } = useAuth0()
   const dispatch = useDispatch<AppDispatch>()
   return (
@@ -67,6 +70,12 @@ export const ProfileMenu: FC = () => {
             dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))
           }}>
             {'Remove Tab Map'}
+          </MenuItem>,
+          <Divider key={genHash(8)}/>,
+          <MenuItem key={genHash(8)} onClick={() => {
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertMeetingTemplate', null)))
+          }}>
+            {'Add Meeting Notes Template'}
           </MenuItem>,
           <Divider key={genHash(8)}/>,
           <MenuItem key={genHash(8)} onClick={() => {
