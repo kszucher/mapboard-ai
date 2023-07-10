@@ -137,8 +137,8 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'insertTable' && isXS(m)): return ({type: 'insertSOTable', payload: ep})
 
     case (es === 'c' && et === 'finishEdit'): return ({type: 'finishEdit', payload: ep})
-    case (es === 'c' && et === 'simulateDrag'): return ({type: 'simulateDrag', payload: ep})
-    case (es === 'c' && et === 'drag'): return ({type: 'drag', payload: ep})
+    case (es === 'c' && et === 'simulateDrag' && !isXR(m)): return ({type: 'simulateDrag', payload: ep})
+    case (es === 'c' && et === 'drag' && !isXR(m)): return ({type: 'drag', payload: ep})
     case (es === 'c' && et === 'startEditAppend' && editable): return ({type: 'startEditAppend', payload: ep})
     case (es === 'c' && et === 'typeText'): return ({type: 'typeText', payload: ep})
     case (es === 'c' && et === 'undo'): return ({type: 'undo',payload: ep})
