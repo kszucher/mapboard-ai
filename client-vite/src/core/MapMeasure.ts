@@ -21,7 +21,7 @@ export const mapMeasure = (pm: M, m: M) => {
           if ((rx.offsetW + rx.selfW / 2 + rxd0.familyW) > n.maxR) {n.maxR = rx.offsetW + rx.selfW / 2 + rxd0.familyW}
           if ((rx.offsetW - rx.selfW / 2 - rxd1.familyW) < n.maxL) {n.maxL = rx.offsetW - rx.selfW / 2 - rxd1.familyW}
         })
-        n.mapWidth = n.maxR - n.maxL + getTaskWidth(n)  * (+hasTaskLeft(m) + +hasTaskRight(m)) + 100
+        n.mapWidth = n.maxR - n.maxL + getTaskWidth(n) * (+hasTaskLeft(m) + +hasTaskRight(m)) + 100
         n.mapHeight = n.maxD - n.maxU + 100
         break
       }
