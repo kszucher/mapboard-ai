@@ -21,8 +21,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'changeDensity': getG(m).density = getG(m).density === 'small' ? 'large' : 'small'; break
     case 'changeAlignment': getG(m).alignment = getG(m).alignment === 'centered' ? 'adaptive' : 'centered'; break
 
-    case 'selectR': selectNode(m, ['r', 0], 's'); break
+    case 'selectR0': selectNode(m, ['r', 0], 's'); break
     case 'selectRi': selectNode(m, payload.path, 's'); break
+    case 'selectXRi': selectNode(m, ['r', getXRi(m)], 's'); break
     case 'selectS': selectNode(m, payload.path, 's'); break
     case 'selectStoo': selectNodeToo(m, payload.path, 's'); break
     case 'selectF': selectNode(m, payload.path, 'f'); break

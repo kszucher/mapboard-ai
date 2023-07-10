@@ -93,7 +93,7 @@ export const MapSvg: FC = () => {
             }
           } else {
             if (e.button === 0) {
-              dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'selectR', null)))
+              dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'selectR0', null)))
             }
           }
         }, { signal })
