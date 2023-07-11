@@ -4,7 +4,7 @@ import {mapActionResolver} from "../core/MapActionResolver"
 import {getCountCO1, getG, getR0, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
-import {MapSvgLayer0MapBackground} from "./MapSvgLayer0MapBackground"
+import {MapSvgLayer0NodeRootBackground} from "./MapSvgLayer0NodeRootBackground"
 import {MapSvgLayer1NodeFamilyBackground} from "./MapSvgLayer1NodeFamilyBackground"
 import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
 import {MapSvgLayer3NodeAttributes} from "./MapSvgLayer3NodeAttributes"
@@ -99,7 +99,7 @@ export const MapSvg: FC = () => {
         }, { signal })
       }}
     >
-      <MapSvgLayer0MapBackground/>
+      <MapSvgLayer0NodeRootBackground/>
       <MapSvgLayer1NodeFamilyBackground/>
       <MapSvgLayer2NodeBackground/>
       <MapSvgLayer3NodeAttributes/>
