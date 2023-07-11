@@ -3,8 +3,10 @@ import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 import {unselectNodes} from "./MapSelect"
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getSI1, getCountSCR, getCountSCC} from "./MapUtils"
 
-export const insertMeetingNotes = (m: M) => {
-  m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1], content: 'meeting notes', offsetW: 500, offsetH: 500} as GN)
+export const insertR = (m: M) => {
+
+
+  m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1], content: 'meeting notes', offsetW: 500.5, offsetH: 500.5} as GN)
   m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1, 'd', 0]} as GN)
   m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1, 'd', 0, 's', 0], content: 'participants'} as GN)
   m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1, 'd', 0, 's', 1], content: 'decisions'} as GN)

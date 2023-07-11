@@ -73,7 +73,7 @@ export const ProfileMenu: FC = () => {
           </MenuItem>,
           <Divider key={genHash(8)}/>,
           <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertMeetingTemplate', null)))
+            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertR', null)))
           }}>
             {'Add Meeting Notes Template'}
           </MenuItem>,
