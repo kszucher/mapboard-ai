@@ -6,7 +6,7 @@ import {structNavigate} from './NodeNavigate'
 import {nSaveOptional} from "../state/MapProps"
 import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
-import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete"
+import {deleteReselectCC, deleteReselectCR, deleteReselectR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertMeetingNotes, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
@@ -84,6 +84,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSCCL': insertCC(m, [...getXP(m), 'c', 0, 0]); break
     case 'insertMeetingTemplate': insertMeetingNotes(m); break
 
+    case 'deleteR': deleteReselectR(m); break
     case 'deleteS': deleteReselectS(m); break
     case 'deleteCR': deleteReselectCR(m); break
     case 'deleteCC': deleteReselectCC(m); break

@@ -23,6 +23,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, '---') && ['Insert','Tab'].includes(e.key) && isXS(m)): return ({type: 'insertSO', payload: ep})
     case (es === 'kd' && ckm(e, '---') && ['Insert','Tab'].includes(e.key) && isXC(m)): return ({type: 'selectCO', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.key === 'Delete' && isXS(m)): return ({type: 'deleteS', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.key === 'Delete' && isXR(m) && getXRi(m) > 0): return ({type: 'deleteR', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.key === 'Delete' && isXACR(m)): return ({type: 'deleteCR', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.key === 'Delete' && isXACC(m)): return ({type: 'deleteCC', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.code === 'Space' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'selectCFF', payload: ep})

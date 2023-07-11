@@ -1,6 +1,14 @@
 import {M} from "../state/MapPropTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
-import {decPiN, getNodeByPath, getSIL, isSD, isCFDF, decPi, isCFRF, getReselectS, getReselectCR, getReselectCC, getXA, getXP} from "./MapUtils"
+import {decPiN, getNodeByPath, getSIL, isSD, isCFDF, decPi, isCFRF, getReselectS, getReselectCR, getReselectCC, getXA, getXP, getXRi, getReselectR} from "./MapUtils"
+
+export const deleteR = (m: M) => {
+  const ri = getXRi(m)
+  for (let i = m.length - 1; i > 0; i--) {
+    const n = m[i]
+    n.path.at(1) as number === ri && m.splice(i, 1)
+  }
+}
 
 export const deleteS = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
@@ -29,6 +37,12 @@ export const deleteCC = (m: M) => {
     if (!getXA(m).length) break
     isCFRF(getXP(m), n.path) && Object.assign(n, {path: decPi(n.path, getXP(m).length - 1)})
   }
+}
+
+export const deleteReselectR = (m: M) => {
+  const reselectPath = getReselectR(m)
+  deleteS(m)
+  selectNode(m, reselectPath, 's')
 }
 
 export const deleteReselectS = (m: M) => {
