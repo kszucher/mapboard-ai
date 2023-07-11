@@ -102,7 +102,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         <Fragment key={`${getX(m).nodeId}_add_right`}>
           <MapSvgIconWrapper
             x={getRootStartX(m, getX(m)) + getRootW(m, getX(m)) - 24}
-            y={getRootStartY(m, getX(m)) + getRootH(m, getX(m)) / 2 - 24}
+            y={getRootStartY(m, getX(m)) + getRootH(m, getX(m)) / 2 - 12}
             iconName={'SquarePlus'}
             onMouseDownGuarded={() => {
               // TODO insert R to the right popup
@@ -113,7 +113,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         isXR(m) && nx.selection === 's' &&
         <Fragment key={`${getX(m).nodeId}_add_bottom`}>
           <MapSvgIconWrapper
-            x={getRootStartX(m, getX(m)) + getRootW(m, getX(m)) / 2 - 24}
+            x={getRootStartX(m, getX(m)) + getRootW(m, getX(m)) / 2 - 12}
             y={getRootStartY(m, getX(m)) + getRootH(m, getX(m)) - 24}
             iconName={'SquarePlus'}
             onMouseDownGuarded={() => {
