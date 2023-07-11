@@ -16,6 +16,12 @@ export const MapSvgIcon = ({iconName} : {iconName : string}) => (
     {iconName === 'CirclePlus' &&
       <g>
         <path stroke="none" d="M0 0h24v24H0z"></path>
+        <path d="M3 12a9 9 0 1018 0 9 9 0 10-18 0M9 12h6M12 9v6"></path>
+      </g>
+    }
+    {iconName === 'SquarePlus' &&
+      <g>
+        <path stroke="none" d="M0 0h24v24H0z"></path>
         <path d="M12 5v14M5 12h14"></path>
       </g>
     }

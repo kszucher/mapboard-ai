@@ -5,7 +5,7 @@ import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {PageState} from "../state/Enums";
 import {N} from "../state/MapPropTypes"
-import {getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath, getRi} from "../core/MapUtils"
+import {getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath, getRi, getRootStartX, getRootStartY, getRootW, getRootH} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -30,111 +30,96 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
     <g>
       {
         <Fragment key={rx.nodeId}>
-          <MapSvgIconWrapper
-            x={r0.nodeStartX + r0.selfW / 2 -12 - .5}
-            y={r0.nodeY - r0.selfH /2 - 24  - 12 + .5}
-            iconName={rx.note === '' ? 'FileUpload' : 'FileText'}
-            onMouseDownGuarded={() => {
-              dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
-            }}/>
+          <MapSvgIconWrapper x={r0.nodeStartX + r0.selfW / 2 -12 - .5} y={r0.nodeY - r0.selfH /2 - 24  - 12 + .5} iconName={rx.note === '' ? 'FileUpload' : 'FileText'} onMouseDownGuarded={() => {
+            dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
+          }}/>
         </Fragment>
       }
       {
         ((isXR(m) && getCountSO1(m, ['r', getRi(nx.path), 'd', 0]) === 0) || isXS(m) && getCountSO1(m, nx.path) === 0) && nx.selection === 's' &&
-        <MapSvgIconWrapper
-          x={calcSvgIconOffsetX(nx, getCountCO1(m, nx.path) ? 6 : 1)}
-          y={nx.nodeY - 12 + .5}
-          iconName={'CirclePlus'}
-          onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertS', null)))
-          }}/>
+        <MapSvgIconWrapper x={calcSvgIconOffsetX(nx, getCountCO1(m, nx.path) ? 6 : 1)} y={nx.nodeY - 12 + .5} iconName={'CirclePlus'} onMouseDownGuarded={() => {
+          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertS', null)))
+        }}/>
       }
       {
         isXD(m) && nx.selection === 'f' && getR0(m).note !== '' &&
-        <MapSvgIconWrapper
-          x={calcSvgIconOffsetX(nx, 1)}
-          y={rx.nodeY - 12 + .5}
-          iconName={'Sparkle'} onMouseDownGuarded={() => {
+        <MapSvgIconWrapper x={calcSvgIconOffsetX(nx, 1)} y={rx.nodeY - 12 + .5} iconName={'Sparkle'} onMouseDownGuarded={() => {
           dispatch(actions.setPageState(PageState.WS_LOADING))
           dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonS(m))))
         }}/>
       }
       {
         isXS(m) && nx.selection === 'f' &&
-        <MapSvgIconWrapper
-          x={calcSvgIconOffsetX(nx, 1)}
-          y={nx.nodeY - 12 + .5}
-          iconName={'TableExport'}
-          onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'moveS2T', null)))
-          }}/>
+        <MapSvgIconWrapper x={calcSvgIconOffsetX(nx, 1)} y={nx.nodeY - 12 + .5} iconName={'TableExport'} onMouseDownGuarded={() => {
+          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'moveS2T', null)))
+        }}/>
       }
       {
         isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
-        <MapSvgIconWrapper
-          x={calcSvgIconOffsetX(nx, 1)}
-          y={nx.nodeY - 12 + .5}
-          iconName={'ColumnInsertLeft'}
-          onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCCL', null)))
-          }}/>
+        <MapSvgIconWrapper x={calcSvgIconOffsetX(nx, 1)} y={nx.nodeY - 12 + .5} iconName={'ColumnInsertLeft'} onMouseDownGuarded={() => {
+          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCCL', null)))
+        }}/>
       }
       {
         isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
-        <MapSvgIconWrapper
-          x={calcSvgIconOffsetX(nx, 2)}
-          y={nx.nodeY - 12 + .5}
-          iconName={'ColumnInsertRight'}
-          onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCCR', null)))
-          }}/>
+        <MapSvgIconWrapper x={calcSvgIconOffsetX(nx, 2)} y={nx.nodeY - 12 + .5} iconName={'ColumnInsertRight'} onMouseDownGuarded={() => {
+          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCCR', null)))
+        }}/>
       }
       {
         isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
-        <MapSvgIconWrapper
-          x={calcSvgIconOffsetX(nx, 3)}
-          y={nx.nodeY - 12 + .5}
-          iconName={'RowInsertTop'}
-          onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCRU', null)))
-          }}/>
+        <MapSvgIconWrapper x={calcSvgIconOffsetX(nx, 3)} y={nx.nodeY - 12 + .5} iconName={'RowInsertTop'} onMouseDownGuarded={() => {
+          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCRU', null)))
+        }}/>
       }
       {
         isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
-        <MapSvgIconWrapper
-          x={calcSvgIconOffsetX(nx, 4)}
-          y={nx.nodeY - 12 + .5}
-          iconName={'RowInsertBottom'}
-          onMouseDownGuarded={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCRD', null)))
-          }}/>
+        <MapSvgIconWrapper x={calcSvgIconOffsetX(nx, 4)} y={nx.nodeY - 12 + .5} iconName={'RowInsertBottom'} onMouseDownGuarded={() => {
+          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCRD', null)))
+        }}/>
       }
       {
         isXS(m) && nx.selection === 's' && getCountCO1(m, nx.path) &&
-        <MapSvgIconWrapper
-          x={calcSvgIconOffsetX(nx, 5)}
-          y={nx.nodeY - 12 + .5}
-          iconName={'TablePlus'}
-          onMouseDownGuarded={() => {
-            dispatch(actions.setPageState(PageState.WS_LOADING))
-            dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonT(m))))
-          }}/>
+        <MapSvgIconWrapper x={calcSvgIconOffsetX(nx, 5)} y={nx.nodeY - 12 + .5} iconName={'TablePlus'} onMouseDownGuarded={() => {
+          dispatch(actions.setPageState(PageState.WS_LOADING))
+          dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonT(m))))
+        }}/>
       }
       {
         isXS(m) && nx.selection === 's' && getCountSO1(m, nx.path) === 0 &&
         getXSSCXX(m).map((n) => (
             getCountSO1(m, n.path) === 0 &&
             <Fragment key={n.nodeId}>
-              <MapSvgIconWrapper
-                x={n.nodeStartX + 10}
-                y={n.nodeY - 12 + .5}
-                iconName={'CirclePlus'}
-                onMouseDownGuarded={() => {
-                  dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCSO', {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number})))
-                }}/>
+              <MapSvgIconWrapper x={n.nodeStartX + 10} y={n.nodeY - 12 + .5} iconName={'CirclePlus'} onMouseDownGuarded={() => {
+                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCSO', {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number})))
+              }}/>
             </Fragment>
           )
         )
+      }
+      {
+        isXR(m) && nx.selection === 's' &&
+        <Fragment key={`${getX(m).nodeId}_add_right`}>
+          <MapSvgIconWrapper
+            x={getRootStartX(m, getX(m)) + getRootW(m, getX(m)) - 24}
+            y={getRootStartY(m, getX(m)) + getRootH(m, getX(m)) / 2 - 24}
+            iconName={'SquarePlus'}
+            onMouseDownGuarded={() => {
+              // TODO insert R to the right popup
+            }}/>
+        </Fragment>
+      }
+      {
+        isXR(m) && nx.selection === 's' &&
+        <Fragment key={`${getX(m).nodeId}_add_bottom`}>
+          <MapSvgIconWrapper
+            x={getRootStartX(m, getX(m)) + getRootW(m, getX(m)) / 2 - 24}
+            y={getRootStartY(m, getX(m)) + getRootH(m, getX(m)) - 24}
+            iconName={'SquarePlus'}
+            onMouseDownGuarded={() => {
+              // TODO insert R to the bottom popup
+            }}/>
+        </Fragment>
       }
     </g>
   )

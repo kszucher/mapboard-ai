@@ -3,7 +3,7 @@ import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {N} from "../state/MapPropTypes";
 import {getColors} from "./Colors"
-import {getG, getRi, getRXD0, getRXD1, getTaskWidth, hasTaskLeft, hasTaskRight, isR} from "../core/MapUtils"
+import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../core/EditorReducer"
@@ -39,10 +39,10 @@ export const MapSvgLayer0NodeRootBackground: FC = () => {
               isR(n.path) &&
               <rect
                 key={`${g.nodeId}_svg_root_background`}
-                x={n.nodeStartX - getRXD1(m, getRi(n.path)).familyW - 50}
-                y={n.nodeY - Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) / 2 - 50}
-                width={getRXD0(m, getRi(n.path)).familyW + getRXD1(m, getRi(n.path)).familyW + n.selfW  + getTaskWidth(getG(m)) * (+hasTaskLeft(m) + +hasTaskRight(m)) + 100}
-                height={Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) + 100}
+                x={getRootStartX(m, n)}
+                y={getRootStartY(m, n)}
+                width={getRootW(m, n)}
+                height={getRootH(m, n)}
                 rx={32}
                 ry={32}
                 fill={C.MAP_BACKGROUND}
