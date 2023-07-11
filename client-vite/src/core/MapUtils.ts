@@ -63,7 +63,7 @@ export const getSI1 = (p: P) => getSIL(p).at(-1) as P
 export const getSI2 = (p: P) => getSIL(p).at(-2) as P
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
 export const getRL = (m: M) => m.filter(n => n.path.length === 2)
-export const getR0 = (m: M) => m.filter(n => n.path.length === 2).at(0) as N
+export const getR0 = (m: M) => getNodeByPath(m, ['r', 0])
 export const getX = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getXP = (m: M) => getX(m).path
 export const getXSF = (m: M) => m.find(n => n.selected)!

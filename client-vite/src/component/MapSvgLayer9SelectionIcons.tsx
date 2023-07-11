@@ -20,6 +20,7 @@ const calcSvgIconOffsetX = (n: N, i: number) => (
 export const MapSvgLayer9SelectionIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const nx = getX(m)
+  const r0 = getR0(m)
   const ri = getXRi(m)
   const rx = getNodeByPath(m, ['r', ri]) as N
   const { data } = useOpenWorkspaceQuery()
@@ -30,8 +31,8 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
       {
         <Fragment key={rx.nodeId}>
           <MapSvgIconWrapper
-            x={rx.nodeStartX + rx.selfW / 2 -12 - .5}
-            y={rx.nodeY - rx.selfH /2 - 24  - 12 + .5}
+            x={r0.nodeStartX + r0.selfW / 2 -12 - .5}
+            y={r0.nodeY - r0.selfH /2 - 24  - 12 + .5}
             iconName={rx.note === '' ? 'FileUpload' : 'FileText'}
             onMouseDownGuarded={() => {
               dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
