@@ -5,7 +5,7 @@ import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
 import {mapActionResolver} from "../core/MapActionResolver"
 import {PageState} from "../state/Enums";
 import {N} from "../state/MapPropTypes"
-import {getCountD0S, getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath} from "../core/MapUtils"
+import {getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath, getRi} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -39,7 +39,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         </Fragment>
       }
       {
-        ((isXR(m) && getCountD0S(m) === 0) || isXS(m) && getCountSO1(m, nx.path) === 0) && nx.selection === 's' &&
+        ((isXR(m) && getCountSO1(m, ['r', getRi(nx.path), 'd', 0]) === 0) || isXS(m) && getCountSO1(m, nx.path) === 0) && nx.selection === 's' &&
         <MapSvgIconWrapper
           x={calcSvgIconOffsetX(nx, getCountCO1(m, nx.path) ? 6 : 1)}
           y={nx.nodeY - 12 + .5}

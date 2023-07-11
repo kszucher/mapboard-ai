@@ -93,7 +93,6 @@ export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 export const getRXD0 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 0])
 export const getRXD1 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 1])
 
-export const getCountD0S = (m: M) => getCountSO1(m, ['r', 0, 'd', 0])
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
 export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
