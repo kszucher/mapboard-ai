@@ -1,17 +1,17 @@
-import {GN, M, P} from "../state/MapPropTypes"
+import {GN, M, MPartial, P} from "../state/MapPropTypes"
 import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 import {unselectNodes} from "./MapSelect"
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getSI1, getCountSCR, getCountSCC} from "./MapUtils"
 
-export const insertR = (m: M) => {
-
-
-  m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1], content: 'meeting notes', offsetW: 500, offsetH: 500} as GN)
-  m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1, 'd', 0]} as GN)
-  m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1, 'd', 0, 's', 0], content: 'participants'} as GN)
-  m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1, 'd', 0, 's', 1], content: 'decisions'} as GN)
-  m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1, 'd', 0, 's', 2], content: 'actions'} as GN)
-  m.push({selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', 1, 'd', 1]} as GN)
+export const insertR = (m: M, ri: number, offsetW: number, offsetH: number) => {
+  m.push(
+    {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri], content: 'meeting notes', offsetW, offsetH} as GN,
+    {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri, 'd', 0]} as GN,
+    {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri, 'd', 0, 's', 0], content: 'participants'} as GN,
+    {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri, 'd', 0, 's', 1], content: 'decisions'} as GN,
+    {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri, 'd', 0, 's', 2], content: 'actions'} as GN,
+    {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri, 'd', 1]} as GN
+  )
   m.sort(sortPath)
 }
 

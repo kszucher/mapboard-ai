@@ -105,7 +105,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
             y={getRootStartY(m, getX(m)) + getRootH(m, getX(m)) / 2 - 12}
             iconName={'SquarePlus'}
             onMouseDownGuarded={() => {
-              // TODO insert R to the right popup
+              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertRR', null)))
             }}/>
         </Fragment>
       }
@@ -117,7 +117,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
             y={getRootStartY(m, getX(m)) + getRootH(m, getX(m)) - 24}
             iconName={'SquarePlus'}
             onMouseDownGuarded={() => {
-              // TODO insert R to the bottom popup
+              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertRD', null)))
             }}/>
         </Fragment>
       }
