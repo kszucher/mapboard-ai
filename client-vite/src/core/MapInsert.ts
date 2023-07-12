@@ -4,8 +4,9 @@ import {unselectNodes} from "./MapSelect"
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getSI1, getCountSCR, getCountSCC} from "./MapUtils"
 
 export const insertR = (m: M, ri: number, offsetW: number, offsetH: number) => {
+  unselectNodes(m)
   m.push(
-    {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri], content: 'meeting notes', offsetW, offsetH} as GN,
+    {selected: 1, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri], content: 'meeting notes', offsetW, offsetH} as GN,
     {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri, 'd', 0]} as GN,
     {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri, 'd', 0, 's', 0], content: 'participants'} as GN,
     {selected: 0, selection: 's', nodeId: 'node' + genHash(8), path: ['r', ri, 'd', 0, 's', 1], content: 'decisions'} as GN,

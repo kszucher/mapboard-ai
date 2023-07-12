@@ -23,8 +23,8 @@ export const MapSvgLayer0NodeRootBackground: FC = () => {
           y={0}
           width={g.mapWidth}
           height={g.mapHeight}
-          rx={32}
-          ry={32}
+          rx={0}
+          ry={0}
           fill={'none'}
           stroke={'#dddddd'}
           strokeWidth={0.5}

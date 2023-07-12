@@ -6,7 +6,7 @@ export const editorState: EditorState = {
   token: '',
   pageState: PageState.AUTH,
   formatMode: FormatMode.text,
-  tabShrink: false,
+  tabShrink: true,
   tempMap: [],
   mapList: [],
   mapListIndex: 0,

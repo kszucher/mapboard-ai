@@ -56,7 +56,7 @@ export const MapSvg: FC = () => {
   return (
     <svg
       key={r0.nodeId}
-      width={g.mapWidth}
+      width={g.mapWidth + 140} // space for buttons
       height={g.mapHeight}
       style={{transition: '0.3s ease-out'}}
       onMouseDown={(e) => {
