@@ -73,12 +73,6 @@ export const ProfileMenu: FC = () => {
           </MenuItem>,
           <Divider key={genHash(8)}/>,
           <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertR', null)))
-          }}>
-            {'Add Meeting Notes Template'}
-          </MenuItem>,
-          <Divider key={genHash(8)}/>,
-          <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.resetState())
             dispatch(api.util.resetApiState())
             logout({ logoutParams: { returnTo: window.location.origin }})
