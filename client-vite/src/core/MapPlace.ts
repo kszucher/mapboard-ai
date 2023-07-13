@@ -11,8 +11,8 @@ export const mapPlace = (m: M) => {
       }
       case isR(n.path): {
         const g = getG(m)
-        n.nodeStartX = n.offsetW + Math.abs(g.maxL) - n.selfW / 2 + 1 + getTaskWidth(g) * +hasTaskLeft(m) + 50
-        n.nodeEndX = n.offsetW + Math.abs(g.maxL) + n.selfW / 2 + 1 + getTaskWidth(g) * +hasTaskLeft(m) + 50
+        n.nodeStartX = n.offsetW + Math.abs(g.maxL) - n.selfW / 2 + 1 + getTaskWidth(g) * +hasTaskLeft(m, getRi(n.path)) + 50
+        n.nodeEndX = n.offsetW + Math.abs(g.maxL) + n.selfW / 2 + 1 + getTaskWidth(g) * +hasTaskLeft(m, getRi(n.path)) + 50
         n.nodeY = n.offsetH + Math.abs(g.maxU) - 0.5 + 50
         break
       }

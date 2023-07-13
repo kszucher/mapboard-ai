@@ -151,14 +151,14 @@ export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
 
-export const hasTaskRight = (m: M) => m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
-export const hasTaskLeft = (m: M) => m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
+export const hasTaskRight = (m: M, ri: number) => m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
+export const hasTaskLeft = (m: M, ri: number) => m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
 
 const TASK_CIRCLES_NUM = 4
 const TASK_CIRCLES_GAP = 4
 export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' ? 24 : 20) + (TASK_CIRCLES_NUM - 1) * TASK_CIRCLES_GAP + 40
 
-export const getRootStartX = (m: M, n: N) => n.nodeStartX - getRXD1(m, getRi(n.path)).familyW - getTaskWidth(getG(m)) * (+hasTaskLeft(m)) - 50
+export const getRootStartX = (m: M, n: N) => n.nodeStartX - getRXD1(m, getRi(n.path)).familyW - getTaskWidth(getG(m)) * (+hasTaskLeft(m, getRi(n.path))) - 50
 export const getRootStartY = (m: M, n: N) => n.nodeY - Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) / 2 - 50
-export const getRootW = (m: M, n: N) => getRXD0(m, getRi(n.path)).familyW + getRXD1(m, getRi(n.path)).familyW + n.selfW  + getTaskWidth(getG(m)) * (+hasTaskLeft(m) + +hasTaskRight(m)) + 100
+export const getRootW = (m: M, n: N) => getRXD0(m, getRi(n.path)).familyW + getRXD1(m, getRi(n.path)).familyW + n.selfW  + getTaskWidth(getG(m)) * (+hasTaskLeft(m, getRi(n.path)) + +hasTaskRight(m, getRi(n.path))) + 100
 export const getRootH = (m: M, n: N) => Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) + 100
