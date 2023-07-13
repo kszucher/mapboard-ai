@@ -157,6 +157,11 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       break
     }
     case 'gptParser': gptParser(m, payload.gptParsed); break
+
+    case 'offsetD': getX(m).offsetH += 20; break
+    case 'offsetU': getX(m).offsetH -= 20; break
+    case 'offsetR': getX(m).offsetW += 20; break
+    case 'offsetL': getX(m).offsetW -= 20; break
   }
 }
 
