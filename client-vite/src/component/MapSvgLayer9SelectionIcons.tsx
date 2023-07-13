@@ -30,7 +30,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
     <g>
       {
         <Fragment key={rx.nodeId}>
-          <MapSvgIconWrapper x={r0.nodeStartX + r0.selfW / 2 -12 - .5} y={r0.nodeY - r0.selfH /2 - 24  - 12 + .5} iconName={rx.note === '' ? 'FileUpload' : 'FileText'} onMouseDownGuarded={() => {
+          <MapSvgIconWrapper x={r0.nodeStartX + r0.selfW / 2 -12 - .5} y={r0.nodeY - r0.selfH /2 - 24  - 12 + .5} iconName={r0.note === '' ? 'FileUpload' : 'FileText'} onMouseDownGuarded={() => {
             dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
           }}/>
         </Fragment>
