@@ -12,16 +12,18 @@ export const mapMeasure = (pm: M, m: M) => {
         getRL(m).forEach(r => {
           const ri = getRi(r.path)
           const rx = getNodeByPath(m, ['r', ri]) as N
-          const rxd0 = getNodeByPath(m, ['r', ri, 'd', 0]) as N
-          const rxd1 = getNodeByPath(m, ['r', ri, 'd', 1]) as N
-          if ((rx.offsetH + rxd0.familyH / 2) > n.maxD) {n.maxD = rx.offsetH + rxd0.familyH / 2}
-          if ((rx.offsetH + rxd1.familyH / 2) > n.maxD) {n.maxD = rx.offsetH + rxd1.familyH / 2}
-          if ((rx.offsetH - rxd0.familyH / 2) < n.maxU) {n.maxU = rx.offsetH - rxd0.familyH / 2}
-          if ((rx.offsetH - rxd1.familyH / 2) < n.maxU) {n.maxU = rx.offsetH - rxd1.familyH / 2}
-          if ((rx.offsetW + rx.selfW / 2 + rxd0.familyW) > n.maxR) {n.maxR = rx.offsetW + rx.selfW / 2 + rxd0.familyW}
-          if ((rx.offsetW - rx.selfW / 2 - rxd1.familyW) < n.maxL) {n.maxL = rx.offsetW - rx.selfW / 2 - rxd1.familyW}
+          const rid0 = getNodeByPath(m, ['r', ri, 'd', 0]) as N
+          const rid1 = getNodeByPath(m, ['r', ri, 'd', 1]) as N
+          const wr = rx.offsetW + rx.selfW + rid0.familyW + getTaskWidth(n) * hasTaskRight(m, getRi(r.path))
+          const wl = rx.offsetW - rid1.familyW - getTaskWidth(n) * hasTaskLeft(m, getRi(r.path))
+          if ((rx.offsetH + rid0.familyH / 2) > n.maxD) {n.maxD = rx.offsetH + rid0.familyH / 2}
+          if ((rx.offsetH + rid1.familyH / 2) > n.maxD) {n.maxD = rx.offsetH + rid1.familyH / 2}
+          if ((rx.offsetH - rid0.familyH / 2) < n.maxU) {n.maxU = rx.offsetH - rid0.familyH / 2}
+          if ((rx.offsetH - rid1.familyH / 2) < n.maxU) {n.maxU = rx.offsetH - rid1.familyH / 2}
+          if ((wr) > n.maxR) {n.maxR = wr}
+          if ((wl) < n.maxL) {n.maxL = wl}
         })
-        n.mapWidth = n.maxR - n.maxL + getTaskWidth(n) * (+hasTaskLeft(m, getRi(n.path)) + +hasTaskRight(m, getRi(n.path))) + 100
+        n.mapWidth = n.maxR + Math.abs(n.maxL) + 100
         n.mapHeight = n.maxD - n.maxU + 100
         break
       }
