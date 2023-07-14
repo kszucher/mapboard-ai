@@ -109,22 +109,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'pasteSOR': pasteS(m, ['r', getXRi(m), 'd', 0], getCountRXD0S(m, getXRi(m)), payload); break
     case 'pasteSO': pasteS(m, getXP(m), getCountSO1(m, getXP(m)), payload); break
     case 'drag': moveS(m, payload.moveTargetPath, payload.moveTargetIndex); break
-    case 'transpose': {
-      // https://stackoverflow.com/questions/872310/javascript-swap-array-elements
-      // make swap as a utility, and then just simply map through component
-
-      // if (getX(m).cRowCount || getX(m).cColCount) {
-      //   getX(m).c = transpose(getX(m).c)
-      // }
-      break
-    }
-    case 'applyColorFromKey': setPropXA(m, 'textColor', shortcutColors[payload.currColor]); break
-    case 'toggleTask': setPropXASF(m, 'taskStatus', getX(m).taskStatus === 0 ? 1 : 0); break
-    case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
-    case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
-    case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
-    case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
-    case 'setNote': Object.assign(getR0(m), { note: payload.note }); break
+    case 'transpose': break;
 
     case 'setLineWidthS': getXA(m).forEach(n => Object.assign(n, {lineWidth: payload})); break
     case 'setLineWidthF': getXSAF(m).forEach(n => Object.assign(n, {lineWidth: payload})); break
@@ -151,6 +136,14 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'clearFillF': getXSAF(m).forEach(n => Object.assign(n, {fFillColor: nSaveOptional.fFillColor})); break;
     case 'clearTextS': getXA(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break;
     case 'clearTextF': getXSAF(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break;
+
+    case 'applyColorFromKey': setPropXA(m, 'textColor', shortcutColors[payload.currColor]); break
+    case 'toggleTask': setPropXASF(m, 'taskStatus', getX(m).taskStatus === 0 ? 1 : 0); break
+    case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
+    case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
+    case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
+    case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
+    case 'setNote': Object.assign(getR0(m), { note: payload.note }); break
 
     case 'gptParser': gptParser(m, payload.gptParsed); break
 
