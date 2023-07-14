@@ -43,8 +43,8 @@ const responseSchema = {
 
 export const gptPrompter = (m: M, promptJson: any) => {
   const prompt = `
-    Take the following meeting transcript: ${getNodeByPath(m, ['r', 0]).note}
-    While keeping the following JSON schema, extract information from the meeting transcript by filling "suggestions" based on "keywords":
+    Take the following ${getNodeByPath(m, ['r', 0]).content}: ${getNodeByPath(m, ['r', 0]).note}
+    While keeping the following JSON schema, extract information from the ${getNodeByPath(m, ['r', 0]).content} by filling "suggestions" based on "keywords":
     ${JSON.stringify(responseSchema)}
     ${JSON.stringify(promptJson)}
   `
