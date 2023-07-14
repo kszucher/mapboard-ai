@@ -126,16 +126,23 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     case 'setNote': Object.assign(getR0(m), { note: payload.note }); break
 
-    // TODO get to oneliners: 1) instead of ternary make a switch in mapActionResolver 2) upgrade setPropXA to accept multiple props
+    case 'setLineWidthS':setPropXA(m, 'lineWidth', payload); break
+    case 'setLineWidthF': setPropXASF (m, 'lineWidth', payload); break
+    case 'setLineTypeS': setPropXA(m, 'lineType', payload); break
+    case 'setLineTypeF': setPropXASF (m, 'lineType', payload); break
+    case 'setLineColorS': setPropXA(m, 'lineColor', payload); break
+    case 'setLineColorF': setPropXASF (m, 'lineColor', payload); break
+    case 'setBorderWidthS': setPropXA(m, 'sBorderWidth', payload); break
+    case 'setBorderWidthF': setPropXA (m, 'fBorderWidth', payload); break
+    case 'setBorderColorS': setPropXA(m, 'sBorderColor', payload); break
+    case 'setBorderColorF': setPropXA (m, 'fBorderColor', payload); break
+    case 'setFillColorS': setPropXA(m, 'sFillColor', payload); break
+    case 'setFillColorF': setPropXA (m, 'fFillColor', payload); break
+    case 'setTextFontSizeS': setPropXA(m, 'textFontSize', payload); break
+    case 'setTextFontSizeF': setPropXASF (m, 'textFontSize', payload); break
+    case 'setTextColorS': setPropXA(m, 'textColor', payload); break
+    case 'setTextColorF': setPropXASF (m, 'textColor', payload); break
 
-    case 'setLineWidth': getX(m).selection === 's' ? setPropXA(m, 'lineWidth', payload) : setPropXASF (m, 'lineWidth', payload); break
-    case 'setLineType': getX(m).selection === 's' ? setPropXA(m, 'lineType', payload) : setPropXASF (m, 'lineType', payload); break
-    case 'setLineColor': getX(m).selection === 's' ? setPropXA(m, 'lineColor', payload) : setPropXASF (m, 'lineColor', payload); break
-    case 'setBorderWidth': getX(m).selection === 's' ? setPropXA(m, 'sBorderWidth', payload) : setPropXA (m, 'fBorderWidth', payload); break
-    case 'setBorderColor': getX(m).selection === 's' ? setPropXA(m, 'sBorderColor', payload) : setPropXA (m, 'fBorderColor', payload); break
-    case 'setFillColor': getX(m).selection === 's' ? setPropXA(m, 'sFillColor', payload) : setPropXA (m, 'fFillColor', payload); break
-    case 'setTextFontSize': getX(m).selection === 's' ? setPropXA(m, 'textFontSize', payload) : setPropXASF (m, 'textFontSize', payload); break
-    case 'setTextColor': getX(m).selection === 's' ? setPropXA(m, 'textColor', payload) : setPropXASF (m, 'textColor', payload); break
     case 'clearLine': {
       getX(m).selection === 's' ? setPropXA(m, 'lineWidth', nSaveOptional.lineWidth) : setPropXASF (m, 'lineWidth', nSaveOptional.lineWidth)
       getX(m).selection === 's' ? setPropXA(m, 'lineType', nSaveOptional.lineType) : setPropXASF (m, 'lineType', nSaveOptional.lineType)
@@ -156,6 +163,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       getX(m).selection === 's' ? setPropXA(m, 'textFontSize', nSaveOptional.textFontSize) : setPropXASF(m, 'textFontSize', nSaveOptional.textFontSize)
       break
     }
+
     case 'gptParser': gptParser(m, payload.gptParsed); break
 
     case 'offsetD': getX(m).offsetH += 20; break

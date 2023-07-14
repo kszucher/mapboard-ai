@@ -1,6 +1,7 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, ButtonGroup, IconButton} from '@mui/material'
+import {mapActionResolver} from "../core/MapActionResolver"
 import {mSelector} from "../state/EditorState"
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './MuiSvgIcons'
 import {colorList} from './Colors'
@@ -64,13 +65,13 @@ export const Formatter: FC = () => {
                       onClick={() => {
                         const color = colorList[i][j]
                         if (formatMode === FormatMode.text) {
-                          dispatch(actions.mapAction({type: 'setTextColor', payload: color}))
+                          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setTextColor', color)))
                         } else if (formatMode === FormatMode.border) {
-                          dispatch(actions.mapAction({type: 'setBorderColor', payload: color}))
+                          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setBorderColor', color)))
                         } else if (formatMode === FormatMode.fill) {
-                          dispatch(actions.mapAction({type: 'setFillColor', payload: color}))
+                          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setFillColor', color)))
                         } else if (formatMode === FormatMode.line) {
-                          dispatch(actions.mapAction({type: 'setLineColor', payload: color}))
+                          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setLineColor', color)))
                         }
                       }}
                     />
@@ -87,7 +88,7 @@ export const Formatter: FC = () => {
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(TextTypes).map((name, idx) =>
               <Button key={idx} style={{backgroundColor: name === TextTypes[getPropXA(m, 'textFontSize') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
-                dispatch(actions.mapAction({type: 'setTextFontSize', payload: TextTypes[name as keyof typeof TextTypes]}))
+                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setTextFontSize', TextTypes[name as keyof typeof TextTypes])))
               }>{name}
               </Button>
             )}
@@ -97,7 +98,7 @@ export const Formatter: FC = () => {
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(WidthTypes).map((name, idx) =>
               <Button key={idx} style={{backgroundColor: name === WidthTypes[nx.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXA(m, 'fBorderWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
-                dispatch(actions.mapAction({type: 'setBorderWidth', payload: WidthTypes[name as keyof typeof WidthTypes]}))
+                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setBorderWidth', WidthTypes[name as keyof typeof WidthTypes])))
               }>{name}
               </Button>
             )}
@@ -107,7 +108,7 @@ export const Formatter: FC = () => {
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(WidthTypes).map((name, idx) =>
               <Button key={idx} style={{backgroundColor: name === WidthTypes[getPropXA(m, 'lineWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
-                dispatch(actions.mapAction({type: 'setLineWidth', payload: WidthTypes[name as keyof typeof WidthTypes]}))
+                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setLineWidth', WidthTypes[name as keyof typeof WidthTypes])))
               }>{name}
               </Button>
             )}
@@ -116,7 +117,7 @@ export const Formatter: FC = () => {
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(LineTypes).map((name, idx) =>
               <Button key={idx} style={{backgroundColor: name === LineTypes[getPropXA(m, 'lineType') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
-                dispatch(actions.mapAction({type: 'setLineType', payload: LineTypes[name as keyof typeof LineTypes]}))
+                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setLineType', LineTypes[name as keyof typeof LineTypes])))
               }>{name}
               </Button>
             )}
