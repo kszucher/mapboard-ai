@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountRXD1S, getCountRXD0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0, getCountSO1, getXRi, getRi, getRiL, getRootW, getRootStartX, getRootStartY, getRootH, getXA, getXSAF,} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountRXD1S, getCountRXD0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0, getCountSO1, getXRi, getRi, getRiL, getRootW, getRootStartX, getRootStartY, getRootH, getXA, getXSAF} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -133,12 +133,12 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'clearBorderS': getXA(m).forEach(n => Object.assign(n, {sBorderWidth: nSaveOptional.sBorderWidth, sBorderColor: nSaveOptional.sBorderColor})); break;
     case 'clearBorderF': getXA(m).forEach(n => Object.assign(n, {fBorderWidth: nSaveOptional.fBorderWidth, fBorderColor: nSaveOptional.fBorderColor})); break;
     case 'clearFillS': getXA(m).forEach(n => Object.assign(n, {sFillColor: nSaveOptional.sFillColor})); break;
-    case 'clearFillF': getXSAF(m).forEach(n => Object.assign(n, {fFillColor: nSaveOptional.fFillColor})); break;
+    case 'clearFillF': getXA(m).forEach(n => Object.assign(n, {fFillColor: nSaveOptional.fFillColor})); break;
     case 'clearTextS': getXA(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break;
     case 'clearTextF': getXSAF(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break;
 
-    case 'applyColorFromKey': setPropXA(m, 'textColor', shortcutColors[payload.currColor]); break
-    case 'toggleTask': setPropXASF(m, 'taskStatus', getX(m).taskStatus === 0 ? 1 : 0); break
+    case 'applyColorFromKey': getXA(m).forEach(n => Object.assign(n, {textColor: shortcutColors[payload.currColor]})); break
+    case 'toggleTask': getXSAF(m).forEach(n => Object.assign(n, {taskStatus: getX(m).taskStatus === 0 ? 1 : 0})); break;
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
     case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break

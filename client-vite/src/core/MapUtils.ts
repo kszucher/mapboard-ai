@@ -119,9 +119,6 @@ export const getCountXCV = (m: M) => getCountCV(m, getXP(m))
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
 export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXSAF(m).map(n => n[prop])) ? getX(m)[prop] : null
 
-export const setPropXA = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
-export const setPropXASF = (m: M, prop: keyof N, value: any) => getXSAF(m).forEach(n => Object.assign(n, {[prop]: value}))
-
 export const makeSpaceFromS = (m: M, p: P, length: number) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, length))
 export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 2))
 export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCFRF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
