@@ -284,7 +284,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
           const configuration = new Configuration({ apiKey: gptApiKey })
           const openai = new OpenAIApi(configuration)
           const response = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo-0613",
+            model: "gpt-3.5-turbo-16k-0613",
             messages: [{"role": "user", "content": prompt}],
             // max_tokens: maxToken,
             // functions=[],

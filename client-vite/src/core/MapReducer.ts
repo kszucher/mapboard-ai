@@ -83,7 +83,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSCCR': insertCC(m, [...getXP(m), 'c', 0, getCountSCC(m, getXP(m))]); break
     case 'insertSCCL': insertCC(m, [...getXP(m), 'c', 0, 0]); break
     case 'insertRR': insertR(m, getRiL(m) + 1, getRootStartX(m, getX(m)) + getRootW(m, getX(m)) + 50, 0); break
-    case 'insertRD': insertR(m, getRiL(m) + 1, 0, getRootStartY(m, getX(m)) + getRootH(m, getX(m))); break
+    case 'insertRD': insertR(m, getRiL(m) + 1, 0, getRootStartY(m, getX(m)) + getRootH(m, getX(m)) + 50); break
 
     case 'deleteR': deleteReselectR(m); break
     case 'deleteS': deleteReselectS(m); break

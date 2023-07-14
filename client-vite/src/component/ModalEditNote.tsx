@@ -17,11 +17,11 @@ export const ModalEditNote: FC = () => {
       <div className="_bg fixed top-[80px] right-[64px] w-[400px] flex flex-col gap-4 p-4 rounded-lg">
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
           <Typography variant="subtitle2" color='primary'>
-            {'DATA (max. 6000 characters):'}
+            {'DATA (max. 20000 characters):'}
           </Typography>
         </div>
         <div style={{ display: "flex", flexDirection: 'column', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <TextField id="filled-multiline-static" label="Multiline" multiline rows={20} defaultValue={getR0(m).note} variant="filled" inputProps={{ maxLength: 6000 }} onChange={(e) => {
+          <TextField id="filled-multiline-static" label="Multiline" multiline rows={20} defaultValue={getR0(m).note} variant="filled" inputProps={{ maxLength: 20000 }} onChange={(e) => {
             dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setNote', {note: e.target.value})))
           }}/>
           <Button color="primary" variant='outlined' disabled={isFetching} onClick={() =>
