@@ -131,13 +131,13 @@ export const Formatter: FC = () => {
           variant='outlined'
           onClick={() => {
             if (formatMode === FormatMode.text)
-              dispatch(actions.mapAction({type: 'clearText', payload: null}))
+              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'clearText', null)))
             else if (formatMode === FormatMode.border)
-              dispatch(actions.mapAction({type: 'clearBorder', payload: null}))
+              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'clearBorder', null)))
             else if (formatMode === FormatMode.fill)
-              dispatch(actions.mapAction({type: 'clearFill', payload: null}))
+              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'clearFill', null)))
             else if (formatMode === FormatMode.line)
-              dispatch(actions.mapAction({type: 'clearLine', payload: null}))
+              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'clearLine', null)))
           }}>
           {'RESET'}
         </Button>

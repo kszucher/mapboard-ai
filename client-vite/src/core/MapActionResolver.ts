@@ -158,6 +158,15 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'setTextColor' && getX(m).selection === 's'): return ({type: 'setTextColorS', payload: ep})
     case (es === 'c' && et === 'setTextColor' && getX(m).selection === 'f'): return ({type: 'setTextColorF', payload: ep})
 
+    case (es === 'c' && et === 'clearLine' && getX(m).selection === 's'): return ({type: 'clearLineS', payload: ep})
+    case (es === 'c' && et === 'clearLine' && getX(m).selection === 'f'): return ({type: 'clearLineF', payload: ep})
+    case (es === 'c' && et === 'clearBorder' && getX(m).selection === 's'): return ({type: 'clearBorderS', payload: ep})
+    case (es === 'c' && et === 'clearBorder' && getX(m).selection === 'f'): return ({type: 'clearBorderF', payload: ep})
+    case (es === 'c' && et === 'clearFill' && getX(m).selection === 's'): return ({type: 'clearFillS', payload: ep})
+    case (es === 'c' && et === 'clearFill' && getX(m).selection === 'f'): return ({type: 'clearFillF', payload: ep})
+    case (es === 'c' && et === 'clearText' && getX(m).selection === 's'): return ({type: 'clearTextS', payload: ep})
+    case (es === 'c' && et === 'clearText' && getX(m).selection === 'f'): return ({type: 'clearTextF', payload: ep})
+
     case (es === 'c' && et === 'finishEdit'): return ({type: 'finishEdit', payload: ep})
     case (es === 'c' && et === 'simulateDrag' && !isXR(m)): return ({type: 'simulateDrag', payload: ep})
     case (es === 'c' && et === 'drag' && !isXR(m)): return ({type: 'drag', payload: ep})

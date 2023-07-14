@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountRXD1S, getCountRXD0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0, getCountSO1, getXRi, getRi, getRiL, getRootW, getRootStartX, getRootStartY, getRootH,} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, setPropXA, setPropXASF, getXCCR, getXCCL, getXCRD, getXCRU, getXCR, getXCL, getXCU, getXCD, getNodeById, getXSI1, getCountXASU, getCountXSO1, getXASU1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountRXD1S, getCountRXD0S, getCountXCU, getCountXCL, getXSI2, getXSFP, getXSLP, getCountSCR, getCountSCC, getR0, getCountSO1, getXRi, getRi, getRiL, getRootW, getRootStartX, getRootStartY, getRootH, getXA, getXSAF,} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -126,43 +126,31 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     case 'setNote': Object.assign(getR0(m), { note: payload.note }); break
 
-    case 'setLineWidthS':setPropXA(m, 'lineWidth', payload); break
-    case 'setLineWidthF': setPropXASF (m, 'lineWidth', payload); break
-    case 'setLineTypeS': setPropXA(m, 'lineType', payload); break
-    case 'setLineTypeF': setPropXASF (m, 'lineType', payload); break
-    case 'setLineColorS': setPropXA(m, 'lineColor', payload); break
-    case 'setLineColorF': setPropXASF (m, 'lineColor', payload); break
-    case 'setBorderWidthS': setPropXA(m, 'sBorderWidth', payload); break
-    case 'setBorderWidthF': setPropXA (m, 'fBorderWidth', payload); break
-    case 'setBorderColorS': setPropXA(m, 'sBorderColor', payload); break
-    case 'setBorderColorF': setPropXA (m, 'fBorderColor', payload); break
-    case 'setFillColorS': setPropXA(m, 'sFillColor', payload); break
-    case 'setFillColorF': setPropXA (m, 'fFillColor', payload); break
-    case 'setTextFontSizeS': setPropXA(m, 'textFontSize', payload); break
-    case 'setTextFontSizeF': setPropXASF (m, 'textFontSize', payload); break
-    case 'setTextColorS': setPropXA(m, 'textColor', payload); break
-    case 'setTextColorF': setPropXASF (m, 'textColor', payload); break
+    case 'setLineWidthS': getXA(m).forEach(n => Object.assign(n, {lineWidth: payload})); break
+    case 'setLineWidthF': getXSAF(m).forEach(n => Object.assign(n, {lineWidth: payload})); break
+    case 'setLineTypeS': getXA(m).forEach(n => Object.assign(n, {lineType: payload})); break
+    case 'setLineTypeF': getXSAF(m).forEach(n => Object.assign(n, {lineType: payload})); break
+    case 'setLineColorS': getXA(m).forEach(n => Object.assign(n, {lineColor: payload})); break
+    case 'setLineColorF': getXSAF(m).forEach(n => Object.assign(n, {lineColor: payload})); break
+    case 'setBorderWidthS': getXA(m).forEach(n => Object.assign(n, {sBorderWidth: payload})); break
+    case 'setBorderWidthF': getXA(m).forEach(n => Object.assign(n, {fBorderWidth: payload})); break
+    case 'setBorderColorS': getXA(m).forEach(n => Object.assign(n, {sBorderColor: payload})); break
+    case 'setBorderColorF': getXA(m).forEach(n => Object.assign(n, {fBorderColor: payload})); break
+    case 'setFillColorS': getXA(m).forEach(n => Object.assign(n, {sFillColor: payload})); break
+    case 'setFillColorF': getXA(m).forEach(n => Object.assign(n, {fFillColor: payload})); break
+    case 'setTextFontSizeS': getXA(m).forEach(n => Object.assign(n, {textFontSize: payload})); break
+    case 'setTextFontSizeF': getXSAF(m).forEach(n => Object.assign(n, {textFontSize: payload})); break
+    case 'setTextColorS': getXA(m).forEach(n => Object.assign(n, {textColor: payload})); break
+    case 'setTextColorF': getXSAF(m).forEach(n => Object.assign(n, {textColor: payload})); break
 
-    case 'clearLine': {
-      getX(m).selection === 's' ? setPropXA(m, 'lineWidth', nSaveOptional.lineWidth) : setPropXASF (m, 'lineWidth', nSaveOptional.lineWidth)
-      getX(m).selection === 's' ? setPropXA(m, 'lineType', nSaveOptional.lineType) : setPropXASF (m, 'lineType', nSaveOptional.lineType)
-      getX(m).selection === 's' ? setPropXA(m, 'lineColor', nSaveOptional.lineColor) : setPropXASF (m, 'lineColor', nSaveOptional.lineColor)
-      break
-    }
-    case 'clearBorder': {
-      getX(m).selection === 's' ? setPropXA(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : setPropXA(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
-      getX(m).selection === 's' ? setPropXA(m, 'sBorderColor', nSaveOptional.sBorderColor) : setPropXA(m, 'fBorderColor', nSaveOptional.sBorderColor)
-      break
-    }
-    case 'clearFill': {
-      getX(m).selection === 's' ? setPropXA(m, 'sFillColor', nSaveOptional.sFillColor) : setPropXA(m, 'fFillColor', nSaveOptional.fFillColor)
-      break
-    }
-    case 'clearText': {
-      getX(m).selection === 's' ? setPropXA(m, 'textColor', nSaveOptional.textColor) : setPropXASF(m, 'textColor', nSaveOptional.textColor)
-      getX(m).selection === 's' ? setPropXA(m, 'textFontSize', nSaveOptional.textFontSize) : setPropXASF(m, 'textFontSize', nSaveOptional.textFontSize)
-      break
-    }
+    case 'clearLineS': getXA(m).forEach(n => Object.assign(n, {lineWidth: nSaveOptional.lineWidth, lineType: nSaveOptional.lineType, lineColor: nSaveOptional.lineColor})); break;
+    case 'clearLineF': getXSAF(m).forEach(n => Object.assign(n, {lineWidth: nSaveOptional.lineWidth, lineType: nSaveOptional.lineType, lineColor: nSaveOptional.lineColor})); break;
+    case 'clearBorderS': getXA(m).forEach(n => Object.assign(n, {sBorderWidth: nSaveOptional.sBorderWidth, sBorderColor: nSaveOptional.sBorderColor})); break;
+    case 'clearBorderF': getXA(m).forEach(n => Object.assign(n, {fBorderWidth: nSaveOptional.fBorderWidth, fBorderColor: nSaveOptional.fBorderColor})); break;
+    case 'clearFillS': getXA(m).forEach(n => Object.assign(n, {sFillColor: nSaveOptional.sFillColor})); break;
+    case 'clearFillF': getXSAF(m).forEach(n => Object.assign(n, {fFillColor: nSaveOptional.fFillColor})); break;
+    case 'clearTextS': getXA(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break;
+    case 'clearTextF': getXSAF(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break;
 
     case 'gptParser': gptParser(m, payload.gptParsed); break
 
