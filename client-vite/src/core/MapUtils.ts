@@ -82,7 +82,7 @@ export const getXA = (m: M) => m.filter(n => n.selected)
 export const getXASU1 = (m: M) => getSU1(getXSFP(m))
 export const getXASI1 = (m: M) => getSI1(getXSFP(m))
 export const getXASI2 = (m: M) => getSI2(getXSFP(m))
-export const getXSAF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
+export const getXAF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
 export const getXSSCR0 = (m: M) => m.filter(n => isSCR0(getXP(m), n.path))
 export const getXSSCC0 = (m: M) => m.filter(n => isSCC0(getXP(m), n.path))
 export const getXSSCXX = (m: M) => m.filter(n => isSCXX(getXP(m), n.path))
@@ -117,7 +117,7 @@ export const getCountXCH = (m: M) => getCountCH(m, getXP(m))
 export const getCountXCV = (m: M) => getCountCV(m, getXP(m))
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
-export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXSAF(m).map(n => n[prop])) ? getX(m)[prop] : null
+export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXAF(m).map(n => n[prop])) ? getX(m)[prop] : null
 
 export const makeSpaceFromS = (m: M, p: P, length: number) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, length))
 export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 2))
@@ -132,9 +132,9 @@ export const fS = (m: M, n: N) => ['s', (n.path.at(getXP(m).length - 1) as numbe
 export const fCR = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]
 export const fCC = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountXCL(m), ...n.path.slice(getXP(m).length)]
 
-export const m2cbS = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fS(m, n)}))) as M
-export const m2cbCR = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fCR(m, n)}))) as M
-export const m2cbCC = (m: M) => structuredClone(getXSAF(m).map(n => ({...n, path: fCC(m, n)}))) as M
+export const m2cbS = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fS(m, n)}))) as M
+export const m2cbCR = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fCR(m, n)}))) as M
+export const m2cbCC = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fCC(m, n)}))) as M
 
 export const tS = (ip: P, n: N) => [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]
 export const tCR = (ip: P, n: N) => [...ip.slice(0, -3), 'c', (n.path.at(1) as number) + (ip.at(-2) as number), (n.path.at(2) as number), ...n.path.slice(3)]

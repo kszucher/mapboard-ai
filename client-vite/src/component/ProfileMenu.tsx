@@ -42,6 +42,13 @@ export const ProfileMenu: FC = () => {
           }}>{'Shares'}</MenuItem>,
           <Divider key={genHash(8)}/>,
 
+
+          <MenuItem key={genHash(8)} disabled={true} onClick={() => {
+            dispatch(actions.closeMoreMenu())
+
+          }}>{'Add Connector'}</MenuItem>,
+          <Divider key={genHash(8)}/>,
+
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(api.endpoints.createMapInTab.initiate())
