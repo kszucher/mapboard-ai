@@ -31,62 +31,46 @@ export const ProfileMenu: FC = () => {
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.setPageState(PageState.WS_PROFILE))
-          }}>
-            {'Profile'}
-          </MenuItem>,
+          }}>{'Profile'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.setPageState(PageState.WS_SETTINGS))
-          }}>
-            {'Settings'}
-          </MenuItem>,
+          }}>{'Settings'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.setPageState(PageState.WS_SHARES))
-          }}>
-            {'Shares'}
-          </MenuItem>,
+          }}>{'Shares'}</MenuItem>,
           <Divider key={genHash(8)}/>,
+
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(api.endpoints.createMapInTab.initiate())
-          }}>
-            {'Add Tab Map'}
-          </MenuItem>,
+          }}>{'Add Tab Map'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(api.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))
-          }}>
-            {'Move Tab Map Up'}
-          </MenuItem>,
+          }}>{'Move Tab Map Up'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(api.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))
-          }}>
-            {'Move Tab Map Down'}
-          </MenuItem>,
+          }}>{'Move Tab Map Down'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))
-          }}>
-            {'Remove Tab Map'}
-          </MenuItem>,
+          }}>{'Remove Tab Map'}</MenuItem>,
           <Divider key={genHash(8)}/>,
+
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.resetState())
             dispatch(api.util.resetApiState())
             logout({ logoutParams: { returnTo: window.location.origin }})
-          }}>
-            {'Sign Out'}
-          </MenuItem>,
+          }}>{'Sign Out'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(api.endpoints.signOutEverywhere.initiate())
             dispatch(actions.resetState())
             dispatch(api.util.resetApiState())
             logout({ logoutParams: { returnTo: window.location.origin }})
-          }}>
-            {'Sign Out Everywhere'}
-          </MenuItem>
+          }}>{'Sign Out Everywhere'}</MenuItem>
         ]
       }
     </Menu>
