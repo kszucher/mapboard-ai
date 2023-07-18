@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
 import {actions, AppDispatch, RootState} from '../core/EditorReducer'
 import {mapActionResolver} from "../core/MapActionResolver"
+import {getXA} from "../core/MapUtils"
 import {genHash} from "../core/Utils"
 import {getMapId} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
@@ -43,9 +44,9 @@ export const ProfileMenu: FC = () => {
           <Divider key={genHash(8)}/>,
 
 
-          <MenuItem key={genHash(8)} disabled={true} onClick={() => {
+          <MenuItem key={genHash(8)} disabled={!m || getXA(m).length !== 2} onClick={() => {
             dispatch(actions.closeMoreMenu())
-
+            dispatch(actions.setPageState(PageState.WS_CREATE_CONNECTOR))
           }}>{'Add Connector'}</MenuItem>,
           <Divider key={genHash(8)}/>,
 

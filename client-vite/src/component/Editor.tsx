@@ -4,6 +4,7 @@ import {Backdrop, CircularProgress, ThemeProvider} from '@mui/material'
 import {RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
+import {ModalCreateConnector} from "./ModalCreateConnector"
 import {ModalEditNote} from "./ModalEditNote"
 import {Sidebar} from './Sidebar'
 import {ModalCreateTable} from './ModalCreateTable'
@@ -71,6 +72,7 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_EDIT_NOTE && <ModalEditNote/>}
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
       {pageState === PageState.WS_CREATE_TASK && <ModalToggleTaskMode/>}
+      {pageState === PageState.WS_CREATE_CONNECTOR && <ModalCreateConnector/>}
       {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
       {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
       {pageState === PageState.WS_LOADING &&

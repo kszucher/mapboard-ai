@@ -181,6 +181,7 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'moveS2T' && isXS(m) && getCountSO1(m, getXP(m)) > 0): return ({type: 'moveS2T', payload: ep})
     case (es === 'c' && et === 'insertRR'): return ({type: 'insertRR', payload: ep})
     case (es === 'c' && et === 'insertRD'): return ({type: 'insertRD', payload: ep})
+    case (es === 'c' && et === 'createConnector'): return ({type: 'createConnector', payload: ep})
 
     case (es === 'a' && et === 'gptParser'): return ({type: 'gptParser', payload: ep})
 
