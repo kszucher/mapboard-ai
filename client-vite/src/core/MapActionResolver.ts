@@ -120,9 +120,8 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'pi' && isXR(m)): return ({type: 'insertSORImage', payload: ep})
     case (es === 'pi' && isXS(m)): return ({type: 'insertSOImage', payload: ep})
 
-    case (es === 'c' && et === 'select' && isR(ep.path)): return ({type: 'selectRi', payload: ep})
-    case (es === 'c' && et === 'select' && !isR(ep.path) && !ep.add): return ({type: 'selectS', payload: ep})
-    case (es === 'c' && et === 'select' && !isR(ep.path) && ep.add): return ({type: 'selectStoo', payload: ep})
+    case (es === 'c' && et === 'select' && !ep.add): return ({type: 'selectS', payload: ep})
+    case (es === 'c' && et === 'select' && ep.add): return ({type: 'selectStoo', payload: ep})
     case (es === 'c' && et === 'selectF' && isR(ep.path) && getCountRXD0S(m, getRi(ep.path)) > 0 && !getRXD0(m, getRi(ep.path)).selected): return ({type: 'selectRXD0F', payload: ep})
     case (es === 'c' && et === 'selectF' && isR(ep.path) && !!getRXD0(m, getRi(ep.path)).selected && !getRXD1(m, getRi(ep.path)).selected && getCountSO1(m, getRXD1(m,getRi(ep.path)).path) > 0): return ({type: 'selectRXD1F', payload: ep})
     case (es === 'c' && et === 'selectF' && !isR(ep.path) && getCountSO1(m, ep.path) > 0): return ({type: 'selectF', payload: ep})
