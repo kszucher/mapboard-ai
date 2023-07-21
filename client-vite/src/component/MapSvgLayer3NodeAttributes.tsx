@@ -136,6 +136,9 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               }
             </Fragment>
           }
+          {
+            // TODO: this is where inter node connectors can be implements
+          }
         </Fragment>
       ))}
     </g>

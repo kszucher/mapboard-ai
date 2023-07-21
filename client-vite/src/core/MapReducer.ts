@@ -151,7 +151,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'offsetR': getX(m).offsetW += 20; break
     case 'offsetL': getX(m).offsetW -= 20; break
 
-    case 'connectRT': break
+    case 'createConnector': break
   }
 }
 
