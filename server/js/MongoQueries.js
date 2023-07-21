@@ -11,7 +11,6 @@ async function openWorkspace(users, userId, sessionId) {
         let: { originalArray: `$${mapIdList}` },
         pipeline: [
           { $set: { "order": { $indexOfArray: [ '$$originalArray', '$_id' ] } } },
-          { $sort: { "order": 1 } },
           { $replaceWith: {
               name: {
                 $getField: {
@@ -26,9 +25,15 @@ async function openWorkspace(users, userId, sessionId) {
                     }
                   }
                 }
-              }
+              },
+              order: '$order'
             }
-          }
+          },
+          { $sort: { "order": 1 } },
+          { $replaceWith: {
+              name: '$name'
+            }
+          },
         ],
         as: mapNameList
       }

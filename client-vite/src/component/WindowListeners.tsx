@@ -12,7 +12,6 @@ let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false
 export let timeoutId: NodeJS.Timeout
 let mapAreaListener: AbortController
-let landingAreaListener: AbortController
 
 export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -36,15 +35,15 @@ export const WindowListeners: FC = () => {
 
   // LANDING LISTENERS
   const wheel = (e: WheelEvent) => {
-    e.preventDefault()
+    // e.preventDefault()
     if (!isIntervalRunning) {
       namedInterval = setInterval(function () {
         clearInterval(namedInterval)
         isIntervalRunning = false
         if (Math.sign(e.deltaY) === 1) {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'redo', null)))
+          // dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'redo', null)))
         } else {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'undo', null)))
+          // dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'undo', null)))
         }
       }, 100)
     }
@@ -93,24 +92,13 @@ export const WindowListeners: FC = () => {
     })
   }
 
-  const addLandingListeners = () => {
-    landingAreaListener = new AbortController()
-    const {signal} = landingAreaListener
-    window.addEventListener("wheel", wheel, {signal, passive: false})
-  }
-
-  const removeLandingListeners = () => {
-    if (landingAreaListener !== undefined) {
-      landingAreaListener.abort()
-    }
-  }
-
   const addMapListeners = () => {
     mapAreaListener = new AbortController()
     const {signal} = mapAreaListener
     window.addEventListener("contextmenu", contextmenu, {signal})
     window.addEventListener("keydown", keydown, {signal})
     window.addEventListener("paste", paste, {signal})
+    window.addEventListener("wheel", wheel, {signal, passive: false})
   }
 
   const removeMapListeners = () => {
@@ -123,7 +111,6 @@ export const WindowListeners: FC = () => {
     if (editedNodeId) {
       console.log('REMOVED')
       removeMapListeners()
-      removeLandingListeners()
     } else {
       if (pageState === PageState.WS) {
         if (access === AccessTypes.EDIT) {
@@ -132,13 +119,10 @@ export const WindowListeners: FC = () => {
         } else if (access === AccessTypes.VIEW) {
           // TODO figure out view listeners
         }
-      } else if (pageState === PageState.DEMO) {
-        addLandingListeners()
       }
     }
     return () => {
       removeMapListeners()
-      removeLandingListeners()
     }
   }, [pageState, access, editedNodeId])
 
