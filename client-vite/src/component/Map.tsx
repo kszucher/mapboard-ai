@@ -4,17 +4,13 @@ import {mSelector} from "../state/EditorState"
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
 import {useSelector} from "react-redux"
-import {getMapX, getMapY, scrollTo} from "./MapDivUtils"
+import {getMapX, getMapY, setScrollLeftAnimated} from "./MapDivUtils"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {getG} from "../core/MapUtils"
-import {G} from "../state/MapPropTypes"
 
-const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2
-const getScrollTop = () => -(window.innerHeight - 40 * 2)
-
-const setScrollLeft = (x: number) => document.getElementById('mainMapDiv')!.scrollLeft -= x
-const setScrollTop = (y: number) => window.scrollTo(0, document.documentElement.scrollTop - y)
+const setScrollLeft = (x: number) => document.getElementById('mainMapDiv')!.scrollLeft = x
+const setScrollTop = (y: number) => window.scrollTo(0, y)
 
 const ZOOM_INTENSITY = 0.2
 
@@ -38,24 +34,28 @@ export const Map: FC = () => {
     const abortController = new AbortController()
     const { signal } = abortController
     window.addEventListener('resize', (e) => {
-      if (mainMapDiv.current) {
-        mainMapDiv.current.scrollLeft = getScrollLeft(g)
-      }
+      setScrollLeft((window.innerWidth + g.mapWidth) / 2)
     }, { signal })
     return () => abortController.abort()
   }, [])
 
   useEffect(() => {
     if (mainMapDiv.current) {
-      setScrollLeft(getScrollLeft(g))
-      setScrollTop(getScrollTop())
+      setXLast(0)
+      setYLast(0)
+      setXNew(0)
+      setYNew(0)
+      setXImage(0)
+      setYImage(0)
       setScale(1)
+      setScrollLeft((window.innerWidth + g.mapWidth) / 2)
+      setScrollTop(window.innerHeight - 40 * 2)
     }}, [mapId, frameId]
   )
 
   useEffect(() => {
     if (mainMapDiv.current) {
-      scrollTo(getScrollLeft(g), 500)
+      setScrollLeftAnimated((window.innerWidth + g.mapWidth) / 2, 500)
     }}, [density, alignment] // TODO figure out how to react to the end of moveTarget
   )
 
@@ -75,13 +75,21 @@ export const Map: FC = () => {
       onMouseMove={(e) => {
         e.preventDefault()
         if (e.buttons === 4) {
-          setScrollLeft(e.movementX)
-          setScrollTop(e.movementY)
+          setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
+          setScrollTop(document.documentElement.scrollTop - e.movementY)
         }
       }}
       onDoubleClick={() => {
         if (mainMapDiv.current) {
-          scrollTo(getScrollLeft(g), 500)
+          setXLast(0)
+          setYLast(0)
+          setXNew(0)
+          setYNew(0)
+          setXImage(0)
+          setYImage(0)
+          setScale(1)
+          setScrollLeft((window.innerWidth + g.mapWidth) / 2)
+          setScrollTop(window.innerHeight - 40 * 2)
         }
       }}
       onWheel={(e) => {

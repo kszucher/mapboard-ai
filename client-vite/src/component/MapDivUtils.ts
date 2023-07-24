@@ -16,7 +16,7 @@ const easeOut = (t: any, b: number, c: number, d: number) => {
   return c * (t * t * t + 1) + b
 }
 
-export const scrollTo = (to: number, duration: number) => {
+export const setScrollLeftAnimated = (to: number, duration: number) => {
   const element = document.getElementById('mainMapDiv') as HTMLDivElement
   const start = element.scrollLeft
   const change = to - start
