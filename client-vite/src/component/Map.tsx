@@ -30,6 +30,18 @@ export const Map: FC = () => {
   const [yImage, setYImage] = useState(0)
   const [scale, setScale] = useState(1)
 
+  const resetView = () => {
+    setXLast(0)
+    setYLast(0)
+    setXNew(0)
+    setYNew(0)
+    setXImage(0)
+    setYImage(0)
+    setScale(1)
+    setScrollLeft((window.innerWidth + g.mapWidth) / 2)
+    setScrollTop(window.innerHeight - 40 * 2)
+  }
+
   useEffect(() => {
     const abortController = new AbortController()
     const { signal } = abortController
@@ -41,15 +53,7 @@ export const Map: FC = () => {
 
   useEffect(() => {
     if (mainMapDiv.current) {
-      setXLast(0)
-      setYLast(0)
-      setXNew(0)
-      setYNew(0)
-      setXImage(0)
-      setYImage(0)
-      setScale(1)
-      setScrollLeft((window.innerWidth + g.mapWidth) / 2)
-      setScrollTop(window.innerHeight - 40 * 2)
+      resetView()
     }}, [mapId, frameId]
   )
 
@@ -81,15 +85,7 @@ export const Map: FC = () => {
       }}
       onDoubleClick={() => {
         if (mainMapDiv.current) {
-          setXLast(0)
-          setYLast(0)
-          setXNew(0)
-          setYNew(0)
-          setXImage(0)
-          setYImage(0)
-          setScale(1)
-          setScrollLeft((window.innerWidth + g.mapWidth) / 2)
-          setScrollTop(window.innerHeight - 40 * 2)
+          resetView()
         }
       }}
       onWheel={(e) => {
