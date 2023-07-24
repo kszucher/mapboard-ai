@@ -9,9 +9,6 @@ import {useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {getG} from "../core/MapUtils"
 
-const setScrollLeft = (x: number) => document.getElementById('mainMapDiv')!.scrollLeft = x
-const setScrollTop = (y: number) => window.scrollTo(0, y)
-
 const ZOOM_INTENSITY = 0.2
 
 export const Map: FC = () => {
@@ -20,7 +17,6 @@ export const Map: FC = () => {
   const { density, alignment } = g
   const { data } = useOpenWorkspaceQuery()
   const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState
-  const mainMapDiv = useRef<HTMLDivElement>(null)
 
   const [xLast, setXLast] = useState(0)
   const [yLast, setYLast] = useState(0)
@@ -41,6 +37,10 @@ export const Map: FC = () => {
     setScrollLeft((window.innerWidth + g.mapWidth) / 2)
     setScrollTop(window.innerHeight - 40 * 2)
   }
+
+  const mainMapDiv = useRef<HTMLDivElement>(null)
+  const setScrollLeft = (x: number) => mainMapDiv.current!.scrollLeft = x
+  const setScrollTop = (y: number) => window.scrollTo(0, y)
 
   useEffect(() => {
     const abortController = new AbortController()
