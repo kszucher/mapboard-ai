@@ -8,13 +8,13 @@ import {getMapX, getMapY, scrollTo} from "./MapDivUtils"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {getG} from "../core/MapUtils"
-import {G, N} from "../state/MapPropTypes"
+import {G} from "../state/MapPropTypes"
 
 const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2
-const getScrollTop = (g: G) => (window.innerHeight - g.mapHeight) / 2
+const getScrollTop = () => -(window.innerHeight - 40 * 2)
 
-const setScrollX = (x: number) => document.getElementById('mainMapDiv')!.scrollLeft -= x
-const setScrollY = (y: number) => window.scrollTo(0, document.documentElement.scrollTop - y)
+const setScrollLeft = (x: number) => document.getElementById('mainMapDiv')!.scrollLeft -= x
+const setScrollTop = (y: number) => window.scrollTo(0, document.documentElement.scrollTop - y)
 
 const ZOOM_INTENSITY = 0.2
 
@@ -47,18 +47,9 @@ export const Map: FC = () => {
 
   useEffect(() => {
     if (mainMapDiv.current) {
-      // mainMapDiv.current.scrollLeft = getScrollLeft(g)
-      // mainMapDiv.current.scrollTop = 10
-
-      // mainMapDiv.current.scrollTop = getScrollTop(g)
-
-
-      window.scrollTo(
-        // document.documentElement.scrollLeft - e.movementX,
-        // document.documentElement.scrollTop - e.movementY
-      )
-
-
+      setScrollLeft(getScrollLeft(g))
+      setScrollTop(getScrollTop())
+      setScale(1)
     }}, [mapId, frameId]
   )
 
@@ -84,8 +75,8 @@ export const Map: FC = () => {
       onMouseMove={(e) => {
         e.preventDefault()
         if (e.buttons === 4) {
-          setScrollX(e.movementX)
-          setScrollY(e.movementY)
+          setScrollLeft(e.movementX)
+          setScrollTop(e.movementY)
         }
       }}
       onDoubleClick={() => {
