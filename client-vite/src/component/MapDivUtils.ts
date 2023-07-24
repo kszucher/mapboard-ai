@@ -34,15 +34,8 @@ export const scrollTo = (to: number, duration: number) => {
   animateScroll()
 }
 
-export const getCoords = (e: any) => {
-  const winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-  const winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-  const mainMapDiv = document.getElementById('mainMapDiv') as HTMLDivElement
-  return {
-    x:  e.pageX - winWidth + mainMapDiv.scrollLeft,
-    y: e.pageY - winHeight + mainMapDiv.scrollTop
-  }
-}
+export const getMapX = (e: any) => e.pageX - window.innerWidth + document.getElementById('mainMapDiv')!.scrollLeft
+export const getMapY = (e: any) => e.pageY - window.innerHeight + document.getElementById('mainMapDiv')!.scrollTop
 
 export const setEndOfContentEditable = (contentEditableElement: HTMLElement) => {
   // https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity

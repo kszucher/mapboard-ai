@@ -4,6 +4,7 @@ import {mapActionResolver} from "../core/MapActionResolver"
 import {getCountCO1, getG, getR0, isXACC, isXACR, isXC} from "../core/MapUtils"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
+import {getMapX, getMapY} from "./MapDivUtils"
 import {MapSvgLayer0NodeRootBackground} from "./MapSvgLayer0NodeRootBackground"
 import {MapSvgLayer1NodeFamilyBackground} from "./MapSvgLayer1NodeFamilyBackground"
 import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
@@ -14,25 +15,15 @@ import {MapSvgLayer6SelectionPreview} from "./MapSvgLayer6SelectionPreview"
 import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
 import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
 import {MapSvgLayer9SelectionIcons} from "./MapSvgLayer9SelectionIcons"
-import {getCoords} from "./MapDivUtils"
 import {mapFindIntersecting} from "../core/MapFindIntersecting"
 import {M, N} from "../state/MapPropTypes"
 
 export const pathCommonProps = {
-  vectorEffect: 'non-scaling-stroke',
   style: {
+    vectorEffect: 'non-scaling-stroke',
     transition: 'all 0.3s',
     transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
     transitionProperty: 'd, fill, stroke-width'
-  }
-}
-
-export const iconCommonProps = {
-  vectorEffect: 'non-scaling-stroke',
-  style: {
-    transition: 'all 0.3s',
-    transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-    transitionProperty: 'all'
   }
 }
 
@@ -63,7 +54,8 @@ export const MapSvg: FC = () => {
         if (e.button === 1) {
           e.preventDefault()
         }
-        const fromCoords = getCoords(e)
+        const fromX = getMapX(e)
+        const fromY = getMapY(e)
         let didMove = false
         const abortController = new AbortController()
         const { signal } = abortController
@@ -71,23 +63,20 @@ export const MapSvg: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.buttons === 1) {
-            const toCoords = getCoords(e)
-            dispatch(actions.setSelectionRectCoords([
-              Math.min(fromCoords.x, toCoords.x),
-              Math.min(fromCoords.y, toCoords.y),
-              Math.abs(toCoords.x - fromCoords.x),
-              Math.abs(toCoords.y - fromCoords.y)
-            ]))
-            dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromCoords, toCoords)))
+            const toX = getMapX(e)
+            const toY = getMapY(e)
+            dispatch(actions.setSelectionRectCoords([Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]))
+            dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromX, fromY, toX, toY)))
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          const toCoords = getCoords(e)
+          const toX = getMapX(e)
+          const toY = getMapY(e)
           if (didMove) {
             if (e.button === 0) {
-              dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'selectDragged', {nList: mapFindIntersecting(m, fromCoords, toCoords)})))
+              dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'selectDragged', {nList: mapFindIntersecting(m, fromX, fromY, toX, toY)})))
               dispatch(actions.setSelectionRectCoords([]))
               dispatch(actions.setIntersectingNodes([]))
             }

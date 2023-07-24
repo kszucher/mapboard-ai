@@ -4,7 +4,7 @@ import {mSelector} from "../state/EditorState"
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
 import {useSelector} from "react-redux"
-import {getCoords, scrollTo} from "./MapDivUtils"
+import {getMapX, getMapY, scrollTo} from "./MapDivUtils"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {getG} from "../core/MapUtils"
@@ -13,31 +13,8 @@ import {G, N} from "../state/MapPropTypes"
 const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2
 const getScrollTop = (g: G) => (window.innerHeight - g.mapHeight) / 2
 
-const getScrollX = () => document.getElementById('mainMapDiv')!.scrollLeft
-const getScrollY = () => document.documentElement.scrollTop
-
-// const getMapX = () => e.pageX - window.innerWidth + document.getElementById('mainMapDiv')!.scrollLeft
-
 const setScrollX = (x: number) => document.getElementById('mainMapDiv')!.scrollLeft -= x
 const setScrollY = (y: number) => window.scrollTo(0, document.documentElement.scrollTop - y)
-
-// export const getCoords = (e: any) => {
-//   const winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-//   const winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-//   const mainMapDiv = document.getElementById('mainMapDiv') as HTMLDivElement
-//   return {
-//     x:  e.pageX - winWidth + mainMapDiv.scrollLeft,
-//     y: e.pageY - winHeight + mainMapDiv.scrollTop
-//   }
-// }
-const width = window.innerWidth;
-const height = window.innerHeight;
-
-var scale = 1;  // scale of the image
-var xLast = 0;  // last x location on the screen
-var yLast = 0;  // last y location on the screen
-var xImage = 0; // last x location on the image
-var yImage = 0; // last y location on the image
 
 const zoomIntensity = 0.2;
 
@@ -49,10 +26,14 @@ export const Map: FC = () => {
   const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState
   const mainMapDiv = useRef<HTMLDivElement>(null)
 
-  const [scaleFactor, setScaleFactor] = useState(1)
+  const [scale, setScale] = useState(1)
+  const [xLast, setXLast] = useState(0)
+  const [yLast, setYLast] = useState(0)
+  const [xNew, setXNew] = useState(0)
+  const [yNew, setYNew] = useState(0)
+  const [xImage, setXImage] = useState(0)
+  const [yImage, setYImage] = useState(0)
 
-  const [originX, setOriginX] = useState(0)
-  const [originY, setOriginY] = useState(0)
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -95,7 +76,6 @@ export const Map: FC = () => {
         display: 'grid',
         gridTemplateRows: `100vh ${g.mapHeight}px 100vh`,
         gridTemplateColumns: `100vw ${g.mapWidth}px 100vw`,
-
       }}
       ref={mainMapDiv}
       id={'mainMapDiv'}
@@ -115,47 +95,29 @@ export const Map: FC = () => {
         }
       }}
       onWheel={(e) => {
-        const subMapDiv = document.getElementById('subMapDiv') as HTMLDivElement
-
-
-        // find current location on screen
-
-        const xy = getCoords(e)
-
-        var xScreen =xy.x
-        var yScreen =xy.y
-
-        // find current location on the image at the current scale
-        xImage = xImage + ((xScreen - xLast) / scale);
-        yImage = yImage + ((yScreen - yLast) / scale);
+        const mapX = getMapX(e)
+        const mapY = getMapY(e)
+        const newXImage = xImage + ((mapX - xLast) / scale)
+        const newYImage = yImage + ((mapY - yLast) / scale)
 
         // TODO BRING THE EXPONENTIAL FROM THE OTHER ANSWER AND WE'LL BE GOOD
 
-        // determine the new scale
+        let newScale
         if (e.deltaY > 0)
         {
-          scale -= 0.1;
+          newScale = (scale - 0.1)
         }
         else
         {
-          scale += 0.1;
+          newScale = (scale + 0.1)
         }
-        // scale = scale < 1 ? 1 : (scale > 64 ? 64 : scale);
-
-        // determine the location on the screen at the new scale
-        var xNew = (xScreen - xImage) / scale;
-        var yNew = (yScreen - yImage) / scale;
-
-        // save the current screen location
-        xLast = xScreen;
-        yLast = yScreen;
-
-
-        // const subMapDiv = document.getElementById('subMapDiv') as HTMLDivElement
-        subMapDiv.style.transform = 'scale(' + scale + ')' + 'translate(' + xNew + 'px, ' + yNew + 'px' + ')'
-        subMapDiv.style.transformOrigin = xImage + 'px ' + yImage + 'px'
-
-
+        setXNew((mapX - newXImage) / newScale)
+        setYNew((mapY - newYImage) / newScale)
+        setScale(newScale)
+        setXImage(newXImage)
+        setYImage(newYImage)
+        setXLast(mapX)
+        setYLast(mapY)
       }}
     >
       <div/>
@@ -163,21 +125,12 @@ export const Map: FC = () => {
       <div/>
       <div/>
       <div
-
-        id={'subMapDiv'}
-
         style={{
-
-        position: 'relative',
-        display: 'flex',
-        // transform: `scale(${scaleFactor})`,
-        // transformOrigin: `${originX}px ${originY}px`
-
-      }}
-
-
-
-
+          position: 'relative',
+          display: 'flex',
+          transform: `scale(${scale}) translate(${xNew}px, ${yNew}px)`,
+          transformOrigin: `${xImage}px ${yImage}px`
+        }}
       >
         <MapSvg/>
         <MapDiv/>

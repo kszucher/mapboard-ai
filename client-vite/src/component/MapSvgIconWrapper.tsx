@@ -1,9 +1,16 @@
 import React from "react"
-import {iconCommonProps} from "./MapSvg"
 import {MapSvgIcon} from "./MapSvgIcons"
 
 export const MapSvgIconWrapper = ({x, y, iconName, onMouseDownGuarded}: {x: number, y: number, iconName: string, onMouseDownGuarded: Function}) => (
-  <g transform={`translate(${x}, ${y})`} {...iconCommonProps}>
+  <g
+    transform={`translate(${x}, ${y})`}
+    style={{
+      vectorEffect: 'non-scaling-stroke',
+      transition: 'all 0.3s',
+      transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
+      transitionProperty: 'all'
+    }}
+  >
     <g width="24" height="24" viewBox="0 0 24 24">
       <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
       <MapSvgIcon iconName={iconName}/>

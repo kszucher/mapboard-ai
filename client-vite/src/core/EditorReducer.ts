@@ -1,6 +1,6 @@
 import {combineReducers, configureStore, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
-import {getCoords} from "../component/MapDivUtils"
+import {getMapX, getMapY} from "../component/MapDivUtils"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "../state/Enums"
 import {M} from "../state/MapPropTypes"
@@ -28,6 +28,7 @@ export const editorSlice = createSlice({
     setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
     setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
+      // TODO check edit/view condition
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
         case 'undo': {
@@ -42,15 +43,17 @@ export const editorSlice = createSlice({
         }
         case 'simulateDrag': {
           const {n, e} = action.payload.payload
-          const toCoords = getCoords(e)
-          const {moveCoords} = mapFindNearest(pm, n, toCoords.x, toCoords.y)
+          const toX = getMapX(e)
+          const toY = getMapY(e)
+          const {moveCoords} = mapFindNearest(pm, n, toX, toY)
           state.moveCoords = moveCoords
           break
         }
         case 'drag': {
           const {n, e} = action.payload.payload
-          const toCoords = getCoords(e)
-          const {moveTargetPath, moveTargetIndex} = mapFindNearest(pm, n, toCoords.x, toCoords.y)
+          const toX = getMapX(e)
+          const toY = getMapY(e)
+          const {moveTargetPath, moveTargetIndex} = mapFindNearest(pm, n, toX, toY)
           if (moveTargetPath.length) {
             const m = mapReducer(pm, 'drag', {moveTargetPath, moveTargetIndex})
             if (!isEqual(pm, m)) {
