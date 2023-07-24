@@ -114,14 +114,7 @@ export const Map: FC = () => {
       <div/>
       <div/>
       <div/>
-      <div
-        style={{
-          position: 'relative',
-          display: 'flex',
-          transform: `scale(${scale}) translate(${xNew}px, ${yNew}px)`,
-          transformOrigin: `${xImage}px ${yImage}px`
-        }}
-      >
+      <div style={{position: 'relative', display: 'flex', transform: `scale(${scale}) translate(${xNew}px, ${yNew}px)`, transformOrigin: `${xImage}px ${yImage}px`}}>
         <MapSvg/>
         <MapDiv/>
       </div>
