@@ -16,7 +16,7 @@ const getScrollTop = (g: G) => (window.innerHeight - g.mapHeight) / 2
 const setScrollX = (x: number) => document.getElementById('mainMapDiv')!.scrollLeft -= x
 const setScrollY = (y: number) => window.scrollTo(0, document.documentElement.scrollTop - y)
 
-const zoomIntensity = 0.2;
+const ZOOM_INTENSITY = 0.2
 
 export const Map: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -26,14 +26,13 @@ export const Map: FC = () => {
   const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState
   const mainMapDiv = useRef<HTMLDivElement>(null)
 
-  const [scale, setScale] = useState(1)
   const [xLast, setXLast] = useState(0)
   const [yLast, setYLast] = useState(0)
   const [xNew, setXNew] = useState(0)
   const [yNew, setYNew] = useState(0)
   const [xImage, setXImage] = useState(0)
   const [yImage, setYImage] = useState(0)
-
+  const [scale, setScale] = useState(1)
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -99,25 +98,16 @@ export const Map: FC = () => {
         const mapY = getMapY(e)
         const newXImage = xImage + ((mapX - xLast) / scale)
         const newYImage = yImage + ((mapY - yLast) / scale)
-
-        // TODO BRING THE EXPONENTIAL FROM THE OTHER ANSWER AND WE'LL BE GOOD
-
-        let newScale
-        if (e.deltaY > 0)
-        {
-          newScale = (scale - 0.1)
-        }
-        else
-        {
-          newScale = (scale + 0.1)
-        }
-        setXNew((mapX - newXImage) / newScale)
-        setYNew((mapY - newYImage) / newScale)
-        setScale(newScale)
-        setXImage(newXImage)
-        setYImage(newYImage)
+        let newScale = scale * Math.exp((e.deltaY < 0 ? 1 : -1) * ZOOM_INTENSITY)
+        if (newScale > 20) {newScale = 20}
+        if (newScale < 0.2) {newScale = 0.2}
         setXLast(mapX)
         setYLast(mapY)
+        setXNew((mapX - newXImage) / newScale)
+        setYNew((mapY - newYImage) / newScale)
+        setXImage(newXImage)
+        setYImage(newYImage)
+        setScale(newScale)
       }}
     >
       <div/>
