@@ -1,3 +1,4 @@
+import {useState} from "react";
 import {FormatMode, PageState} from "./Enums"
 import {EditorState} from "./EditorStateTypes"
 import {RootState, store} from "../core/EditorReducer"
@@ -17,6 +18,15 @@ export const editorState: EditorState = {
   moveCoords: [],
   selectionRectCoords: [],
   intersectingNodes: [],
+  zoomInfo: {
+    scale: 1,
+    xLast: 0,
+    yLast: 0,
+    xNew: 0,
+    yNew: 0,
+    xImage: 0,
+    yImage: 0,
+  },
 }
 
 export const getMap = () => (store.getState().editor.mapList[store.getState().editor.mapListIndex])

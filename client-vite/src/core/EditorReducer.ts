@@ -27,6 +27,7 @@ export const editorSlice = createSlice({
     closeMoreMenu(state) { state.moreMenu = false },
     setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
     setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
+    setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload},
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
       // TODO check edit/view condition
       const pm = current(state.mapList[state.mapListIndex])

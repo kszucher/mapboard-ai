@@ -16,4 +16,13 @@ export interface EditorState {
   moveCoords: number[]
   selectionRectCoords: number[]
   intersectingNodes: N[]
+  zoomInfo: {
+    scale: number
+    xLast: number,
+    yLast: number,
+    xNew: number,
+    yNew: number,
+    xImage: number,
+    yImage: number,
+  }
 }

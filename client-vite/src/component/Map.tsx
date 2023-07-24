@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useRef, useState} from "react"
-import {RootState} from "../core/EditorReducer"
+import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
-import {useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {getMapX, getMapY, setScrollLeftAnimated} from "./MapDivUtils"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
@@ -12,28 +12,17 @@ import {getG} from "../core/MapUtils"
 const ZOOM_INTENSITY = 0.2
 
 export const Map: FC = () => {
+  const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const { density, alignment } = g
   const { data } = useOpenWorkspaceQuery()
   const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState
 
-  const [xLast, setXLast] = useState(0)
-  const [yLast, setYLast] = useState(0)
-  const [xNew, setXNew] = useState(0)
-  const [yNew, setYNew] = useState(0)
-  const [xImage, setXImage] = useState(0)
-  const [yImage, setYImage] = useState(0)
-  const [scale, setScale] = useState(1)
+  const dispatch = useDispatch<AppDispatch>()
 
   const resetView = () => {
-    setXLast(0)
-    setYLast(0)
-    setXNew(0)
-    setYNew(0)
-    setXImage(0)
-    setYImage(0)
-    setScale(1)
+    dispatch(actions.setZoomInfo({scale: 1, xLast: 0, yLast: 0, xNew: 0, yNew: 0, xImage: 0, yImage: 0}))
     setScrollLeft((window.innerWidth + g.mapWidth) / 2)
     setScrollTop(window.innerHeight - 40 * 2)
   }
@@ -89,6 +78,7 @@ export const Map: FC = () => {
         }
       }}
       onWheel={(e) => {
+        const {scale, xLast, yLast, xImage, yImage } = zoomInfo
         const mapX = getMapX(e)
         const mapY = getMapY(e)
         const newXImage = xImage + ((mapX - xLast) / scale)
@@ -96,20 +86,27 @@ export const Map: FC = () => {
         let newScale = scale * Math.exp((e.deltaY < 0 ? 1 : -1) * ZOOM_INTENSITY)
         if (newScale > 20) {newScale = 20}
         if (newScale < 0.2) {newScale = 0.2}
-        setXLast(mapX)
-        setYLast(mapY)
-        setXNew((mapX - newXImage) / newScale)
-        setYNew((mapY - newYImage) / newScale)
-        setXImage(newXImage)
-        setYImage(newYImage)
-        setScale(newScale)
+        dispatch(actions.setZoomInfo({
+          scale: newScale,
+          xLast: mapX,
+          yLast: mapY,
+          xNew: (mapX - newXImage) / newScale,
+          yNew: (mapY - newYImage) / newScale,
+          xImage: newXImage,
+          yImage: newYImage,
+        }))
       }}
     >
       <div/>
       <div/>
       <div/>
       <div/>
-      <div style={{position: 'relative', display: 'flex', transform: `scale(${scale}) translate(${xNew}px, ${yNew}px)`, transformOrigin: `${xImage}px ${yImage}px`}}>
+      <div style={{
+        position: 'relative',
+        display: 'flex',
+        transform: `scale(${zoomInfo.scale}) translate(${zoomInfo.xNew}px, ${zoomInfo.yNew}px)`,
+        transformOrigin: `${zoomInfo.xImage}px ${zoomInfo.yImage}px`
+      }}>
         <MapSvg/>
         <MapDiv/>
       </div>
