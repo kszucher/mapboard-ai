@@ -4,8 +4,8 @@ import {MapSvgIcon} from "./MapSvgIcons"
 export const MapSvgIconWrapper = ({x, y, iconName, onMouseDownGuarded}: {x: number, y: number, iconName: string, onMouseDownGuarded: Function}) => (
   <g
     transform={`translate(${x}, ${y})`}
+    {...{vectorEffect: 'non-scaling-stroke'}}
     style={{
-      vectorEffect: 'non-scaling-stroke',
       transition: 'all 0.3s',
       transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
       transitionProperty: 'all'

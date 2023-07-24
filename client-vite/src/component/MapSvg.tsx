@@ -19,8 +19,8 @@ import {mapFindIntersecting} from "../core/MapFindIntersecting"
 import {M, N} from "../state/MapPropTypes"
 
 export const pathCommonProps = {
+  vectorEffect: 'non-scaling-stroke',
   style: {
-    vectorEffect: 'non-scaling-stroke',
     transition: 'all 0.3s',
     transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
     transitionProperty: 'd, fill, stroke-width'
