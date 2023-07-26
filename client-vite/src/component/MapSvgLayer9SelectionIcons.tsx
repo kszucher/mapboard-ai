@@ -38,7 +38,8 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
       {
         ((isXR(m) && getCountSO1(m, ['r', getRi(nx.path), 'd', 0]) === 0) || isXS(m) && getCountSO1(m, nx.path) === 0) && nx.selection === 's' &&
         <MapSvgIconWrapper x={calcSvgIconOffsetX(nx, getCountCO1(m, nx.path) ? 6 : 1)} y={nx.nodeY - 12 + .5} iconName={'CirclePlus'} onMouseDownGuarded={() => {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertS', null)))
+          isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))
+          isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
         }}/>
       }
       {

@@ -120,18 +120,13 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'pi' && isXR(m)): return ({type: 'insertSORImage', payload: ep})
     case (es === 'pi' && isXS(m)): return ({type: 'insertSOImage', payload: ep})
 
-    case (es === 'c' && et === 'select' && !ep.add): return ({type: 'selectS', payload: ep})
-    case (es === 'c' && et === 'select' && ep.add): return ({type: 'selectStoo', payload: ep})
-    case (es === 'c' && et === 'selectF' && isR(ep.path) && getCountRXD0S(m, getRi(ep.path)) > 0 && !getRXD0(m, getRi(ep.path)).selected): return ({type: 'selectRXD0F', payload: ep})
-    case (es === 'c' && et === 'selectF' && isR(ep.path) && !!getRXD0(m, getRi(ep.path)).selected && !getRXD1(m, getRi(ep.path)).selected && getCountSO1(m, getRXD1(m,getRi(ep.path)).path) > 0): return ({type: 'selectRXD1F', payload: ep})
-    case (es === 'c' && et === 'selectF' && !isR(ep.path) && getCountSO1(m, ep.path) > 0): return ({type: 'selectF', payload: ep})
+
+
+
+
     case (es === 'c' && et === 'selectR0'): return ({type: 'selectR0', payload: ep})
     case (es === 'c' && et === 'selectDragged'): return ({type: 'selectDragged', payload: ep})
 
-    case (es === 'c' && et === 'insert' && isXR(m)): return ({type: 'insertSOR', payload: ep})
-    case (es === 'c' && et === 'insert' && isXS(m)): return ({type: 'insertSO', payload: ep})
-    case (es === 'c' && et === 'insertS' && isXR(m)): return ({type: 'insertSOR', payload: ep})
-    case (es === 'c' && et === 'insertS' && isXS(m)): return ({type: 'insertSO', payload: ep})
     case (es === 'c' && et === 'insertSCSO'): return ({type: 'insertSCSO', payload: ep})
     case (es === 'c' && et === 'insertSCRD' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCRD', payload: ep})
     case (es === 'c' && et === 'insertSCRU' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCRU', payload: ep})
@@ -140,22 +135,6 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'insertTable' && isXR(m)): return ({type: 'insertSORTable', payload: ep})
     case (es === 'c' && et === 'insertTable' && isXS(m)): return ({type: 'insertSOTable', payload: ep})
 
-    case (es === 'c' && et === 'setLineWidth' && getX(m).selection === 's'): return ({type: 'setLineWidthS', payload: ep})
-    case (es === 'c' && et === 'setLineWidth' && getX(m).selection === 'f'): return ({type: 'setLineWidthF', payload: ep})
-    case (es === 'c' && et === 'setLineType' && getX(m).selection === 's'): return ({type: 'setLineTypeS', payload: ep})
-    case (es === 'c' && et === 'setLineType' && getX(m).selection === 'f'): return ({type: 'setLineTypeF', payload: ep})
-    case (es === 'c' && et === 'setLineColor' && getX(m).selection === 's'): return ({type: 'setLineColorS', payload: ep})
-    case (es === 'c' && et === 'setLineColor' && getX(m).selection === 'f'): return ({type: 'setLineColorF', payload: ep})
-    case (es === 'c' && et === 'setBorderWidth' && getX(m).selection === 's'): return ({type: 'setBorderWidthS', payload: ep})
-    case (es === 'c' && et === 'setBorderWidth' && getX(m).selection === 'f'): return ({type: 'setBorderWidthF', payload: ep})
-    case (es === 'c' && et === 'setBorderColor' && getX(m).selection === 's'): return ({type: 'setBorderColorS', payload: ep})
-    case (es === 'c' && et === 'setBorderColor' && getX(m).selection === 'f'): return ({type: 'setBorderColorF', payload: ep})
-    case (es === 'c' && et === 'setFillColor' && getX(m).selection === 's'): return ({type: 'setFillColorS', payload: ep})
-    case (es === 'c' && et === 'setFillColor' && getX(m).selection === 'f'): return ({type: 'setFillColorF', payload: ep})
-    case (es === 'c' && et === 'setTextFontSize' && getX(m).selection === 's'): return ({type: 'setTextFontSizeS', payload: ep})
-    case (es === 'c' && et === 'setTextFontSize' && getX(m).selection === 'f'): return ({type: 'setTextFontSizeF', payload: ep})
-    case (es === 'c' && et === 'setTextColor' && getX(m).selection === 's'): return ({type: 'setTextColorS', payload: ep})
-    case (es === 'c' && et === 'setTextColor' && getX(m).selection === 'f'): return ({type: 'setTextColorF', payload: ep})
 
     case (es === 'c' && et === 'clearLine' && getX(m).selection === 's'): return ({type: 'clearLineS', payload: ep})
     case (es === 'c' && et === 'clearLine' && getX(m).selection === 'f'): return ({type: 'clearLineF', payload: ep})

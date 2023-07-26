@@ -9,16 +9,16 @@ import {actions, AppDispatch, RootState} from '../core/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
 import {getPropXA, getX} from "../core/MapUtils"
 
-const getKeys = (type: object) => Object.keys(type).filter(nx => !(parseInt(nx) >= 0))
+const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 
 export const Formatter: FC = () => {
   const o = 32
   const r = 12
-  const width =  o * colorList[0].length
+  const width = o * colorList[0].length
   const height = o * colorList.length
   const formatMode = useSelector((state: RootState) => state.editor.formatMode)
   const m = useSelector((state:RootState) => mSelector(state))
-  const nx = getX(m)
+  const xn = getX(m)
   const access = useSelector((state: RootState) => state.editor.access)
   const disabled = [AccessTypes.UNAUTHORIZED, AccessTypes.VIEW].includes(access)
   const dispatch = useDispatch<AppDispatch>()
@@ -31,11 +31,11 @@ export const Formatter: FC = () => {
         </IconButton>
         <IconButton color='secondary' aria-label="border" onClick={() => {
           dispatch(actions.setFormatMode(FormatMode.border))
-        }}><BorderIcon selection={nx.selection}/>
+        }}><BorderIcon selection={xn.selection}/>
         </IconButton>
         <IconButton color='secondary' aria-label="fill" onClick={() => {
           dispatch(actions.setFormatMode(FormatMode.fill))
-        }}><FillIcon selection={nx.selection}/>
+        }}><FillIcon selection={xn.selection}/>
         </IconButton>
         <IconButton color='secondary' aria-label="line" onClick={() => {
           dispatch(actions.setFormatMode(FormatMode.line))
@@ -57,22 +57,23 @@ export const Formatter: FC = () => {
                       fill={jEl}
                       stroke={colorList[i][j] === (() => {
                         if (formatMode === FormatMode.text) return getPropXA(m, 'textColor')
-                        if (formatMode === FormatMode.border) return nx.selection === 's' ? getPropXA(m, 'sBorderColor') : getPropXA(m, 'fBorderColor')
-                        if (formatMode === FormatMode.fill) return nx.selection === 's' ? getPropXA(m, 'sFillColor') : getPropXA(m, 'fFillColor')
+                        if (formatMode === FormatMode.border && xn.selection === 's') return getPropXA(m, 'sBorderColor')
+                        if (formatMode === FormatMode.border && xn.selection === 'f') return getPropXA(m, 'fBorderColor')
+                        if (formatMode === FormatMode.fill && xn.selection === 's') return getPropXA(m, 'sFillColor')
+                        if (formatMode === FormatMode.fill && xn.selection === 'f') return getPropXA(m, 'fFillColor')
                         if (formatMode === FormatMode.line) return getPropXA(m, 'lineColor')
                       })() ? '#9040b8' : 'none'}
                       strokeWidth={"2%"}
                       onClick={() => {
                         const color = colorList[i][j]
-                        if (formatMode === FormatMode.text) {
-                          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setTextColor', color)))
-                        } else if (formatMode === FormatMode.border) {
-                          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setBorderColor', color)))
-                        } else if (formatMode === FormatMode.fill) {
-                          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setFillColor', color)))
-                        } else if (formatMode === FormatMode.line) {
-                          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setLineColor', color)))
-                        }
+                        formatMode === FormatMode.text && xn.selection === 's' && dispatch(actions.mapAction({type: 'setTextColorS', payload: color}))
+                        formatMode === FormatMode.text && xn.selection === 'f' && dispatch(actions.mapAction({type: 'setTextColorF', payload: color}))
+                        formatMode === FormatMode.border && xn.selection === 's' && dispatch(actions.mapAction({type: 'setBorderColorS', payload: color}))
+                        formatMode === FormatMode.border && xn.selection === 'f' && dispatch(actions.mapAction({type: 'setBorderColorF', payload: color}))
+                        formatMode === FormatMode.fill && xn.selection === 's' && dispatch(actions.mapAction({type: 'setFillColorS', payload: color}))
+                        formatMode === FormatMode.fill && xn.selection === 'f' && dispatch(actions.mapAction({type: 'setFillColorF', payload: color}))
+                        formatMode === FormatMode.line && xn.selection === 's' && dispatch(actions.mapAction({type: 'setLineColorS', payload: color}))
+                        formatMode === FormatMode.line && xn.selection === 'f' && dispatch(actions.mapAction({type: 'setLineColorF', payload: color}))
                       }}
                     />
                   )
@@ -87,9 +88,10 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.text &&
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(TextTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === TextTypes[getPropXA(m, 'textFontSize') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
-                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setTextFontSize', TextTypes[name as keyof typeof TextTypes])))
-              }>{name}
+              <Button key={idx} style={{backgroundColor: name === TextTypes[getPropXA(m, 'textFontSize') as number || 0] ? 'var(--button-color)' : ''}} onClick={() => {
+                xn.selection === 's' && dispatch(actions.mapAction({type: 'setTextFontSizeS', payload: TextTypes[name as keyof typeof TextTypes]}))
+                xn.selection === 'f' && dispatch(actions.mapAction({type: 'setTextFontSizeF', payload: TextTypes[name as keyof typeof TextTypes]}))
+              }}>{name}
               </Button>
             )}
           </ButtonGroup>
@@ -97,9 +99,10 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.border &&
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(WidthTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === WidthTypes[nx.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXA(m, 'fBorderWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
-                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setBorderWidth', WidthTypes[name as keyof typeof WidthTypes])))
-              }>{name}
+              <Button key={idx} style={{backgroundColor: name === WidthTypes[xn.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXA(m, 'fBorderWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() => {
+                xn.selection === 's' && dispatch(actions.mapAction({type: 'setBorderWidthS', payload: WidthTypes[name as keyof typeof WidthTypes]}))
+                xn.selection === 'f' && dispatch(actions.mapAction({type: 'setBorderWidthF', payload: WidthTypes[name as keyof typeof WidthTypes]}))
+              }}>{name}
               </Button>
             )}
           </ButtonGroup>
@@ -107,18 +110,20 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.line && <>
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(WidthTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === WidthTypes[getPropXA(m, 'lineWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
-                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setLineWidth', WidthTypes[name as keyof typeof WidthTypes])))
-              }>{name}
+              <Button key={idx} style={{backgroundColor: name === WidthTypes[getPropXA(m, 'lineWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() => {
+                xn.selection === 's' && dispatch(actions.mapAction({type: 'setLineWidthS', payload: WidthTypes[name as keyof typeof WidthTypes]}))
+                xn.selection === 'f' && dispatch(actions.mapAction({type: 'setLineWidthF', payload: WidthTypes[name as keyof typeof WidthTypes]}))
+              }}>{name}
               </Button>
             )}
           </ButtonGroup>
 
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(LineTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === LineTypes[getPropXA(m, 'lineType') as number || 0] ? 'var(--button-color)' : ''}} onClick={() =>
-                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'setLineType', LineTypes[name as keyof typeof LineTypes])))
-              }>{name}
+              <Button key={idx} style={{backgroundColor: name === LineTypes[getPropXA(m, 'lineType') as number || 0] ? 'var(--button-color)' : ''}} onClick={() => {
+                xn.selection === 's' && dispatch(actions.mapAction({type: 'setLineTypeS', payload: LineTypes[name as keyof typeof LineTypes]}))
+                xn.selection === 'f' && dispatch(actions.mapAction({type: 'setLineTypeF', payload: LineTypes[name as keyof typeof LineTypes]}))
+              }}>{name}
               </Button>
             )}
           </ButtonGroup>

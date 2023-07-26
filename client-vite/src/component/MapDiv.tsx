@@ -4,7 +4,7 @@ import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
 import {mapActionResolver} from "../core/MapActionResolver"
-import {getCountCO1, getG, getNodeById, isR, isS} from "../core/MapUtils"
+import {getCountCO1, getCountRXD0S, getCountSO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -87,25 +87,32 @@ export const MapDiv: FC = () => {
                     window.open(n.link, '_blank')
                     window.focus()
                   } else {
-                    const add = e.ctrlKey
-                    dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'select', { add, path: n.path })))
+                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
+                    e.ctrlKey && dispatch(actions.mapAction({type: 'selectStoo', payload: {path: n.path}}))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
+                      // TODO include here the scale condition
                       dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'simulateDrag', {n, e})))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
+                      // TODO include here the scale condition
                       dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'drag', {n, e})))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  const add = e.ctrlKey
-                  dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'selectF', { add, path: n.path })))
+                  if (isR(n.path) && getCountRXD0S(m, getRi(n.path)) > 0 && !getRXD0(m, getRi(n.path)).selected) {
+                    dispatch(actions.mapAction({type: 'selectRXD0F', payload: {path: n.path}}))
+                  } else if (isR(n.path) && !!getRXD0(m, getRi(n.path)).selected && !getRXD1(m, getRi(n.path)).selected && getCountSO1(m, getRXD1(m, getRi(n.path)).path) > 0) {
+                    dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: n.path}}))
+                  } else if (!isR(n.path) && getCountSO1(m, n.path) > 0) {
+                    dispatch(actions.mapAction({type: 'selectF', payload: {path: n.path}}))
+                  }
                 }
               }}
               onDoubleClick={(e) => {
@@ -114,11 +121,12 @@ export const MapDiv: FC = () => {
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
-                } else if (['Insert','Tab'].includes(e.key)) {
-                  dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
-                  dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'insert', null)))
+                if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
+                  dispatch(actions.mapAction({type: 'finishEdit', payload: {path: n.path, content: e.currentTarget.innerHTML}}))
+                }
+                if (['Insert','Tab'].includes(e.key)) {
+                  isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))
+                  isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
                 }
               }}
               onInput={(e) => {
