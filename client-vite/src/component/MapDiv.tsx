@@ -27,6 +27,7 @@ const getInnerHtml = (n: N) => {
 export const MapDiv: FC = () => {
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const editType = useSelector((state: RootState) => state.editor.editType)
+  const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
@@ -93,14 +94,12 @@ export const MapDiv: FC = () => {
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      // TODO include here the scale condition
-                      dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'simulateDrag', {n, e})))
+                      !isXR(m) && zoomInfo.scale === 1 && dispatch(actions.mapAction({type: 'simulateDrag', payload: {n, e}}))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      // TODO include here the scale condition
-                      dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'drag', {n, e})))
+                      !isXR(m) && zoomInfo.scale === 1 && dispatch(actions.mapAction({type: 'drag', payload: {n, e}}))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
