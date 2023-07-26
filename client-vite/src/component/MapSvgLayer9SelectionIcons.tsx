@@ -2,10 +2,9 @@ import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
-import {mapActionResolver} from "../core/MapActionResolver"
 import {PageState} from "../state/Enums";
 import {N} from "../state/MapPropTypes"
-import {getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath, getRi, getRootStartX, getRootStartY, getRootW, getRootH} from "../core/MapUtils"
+import {getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath, getRi, getRootStartX, getRootStartY, getRootW, getRootH,} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -50,9 +49,9 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         }}/>
       }
       {
-        isXS(m) && xn.selection === 'f' &&
+        isXS(m) && xn.selection === 'f' && getCountSO1(m, xn.path) &&
         <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 1)} y={xn.nodeY - 12 + .5} iconName={'TableExport'} onMouseDownGuarded={() => {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'moveS2T', null)))
+          dispatch(actions.mapAction({type: 'moveS2T', payload: null}))
         }}/>
       }
       {
@@ -106,7 +105,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
             y={getRootStartY(m, getX(m)) + getRootH(m, getX(m)) / 2 - 12}
             iconName={'SquarePlus'}
             onMouseDownGuarded={() => {
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertRR', null)))
+              dispatch(actions.mapAction({type: 'insertRR', payload: null}))
             }}/>
         </Fragment>
       }
@@ -118,7 +117,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
             y={getRootStartY(m, getX(m)) + getRootH(m, getX(m))}
             iconName={'SquarePlus'}
             onMouseDownGuarded={() => {
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertRD', null)))
+              dispatch(actions.mapAction({type: 'insertRD', payload: null}))
             }}/>
         </Fragment>
       }

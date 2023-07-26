@@ -2,7 +2,6 @@ import {FC} from "react"
 import {useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
 import {actions, AppDispatch, RootState} from '../core/EditorReducer'
-import {mapActionResolver} from "../core/MapActionResolver"
 import {getXA} from "../core/MapUtils"
 import {genHash} from "../core/Utils"
 import {getMapId} from "../state/ApiState"

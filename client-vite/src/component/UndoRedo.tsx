@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from 'react-redux'
 import {IconButton} from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
-import {mapActionResolver} from "../core/MapActionResolver"
 import {mSelector} from "../state/EditorState"
 import {AccessTypes} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"

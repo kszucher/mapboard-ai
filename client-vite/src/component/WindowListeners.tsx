@@ -8,8 +8,6 @@ import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/
 import {getMap, mSelector} from "../state/EditorState"
 import {mapDeInit} from "../core/MapDeInit"
 
-let namedInterval: NodeJS.Timeout
-let isIntervalRunning = false
 export let timeoutId: NodeJS.Timeout
 let mapAreaListener: AbortController
 
@@ -36,18 +34,6 @@ export const WindowListeners: FC = () => {
   // LANDING LISTENERS
   const wheel = (e: WheelEvent) => {
     e.preventDefault()
-    // if (!isIntervalRunning) {
-    //   namedInterval = setInterval(function () {
-    //     clearInterval(namedInterval)
-    //     isIntervalRunning = false
-    //     if (Math.sign(e.deltaY) === 1) {
-    //       // dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'redo', null)))
-    //     } else {
-    //       // dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'undo', null)))
-    //     }
-    //   }, 100)
-    // }
-    // isIntervalRunning = true
   }
 
   // MAP LISTENERS

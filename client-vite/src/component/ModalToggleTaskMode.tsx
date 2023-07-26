@@ -2,7 +2,6 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {mapActionResolver} from "../core/MapActionResolver"
 import {mSelector} from "../state/EditorState"
 import {PageState} from "../state/Enums"
 
@@ -29,7 +28,7 @@ export const ModalToggleTaskMode: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'toggleTask', null)))
+              dispatch(actions.mapAction({type: 'toggleTask', payload: null}))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}

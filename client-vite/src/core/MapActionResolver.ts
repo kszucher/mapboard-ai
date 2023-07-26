@@ -1,6 +1,6 @@
 import {isUrl} from "./Utils"
 import {M} from "../state/MapPropTypes"
-import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountCO1, getCountSO1, getPathDir, getXP, getCountRXD1S, getCountRXD0S, getXRi, editable} from "./MapUtils"
+import {isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountCO1, getCountSO1, getPathDir, getXP, getCountRXD1S, getCountRXD0S, getXRi, editable} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
@@ -118,23 +118,6 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
 
     case (es === 'pi' && isXR(m)): return ({type: 'insertSORImage', payload: ep})
     case (es === 'pi' && isXS(m)): return ({type: 'insertSOImage', payload: ep})
-
-    case (es === 'c' && et === 'clearLine' && getX(m).selection === 's'): return ({type: 'clearLineS', payload: ep})
-    case (es === 'c' && et === 'clearLine' && getX(m).selection === 'f'): return ({type: 'clearLineF', payload: ep})
-    case (es === 'c' && et === 'clearBorder' && getX(m).selection === 's'): return ({type: 'clearBorderS', payload: ep})
-    case (es === 'c' && et === 'clearBorder' && getX(m).selection === 'f'): return ({type: 'clearBorderF', payload: ep})
-    case (es === 'c' && et === 'clearFill' && getX(m).selection === 's'): return ({type: 'clearFillS', payload: ep})
-    case (es === 'c' && et === 'clearFill' && getX(m).selection === 'f'): return ({type: 'clearFillF', payload: ep})
-    case (es === 'c' && et === 'clearText' && getX(m).selection === 's'): return ({type: 'clearTextS', payload: ep})
-    case (es === 'c' && et === 'clearText' && getX(m).selection === 'f'): return ({type: 'clearTextF', payload: ep})
-
-    case (es === 'c' && et === 'changeDensity'): return ({type: 'changeDensity', payload: ep})
-    case (es === 'c' && et === 'changeAlignment'): return ({type: 'changeAlignment', payload: ep})
-    case (es === 'c' && et === 'toggleTask'): return ({type: 'toggleTask', payload: ep})
-    case (es === 'c' && et === 'moveS2T' && isXS(m) && getCountSO1(m, getXP(m)) > 0): return ({type: 'moveS2T', payload: ep})
-    case (es === 'c' && et === 'insertRR'): return ({type: 'insertRR', payload: ep})
-    case (es === 'c' && et === 'insertRD'): return ({type: 'insertRD', payload: ep})
-
 
     default: return ({type: '', payload: ep})
   }

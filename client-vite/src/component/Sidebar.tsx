@@ -13,7 +13,6 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
-import {mapActionResolver} from "../core/MapActionResolver"
 import {mSelector} from "../state/EditorState"
 import { CreateMapInMapIcon, TaskIcon } from './MuiSvgIcons'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -69,7 +68,7 @@ export const Sidebar: FC = () => {
         <IconButton
           color='secondary'
           onClick={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'changeDensity', null)))
+            dispatch(actions.mapAction({type: 'changeDensity', payload: null}))
           }}
         >
           {density === 'small' && <DensitySmallIcon/>}
@@ -78,7 +77,7 @@ export const Sidebar: FC = () => {
         <IconButton
           color='secondary'
           onClick={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'changeAlignment', null)))
+            dispatch(actions.mapAction({type: 'changeAlignment', payload: null}))
           }}
         >
           {alignment === 'adaptive' && <CenterFocusWeakIcon/>}

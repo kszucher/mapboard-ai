@@ -1,7 +1,6 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, ButtonGroup, IconButton} from '@mui/material'
-import {mapActionResolver} from "../core/MapActionResolver"
 import {mSelector} from "../state/EditorState"
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './MuiSvgIcons'
 import {colorList} from './Colors'
@@ -135,14 +134,14 @@ export const Formatter: FC = () => {
           color="primary"
           variant='outlined'
           onClick={() => {
-            if (formatMode === FormatMode.text)
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'clearText', null)))
-            else if (formatMode === FormatMode.border)
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'clearBorder', null)))
-            else if (formatMode === FormatMode.fill)
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'clearFill', null)))
-            else if (formatMode === FormatMode.line)
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'clearLine', null)))
+            formatMode === FormatMode.text && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearTextS', payload: null}))
+            formatMode === FormatMode.text && getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearTextF', payload: null}))
+            formatMode === FormatMode.border && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearBorderS', payload: null}))
+            formatMode === FormatMode.border && getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearBorderF', payload: null}))
+            formatMode === FormatMode.fill &&  getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearFillS', payload: null}))
+            formatMode === FormatMode.fill &&  getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearFillF', payload: null}))
+            formatMode === FormatMode.line &&  getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearLineS', payload: null}))
+            formatMode === FormatMode.line &&  getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearLineF', payload: null}))
           }}>
           {'RESET'}
         </Button>
