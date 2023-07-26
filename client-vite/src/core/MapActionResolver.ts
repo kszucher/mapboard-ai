@@ -1,6 +1,6 @@
 import {isUrl} from "./Utils"
 import {M} from "../state/MapPropTypes"
-import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountCO1, getCountSO1, getPathDir, getXP, isR, getCountRXD1S, getCountRXD0S, getXRi, getRXD0, getRXD1, getRi} from "./MapUtils"
+import {getX, isXACC, isXACR, isXC, isXDS, isXR, isXS, isXASVN, isXCR, isXCL, isXCB, isXCT, sortPath, getCountXASU, getCountXASD, getCountCO1, getCountSO1, getPathDir, getXP, getCountRXD1S, getCountRXD0S, getXRi, editable} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
@@ -8,11 +8,10 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
   const m = structuredClone(pm).sort(sortPath)
   const dr = getPathDir(getXP(m)) === 1
   const dl = getPathDir(getXP(m)) === -1
-  const editable = (isXR(m) || isXS(m) || isXC(m)) && getX(m).contentType !== 'image' && getCountCO1(m, getXP(m)) === 0
 
   switch (true) {
     case (es === 'kd' && ckm(e, '---') && e.key === 'F1'): return ({type: '', payload: ep})
-    case (es === 'kd' && ckm(e, '---') && e.key === 'F2' && editable): return ({type: 'startEditAppend', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.key === 'F2' && editable(m)): return ({type: 'startEditAppend', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.key === 'F3'): return ({type: '', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.key === 'F5'): return ({type: '', payload: ep})
     case (es === 'kd' && ckm(e, '---') && e.key === 'Enter' && isXS(m)): return ({type: 'insertSD', payload: ep})
@@ -38,8 +37,8 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyM'): return ({type: 'createMapInMapDialog', payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyC' && isXASVN(m)): return ({type: 'copyS', payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyX' && isXASVN(m)): return ({type: 'cutS', payload: ep})
-    case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyZ'): return ({type: 'redo',payload: ep})
-    case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyY'): return ({type: 'undo',payload: ep})
+    case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyZ'): return ({type: 'redo', payload: ep})
+    case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyY'): return ({type: 'undo', payload: ep})
     case (es === 'kd' && ckm(e, 'c--') && e.code === 'KeyE' && isXS(m)): return ({type: 'transpose', payload: ep})
 
     case (es === 'kd' && ckm(e, '---') && e.code === 'ArrowDown' && isXS(m)): return ({type: 'selectSD', payload: ep})
@@ -105,8 +104,8 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'kd' && ckm(e, '--a') && e.code === 'ArrowLeft' && dl && isXACC(m)): return ({type: 'insertCCR', payload: ep})
 
     case (es === 'kd' && ckm(e, 'c--') && e.which >= 96 && e.which <= 105 && isXS(m)): return ({type: 'applyColorFromKey', payload: {currColor: e.which - 96}})
-    case (es === 'kd' && ckm(e, '---') && e.which >= 48 && editable): return ({type: 'startEditReplace', payload: ep})
-    case (es === 'kd' && ckm(e, '-s-') && e.which >= 48 && editable): return ({type: 'startEditReplace', payload: ep})
+    case (es === 'kd' && ckm(e, '---') && e.which >= 48 && editable(m)): return ({type: 'startEditReplace', payload: ep})
+    case (es === 'kd' && ckm(e, '-s-') && e.which >= 48 && editable(m)): return ({type: 'startEditReplace', payload: ep})
 
     case (es === 'pt' && ep.substring(0, 1) === '[' && isXR(m)): return ({type: 'pasteSOR', payload: ep})
     case (es === 'pt' && ep.substring(0, 1) === '[' && isXS(m)): return ({type: 'pasteSO', payload: ep})
@@ -120,22 +119,6 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'pi' && isXR(m)): return ({type: 'insertSORImage', payload: ep})
     case (es === 'pi' && isXS(m)): return ({type: 'insertSOImage', payload: ep})
 
-
-
-
-
-    case (es === 'c' && et === 'selectR0'): return ({type: 'selectR0', payload: ep})
-    case (es === 'c' && et === 'selectDragged'): return ({type: 'selectDragged', payload: ep})
-
-    case (es === 'c' && et === 'insertSCSO'): return ({type: 'insertSCSO', payload: ep})
-    case (es === 'c' && et === 'insertSCRD' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCRD', payload: ep})
-    case (es === 'c' && et === 'insertSCRU' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCRU', payload: ep})
-    case (es === 'c' && et === 'insertSCCR' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCCR', payload: ep})
-    case (es === 'c' && et === 'insertSCCL' && isXS(m) && getCountCO1(m, getXP(m)) > 0): return ({type: 'insertSCCL', payload: ep})
-    case (es === 'c' && et === 'insertTable' && isXR(m)): return ({type: 'insertSORTable', payload: ep})
-    case (es === 'c' && et === 'insertTable' && isXS(m)): return ({type: 'insertSOTable', payload: ep})
-
-
     case (es === 'c' && et === 'clearLine' && getX(m).selection === 's'): return ({type: 'clearLineS', payload: ep})
     case (es === 'c' && et === 'clearLine' && getX(m).selection === 'f'): return ({type: 'clearLineF', payload: ep})
     case (es === 'c' && et === 'clearBorder' && getX(m).selection === 's'): return ({type: 'clearBorderS', payload: ep})
@@ -145,22 +128,13 @@ export const mapActionResolver = (pm: M, e: any, es: string, et: string | null, 
     case (es === 'c' && et === 'clearText' && getX(m).selection === 's'): return ({type: 'clearTextS', payload: ep})
     case (es === 'c' && et === 'clearText' && getX(m).selection === 'f'): return ({type: 'clearTextF', payload: ep})
 
-    case (es === 'c' && et === 'finishEdit'): return ({type: 'finishEdit', payload: ep})
-    case (es === 'c' && et === 'startEditAppend' && editable): return ({type: 'startEditAppend', payload: ep})
-    case (es === 'c' && et === 'typeText'): return ({type: 'typeText', payload: ep})
-    case (es === 'c' && et === 'undo'): return ({type: 'undo',payload: ep})
-    case (es === 'c' && et === 'redo'): return ({type: 'redo',payload: ep})
-    case (es === 'c' && et === 'setTaskStatus'): return ({type: 'setTaskStatus', payload: ep})
-    case (es === 'c' && et === 'setNote'): return ({type: 'setNote', payload: ep})
     case (es === 'c' && et === 'changeDensity'): return ({type: 'changeDensity', payload: ep})
     case (es === 'c' && et === 'changeAlignment'): return ({type: 'changeAlignment', payload: ep})
     case (es === 'c' && et === 'toggleTask'): return ({type: 'toggleTask', payload: ep})
     case (es === 'c' && et === 'moveS2T' && isXS(m) && getCountSO1(m, getXP(m)) > 0): return ({type: 'moveS2T', payload: ep})
     case (es === 'c' && et === 'insertRR'): return ({type: 'insertRR', payload: ep})
     case (es === 'c' && et === 'insertRD'): return ({type: 'insertRD', payload: ep})
-    case (es === 'c' && et === 'createConnector'): return ({type: 'createConnector', payload: ep})
 
-    case (es === 'a' && et === 'gptParser'): return ({type: 'gptParser', payload: ep})
 
     default: return ({type: '', payload: ep})
   }

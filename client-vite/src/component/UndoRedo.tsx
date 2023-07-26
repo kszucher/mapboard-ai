@@ -26,7 +26,7 @@ export const UndoRedo: FC = () => {
           color='secondary'
           disabled={[AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access) || undoDisabled}
           onClick={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'undo', null)))
+            dispatch(actions.mapAction({type: 'undo', payload: null}))
           }}>
           <UndoIcon/>
         </IconButton>
@@ -34,7 +34,7 @@ export const UndoRedo: FC = () => {
           color='secondary'
           disabled={[AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access) || redoDisabled}
           onClick={() => {
-            dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'redo', null)))
+            dispatch(actions.mapAction({type: 'redo', payload: null}))
           }}>
           <RedoIcon/>
         </IconButton>

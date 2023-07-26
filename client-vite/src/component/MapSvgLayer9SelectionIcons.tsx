@@ -58,25 +58,25 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
       {
         isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&
         <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 1)} y={xn.nodeY - 12 + .5} iconName={'ColumnInsertLeft'} onMouseDownGuarded={() => {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCCL', null)))
+          dispatch(actions.mapAction({type: 'insertSCCL', payload: null}))
         }}/>
       }
       {
         isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&
         <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 2)} y={xn.nodeY - 12 + .5} iconName={'ColumnInsertRight'} onMouseDownGuarded={() => {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCCR', null)))
+          dispatch(actions.mapAction({type: 'insertSCCR', payload: null}))
         }}/>
       }
       {
         isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&
         <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 3)} y={xn.nodeY - 12 + .5} iconName={'RowInsertTop'} onMouseDownGuarded={() => {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCRU', null)))
+          dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))
         }}/>
       }
       {
         isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&
         <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 4)} y={xn.nodeY - 12 + .5} iconName={'RowInsertBottom'} onMouseDownGuarded={() => {
-          dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCRD', null)))
+          dispatch(actions.mapAction({type: 'insertSCRD', payload: null}))
         }}/>
       }
       {
@@ -92,7 +92,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
             getCountSO1(m, n.path) === 0 &&
             <Fragment key={n.nodeId}>
               <MapSvgIconWrapper x={n.nodeStartX + 10} y={n.nodeY - 12 + .5} iconName={'CirclePlus'} onMouseDownGuarded={() => {
-                dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertSCSO', {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number})))
+                dispatch(actions.mapAction({type: 'insertSCSO', payload: {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number}}))
               }}/>
             </Fragment>
           )

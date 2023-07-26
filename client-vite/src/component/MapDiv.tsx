@@ -3,8 +3,7 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
-import {mapActionResolver} from "../core/MapActionResolver"
-import {getCountCO1, getCountRXD0S, getCountSO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
+import {editable, getCountCO1, getCountRXD0S, getCountSO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -77,7 +76,7 @@ export const MapDiv: FC = () => {
                 setEndOfContentEditable(e.currentTarget)
               }}
               onBlur={(e) => {
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'finishEdit', { path: n.path, content: e.currentTarget.innerHTML })))
+                dispatch(actions.mapAction({type: 'finishEdit', payload: {path: n.path, content: e.currentTarget.innerHTML}}))
               }}
               onMouseDown={(e) => {
                 e.stopPropagation()
@@ -116,7 +115,7 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'startEditAppend', null)))
+                editable(m) && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
@@ -129,14 +128,14 @@ export const MapDiv: FC = () => {
                 }
               }}
               onInput={(e) => {
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'typeText', { content:  e.currentTarget.innerHTML })))
+                dispatch(actions.mapAction({type: 'typeText', payload: {content:  e.currentTarget.innerHTML}}))
               }}
               onPaste={(e) => {
                 e.preventDefault()
                 const pasted = e.clipboardData.getData('Text')
                 e.currentTarget.innerHTML += pasted
                 setEndOfContentEditable(e.currentTarget)
-                dispatch(actions.mapAction(mapActionResolver(m, e, 'c', 'typeText', { content:  e.currentTarget.innerHTML })))
+                dispatch(actions.mapAction({type: 'typeText', payload: {content:  e.currentTarget.innerHTML}}))
               }}
             >
             </div>

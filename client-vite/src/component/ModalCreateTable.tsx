@@ -2,8 +2,8 @@ import {FC, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {isXR, isXS} from "../core/MapUtils"
 import {PageState} from "../state/Enums"
-import {mapActionResolver} from "../core/MapActionResolver"
 import {mSelector} from "../state/EditorState"
 
 export const ModalCreateTable: FC = () => {
@@ -54,7 +54,8 @@ export const ModalCreateTable: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'insertTable', {rowLen: parseInt(row), colLen: parseInt(col)})))
+              isXR(m) && dispatch(actions.mapAction({type: 'insertSORTable', payload: {rowLen: parseInt(row), colLen: parseInt(col)}}))
+              isXS(m) && dispatch(actions.mapAction({type: 'insertSOTable', payload: {rowLen: parseInt(row), colLen: parseInt(col)}}))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}

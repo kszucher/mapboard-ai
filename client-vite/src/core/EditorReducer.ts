@@ -5,7 +5,6 @@ import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "../state/Enums"
 import {M} from "../state/MapPropTypes"
 import {api} from "./Api"
-import {mapActionResolver} from "./MapActionResolver"
 import {mapFindNearest} from "./MapFindNearest"
 import {mapReducer} from "./MapReducer"
 import {getEditedNode, getXP} from "./MapUtils"
@@ -139,7 +138,7 @@ export const editorSlice = createSlice({
               try {
                 const gptParsed = JSON.parse(gptSuggestions)
                 console.log(gptParsed)
-                mapAction = mapActionResolver(pm, null, 'a', 'gptParser', {gptParsed})
+                mapAction = {type: 'gptParser', payload: {gptParsed}}
               } catch {
                 console.warn('unparseable:', gptSuggestions)
               }

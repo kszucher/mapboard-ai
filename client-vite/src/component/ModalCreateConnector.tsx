@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
-import {mapActionResolver} from "../core/MapActionResolver"
 import {mSelector} from "../state/EditorState"
 
 enum Sides {
@@ -61,7 +60,7 @@ export const ModalCreateConnector: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              dispatch(actions.mapAction(mapActionResolver(m, null, 'c', 'createConnector', {fromSide, toSide})))
+              dispatch(actions.mapAction({type: 'createConnector', payload: {fromSide, toSide}}))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}
