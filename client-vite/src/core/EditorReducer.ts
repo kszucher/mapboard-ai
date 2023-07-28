@@ -71,7 +71,7 @@ export const editorSlice = createSlice({
           break
         }
         case 'startEditAppend': {
-          const m = mapReducer(pm, 'startEditAppend', action.payload.payload)
+          const m = mapReducer(pm, 'startEditAppend', null)
           if (!isEqual(pm, m)) {
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
             state.mapListIndex = state.mapListIndex + 1
