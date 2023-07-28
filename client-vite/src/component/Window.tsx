@@ -153,14 +153,14 @@ export const Window: FC = () => {
           if (type === 'text/plain') {
             navigator.clipboard.readText()
               .then(text => {
+                text.substring(0, 1) !== '[' && isXR(m) && dispatch(actions.mapAction({type: 'insertSORText', payload: text}))
+                text.substring(0, 1) !== '[' && isXS(m) && dispatch(actions.mapAction({type: 'insertSOText', payload: text}))
                 text.substring(0, 1) === '[' && isXR(m) && dispatch(actions.mapAction({type: 'pasteSOR', payload: text}))
                 text.substring(0, 1) === '[' && isXS(m) && dispatch(actions.mapAction({type: 'pasteSO', payload: text}))
                 text.substring(0, 2) === '\\[' && isXR(m) && dispatch(actions.mapAction({type: 'insertSOREquation', payload: text}))
                 text.substring(0, 2) === '\\[' && isXS(m) && dispatch(actions.mapAction({type: 'insertSOEquation', payload: text}))
                 isUrl(text) && isXR(m) && dispatch(actions.mapAction({type: 'insertSORLink', payload: text}))
-                isUrl(text) && isXS(m) &&dispatch(actions.mapAction({type: 'insertSOLink', payload: text}))
-                isXR(m) && dispatch(actions.mapAction({type: 'insertSORText', payload: text}))
-                isXS(m) && dispatch(actions.mapAction({type: 'insertSOText', payload: text}))
+                isUrl(text) && isXS(m) && dispatch(actions.mapAction({type: 'insertSOLink', payload: text}))
               })
           } else if (type === 'image/png') {
             item[0].getType('image/png').then(image => {
