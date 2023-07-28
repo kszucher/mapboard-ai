@@ -23,7 +23,7 @@ import {ModalCreateMapInMap} from './ModalCreateMapInMap'
 import {ModalToggleTaskMode} from './ModalToggleTaskMode'
 import {TabMaps} from "./TabMaps"
 import {UndoRedo} from './UndoRedo'
-import {WindowListeners} from "./WindowListeners"
+import {Window} from "./Window"
 import {setColors} from "./Colors"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {PageState} from "../state/Enums"
@@ -61,7 +61,7 @@ export const Editor: FC = () => {
             <Formatter/>
           }
           <FrameCarousel/>
-          <WindowListeners/>
+          <Window/>
         </>
       }
       <Logo/>
