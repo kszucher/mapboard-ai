@@ -42,6 +42,7 @@ export const ProfileMenu: FC = () => {
           }}>{'Shares'}</MenuItem>,
           <Divider key={genHash(8)}/>,
 
+          // TODO Add Template that opens ModalTemplate that selects the TEMPLATE and direction,
 
           <MenuItem key={genHash(8)} disabled={!m || getXA(m).length !== 2} onClick={() => {
             dispatch(actions.closeMoreMenu())

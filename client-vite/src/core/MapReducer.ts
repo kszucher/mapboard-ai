@@ -8,7 +8,7 @@ import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteReselectCC, deleteReselectCR, deleteReselectR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
-import {insertCC, insertCR, insertR, insertS, insertTable} from "./MapInsert"
+import {insertCC, insertCR, insertS, insertTable, insertTemplateR} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
@@ -81,8 +81,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSCRU': insertCR(m, [...getXP(m), 'c', 0, 0]); break
     case 'insertSCCR': insertCC(m, [...getXP(m), 'c', 0, getCountSCC(m, getXP(m))]); break
     case 'insertSCCL': insertCC(m, [...getXP(m), 'c', 0, 0]); break
-    case 'insertRR': insertR(m, getRiL(m) + 1, getRootStartX(m, getX(m)) + getRootW(m, getX(m)) + 50, 0); break
-    case 'insertRD': insertR(m, getRiL(m) + 1, 0, getRootStartY(m, getX(m)) + getRootH(m, getX(m)) + 50); break
+    case 'insertTemplateRR': insertTemplateR(m, 'x', getRiL(m) + 1, getRootStartX(m, getR0(m)) + getG(m).maxR + 100, 0); break
+    case 'insertTemplateRD': insertTemplateR(m, 'x', getRiL(m) + 1, 0, getRootStartY(m, getR0(m)) + getG(m).maxD + 100); break
 
     case 'deleteR': deleteReselectR(m); break
     case 'deleteS': deleteReselectS(m); break

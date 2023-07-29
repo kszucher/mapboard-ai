@@ -14,7 +14,7 @@ const showTemplate = (m: M) => {
       'selected: ' + JSON.stringify(n.selected) + ', ' +
       'selection: ' + JSON.stringify(n.selection) + ', ' +
       `nodeId: 'node' + genHash(8)` + ', ' +
-      'path: ' + JSON.stringify(n.path) + ', ' +
+      `path: ["r",ri,${JSON.stringify(n.path.slice(2)).slice(1, -1)}]` + ', ' +
       'content: ' + JSON.stringify(n.content) +
       '} as GN'
     ))
