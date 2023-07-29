@@ -40,14 +40,18 @@ export const ProfileMenu: FC = () => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.setPageState(PageState.WS_SHARES))
           }}>{'Shares'}</MenuItem>,
+
           <Divider key={genHash(8)}/>,
 
-          // TODO Add Template that opens ModalTemplate that selects the TEMPLATE and direction,
-
+          <MenuItem key={genHash(8)} disabled={false} onClick={() => {
+            dispatch(actions.closeMoreMenu())
+            dispatch(actions.setPageState(PageState.WS_CREATE_TEMPLATE))
+          }}>{'Add Template'}</MenuItem>,
           <MenuItem key={genHash(8)} disabled={!m || getXA(m).length !== 2} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.setPageState(PageState.WS_CREATE_CONNECTOR))
           }}>{'Add Connector'}</MenuItem>,
+
           <Divider key={genHash(8)}/>,
 
           <MenuItem key={genHash(8)} onClick={() => {
@@ -66,6 +70,7 @@ export const ProfileMenu: FC = () => {
             dispatch(actions.closeMoreMenu())
             dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))
           }}>{'Remove Tab Map'}</MenuItem>,
+
           <Divider key={genHash(8)}/>,
 
           <MenuItem key={genHash(8)} onClick={() => {

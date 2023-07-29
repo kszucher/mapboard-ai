@@ -3,10 +3,22 @@ import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 import {unselectNodes} from "./MapSelect"
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getSI1, getCountSCR, getCountSCC} from "./MapUtils"
 
+export enum Templates {
+  empty = 'empty',
+  detailedTeamBio = 'Detailed Team Bio',
+  swot = 'SWOT',
+}
+
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
   unselectNodes(m)
-  switch (templateId){
-    case 'Detailed Team Bio': {
+  switch (templateId)  {
+    case Templates.empty: {
+      m.push(
+        {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "New Root"} as GN,
+      )
+      break
+    }
+    case Templates.detailedTeamBio: {
       m.push(
         {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "Detailed Team Bio"} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: ""} as GN,
@@ -30,13 +42,8 @@ export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: n
       )
       break
     }
-    case 'SWOT': {
+    case Templates.swot: {
       break
-    }
-    case 'default': {
-      m.push(
-
-      )
     }
   }
 }
