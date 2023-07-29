@@ -5,8 +5,11 @@ import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpa
 
 export enum Templates {
   empty = 'Empty',
-  detailedTeamBio = 'Detailed Team Bio',
-  swot = 'SWOT',
+  detailedTeamBio = 'Pitch Deck - Detailed Team Bio',
+  leanCanvasFramework = 'Pitch Deck - Lean Canvas Framework',
+  featureCanvasFramework = 'Pitch Deck - Feature Canvas Framework',
+  yana = `Pitch Deck - Yana's Framework`,
+  swot = 'Pitch Deck - SWOT',
 }
 
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
@@ -45,8 +48,62 @@ export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: n
       ]
       break
     }
-    case Templates.swot: {
-
+    case Templates.leanCanvasFramework: {
+      template = [
+        {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "Lean Canvas<br>Framework"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",0,0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",0,0,"s",0], content: "Problem"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",0,1], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",1,0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",1,0,"s",0], content: "Solution"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",1,1], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",2,0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",2,0,"s",0], content: "Key Metrics"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",2,1], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",3,0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",3,0,"s",0], content: "Unique Value Proposition"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",3,1], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",4,0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",4,0,"s",0], content: "Customer Segments"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",4,1], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",5,0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",5,0,"s",0], content: "Unfair Advantage"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",5,1], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",1], content: ""} as GN
+      ]
+      break
+    }
+    case Templates.featureCanvasFramework: {
+      template = [
+        {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "Feature Canvas<br>Framework"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0], content: "Idea Description"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",1], content: "Contextual Situations"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",2], content: "Problems to Solve"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",3], content: "Why?"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",4], content: "Value proposition"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",5], content: "Capabilities"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",1], content: ""} as GN
+      ]
+      break
+    }
+    case Templates.yana: {
+      template = [
+        {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "Yana Abramov's<br>methodology"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0], content: "Purpose"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",1], content: "Problem"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",2], content: "Solution"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",3], content: "Product"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",4], content: "Market Size"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",5], content: "Team"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",6], content: "Traction"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",7], content: "Competition"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",8], content: "How you plan to spend"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",1], content: ""} as GN
+      ]
       break
     }
   }
