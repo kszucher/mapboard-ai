@@ -57,3 +57,10 @@ export enum Dir {
   U,
   D,
 }
+
+export enum Sides {
+  D = 'down',
+  U = 'up',
+  L = 'left',
+  R = 'right'
+}

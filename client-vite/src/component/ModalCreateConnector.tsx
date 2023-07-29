@@ -2,15 +2,8 @@ import {FC, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {PageState} from "../state/Enums"
+import {Sides, PageState} from "../state/Enums"
 import {mSelector} from "../state/EditorState"
-
-enum Sides {
-  D = 'down',
-  U = 'up',
-  L = 'left',
-  R = 'right'
-}
 
 export const ModalCreateConnector: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

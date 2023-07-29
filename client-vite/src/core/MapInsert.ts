@@ -11,15 +11,16 @@ export enum Templates {
 
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
   unselectNodes(m)
+  let template = [] as GN[]
   switch (templateId)  {
     case Templates.empty: {
-      m.push(
+      template = [
         {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "New Root"} as GN,
-      )
+      ]
       break
     }
     case Templates.detailedTeamBio: {
-      m.push(
+      template = [
         {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "Detailed Team Bio"} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: ""} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0], content: ""} as GN,
@@ -39,13 +40,18 @@ export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: n
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",1,3], content: ""} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0,"c",1,4], content: ""} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",1], content: ""} as GN
-      )
+      ]
       break
     }
     case Templates.swot: {
+
       break
     }
   }
+  template[0].offsetW = offsetW
+  template[0].offsetH = offsetH
+  m.push(...template)
+  m.sort(sortPath)
 }
 
 export const insertS = (m: M, ip: P, attributes: object) => {

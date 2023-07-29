@@ -3,12 +3,13 @@ import {useDispatch, useSelector} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {Templates} from "../core/MapInsert";
-import {PageState} from "../state/Enums"
+import {Sides, PageState} from "../state/Enums"
 import {mSelector} from "../state/EditorState"
 
 export const ModalCreateTemplate: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
-  const [fromSide, setFromSide] = useState<string>(Templates.empty)
+  const [side, setSide] = useState<string>(Sides.D)
+  const [template, setTemplate] = useState<string>(Templates.empty)
   const interactionDisabled = false
   const dispatch = useDispatch<AppDispatch>()
   return (
@@ -23,11 +24,25 @@ export const ModalCreateTemplate: FC = () => {
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth size="small" variant="standard" >
               <InputLabel>
-                {'From'}
+                {'Side'}
               </InputLabel>
               <Select
-                value={fromSide}
-                onChange={(event: SelectChangeEvent) => setFromSide(event.target.value as string)}>
+                value={side}
+                onChange={(event: SelectChangeEvent) => setSide(event.target.value as string)}>
+                {Object.values(Sides).map((el, idx) => (
+                  <MenuItem value={el} key={idx}>{el}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth size="small" variant="standard" >
+              <InputLabel>
+                {'Template'}
+              </InputLabel>
+              <Select
+                value={template}
+                onChange={(event: SelectChangeEvent) => setTemplate(event.target.value as string)}>
                 {Object.values(Templates).map((el, idx) => (
                   <MenuItem value={el} key={idx}>{el}</MenuItem>
                 ))}
@@ -39,7 +54,8 @@ export const ModalCreateTemplate: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              // dispatch(actions.mapAction({type: 'createConnector', payload: {fromSide, toSide}}))
+              side === Sides.R && dispatch(actions.mapAction({type: 'insertTemplateRR', payload: {template}}))
+              side === Sides.D && dispatch(actions.mapAction({type: 'insertTemplateRD', payload: {template}}))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}
