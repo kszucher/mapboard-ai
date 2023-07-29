@@ -39,6 +39,7 @@ export const getSelectionMargin = (m: M, n: N) => (
 )
 
 export const MapSvg: FC = () => {
+  const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
   const r0 = getR0(m)
   const g = getG(m)
@@ -64,8 +65,8 @@ export const MapSvg: FC = () => {
           if (e.buttons === 1) {
             const toX = getMapX(e)
             const toY = getMapY(e)
-            dispatch(actions.setSelectionRectCoords([Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]))
-            dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromX, fromY, toX, toY)))
+            zoomInfo.scale === 1 && dispatch(actions.setSelectionRectCoords([Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]))
+            zoomInfo.scale === 1 && dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromX, fromY, toX, toY)))
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
@@ -76,9 +77,9 @@ export const MapSvg: FC = () => {
           if (didMove) {
             if (e.button === 0) {
               const nList = mapFindIntersecting(m, fromX, fromY, toX, toY)
-              nList.length && dispatch(actions.mapAction({type: 'selectDragged', payload: {nList}}))
-              dispatch(actions.setSelectionRectCoords([]))
-              dispatch(actions.setIntersectingNodes([]))
+              zoomInfo.scale === 1 && nList.length && dispatch(actions.mapAction({type: 'selectDragged', payload: {nList}}))
+              zoomInfo.scale === 1 && dispatch(actions.setSelectionRectCoords([]))
+              zoomInfo.scale === 1 && dispatch(actions.setIntersectingNodes([]))
             }
           } else {
             if (e.button === 0) {
