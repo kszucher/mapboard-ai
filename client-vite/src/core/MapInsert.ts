@@ -16,6 +16,60 @@ export const insertR = (m: M, ri: number, offsetW: number, offsetH: number) => {
   m.sort(sortPath)
 }
 
+export const insertTemplateR = (m: M, ri: number, offsetW: number, offsetH: number) => {
+  unselectNodes(m)
+  m.push(
+
+    // TODO: include ri, and make a selector workflow to create them!!!
+
+    // {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",0,0], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",0,0,"s",0], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",0,1], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",0,1,"s",0], content: "Column 1"} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",0,2], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",0,2,"s",0], content: "Column 2"} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",1,0], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",1,0,"s",0], content: "Row A"} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",1,1], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",1,1,"s",0], content: "Cell A1"} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",1,2], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",1,2,"s",0], content: "Cell A2"} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",2,0], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",2,0,"s",0], content: "Row B"} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",2,1], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",2,1,"s",0], content: "Cell B1"} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",2,2], content: ""} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",2,2,"s",0], content: "Cell B2"} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",2,2,"s",0,"s",0], content: "Cell B2 Child 1"} as GN,
+    // {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["s",0,"c",2,2,"s",0,"s",1], content: "Cell B2 Child 2"} as GN
+
+    {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0], content: "Detailed Team Bio"} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",0,0], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",0,1], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",0,1,"s",0], content: "Name"} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",0,2], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",0,2,"s",0], content: "Email"} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",0,3], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",0,3,"s",0], content: "LinkedIn"} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",0,4], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",0,4,"s",0], content: "Crunchbase"} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",1,0], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",1,0,"s",0], content: "Member"} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",1,1], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",1,2], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",1,3], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",0,"s",0,"c",1,4], content: ""} as GN,
+    {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",0,"d",1], content: ""} as GN
+
+
+
+  )
+  m.sort(sortPath)
+}
+
 export const insertS = (m: M, ip: P, attributes: object) => {
   makeSpaceFromS(m, ip, 1)
   unselectNodes(m)

@@ -117,7 +117,7 @@ export const getCountXCH = (m: M) => getCountCH(m, getXP(m))
 export const getCountXCV = (m: M) => getCountCV(m, getXP(m))
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
-export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXAF(m).map(n => n[prop])) ? getX(m)[prop] : null
+export const getPropXAF = (m: M, prop: keyof N) => isArrayOfEqualValues(getXAF(m).map(n => n[prop])) ? getX(m)[prop] : null
 
 export const makeSpaceFromS = (m: M, p: P, length: number) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, length))
 export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 2))
@@ -128,10 +128,12 @@ export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1(m) : (isXDS(m) 
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 
+export const fR = (m: M, n: N) => ['r', 0, ...n.path.slice(getXP(m).length)]
 export const fS = (m: M, n: N) => ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]
 export const fCR = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]
 export const fCC = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountXCL(m), ...n.path.slice(getXP(m).length)]
 
+export const m2cbR = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fR(m, n)}))) as M
 export const m2cbS = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fS(m, n)}))) as M
 export const m2cbCR = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fCR(m, n)}))) as M
 export const m2cbCC = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fCC(m, n)}))) as M

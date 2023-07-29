@@ -71,6 +71,7 @@ export const Window: FC = () => {
     ckm(e, '---') && e.code === 'Escape' && dispatch(actions.mapAction({type: 'selectR0', payload: null}))
     ckm(e, 'c--') && e.code === 'KeyA' && dispatch(actions.mapAction({type: 'selectall', payload: null}))
     ckm(e, 'c--') && e.code === 'KeyM' && dispatch(actions.mapAction({type: 'createMapInMapDialog', payload: null}))
+    ckm(e, 'c--') && e.code === 'KeyC' && isXR(m) && dispatch(actions.mapAction({type: 'copyR', payload: null}))
     ckm(e, 'c--') && e.code === 'KeyC' && isXASVN(m) && dispatch(actions.mapAction({type: 'copyS', payload: null}))
     ckm(e, 'c--') && e.code === 'KeyX' && isXASVN(m) && dispatch(actions.mapAction({type: 'cutS', payload: null}))
     ckm(e, 'c--') && e.code === 'KeyZ' && dispatch(actions.mapAction({type: 'redo', payload: null}))

@@ -1,15 +1,31 @@
+import {mapDeInit} from "./MapDeInit";
 import {insertTable} from "./MapInsert"
 import {genHash} from "./Utils"
 import {M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSS} from "./MapUtils"
+import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSS, m2cbR} from "./MapUtils"
+
+const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
+
+const showTemplate = (m: M) => {
+  console.log(
+    '' + m.map(n => ('\n{' +
+      'selected: ' + JSON.stringify(n.selected) + ', ' +
+      'selection: ' + JSON.stringify(n.selection) + ', ' +
+      `nodeId: 'node' + genHash(8)` + ', ' +
+      'path: ' + JSON.stringify(n.path) + ', ' +
+      'content: ' + JSON.stringify(n.content) +
+      '} as GN'
+    ))
+  )
+}
 
 const cbSave = (cb: any) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
     if (result.state === "granted" || result.state === "prompt") {
       navigator.clipboard
-        .writeText(JSON.stringify(cb, undefined, 4))
+        .writeText(templateReady(cb))
         .then(() => {
           console.log('moved to clipboard')
         })
@@ -28,9 +44,19 @@ export const cutS = (m: M) => {
   selectNode(m, reselectPath, 's')
 }
 
+export const copyR = (m: M) => {
+  const cb = m2cbR(m)
+  showTemplate(cb)
+  // const cbDeInit = mapDeInit(cb)
+  // cbSave(cbDeInit)
+  // TODO uncomment these when paste can detect and load R
+}
+
 export const copyS = (m: M) => {
   const cb = m2cbS(m)
-  cbSave(cb)
+  showTemplate(cb)
+  const cbDeInit = mapDeInit(cb)
+  cbSave(cbDeInit)
 }
 
 export const pasteS = (m: M, insertTargetPath: P, insertTargetIndex: number, payload: any) => {
