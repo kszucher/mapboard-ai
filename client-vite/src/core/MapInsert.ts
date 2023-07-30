@@ -78,7 +78,7 @@ export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: n
     }
     case Templates.yana: {
       template = [
-        {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "Yana Abramov's<br>methodology"} as GN,
+        {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "Yana Abramova's<br>methodology"} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: ""} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0], content: "Purpose"} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",1], content: "Problem"} as GN,
