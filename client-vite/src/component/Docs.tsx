@@ -46,7 +46,7 @@ export const Docs: FC = () => {
                 </div>
               </address>
               <h1 className="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">
-                How to extract information from you meeting notes
+                Introduction
               </h1>
             </header>
             <p className="lead">
@@ -56,7 +56,7 @@ export const Docs: FC = () => {
             <p>
               Disclaimer:
               We are using openAI's GPT3.5 engine with default privacy settings - which by default does not use data for
-              trailing or any other purposes. You can read more here about
+              training or any other purposes. You can read more here about
               &nbsp;
               <a href="https://openai.com/policies/privacy-policy">
                 OpenAI's privacy policy
@@ -71,23 +71,23 @@ export const Docs: FC = () => {
 
 
             </p>
-            <p>
-              But then I found a{" "}
-              <a href="https://flowbite.com">
-                component library based on Tailwind CSS called Flowbite
-              </a>
-              . It comes with the most commonly used UI components, such as buttons,
-              navigation bars, cards, form elements, and more which are conveniently
-              built with the utility classes from Tailwind CSS.
-            </p>
-            <figure>
-              <img
-                src="https://flowbite.s3.amazonaws.com/typography-plugin/typography-image-1.png"
-                alt=""
-              />
-              <figcaption>Digital art by Anonymous</figcaption>
-            </figure>
-            <h2>Getting started with Flowbite</h2>
+            {/*<p>*/}
+            {/*  But then I found a{" "}*/}
+            {/*  <a href="https://flowbite.com">*/}
+            {/*    component library based on Tailwind CSS called Flowbite*/}
+            {/*  </a>*/}
+            {/*  . It comes with the most commonly used UI components, such as buttons,*/}
+            {/*  navigation bars, cards, form elements, and more which are conveniently*/}
+            {/*  built with the utility classes from Tailwind CSS.*/}
+            {/*</p>*/}
+            {/*<figure>*/}
+            {/*  <img*/}
+            {/*    src="https://flowbite.s3.amazonaws.com/typography-plugin/typography-image-1.png"*/}
+            {/*    alt=""*/}
+            {/*  />*/}
+            {/*  <figcaption>Digital art by Anonymous</figcaption>*/}
+            {/*</figure>*/}
+            <h2>Getting started with MapBoard</h2>
             <p>
               First of all you need to understand how Flowbite works. This library
               is not another framework. Rather, it is a set of components based on
@@ -109,14 +109,9 @@ export const Docs: FC = () => {
               generated CSS.
             </p>
             <p>
-              You'll also receive a lot of useful application UI, marketing UI, and
-              e-commerce pages that can help you get started with your projects even
-              faster. You can check out this{" "}
-              <a href="https://flowbite.com/docs/components/tables/">
-                comparison table
-              </a>{" "}
-              to better understand the differences between the open-source and pro
-              version of Flowbite.
+              You'll also receive a lot of useful application UI, marketing UI, and e-commerce pages that can help you get started with your projects even faster. You can check out this{" "}
+              <a href="https://flowbite.com/docs/components/tables/">comparison table</a>{" "}
+              to better understand the differences between the open-source and pro version of Flowbite.
             </p>
             <h2>When does design come in handy?</h2>
             <p>
@@ -130,6 +125,16 @@ export const Docs: FC = () => {
                 something from the site you’ve designed? By running a usability
                 test, you’ll be able to see how users will interact with your design
                 once it’s live;
+
+
+                <figure>
+                  <img
+                    src="https://flowbite.s3.amazonaws.com/typography-plugin/typography-image-1.png"
+                    alt=""
+                  />
+                  <figcaption>Digital art by Anonymous</figcaption>
+                </figure>
+
               </li>
               <li>
                 <strong>Involving stakeholders</strong>. Need to check if your GDPR
