@@ -1,6 +1,6 @@
 import {G, M, N} from "../state/MapPropTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils";
-import {getCountCO1, getCountSO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getTaskWidth} from "./MapUtils"
+import {getCountCO1, getCountSO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getTaskWidth, MARGIN_X, MARGIN_Y} from "./MapUtils"
 
 export const mapMeasure = (pm: M, m: M) => {
   const g = getNodeByPath(m, ['g']) as G
@@ -23,8 +23,8 @@ export const mapMeasure = (pm: M, m: M) => {
           if ((wr) > n.maxR) {n.maxR = wr}
           if ((wl) < n.maxL) {n.maxL = wl}
         })
-        n.mapWidth = n.maxR + Math.abs(n.maxL) + 100
-        n.mapHeight = n.maxD - n.maxU + 100
+        n.mapWidth = n.maxR + Math.abs(n.maxL) + 2 * MARGIN_X
+        n.mapHeight = n.maxD - n.maxU + 2 * MARGIN_Y
         break
       }
       case isR(n.path): {

@@ -1,4 +1,4 @@
-import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSO1, getCountSO2, getCountCO2, getRi, getG, hasTaskLeft, getTaskWidth} from "./MapUtils"
+import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSO1, getCountSO2, getCountCO2, getRi, getG, MARGIN_X, MARGIN_Y} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
@@ -11,9 +11,9 @@ export const mapPlace = (m: M) => {
       }
       case isR(n.path): {
         const g = getG(m)
-        n.nodeStartX = n.offsetW + Math.abs(g.maxL)  + 50
-        n.nodeEndX = n.offsetW + Math.abs(g.maxL) + n.selfW + 50
-        n.nodeY = n.offsetH + Math.abs(g.maxU) + 50
+        n.nodeStartX = n.offsetW + Math.abs(g.maxL)  + MARGIN_X
+        n.nodeEndX = n.offsetW + Math.abs(g.maxL) + n.selfW + MARGIN_X
+        n.nodeY = n.offsetH + Math.abs(g.maxU) + MARGIN_Y
         break
       }
       case isD(n.path): {
