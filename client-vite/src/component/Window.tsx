@@ -8,6 +8,7 @@ import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
 import {getMap, mSelector} from "../state/EditorState"
 import {mapDeInit} from "../core/MapDeInit"
+import {GN} from "../state/MapPropTypes";
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
@@ -220,7 +221,7 @@ export const Window: FC = () => {
     dispatch(api.endpoints.saveMap.initiate({
       mapId: getMapId(),
       frameId: getFrameId(),
-      mapData: mapDeInit(getMap())
+      mapData: mapDeInit(getMap().filter((gn: GN) => (gn.hasOwnProperty('path') && gn.hasOwnProperty('nodeId'))))
     }))
     console.log('saved by timeout')
   }
