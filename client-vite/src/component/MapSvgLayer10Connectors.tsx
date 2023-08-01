@@ -29,7 +29,7 @@ export const MapSvgLayer10Connectors: FC = () => {
 
               }}
               onMouseUpGuarded={() => {
-
+                console.log('connecting to')
               }}
             />
           </Fragment>
@@ -39,7 +39,7 @@ export const MapSvgLayer10Connectors: FC = () => {
               y={getRootStartY(m, n) + getRootH(m, n) / 2 - 12}
               iconName={'Nothing'}
               onMouseDownGuarded={() => {
-
+                console.log('connecting from')
               }}
               onMouseUpGuarded={() => {
 
