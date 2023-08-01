@@ -159,7 +159,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
 export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map validity check
-  const m = structuredClone(pm).sort(sortPath)
+  const m = structuredClone(pm.filter(n => n.hasOwnProperty('path'))).sort(sortPath)
   mapReducerAtomic(m, action, payload)
   mapInit(m)
   mapCalcTask(m)
