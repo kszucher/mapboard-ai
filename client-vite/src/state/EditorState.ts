@@ -1,4 +1,3 @@
-import {useState} from "react";
 import {FormatMode, PageState} from "./Enums"
 import {EditorState} from "./EditorStateTypes"
 import {RootState, store} from "../core/EditorReducer"
@@ -7,7 +6,7 @@ export const editorState: EditorState = {
   token: '',
   pageState: PageState.AUTH,
   formatMode: FormatMode.text,
-  tabShrink: true,
+  tabShrink: false,
   tempMap: [],
   mapList: [],
   mapListIndex: 0,
