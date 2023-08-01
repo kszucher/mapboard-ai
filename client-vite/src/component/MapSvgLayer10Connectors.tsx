@@ -11,12 +11,15 @@ import {MapSvgIconWrapper} from "./MapSvgIconWrapper"
 export const MapSvgLayer10Connectors: FC = () => {
   const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
   const m = useSelector((state:RootState) => mSelector(state))
-  const ri = getXRi(m)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
+
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
+      {
+        // TODO: connectors
+      }
       {m.map((n: N) => (
         isR(n.path) && connectorsVisible &&
         <Fragment key={`${n.nodeId}`}>

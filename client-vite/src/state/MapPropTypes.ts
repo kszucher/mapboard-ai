@@ -4,7 +4,7 @@ interface Connection {
   fromNodeId: string
   fromNodeSide: string
   toNodeId: string
-  toNodeSize: string
+  toNodeSide: string
 }
 
 export interface GSaveAlways {
