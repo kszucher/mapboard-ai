@@ -12,6 +12,7 @@ export const TabMaps: FC = () => {
   const tabShrink = useSelector((state: RootState) => state.editor.tabShrink)
   const { data } = useOpenWorkspaceQuery()
   const { frameId, tabMapIdList, tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
+  console.log(tabId)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <>
@@ -23,34 +24,6 @@ export const TabMaps: FC = () => {
             borderTopRightRadius: 8,
             borderBottomRightRadius: 8,
           }}>
-          {/*<Tabs*/}
-          {/*  sx={{*/}
-          {/*    '.MuiTabs-indicator': { backgroundColor: 'var(--main-color)' },*/}
-          {/*    '.MuiButtonBase-root': { minWidth: tabShrink ? 0 : 90 }*/}
-          {/*  }}*/}
-          {/*  orientation={'vertical'}*/}
-          {/*  variant="scrollable"*/}
-          {/*  aria-label="Vertical tabs example"*/}
-          {/*  indicatorColor="primary"*/}
-          {/*  value={tabId}*/}
-          {/*  onChange={(e, value) =>*/}
-          {/*    dispatch(api.endpoints.selectMap.initiate({mapId: tabMapIdList[value], frameId: ''}))*/}
-          {/*  }>*/}
-          {/*  {*/}
-          {/*    tabMapNameList.map((el: { name: string }, index: number) => (*/}
-          {/*      <Tab*/}
-          {/*        sx={{*/}
-          {/*          '.MuiTab-root': { textTransform: 'none' },*/}
-          {/*        }}*/}
-          {/*        disabled={frameId !== ''}*/}
-          {/*        label={tabShrink ? el.name.at(0) : el.name}*/}
-          {/*        key={index}*/}
-          {/*      />*/}
-          {/*    ))*/}
-          {/*  }*/}
-          {/*</Tabs>*/}
-
-
           <TreeView
             aria-label="file system navigator"
             defaultCollapseIcon={<ExpandMoreIcon />}
@@ -61,6 +34,7 @@ export const TabMaps: FC = () => {
               overflowY: 'auto',
             }}
             defaultExpanded={['applications']}
+            selected={tabMapIdList[tabId]}
           >
             <TreeItem
               nodeId="applications"
@@ -75,8 +49,11 @@ export const TabMaps: FC = () => {
                   <TreeItem
                     disabled={frameId !== ''}
                     label={tabShrink ? el.name.at(0) : el.name}
-                    nodeId={'map-' + (index).toString()}
+                    nodeId={tabMapIdList[index]}
                     key={index}
+                    onClick={() => {
+                      dispatch(api.endpoints.selectMap.initiate({mapId: tabMapIdList[index], frameId: ''}))
+                    }}
                   />
                 ))
               }
