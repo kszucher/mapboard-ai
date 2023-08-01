@@ -4,7 +4,7 @@ import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
 import {PageState} from "../state/Enums";
 import {N} from "../state/MapPropTypes"
-import {getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath, getRi, getRootStartX, getRootStartY, getRootW, getRootH, isR,} from "../core/MapUtils"
+import {getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath, getRi} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -17,7 +17,6 @@ const calcSvgIconOffsetX = (n: N, i: number) => (
 )
 
 export const MapSvgLayer9SelectionIcons: FC = () => {
-  const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const xn = getX(m)
   const r0 = getR0(m)
@@ -98,51 +97,6 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           )
         )
       }
-      {m.map((n: N) => (
-        isR(n.path) && connectorsVisible &&
-        <Fragment key={`${n.nodeId}`}>
-          <Fragment key={`${n.nodeId}_plus_left`}>
-            <MapSvgIconWrapper
-              x={getRootStartX(m, n)}
-              y={getRootStartY(m, n) + getRootH(m, n) / 2 - 12}
-              iconName={'Nothing'}
-              onMouseDownGuarded={() => {
-
-              }}
-            />
-          </Fragment>
-          <Fragment key={`${n.nodeId}_plus_right`}>
-            <MapSvgIconWrapper
-              x={getRootStartX(m, n) + getRootW(m, n) - 24}
-              y={getRootStartY(m, n) + getRootH(m, n) / 2 - 12}
-              iconName={'Nothing'}
-              onMouseDownGuarded={() => {
-
-              }}
-            />
-          </Fragment>
-          <Fragment key={`${n.nodeId}_plus_top`}>
-            <MapSvgIconWrapper
-              x={getRootStartX(m, n) + getRootW(m, n) / 2 - 12}
-              y={getRootStartY(m, n)}
-              iconName={'Nothing'}
-              onMouseDownGuarded={() => {
-
-              }}
-            />
-          </Fragment>
-          <Fragment key={`${n.nodeId}_plus_bottom`}>
-            <MapSvgIconWrapper
-              x={getRootStartX(m, n) + getRootW(m, n) / 2 - 12}
-              y={getRootStartY(m, n) + getRootH(m, n) - 24}
-              iconName={'Nothing'}
-              onMouseDownGuarded={() => {
-
-              }}
-            />
-          </Fragment>
-        </Fragment>
-      ))}
     </g>
   )
 }
