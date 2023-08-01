@@ -1,9 +1,10 @@
 import React from "react"
+import {adjustIcon} from "../core/Utils"
 import {MapSvgIcon} from "./MapSvgIcons"
 
 export const MapSvgIconWrapper = ({x, y, iconName, onMouseDownGuarded}: {x: number, y: number, iconName: string, onMouseDownGuarded: Function}) => (
   <g
-    transform={`translate(${x}, ${y})`}
+    transform={`translate(${adjustIcon(x)}, ${adjustIcon(y)})`}
     {...{vectorEffect: 'non-scaling-stroke'}}
     style={{
       transition: 'all 0.3s',
