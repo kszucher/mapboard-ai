@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {GN} from "../state/MapPropTypes"
 import {actions, RootState} from "./EditorReducer"
 import {timeoutId} from "../component/Window"
 import {backendUrl} from "./Urls"
@@ -38,7 +39,11 @@ export const api = createApi({
         if (editor.mapList.length > 1) {
           console.log('saved by listener')
           clearTimeout(timeoutId)
-          dispatch(api.endpoints.saveMap.initiate({ mapId: getMapId(), frameId: getFrameId(), mapData: mapDeInit(getMap()) }))
+          dispatch(api.endpoints.saveMap.initiate({
+            mapId: getMapId(),
+            frameId: getFrameId(),
+            mapData: mapDeInit(getMap().filter((gn: GN) => (gn.hasOwnProperty('path') && gn.hasOwnProperty('nodeId'))))
+          }))
         }
       },
       providesTags: ['Workspace']
