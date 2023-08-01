@@ -13,6 +13,7 @@ import {useAuth0} from "@auth0/auth0-react"
 export const ProfileMenu: FC = () => {
   const moreMenu = useSelector((state: RootState) => state.editor.moreMenu)
   const pageState = useSelector((state: RootState) => state.editor.pageState)
+  const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const { logout } = useAuth0()
   const dispatch = useDispatch<AppDispatch>()
@@ -47,10 +48,10 @@ export const ProfileMenu: FC = () => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.setPageState(PageState.WS_CREATE_TEMPLATE))
           }}>{'Add Template'}</MenuItem>,
-          <MenuItem key={genHash(8)} disabled={!m || getXA(m).length !== 2} onClick={() => {
+          <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
-            dispatch(actions.setPageState(PageState.WS_CREATE_CONNECTOR))
-          }}>{'Add Connector'}</MenuItem>,
+            dispatch(actions.toggleConnectorsVisible())
+          }}>{connectorsVisible ? 'Hide Connectors' : 'Show Connectors'}</MenuItem>,
 
           <Divider key={genHash(8)}/>,
 

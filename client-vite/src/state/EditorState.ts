@@ -26,6 +26,7 @@ export const editorState: EditorState = {
     xImage: 0,
     yImage: 0,
   },
+  connectorsVisible: false
 }
 
 export const getMap = () => (store.getState().editor.mapList[store.getState().editor.mapListIndex])

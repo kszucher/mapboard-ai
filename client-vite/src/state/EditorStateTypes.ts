@@ -25,4 +25,5 @@ export interface EditorState {
     xImage: number,
     yImage: number,
   }
+  connectorsVisible: boolean
 }

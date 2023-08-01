@@ -12,7 +12,6 @@ export const TabMaps: FC = () => {
   const tabShrink = useSelector((state: RootState) => state.editor.tabShrink)
   const { data } = useOpenWorkspaceQuery()
   const { frameId, tabMapIdList, tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
-  console.log(tabId)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <>
