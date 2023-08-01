@@ -25,6 +25,10 @@ export const MapSvgIcon = ({iconName} : {iconName : string}) => (
         <path d="M12 5v14M5 12h14"></path>
       </g>
     }
+    {iconName === 'Nothing' &&
+      <g>
+      </g>
+    }
     {iconName === 'Sparkle' &&
       <g>
         <path stroke="none" d="M0 0h24v24H0z"></path>

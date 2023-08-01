@@ -105,37 +105,41 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
             <MapSvgIconWrapper
               x={getRootStartX(m, n)}
               y={getRootStartY(m, n) + getRootH(m, n) / 2 - 12}
-              iconName={'SquarePlus'}
+              iconName={'Nothing'}
               onMouseDownGuarded={() => {
 
-              }}/>
+              }}
+            />
           </Fragment>
           <Fragment key={`${n.nodeId}_plus_right`}>
             <MapSvgIconWrapper
               x={getRootStartX(m, n) + getRootW(m, n) - 24}
               y={getRootStartY(m, n) + getRootH(m, n) / 2 - 12}
-              iconName={'SquarePlus'}
+              iconName={'Nothing'}
               onMouseDownGuarded={() => {
 
-              }}/>
+              }}
+            />
           </Fragment>
           <Fragment key={`${n.nodeId}_plus_top`}>
             <MapSvgIconWrapper
               x={getRootStartX(m, n) + getRootW(m, n) / 2 - 12}
               y={getRootStartY(m, n)}
-              iconName={'SquarePlus'}
+              iconName={'Nothing'}
               onMouseDownGuarded={() => {
 
-              }}/>
+              }}
+            />
           </Fragment>
           <Fragment key={`${n.nodeId}_plus_bottom`}>
             <MapSvgIconWrapper
               x={getRootStartX(m, n) + getRootW(m, n) / 2 - 12}
               y={getRootStartY(m, n) + getRootH(m, n) - 24}
-              iconName={'SquarePlus'}
+              iconName={'Nothing'}
               onMouseDownGuarded={() => {
 
-              }}/>
+              }}
+            />
           </Fragment>
         </Fragment>
       ))}
