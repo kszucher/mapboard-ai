@@ -142,8 +142,8 @@ export const Window: FC = () => {
     ckm(e, '--a') && e.code === 'ArrowLeft' && dl && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCR', payload: null}))
 
     ckm(e, 'c--') && e.which >= 96 && e.which <= 105 && isXS(m) && dispatch(actions.mapAction({type: 'applyColorFromKey', payload: {currColor: e.which - 96}}))
-    ckm(e, '---') && e.which >= 48 && e.key !== 'F2' && editable(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
-    ckm(e, '-s-') && e.which >= 48 && e.key !== 'F2' && editable(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
+    ckm(e, '---') && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && editable(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
+    ckm(e, '-s-') && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && editable(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
   }
 
   const paste = (e: Event) => {
