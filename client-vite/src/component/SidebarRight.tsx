@@ -9,6 +9,7 @@ import DynamicFeedIcon from '@mui/icons-material/DynamicFeed'
 import ShareIcon from '@mui/icons-material/Share'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
+import Tooltip from '@mui/material/Tooltip'
 import {mSelector} from "../state/EditorState"
 import { CreateMapInMapIcon, TaskIcon } from './MuiSvgIcons'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -26,30 +27,46 @@ export const SidebarRight: FC = () => {
 
   return (
     <div className={"_bg fixed right-0 w-[48px] flex flex-col items-center py-1 px-1 border-r-0 z-50"} style={{top: 80, borderRadius: '8px 0 0 8px'}}>
-      <IconButton color='secondary' onClick={() => {
-        dispatch(actions.toggleFormatterVisible())
-      }}><PaletteIcon/></IconButton>
-      <IconButton color='secondary' onClick={() => {
-        dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))
-      }}><CalendarViewMonthIcon/></IconButton>
-      <IconButton color='secondary' onClick={() => {
-        dispatch(actions.setPageState(PageState.WS_CREATE_TASK))
-      }}><TaskIcon/></IconButton>
-      <IconButton color='secondary' onClick={() => {
-        dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))
+      <Tooltip title="Formatter" placement="left-end">
+        <IconButton color='secondary' onClick={() => {
+          dispatch(actions.toggleFormatterVisible())
+        }}><PaletteIcon/></IconButton>
+      </Tooltip>
+      <Tooltip title="Cells" placement="left-end">
+        <IconButton color='secondary' onClick={() => {
+          dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))
+        }}><CalendarViewMonthIcon/></IconButton>
+      </Tooltip>
+      <Tooltip title="Tasks" placement="left-end">
+        <IconButton color='secondary' onClick={() => {
+          dispatch(actions.setPageState(PageState.WS_CREATE_TASK))
+        }}><TaskIcon/></IconButton>
+      </Tooltip>
+      <Tooltip title="Submaps" placement="left-end">
+        <IconButton color='secondary' onClick={() => {
+          dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))
         }}><CreateMapInMapIcon/></IconButton>
-      <IconButton color='secondary' onClick={() => {
-        dispatch(actions.mapAction({type: 'changeDensity', payload: null}))
-      }}>{density === 'small' && <DensitySmallIcon/>}{density === 'large' && <DensityMediumIcon/>}</IconButton>
-      <IconButton color='secondary' onClick={() => {
-        dispatch(actions.mapAction({type: 'changeAlignment', payload: null}))
-      }}>{alignment === 'adaptive' && <CenterFocusWeakIcon/>}{alignment === 'centered' && <CenterFocusStrongIcon/>}</IconButton>
-      <IconButton id='sidebar-right-frames' color='secondary' onClick={({currentTarget}) => {
-        dispatch(actions.openFrameMenu(Boolean(currentTarget)))
-      }}><DynamicFeedIcon/></IconButton>
-      <IconButton color='secondary' disabled={frameId !== ''} onClick={() => {
-        dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}
-      }><ShareIcon/></IconButton>
+      </Tooltip>
+      <Tooltip title="Density" placement="left-end">
+        <IconButton color='secondary' onClick={() => {
+          dispatch(actions.mapAction({type: 'changeDensity', payload: null}))
+        }}>{density === 'small' && <DensitySmallIcon/>}{density === 'large' && <DensityMediumIcon/>}</IconButton>
+      </Tooltip>
+      <Tooltip title="Alignment" placement="left-end">
+        <IconButton color='secondary' onClick={() => {
+          dispatch(actions.mapAction({type: 'changeAlignment', payload: null}))
+        }}>{alignment === 'adaptive' && <CenterFocusWeakIcon/>}{alignment === 'centered' && <CenterFocusStrongIcon/>}</IconButton>
+      </Tooltip>
+      <Tooltip title="Frames" placement="left-end">
+        <IconButton id='sidebar-right-frames' color='secondary' onClick={({currentTarget}) => {
+          dispatch(actions.openFrameMenu(Boolean(currentTarget)))
+        }}><DynamicFeedIcon/></IconButton>
+      </Tooltip>
+      <Tooltip title="Shares" placement="left-end">
+        <IconButton color='secondary' disabled={frameId !== ''} onClick={() => {
+          dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}
+        }><ShareIcon/></IconButton>
+      </Tooltip>
     </div>
   )
 }
