@@ -2,24 +2,20 @@ import {FC} from "react"
 import {useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
 import {actions, AppDispatch, RootState} from '../core/EditorReducer'
-import {getXA} from "../core/MapUtils"
 import {genHash} from "../core/Utils"
 import {getMapId} from "../state/ApiState"
-import {mSelector} from "../state/EditorState"
 import {PageState} from "../state/Enums"
 import {api} from "../core/Api"
 import {useAuth0} from "@auth0/auth0-react"
 
-export const ProfileMenu: FC = () => {
+export const MenuProfile: FC = () => {
   const moreMenu = useSelector((state: RootState) => state.editor.moreMenu)
-  const pageState = useSelector((state: RootState) => state.editor.pageState)
   const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
-  const m = useSelector((state:RootState) => mSelector(state))
   const { logout } = useAuth0()
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Menu
-      anchorEl={document.getElementById('profile-button')}
+      anchorEl={document.getElementById('sidebar-top-profile')}
       anchorOrigin={{vertical: 'top', horizontal: 'right'}}
       keepMounted
       transformOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -28,7 +24,7 @@ export const ProfileMenu: FC = () => {
         dispatch(actions.closeMoreMenu())
       }}>
       {
-        pageState === PageState.WS && [
+        [
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.setPageState(PageState.WS_PROFILE))
@@ -41,9 +37,7 @@ export const ProfileMenu: FC = () => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.setPageState(PageState.WS_SHARES))
           }}>{'Shares'}</MenuItem>,
-
           <Divider key={genHash(8)}/>,
-
           <MenuItem key={genHash(8)} disabled={false} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.setPageState(PageState.WS_CREATE_TEMPLATE))
@@ -52,9 +46,7 @@ export const ProfileMenu: FC = () => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.toggleConnectorsVisible())
           }}>{connectorsVisible ? 'Hide Connectors' : 'Show Connectors'}</MenuItem>,
-
           <Divider key={genHash(8)}/>,
-
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(api.endpoints.createMapInTab.initiate())
@@ -71,9 +63,7 @@ export const ProfileMenu: FC = () => {
             dispatch(actions.closeMoreMenu())
             dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))
           }}>{'Remove Tab Map'}</MenuItem>,
-
           <Divider key={genHash(8)}/>,
-
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.resetState())
             dispatch(api.util.resetApiState())

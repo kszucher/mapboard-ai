@@ -13,6 +13,7 @@ export interface EditorState {
   editType: '' | 'append' | 'replace'
   formatterVisible: boolean
   moreMenu: boolean
+  frameMenu: boolean
   moveCoords: number[]
   selectionRectCoords: number[]
   intersectingNodes: N[]

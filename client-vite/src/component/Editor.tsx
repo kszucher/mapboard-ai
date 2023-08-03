@@ -4,10 +4,12 @@ import {Backdrop, CircularProgress, ThemeProvider} from '@mui/material'
 import {RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
+import {MenuFrames} from "./MenuFrames"
+import {MenuProfile} from "./MenuProfile"
 import {ModalCreateConnector} from "./ModalCreateConnector"
 import {ModalCreateTemplate} from "./ModalCreateTemplate"
 import {ModalEditNote} from "./ModalEditNote"
-import {Sidebar} from './Sidebar'
+import {SidebarRight} from './SidebarRight'
 import {ModalCreateTable} from './ModalCreateTable'
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -16,7 +18,7 @@ import {Map} from "./Map"
 import {getEquationDim, getTextDim} from "./MapDivUtils"
 import {getMuiTheme} from "./Mui"
 import {Profile} from './Profile'
-import {ProfileButton} from './ProfileButton'
+import {SidebarTop} from './SidebarTop'
 import {Settings} from './Settings'
 import {Shares} from "./Shares"
 import {ModalShareThisMap} from "./ModalShareThisMap"
@@ -56,7 +58,7 @@ export const Editor: FC = () => {
           <UndoRedo/>
           <BreadcrumbMaps/>
           <TabMaps/>
-          <Sidebar/>
+          <SidebarRight/>
           {
             formatterVisible &&
             <Formatter/>
@@ -66,7 +68,9 @@ export const Editor: FC = () => {
         </>
       }
       <Logo/>
-      <ProfileButton/>
+      <SidebarTop/>
+      <MenuProfile/>
+      <MenuFrames/>
       {pageState === PageState.WS_PROFILE && <Profile/>}
       {pageState === PageState.WS_SETTINGS && <Settings/>}
       {pageState === PageState.WS_SHARES && <Shares/>}
