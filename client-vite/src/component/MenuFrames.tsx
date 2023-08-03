@@ -11,6 +11,8 @@ export const MenuFrames: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
 
+  console.log(frameId)
+
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Menu
@@ -28,7 +30,7 @@ export const MenuFrames: FC = () => {
             dispatch(actions.closeFrameMenu())
             dispatch(api.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))
           }}>{'Open Frames'}</MenuItem>,
-          <MenuItem key={genHash(8)} disabled={frameId === ''} onClick={() => {
+          <MenuItem key={genHash(8)} disabled={false} onClick={() => {
             dispatch(actions.closeFrameMenu())
             dispatch(api.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))
           }}>{'Import Map Into Frame'}</MenuItem>,
