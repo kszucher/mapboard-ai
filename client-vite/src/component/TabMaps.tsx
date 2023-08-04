@@ -17,7 +17,7 @@ export const TabMaps: FC = () => {
     <>
       {!tabShrink &&
         <div
-          className="_bg fixed top-[80px] border-l-0 z-50"
+          className="_bg fixed top-[80px] border-l-0 pb-4 z-50"
           style={{
             width: 224,
             borderTopRightRadius: 8,
