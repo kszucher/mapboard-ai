@@ -65,15 +65,15 @@ export const MenuProfile: FC = () => {
           }}>{'Remove Tab Map'}</MenuItem>,
           <Divider key={genHash(8)}/>,
           <MenuItem key={genHash(8)} onClick={() => {
+            logout({ logoutParams: { returnTo: window.location.origin }})
             dispatch(actions.resetState())
             dispatch(api.util.resetApiState())
-            logout({ logoutParams: { returnTo: window.location.origin }})
           }}>{'Sign Out'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {
+            logout({ logoutParams: { returnTo: window.location.origin }})
             dispatch(api.endpoints.signOutEverywhere.initiate())
             dispatch(actions.resetState())
             dispatch(api.util.resetApiState())
-            logout({ logoutParams: { returnTo: window.location.origin }})
           }}>{'Sign Out Everywhere'}</MenuItem>
         ]
       }
