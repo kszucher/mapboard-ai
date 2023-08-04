@@ -6,7 +6,7 @@ const { ObjectId } = require('mongodb')
 const { countNodesBasedOnNodePropValue } = require('./MongoQueries')
 const MongoClient = require('mongodb').MongoClient
 
-async function mongoStagingCommands (users, maps, shares) {
+async function mongoExecutorCommands (users, maps, shares) {
   // console.log(await MongoQueries.countNodes(maps))
   // console.log(await MongoQueries.countNodesBasedOnNodePropExistence(maps, 'svgId'))
   // console.log(await MongoQueries.countNodesBasedOnNodePropExistence(maps, 'divId'))
@@ -18,18 +18,18 @@ async function mongoStagingCommands (users, maps, shares) {
   // await MongoMutations.createNodeProp(maps, 'nodeId', genNodeId())
   // await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'taskStatus', -1, 0)
 
-  await maps.updateMany({}, [
-    {
-      $set: {
-        versions: [ {$first: '$versions'} ],
-        versionsInfo: [ {$first: '$versionsInfo'} ],
-      }
-    }
-  ])
+  // await maps.updateMany({}, [
+  //   {
+  //     $set: {
+  //       versions: [ {$first: '$versions'} ],
+  //       versionsInfo: [ {$first: '$versionsInfo'} ],
+  //     }
+  //   }
+  // ])
 
 }
 
-async function mongoStaging() {
+async function mongoExecutor() {
   const client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true })
   try {
     await client.connect()
@@ -37,7 +37,7 @@ async function mongoStaging() {
     const users = db.collection("users")
     const maps = db.collection("maps")
     const shares = db.collection("shares")
-    await mongoStagingCommands(users, maps, shares)
+    await mongoExecutorCommands(users, maps, shares)
   }
   catch (err) {
     console.log('error')
@@ -46,4 +46,4 @@ async function mongoStaging() {
   await client.close()
 }
 
-mongoStaging().then(r => {})
+mongoExecutor().then(r => {})
