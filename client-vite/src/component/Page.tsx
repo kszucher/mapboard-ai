@@ -17,11 +17,11 @@ export const Page: FC = () => {
 
   return (
     <Auth0Provider
-      domain="dev-gvarh14b.us.auth0.com"
-      clientId="UVB3zZg4PaUXQKAsgoGOMiMwkr0xlcDV"
+      domain="mapboard.eu.auth0.com"
+      clientId="tUtOWoIYJQzJqh4jr1pwGOCmRzK2SFZH"
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: "https://dev-gvarh14b.us.auth0.com/api/v2/",
+        audience: "https://mapboard.eu.auth0.com/api/v2/",
         scope: "read:current_user update:current_user_metadata"
       }}
     >

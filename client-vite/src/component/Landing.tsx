@@ -118,9 +118,9 @@ export const Landing: FC = () => {
 
                 <br/>
 
-                <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-                  <img className="rounded-xl" src="https://lh3.googleusercontent.com/drive-viewer/AFGJ81o4ierqrkzojD9lu5fvJWjgVaRqbfJfkJhjQyuZN8V7ZCbXCtSq2s3FstHw9s1n-LNOdK7Ct7LwGJcQUtlrc2Odiztp=w2559-h1315" alt="mockup" id="img"/>
-                </div>
+                {/*<div className="hidden lg:mt-0 lg:col-span-5 lg:flex">*/}
+                {/*  <img className="rounded-xl" src="https://lh3.googleusercontent.com/drive-viewer/AFGJ81o4ierqrkzojD9lu5fvJWjgVaRqbfJfkJhjQyuZN8V7ZCbXCtSq2s3FstHw9s1n-LNOdK7Ct7LwGJcQUtlrc2Odiztp=w2559-h1315" alt="mockup" id="img"/>*/}
+                {/*</div>*/}
 
                 <section className="bg-white dark:bg-gray-900">
                   <div

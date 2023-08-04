@@ -16,7 +16,7 @@ const { Configuration, OpenAIApi } = require("openai")
 
 const checkJwt = auth({
   audience: authAudienceUrl,
-  issuerBaseURL: `https://dev-gvarh14b.us.auth0.com/`,
+  issuerBaseURL: `https://mapboard.eu.auth0.com/`,
 })
 
 const transporter = nodemailer.createTransport({
@@ -113,7 +113,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         if (signInCount === 0) {
           const userInfo = await axios.request({
             method: 'GET',
-            url: 'https://dev-gvarh14b.us.auth0.com/userinfo',
+            url: 'https://mapboard.eu.auth0.com/userinfo',
             headers: {authorization: req.header('authorization')}
           })
           const newMap = getDefaultMap('My First Map', userId, [])
