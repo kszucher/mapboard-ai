@@ -10,9 +10,6 @@ export const MenuFrames: FC = () => {
   const frameMenu = useSelector((state: RootState) => state.editor.frameMenu)
   const { data } = useOpenWorkspaceQuery()
   const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
-
-  console.log(frameId)
-
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Menu
