@@ -389,10 +389,10 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
             },
             { $unwind: '$helperArray' },
             { $group: { _id: "$helperArray.k", nodePropInfo: { $mergeObjects: "$helperArray.v" } } },
-            { $sort: { '_id' : 1 } },
+            // { $sort: { '_id' : 1 } }, // use only for testing
             { $unwind: '$nodePropInfo' },
             { $group: { _id: "$nodePropInfo.nodeId", nodePropInfoArray: { $push: "$nodePropInfo" } } },
-            { $sort: { '_id' : 1 } },
+            // { $sort: { '_id' : 1 } }, // use only for testing
           ]
         }
       },
