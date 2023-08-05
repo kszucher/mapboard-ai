@@ -2,7 +2,7 @@ import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {N} from "../state/MapPropTypes"
-import {getXRi,getRootStartX, getRootStartY, getRootW, getRootH, isR,} from "../core/MapUtils"
+import {getRootStartX, getRootStartY, isR, getRootMidY, getRootMidX, getRootEndX, getRootEndY} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import { AppDispatch, RootState} from "../core/EditorReducer"
@@ -24,10 +24,7 @@ export const MapSvgLayer10Connectors: FC = () => {
         isR(n.path) && connectorsVisible &&
         <Fragment key={`${n.nodeId}`}>
           <Fragment key={`${n.nodeId}_plus_left`}>
-            <MapSvgIconWrapper
-              x={getRootStartX(m, n)}
-              y={getRootStartY(m, n) + getRootH(m, n) / 2 - 12}
-              iconName={'Nothing'}
+            <MapSvgIconWrapper x={getRootStartX(m, n)} y={getRootMidY(m, n) - 12} iconName={'Nothing'}
               onMouseDownGuarded={() => {
 
               }}
@@ -37,10 +34,7 @@ export const MapSvgLayer10Connectors: FC = () => {
             />
           </Fragment>
           <Fragment key={`${n.nodeId}_plus_right`}>
-            <MapSvgIconWrapper
-              x={getRootStartX(m, n) + getRootW(m, n) - 24}
-              y={getRootStartY(m, n) + getRootH(m, n) / 2 - 12}
-              iconName={'Nothing'}
+            <MapSvgIconWrapper x={getRootEndX(m, n) - 24} y={getRootMidY(m, n) - 12} iconName={'Nothing'}
               onMouseDownGuarded={() => {
                 console.log('connecting from')
               }}
@@ -50,10 +44,7 @@ export const MapSvgLayer10Connectors: FC = () => {
             />
           </Fragment>
           <Fragment key={`${n.nodeId}_plus_top`}>
-            <MapSvgIconWrapper
-              x={getRootStartX(m, n) + getRootW(m, n) / 2 - 12}
-              y={getRootStartY(m, n)}
-              iconName={'Nothing'}
+            <MapSvgIconWrapper x={getRootMidX(m, n) - 12} y={getRootStartY(m, n)} iconName={'Nothing'}
               onMouseDownGuarded={() => {
 
               }}
@@ -63,10 +54,7 @@ export const MapSvgLayer10Connectors: FC = () => {
             />
           </Fragment>
           <Fragment key={`${n.nodeId}_plus_bottom`}>
-            <MapSvgIconWrapper
-              x={getRootStartX(m, n) + getRootW(m, n) / 2 - 12}
-              y={getRootStartY(m, n) + getRootH(m, n) - 24}
-              iconName={'Nothing'}
+            <MapSvgIconWrapper x={getRootMidX(m, n) - 12} y={getRootEndY(m, n) - 24} iconName={'Nothing'}
               onMouseDownGuarded={() => {
 
               }}

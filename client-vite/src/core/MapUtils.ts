@@ -176,3 +176,7 @@ export const getRootStartX = (m: M, n: N) => n.nodeStartX - getRXD1(m, getRi(n.p
 export const getRootStartY = (m: M, n: N) => n.nodeY - Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) / 2 - MARGIN_Y
 export const getRootW = (m: M, n: N) => getRXD0(m, getRi(n.path)).familyW + getRXD1(m, getRi(n.path)).familyW + n.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, getRi(n.path)) + hasTaskRight(m, getRi(n.path))) + 2 * MARGIN_X
 export const getRootH = (m: M, n: N) => Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) + 2 * MARGIN_Y
+export const getRootMidX = (m: M, n: N) => getRootStartX(m, n) + getRootW(m, n) / 2
+export const getRootMidY = (m: M, n: N) => getRootStartY(m, n) + getRootH(m, n) / 2
+export const getRootEndX = (m: M, n: N) => getRootStartX(m, n) + getRootW(m, n)
+export const getRootEndY = (m: M, n: N) => getRootStartY(m, n) + getRootH(m, n)
