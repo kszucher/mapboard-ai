@@ -33,6 +33,7 @@ export const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.s
 export const isSO2 = (p: P, pt: P) => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
 export const isCO1 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 export const isCO2 = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
+export const isCON = (p: P) => p.includes('c')
 export const isSCXX = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p)
 export const isSCYY = (p: P, pt: P) => isSCXX(p, pt) && pt.at(-2) as number > 0 && pt.at(-1) as number > 0
 export const isSCR0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) === 0
@@ -152,6 +153,8 @@ export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const editable = (m: M) => (isXR(m) || isXS(m) || isXC(m)) && getX(m).contentType !== 'image' && getCountCO1(m, getXP(m)) === 0
 
 export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
+export const getClosestCellParentPath = (p: P) => p.slice(0, p.lastIndexOf('c') + 3)
+export const getClosestCellParent = (m: M, p: P) => getNodeByPath(m, getClosestCellParentPath(p))
 
 export const hasTaskRight = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
 export const hasTaskLeft = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
@@ -159,14 +162,12 @@ export const hasTaskLeft = (m: M, ri: number) => +m.filter(n => n.path.at(1) ===
 export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' ? 24 : 20) + (TASK_CIRCLES_NUM - 1) * TASK_CIRCLES_GAP + 40
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 export const getTaskStartPoint = (m: M, g: G, n: N) => {
-  const dir = getPathDir(n.path)
-  if (n.path.includes('c')) {
-    const currCol = n.path[n.path.lastIndexOf('c') + 2] as number
-    const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
-    const coverCellRef = getNodeByPath(m, coverCellPath) as N
-    return (dir === -1 ? coverCellRef.nodeEndX : coverCellRef.nodeStartX) + dir * (coverCellRef.sumMaxColWidth[currCol] + coverCellRef.maxColWidth[currCol] - 120)
-  } else {
-    return (dir === 1 ? g.mapWidth : 0) - dir * getTaskWidth(g)
+  switch (true) {
+    case getPathDir(n.path) === 1 && !isCON(n.path): return g.mapWidth - getTaskWidth(g)
+    case getPathDir(n.path) === -1 && !isCON(n.path): return getTaskWidth(g)
+    case getPathDir(n.path) === 1 && isCON(n.path): return getClosestCellParent(m, n.path).nodeEndX - 120
+    case getPathDir(n.path) === -1 && isCON(n.path): return getClosestCellParent(m, n.path).nodeStartX + 120
+    default: return 0
   }
 }
 

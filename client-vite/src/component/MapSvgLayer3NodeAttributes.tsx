@@ -101,7 +101,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
                   <circle
                     key={`${n.nodeId}_svg_taskCircle${i + 1}`}
                     id={'taskCircle'}
-                    cx={getTaskStartPoint(m, g, n) + getPathDir(n.path) * ( getTaskRadius(g) / 2 + i * (getTaskRadius(g) + TASK_CIRCLES_GAP))}
+                    cx={getTaskStartPoint(m, g, n) + getPathDir(n.path) * (getTaskRadius(g) / 2 + i * (getTaskRadius(g) + TASK_CIRCLES_GAP))}
                     cy={n.nodeY}
                     r={getTaskRadius(g) / 2}
                     fill={n.taskStatus === i + 1
