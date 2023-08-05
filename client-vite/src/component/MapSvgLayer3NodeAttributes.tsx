@@ -26,25 +26,11 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
         <Fragment key={n.nodeId}>
           {
             n.fBorderColor &&
-            <path
-              d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)}
-              stroke={n.fBorderColor}
-              strokeWidth={n.fBorderWidth}
-              fill={'none'}
-              {...pathCommonProps}
-            >
-            </path>
+            <path d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)} stroke={n.fBorderColor} strokeWidth={n.fBorderWidth} fill={'none'}{...pathCommonProps}/>
           }
           {
             n.sBorderColor && !getCountCO1(m, n.path) &&
-            <path
-              d={getArcPath(n, -2, true)}
-              stroke={n.sBorderColor}
-              strokeWidth={n.sBorderWidth}
-              fill={'none'}
-              {...pathCommonProps}
-            >
-            </path>
+            <path d={getArcPath(n, -2, true)} stroke={n.sBorderColor} strokeWidth={n.sBorderWidth} fill={'none'}{...pathCommonProps}/>
           }
           {(
               getPathPattern(n.path).endsWith('ds') ||
@@ -78,39 +64,18 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           }
           {
             isS(n.path) && getCountCO1(m, n.path) &&
-            <path
-              d={getArcPath(n, 0, false)}
-              stroke={n.sBorderColor ? n.sBorderColor : C.TABLE_FRAME_COLOR}
-              strokeWidth={n.sBorderWidth}
-              fill={'none'}
-              {...pathCommonProps}
-            >
-            </path>
+            <path d={getArcPath(n, 0, false)} stroke={n.sBorderColor ? n.sBorderColor : C.TABLE_FRAME_COLOR} strokeWidth={n.sBorderWidth} fill={'none'} {...pathCommonProps}/>
           }
           {
             isS(n.path) && getCountCO1(m, n.path) &&
-            <path
-              d={getGridPath(n)}
-              stroke={C.TABLE_GRID}
-              strokeWidth={1}
-              fill={'none'}
-              {...pathCommonProps}
-            >
-            </path>
+            <path d={getGridPath(n)} stroke={C.TABLE_GRID} strokeWidth={1} fill={'none'} {...pathCommonProps}/>
           }
           {
             n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && !getCountSO1(m, n.path) && !getCountCO1(m, n.path) && n.contentType !== 'image' &&
             <Fragment key={`${n.nodeId}_svg_task`}>
               {
                 !isEqual(n.nodeId, editedNodeId) &&
-                <path
-                  d={getTaskPath(m, g, n)}
-                  stroke={C.TASK_LINE}
-                  strokeWidth={1}
-                  fill={'none'}
-                  {...pathCommonProps}
-                >
-                </path>
+                <path d={getTaskPath(m, g, n)} stroke={C.TASK_LINE} strokeWidth={1} fill={'none'}{...pathCommonProps}/>
               }
               {
                 [...Array(4)].map((el, i) => (
