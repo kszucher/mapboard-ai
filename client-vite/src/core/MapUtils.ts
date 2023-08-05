@@ -1,4 +1,5 @@
 import isEqual from "react-fast-compare"
+import {MARGIN_X, MARGIN_Y, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
 import {G, GN, M, N, P} from "../state/MapPropTypes"
 import {isArrayOfEqualValues} from "./Utils"
 
@@ -154,11 +155,6 @@ export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith(
 
 export const hasTaskRight = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
 export const hasTaskLeft = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
-
-export const TASK_CIRCLES_NUM = 4
-export const TASK_CIRCLES_GAP = 4
-export const MARGIN_X = 60
-export const MARGIN_Y = 80
 
 export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' ? 24 : 20) + (TASK_CIRCLES_NUM - 1) * TASK_CIRCLES_GAP + 40
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20

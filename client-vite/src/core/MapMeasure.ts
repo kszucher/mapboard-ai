@@ -1,6 +1,7 @@
+import {MARGIN_X, MARGIN_Y} from "../state/Consts";
 import {G, M, N} from "../state/MapPropTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils";
-import {getCountCO1, getCountSO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getTaskWidth, MARGIN_X, MARGIN_Y} from "./MapUtils"
+import {getCountCO1, getCountSO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getTaskWidth} from "./MapUtils"
 
 export const mapMeasure = (pm: M, m: M) => {
   const g = getNodeByPath(m, ['g']) as G

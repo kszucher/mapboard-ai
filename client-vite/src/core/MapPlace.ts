@@ -1,4 +1,5 @@
-import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSO1, getCountSO2, getCountCO2, getRi, getG, MARGIN_X, MARGIN_Y} from "./MapUtils"
+import {MARGIN_X, MARGIN_Y} from "../state/Consts";
+import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSO1, getCountSO2, getCountCO2, getRi, getG} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
