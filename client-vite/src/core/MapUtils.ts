@@ -20,6 +20,7 @@ export const getPathDir = (p: P) => p[3] ? -1 : 1
 export const getRi = (p: P) => p.at(1) as number
 export const getRiL = (m: M) => m.findLast(n => n.path.length === 2)!.path.at(1) as number
 export const getXRi = (m: M) => getRi(getXP(m))
+export const getNRi = (m: M, n: N) => getNodeByPath(m, n.path.slice(0, 2))
 
 export const isG = (p: P) => getPathPattern(p).endsWith('g')
 export const isR = (p: P) => getPathPattern(p).endsWith('r')
@@ -164,7 +165,7 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 export const getTaskStartPoint = (m: M, g: G, n: N) => {
   switch (true) {
-    case getPathDir(n.path) === 1 && !isCON(n.path): return g.mapWidth - getTaskWidth(g)
+    case getPathDir(n.path) === 1 && !isCON(n.path): return getRootEndX(m, getNRi(m, n)) - getTaskWidth(g)
     case getPathDir(n.path) === -1 && !isCON(n.path): return getTaskWidth(g)
     case getPathDir(n.path) === 1 && isCON(n.path): return getClosestCellParent(m, n.path).nodeEndX - 120
     case getPathDir(n.path) === -1 && isCON(n.path): return getClosestCellParent(m, n.path).nodeStartX + 120
