@@ -8,7 +8,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../core/EditorReducer"
 
-export const MapSvgLayer0NodeRootBackground: FC = () => {
+export const MapSvgLayer0RootBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
