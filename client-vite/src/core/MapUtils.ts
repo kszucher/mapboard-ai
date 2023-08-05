@@ -153,6 +153,7 @@ export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const editable = (m: M) => (isXR(m) || isXS(m) || isXC(m)) && getX(m).contentType !== 'image' && getCountCO1(m, getXP(m)) === 0
 
 export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
+export const getClosestStructParent = (m: M, p: P) => getNodeByPath(m, getClosestStructParentPath(p))
 export const getClosestCellParentPath = (p: P) => p.slice(0, p.lastIndexOf('c') + 3)
 export const getClosestCellParent = (m: M, p: P) => getNodeByPath(m, getClosestCellParentPath(p))
 

@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../core/Api"
 import {adjust} from "../core/Utils";
 import {TASK_CIRCLES_GAP} from "../state/Consts"
 import {getColors} from "./Colors"
-import {getClosestStructParentPath, getCountCO1, getCountSO1, getG, getNodeById, getNodeByPath, getPathDir, getPathPattern, getTaskRadius, getTaskStartPoint, isD, isR, isS} from "../core/MapUtils"
+import {getClosestStructParent, getCountCO1, getCountSO1, getG, getNodeById, getPathDir, getPathPattern, getTaskRadius, getTaskStartPoint, isD, isR, isS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -53,9 +53,9 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             ) &&
             <path
               d={
-                !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path))
-                  ? getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)
-                  : getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)
+                !getNodeById(pm, n.nodeId) && getClosestStructParent(pm, n.path)
+                  ? getLinePathBetweenNodes(getClosestStructParent(pm, n.path), n)
+                  : getLinePathBetweenNodes(getClosestStructParent(m, n.path), n)
               }
               strokeWidth={n.lineWidth}
               stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -63,11 +63,11 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               {...pathCommonProps}
             >
               {
-                !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path)) &&
+                !getNodeById(pm, n.nodeId) && getClosestStructParent(pm, n.path) &&
                 <animate
                   attributeName='d'
-                  from={getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)}
-                  to={getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)}
+                  from={getLinePathBetweenNodes(getClosestStructParent(pm, n.path), n)}
+                  to={getLinePathBetweenNodes(getClosestStructParent(m, n.path), n)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
