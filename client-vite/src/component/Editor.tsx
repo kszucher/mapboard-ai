@@ -6,7 +6,6 @@ import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {MenuFrames} from "./MenuFrames"
 import {MenuProfile} from "./MenuProfile"
-import {ModalCreateConnection} from "./ModalCreateConnection"
 import {ModalCreateTemplate} from "./ModalCreateTemplate"
 import {ModalEditNote} from "./ModalEditNote"
 import {SidebarRight} from './SidebarRight'
@@ -78,7 +77,6 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
       {pageState === PageState.WS_CREATE_TASK && <ModalToggleTaskMode/>}
       {pageState === PageState.WS_CREATE_TEMPLATE && <ModalCreateTemplate/>}
-      {pageState === PageState.WS_CREATE_CONNECTION && <ModalCreateConnection/>}
       {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
       {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
       {pageState === PageState.WS_LOADING &&

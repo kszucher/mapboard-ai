@@ -9,7 +9,6 @@ export enum PageState {
   WS_CREATE_TABLE,
   WS_CREATE_TASK,
   WS_CREATE_TEMPLATE,
-  WS_CREATE_CONNECTION,
   WS_CREATE_MAP_IN_MAP,
   WS_SHARE_THIS_MAP,
   WS_LOADING
@@ -59,8 +58,8 @@ export enum Dir {
 }
 
 export enum Sides {
-  D = 'down',
-  U = 'up',
   L = 'left',
-  R = 'right'
+  R = 'right',
+  T = 'top',
+  B = 'bottom',
 }

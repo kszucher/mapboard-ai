@@ -1,4 +1,4 @@
-import {FormatMode, PageState} from "./Enums"
+import {FormatMode, PageState, Sides} from "./Enums"
 import {M, N} from "./MapPropTypes"
 
 export interface EditorState {
@@ -19,12 +19,16 @@ export interface EditorState {
   intersectingNodes: N[]
   zoomInfo: {
     scale: number
-    xLast: number,
-    yLast: number,
-    xNew: number,
-    yNew: number,
-    xImage: number,
-    yImage: number,
+    xLast: number
+    yLast: number
+    xNew: number
+    yNew: number
+    xImage: number
+    yImage: number
   }
   connectorsVisible: boolean
+  connectionStart: {
+    fromNodeId: string,
+    fromNodeSide: Sides
+  }
 }

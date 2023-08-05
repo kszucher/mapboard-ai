@@ -1,4 +1,4 @@
-import {FormatMode, PageState} from "./Enums"
+import {FormatMode, PageState, Sides} from "./Enums"
 import {EditorState} from "./EditorStateTypes"
 import {RootState, store} from "../core/EditorReducer"
 
@@ -27,7 +27,11 @@ export const editorState: EditorState = {
     xImage: 0,
     yImage: 0,
   },
-  connectorsVisible: true
+  connectorsVisible: true,
+  connectionStart: {
+    fromNodeId: '',
+    fromNodeSide: Sides.R
+  }
 }
 
 export const getMap = () => (store.getState().editor.mapList[store.getState().editor.mapListIndex])

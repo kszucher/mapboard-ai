@@ -2,7 +2,7 @@ import {combineReducers, configureStore, createSlice, current, PayloadAction} fr
 import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../component/MapDivUtils"
 import {editorState} from "../state/EditorState"
-import {FormatMode, PageState} from "../state/Enums"
+import {FormatMode, PageState, Sides} from "../state/Enums"
 import {M} from "../state/MapPropTypes"
 import {api} from "./Api"
 import {mapFindNearest} from "./MapFindNearest"
@@ -30,7 +30,8 @@ export const editorSlice = createSlice({
     setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
     setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload},
     toggleConnectorsVisible(state) { state.connectorsVisible = !state.connectorsVisible },
-    // setConnectorStart(state) {state.connection = {}}
+    setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload},
+    resetConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Sides.R}},
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
       // TODO check edit/view condition
       const pm = current(state.mapList[state.mapListIndex])
