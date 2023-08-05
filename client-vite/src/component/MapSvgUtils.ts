@@ -1,7 +1,18 @@
-import {LineTypes} from "../state/Enums"
+import {
+  getG,
+  getNodeByPath,
+  getPathDir,
+  getRi,
+  getSI1,
+  getTaskStartPoint,
+  getX,
+  isD,
+  isXACC,
+  isXACR
+} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
+import {LineTypes} from "../state/Enums"
 import {G, M, N} from "../state/MapPropTypes"
-import {getX, getNodeByPath, getPathDir, isXACC, isXACR, getG, isD, getSI1, getRi, getTaskWidth} from "../core/MapUtils"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -206,18 +217,6 @@ export const getGridPath = (n: N) => {
     path += `M${x},${yu} L${x},${yd}`
   }
   return path
-}
-
-const getTaskStartPoint = (m: M, g: G, n: N) => {
-  const dir = getPathDir(n.path)
-  if (n.path.includes('c')) {
-    const currCol = n.path[n.path.lastIndexOf('c') + 2] as number
-    const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
-    const coverCellRef = getNodeByPath(m, coverCellPath) as N
-    return (dir === - 1 ? coverCellRef.nodeEndX : coverCellRef.nodeStartX) + dir * (coverCellRef.sumMaxColWidth[currCol] + coverCellRef.maxColWidth[currCol] - 120)
-  } else {
-    return (dir === 1 ? g.mapWidth : 0) - dir * getTaskWidth(g)
-  }
 }
 
 export const getTaskPath = (m: M, g: G, n: N) => {

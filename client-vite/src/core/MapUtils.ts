@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare"
-import {isArrayOfEqualValues} from "./Utils"
 import {G, GN, M, N, P} from "../state/MapPropTypes"
+import {isArrayOfEqualValues} from "./Utils"
 
 export const incPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number + 1 : p)
 export const decPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number - 1 : p)
@@ -158,6 +158,17 @@ export const hasTaskLeft = (m: M, ri: number) => +m.filter(n => n.path.at(1) ===
 const TASK_CIRCLES_NUM = 4
 const TASK_CIRCLES_GAP = 4
 export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' ? 24 : 20) + (TASK_CIRCLES_NUM - 1) * TASK_CIRCLES_GAP + 40
+export const getTaskStartPoint = (m: M, g: G, n: N) => {
+  const dir = getPathDir(n.path)
+  if (n.path.includes('c')) {
+    const currCol = n.path[n.path.lastIndexOf('c') + 2] as number
+    const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
+    const coverCellRef = getNodeByPath(m, coverCellPath) as N
+    return (dir === -1 ? coverCellRef.nodeEndX : coverCellRef.nodeStartX) + dir * (coverCellRef.sumMaxColWidth[currCol] + coverCellRef.maxColWidth[currCol] - 120)
+  } else {
+    return (dir === 1 ? g.mapWidth : 0) - dir * getTaskWidth(g)
+  }
+}
 
 export const MARGIN_X = 60
 export const MARGIN_Y = 80
