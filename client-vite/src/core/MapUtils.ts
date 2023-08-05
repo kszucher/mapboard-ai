@@ -155,9 +155,13 @@ export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith(
 export const hasTaskRight = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
 export const hasTaskLeft = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
 
-const TASK_CIRCLES_NUM = 4
-const TASK_CIRCLES_GAP = 4
+export const TASK_CIRCLES_NUM = 4
+export const TASK_CIRCLES_GAP = 4
+export const MARGIN_X = 60
+export const MARGIN_Y = 80
+
 export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' ? 24 : 20) + (TASK_CIRCLES_NUM - 1) * TASK_CIRCLES_GAP + 40
+export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 export const getTaskStartPoint = (m: M, g: G, n: N) => {
   const dir = getPathDir(n.path)
   if (n.path.includes('c')) {
@@ -169,9 +173,6 @@ export const getTaskStartPoint = (m: M, g: G, n: N) => {
     return (dir === 1 ? g.mapWidth : 0) - dir * getTaskWidth(g)
   }
 }
-
-export const MARGIN_X = 60
-export const MARGIN_Y = 80
 
 export const getRootStartX = (m: M, n: N) => n.nodeStartX - getRXD1(m, getRi(n.path)).familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, getRi(n.path)) - MARGIN_X
 export const getRootStartY = (m: M, n: N) => n.nodeY - Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) / 2 - MARGIN_Y

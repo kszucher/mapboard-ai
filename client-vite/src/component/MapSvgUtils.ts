@@ -1,18 +1,7 @@
-import {
-  getG,
-  getNodeByPath,
-  getPathDir,
-  getRi,
-  getSI1,
-  getTaskStartPoint,
-  getX,
-  isD,
-  isXACC,
-  isXACR
-} from "../core/MapUtils"
+import {getG, getNodeByPath, getPathDir, getRi, getSI1, getX, isD, isXACC, isXACR,} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
 import {LineTypes} from "../state/Enums"
-import {G, M, N} from "../state/MapPropTypes"
+import {M, N} from "../state/MapPropTypes"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -26,13 +15,9 @@ const getCoordsInLine = (a: any[], b: any[], dt: number) => {
   return [xt, yt]
 }
 
-export const getEdgeLinePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) => {
-  return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
-}
-
-export const getBezierLinePath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) => {
-  return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`
-}
+export const getLinearLinePath = ({x1, x2, y} : {x1: number, x2: number, y: number}) => `M${x1},${y} L${x2},${y}`
+export const getEdgeLinePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) => `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
+export const getBezierLinePath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) => `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`
 
 export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
   const dx = (bx - ax)
@@ -217,23 +202,4 @@ export const getGridPath = (n: N) => {
     path += `M${x},${yu} L${x},${yd}`
   }
   return path
-}
-
-export const getTaskPath = (m: M, g: G, n: N) => {
-  const dir = getPathDir(n.path)
-  const xo = dir === -1 ? n.nodeStartX : n.nodeEndX
-  const x1 = adjust(xo)
-  const x2 = adjust(getTaskStartPoint(m, g, n))
-  const y = adjust(n.nodeY)
-  return `M${x1},${y} L${x2},${y}`
-}
-
-export const getTaskCircle = (m: M, g: G, n: N, i: number) => {
-  const dir = getPathDir(n.path)
-  const taskRadius = g.density === 'large' ? 24 : 20
-  const GAP = 4
-  const cx = getTaskStartPoint(m, g, n) + dir * ( taskRadius/2 + i * (taskRadius + GAP))
-  const cy = n.nodeY
-  const r = taskRadius / 2
-  return { cx, cy, r }
 }

@@ -2,14 +2,15 @@ import React, {FC, Fragment,} from "react"
 import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
+import {adjust} from "../core/Utils";
 import {getColors} from "./Colors"
-import {getClosestStructParentPath, getCountCO1, getCountSO1, getG, getNodeById, getNodeByPath, getPathPattern, isD, isR, isS} from "../core/MapUtils"
+import {getClosestStructParentPath, getCountCO1, getCountSO1, getG, getNodeById, getNodeByPath, getPathDir, getPathPattern, getTaskRadius, getTaskStartPoint, isD, isR, isS, TASK_CIRCLES_GAP} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {N} from "../state/MapPropTypes"
 import {pathCommonProps} from "./MapSvg"
-import {getArcPath, getGridPath, getLinePathBetweenNodes, getPolygonPath, getPolygonS, getTaskCircle, getTaskPath} from "./MapSvgUtils"
+import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
 export const MapSvgLayer3NodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -26,11 +27,23 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
         <Fragment key={n.nodeId}>
           {
             n.fBorderColor &&
-            <path d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)} stroke={n.fBorderColor} strokeWidth={n.fBorderWidth} fill={'none'}{...pathCommonProps}/>
+            <path
+              d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)}
+              stroke={n.fBorderColor}
+              strokeWidth={n.fBorderWidth}
+              fill={'none'}
+              {...pathCommonProps}
+            />
           }
           {
             n.sBorderColor && !getCountCO1(m, n.path) &&
-            <path d={getArcPath(n, -2, true)} stroke={n.sBorderColor} strokeWidth={n.sBorderWidth} fill={'none'}{...pathCommonProps}/>
+            <path
+              d={getArcPath(n, -2, true)}
+              stroke={n.sBorderColor}
+              strokeWidth={n.sBorderWidth}
+              fill={'none'}
+              {...pathCommonProps}
+            />
           }
           {(
               getPathPattern(n.path).endsWith('ds') ||
@@ -57,8 +70,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
-                >
-                </animate>
+                />
               }
             </path>
           }
@@ -75,14 +87,22 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             <Fragment key={`${n.nodeId}_svg_task`}>
               {
                 !isEqual(n.nodeId, editedNodeId) &&
-                <path d={getTaskPath(m, g, n)} stroke={C.TASK_LINE} strokeWidth={1} fill={'none'}{...pathCommonProps}/>
+                <path
+                  d={getLinearLinePath({x1: adjust(getPathDir(n.path) === -1 ? n.nodeStartX : n.nodeEndX), x2: adjust(getTaskStartPoint(m, g, n)), y: adjust(n.nodeY)})}
+                  stroke={C.TASK_LINE}
+                  strokeWidth={1}
+                  fill={'none'}
+                  {...pathCommonProps}
+                />
               }
               {
                 [...Array(4)].map((el, i) => (
                   <circle
                     key={`${n.nodeId}_svg_taskCircle${i + 1}`}
                     id={'taskCircle'}
-                    {...getTaskCircle(m, g, n, i)}
+                    cx={getTaskStartPoint(m, g, n) + getPathDir(n.path) * ( getTaskRadius(g) / 2 + i * (getTaskRadius(g) + TASK_CIRCLES_GAP))}
+                    cy={n.nodeY}
+                    r={getTaskRadius(g) / 2}
                     fill={n.taskStatus === i + 1
                       ? [C.TASK_CIRCLE_0_ON, C.TASK_CIRCLE_1_ON, C.TASK_CIRCLE_2_ON, C.TASK_CIRCLE_3_ON].at(i)
                       : [C.TASK_CIRCLE_0_OFF, C.TASK_CIRCLE_1_OFF, C.TASK_CIRCLE_2_OFF, C.TASK_CIRCLE_3_OFF].at(i)}
@@ -94,8 +114,8 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
                       e.preventDefault()
                       e.stopPropagation()
                       dispatch(actions.mapAction({type: 'setTaskStatus', payload: {taskStatus: i + 1, nodeId: n.nodeId}}))
-                   }}>
-                  </circle>
+                    }}
+                  />
                 ))
               }
             </Fragment>
