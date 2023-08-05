@@ -1,13 +1,15 @@
 import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {useOpenWorkspaceQuery} from "../core/Api"
 import {Sides} from "../state/Enums"
 import {N} from "../state/MapPropTypes"
-import {getRootStartX, getRootStartY, isR, getRootMidY, getRootMidX, getRootEndX, getRootEndY} from "../core/MapUtils"
+import {getRootStartX, getRootStartY, isR, getRootMidY, getRootMidX, getRootEndX, getRootEndY,} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {MapSvgIconWrapper} from "./MapSvgIconWrapper"
+import {pathCommonProps} from "./MapSvg"
+import {getLinePathBetweenNodes} from "./MapSvgUtils"
 
 export const MapSvgLayer10Connections: FC = () => {
   const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
@@ -19,7 +21,14 @@ export const MapSvgLayer10Connections: FC = () => {
   return (
     <g>
       {
-        // TODO: connectors
+        // TODO map through g's connections
+        // <path
+        //   d={getLinePathBetweenNodes( todo )}
+        //   strokeWidth={ todo }
+        //   stroke={ todo }
+        //   fill={'none'}
+        //   {...pathCommonProps}
+        // >
       }
       {m.map((n: N) => (
         isR(n.path) && connectorsVisible &&

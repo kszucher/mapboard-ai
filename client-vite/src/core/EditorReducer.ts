@@ -101,6 +101,11 @@ export const editorSlice = createSlice({
           state.editType = ''
           break
         }
+        case 'checkConnectionEnd': {
+          // TODO: check if state's connectionStart's nodeId is NOT empty, and IF the g prop doesnt have such from-end combo, and then save it
+          // with a mapReducer that saves
+          break
+        }
         default: {
           const m = mapReducer(pm, action.payload.type, action.payload.payload)
           if (!isEqual(pm, m)) {
