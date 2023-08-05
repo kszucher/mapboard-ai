@@ -8,7 +8,7 @@ import {mSelector} from "../state/EditorState"
 import { AppDispatch, RootState} from "../core/EditorReducer"
 import {MapSvgIconWrapper} from "./MapSvgIconWrapper"
 
-export const MapSvgLayer10Connectors: FC = () => {
+export const MapSvgLayer10Connections: FC = () => {
   const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()

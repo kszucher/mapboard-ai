@@ -5,7 +5,7 @@ import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {Sides, PageState} from "../state/Enums"
 import {mSelector} from "../state/EditorState"
 
-export const ModalCreateConnector: FC = () => {
+export const ModalCreateConnection: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const [fromSide, setFromSide] = useState<string>(Sides.R)
   const [toSide, setToSide] = useState<string>(Sides.L)
