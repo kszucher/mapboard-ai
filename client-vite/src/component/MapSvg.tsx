@@ -14,7 +14,7 @@ import {MapSvgLayer6SelectionPreview} from "./MapSvgLayer6SelectionPreview"
 import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
 import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
 import {MapSvgLayer9SelectionIcons} from "./MapSvgLayer9SelectionIcons"
-import {MapSvgLayer10ConnectionIconss} from "./MapSvgLayer10ConnectionIconss"
+import {MapSvgLayer10ConnectionIcons} from "./MapSvgLayer10ConnectionIcons"
 import {mapFindIntersecting} from "../core/MapFindIntersecting"
 import {M, N} from "../state/MapStateTypes"
 
@@ -100,7 +100,7 @@ export const MapSvg: FC = () => {
       <MapSvgLayer7SelectionArea/>
       <MapSvgLayer8SelectionMove/>
       <MapSvgLayer9SelectionIcons/>
-      <MapSvgLayer10ConnectionIconss/>
+      <MapSvgLayer10ConnectionIcons/>
     </svg>
   )
 }

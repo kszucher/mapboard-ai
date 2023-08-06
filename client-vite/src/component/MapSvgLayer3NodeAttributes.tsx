@@ -24,6 +24,16 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
+      {
+        // g.connectionmap((n: N) => (
+        // <path
+        //   d={getLinePathBetweenNodes( todo )}
+        //   strokeWidth={ todo }
+        //   stroke={ todo }
+        //   fill={'none'}
+        //   {...pathCommonProps}
+        // >
+      }
       {m.map((n: N) => (
         <Fragment key={n.nodeId}>
           {

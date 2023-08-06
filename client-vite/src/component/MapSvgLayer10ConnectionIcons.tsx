@@ -9,7 +9,7 @@ import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {MapSvgIconWrapper} from "./MapSvgIconWrapper"
 
-export const MapSvgLayer10ConnectionIconss: FC = () => {
+export const MapSvgLayer10ConnectionIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const connectionIconsVisible = useSelector((state: RootState) => state.editor.connectionIconsVisible)
