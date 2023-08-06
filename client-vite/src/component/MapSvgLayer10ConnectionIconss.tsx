@@ -9,10 +9,10 @@ import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {MapSvgIconWrapper} from "./MapSvgIconWrapper"
 
-export const MapSvgLayer10Connectors: FC = () => {
+export const MapSvgLayer10ConnectionIconss: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
-  const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
+  const connectionIconsVisible = useSelector((state: RootState) => state.editor.connectionIconsVisible)
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
@@ -20,7 +20,7 @@ export const MapSvgLayer10Connectors: FC = () => {
   return (
     <g>
       {m.map((n: N) => (
-        isR(n.path) && connectorsVisible &&
+        isR(n.path) && connectionIconsVisible &&
         <Fragment key={`${n.nodeId}`}>
           <Fragment key={`${n.nodeId}_plus_left`}>
             <MapSvgIconWrapper

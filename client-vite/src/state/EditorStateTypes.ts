@@ -26,7 +26,7 @@ export interface EditorState {
     xImage: number
     yImage: number
   }
-  connectorsVisible: boolean
+  connectionIconsVisible: boolean
   connectionStart: {
     fromNodeId: string,
     fromNodeSide: Sides
