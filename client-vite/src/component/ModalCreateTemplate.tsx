@@ -8,7 +8,7 @@ import {mSelector} from "../state/EditorState"
 
 export const ModalCreateTemplate: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
-  const [side, setSide] = useState<string>(Sides.D)
+  const [side, setSide] = useState<string>(Sides.B)
   const [template, setTemplate] = useState<string>(Templates.empty)
   const interactionDisabled = false
   const dispatch = useDispatch<AppDispatch>()
@@ -55,7 +55,7 @@ export const ModalCreateTemplate: FC = () => {
             disabled={interactionDisabled}
             onClick={() => {
               side === Sides.R && dispatch(actions.mapAction({type: 'insertTemplateRR', payload: {template}}))
-              side === Sides.D && dispatch(actions.mapAction({type: 'insertTemplateRD', payload: {template}}))
+              side === Sides.B && dispatch(actions.mapAction({type: 'insertTemplateRD', payload: {template}}))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}
