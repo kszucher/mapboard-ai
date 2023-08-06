@@ -29,7 +29,7 @@ export const MapSvgLayer10ConnectionIcons: FC = () => {
                 dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides.L}))
               }}
               onMouseUpGuarded={() => {
-                connectionStart.fromNodeId !== '' && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
+                connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
                 dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides.L}}))
               }}
             />
@@ -41,7 +41,7 @@ export const MapSvgLayer10ConnectionIcons: FC = () => {
                 dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides.R}))
               }}
               onMouseUpGuarded={() => {
-                connectionStart.fromNodeId !== '' && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
+                connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
                 dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides.R}}))
               }}
             />
@@ -53,7 +53,7 @@ export const MapSvgLayer10ConnectionIcons: FC = () => {
                 dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides.T}))
               }}
               onMouseUpGuarded={() => {
-                connectionStart.fromNodeId !== '' && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
+                connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
                 dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides.T}}))
               }}
             />
@@ -65,7 +65,7 @@ export const MapSvgLayer10ConnectionIcons: FC = () => {
                 dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides.B}))
               }}
               onMouseUpGuarded={() => {
-                connectionStart.fromNodeId !== '' && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
+                connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
                 dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides.B}}))
               }}
             />
