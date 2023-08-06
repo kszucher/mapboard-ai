@@ -1,4 +1,4 @@
-import {M} from "../state/MapPropTypes";
+import {M} from "../state/MapStateTypes";
 
 export const mapConnect = (m: M, fromNodeSide: string, toNodeSide: string) => {
 

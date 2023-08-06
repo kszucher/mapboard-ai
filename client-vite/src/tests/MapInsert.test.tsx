@@ -1,6 +1,6 @@
 import {setIsTesting} from "../core/Utils"
 import {mapReducerAtomic} from "../core/MapReducer"
-import {M} from "../state/MapPropTypes"
+import {M} from "../state/MapStateTypes"
 
 const insertSD_test = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},

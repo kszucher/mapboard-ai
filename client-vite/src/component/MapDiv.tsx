@@ -10,7 +10,7 @@ import {setEndOfContentEditable} from "./MapDivUtils"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
-import {N} from "../state/MapPropTypes"
+import {N} from "../state/MapStateTypes"
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {

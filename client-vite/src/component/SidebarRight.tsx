@@ -16,7 +16,7 @@ import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
-import {gSaveOptional} from "../state/MapProps"
+import {gSaveOptional} from "../state/MapState"
 
 export const SidebarRight: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

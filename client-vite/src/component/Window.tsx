@@ -8,7 +8,7 @@ import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
 import {getMap, mSelector} from "../state/EditorState"
 import {mapDeInit} from "../core/MapDeInit"
-import {GN} from "../state/MapPropTypes"
+import {GN} from "../state/MapStateTypes"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 

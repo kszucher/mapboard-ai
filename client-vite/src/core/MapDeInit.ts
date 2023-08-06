@@ -1,5 +1,5 @@
-import {M, GSaveNever, GSaveOptional, NSaveNever, NSaveOptional} from "../state/MapPropTypes"
-import {gSaveAlways, gSaveOptional, nSaveAlways, nSaveOptional} from "../state/MapProps"
+import {M, GSaveNever, GSaveOptional, NSaveNever, NSaveOptional} from "../state/MapStateTypes"
+import {gSaveAlways, gSaveOptional, nSaveAlways, nSaveOptional} from "../state/MapState"
 import {isG, sortPath} from "./MapUtils"
 
 export const mapDeInit = (m: M) => {

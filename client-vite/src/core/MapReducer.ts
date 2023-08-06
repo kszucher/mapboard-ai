@@ -3,8 +3,8 @@ import {Dir} from "../state/Enums"
 import {gptParser} from "./GptParser"
 import {transpose} from './Utils'
 import {structNavigate} from './NodeNavigate'
-import {nSaveOptional} from "../state/MapProps"
-import {M, N} from "../state/MapPropTypes"
+import {nSaveOptional} from "../state/MapState"
+import {M, N} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteReselectCC, deleteReselectCR, deleteReselectR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"

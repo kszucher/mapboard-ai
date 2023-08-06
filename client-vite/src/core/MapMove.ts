@@ -1,7 +1,7 @@
 import {mapDeInit} from "./MapDeInit";
 import {insertTable} from "./MapInsert"
 import {genHash} from "./Utils"
-import {M, P} from "../state/MapPropTypes"
+import {M, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
 import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSS, m2cbR} from "./MapUtils"

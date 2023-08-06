@@ -6,7 +6,7 @@ import {getX, isXACC, isXACR} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../core/EditorReducer"
-import {N} from "../state/MapPropTypes"
+import {N} from "../state/MapStateTypes"
 import {getSelectionMargin, pathCommonProps} from "./MapSvg"
 import {getPolygonPath, getPolygonS} from "./MapSvgUtils"
 

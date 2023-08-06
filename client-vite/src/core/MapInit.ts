@@ -1,5 +1,5 @@
-import {GSaveOptional, GSaveNever, GPartial, NSaveAlways, NSaveOptional, NSaveNever, M, MPartial} from "../state/MapPropTypes"
-import {gSaveAlways, gSaveNever, gSaveOptional, nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapProps"
+import {GSaveOptional, GSaveNever, GPartial, NSaveAlways, NSaveOptional, NSaveNever, M, MPartial} from "../state/MapStateTypes"
+import {gSaveAlways, gSaveNever, gSaveOptional, nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapState"
 import {getNodeByPath, isG} from "./MapUtils"
 import {genHash} from "./Utils"
 

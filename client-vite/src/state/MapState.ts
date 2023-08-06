@@ -1,4 +1,4 @@
-import {GSaveAlways, GSaveNever, GSaveOptional, NSaveAlways, NSaveNever, NSaveOptional} from "./MapPropTypes"
+import {GSaveAlways, GSaveNever, GSaveOptional, NSaveAlways, NSaveNever, NSaveOptional} from "./MapStateTypes"
 import {LineTypes} from "./Enums"
 
 export const gSaveAlways = {

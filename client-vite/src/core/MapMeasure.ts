@@ -1,5 +1,5 @@
 import {MARGIN_X, MARGIN_Y} from "../state/Consts";
-import {G, M, N} from "../state/MapPropTypes"
+import {G, M, N} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils";
 import {getCountCO1, getCountSO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getTaskWidth} from "./MapUtils"
 

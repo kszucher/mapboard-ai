@@ -7,7 +7,7 @@ import {actions, store} from "../core/EditorReducer"
 import {colorList} from "../component/Colors"
 import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../state/Enums"
 import {getMap} from "../state/EditorState"
-import {nSaveOptional} from "../state/MapProps"
+import {nSaveOptional} from "../state/MapState"
 
 describe("Formatter test", () => {
   // beforeEach(() => {

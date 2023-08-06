@@ -16,7 +16,7 @@ import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
 import {MapSvgLayer9SelectionIcons} from "./MapSvgLayer9SelectionIcons"
 import {MapSvgLayer10Connections} from "./MapSvgLayer10Connections"
 import {mapFindIntersecting} from "../core/MapFindIntersecting"
-import {M, N} from "../state/MapPropTypes"
+import {M, N} from "../state/MapStateTypes"
 
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',

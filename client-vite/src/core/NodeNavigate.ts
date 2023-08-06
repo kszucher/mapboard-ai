@@ -1,5 +1,5 @@
 import {Dir} from "../state/Enums"
-import {M, P} from "../state/MapPropTypes"
+import {M, P} from "../state/MapStateTypes"
 import {getCountSO1, getNodeByPath, getSI1, isC} from "./MapUtils"
 
 export const structNavigate = (m: M, path: P, dir: Dir) => {

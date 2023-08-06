@@ -2,8 +2,17 @@ import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {Sides} from "../state/Enums"
-import {N} from "../state/MapPropTypes"
-import {getRootStartX, getRootStartY, isR, getRootMidY, getRootMidX, getRootEndX, getRootEndY,} from "../core/MapUtils"
+import {N} from "../state/MapStateTypes"
+import {
+  getRootStartX,
+  getRootStartY,
+  isR,
+  getRootMidY,
+  getRootMidX,
+  getRootEndX,
+  getRootEndY,
+  getG,
+} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -12,8 +21,11 @@ import {pathCommonProps} from "./MapSvg"
 import {getLinePathBetweenNodes} from "./MapSvgUtils"
 
 export const MapSvgLayer10Connections: FC = () => {
-  const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
   const m = useSelector((state:RootState) => mSelector(state))
+  const g = getG(m)
+  // const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
+  const connectorsVisible = useSelector((state: RootState) => state.editor.connectorsVisible)
+
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
 

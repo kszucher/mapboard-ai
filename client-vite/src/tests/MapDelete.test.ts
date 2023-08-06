@@ -1,5 +1,5 @@
 import {mapReducerAtomic} from "../core/MapReducer"
-import {M} from "../state/MapPropTypes"
+import {M} from "../state/MapStateTypes"
 import {deleteS, deleteCR, deleteCC} from "../core/MapDelete"
 import {sortNode} from "../core/MapUtils"
 

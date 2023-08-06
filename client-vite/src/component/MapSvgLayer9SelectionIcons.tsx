@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {genPromptJsonS, genPromptJsonT, gptPrompter} from "../core/GptPrompter"
 import {PageState} from "../state/Enums";
-import {N} from "../state/MapPropTypes"
+import {N} from "../state/MapStateTypes"
 import {getCountCO1, getCountSO1, getPathDir, getR0, getX, getXSSCXX, isXD, isXR, isXS, getXRi, getNodeByPath, getRi} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"

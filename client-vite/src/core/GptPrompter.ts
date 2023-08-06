@@ -1,4 +1,4 @@
-import {M, N} from "../state/MapPropTypes"
+import {M, N} from "../state/MapStateTypes"
 import {getXSSCC0, getXSSCR0, m2cbS, getCountSO1, getSIL, getNodeByPath, getXSSCYY, sortPath} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {GN} from "../state/MapPropTypes"
+import {GN} from "../state/MapStateTypes"
 import {actions, RootState} from "./EditorReducer"
 import {timeoutId} from "../component/Window"
 import {backendUrl} from "./Urls"

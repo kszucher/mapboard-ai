@@ -9,7 +9,7 @@ import {getClosestStructParent, getCountCO1, getCountSO1, getG, getNodeById, get
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {N} from "../state/MapPropTypes"
+import {N} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
 import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getPolygonS} from "./MapSvgUtils"
 

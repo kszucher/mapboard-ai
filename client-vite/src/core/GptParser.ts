@@ -1,4 +1,4 @@
-import {M} from "../state/MapPropTypes"
+import {M} from "../state/MapStateTypes"
 import {insertS} from "./MapInsert"
 import {getCountSO1, getNodeById} from "./MapUtils"
 

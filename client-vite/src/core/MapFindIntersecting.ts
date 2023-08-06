@@ -1,4 +1,4 @@
-import {M} from "../state/MapPropTypes"
+import {M} from "../state/MapStateTypes"
 import {getCountCO1, isS} from "./MapUtils"
 
 export const rectanglesIntersect = (input: number[]) => {

@@ -1,6 +1,6 @@
 import {mapReducerAtomic} from "../core/MapReducer"
 import {setIsTesting} from "../core/Utils"
-import {M} from "../state/MapPropTypes"
+import {M} from "../state/MapStateTypes"
 
 const moveSD_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},

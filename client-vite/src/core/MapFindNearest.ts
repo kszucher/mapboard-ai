@@ -1,4 +1,4 @@
-import {M, GN, P, N} from "../state/MapPropTypes"
+import {M, GN, P, N} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
 import {getCountSO1, getNodeById, getNodeByPath, getSI1, getRi, isD, isS, isSO, sortPath} from "./MapUtils"
 

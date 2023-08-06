@@ -1,4 +1,4 @@
-import {M, P} from "../state/MapPropTypes"
+import {M, P} from "../state/MapStateTypes"
 import {getNodeByPath, getSI1, getX, isR} from "./MapUtils"
 
 export const unselectNodes = (m: M) => m.forEach(n => n.path.length > 1 && Object.assign(n, {selected: 0, selection: 's'}))

@@ -1,5 +1,5 @@
 import {getCountRXD0S, getCountRXD1S, getCountSO1, getNodeByPath, getRi, isR} from "./MapUtils"
-import {M} from "../state/MapPropTypes"
+import {M} from "../state/MapStateTypes"
 
 export const mapCalcTask = (m: M) => {
   m.reverse()

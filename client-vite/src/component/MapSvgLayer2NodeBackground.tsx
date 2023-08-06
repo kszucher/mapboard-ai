@@ -5,7 +5,7 @@ import {getColors} from "./Colors"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../core/EditorReducer"
-import {N} from "../state/MapPropTypes"
+import {N} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
 import {getArcPath} from "./MapSvgUtils"
 

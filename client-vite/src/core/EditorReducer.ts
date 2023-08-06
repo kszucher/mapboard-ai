@@ -3,7 +3,7 @@ import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../component/MapDivUtils"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState, Sides} from "../state/Enums"
-import {M} from "../state/MapPropTypes"
+import {M} from "../state/MapStateTypes"
 import {api} from "./Api"
 import {mapFindNearest} from "./MapFindNearest"
 import {mapReducer} from "./MapReducer"
@@ -102,6 +102,10 @@ export const editorSlice = createSlice({
           break
         }
         case 'checkConnectionEnd': {
+
+
+
+          // state.connectionStart.fromNodeId !== '' && state.
           // TODO: check if state's connectionStart's nodeId is NOT empty, and IF the g prop doesnt have such from-end combo, and then save it
           // with a mapReducer that saves
           break

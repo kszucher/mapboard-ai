@@ -1,4 +1,4 @@
-import {M} from "../state/MapPropTypes"
+import {M} from "../state/MapStateTypes"
 import {genPromptJsonS, genPromptJsonT} from "../core/GptPrompter"
 
 const genPromptJsonS_test = [

@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare"
 import {MARGIN_X, MARGIN_Y, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
-import {G, GN, M, N, P} from "../state/MapPropTypes"
+import {G, GN, M, N, P} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "./Utils"
 
 export const incPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number + 1 : p)

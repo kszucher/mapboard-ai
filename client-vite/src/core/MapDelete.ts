@@ -1,4 +1,4 @@
-import {M} from "../state/MapPropTypes"
+import {M} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
 import {decPiN, getNodeByPath, getSIL, isSD, isCFDF, decPi, isCFRF, getReselectS, getReselectCR, getReselectCC, getXA, getXP, getXRi, getReselectR} from "./MapUtils"
 
