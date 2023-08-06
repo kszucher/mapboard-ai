@@ -1,6 +1,6 @@
 import {LineTypes} from "./Enums"
 
-interface Connection {
+export interface Connection {
   fromNodeId: string
   fromNodeSide: string
   toNodeId: string

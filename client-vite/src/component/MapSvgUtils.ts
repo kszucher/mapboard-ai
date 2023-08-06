@@ -1,7 +1,7 @@
-import {getG, getNodeByPath, getPathDir, getRi, getSI1, getX, isD, isXACC, isXACR,} from "../core/MapUtils"
+import {getG, getNodeById, getNodeByPath, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1, getX, isD, isXACC, isXACR} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
-import {LineTypes} from "../state/Enums"
-import {M, N} from "../state/MapStateTypes"
+import {LineTypes, Sides} from "../state/Enums"
+import {Connection, M, N} from "../state/MapStateTypes"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -28,13 +28,12 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
 export const getLinePathBetweenNodes = (na: N, nb: N) => {
   const dir = getPathDir(nb.path)
   const { lineType } = nb
-  let sx, sy, dx, dy, ex, ey
-  sx = (dir === -1 ? na.nodeStartX : na.nodeEndX)
-  sy = (na.nodeY)
-  ex = (dir === -1 ? nb.nodeEndX : nb.nodeStartX)
-  ey = (nb.nodeY)
-  dx = (dir === -1 ? (na.nodeStartX - nb.nodeEndX) : (nb.nodeStartX - na.nodeEndX))
-  dy = (nb.nodeY - na.nodeY)
+  const sx = (dir === -1 ? na.nodeStartX : na.nodeEndX)
+  const sy = (na.nodeY)
+  const ex = (dir === -1 ? nb.nodeEndX : nb.nodeStartX)
+  const ey = (nb.nodeY)
+  const dx = (dir === -1 ? (na.nodeStartX - nb.nodeEndX) : (nb.nodeStartX - na.nodeEndX))
+  const dy = (nb.nodeY - na.nodeY)
   let path
   if (lineType === LineTypes.bezier) {
     const c1x = (sx + dir * dx / 4)
@@ -50,6 +49,27 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
     path = getEdgeLinePath('M', [sx, sy, m1x, m1y, m2x, m2y, ex, ey])
   }
   return path
+}
+
+export const getLinePathBetweenRoots = (m: M, connection: Connection) => {
+  const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = connection
+  const fromNode = getNodeById(m, fromNodeId)
+  const toNode = getNodeById(m, toNodeId)
+  let sx = 0, sy = 0, c1x = 0, c1y = 0
+  switch (fromNodeSide) {
+    case Sides.R: sx = getRootEndX(m, fromNode); sy = getRootMidY(m, fromNode); c1x = sx + 100; c1y = sy; break
+    case Sides.L: sx = getRootStartX(m, fromNode); sy = getRootMidY(m, fromNode); c1x = sx - 100; c1y = sy; break
+    case Sides.T: sx = getRootMidX(m, fromNode); sy = getRootStartY(m, fromNode); c1x = sx; c1y = sy - 100; break
+    case Sides.B: sx = getRootMidX(m, fromNode); sy = getRootEndY(m, fromNode); c1x = sx; c1y = sy + 100; break
+  }
+  let ex = 0, ey = 0, c2x = 0, c2y = 0
+  switch (toNodeSide) {
+    case Sides.R: ex = getRootEndX(m, toNode); ey = getRootMidY(m, toNode); c2x = ex + 100; c2y = ey; break
+    case Sides.L: ex = getRootStartX(m, toNode); ey = getRootMidY(m, toNode); c2x = ex - 100; c2y = ey; break
+    case Sides.T: ex = getRootMidX(m, toNode); ey = getRootStartY(m, toNode); c2x = ex; c2y = ey - 100; break
+    case Sides.B: ex = getRootMidX(m, toNode); ey = getRootEndY(m, toNode); c2x = ex; c2y = ey + 100;  break
+  }
+  return getBezierLinePath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
 }
 
 export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {

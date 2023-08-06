@@ -45,7 +45,7 @@ export const MenuProfile: FC = () => {
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
             dispatch(actions.toggleConnectionIconsVisible())
-          }}>{connectionIconsVisible ? 'Disable Making Connections' : 'Enable Making Connections'}</MenuItem>,
+          }}>{connectionIconsVisible ? 'Hide Connection Anchors' : 'Show Connection Anchors'}</MenuItem>,
           <Divider key={genHash(8)}/>,
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
