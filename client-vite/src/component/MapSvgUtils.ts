@@ -223,3 +223,31 @@ export const getGridPath = (n: N) => {
   }
   return path
 }
+
+// export const calculateMiddlePoint = (sx, sy, c1x, c1y, c2x, c2y, ex, ey) => {
+//   // Calculate the middle point t value
+//   var t = 0.5;
+//
+//   // Calculate intermediate points based on the t value
+//   var p0x = sx + (c1x - sx) * t;
+//   var p0y = sy + (c1y - sy) * t;
+//   var p1x = c1x + (c2x - c1x) * t;
+//   var p1y = c1y + (c2y - c1y) * t;
+//   var p2x = c2x + (ex - c2x) * t;
+//   var p2y = c2y + (ey - c2y) * t;
+//
+//   // Calculate final point based on intermediate points
+//   var p3x = p0x + (p1x - p0x) * t;
+//   var p3y = p0y + (p1y) * t;
+//
+//   var p4x = p1x + (p2x - p1x) * t;
+//   var p4y = p1y + (p2y - p1y) * t;
+//
+//   var px = p3x + (p4x - p3x) * t;
+//   var py = p3y + (p4y - p3y) * t;
+//
+//   return {
+//     x: px,
+//     y: py
+//   };
+// }
