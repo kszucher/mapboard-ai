@@ -7,7 +7,7 @@ import {useOpenWorkspaceQuery} from "../core/Api"
 import {AppDispatch, RootState} from "../core/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 
-export const MapDivMenu: FC = () => {
+export const MenuNode: FC = () => {
   const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
