@@ -1,4 +1,4 @@
-import {combineReducers, configureStore, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
+import {combineReducers, configureStore, createListenerMiddleware, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../component/MapDivUtils"
 import {editorState} from "../state/EditorState"
@@ -165,15 +165,29 @@ export const editorSlice = createSlice({
 
 export const { actions } = editorSlice
 
+const listenerMiddleware = createListenerMiddleware()
+
+listenerMiddleware.startListening({
+  predicate: (action, currentState) => {
+   return (
+    action.type.startsWith('editor') &&
+    action.type !== 'editor/closeNodeMenu' &&
+    action.type !== 'editor/openNodeMenu' &&
+    action.type !== 'editor/resetConnectionStart' &&
+    (currentState as RootState).editor.nodeMenu !== null
+   )
+  },
+  effect: async (action, listenerApi) => {
+    listenerApi.dispatch(actions.closeNodeMenu())
+  },
+})
+
 export const store = configureStore({
   reducer: combineReducers({api: api.reducer, editor: editorSlice.reducer}),
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(api.middleware)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
+    .prepend(listenerMiddleware.middleware)
+    .concat(api.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-
-// TODO add the middleware that after every action closes your menu
-// https://redux-toolkit.js.org/api/createListenerMiddleware
-// once flowbite will have a better solution for a contextmenu, change the approach
-
