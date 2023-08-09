@@ -175,15 +175,6 @@ export const Window: FC = () => {
     })
   }
 
-  const mousedown = (e: MouseEvent) => {
-    if (e.button === 0) {
-      const currentElement = e.target as HTMLElement
-      if (currentElement.id !== 'doubleDropdownButton') {
-        dispatch(actions.closeNodeMenu())
-      }
-    }
-  }
-
   const mouseup = (e: MouseEvent) => {
     dispatch(actions.resetConnectionStart())
   }
@@ -203,7 +194,6 @@ export const Window: FC = () => {
     window.addEventListener("keydown", keydown, {signal})
     window.addEventListener("paste", paste, {signal})
     window.addEventListener("wheel", wheel, {signal, passive: false})
-    window.addEventListener("mousedown", mousedown, {signal})
     window.addEventListener("mouseup", mouseup, {signal})
     window.addEventListener("contextmenu", contextmenu, {signal})
   }

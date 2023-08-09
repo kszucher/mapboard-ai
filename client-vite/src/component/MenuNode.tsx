@@ -1,22 +1,17 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getColors} from "./Colors"
-import {getX} from "../core/MapUtils"
+import {getX, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
-import {useOpenWorkspaceQuery} from "../core/Api"
-import {AppDispatch, RootState} from "../core/EditorReducer"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+
+const menuClassName = "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 
 export const MenuNode: FC = () => {
   const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
   const xn = mExists && getX(m)
-  const { data } = useOpenWorkspaceQuery()
-  const { colorMode } = data || defaultUseOpenWorkspaceQueryState
-  const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
-
   return (
     <div
       id="dropdown"
@@ -27,7 +22,7 @@ export const MenuNode: FC = () => {
       <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
         { mExists && xn.content === 'Solution' &&
           <li>
-            <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+            <a className={menuClassName}>
               Dashboard
             </a>
           </li>
@@ -35,31 +30,36 @@ export const MenuNode: FC = () => {
         <li>
           <button
             id="doubleDropdownButton"
-            data-dropdown-toggle="doubleDropdown"
+            data-dropdown-toggle="insertSubMenu"
             data-dropdown-placement="right-start"
             type="button"
             className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-          >Dropdown
+          >Insert
             <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
             </svg>
           </button>
-          <div id="doubleDropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+          <div id="insertSubMenu" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
               <li>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                  Overview</a>
+                <a className={menuClassName} onClick={(e)=>{
+                  isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))
+                  isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
+                }}>Node To The Right
+                </a>
               </li>
               <li>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                  My downloads</a>
+                <a className={menuClassName}>
+                  My downloads
+                </a>
               </li>
               <li>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                  Billing</a>
+                <a className={menuClassName}>
+                  Billing
+                </a>
               </li>
               <li>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                <a className={menuClassName}>
                   Rewards
                 </a>
               </li>
@@ -67,12 +67,12 @@ export const MenuNode: FC = () => {
           </div>
         </li>
         <li>
-          <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+          <a className={menuClassName}>
             Earnings
           </a>
         </li>
         <li>
-          <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+          <a className={menuClassName}>
             Sign out
           </a>
         </li>

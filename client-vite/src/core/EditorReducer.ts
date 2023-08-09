@@ -172,3 +172,8 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+
+// TODO add the middleware that after every action closes your menu
+// https://redux-toolkit.js.org/api/createListenerMiddleware
+// once flowbite will have a better solution for a contextmenu, change the approach
+
