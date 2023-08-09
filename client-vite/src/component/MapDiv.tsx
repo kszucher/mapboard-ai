@@ -6,7 +6,7 @@ import {getColors} from "./Colors"
 import {editable, getCountCO1, getCountRXD0S, getCountSO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
-import {getMapX, getMapY, setEndOfContentEditable} from "./MapDivUtils"
+import {setEndOfContentEditable} from "./MapDivUtils"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
@@ -79,7 +79,7 @@ export const MapDiv: FC = () => {
                 dispatch(actions.mapAction({type: 'finishEdit', payload: {path: n.path, content: e.currentTarget.innerHTML}}))
               }}
               onMouseDown={(e) => {
-                // e.stopPropagation() // removed in order to allow to hide menu in case of any action
+                // e.stopPropagation()
                 if (e.button === 0) {
                   if (n.linkType === 'internal') {
                     dispatch(api.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
@@ -113,7 +113,7 @@ export const MapDiv: FC = () => {
                   } else {
                     !e.ctrlKey && dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
                   }
-                  dispatch(actions.openNodeMenu({x: getMapX(e), y: getMapY(e)}))
+                  dispatch(actions.openNodeMenu({x: e.clientX, y: e.clientY}))
                 }
               }}
               onDoubleClick={(e) => {

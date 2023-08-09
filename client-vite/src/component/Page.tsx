@@ -1,9 +1,10 @@
 import {Auth0Provider} from "@auth0/auth0-react"
 import React, {FC, useEffect} from 'react'
-import {Provider, useSelector} from "react-redux"
-import {RootState, store} from "../core/EditorReducer"
+import {useSelector} from "react-redux"
+import {RootState} from "../core/EditorReducer"
 import {Landing} from "./Landing"
 import {PageState} from "../state/Enums"
+import {MapDivMenu} from "./MapDivMenu";
 import {getEquationDim, getTextDim} from "./MapDivUtils"
 import {Editor} from "./Editor"
 
@@ -27,6 +28,7 @@ export const Page: FC = () => {
     >
       {pageState === PageState.AUTH && <Landing/>}
       {pageState!== PageState.AUTH && <Editor/>}
+      {<MapDivMenu/>}
     </Auth0Provider>
   )
 }

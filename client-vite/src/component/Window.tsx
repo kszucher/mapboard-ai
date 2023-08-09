@@ -177,7 +177,10 @@ export const Window: FC = () => {
 
   const mousedown = (e: MouseEvent) => {
     if (e.button === 0) {
-      dispatch(actions.closeNodeMenu())
+      const currentElement = e.target as HTMLElement
+      if (currentElement.id !== 'doubleDropdownButton') {
+        dispatch(actions.closeNodeMenu())
+      }
     }
   }
 
