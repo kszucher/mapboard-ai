@@ -29,12 +29,12 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           }}/>
         </Fragment>
       }
-      {
-        isXS(m) && !nodeMenu &&
-        <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 1)} y={xn.nodeY - 12} iconName={'Dots'} onMouseDownGuarded={(e: MouseEvent) => {
-          dispatch(actions.openNodeMenu())
-        }}/>
-      }
+      {/*{*/}
+      {/*  isXS(m) && !nodeMenu &&*/}
+      {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 1)} y={xn.nodeY - 12} iconName={'Dots'} onMouseDownGuarded={(e: MouseEvent) => {*/}
+      {/*    // dispatch(actions.openNodeMenu({x: getMapX(e), y: getMapY(e)}))*/}
+      {/*  }}/>*/}
+      {/*}*/}
       {/*{*/}
       {/*  ((isXR(m) && getCountSO1(m, ['r', getRi(xn.path), 'd', 0]) === 0) || isXS(m) && getCountSO1(m, xn.path) === 0) && xn.selection === 's' &&*/}
       {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, getCountCO1(m, xn.path) ? 6 : 1)} y={xn.nodeY - 12} iconName={'CirclePlus'} onMouseDownGuarded={() => {*/}

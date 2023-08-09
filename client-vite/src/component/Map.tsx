@@ -1,7 +1,6 @@
 import React, {FC, useEffect, useRef} from "react"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
-import {MapDivMenu} from "./MapDivMenu"
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
 import {useDispatch, useSelector} from "react-redux"
@@ -110,7 +109,6 @@ export const Map: FC = () => {
       }}>
         <MapSvg/>
         <MapDiv/>
-        <MapDivMenu/>
       </div>
       <div/>
       <div/>

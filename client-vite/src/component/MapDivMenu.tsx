@@ -24,8 +24,8 @@ export const MapDivMenu: FC = () => {
         nodeMenu &&
         <div
           id="dropdownDotsHorizontal"
-          className="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-neutral-600 dark:divide-neutral-400"
-          style={{left: calcSvgIconOffsetX(xn, 1) + 36, top: xn.nodeY - 12}}
+          className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-neutral-600 dark:divide-neutral-400"
+          style={{left: nodeMenu.x + 240, top: nodeMenu.y + 60}}
         >
           <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconHorizontalButton">
             <li><a href="#" className={menuElemClassName} onClick={(e)=> {e.preventDefault(); console.log('click')}}>Dashboard</a></li>

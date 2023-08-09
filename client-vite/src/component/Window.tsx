@@ -176,7 +176,9 @@ export const Window: FC = () => {
   }
 
   const mousedown = (e: MouseEvent) => {
-    dispatch(actions.closeNodeMenu())
+    if (e.button === 0) {
+      dispatch(actions.closeNodeMenu())
+    }
   }
 
   const mouseup = (e: MouseEvent) => {
@@ -185,6 +187,7 @@ export const Window: FC = () => {
 
   const wheel = (e: WheelEvent) => {
     e.preventDefault()
+    dispatch(actions.closeNodeMenu())
   }
 
   const contextmenu = (e: MouseEvent) => {

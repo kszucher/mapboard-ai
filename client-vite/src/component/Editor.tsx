@@ -4,6 +4,7 @@ import {Backdrop, CircularProgress, ThemeProvider} from '@mui/material'
 import {RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
+import {MapDivMenu} from "./MapDivMenu"
 import {MenuFrames} from "./MenuFrames"
 import {MenuProfile} from "./MenuProfile"
 import {ModalCreateTemplate} from "./ModalCreateTemplate"
@@ -51,6 +52,7 @@ export const Editor: FC = () => {
   return (
     <ThemeProvider theme={getMuiTheme('dark')}>
       {mExists && <Map/>}
+      {mExists && <MapDivMenu/>}
       {mExists && <UndoRedo/>}
       {mExists && <BreadcrumbMaps/>}
       {mExists && <TabMaps/>}

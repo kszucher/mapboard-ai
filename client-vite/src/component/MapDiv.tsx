@@ -6,7 +6,7 @@ import {getColors} from "./Colors"
 import {editable, getCountCO1, getCountRXD0S, getCountSO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
-import {setEndOfContentEditable} from "./MapDivUtils"
+import {getMapX, getMapY, setEndOfContentEditable} from "./MapDivUtils"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
@@ -110,7 +110,10 @@ export const MapDiv: FC = () => {
                     dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: n.path}}))
                   } else if (!isR(n.path) && getCountSO1(m, n.path) > 0) {
                     dispatch(actions.mapAction({type: 'selectF', payload: {path: n.path}}))
+                  } else {
+                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
                   }
+                  dispatch(actions.openNodeMenu({x: getMapX(e), y: getMapY(e)}))
                 }
               }}
               onDoubleClick={(e) => {
