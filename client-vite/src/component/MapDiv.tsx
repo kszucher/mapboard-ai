@@ -79,7 +79,7 @@ export const MapDiv: FC = () => {
                 dispatch(actions.mapAction({type: 'finishEdit', payload: {path: n.path, content: e.currentTarget.innerHTML}}))
               }}
               onMouseDown={(e) => {
-                e.stopPropagation()
+                // e.stopPropagation() // removed in order to allow to hide menu in case of any action
                 if (e.button === 0) {
                   if (n.linkType === 'internal') {
                     dispatch(api.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
@@ -91,14 +91,14 @@ export const MapDiv: FC = () => {
                     e.ctrlKey && dispatch(actions.mapAction({type: 'selectStoo', payload: {path: n.path}}))
                     const abortController = new AbortController()
                     const { signal } = abortController
-                    window.addEventListener('mousemove', (e) => {
+                    zoomInfo.scale === 1 && window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      !isXR(m) && zoomInfo.scale === 1 && dispatch(actions.mapAction({type: 'simulateDrag', payload: {n, e}}))
+                      !isXR(m) && dispatch(actions.mapAction({type: 'simulateDrag', payload: {n, e}}))
                     }, { signal })
-                    window.addEventListener('mouseup', (e) => {
+                    zoomInfo.scale === 1 && window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      !isXR(m) && zoomInfo.scale === 1 && dispatch(actions.mapAction({type: 'drag', payload: {n, e}}))
+                      !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {n, e}}))
                     }, { signal })
                   }
                 } else if (e.button === 1) {

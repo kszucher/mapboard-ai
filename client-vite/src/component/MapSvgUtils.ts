@@ -1,4 +1,21 @@
-import {getG, getNodeById, getNodeByPath, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1, getX, isD, isXACC, isXACR} from "../core/MapUtils"
+import {
+  getG,
+  getNodeById,
+  getNodeByPath,
+  getPathDir,
+  getRi,
+  getRootEndX,
+  getRootEndY,
+  getRootMidX,
+  getRootMidY,
+  getRootStartX,
+  getRootStartY,
+  getSI1,
+  getX,
+  isD,
+  isXACC,
+  isXACR
+} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
 import {LineTypes, Sides} from "../state/Enums"
 import {Connection, M, N} from "../state/MapStateTypes"
@@ -251,3 +268,7 @@ export const getGridPath = (n: N) => {
 //     y: py
 //   };
 // }
+
+export const calcSvgIconOffsetX = (n: N, i: number) => getPathDir(n.path) === -1
+  ? n.nodeStartX - n.familyW - 4 - i * 24 - i * 6
+  : n.nodeEndX + n.familyW + 4 + (i - 1) * 24 + i * 6

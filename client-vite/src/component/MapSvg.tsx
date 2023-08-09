@@ -82,10 +82,6 @@ export const MapSvg: FC = () => {
               zoomInfo.scale === 1 && dispatch(actions.setSelectionRectCoords([]))
               zoomInfo.scale === 1 && dispatch(actions.setIntersectingNodes([]))
             }
-          } else {
-            if (e.button === 0) {
-              dispatch(actions.mapAction({type: 'selectR0', payload: null}))
-            }
           }
         }, { signal })
       }}

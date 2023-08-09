@@ -50,22 +50,14 @@ export const Editor: FC = () => {
 
   return (
     <ThemeProvider theme={getMuiTheme('dark')}>
-      {
-        mExists &&
-        <>
-          <Map/>
-          <UndoRedo/>
-          <BreadcrumbMaps/>
-          <TabMaps/>
-          <SidebarRight/>
-          {
-            formatterVisible &&
-            <Formatter/>
-          }
-          <FrameCarousel/>
-          <Window/>
-        </>
-      }
+      {mExists && <Map/>}
+      {mExists && <UndoRedo/>}
+      {mExists && <BreadcrumbMaps/>}
+      {mExists && <TabMaps/>}
+      {mExists && <SidebarRight/>}
+      {mExists && formatterVisible && <Formatter/>}
+      {mExists && <FrameCarousel/>}
+      {mExists && <Window/>}
       <Logo/>
       <SidebarTop/>
       <MenuProfile/>
@@ -79,11 +71,7 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_CREATE_TEMPLATE && <ModalCreateTemplate/>}
       {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
       {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
-      {pageState === PageState.WS_LOADING &&
-        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      }
+      {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
     </ThemeProvider>
   )
 }

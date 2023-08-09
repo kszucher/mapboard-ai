@@ -14,6 +14,7 @@ export interface EditorState {
   formatterVisible: boolean
   moreMenu: boolean
   frameMenu: boolean
+  nodeMenu: boolean
   moveCoords: number[]
   selectionRectCoords: number[]
   intersectingNodes: N[]

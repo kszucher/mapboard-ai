@@ -13,6 +13,18 @@ export const MapSvgIcon = ({iconName} : {iconName : string}) => (
     className="icon icon-tabler icon-tabler-square-rounded-plus"
     viewBox="0 0 24 24"
   >
+    {iconName === 'Dots' &&
+      <g>
+        <path stroke="none" d="M0 0h24v24H0z"></path>
+        <path d="M4 12a1 1 0 102 0 1 1 0 10-2 0M11 12a1 1 0 102 0 1 1 0 10-2 0M18 12a1 1 0 102 0 1 1 0 10-2 0"></path>
+      </g>
+    }
+    {iconName === 'X' &&
+      <g>
+        <path stroke="none" d="M0 0h24v24H0z"></path>
+        <path d="M18 6L6 18M6 6l12 12"></path>
+      </g>
+    }
     {iconName === 'CirclePlus' &&
       <g>
         <path stroke="none" d="M0 0h24v24H0z"></path>

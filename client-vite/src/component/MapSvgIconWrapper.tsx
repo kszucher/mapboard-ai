@@ -3,7 +3,7 @@ import {adjustIcon} from "../core/Utils"
 import {MapSvgIcon} from "./MapSvgIcons"
 
 export const MapSvgIconWrapper = (
-  {x, y, iconName, onMouseDownGuarded, onMouseUpGuarded=()=>{}}:
+  {x, y, iconName, onMouseDownGuarded=()=>{}, onMouseUpGuarded=()=>{}}:
     {x: number, y: number, iconName: string, onMouseDownGuarded: Function, onMouseUpGuarded?: Function}) => (
   <g
     transform={`translate(${adjustIcon(x)}, ${adjustIcon(y)})`}
