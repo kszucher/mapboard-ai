@@ -229,7 +229,7 @@ export const Window: FC = () => {
       frameId: getFrameId(),
       mapData: mapDeInit(getMap().filter((gn: GN) => (gn.hasOwnProperty('path') && gn.hasOwnProperty('nodeId'))))
     }))
-    console.log('saved by timeout')
+    console.log('save by timeout')
   }
 
   useEffect(() => {

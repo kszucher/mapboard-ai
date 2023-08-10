@@ -160,6 +160,12 @@ export const editorSlice = createSlice({
         }
       }
     )
+    builder.addMatcher(
+      api.endpoints.saveMap.matchFulfilled,
+      (state) => {
+        console.log('save completed')
+      }
+    )
   }
 })
 

@@ -37,7 +37,7 @@ export const api = createApi({
       async onQueryStarted(arg, { dispatch, getState }) {
         const editor = (getState() as RootState).editor
         if (editor.mapList.length > 1) {
-          console.log('saved by listener')
+          console.log('save by listener')
           clearTimeout(timeoutId)
           dispatch(api.endpoints.saveMap.initiate({
             mapId: getMapId(),
