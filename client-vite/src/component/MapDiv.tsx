@@ -79,7 +79,7 @@ export const MapDiv: FC = () => {
                 dispatch(actions.mapAction({type: 'finishEdit', payload: {path: n.path, content: e.currentTarget.innerHTML}}))
               }}
               onMouseDown={(e) => {
-                // e.stopPropagation()
+                e.stopPropagation()
                 if (e.button === 0) {
                   if (n.linkType === 'internal') {
                     dispatch(api.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
