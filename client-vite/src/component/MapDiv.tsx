@@ -98,7 +98,7 @@ export const MapDiv: FC = () => {
                     zoomInfo.scale === 1 && window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {n, e}}))
+                      // !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {n, e}}))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
