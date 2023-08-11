@@ -64,7 +64,7 @@ export const MapDiv: FC = () => {
                 zIndex: n.path.length,
                 border: 0,
                 margin: 0,
-                pointerEvents: n.selected && getCountCO1(m, n.path) > 0 ? 'none' : 'auto'
+                // pointerEvents: n.selected && getCountCO1(m, n.path) > 0 ? 'none' : 'auto'
               }}
               spellCheck={false}
               dangerouslySetInnerHTML={n.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(n) }}

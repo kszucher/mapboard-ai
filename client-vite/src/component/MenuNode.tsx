@@ -1,6 +1,8 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getX, isXR, isXS} from "../core/MapUtils"
+import {api} from "../core/Api";
+import {genPromptJsonT, gptPrompter} from "../core/GptPrompter"
+import {getCountCO1, getX, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 
@@ -48,34 +50,18 @@ export const MenuNode: FC = () => {
                 }}>Node To The Right
                 </a>
               </li>
-              <li>
-                <a className={menuClassName}>
-                  My downloads
-                </a>
-              </li>
-              <li>
-                <a className={menuClassName}>
-                  Billing
-                </a>
-              </li>
-              <li>
-                <a className={menuClassName}>
-                  Rewards
-                </a>
-              </li>
             </ul>
           </div>
         </li>
-        <li>
-          <a className={menuClassName}>
-            Earnings
-          </a>
-        </li>
-        <li>
-          <a className={menuClassName}>
-            Sign out
-          </a>
-        </li>
+        { mExists && getCountCO1(m, xn.path) > 0 &&
+          <li>
+            <a className={menuClassName} onClick={(e)=>{
+              dispatch(actions.closeNodeMenu())
+              dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonT(m))))
+            }}>Generative Table Fill
+            </a>
+          </li>
+        }
       </ul>
     </div>
   )
