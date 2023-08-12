@@ -330,7 +330,13 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
       $objectToArray: {
         $mergeObjects: {
           $map: {
-            input: input,
+            input: {
+              $filter: {
+                input: input,
+                as: 'node',
+                cond: { $ne: [ {$type: "$$node.nodeId"}, 'missing' ] }
+              }
+            },
             as: "node",
             in: {
               $arrayToObject: {
