@@ -51,7 +51,7 @@ export const MapDiv: FC = () => {
           {
             (isR(n.path) || isS(n.path)) &&
             <div
-              id={'node'}
+              id={n.nodeId}
               ref={ref => ref && ref.focus()}
               className={n.contentType === 'mermaid' ? 'mermaidNode' : ''}
               style={{
