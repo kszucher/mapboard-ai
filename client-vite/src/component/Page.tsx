@@ -1,4 +1,5 @@
 import {Auth0Provider} from "@auth0/auth0-react"
+import mermaid from "mermaid"
 import React, {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
 import {RootState} from "../core/EditorReducer"
@@ -14,6 +15,14 @@ export const Page: FC = () => {
   useEffect(()=> {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
+    mermaid.initialize({
+      startOnLoad: false
+      // theme: "forest",
+      // logLevel: 3,
+      // flowchart: { curve: "linear" },
+      // gantt: { axisFormat: "%m/%d/%Y" },
+      // sequence: { actorMargin: 20 }
+    })
   }, [])
 
   return (

@@ -1,6 +1,7 @@
 // @ts-ignore
 import katex from "katex/dist/katex.mjs"
-import {FC, Fragment} from "react"
+import mermaid from "mermaid"
+import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
 import {editable, getCountCO1, getCountRXD0S, getCountSO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
@@ -13,7 +14,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {N} from "../state/MapStateTypes"
 
 const getInnerHtml = (n: N) => {
-  if (n.contentType === 'text') {
+  if (n.contentType === 'text' || n.contentType === 'mermaid') {
     return n.content
   } else if (n.contentType === 'equation') {
     return katex.renderToString(getLatexString(n.content), {throwOnError: false})
@@ -33,6 +34,13 @@ export const MapDiv: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+    mermaid.run({
+      nodes: document.querySelectorAll('.mermaid'),
+    });
+  }, [m])
+
   return (
     <>
       {m.map((n: N) => (
@@ -42,6 +50,7 @@ export const MapDiv: FC = () => {
             <div
               id={'node'}
               ref={ref => ref && ref.focus()}
+              className={n.contentType === 'mermaid' ? 'mermaid' : ''}
               style={{
                 left: adjust(n.nodeStartX),
                 top: adjust( n.nodeY - n.selfH / 2),

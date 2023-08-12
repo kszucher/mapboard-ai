@@ -3,6 +3,13 @@ import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 import {unselectNodes} from "./MapSelect"
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getSI1, getCountSCR, getCountSCC} from "./MapUtils"
 
+const mermaidExample = `pie
+         "FRIENDS" : 2
+         "FAMILY" : 3
+         "NOSE" : 45
+`
+
+
 export enum Templates {
   empty = 'Empty',
   detailedTeamBio = 'Pitch Deck - Detailed Team Bio',
@@ -10,7 +17,8 @@ export enum Templates {
   featureCanvasFramework = 'Pitch Deck - Feature Canvas Framework',
   yana = `Pitch Deck - Yana's Framework`,
   swot = 'Pitch Deck - SWOT',
-  enterpriseArchitecture = 'Enterprise Architecture'
+  enterpriseArchitecture = 'Enterprise Architecture',
+  mermaidSample = 'Mermaid Sample'
 }
 
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
@@ -21,6 +29,15 @@ export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: n
       template = [
         {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "New Root"} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",1], content: ""} as GN
+      ]
+      break
+    }
+    case Templates.mermaidSample: {
+      template = [
+        {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "New Root"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: ""} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0], content: mermaidExample, contentType: 'mermaid'} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",1], content: ""} as GN
       ]
       break
