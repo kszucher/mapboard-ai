@@ -140,17 +140,16 @@ export const editorSlice = createSlice({
         if (gptSuggestions) {
           const pm = current(state.mapList[state.mapListIndex])
           let mapAction = {type: '', payload: {}}
-          switch (promptId) {
-            case 'gptGenNodes': {
-              try {
-                const gptParsed = JSON.parse(gptSuggestions)
-                console.log(gptParsed)
-                mapAction = {type: 'gptParser', payload: {gptParsed}}
-              } catch {
-                console.warn('unparseable:', gptSuggestions)
-              }
-              break
+          try {
+            const gptParsed = JSON.parse(gptSuggestions)
+            console.log(gptParsed)
+            switch (promptId) {
+              case 'gptGenNodesS': mapAction = {type: 'gptParseNodesS', payload: {gptParsed}}; break
+              case 'gptGenNodesT': mapAction = {type: 'gptParseNodesT', payload: {gptParsed}}; break
+              case 'gptGenNodeMermaid': mapAction = {type: 'gptParseNodeMermaid', payload: {gptParsed}}; break
             }
+          } catch {
+            console.warn('unparseable:', gptSuggestions)
           }
           const m = mapReducer(pm, mapAction.type, mapAction.payload)
           if (!isEqual(pm, m)) {

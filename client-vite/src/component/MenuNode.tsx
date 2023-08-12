@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
-import {genPromptJsonT, gptPrompter} from "../core/GptPrompter"
+import {gptGenNodesT} from "../core/GptPrompter"
 import {getCountCO1, getX, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -57,7 +57,7 @@ export const MenuNode: FC = () => {
           <li>
             <a className={menuClassName} onClick={(e)=>{
               dispatch(actions.closeNodeMenu())
-              dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonT(m))))
+              dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))
             }}>Generative Table Fill
             </a>
           </li>

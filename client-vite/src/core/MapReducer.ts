@@ -1,6 +1,6 @@
 import {shortcutColors} from "../component/Colors"
 import {Dir} from "../state/Enums"
-import {gptParser} from "./GptParser"
+import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./GptParser"
 import {transpose} from './Utils'
 import {structNavigate} from './NodeNavigate'
 import {nSaveOptional} from "../state/MapState"
@@ -145,7 +145,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     case 'setNote': Object.assign(getR0(m), { note: payload.note }); break
 
-    case 'gptParser': gptParser(m, payload.gptParsed); break
+    case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
+    case 'gptParseNodesT': gptParseNodesT(m, payload.gptParsed); break
+    case 'gptParseNodeMermaid': gptParseNodeMermaid(m, payload.gptParsed); break
 
     case 'offsetD': getX(m).offsetH += 20; break
     case 'offsetU': getX(m).offsetH -= 20; break

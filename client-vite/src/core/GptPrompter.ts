@@ -22,38 +22,64 @@ export const genPromptJsonT = (m: M) => {
   }))
 }
 
-const responseSchema = {
+const getResponseSchema = (properties: object) => ({
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Generated schema for Root",
   "type": "array",
   "items": {
     "type": "object",
-    "properties": {
-      "keywords": {"type": "array", "readOnly": true},
-      "suggestions": {"type": "array"},
-      "insertParentId": {"type": "string", "readOnly": true},
-    },
-    "required": [
-      "keywords",
-      "suggestions",
-      "insertParentId"
-    ]
+    "properties": properties,
+    "required": Object.keys(properties)
   }
-}
+})
 
-export const gptPrompter = (m: M, promptJson: any) => {
-  const prompt = `
+export const gptGenNodesS = (m: M) => {
+  const promptJson = genPromptJsonS(m)
+  const responseSchema = getResponseSchema({
+    keywords: {type: "array", readOnly: true},
+    suggestions: {type: "array"},
+    insertParentId: {type: "string", readOnly: true}
+  })
+  const prompt = (`
     Disregard any previous context.
     Take the following ${getNodeByPath(m, ['r', 0]).content}: ${getNodeByPath(m, ['r', 0]).note}
     While keeping the following JSON schema, extract information from the ${getNodeByPath(m, ['r', 0]).content} by filling "suggestions" based on "keywords":
     ${JSON.stringify(responseSchema)}
-    ${JSON.stringify(promptJson)}
-  `
-  return {
-    promptId: 'gptGenNodes',
-    promptJson,
-    prompt: prompt.trim(),
-    maxToken: 4000,
-    timestamp: Date.now(),
-  } as GptData
+    ${JSON.stringify(promptJson)}`
+  )
+  return {promptId: 'gptGenNodesS', promptJson, prompt: prompt.trim(), maxToken: 4000, timestamp: Date.now()} as GptData
+}
+
+export const gptGenNodesT = (m: M) => {
+  const promptJson = genPromptJsonT(m)
+  const responseSchema = getResponseSchema({
+    keywords: {type: "array", readOnly: true},
+    suggestions: {type: "array"},
+    insertParentId: {type: "string", readOnly: true}
+  })
+  const prompt = (`
+    Disregard any previous context.
+    Take the following ${getNodeByPath(m, ['r', 0]).content}: ${getNodeByPath(m, ['r', 0]).note}
+    While keeping the following JSON schema, extract information from the ${getNodeByPath(m, ['r', 0]).content} by filling "suggestions" based on "keywords":
+    ${JSON.stringify(responseSchema)}
+    ${JSON.stringify(promptJson)}`
+  )
+  return {promptId: 'gptGenNodesT', promptJson, prompt: prompt.trim(), maxToken: 4000, timestamp: Date.now()} as GptData
+}
+
+export const gptGenNodeMermaid = (m: M) => {
+  const promptJson = genPromptJsonT(m)
+  const responseSchema = getResponseSchema({
+    mermaidString: {type: "string"},
+    insertParentId: {type: "string", readOnly: true}
+  })
+  const prompt = (`
+    Disregard any previous context.
+    Take the following ${getNodeByPath(m, ['r', 0]).content}: ${getNodeByPath(m, ['r', 0]).note}
+    While keeping the following JSON schema, extract information from the ${getNodeByPath(m, ['r', 0]).content} by filling "suggestions" based on "keywords":
+    // TODO write it
+    ${JSON.stringify(responseSchema)}
+    ${JSON.stringify(promptJson)}`
+  )
+  return {promptId: 'gptGenNodeMermaid', promptJson, prompt: prompt.trim(), maxToken: 4000, timestamp: Date.now()} as GptData
 }
