@@ -1,5 +1,5 @@
 import {M, N} from "../state/MapStateTypes"
-import {getXSSCC0, getXSSCR0, m2cbS, getCountSO1, getSIL, getNodeByPath, getXSSCYY, sortPath} from "./MapUtils"
+import {getXSSCC0, getXSSCR0, m2cbS, getCountSO1, getSIL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getNRiD0, getNRi} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
 export const genPromptJsonS = (m: M) => {
@@ -68,17 +68,21 @@ export const gptGenNodesT = (m: M) => {
 }
 
 export const gptGenNodeMermaid = (m: M) => {
-  const promptJson = genPromptJsonT(m)
+  const promptJson = [{
+    description: 'flowchart that describes a 2 factor authentication process for a bank transfer',
+    mermaidString: '',
+    insertParentId: isXR(m) ? getNRi(m, getX(m)).nodeId : getNRiD0(m, getX(m)).nodeId
+  }]
   const responseSchema = getResponseSchema({
+    description: {type: "string", readOnly: true},
     mermaidString: {type: "string"},
     insertParentId: {type: "string", readOnly: true}
   })
   const prompt = (`
     Disregard any previous context.
-    Take the following ${getNodeByPath(m, ['r', 0]).content}: ${getNodeByPath(m, ['r', 0]).note}
-    While keeping the following JSON schema, extract information from the ${getNodeByPath(m, ['r', 0]).content} by filling "suggestions" based on "keywords":
-    // TODO write it
+    The response should match the following JSON schema.
     ${JSON.stringify(responseSchema)}
+    Fill out the field "mermaidString" by generating a diagram in mermaid format based on "description". 
     ${JSON.stringify(promptJson)}`
   )
   return {promptId: 'gptGenNodeMermaid', promptJson, prompt: prompt.trim(), maxToken: 4000, timestamp: Date.now()} as GptData

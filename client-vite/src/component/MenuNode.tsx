@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
-import {gptGenNodesT} from "../core/GptPrompter"
+import {gptGenNodeMermaid, gptGenNodesT} from "../core/GptPrompter"
 import {getCountCO1, getX, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -59,6 +59,15 @@ export const MenuNode: FC = () => {
               dispatch(actions.closeNodeMenu())
               dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))
             }}>Generative Table Fill
+            </a>
+          </li>
+        }
+        { mExists && (isXR(m) || isXS(m)) &&
+          <li>
+            <a className={menuClassName} onClick={(e)=>{
+              dispatch(actions.closeNodeMenu())
+              dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))
+            }}>Generate Mermaid
             </a>
           </li>
         }
