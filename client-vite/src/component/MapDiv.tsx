@@ -4,7 +4,7 @@ import mermaid from "mermaid"
 import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
-import {editable, getCountCO1, getCountRXD0S, getCountSO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
+import {editable, getCountRXD0S, getCountSO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -37,8 +37,11 @@ export const MapDiv: FC = () => {
 
   useEffect(() => {
     mermaid.run({
-      nodes: document.querySelectorAll('.mermaid'),
-    });
+      nodes: document.querySelectorAll('.mermaidNode'),
+      postRenderCallback: () => {
+        dispatch(actions.mapAction({type: 'LOAD', payload: null}))
+      }
+    })
   }, [m])
 
   return (
@@ -50,7 +53,7 @@ export const MapDiv: FC = () => {
             <div
               id={'node'}
               ref={ref => ref && ref.focus()}
-              className={n.contentType === 'mermaid' ? 'mermaid' : ''}
+              className={n.contentType === 'mermaid' ? 'mermaidNode' : ''}
               style={{
                 left: adjust(n.nodeStartX),
                 top: adjust( n.nodeY - n.selfH / 2),

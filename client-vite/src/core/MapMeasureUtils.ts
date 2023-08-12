@@ -22,6 +22,12 @@ export const measureText = (g: G, pn: N, n: N) => {
       const dim = getTextDim(n.content, n.textFontSize)
       n.dimW = dim[0]
       n.dimH = dim[1]
+    } else if (n.contentType === 'mermaid') {
+      const currDiv = document.getElementById(n.nodeId) as HTMLDivElement
+      if (currDiv) {
+        n.dimW = currDiv.offsetWidth
+        n.dimH = currDiv.offsetHeight
+      }
     } else if (n.contentType === 'equation') {
       const dim = getEquationDim(n.content)
       n.dimW = dim[0]

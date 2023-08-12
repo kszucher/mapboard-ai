@@ -64,15 +64,14 @@ export const getTextDim = (innerHTML: string, fontSize: number) => {
 }
 
 export const getEquationDim = (content: string) => {
-  const str = katex.renderToString(getLatexString(content), {throwOnError: false})
   const tmpDiv = document.createElement('div') as HTMLDivElement
   tmpDiv.id = "Test"
   tmpDiv.style.fontFamily = 'Roboto'
   tmpDiv.style.fontSize = 14 + 'px'
-  tmpDiv.innerHTML = str
+  tmpDiv.innerHTML = katex.renderToString(getLatexString(content), {throwOnError: false})
   window.document.body.appendChild(tmpDiv)
   const firstChildNode = tmpDiv.childNodes[0] as HTMLDivElement
-  let dim = [
+  const dim = [
     firstChildNode.offsetWidth,
     firstChildNode.offsetHeight
   ]
