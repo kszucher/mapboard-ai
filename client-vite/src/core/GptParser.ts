@@ -21,11 +21,7 @@ export const gptParseNodesT = (m: M, gptParsed: any) => {
 }
 
 export const gptParseNodeMermaid = (m: M, gptParsed: any) => {
-  console.log(gptParsed.mermaidString)
-  // gptParsed.forEach((el: any) => {
-  //   el.suggestions.forEach((suggestion: string) => {
-  //     const insertParentPath = getNodeById(m, el.insertParentId).path
-  //     insertS(m, [...insertParentPath, 's', getCountSO1(m, insertParentPath)], {content: suggestion})
-  //   })
-  // })
+  const insertParentPath = getNodeById(m, gptParsed[0].insertParentId).path
+  console.log(insertParentPath)
+  insertS(m, [...insertParentPath, 's', getCountSO1(m, insertParentPath)], {content: gptParsed[0].mermaidString, contentType: 'mermaid'})
 }

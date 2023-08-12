@@ -69,9 +69,9 @@ export const gptGenNodesT = (m: M) => {
 
 export const gptGenNodeMermaid = (m: M) => {
   const promptJson = [{
-    description: 'flowchart that describes a 2 factor authentication process for a bank transfer',
+    description: ' flowchart s that describes a 2 factor authentication process for a bank transfer',
     mermaidString: '',
-    insertParentId: isXR(m) ? getNRi(m, getX(m)).nodeId : getNRiD0(m, getX(m)).nodeId
+    insertParentId: isXR(m) ? getNRiD0(m, getX(m)).nodeId : getX(m).nodeId
   }]
   const responseSchema = getResponseSchema({
     description: {type: "string", readOnly: true},

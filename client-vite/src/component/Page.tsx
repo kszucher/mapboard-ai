@@ -16,8 +16,8 @@ export const Page: FC = () => {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
     mermaid.initialize({
-      startOnLoad: false
-      // theme: "forest",
+      startOnLoad: false,
+      theme: "dark",
       // logLevel: 3,
       // flowchart: { curve: "linear" },
       // gantt: { axisFormat: "%m/%d/%Y" },
