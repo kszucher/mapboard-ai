@@ -48,7 +48,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             />
           }
           {
-            n.sBorderColor && !getCountNCO1(m, n) &&
+            n.sBorderColor && getCountNCO1(m, n) === 0 &&
             <path
               d={getArcPath(n, -2, true)}
               stroke={n.sBorderColor}
@@ -59,7 +59,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           }
           {(
               getPathPattern(n.path).endsWith('ds') ||
-              (getPathPattern(n.path).endsWith('ss') && !getCountNCO1(m, n)) ||
+              (getPathPattern(n.path).endsWith('ss') && getCountNCO1(m, n) === 0) ||
               (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) && n.path.at(-2) as number > -1 && n.path.at(-1) === 0
             ) &&
             <path
@@ -95,7 +95,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             <path d={getGridPath(n)} stroke={C.TABLE_GRID} strokeWidth={1} fill={'none'} {...pathCommonProps}/>
           }
           {
-            n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && !getCountNSO1(m, n) && !getCountNCO1(m, n) && n.contentType !== 'image' &&
+            n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && getCountNSO1(m, n) === 0 && getCountNCO1(m, n) === 0 && n.contentType !== 'image' &&
             <Fragment key={`${n.nodeId}_svg_task`}>
               {
                 !isEqual(n.nodeId, editedNodeId) &&
