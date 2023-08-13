@@ -4,7 +4,7 @@ import mermaid from "mermaid"
 import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
-import {editable, getCountNSO1, getCountNCO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS, getCountXRXD0S} from "../core/MapUtils"
+import {editable, getG, getNodeById, isR, isS, isXR, isXS, isXD} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -93,7 +93,6 @@ export const MapDiv: FC = () => {
               onMouseDown={(e) => {
                 e.stopPropagation()
                 dispatch(actions.closeNodeMenu())
-
                 if (e.button === 0) {
                   if (n.linkType === 'internal') {
                     dispatch(api.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
@@ -118,16 +117,8 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  // if (isR(n.path) && getCountXRXD0S(m) > 0 && !getRXD0(m, getRi(n.path)).selected) {
-                  //   dispatch(actions.mapAction({type: 'selectRXD0F', payload: {path: n.path}}))
-                  // } else if (isR(n.path) && !!getRXD0(m, getRi(n.path)).selected && !getRXD1(m, getRi(n.path)).selected && getCountNSO1(m, getRXD1(m, getRi(n.path))) > 0) {
-                  //   dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: n.path}}))
-                  // } else if (!isR(n.path) && getCountNSO1(m, n) > 0) {
-                  //   dispatch(actions.mapAction({type: 'selectF', payload: {path: n.path}}))
-                  // } else {
-                  //   !e.ctrlKey && dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
-                  // }
-                  dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
+                  console.log(n)
+                  n.selected === 0 && n.selection === 's' && !(isR(n.path) && isXD(m)) && dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
                   dispatch(actions.openNodeMenu({x: e.clientX, y: e.clientY}))
                 }
               }}

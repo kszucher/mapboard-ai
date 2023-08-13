@@ -2,7 +2,7 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
 import {gptGenNodeMermaid, gptGenNodesT} from "../core/GptPrompter"
-import {getCountXCO1, getCountXSO1, getCountXSO2, getX, isXR, isXS} from "../core/MapUtils"
+import {getCountNSO1, getCountXCO1, getCountXRXD0S, getCountXSO1, getCountXSO2, getRi, getRXD0, getRXD1, getX, getXP, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 
@@ -13,7 +13,6 @@ const MenuButtonSvg =
   <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
   </svg>
-
 export const MenuNode: FC = () => {
   const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
   const m = useSelector((state:RootState) => mSelector(state))
@@ -22,6 +21,23 @@ export const MenuNode: FC = () => {
   return (
     <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={nodeMenu === null} style={{left: nodeMenu ? nodeMenu.x + 1 : 0, top: nodeMenu ? nodeMenu.y + -20 : 0}}>
       <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
+        { mExists && (isXR(m) || getCountXSO1(m) > 0) &&
+          <li>
+            <a className={menuClassName} onClick={(e)=>{
+              dispatch(actions.closeNodeMenu())
+              if (!isXS(m) && getCountXRXD0S(m) > 0 && !getRXD0(m, getRi(getXP(m))).selected) {
+                dispatch(actions.mapAction({type: 'selectRXD0F', payload: {path: getXP(m)}}))
+              } else if (!isXS(m) && !!getRXD0(m, getRi(getXP(m))).selected && !getRXD1(m, getRi(getXP(m))).selected && getCountNSO1(m, getRXD1(m, getRi(getXP(m)))) > 0) {
+                dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: getXP(m)}}))
+              } else if (!isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f') {
+                dispatch(actions.mapAction({type: 'selectS', payload: {path: getXP(m)}}))
+              } else if  (!isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 's') {
+                dispatch(actions.mapAction({type: 'selectF', payload: {path: getXP(m)}}))
+              }
+            }}>Change Selection
+            </a>
+          </li>
+        }
         <li>
           <button id="doubleDropdownButton" data-dropdown-toggle="insertSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>
             Insert
