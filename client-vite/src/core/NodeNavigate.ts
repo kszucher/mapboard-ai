@@ -1,6 +1,6 @@
 import {Dir} from "../state/Enums"
 import {M, P} from "../state/MapStateTypes"
-import {getCountSO1, getNodeByPath, getSI1, isC} from "./MapUtils"
+import {getCountNSO1, getNodeByPath, getSI1, isC} from "./MapUtils"
 
 export const structNavigate = (m: M, path: P, dir: Dir) => {
   let toPath = [] as P
@@ -37,7 +37,7 @@ export const structNavigate = (m: M, path: P, dir: Dir) => {
       for (let i = 0; i < sequence.length; i++) {
         let currDirection = sequence[i]
         let currRef = getNodeByPath(m, toPath)
-        let currChildCount = getCountSO1(m, currRef.path)
+        let currChildCount = getCountNSO1(m, currRef)
         let pn = getNodeByPath(m, getSI1(currRef.path))
         if (toPath.length === 2 && ['i','u','d'].includes(currDirection) ||
           isC(pn.path) && ['i'].includes(currDirection) ||
@@ -46,7 +46,7 @@ export const structNavigate = (m: M, path: P, dir: Dir) => {
           break sequenceGenerator
         }
         if (currDirection === 'u' && currRef.path.at(-1) === 0 ||
-          currDirection === 'd' && getCountSO1(m, pn.path) === currRef.path.at(-1) as number + 1 ||
+          currDirection === 'd' && getCountNSO1(m, pn) === currRef.path.at(-1) as number + 1 ||
           currDirection === 'ou' && currChildCount === 0 ||
           currDirection === 'od' && currChildCount === 0) {
           break

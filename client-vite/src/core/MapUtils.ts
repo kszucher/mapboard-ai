@@ -99,9 +99,9 @@ export const getRXD0 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 0])
 export const getRXD1 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 1])
 
 // TODO prevent export from the below functions so that XN and N based versions get forced be used
-export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
-export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
-export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
+const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
+const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
+const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
 export const getCountSO2 = (m: M, p: P) => m.filter(n => isSO2(p, n.path)).length
 export const getCountCO1 = (m: M, p: P) => m.filter(n => isCO1(p, n.path)).length
 export const getCountCO2 = (m: M, p: P) => m.filter(n => isCO2(p, n.path)).length
@@ -111,6 +111,8 @@ export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
 export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountSCR = (m: M, p: P) =>  getCountCV(m, [...p, 'c', 0, 0])
 export const getCountSCC = (m: M, p: P) =>  getCountCH(m, [...p, 'c', 0, 0])
+
+export const getCountNSO1 = (m: M, n: N) => getCountSO1(m, n.path)
 
 export const getCountXASD = (m: M) => getCountSD(m, getXSLP(m))
 export const getCountXASU = (m: M) => getCountSU(m, getXSFP(m))

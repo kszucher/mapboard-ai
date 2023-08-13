@@ -1,6 +1,6 @@
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {G, M, N} from "../state/MapStateTypes"
-import {getCountCO2, getCountSCC, getCountSCR, getCountSO1, getCountSO2, getNodeByPath} from "./MapUtils"
+import {getCountCO2, getCountSCC, getCountSCR, getCountNSO1, getCountSO2, getNodeByPath} from "./MapUtils"
 import {createArray} from "./Utils"
 
 export const measureText = (g: G, pn: N, n: N) => {
@@ -99,7 +99,7 @@ export const measureTable = (m: M, g: G, n: N) => {
 }
 
 export const measureFamily = (m: M, g: G, n: N) => {
-  const countSS = getCountSO1(m, n.path)
+  const countSS = getCountNSO1(m, n)
   let sMaxW = 0
   for (let i = 0; i < countSS; i++) {
     const cn = getNodeByPath(m, [...n.path, 's', i]) as N

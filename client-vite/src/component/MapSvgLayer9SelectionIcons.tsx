@@ -2,7 +2,7 @@ import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {getCountCO1, getCountSO1, getNodeByPath, getR0, getRi, getX, getXRi, getXSSCXX, isXR, isXS} from "../core/MapUtils"
+import {getCountCO1, getCountNSO1, getCountXSO1, getNodeByPath, getR0, getRi, getX, getXRi, getXSSCXX, isXR, isXS} from "../core/MapUtils"
 import {adjustIcon} from "../core/Utils";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
@@ -40,12 +40,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
       {/*    dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonS(m))))*/}
       {/*  }}/>*/}
       {/*}*/}
-      {/*{*/}
-      {/*  isXS(m) && xn.selection === 'f' && getCountSO1(m, xn.path) &&*/}
-      {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 1)} y={xn.nodeY - 12} iconName={'TableExport'} onMouseDownGuarded={() => {*/}
-      {/*    dispatch(actions.mapAction({type: 'moveS2T', payload: null}))*/}
-      {/*  }}/>*/}
-      {/*}*/}
+
       {/*{*/}
       {/*  isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&*/}
       {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 1)} y={xn.nodeY - 12} iconName={'ColumnInsertLeft'} onMouseDownGuarded={() => {*/}
@@ -78,9 +73,9 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
       {/*  }}/>*/}
       {/*}*/}
       {
-        isXS(m) && xn.selection === 's' && getCountSO1(m, xn.path) === 0 &&
+        isXS(m) && xn.selection === 's' && getCountXSO1(m) === 0 &&
         getXSSCXX(m).map((n) => (
-            getCountSO1(m, n.path) === 0 &&
+            getCountNSO1(m, n) === 0 &&
             <Fragment key={n.nodeId}>
               <g
                 transform={`translate(${adjustIcon(n.nodeStartX + 10)}, ${adjustIcon(n.nodeY - 12)})`}

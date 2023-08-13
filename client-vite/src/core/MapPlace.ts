@@ -1,5 +1,5 @@
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSO1, getCountSO2, getCountCO2, getRi, getG, getPathDir} from "./MapUtils"
+import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountSO2, getCountCO2, getRi, getG, getPathDir} from "./MapUtils"
 import {G, M, N} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {
@@ -41,7 +41,7 @@ export const mapPlace = (m: M) => {
         }
         n.nodeY = p1.nodeY - p1.familyH / 2 + n.maxH / 2 + sumElapsedY
         n.isTop = i === 0 && p1.isTop ? 1 : 0
-        n.isBottom = i === getCountSO1(m, p1.path) - 1 && p1.isBottom === 1 ? 1 : 0
+        n.isBottom = i === getCountNSO1(m, p1) - 1 && p1.isBottom === 1 ? 1 : 0
         break
       }
       case isC(n.path): {

@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../core/Api"
 import {adjust} from "../core/Utils";
 import {TASK_CIRCLES_GAP} from "../state/Consts"
 import {getColors} from "./Colors"
-import {getClosestStructParent, getCountCO1, getCountSO1, getG, getNodeById, getPathDir, getPathPattern, getTaskRadius, getTaskStartPoint, isD, isR, isS} from "../core/MapUtils"
+import {getClosestStructParent, getCountCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, getTaskRadius, getTaskStartPoint, isD, isR, isS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -95,7 +95,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             <path d={getGridPath(n)} stroke={C.TABLE_GRID} strokeWidth={1} fill={'none'} {...pathCommonProps}/>
           }
           {
-            n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && !getCountSO1(m, n.path) && !getCountCO1(m, n.path) && n.contentType !== 'image' &&
+            n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && !getCountNSO1(m, n) && !getCountCO1(m, n.path) && n.contentType !== 'image' &&
             <Fragment key={`${n.nodeId}_svg_task`}>
               {
                 !isEqual(n.nodeId, editedNodeId) &&
