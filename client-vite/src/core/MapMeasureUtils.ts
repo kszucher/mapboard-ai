@@ -1,6 +1,6 @@
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {G, M, N} from "../state/MapStateTypes"
-import {getCountCO2, getCountSCC, getCountSCR, getCountNSO1, getCountNSO2, getNodeByPath} from "./MapUtils"
+import {getCountNCO2, getCountSCC, getCountSCR, getCountNSO1, getCountNSO2, getNodeByPath} from "./MapUtils"
 import {createArray} from "./Utils"
 
 export const measureText = (g: G, pn: N, n: N) => {
@@ -109,7 +109,7 @@ export const measureFamily = (m: M, g: G, n: N) => {
       sMaxW = currMaxW
     }
   }
-  if (getCountNSO2(m, n) || getCountCO2(m, n.path)) {
+  if (getCountNSO2(m, n) || getCountNCO2(m, n)) {
     n.familyH += (countSS - 1) * n.spacing
   }
   n.familyW = sMaxW + g.sLineDeltaXDefault
