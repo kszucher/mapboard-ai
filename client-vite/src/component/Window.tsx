@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {editable, getCountRXD0S, getCountRXD1S, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getPathDir, getXP, getXRi, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
+import {editable, getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXRXD1S, getCountXSO1, getPathDir, getXP, getXRi, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
 import {isUrl} from "../core/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -93,7 +93,7 @@ export const Window: FC = () => {
     ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && dispatch(actions.mapAction({type: 'selectCCSAME', payload: null}))
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && dispatch(actions.mapAction({type: 'insertCRU', payload: null}))
 
-    ckm === '---' && e.code === 'ArrowRight' && isXR(m) && getCountRXD0S(m, getXRi(m)) > 0 && dispatch(actions.mapAction({type: 'selectSOR', payload: null}))
+    ckm === '---' && e.code === 'ArrowRight' && isXR(m) && getCountXRXD0S(m) > 0 && dispatch(actions.mapAction({type: 'selectSOR', payload: null}))
     ckm === '---' && e.code === 'ArrowRight' && dr && isXS(m) && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
     ckm === '---' && e.code === 'ArrowRight' && dl && isXDS(m) && dispatch(actions.mapAction({type: 'selectXRi', payload: null}))
     ckm === '---' && e.code === 'ArrowRight' && dl && isXS(m) && dispatch(actions.mapAction({type: 'selectSI', payload: null}))
@@ -113,7 +113,7 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowRight' && dr && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCR', payload: null}))
     ckm === '--a' && e.code === 'ArrowRight' && dl && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCL', payload: null}))
 
-    ckm === '---' && e.code === 'ArrowLeft' && isXR(m) && getCountRXD1S(m, getXRi(m)) > 0 && dispatch(actions.mapAction({type: 'selectSOL', payload: null}))
+    ckm === '---' && e.code === 'ArrowLeft' && isXR(m) && getCountXRXD1S(m) > 0 && dispatch(actions.mapAction({type: 'selectSOL', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && dr && isXDS(m) && dispatch(actions.mapAction({type: 'selectXRi', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && dr && isXS(m) && dispatch(actions.mapAction({type: 'selectSI', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && dl && isXS(m) && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
