@@ -77,7 +77,8 @@ export const getXSL = (m: M) => m.findLast(n => n.selected)!
 export const getXSLP = (m: M) => getXSL(m).path
 export const getXSI1  = (m: M) => getSI1(getXP(m))
 export const getXSI2 = (m: M) => getSI2(getXP(m))
-export const getXSS = (m: M) => m.filter(n => isSO1(getXP(m), n.path))
+export const getXSO1 = (m: M) => m.filter(n => isSO1(getXP(m), n.path))
+export const getXSO2 = (m: M) => m.filter(n => isSO2(getXP(m), n.path))
 export const getXCD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
 export const getXCU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
 export const getXCR = (m: M) => incPi(getXP(m), getXP(m).length - 1)

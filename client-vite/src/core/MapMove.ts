@@ -1,10 +1,10 @@
 import {mapDeInit} from "./MapDeInit";
 import {insertTable} from "./MapInsert"
 import {genHash} from "./Utils"
-import {M, P} from "../state/MapStateTypes"
+import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSS, m2cbR} from "./MapUtils"
+import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSO1, m2cbR} from "./MapUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -100,14 +100,13 @@ export const moveCC = (m: M, insertTargetPath: P, insertTargetColIndex: number) 
   m.sort(sortPath)
 }
 
-export const moveS2T = (m: M) => {
-  const insertTargetNodeId = getNodeByPath(m, getXP(m)).nodeId
-  const rowLen = getXSS(m).length
-  selectNodeList(m, getXSS(m).map(n => n.path), 's')
+export const moveS2T = (m: M, insertParentNode: N, sourceNodes: N[]) => {
+  const rowLen = sourceNodes.length
+  selectNodeList(m, sourceNodes.map(n => n.path), 's')
   const cb = m2cbS(m)
   deleteS(m)
-  insertTable(m, [...getNodeById(m, insertTargetNodeId).path, 's', 0], {rowLen, colLen: 1})
-  cb.forEach(n => Object.assign(n, {selected: 0, selection: 's', path: [...getXP(m), 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P}))
+  insertTable(m, [...insertParentNode.path, 's', 0], {rowLen, colLen: 1})
+  cb.forEach(n => Object.assign(n, {selected: 0, selection: 's', path: [...insertParentNode.path, 's', 0, 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P}))
   m.push(...cb)
   m.sort(sortPath)
 }

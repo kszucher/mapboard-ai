@@ -49,7 +49,8 @@ export const MenuNode: FC = () => {
               { mExists && (isXR(m) && getCountXSO2(m) > 0 || isXS(m) && getCountXSO1(m) > 0) &&
                 <li>
                   <a className={menuClassName} onClick={(e)=>{
-                    dispatch(actions.mapAction({type: 'moveS2T', payload: null}))
+                    isXR(m) && dispatch(actions.mapAction({type: 'moveS2TOR', payload: null}))
+                    isXS(m) && dispatch(actions.mapAction({type: 'moveS2TO', payload: null}))
                   }}>Sub Nodes To Table
                   </a>
                 </li>
