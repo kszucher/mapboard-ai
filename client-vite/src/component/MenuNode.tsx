@@ -7,6 +7,12 @@ import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 
 const menuClassName = "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+const menuButtonClassName = "flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+const subMenuClassName = "z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+const MenuButtonSvg =
+  <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
+  </svg>
 
 export const MenuNode: FC = () => {
   const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
@@ -15,39 +21,36 @@ export const MenuNode: FC = () => {
   const xn = mExists && getX(m)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div
-      id="dropdown"
-      className="fixed z-10  bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-      hidden={nodeMenu === null}
-      style={{left: nodeMenu ? nodeMenu.x + 1 : 0, top: nodeMenu ? nodeMenu.y + -20 : 0,}}
-    >
+    <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={nodeMenu === null} style={{left: nodeMenu ? nodeMenu.x + 1 : 0, top: nodeMenu ? nodeMenu.y + -20 : 0}}>
       <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
-        { mExists && xn.content === 'Solution' &&
-          <li>
-            <a className={menuClassName}>
-              Dashboard
-            </a>
-          </li>
-        }
         <li>
-          <button
-            id="doubleDropdownButton"
-            data-dropdown-toggle="insertSubMenu"
-            data-dropdown-placement="right-start"
-            type="button"
-            className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-          >Insert
-            <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
-            </svg>
+          <button id="doubleDropdownButton" data-dropdown-toggle="insertSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>
+            Insert
+            {MenuButtonSvg}
           </button>
-          <div id="insertSubMenu" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+          <div id="insertSubMenu" className={subMenuClassName}>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
               <li>
                 <a className={menuClassName} onClick={(e)=>{
                   isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))
                   isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
                 }}>Node To The Right
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <button id="doubleDropdownButton" data-dropdown-toggle="transformSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>
+            Transform
+            {MenuButtonSvg}
+          </button>
+          <div id="transformSubMenu" className={subMenuClassName}>
+            <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+              <li>
+                <a className={menuClassName} onClick={(e)=>{
+
+                }}>Sub Nodes To Table
                 </a>
               </li>
             </ul>

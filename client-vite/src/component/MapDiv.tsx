@@ -116,15 +116,16 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  if (isR(n.path) && getCountRXD0S(m, getRi(n.path)) > 0 && !getRXD0(m, getRi(n.path)).selected) {
-                    dispatch(actions.mapAction({type: 'selectRXD0F', payload: {path: n.path}}))
-                  } else if (isR(n.path) && !!getRXD0(m, getRi(n.path)).selected && !getRXD1(m, getRi(n.path)).selected && getCountSO1(m, getRXD1(m, getRi(n.path)).path) > 0) {
-                    dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: n.path}}))
-                  } else if (!isR(n.path) && getCountSO1(m, n.path) > 0) {
-                    dispatch(actions.mapAction({type: 'selectF', payload: {path: n.path}}))
-                  } else {
-                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
-                  }
+                  // if (isR(n.path) && getCountRXD0S(m, getRi(n.path)) > 0 && !getRXD0(m, getRi(n.path)).selected) {
+                  //   dispatch(actions.mapAction({type: 'selectRXD0F', payload: {path: n.path}}))
+                  // } else if (isR(n.path) && !!getRXD0(m, getRi(n.path)).selected && !getRXD1(m, getRi(n.path)).selected && getCountSO1(m, getRXD1(m, getRi(n.path)).path) > 0) {
+                  //   dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: n.path}}))
+                  // } else if (!isR(n.path) && getCountSO1(m, n.path) > 0) {
+                  //   dispatch(actions.mapAction({type: 'selectF', payload: {path: n.path}}))
+                  // } else {
+                  //   !e.ctrlKey && dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
+                  // }
+                  dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
                   dispatch(actions.openNodeMenu({x: e.clientX, y: e.clientY}))
                 }
               }}

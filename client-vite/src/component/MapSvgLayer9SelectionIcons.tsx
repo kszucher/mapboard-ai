@@ -3,10 +3,12 @@ import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {getCountCO1, getCountSO1, getNodeByPath, getR0, getRi, getX, getXRi, getXSSCXX, isXR, isXS} from "../core/MapUtils"
+import {adjustIcon} from "../core/Utils";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {PageState} from "../state/Enums"
 import {N} from "../state/MapStateTypes"
+import {MapSvgIcon} from "./MapSvgIcons";
 import {MapSvgIconWrapper} from "./MapSvgIconWrapper"
 import {calcSvgIconOffsetX} from "./MapSvgUtils"
 
@@ -29,19 +31,8 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
           }}/>
         </Fragment>
       }
-      {/*{*/}
-      {/*  isXS(m) && !nodeMenu &&*/}
-      {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 1)} y={xn.nodeY - 12} iconName={'Dots'} onMouseDownGuarded={(e: MouseEvent) => {*/}
-      {/*    // dispatch(actions.openNodeMenu({x: getMapX(e), y: getMapY(e)}))*/}
-      {/*  }}/>*/}
-      {/*}*/}
-      {/*{*/}
-      {/*  ((isXR(m) && getCountSO1(m, ['r', getRi(xn.path), 'd', 0]) === 0) || isXS(m) && getCountSO1(m, xn.path) === 0) && xn.selection === 's' &&*/}
-      {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, getCountCO1(m, xn.path) ? 6 : 1)} y={xn.nodeY - 12} iconName={'CirclePlus'} onMouseDownGuarded={() => {*/}
-      {/*    isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))*/}
-      {/*    isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))*/}
-      {/*  }}/>*/}
-      {/*}*/}
+
+
       {/*{*/}
       {/*  isXD(m) && xn.selection === 'f' && getR0(m).note !== '' &&*/}
       {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 1)} y={rx.nodeY - 12} iconName={'Sparkle'} onMouseDownGuarded={() => {*/}
@@ -91,9 +82,25 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
         getXSSCXX(m).map((n) => (
             getCountSO1(m, n.path) === 0 &&
             <Fragment key={n.nodeId}>
-              <MapSvgIconWrapper x={n.nodeStartX + 10} y={n.nodeY - 12} iconName={'CirclePlus'} onMouseDownGuarded={() => {
-                dispatch(actions.mapAction({type: 'insertSCSO', payload: {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number}}))
-              }}/>
+              <g
+                transform={`translate(${adjustIcon(n.nodeStartX + 10)}, ${adjustIcon(n.nodeY - 12)})`}
+                {...{vectorEffect: 'non-scaling-stroke'}}
+                style={{
+                  transition: 'all 0.3s',
+                  transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
+                  transitionProperty: 'all'
+                }}
+              >
+                <g width="24" height="24" viewBox="0 0 24 24">
+                  <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
+                  <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    dispatch(actions.mapAction({type: 'insertSCSO', payload: {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number}}))
+                  }}
+                  />
+                </g>
+              </g>
             </Fragment>
           )
         )
