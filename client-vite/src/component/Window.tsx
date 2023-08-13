@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {editable, getCountCO1, getCountRXD0S, getCountRXD1S, getCountXASD, getCountXASU, getCountXSO1, getPathDir, getXP, getXRi, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
+import {editable, getCountRXD0S, getCountRXD1S, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getPathDir, getXP, getXRi, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
 import {isUrl} from "../core/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -54,7 +54,7 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Delete' && isXR(m) && getXRi(m) > 0 && dispatch(actions.mapAction({type: 'deleteR', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXACR(m) && dispatch(actions.mapAction({type: 'deleteCR', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXACC(m) && dispatch(actions.mapAction({type: 'deleteCC', payload: null}))
-    ckm === '---' && e.code === 'Space' && isXS(m) && getCountCO1(m, getXP(m)) > 0 && dispatch(actions.mapAction({type: 'selectCFF', payload: null}))
+    ckm === '---' && e.code === 'Space' && isXS(m) && getCountXCO1(m) > 0 && dispatch(actions.mapAction({type: 'selectCFF', payload: null}))
     ckm === '---' && e.code === 'Space' && isXC(m) && getCountXSO1(m) > 0 && dispatch(actions.mapAction({type: 'selectSF', payload: null}))
     ckm === '---' && e.code === 'Space' && isXC(m) && !(getCountXSO1(m) > 0) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
     ckm === '---' && e.code === 'Space' && isXACR(m) && dispatch(actions.mapAction({type: 'selectCFfirstCol', payload: null}))

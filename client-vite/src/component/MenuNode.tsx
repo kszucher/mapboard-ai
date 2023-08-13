@@ -2,7 +2,7 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
 import {gptGenNodeMermaid, gptGenNodesT} from "../core/GptPrompter"
-import {getCountCO1, getCountXSO1, getCountXSO2, getX, isXR, isXS} from "../core/MapUtils"
+import {getCountXCO1, getCountXSO1, getCountXSO2, getX, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 
@@ -57,7 +57,7 @@ export const MenuNode: FC = () => {
             </ul>
           </div>
         </li>
-        { mExists && getCountCO1(m, getX(m).path) > 0 &&
+        { mExists && getCountXCO1(m) > 0 &&
           <li>
             <a className={menuClassName} onClick={(e)=>{
               dispatch(actions.closeNodeMenu())

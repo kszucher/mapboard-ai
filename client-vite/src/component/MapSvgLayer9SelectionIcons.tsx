@@ -2,7 +2,7 @@ import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {getCountCO1, getCountNSO1, getCountXSO1, getNodeByPath, getR0, getRi, getX, getXRi, getXSSCXX, isXR, isXS} from "../core/MapUtils"
+import {getCountNSO1, getCountXSO1, getNodeByPath, getR0, getRi, getX, getXRi, getXSSCXX, isXR, isXS} from "../core/MapUtils"
 import {adjustIcon} from "../core/Utils";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"

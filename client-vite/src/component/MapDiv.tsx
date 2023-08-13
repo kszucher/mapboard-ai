@@ -4,7 +4,7 @@ import mermaid from "mermaid"
 import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
-import {editable, getCountNSO1, getCountRXD0S, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
+import {editable, getCountNSO1, getCountRXD0S, getCountNCO1, getG, getNodeById, getRi, getRXD0, getRXD1, isR, isS, isXR, isXS} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -76,7 +76,7 @@ export const MapDiv: FC = () => {
                 zIndex: n.path.length,
                 border: 0,
                 margin: 0,
-                // pointerEvents: n.selected && getCountCO1(m, n.path) > 0 ? 'none' : 'auto'
+                // pointerEvents: n.selected && getCountNCO1(m, n) > 0 ? 'none' : 'auto'
               }}
               spellCheck={false}
               dangerouslySetInnerHTML={n.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(n) }}

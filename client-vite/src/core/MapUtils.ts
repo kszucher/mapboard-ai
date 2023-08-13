@@ -98,33 +98,34 @@ export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 export const getRXD0 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 0])
 export const getRXD1 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 1])
 
-// TODO prevent export from the below functions so that XN and N based versions get forced be used
-const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
-const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
-const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
-const getCountSO2 = (m: M, p: P) => m.filter(n => isSO2(p, n.path)).length
-export const getCountCO1 = (m: M, p: P) => m.filter(n => isCO1(p, n.path)).length
-export const getCountCO2 = (m: M, p: P) => m.filter(n => isCO2(p, n.path)).length
-export const getCountRXD0S = (m: M, ri: number) => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === 1 && isS(n.path)).length
-export const getCountRXD1S  = (m: M, ri: number) => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length
-export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
-export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
-export const getCountSCR = (m: M, p: P) =>  getCountCV(m, [...p, 'c', 0, 0])
-export const getCountSCC = (m: M, p: P) =>  getCountCH(m, [...p, 'c', 0, 0])
+const getCountSD = (m: M, p: P): number => m.filter(n => isSD(p, n.path)).length
+const getCountSU = (m: M, p: P): number => m.filter(n => isSU(p, n.path)).length
+const getCountSO1 = (m: M, p: P): number => m.filter(n => isSO1(p, n.path)).length
+const getCountSO2 = (m: M, p: P): number => m.filter(n => isSO2(p, n.path)).length
+const getCountCO1 = (m: M, p: P): number => m.filter(n => isCO1(p, n.path)).length
+export const getCountCO2 = (m: M, p: P): number => m.filter(n => isCO2(p, n.path)).length
+export const getCountRXD0S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === 1 && isS(n.path)).length
+export const getCountRXD1S  = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length
+export const getCountCV = (m: M, p: P): number => m.filter(n => isCH(p, n.path)).length
+export const getCountCH = (m: M, p: P): number => m.filter(n => isCV(p, n.path)).length
+export const getCountSCR = (m: M, p: P): number => getCountCV(m, [...p, 'c', 0, 0])
+export const getCountSCC = (m: M, p: P): number => getCountCH(m, [...p, 'c', 0, 0])
 
-export const getCountNSO1 = (m: M, n: N) => getCountSO1(m, n.path)
-export const getCountNSO2 = (m: M, n: N) => getCountSO2(m, n.path)
+export const getCountNSO1 = (m: M, n: N): number => getCountSO1(m, n.path)
+export const getCountNSO2 = (m: M, n: N): number => getCountSO2(m, n.path)
+export const getCountNCO1 = (m: M, n: N): number => getCountCO1(m, n.path)
 
-export const getCountXASD = (m: M) => getCountSD(m, getXSLP(m))
-export const getCountXASU = (m: M) => getCountSU(m, getXSFP(m))
-export const getCountXASU1O1 = (m: M) => getCountSO1(m, getXASU1(m))
-export const getCountXSO1 = (m: M) => getCountSO1(m, getXP(m))
-export const getCountXSO2 = (m: M) => getCountSO2(m, getXP(m))
-export const getCountXSI1U = (m: M) => getCountSU(m, getSI1(getXP(m)))
-export const getCountXCU = (m: M) => getXP(m).at(-2) as number
-export const getCountXCL = (m: M) => getXP(m).at(-1) as number
-export const getCountXCH = (m: M) => getCountCH(m, getXP(m))
-export const getCountXCV = (m: M) => getCountCV(m, getXP(m))
+export const getCountXASD = (m: M): number => getCountSD(m, getXSLP(m))
+export const getCountXASU = (m: M): number => getCountSU(m, getXSFP(m))
+export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXASU1(m))
+export const getCountXSO1 = (m: M): number => getCountSO1(m, getXP(m))
+export const getCountXSO2 = (m: M): number => getCountSO2(m, getXP(m))
+export const getCountXSI1U = (m: M): number => getCountSU(m, getSI1(getXP(m)))
+export const getCountXCO1 = (m: M): number => getCountCO1(m, getXP(m))
+export const getCountXCU = (m: M): number => getXP(m).at(-2) as number
+export const getCountXCL = (m: M): number => getXP(m).at(-1) as number
+export const getCountXCH = (m: M): number => getCountCH(m, getXP(m))
+export const getCountXCV = (m: M): number => getCountCV(m, getXP(m))
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
 export const getPropXAF = (m: M, prop: keyof N) => isArrayOfEqualValues(getXAF(m).map(n => n[prop])) ? getX(m)[prop] : null

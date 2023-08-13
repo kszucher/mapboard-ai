@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../core/Api"
 import {adjust} from "../core/Utils";
 import {TASK_CIRCLES_GAP} from "../state/Consts"
 import {getColors} from "./Colors"
-import {getClosestStructParent, getCountCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, getTaskRadius, getTaskStartPoint, isD, isR, isS} from "../core/MapUtils"
+import {getClosestStructParent, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, getTaskRadius, getTaskStartPoint, isD, isR, isS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -48,7 +48,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             />
           }
           {
-            n.sBorderColor && !getCountCO1(m, n.path) &&
+            n.sBorderColor && !getCountNCO1(m, n) &&
             <path
               d={getArcPath(n, -2, true)}
               stroke={n.sBorderColor}
@@ -59,7 +59,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           }
           {(
               getPathPattern(n.path).endsWith('ds') ||
-              (getPathPattern(n.path).endsWith('ss') && !getCountCO1(m, n.path)) ||
+              (getPathPattern(n.path).endsWith('ss') && !getCountNCO1(m, n)) ||
               (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) && n.path.at(-2) as number > -1 && n.path.at(-1) === 0
             ) &&
             <path
@@ -87,15 +87,15 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             </path>
           }
           {
-            isS(n.path) && getCountCO1(m, n.path) &&
+            isS(n.path) && getCountNCO1(m, n) &&
             <path d={getArcPath(n, 0, false)} stroke={n.sBorderColor ? n.sBorderColor : C.TABLE_FRAME_COLOR} strokeWidth={n.sBorderWidth} fill={'none'} {...pathCommonProps}/>
           }
           {
-            isS(n.path) && getCountCO1(m, n.path) &&
+            isS(n.path) && getCountNCO1(m, n) &&
             <path d={getGridPath(n)} stroke={C.TABLE_GRID} strokeWidth={1} fill={'none'} {...pathCommonProps}/>
           }
           {
-            n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && !getCountNSO1(m, n) && !getCountCO1(m, n.path) && n.contentType !== 'image' &&
+            n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && !getCountNSO1(m, n) && !getCountNCO1(m, n) && n.contentType !== 'image' &&
             <Fragment key={`${n.nodeId}_svg_task`}>
               {
                 !isEqual(n.nodeId, editedNodeId) &&
