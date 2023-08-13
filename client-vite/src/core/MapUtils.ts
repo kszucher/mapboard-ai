@@ -98,6 +98,7 @@ export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 export const getRXD0 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 0])
 export const getRXD1 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 1])
 
+// TODO prevent export from the below functions so that XN and N based versions get forced be used
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
 export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
@@ -110,10 +111,12 @@ export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
 export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountSCR = (m: M, p: P) =>  getCountCV(m, [...p, 'c', 0, 0])
 export const getCountSCC = (m: M, p: P) =>  getCountCH(m, [...p, 'c', 0, 0])
+
 export const getCountXASD = (m: M) => getCountSD(m, getXSLP(m))
 export const getCountXASU = (m: M) => getCountSU(m, getXSFP(m))
 export const getCountXASU1O1 = (m: M) => getCountSO1(m, getXASU1(m))
 export const getCountXSO1 = (m: M) => getCountSO1(m, getXP(m))
+export const getCountXSO2 = (m: M) => getCountSO2(m, getXP(m))
 export const getCountXSI1U = (m: M) => getCountSU(m, getSI1(getXP(m)))
 export const getCountXCU = (m: M) => getXP(m).at(-2) as number
 export const getCountXCL = (m: M) => getXP(m).at(-1) as number

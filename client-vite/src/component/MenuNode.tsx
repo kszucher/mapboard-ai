@@ -2,7 +2,7 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
 import {gptGenNodeMermaid, gptGenNodesT} from "../core/GptPrompter"
-import {getCountCO1, getX, isXR, isXS} from "../core/MapUtils"
+import {getCountCO1, getCountXSO1, getCountXSO2, getX, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 
@@ -18,7 +18,6 @@ export const MenuNode: FC = () => {
   const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
-  const xn = mExists && getX(m)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={nodeMenu === null} style={{left: nodeMenu ? nodeMenu.x + 1 : 0, top: nodeMenu ? nodeMenu.y + -20 : 0}}>
@@ -47,16 +46,18 @@ export const MenuNode: FC = () => {
           </button>
           <div id="transformSubMenu" className={subMenuClassName}>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-              <li>
-                <a className={menuClassName} onClick={(e)=>{
-
-                }}>Sub Nodes To Table
-                </a>
-              </li>
+              { mExists && (isXR(m) && getCountXSO2(m) > 0 || isXS(m) && getCountXSO1(m) > 0) &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    dispatch(actions.mapAction({type: 'moveS2T', payload: null}))
+                  }}>Sub Nodes To Table
+                  </a>
+                </li>
+              }
             </ul>
           </div>
         </li>
-        { mExists && getCountCO1(m, xn.path) > 0 &&
+        { mExists && getCountCO1(m, getX(m).path) > 0 &&
           <li>
             <a className={menuClassName} onClick={(e)=>{
               dispatch(actions.closeNodeMenu())

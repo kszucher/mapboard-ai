@@ -64,6 +64,7 @@ export const Map: FC = () => {
       id={'mainMapDiv'}
       onMouseDown={(e) => {
         e.preventDefault()
+        dispatch(actions.closeNodeMenu())
       }}
       onMouseMove={(e) => {
         e.preventDefault()
