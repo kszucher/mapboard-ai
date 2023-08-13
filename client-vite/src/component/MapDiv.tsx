@@ -4,7 +4,7 @@ import mermaid from "mermaid"
 import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
-import {editable, getG, getNodeById, isR, isS, isXR, isXS, isXD} from "../core/MapUtils"
+import {editable, getG, getNodeById, isR, isS, isXR, isXS, isXD, getRi, getXRi} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -117,8 +117,8 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  console.log(n)
-                  n.selected === 0 && n.selection === 's' && !(isR(n.path) && isXD(m)) && dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
+                  n.selected === 0 && n.selection === 's' && !(isR(n.path) && isXD(m) && getRi(n.path) === getXRi(m)) &&
+                  dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
                   dispatch(actions.openNodeMenu({x: e.clientX, y: e.clientY}))
                 }
               }}
