@@ -1,5 +1,5 @@
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountSO2, getCountCO2, getRi, getG, getPathDir} from "./MapUtils"
+import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountNSO2, getCountCO2, getRi, getG, getPathDir} from "./MapUtils"
 import {G, M, N} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {
@@ -31,7 +31,7 @@ export const mapPlace = (m: M) => {
         const p1 = getNodeByPath(m, getSI1(n.path)) as N
         const i = n.path.at(-1) as number
         const sumUpperSiblingMaxH = m.filter(nt => isSU(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
-        const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * + Boolean(getCountSO2(m, p1.path) || getCountCO2(m, p1.path))
+        const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * + Boolean(getCountNSO2(m, p1) || getCountCO2(m, p1.path))
         if (getPathPattern(n.path).endsWith('ds') || getPathPattern(n.path).endsWith('ss')) {
           n.nodeStartX = getPathDir(n.path) === 1 ? p1.nodeEndX + g.sLineDeltaXDefault : p1.nodeStartX - g.sLineDeltaXDefault - n.selfW
           n.nodeEndX = getPathDir(n.path) === 1 ? p1.nodeEndX + g.sLineDeltaXDefault + n.selfW : p1.nodeStartX - g.sLineDeltaXDefault

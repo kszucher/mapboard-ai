@@ -102,7 +102,7 @@ export const getRXD1 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 1])
 const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
 const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
-export const getCountSO2 = (m: M, p: P) => m.filter(n => isSO2(p, n.path)).length
+const getCountSO2 = (m: M, p: P) => m.filter(n => isSO2(p, n.path)).length
 export const getCountCO1 = (m: M, p: P) => m.filter(n => isCO1(p, n.path)).length
 export const getCountCO2 = (m: M, p: P) => m.filter(n => isCO2(p, n.path)).length
 export const getCountRXD0S = (m: M, ri: number) => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === 1 && isS(n.path)).length
@@ -113,6 +113,7 @@ export const getCountSCR = (m: M, p: P) =>  getCountCV(m, [...p, 'c', 0, 0])
 export const getCountSCC = (m: M, p: P) =>  getCountCH(m, [...p, 'c', 0, 0])
 
 export const getCountNSO1 = (m: M, n: N) => getCountSO1(m, n.path)
+export const getCountNSO2 = (m: M, n: N) => getCountSO2(m, n.path)
 
 export const getCountXASD = (m: M) => getCountSD(m, getXSLP(m))
 export const getCountXASU = (m: M) => getCountSU(m, getXSFP(m))
