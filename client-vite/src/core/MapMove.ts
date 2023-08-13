@@ -100,9 +100,9 @@ export const moveCC = (m: M, insertTargetPath: P, insertTargetColIndex: number) 
   m.sort(sortPath)
 }
 
-export const moveS2T = (m: M, insertParentNode: N, sourceNodes: N[]) => {
-  const rowLen = sourceNodes.length
-  selectNodeList(m, sourceNodes.map(n => n.path), 's')
+export const moveS2T = (m: M, insertParentNode: N, moveNodes: N[]) => {
+  const rowLen = moveNodes.length
+  selectNodeList(m, moveNodes.map(n => n.path), 's')
   const cb = m2cbS(m)
   deleteS(m)
   insertTable(m, [...insertParentNode.path, 's', 0], {rowLen, colLen: 1})
