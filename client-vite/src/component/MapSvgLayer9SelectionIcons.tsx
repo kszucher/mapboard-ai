@@ -49,34 +49,35 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
       {/*    dispatch(api.endpoints.getGptSuggestions.initiate(gptPrompter(m, genPromptJsonT(m))))*/}
       {/*  }}/>*/}
       {/*}*/}
-      {
-        isXS(m) && xn.selection === 's' && getCountXSO1(m) === 0 &&
-        getXSSCXX(m).map((n) => (
-            getCountNSO1(m, n) === 0 &&
-            <Fragment key={n.nodeId}>
-              <g
-                transform={`translate(${adjustIcon(n.nodeStartX + 10)}, ${adjustIcon(n.nodeY - 12)})`}
-                {...{vectorEffect: 'non-scaling-stroke'}}
-                style={{
-                  transition: 'all 0.3s',
-                  transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-                  transitionProperty: 'all'
-                }}
-              >
-                <g width="24" height="24" viewBox="0 0 24 24">
-                  <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
-                  <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    dispatch(actions.mapAction({type: 'insertSCSO', payload: {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number}}))
-                  }}
-                  />
-                </g>
-              </g>
-            </Fragment>
-          )
-        )
-      }
+
+      {/*{*/}
+      {/*  isXS(m) && xn.selection === 's' && getCountXSO1(m) === 0 &&*/}
+      {/*  getXSSCXX(m).map((n) => (*/}
+      {/*      getCountNSO1(m, n) === 0 &&*/}
+      {/*      <Fragment key={n.nodeId}>*/}
+      {/*        <g*/}
+      {/*          transform={`translate(${adjustIcon(n.nodeStartX + 10)}, ${adjustIcon(n.nodeY - 12)})`}*/}
+      {/*          {...{vectorEffect: 'non-scaling-stroke'}}*/}
+      {/*          style={{*/}
+      {/*            transition: 'all 0.3s',*/}
+      {/*            transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',*/}
+      {/*            transitionProperty: 'all'*/}
+      {/*          }}*/}
+      {/*        >*/}
+      {/*          <g width="24" height="24" viewBox="0 0 24 24">*/}
+      {/*            <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>*/}
+      {/*            <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {*/}
+      {/*              e.preventDefault()*/}
+      {/*              e.stopPropagation()*/}
+      {/*              dispatch(actions.mapAction({type: 'insertSCSO', payload: {rowIndex: n.path.at(-2) as number, colIndex: n.path.at(-1) as number}}))*/}
+      {/*            }}*/}
+      {/*            />*/}
+      {/*          </g>*/}
+      {/*        </g>*/}
+      {/*      </Fragment>*/}
+      {/*    )*/}
+      {/*  )*/}
+      {/*}*/}
     </g>
   )
 }
