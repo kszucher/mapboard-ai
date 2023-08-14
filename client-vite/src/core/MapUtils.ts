@@ -16,6 +16,8 @@ export const getNodeById = (m: M, nodeId: string) => m.find(n => n.nodeId === no
 
 export const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 export const getPathDir = (p: P) => p[3] ? -1 : 1
+export const isDirR = (m: M) => getPathDir(getXP(m)) === 1
+export const isDirL = (m: M) => getPathDir(getXP(m)) === -1
 
 export const getRi = (p: P): number => p.at(1) as number
 export const getRiL = (m: M): number => m.findLast(n => n.path.length === 2)!.path.at(1) as number
