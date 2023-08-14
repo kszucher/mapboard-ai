@@ -20,10 +20,10 @@ export const ContextMenu: FC = () => {
   return (
     <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={nodeMenu === null} style={{left: nodeMenu ? nodeMenu.x + 1 : 0, top: nodeMenu ? nodeMenu.y + -20 : 0}}>
       <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
-        { mExists && !isXS(m) && getCountXRXD0S(m) > 0 && !getRXD0(m, getRi(getXP(m))).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectRXD0F', payload: {path: getXP(m)}}))}}>Select Node Family Right</a></li> }
-        { mExists && !isXS(m) && !!getRXD0(m, getRi(getXP(m))).selected && !getRXD1(m, getRi(getXP(m))).selected && getCountNSO1(m, getRXD1(m, getRi(getXP(m)))) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: getXP(m)}}))}}>Select Node Family Left</a></li> }
+        { mExists && !isXS(m) && getCountXRXD0S(m) > 0 && !getRXD0(m, getRi(getXP(m))).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectRXD0F', payload: {path: getXP(m)}}))}}>Select Node Branch Right</a></li> }
+        { mExists && !isXS(m) && !!getRXD0(m, getRi(getXP(m))).selected && !getRXD1(m, getRi(getXP(m))).selected && getCountNSO1(m, getRXD1(m, getRi(getXP(m)))) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: getXP(m)}}))}}>Select Node Branch Left</a></li> }
         { mExists && !isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectS', payload: {path: getXP(m)}}))}}>Select Node</a></li> }
-        { mExists && !isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getXP(m)}}))}}>Select Node Family</a></li> }
+        { mExists && !isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getXP(m)}}))}}>Select Node Branch</a></li> }
         <li>
           <button id="doubleDropdownButton" data-dropdown-toggle="insertSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Insert{MenuButtonSvg}</button>
           <div id="insertSubMenu" className={subMenuClassName}>
