@@ -12,7 +12,7 @@ const menuButtonClassName = "flex items-center justify-between w-full px-4 py-2 
 const subMenuClassName = "z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
 const MenuButtonSvg = <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/></svg>
 
-export const MenuNode: FC = () => {
+export const ContextMenu: FC = () => {
   const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
