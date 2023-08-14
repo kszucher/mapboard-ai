@@ -41,6 +41,14 @@ export const ContextMenu: FC = () => {
           </div>
         </li>
         <li>
+          <button id="doubleDropdownButton" data-dropdown-toggle="editSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Edit{MenuButtonSvg}</button>
+          <div id="editSubMenu" className={subMenuClassName}>
+            <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+
+            </ul>
+          </div>
+        </li>
+        <li>
           <button id="doubleDropdownButton" data-dropdown-toggle="moveSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Move{MenuButtonSvg}</button>
           <div id="moveSubMenu" className={subMenuClassName}>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
@@ -56,15 +64,15 @@ export const ContextMenu: FC = () => {
           </div>
         </li>
         <li>
-          <button id="doubleDropdownButton" data-dropdown-toggle="llmSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>LLM{MenuButtonSvg}</button>
-          <div id="llmSubMenu" className={subMenuClassName}>
+          <button id="doubleDropdownButton" data-dropdown-toggle="generateSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Generate{MenuButtonSvg}</button>
+          <div id="generateSubMenu" className={subMenuClassName}>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
               { mExists && getCountXCO1(m) > 0 &&
                 <li>
                   <a className={menuClassName} onClick={()=>{
                     dispatch(actions.closeNodeMenu())
                     dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))
-                  }}>Fill Table
+                  }}>Table Fill
                   </a>
                 </li>
               }
