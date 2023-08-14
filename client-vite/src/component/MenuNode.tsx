@@ -34,7 +34,7 @@ export const MenuNode: FC = () => {
               } else if  (!isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 's') {
                 dispatch(actions.mapAction({type: 'selectF', payload: {path: getXP(m)}}))
               }
-            }}>Change Selection
+            }}>Selection Change
             </a>
           </li>
         }
@@ -52,15 +52,51 @@ export const MenuNode: FC = () => {
                 }}>Node To The Right
                 </a>
               </li>
+              { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))
+                  }}>Insert Row Top
+                  </a>
+                </li>
+              }
+              { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    dispatch(actions.mapAction({type: 'insertSCRD', payload: null}))
+                  }}>Insert Row Bottom
+                  </a>
+                </li>
+              }
+              { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    dispatch(actions.mapAction({type: 'insertSCCL', payload: null}))
+                  }}>Insert Column Left
+                  </a>
+                </li>
+              }
+              { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    dispatch(actions.mapAction({type: 'insertSCCR', payload: null}))
+                  }}>Insert Column Right
+                  </a>
+                </li>
+              }
+
+
+
+
             </ul>
           </div>
         </li>
         <li>
-          <button id="doubleDropdownButton" data-dropdown-toggle="transformSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>
+          <button id="doubleDropdownButton" data-dropdown-toggle="convertSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>
             Convert
             {MenuButtonSvg}
           </button>
-          <div id="transformSubMenu" className={subMenuClassName}>
+          <div id="convertSubMenu" className={subMenuClassName}>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
               { mExists && (isXR(m) && getCountXSO2(m) > 0 || isXS(m) && getCountXSO1(m) > 0) &&
                 <li>
@@ -74,24 +110,34 @@ export const MenuNode: FC = () => {
             </ul>
           </div>
         </li>
-        { mExists && getCountXCO1(m) > 0 &&
-          <li>
-            <a className={menuClassName} onClick={(e)=>{
-              dispatch(actions.closeNodeMenu())
-              dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))
-            }}>Generative Table Fill
-            </a>
-          </li>
-        }
-        { mExists && (isXR(m) || isXS(m)) &&
-          <li>
-            <a className={menuClassName} onClick={(e)=>{
-              dispatch(actions.closeNodeMenu())
-              dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))
-            }}>Generate Mermaid
-            </a>
-          </li>
-        }
+        <li>
+          <button id="doubleDropdownButton" data-dropdown-toggle="llmSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>
+            LLM
+            {MenuButtonSvg}
+          </button>
+          <div id="llmSubMenu" className={subMenuClassName}>
+            <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+              { mExists && getCountXCO1(m) > 0 &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    dispatch(actions.closeNodeMenu())
+                    dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))
+                  }}>Fill Table
+                  </a>
+                </li>
+              }
+              { mExists && (isXR(m) || isXS(m)) && getCountXCO1(m) === 0 && getX(m).contentType === 'text' &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    dispatch(actions.closeNodeMenu())
+                    dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))
+                  }}>Generate Mermaid
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+        </li>
       </ul>
     </div>
   )

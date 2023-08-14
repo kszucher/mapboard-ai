@@ -41,30 +41,7 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
       {/*  }}/>*/}
       {/*}*/}
 
-      {/*{*/}
-      {/*  isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&*/}
-      {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 1)} y={xn.nodeY - 12} iconName={'ColumnInsertLeft'} onMouseDownGuarded={() => {*/}
-      {/*    dispatch(actions.mapAction({type: 'insertSCCL', payload: null}))*/}
-      {/*  }}/>*/}
-      {/*}*/}
-      {/*{*/}
-      {/*  isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&*/}
-      {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 2)} y={xn.nodeY - 12} iconName={'ColumnInsertRight'} onMouseDownGuarded={() => {*/}
-      {/*    dispatch(actions.mapAction({type: 'insertSCCR', payload: null}))*/}
-      {/*  }}/>*/}
-      {/*}*/}
-      {/*{*/}
-      {/*  isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&*/}
-      {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 3)} y={xn.nodeY - 12} iconName={'RowInsertTop'} onMouseDownGuarded={() => {*/}
-      {/*    dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))*/}
-      {/*  }}/>*/}
-      {/*}*/}
-      {/*{*/}
-      {/*  isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&*/}
-      {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 4)} y={xn.nodeY - 12} iconName={'RowInsertBottom'} onMouseDownGuarded={() => {*/}
-      {/*    dispatch(actions.mapAction({type: 'insertSCRD', payload: null}))*/}
-      {/*  }}/>*/}
-      {/*}*/}
+
       {/*{*/}
       {/*  isXS(m) && xn.selection === 's' && getCountCO1(m, xn.path) &&*/}
       {/*  <MapSvgIconWrapper x={calcSvgIconOffsetX(xn, 5)} y={xn.nodeY - 12} iconName={'TablePlus'} onMouseDownGuarded={() => {*/}
