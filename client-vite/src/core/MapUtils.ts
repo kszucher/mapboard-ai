@@ -22,6 +22,7 @@ export const getRiL = (m: M): number => m.findLast(n => n.path.length === 2)!.pa
 export const getXRi = (m: M): number  => getRi(getXP(m))
 export const getNRi = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getNRiD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
+export const getXRiD0 = (m: M) => getNRiD0(m, getX(m))
 
 export const isG = (p: P) => getPathPattern(p).endsWith('g')
 export const isR = (p: P) => getPathPattern(p).endsWith('r')

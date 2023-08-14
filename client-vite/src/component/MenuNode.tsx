@@ -57,7 +57,7 @@ export const MenuNode: FC = () => {
         </li>
         <li>
           <button id="doubleDropdownButton" data-dropdown-toggle="transformSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>
-            Transform
+            Convert
             {MenuButtonSvg}
           </button>
           <div id="transformSubMenu" className={subMenuClassName}>
