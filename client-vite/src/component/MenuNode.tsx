@@ -45,18 +45,36 @@ export const MenuNode: FC = () => {
           </button>
           <div id="insertSubMenu" className={subMenuClassName}>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-              <li>
-                <a className={menuClassName} onClick={(e)=>{
-                  isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))
-                  isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
-                }}>Node To The Right
-                </a>
-              </li>
+              { mExists && isXS(m) &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    dispatch(actions.mapAction({type: 'insertSU', payload: null}))
+                  }}>Node Above
+                  </a>
+                </li>
+              }
+              { mExists && isXS(m) &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))
+                    isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
+                  }}>Node Out
+                  </a>
+                </li>
+              }
+              { mExists && isXS(m) &&
+                <li>
+                  <a className={menuClassName} onClick={(e)=>{
+                    dispatch(actions.mapAction({type: 'insertSD', payload: null}))
+                  }}>Node Below
+                  </a>
+                </li>
+              }
               { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 &&
                 <li>
                   <a className={menuClassName} onClick={(e)=>{
                     dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))
-                  }}>Insert Row Top
+                  }}>Table Row Above
                   </a>
                 </li>
               }
@@ -64,7 +82,7 @@ export const MenuNode: FC = () => {
                 <li>
                   <a className={menuClassName} onClick={(e)=>{
                     dispatch(actions.mapAction({type: 'insertSCRD', payload: null}))
-                  }}>Insert Row Bottom
+                  }}>Table Row Below
                   </a>
                 </li>
               }
@@ -72,7 +90,7 @@ export const MenuNode: FC = () => {
                 <li>
                   <a className={menuClassName} onClick={(e)=>{
                     dispatch(actions.mapAction({type: 'insertSCCL', payload: null}))
-                  }}>Insert Column Left
+                  }}>Table Column Left
                   </a>
                 </li>
               }
@@ -80,14 +98,10 @@ export const MenuNode: FC = () => {
                 <li>
                   <a className={menuClassName} onClick={(e)=>{
                     dispatch(actions.mapAction({type: 'insertSCCR', payload: null}))
-                  }}>Insert Column Right
+                  }}>Table Column Right
                   </a>
                 </li>
               }
-
-
-
-
             </ul>
           </div>
         </li>
