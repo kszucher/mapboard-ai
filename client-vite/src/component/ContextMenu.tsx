@@ -37,7 +37,8 @@ export const ContextMenu: FC = () => {
           <div id="insertSubMenu" className={subMenuClassName}>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
               { mExists && isXS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSU', payload: null}))}}>Node Above</a></li> }
-              { mExists && (isXR(m) || isXS(m))  && <li><a className={menuClassName} onClick={()=>{isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null})); isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))}}>Node Out</a></li> }
+              { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSOR', payload: null}))}}>Node Out</a></li> }
+              { mExists && isXS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSO', payload: null}))}}>Node Out</a></li> }
               { mExists && isXS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSD', payload: null}))}}>Node Below</a></li> }
               { mExists && (isXR(m) || isXS(m))  && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}}>Table Out</a></li> }
               { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))}}>Table Row Above</a></li> }
@@ -55,7 +56,8 @@ export const ContextMenu: FC = () => {
               { mExists && isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveSD', payload: null}))}}>Node Down</a></li> }
               { mExists && isXS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveSO', payload: null}))}}>Node Out</a></li> }
               { mExists && isXS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveSI', payload: null}))}}>Node In</a></li> }
-              { mExists && (isXR(m) && getCountXSO2(m) > 0 || isXS(m) && getCountXSO1(m) > 0) && <li><a className={menuClassName} onClick={()=>{isXR(m) && dispatch(actions.mapAction({type: 'moveS2TOR', payload: null})); isXS(m) && dispatch(actions.mapAction({type: 'moveS2TO', payload: null}))}}>Sub Nodes To Table</a></li> }
+              { mExists && (isXR(m) && getCountXSO2(m) > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveS2TOR', payload: null}))}}>Sub Nodes To Table</a></li> }
+              { mExists && (isXS(m) && getCountXSO1(m) > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveS2TO', payload: null}))}}>Sub Nodes To Table</a></li> }
             </ul>
           </div>
         </li>
