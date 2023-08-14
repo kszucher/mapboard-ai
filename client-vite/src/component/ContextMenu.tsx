@@ -2,7 +2,7 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
 import {gptGenNodeMermaid, gptGenNodesT} from "../core/GptPrompter"
-import {getCountNSO1, getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXSO1, getCountXSO2, getRi, getRXD0, getRXD1, getX, getXP, isDirL, isDirR, isXASVN, isXDS, isXR, isXS} from "../core/MapUtils"
+import {getCountNSO1, getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXSO1, getCountXSO2, getRi, getRXD0, getRXD1, getX, getXP, isDirL, isDirR, isXACC, isXACR, isXASVN, isXDS, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
@@ -28,6 +28,7 @@ export const ContextMenu: FC = () => {
               { mExists && !isXS(m) && !!getRXD0(m, getRi(getXP(m))).selected && !getRXD1(m, getRi(getXP(m))).selected && getCountNSO1(m, getRXD1(m, getRi(getXP(m)))) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: getXP(m)}}))}}>Node Branch Left</a></li> }
               { mExists && !isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectS', payload: {path: getXP(m)}}))}}>Node</a></li> }
               { mExists && !isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getXP(m)}}))}}>Node Branch</a></li> }
+              { mExists && isXS(m) && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getXP(m)}}))}}>First Cell</a></li> }
             </ul>
           </div>
         </li>
