@@ -373,21 +373,8 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
               $set: {
                 helperArray: {
                   $concatArrays: [
-                    getValuesByNodeIdAndNodePropId({
-                        $cond: {
-                          if: shouldAppend(),
-                          then: { $last: "$versions" },
-                          else: { $arrayElemAt: [ "$versions", -2 ] }
-                        }
-                      }, 'O'),
-                    getValuesByNodeIdAndNodePropId(
-                      {
-                        $cond: {
-                          if: shouldAppend(),
-                          then: '$newMap',
-                          else: { $last: "$versions" }
-                        }
-                      }, 'A'),
+                    getValuesByNodeIdAndNodePropId({ $cond: { if: shouldAppend(), then: { $last: "$versions" }, else: { $arrayElemAt: [ "$versions", -2 ] } } }, 'O'),
+                    getValuesByNodeIdAndNodePropId({ $cond: { if: shouldAppend(), then: '$newMap', else: { $last: "$versions" } } }, 'A'),
                     getValuesByNodeIdAndNodePropId('$newMap', 'B')
                   ]
                 }
