@@ -1,8 +1,11 @@
 import {M} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
-import {decPiN, getNodeByPath, getSIL, isSD, isCFDF, decPi, isCFRF, getReselectS, getReselectCR, getReselectCC, getXA, getXP, getXRi, getReselectR} from "./MapUtils"
+import {decPiN, getNodeByPath, getSIL, isSD, isCFDF, decPi, isCFRF, getReselectS, getReselectCR, getReselectCC, getXA, getXP, getXRi, getReselectR, getG, getX} from "./MapUtils"
 
 export const deleteR = (m: M) => {
+  const g = getG(m)
+  const xn = getX(m)
+  g.connections = g.connections.filter(el => el.fromNodeId !== xn.nodeId && el.toNodeId !== xn.nodeId)
   const ri = getXRi(m)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
@@ -41,7 +44,7 @@ export const deleteCC = (m: M) => {
 
 export const deleteReselectR = (m: M) => {
   const reselectPath = getReselectR(m)
-  deleteS(m)
+  deleteR(m)
   selectNode(m, reselectPath, 's')
 }
 
