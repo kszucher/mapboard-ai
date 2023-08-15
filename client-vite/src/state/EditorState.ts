@@ -28,7 +28,7 @@ export const editorState: EditorState = {
     xImage: 0,
     yImage: 0,
   },
-  connectionIconsVisible: true,
+  connectionIconsVisible: false,
   connectionStart: {
     fromNodeId: '',
     fromNodeSide: Sides.R
