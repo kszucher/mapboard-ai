@@ -69,7 +69,7 @@ export const gptGenNodesT = (m: M) => {
 
 export const gptGenNodeMermaid = (m: M) => {
   const promptJson = [{
-    description: ' flowchart that describes a 2 factor authentication process for a bank transfer',
+    description: 'flowchart of a ' + getX(m).content,
     mermaidString: '',
     insertParentId: isXR(m) ? getXRiD0(m).nodeId : getX(m).nodeId
   }]
