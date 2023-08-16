@@ -101,7 +101,7 @@ export const ContextMenu: FC = () => {
                     dispatch(actions.closeNodeMenu())
                     dispatch(actions.setPageState(PageState.WS_LOADING))
                     dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))
-                  }}>Mermaid Flowchart
+                  }}>Diagram
                   </a>
                 </li>
               }
