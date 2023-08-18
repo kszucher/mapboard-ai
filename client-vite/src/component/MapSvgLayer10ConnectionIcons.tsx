@@ -1,13 +1,33 @@
 import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
+import {adjustIcon} from "../core/Utils";
 import {Sides} from "../state/Enums"
-import {N} from "../state/MapStateTypes"
+import {M, N} from "../state/MapStateTypes"
 import {getRootStartX, getRootStartY, isR, getRootMidY, getRootMidX, getRootEndX, getRootEndY, getG,} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {MapSvgIconWrapper} from "./MapSvgIconWrapper"
+
+const getX = (m: M, n: N, side: string) => {
+  switch (true) {
+    case (side === 'L'): return getRootStartX(m, n)
+    case (side === 'R'): return getRootEndX(m, n) - 24
+    case (side === 'T'): return getRootMidX(m, n) - 12
+    case (side === 'B'): return getRootMidX(m, n) - 12
+    default: return 0
+  }
+}
+
+const getY = (m: M, n: N, side: string) => {
+  switch (true) {
+    case (side === 'L'): return getRootMidY(m, n) - 12
+    case (side === 'R'): return getRootMidY(m, n) - 12
+    case (side === 'T'): return getRootStartY(m, n)
+    case (side === 'B'): return getRootEndY(m, n) - 24
+    default: return 0
+  }
+}
 
 export const MapSvgLayer10ConnectionIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -22,54 +42,30 @@ export const MapSvgLayer10ConnectionIcons: FC = () => {
       {m.map((n: N) => (
         isR(n.path) && connectionIconsVisible &&
         <Fragment key={`${n.nodeId}`}>
-          <Fragment key={`${n.nodeId}_plus_left`}>
-            <MapSvgIconWrapper
-              x={getRootStartX(m, n)} y={getRootMidY(m, n) - 12} iconName={'Nothing'}
-              onMouseDownGuarded={() => {
-                dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides.L}))
-              }}
-              onMouseUpGuarded={() => {
-                connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
-                dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides.L}}))
-              }}
-            />
-          </Fragment>
-          <Fragment key={`${n.nodeId}_plus_right`}>
-            <MapSvgIconWrapper
-              x={getRootEndX(m, n) - 24} y={getRootMidY(m, n) - 12} iconName={'Nothing'}
-              onMouseDownGuarded={() => {
-                dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides.R}))
-              }}
-              onMouseUpGuarded={() => {
-                connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
-                dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides.R}}))
-              }}
-            />
-          </Fragment>
-          <Fragment key={`${n.nodeId}_plus_top`}>
-            <MapSvgIconWrapper
-              x={getRootMidX(m, n) - 12} y={getRootStartY(m, n)} iconName={'Nothing'}
-              onMouseDownGuarded={() => {
-                dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides.T}))
-              }}
-              onMouseUpGuarded={() => {
-                connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
-                dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides.T}}))
-              }}
-            />
-          </Fragment>
-          <Fragment key={`${n.nodeId}_plus_bottom`}>
-            <MapSvgIconWrapper
-              x={getRootMidX(m, n) - 12} y={getRootEndY(m, n) - 24} iconName={'Nothing'}
-              onMouseDownGuarded={() => {
-                dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides.B}))
-              }}
-              onMouseUpGuarded={() => {
-                connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
-                dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides.B}}))
-              }}
-            />
-          </Fragment>
+          {['L', 'R', 'T', 'B'].map(side => (
+              <g key={`${n.nodeId}_plus_${side}`}
+                 width="24" height="24" viewBox="0 0 24 24"
+                 transform={`translate(${adjustIcon(getX(m, n, side))}, ${adjustIcon(getY(m, n, side))})`}
+                 {...{vectorEffect: 'non-scaling-stroke'}}
+                 style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
+              >
+                <rect
+                  width="24" height="24" rx={4} ry={4} fill={'#666666'}
+                  onMouseDown={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides[side as keyof typeof Sides]}))
+                  }}
+                  onMouseUp={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
+                    dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides[side as keyof typeof Sides]}}))
+                  }}
+                />
+              </g>
+            )
+          )}
         </Fragment>
       ))}
     </g>
