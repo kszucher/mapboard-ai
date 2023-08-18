@@ -3,11 +3,13 @@ import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {adjustIcon} from "../core/Utils";
 import {Sides} from "../state/Enums"
-import {M, N} from "../state/MapStateTypes"
+import {Connection, M, N} from "../state/MapStateTypes"
 import {getRootStartX, getRootStartY, isR, getRootMidY, getRootMidX, getRootEndX, getRootEndY, getG,} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {pathCommonProps} from "./MapSvg";
+import {getLinePathBetweenRoots} from "./MapSvgUtils";
 
 const getX = (m: M, n: N, side: string) => {
   switch (true) {
@@ -69,6 +71,17 @@ export const MapSvgLayer10ConnectionIcons: FC = () => {
             )
           )}
         </g>
+      ))}
+      {g.connections.map((connection: Connection) => (
+        <Fragment key={JSON.stringify(connection)}>
+          <path
+            d={getLinePathBetweenRoots(m, connection)}
+            strokeWidth={1}
+            stroke={'#ffffff'}
+            fill={'none'}
+            {...pathCommonProps}
+          />
+        </Fragment>
       ))}
     </g>
   )

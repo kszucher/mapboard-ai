@@ -11,7 +11,7 @@ import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {Connection, N} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
-import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getLinePathBetweenRoots, getPolygonPath, getPolygonS} from "./MapSvgUtils"
+import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
 export const MapSvgLayer3NodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -24,17 +24,6 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
-      {g.connections.map((connection: Connection) => (
-        <Fragment key={JSON.stringify(connection)}>
-          <path
-            d={getLinePathBetweenRoots(m, connection)}
-            strokeWidth={1}
-            stroke={'#ffffff'}
-            fill={'none'}
-            {...pathCommonProps}
-          />
-        </Fragment>
-      ))}
       {m.map((n: N) => (
         <Fragment key={n.nodeId}>
           {
