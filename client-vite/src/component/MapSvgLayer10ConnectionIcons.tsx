@@ -45,12 +45,15 @@ export const MapSvgLayer10ConnectionIcons: FC = () => {
           {['L', 'R', 'T', 'B'].map(side => (
               <rect
                 key={`${n.nodeId}_plus_${side}`}
-                // width="24" height="24"
                 viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                rx={4}
+                ry={4}
+                fill={'#666666'}
                 transform={`translate(${adjustIcon(getX(m, n, side))}, ${adjustIcon(getY(m, n, side))})`}
                 {...{vectorEffect: 'non-scaling-stroke'}}
                 style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
-                width="24" height="24" rx={4} ry={4} fill={'#666666'}
                 onMouseDown={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
