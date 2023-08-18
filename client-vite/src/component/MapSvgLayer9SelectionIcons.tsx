@@ -8,9 +8,6 @@ import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {PageState} from "../state/Enums"
 import {N} from "../state/MapStateTypes"
-import {MapSvgIcon} from "./MapSvgIcons";
-import {MapSvgIconWrapper} from "./MapSvgIconWrapper"
-import {calcSvgIconOffsetX} from "./MapSvgUtils"
 
 export const MapSvgLayer9SelectionIcons: FC = () => {
   const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
@@ -23,18 +20,53 @@ export const MapSvgLayer9SelectionIcons: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <g>
+    <g key={rx.nodeId}
+       width="24" height="24" viewBox="0 0 24 24"
+       transform={`translate(${adjustIcon(r0.nodeStartX + r0.selfW / 2 -12)}, ${adjustIcon(r0.nodeY - r0.selfH /2 - 12  - 12)})`}
+       {...{vectorEffect: 'non-scaling-stroke'}}
+       style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
+    >
+      <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
       {
-        <Fragment key={rx.nodeId}>
-          <MapSvgIconWrapper
-            x={r0.nodeStartX + r0.selfW / 2 -12}
-            y={r0.nodeY - r0.selfH /2 - 12  - 12}
-            iconName={r0.note === '' ? 'FileUpload' : 'FileText'}
-            onMouseDownGuarded={() => {
-              dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
-            }}/>
-        </Fragment>
+        <g
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          stroke="#ffffff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          className="icon icon-tabler icon-tabler-square-rounded-plus"
+          viewBox="0 0 24 24"
+        >
+          {r0.note === '' &&
+            <g>
+              <path stroke="none" d="M0 0h24v24H0z"></path>
+              <path d="M14 3v4a1 1 0 001 1h4"></path>
+              <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2zM12 11v6"></path>
+              <path d="M9.5 13.5L12 11l2.5 2.5"></path>
+            </g>
+          }
+          {r0.note !== '' &&
+            <g>
+              <path stroke="none" d="M0 0h24v24H0z"></path>
+              <path d="M14 3v4a1 1 0 001 1h4"></path>
+              <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2zM9 9h1M9 13h6M9 17h6"></path>
+            </g>
+          }
+        </g>
       }
+      <rect
+        width="24"
+        height="24"
+        style={{opacity: 0}}
+        onMouseDown={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
+        }}
+      />
     </g>
   )
 }
