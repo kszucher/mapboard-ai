@@ -31,7 +31,7 @@ export const editorSlice = createSlice({
     setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
     setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
     setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload},
-    toggleConnectionIconsVisible(state) { state.connectionIconsVisible = !state.connectionIconsVisible },
+    toggleConnectionRectsVisible(state) { state.connectionRectsVisible = !state.connectionRectsVisible },
     setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload},
     resetConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Sides.R}},
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {

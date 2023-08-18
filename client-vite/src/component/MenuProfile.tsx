@@ -10,7 +10,7 @@ import {useAuth0} from "@auth0/auth0-react"
 
 export const MenuProfile: FC = () => {
   const moreMenu = useSelector((state: RootState) => state.editor.moreMenu)
-  const connectionIconsVisible = useSelector((state: RootState) => state.editor.connectionIconsVisible)
+  const connectionRectsVisible = useSelector((state: RootState) => state.editor.connectionRectsVisible)
   const { logout } = useAuth0()
   const dispatch = useDispatch<AppDispatch>()
   return (
@@ -44,8 +44,8 @@ export const MenuProfile: FC = () => {
           }}>{'Add Template'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
-            dispatch(actions.toggleConnectionIconsVisible())
-          }}>{connectionIconsVisible ? 'Hide Connection Anchors' : 'Show Connection Anchors'}</MenuItem>,
+            dispatch(actions.toggleConnectionRectsVisible())
+          }}>{connectionRectsVisible ? 'Hide Connection Anchors' : 'Show Connection Anchors'}</MenuItem>,
           <Divider key={genHash(8)}/>,
           <MenuItem key={genHash(8)} onClick={() => {
             dispatch(actions.closeMoreMenu())
