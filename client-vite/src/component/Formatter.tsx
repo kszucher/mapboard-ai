@@ -24,22 +24,10 @@ export const Formatter: FC = () => {
   return (
     <div className="_bg fixed w-[216px] top-[80px] right-[47px] flex flex-col gap-3 rounded-lg p-3 z-50">
       <div className="flex justify-center">
-        <IconButton color='secondary' aria-label="text" onClick={() => {
-          dispatch(actions.setFormatMode(FormatMode.text))
-        }}><TextIcon/>
-        </IconButton>
-        <IconButton color='secondary' aria-label="border" onClick={() => {
-          dispatch(actions.setFormatMode(FormatMode.border))
-        }}><BorderIcon selection={xn.selection}/>
-        </IconButton>
-        <IconButton color='secondary' aria-label="fill" onClick={() => {
-          dispatch(actions.setFormatMode(FormatMode.fill))
-        }}><FillIcon selection={xn.selection}/>
-        </IconButton>
-        <IconButton color='secondary' aria-label="line" onClick={() => {
-          dispatch(actions.setFormatMode(FormatMode.line))
-        }}><LineIcon/>
-        </IconButton>
+        <IconButton color='secondary' aria-label="text" onClick={() => {dispatch(actions.setFormatMode(FormatMode.text))}}><TextIcon/></IconButton>
+        <IconButton color='secondary' aria-label="border" onClick={() => {dispatch(actions.setFormatMode(FormatMode.border))}}><BorderIcon selection={xn.selection}/></IconButton>
+        <IconButton color='secondary' aria-label="fill" onClick={() => {dispatch(actions.setFormatMode(FormatMode.fill))}}><FillIcon selection={xn.selection}/></IconButton>
+        <IconButton color='secondary' aria-label="line" onClick={() => {dispatch(actions.setFormatMode(FormatMode.line))}}><LineIcon/></IconButton>
         <span className="fixed top-[82px] w-[40px] h-[2px] bg-[color:var(--main-color)]" style={{right: 196 - 40* formatMode}}/>
       </div>
       <div className="flex justify-center">
@@ -130,29 +118,21 @@ export const Formatter: FC = () => {
         }
       </div>
       <div className="flex flex-row justify-center">
-        <Button
-          color="primary"
-          variant='outlined'
-          onClick={() => {
-            formatMode === FormatMode.text && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearTextS', payload: null}))
-            formatMode === FormatMode.text && getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearTextF', payload: null}))
-            formatMode === FormatMode.border && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearBorderS', payload: null}))
-            formatMode === FormatMode.border && getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearBorderF', payload: null}))
-            formatMode === FormatMode.fill &&  getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearFillS', payload: null}))
-            formatMode === FormatMode.fill &&  getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearFillF', payload: null}))
-            formatMode === FormatMode.line &&  getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearLineS', payload: null}))
-            formatMode === FormatMode.line &&  getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearLineF', payload: null}))
-          }}>
+        <Button color="primary" variant='outlined' onClick={() => {
+          formatMode === FormatMode.text && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearTextS', payload: null}))
+          formatMode === FormatMode.text && getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearTextF', payload: null}))
+          formatMode === FormatMode.border && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearBorderS', payload: null}))
+          formatMode === FormatMode.border && getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearBorderF', payload: null}))
+          formatMode === FormatMode.fill &&  getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearFillS', payload: null}))
+          formatMode === FormatMode.fill &&  getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearFillF', payload: null}))
+          formatMode === FormatMode.line &&  getX(m).selection === 's' && dispatch(actions.mapAction({type: 'clearLineS', payload: null}))
+          formatMode === FormatMode.line &&  getX(m).selection === 'f' && dispatch(actions.mapAction({type: 'clearLineF', payload: null}))
+        }}>
           {'RESET'}
         </Button>
       </div>
       <div className="flex flex-row justify-center">
-        <Button
-          color="primary"
-          variant='outlined'
-          onClick={() => dispatch(actions.toggleFormatterVisible())}
-        >{'CLOSE'}
-        </Button>
+        <Button color="primary" variant='outlined' onClick={() => dispatch(actions.toggleFormatterVisible())}>{'CLOSE'}</Button>
       </div>
     </div>
   )
