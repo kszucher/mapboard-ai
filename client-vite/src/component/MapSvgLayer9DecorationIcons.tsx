@@ -9,7 +9,7 @@ import {mSelector} from "../state/EditorState"
 import {PageState} from "../state/Enums"
 import {N} from "../state/MapStateTypes"
 
-export const MapSvgLayer9SelectionIcons: FC = () => {
+export const MapSvgLayer9DecorationIcons: FC = () => {
   const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
   const m = useSelector((state:RootState) => mSelector(state))
   const xn = getX(m)
