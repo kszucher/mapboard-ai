@@ -1,8 +1,8 @@
-import React, {FC, Fragment} from "react"
+import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {getCountNSO1, getCountXSO1, getNodeByPath, getR0, getRi, getX, getXRi, getXSSCXX, isXR, isXS} from "../core/MapUtils"
+import {getNodeByPath, getR0, getXRi} from "../core/MapUtils"
 import {adjustIcon} from "../core/Utils";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
@@ -10,9 +10,7 @@ import {PageState} from "../state/Enums"
 import {N} from "../state/MapStateTypes"
 
 export const MapSvgLayer9DecorationIcons: FC = () => {
-  const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
   const m = useSelector((state:RootState) => mSelector(state))
-  const xn = getX(m)
   const r0 = getR0(m)
   const ri = getXRi(m)
   const rx = getNodeByPath(m, ['r', ri]) as N

@@ -41,32 +41,31 @@ export const MapSvgLayer10ConnectionIcons: FC = () => {
     <g>
       {m.map((n: N) => (
         isR(n.path) && connectionIconsVisible &&
-        <Fragment key={`${n.nodeId}`}>
+        <g key={`${n.nodeId}`}>
           {['L', 'R', 'T', 'B'].map(side => (
-              <g key={`${n.nodeId}_plus_${side}`}
-                 width="24" height="24" viewBox="0 0 24 24"
-                 transform={`translate(${adjustIcon(getX(m, n, side))}, ${adjustIcon(getY(m, n, side))})`}
-                 {...{vectorEffect: 'non-scaling-stroke'}}
-                 style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
-              >
-                <rect
-                  width="24" height="24" rx={4} ry={4} fill={'#666666'}
-                  onMouseDown={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides[side as keyof typeof Sides]}))
-                  }}
-                  onMouseUp={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
-                    dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides[side as keyof typeof Sides]}}))
-                  }}
-                />
-              </g>
+              <rect
+                key={`${n.nodeId}_plus_${side}`}
+                // width="24" height="24"
+                viewBox="0 0 24 24"
+                transform={`translate(${adjustIcon(getX(m, n, side))}, ${adjustIcon(getY(m, n, side))})`}
+                {...{vectorEffect: 'non-scaling-stroke'}}
+                style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
+                width="24" height="24" rx={4} ry={4} fill={'#666666'}
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  dispatch(actions.setConnectionStart({fromNodeId: n.nodeId, fromNodeSide: Sides[side as keyof typeof Sides]}))
+                }}
+                onMouseUp={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
+                  dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides[side as keyof typeof Sides]}}))
+                }}
+              />
             )
           )}
-        </Fragment>
+        </g>
       ))}
     </g>
   )
