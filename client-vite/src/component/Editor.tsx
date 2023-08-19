@@ -7,6 +7,7 @@ import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {MenuFrames} from "./MenuFrames"
 import {MenuProfile} from "./MenuProfile"
 import {ModalCreateTemplate} from "./ModalCreateTemplate"
+import {ModalEditContentMermaid} from "./ModalEditContentMermaid"
 import {ModalEditNote} from "./ModalEditNote"
 import {SidebarRight} from './SidebarRight'
 import {ModalCreateTable} from './ModalCreateTable'
@@ -66,6 +67,7 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_SETTINGS && <Settings/>}
       {pageState === PageState.WS_SHARES && <Shares/>}
       {pageState === PageState.WS_EDIT_NOTE && <ModalEditNote/>}
+      {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <ModalEditContentMermaid/>}
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
       {pageState === PageState.WS_CREATE_TASK && <ModalToggleTaskMode/>}
       {pageState === PageState.WS_CREATE_TEMPLATE && <ModalCreateTemplate/>}

@@ -3,8 +3,9 @@ import katex from "katex/dist/katex.mjs"
 import mermaid from "mermaid"
 import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
+import {PageState} from "../state/Enums"
 import {getColors} from "./Colors"
-import {getG, getNodeById, isR, isS, isXR, isXS, isXD, getRi, getXRi, getX, getCountXCO1} from "../core/MapUtils"
+import {getG, getNodeById, isR, isS, isXR, isXS, isXD, getRi, getXRi, getX, getCountNCO1} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -124,8 +125,8 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation();
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
-
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountNCO1(m, n) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}));
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountNCO1(m, n) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID));
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
