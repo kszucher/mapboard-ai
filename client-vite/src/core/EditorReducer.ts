@@ -89,11 +89,19 @@ export const editorSlice = createSlice({
           break
         }
         case 'typeText': {
-          state.tempMap = mapReducer(pm, 'typeText', action.payload.payload)
+          state.tempMap = mapReducer(pm, 'typeText', action.payload.payload) // why do I use tempMap??? I could just update the last elem...
           break
         }
         case 'finishEdit': {
-          const m = mapReducer(pm, 'finishEdit', action.payload.payload)
+          const { path, content } = action.payload.payload
+          let m
+          if (content.substring(0, 2) === '\\[') {
+            m = mapReducer(pm, 'finishEdit', {path, contentType: 'equation', content})
+          } else if (content.startsWith('graph')) {
+            m = mapReducer(pm, 'finishEdit', {path, contentType: 'mermaid', content})
+          } else {
+            m = mapReducer(pm, 'finishEdit', {path, contentType: 'text', content})
+          }
           if (!isEqual(pm, m)) {
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
             state.mapListIndex = state.mapListIndex + 1
