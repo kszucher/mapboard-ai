@@ -112,9 +112,9 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowRight' && isDirL(m) && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCL', payload: null}))
 
     ckm === '---' && e.code === 'ArrowLeft' && isXR(m) && getCountXRXD1S(m) > 0 && dispatch(actions.mapAction({type: 'selectSOL', payload: null}))
+    ckm === '---' && e.code === 'ArrowLeft' && isDirL(m) && isXS(m) && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && isDirR(m) && isXDS(m) && dispatch(actions.mapAction({type: 'selectXRi', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && isDirR(m) && isXS(m) && dispatch(actions.mapAction({type: 'selectSI', payload: null}))
-    ckm === '---' && e.code === 'ArrowLeft' && isDirL(m) && isXS(m) && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && isDirR(m) && isXC(m) && !isXCL(m) && dispatch(actions.mapAction({type: 'selectCL', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && isDirR(m) && isXACC(m) && !isXCL(m) && dispatch(actions.mapAction({type: 'selectCCL', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && isDirL(m) && isXC(m) && !isXCR(m) && dispatch(actions.mapAction({type: 'selectCR', payload: null}))
