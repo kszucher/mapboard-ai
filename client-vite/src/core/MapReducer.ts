@@ -141,7 +141,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'applyColorFromKey': getXA(m).forEach(n => Object.assign(n, {textColor: shortcutColors[payload.currColor]})); break
     case 'toggleTask': getXAF(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus === 0 ? 1 : 0})); break;
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
-    case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.contentType, content: payload.content }); break
     case 'setNote': Object.assign(getR0(m), { note: payload.note }); break

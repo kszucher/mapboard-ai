@@ -7,7 +7,6 @@ export const editorState: EditorState = {
   pageState: PageState.AUTH,
   formatMode: FormatMode.text,
   tabShrink: false,
-  tempMap: [],
   mapList: [],
   mapListIndex: 0,
   editedNodeId: '',
@@ -36,5 +35,5 @@ export const editorState: EditorState = {
 }
 
 export const getMap = () => (store.getState().editor.mapList[store.getState().editor.mapListIndex])
-export const mSelector = (state: RootState) => state.editor.tempMap.length ? state.editor.tempMap : state.editor.mapList[state.editor.mapListIndex]
-export const pmSelector = (state: RootState) => state.editor.tempMap.length ? state.editor.tempMap : state.editor.mapList[state.editor.mapListIndex > 0 ? state.editor.mapListIndex - 1 : 0]
+export const mSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex]
+export const pmSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex > 0 ? state.editor.mapListIndex - 1 : 0]

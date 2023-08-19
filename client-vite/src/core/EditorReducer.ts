@@ -67,7 +67,6 @@ export const editorSlice = createSlice({
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
               state.mapListIndex = state.mapListIndex + 1
             }
-            state.tempMap = []
           }
           state.moveCoords = []
           break
@@ -78,18 +77,15 @@ export const editorSlice = createSlice({
           break
         }
         case 'startEditAppend': {
-          const m = mapReducer(pm, 'startEditAppend', null)
-          if (!isEqual(pm, m)) {
-            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            state.mapListIndex = state.mapListIndex + 1
-          }
-          state.tempMap = m
           state.editedNodeId = getEditedNode(pm, getXP(pm)).nodeId
           state.editType = 'append'
           break
         }
         case 'typeText': {
-          state.tempMap = mapReducer(pm, 'typeText', action.payload.payload) // why do I use tempMap??? I could just update the last elem...
+          const m = mapReducer(pm, 'typeText', action.payload.payload)
+          if (!isEqual(pm, m)) {
+            state.mapList = [...state.mapList.slice(0, state.mapListIndex), m]
+          }
           break
         }
         case 'finishEdit': {
@@ -102,11 +98,6 @@ export const editorSlice = createSlice({
           } else {
             m = mapReducer(pm, 'finishEdit', {path, contentType: 'text', content})
           }
-          if (!isEqual(pm, m)) {
-            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            state.mapListIndex = state.mapListIndex + 1
-          }
-          state.tempMap = []
           state.editedNodeId = ''
           state.editType = ''
           break
@@ -117,7 +108,6 @@ export const editorSlice = createSlice({
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
             state.mapListIndex = state.mapListIndex + 1
           }
-          state.tempMap = []
           break
         }
       }
