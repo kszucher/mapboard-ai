@@ -21,9 +21,7 @@ export const ModalEditContentMermaid: FC = () => {
         </div>
         <div style={{ display: "flex", flexDirection: 'column', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <TextField id="filled-multiline-static" label="Multiline" multiline rows={20} defaultValue={getX(m).content} variant="filled" inputProps={{ maxLength: 1000 }} onChange={(e) => {
-            const currentNode = document.getElementById(getX(m).nodeId)
-            currentNode!.removeAttribute('data-processed')
-            currentNode!.innerHTML = ''
+            document.getElementById(getX(m).nodeId)!.removeAttribute('data-processed')
             dispatch(actions.mapAction({type: 'setContent', payload: {content: e.target.value}}))
           }}/>
           <Button color="primary" variant='outlined' disabled={isFetching} onClick={() =>
