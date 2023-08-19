@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {editable, getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXRXD1S, getCountXSO1, getXP, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
+import {getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXRXD1S, getCountXSO1, getX, getXP, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
 import {isUrl} from "../core/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -38,7 +38,7 @@ export const Window: FC = () => {
     const ckm = [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('')
 
     ckm === '---' && e.key === 'F1' && dispatch(actions.mapAction({type: '', payload: null}))
-    ckm === '---' && e.key === 'F2' && editable(m) && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
+    ckm === '---' && e.key === 'F2' && (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
     ckm === '---' && e.key === 'F3' && dispatch(actions.mapAction({type: '', payload: null}))
     ckm === '---' && e.key === 'F5' && dispatch(actions.mapAction({type: '', payload: null}))
     ckm === '---' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: 'insertSD', payload: null}))
@@ -132,8 +132,8 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowLeft' && isDirL(m) && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCR', payload: null}))
 
     ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXS(m) && dispatch(actions.mapAction({type: 'applyColorFromKey', payload: {currColor: e.which - 96}}))
-    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && editable(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
-    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && editable(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
+    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
+    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
   }
 
   const paste = (e: Event) => {

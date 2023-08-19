@@ -4,7 +4,7 @@ import mermaid from "mermaid"
 import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "./Colors"
-import {editable, getG, getNodeById, isR, isS, isXR, isXS, isXD, getRi, getXRi} from "../core/MapUtils"
+import {getG, getNodeById, isR, isS, isXR, isXS, isXD, getRi, getXRi, getX, getCountXCO1} from "../core/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -123,8 +123,9 @@ export const MapDiv: FC = () => {
                 }
               }}
               onDoubleClick={(e) => {
-                e.stopPropagation()
-                editable(m) && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
+                e.stopPropagation();
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
+
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
