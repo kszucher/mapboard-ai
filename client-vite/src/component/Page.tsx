@@ -18,6 +18,9 @@ export const Page: FC = () => {
     mermaid.initialize({
       startOnLoad: false,
       theme: "dark",
+      flowchart: {
+        useMaxWidth: false
+      }
       // logLevel: 3,
       // flowchart: { curve: "linear" },
       // gantt: { axisFormat: "%m/%d/%Y" },

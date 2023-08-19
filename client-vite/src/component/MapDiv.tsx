@@ -15,7 +15,9 @@ import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {N} from "../state/MapStateTypes"
 
 const getInnerHtml = (n: N) => {
-  if (n.contentType === 'text' || n.contentType === 'mermaid') {
+  if (n.contentType === 'text') {
+    return n.content
+  } else if (n.contentType === 'mermaid') {
     return n.content
   } else if (n.contentType === 'equation') {
     return katex.renderToString(getLatexString(n.content), {throwOnError: false})
@@ -40,7 +42,7 @@ export const MapDiv: FC = () => {
     mermaid.run({
       nodes: document.querySelectorAll('.mermaidNode'),
       postRenderCallback: () => {
-        dispatch(actions.mapAction({type: 'LOAD', payload: null}))
+        dispatch(actions.mapAction({type: 'resetDimensions', payload: null}))
       }
     })
   }, [m])
@@ -58,8 +60,8 @@ export const MapDiv: FC = () => {
               style={{
                 left: adjust(n.nodeStartX),
                 top: adjust( n.nodeY - n.selfH / 2),
-                minWidth: n.selfW + (g.density === 'large'? -10 : -8),
-                minHeight: n.selfH + (g.density === 'large'? -10 : 0),
+                minWidth: n.contentType === 'mermaid' ? 'inherit' : n.selfW + (g.density === 'large'? -10 : -8),
+                minHeight: n.contentType === 'mermaid' ? 'inherit' : n.selfH + (g.density === 'large'? -10 : 0),
                 paddingLeft: g.density === 'large'? 8 : 8,
                 paddingTop: g.density === 'large'? 4 : 2,
                 position: 'absolute',

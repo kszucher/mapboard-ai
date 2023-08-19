@@ -144,6 +144,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.contentType, content: payload.content }); break
     case 'setNote': Object.assign(getR0(m), { note: payload.note }); break
+    case 'setContent': Object.assign(getX(m), { content: payload.content }); break
+    case 'resetDimensions': Object.assign(getX(m), { dimW: 0, dimH: 0 }); break
 
     case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
     case 'gptParseNodesT': gptParseNodesT(m, payload.gptParsed); break
