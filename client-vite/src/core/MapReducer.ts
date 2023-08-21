@@ -18,8 +18,10 @@ import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getXCC
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
     case 'LOAD': break
-    case 'changeDensity': getG(m).density = getG(m).density === 'small' ? 'large' : 'small'; break
-    case 'changeAlignment': getG(m).alignment = getG(m).alignment === 'centered' ? 'adaptive' : 'centered'; break
+    case 'setDensitySmall': getG(m).density = 'small'; break
+    case 'setDensityLarge': getG(m).density = 'large'; break
+    case 'setAlignmentCentered': getG(m).alignment = 'centered'; break
+    case 'setAlignmentAdaptive': getG(m).alignment = 'adaptive'; break
 
     case 'selectR0': selectNode(m, ['r', 0], 's'); break
     case 'selectXRi': selectNode(m, ['r', getXRi(m)], 's'); break

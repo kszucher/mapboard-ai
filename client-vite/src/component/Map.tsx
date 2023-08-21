@@ -49,7 +49,7 @@ export const Map: FC = () => {
   useEffect(() => {
     if (mainMapDiv.current) {
       setScrollLeftAnimated((window.innerWidth + g.mapWidth) / 2, 500)
-    }}, [density, alignment] // TODO figure out how to react to the end of moveTarget
+    }}, [density] // TODO figure out how to react to the end of moveTarget
   )
 
   return (

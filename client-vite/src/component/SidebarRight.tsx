@@ -28,16 +28,7 @@ export const SidebarRight: FC = () => {
   return (
     <div className={"_bg fixed right-0 w-[48px] flex flex-col items-center py-1 px-1 border-r-0 z-50"} style={{top: 80, borderRadius: '8px 0 0 8px'}}>
 
-      <Tooltip title="Density" placement="left-end">
-        <IconButton color='secondary' onClick={() => {
-          dispatch(actions.mapAction({type: 'changeDensity', payload: null}))
-        }}>{density === 'small' && <DensitySmallIcon/>}{density === 'large' && <DensityMediumIcon/>}</IconButton>
-      </Tooltip>
-      <Tooltip title="Alignment" placement="left-end">
-        <IconButton color='secondary' onClick={() => {
-          dispatch(actions.mapAction({type: 'changeAlignment', payload: null}))
-        }}>{alignment === 'adaptive' && <CenterFocusWeakIcon/>}{alignment === 'centered' && <CenterFocusStrongIcon/>}</IconButton>
-      </Tooltip>
+
       <Tooltip title="Frames" placement="left-end">
         <IconButton id='sidebar-right-frames' color='secondary' onClick={({currentTarget}) => {
           dispatch(actions.openFrameMenu(Boolean(currentTarget)))
