@@ -13,12 +13,12 @@ const subMenuClassName = "z-10 hidden bg-white divide-y divide-gray-100 rounded-
 const MenuButtonSvg = <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/></svg>
 
 export const ContextMenu: FC = () => {
-  const nodeMenu = useSelector((state: RootState) => state.editor.nodeMenu)
+  const contextMenu = useSelector((state: RootState) => state.editor.contextMenu)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={nodeMenu === null} style={{left: nodeMenu ? nodeMenu.x + 1 : 0, top: nodeMenu ? nodeMenu.y + -20 : 0}}>
+    <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={contextMenu === null} style={{left: contextMenu ? contextMenu.x + 1 : 0, top: contextMenu ? contextMenu.y + -20 : 0}}>
       <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
         <li>
           <button id="doubleDropdownButton" data-dropdown-toggle="selectSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Select{MenuButtonSvg}</button>
@@ -81,7 +81,7 @@ export const ContextMenu: FC = () => {
               { mExists && isXD(m) && getX(m).selection === 'f' && getR0(m).note !== '' &&
                 <li>
                   <a className={menuClassName} onClick={()=>{
-                    dispatch(actions.closeNodeMenu())
+                    dispatch(actions.closeContextMenu())
                     dispatch(actions.setPageState(PageState.WS_LOADING))
                     dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodesS(m)))
                   }}>Structure Extension
@@ -91,7 +91,7 @@ export const ContextMenu: FC = () => {
               { mExists && getCountXCO1(m) > 0 &&
                 <li>
                   <a className={menuClassName} onClick={()=>{
-                    dispatch(actions.closeNodeMenu())
+                    dispatch(actions.closeContextMenu())
                     dispatch(actions.setPageState(PageState.WS_LOADING))
                     dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))
                   }}>Table Fill
@@ -101,7 +101,7 @@ export const ContextMenu: FC = () => {
               { mExists && (isXR(m) || isXS(m)) && getCountXCO1(m) === 0 && getX(m).contentType === 'text' &&
                 <li>
                   <a className={menuClassName} onClick={()=>{
-                    dispatch(actions.closeNodeMenu())
+                    dispatch(actions.closeContextMenu())
                     dispatch(actions.setPageState(PageState.WS_LOADING))
                     dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))
                   }}>Diagram

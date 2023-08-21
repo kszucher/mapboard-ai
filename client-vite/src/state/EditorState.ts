@@ -14,7 +14,7 @@ export const editorState: EditorState = {
   formatterVisible: false,
   moreMenu: false,
   frameMenu: false,
-  nodeMenu: null,
+  contextMenu: null,
   moveCoords: [],
   selectionRectCoords: [],
   intersectingNodes: [],

@@ -27,7 +27,7 @@ export const Window: FC = () => {
     if ((+e.ctrlKey && e.code === 'KeyZ') || (+e.ctrlKey && e.code === 'KeyY') || (+e.ctrlKey && e.which >= 96 && e.which <= 105) || (e.which < 48)) {e.preventDefault()}
     const m = structuredClone(getMap()).sort(sortPath)
     const ckm = [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('')
-    
+
     ckm === '---' && e.key === 'F1' && dispatch(actions.mapAction({type: '', payload: null}))
     ckm === '---' && e.key === 'F2' && (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
     ckm === '---' && e.key === 'F3' && dispatch(actions.mapAction({type: '', payload: null}))
@@ -171,7 +171,7 @@ export const Window: FC = () => {
 
   const wheel = (e: WheelEvent) => {
     e.preventDefault()
-    dispatch(actions.closeNodeMenu())
+    dispatch(actions.closeContextMenu())
   }
 
   const contextmenu = (e: MouseEvent) => {

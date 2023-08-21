@@ -26,8 +26,8 @@ export const editorSlice = createSlice({
     closeMoreMenu(state) { state.moreMenu = false },
     openFrameMenu(state, action: PayloadAction<boolean>) { state.frameMenu = action.payload },
     closeFrameMenu(state) { state.frameMenu = false },
-    openNodeMenu(state, action: PayloadAction<{ x: number, y: number }>) { state.nodeMenu = action.payload },
-    closeNodeMenu(state) { state.nodeMenu = null },
+    openContextMenu(state, action: PayloadAction<{ x: number, y: number }>) { state.contextMenu = action.payload },
+    closeContextMenu(state) { state.contextMenu = null },
     setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
     setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
     setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload},
@@ -174,14 +174,14 @@ listenerMiddleware.startListening({
   predicate: (action, currentState) => {
    return (
     action.type.startsWith('editor') &&
-    action.type !== 'editor/closeNodeMenu' &&
-    action.type !== 'editor/openNodeMenu' &&
+    action.type !== 'editor/closeContextMenu' &&
+    action.type !== 'editor/openContextMenu' &&
     action.type !== 'editor/resetConnectionStart' &&
-    (currentState as RootState).editor.nodeMenu !== null
+    (currentState as RootState).editor.contextMenu !== null
    )
   },
   effect: async (action, listenerApi) => {
-    listenerApi.dispatch(actions.closeNodeMenu())
+    listenerApi.dispatch(actions.closeContextMenu())
   },
 })
 
