@@ -34,7 +34,7 @@ const getY = (m: M, n: N, side: string) => {
 export const MapSvgLayer10Connections: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
-  const connectionRectsVisible = useSelector((state: RootState) => state.editor.connectionRectsVisible)
+  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
@@ -42,7 +42,7 @@ export const MapSvgLayer10Connections: FC = () => {
   return (
     <g>
       {m.map((n: N) => (
-        isR(n.path) && connectionRectsVisible &&
+        isR(n.path) && connectionHelpersVisible &&
         <g key={`${n.nodeId}`}>
           {['L', 'R', 'T', 'B'].map(side => (
               <rect

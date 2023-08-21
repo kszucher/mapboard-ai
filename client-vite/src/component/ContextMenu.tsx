@@ -15,6 +15,7 @@ const MenuButtonSvg = <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xml
 export const ContextMenu: FC = () => {
   const contextMenu = useSelector((state: RootState) => state.editor.contextMenu)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
+  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
   const dispatch = useDispatch<AppDispatch>()
@@ -127,6 +128,8 @@ export const ContextMenu: FC = () => {
           { mExists && getG(m).density === 'large' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}}>{'Set Compact'}</a></li> }
           { mExists && getG(m).alignment === 'adaptive' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}}>{'Set Centered'}</a></li> }
           { mExists && getG(m).alignment === 'centered' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}}>{'Set Adaptive'}</a></li> }
+          { mExists && !connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.showConnectionHelpers())}}>{'Show Connection Helpers'}</a></li> }
+          { mExists && connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Connection Helpers'}</a></li> }
         </ul>
       </div>
     </div>

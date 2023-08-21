@@ -10,7 +10,7 @@ import {useAuth0} from "@auth0/auth0-react"
 
 export const MenuProfile: FC = () => {
   const moreMenu = useSelector((state: RootState) => state.editor.moreMenu)
-  const connectionRectsVisible = useSelector((state: RootState) => state.editor.connectionRectsVisible)
+  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const { logout } = useAuth0()
   const dispatch = useDispatch<AppDispatch>()
   return (
@@ -31,7 +31,6 @@ export const MenuProfile: FC = () => {
           <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}}>{'Share This Map'}</MenuItem>,
           <Divider key={genHash(8)}/>,
           <MenuItem key={genHash(8)} disabled={false} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(actions.setPageState(PageState.WS_CREATE_TEMPLATE))}}>{'Add Template'}</MenuItem>,
-          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(actions.toggleConnectionRectsVisible())}}>{connectionRectsVisible ? 'Hide Connection Anchors' : 'Show Connection Anchors'}</MenuItem>,
           <Divider key={genHash(8)}/>,
           <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(api.endpoints.createMapInTab.initiate())}}>{'Add Tab Map'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(api.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}}>{'Move Tab Map Up'}</MenuItem>,

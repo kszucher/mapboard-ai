@@ -30,7 +30,7 @@ export interface EditorState {
     xImage: number
     yImage: number
   }
-  connectionRectsVisible: boolean
+  connectionHelpersVisible: boolean
   connectionStart: {
     fromNodeId: string,
     fromNodeSide: Sides
