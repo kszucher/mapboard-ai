@@ -139,7 +139,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'clearTextF': getXAF(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break;
 
     case 'applyColorFromKey': getXA(m).forEach(n => Object.assign(n, {textColor: shortcutColors[payload.currColor]})); break
-    case 'toggleTask': getXAF(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus === 0 ? 1 : 0})); break;
+    case 'taskModeOn': getXAF(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus === 0 ? 1 : n.taskStatus})); break;
+    case 'taskModeOff': getXAF(m).forEach(n => Object.assign(n, {taskStatus: 0 })); break;
+    case 'taskModeReset': getXAF(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus > 0 ? 1 : n.taskStatus})); break;
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.contentType, content: payload.content }); break

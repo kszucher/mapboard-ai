@@ -2,7 +2,7 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
 import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../core/GptPrompter"
-import {getCountNSO1, getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXSO1, getCountXSO2, getR0, getRi, getRXD0, getRXD1, getX, getXP, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
+import {getCountNSO1, getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXSO1, getCountXSO2, getR0, getRi, getRXD0, getRXD1, getX, getXAF, getXP, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
@@ -52,8 +52,10 @@ export const ContextMenu: FC = () => {
           <button id="doubleDropdownButton" data-dropdown-toggle="editSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Edit{MenuButtonSvg}</button>
           <div id="editSubMenu" className={subMenuClassName}>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-              { mExists && isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}}>Turn Node Into Submap</a></li> }
-
+              { mExists && isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}}>Turn Into Submap</a></li> }
+              { mExists && getXAF(m).map(n => n.taskStatus).includes(0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'taskModeOn', payload: null}))}}>Task Mode On</a></li> }
+              { mExists && getXAF(m).map(n => n.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'taskModeOff', payload: null}))}}>Task Mode Off</a></li> }
+              { mExists && getXAF(m).map(n => n.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'taskModeReset', payload: null}))}}>Task Mode Reset</a></li> }
             </ul>
           </div>
         </li>

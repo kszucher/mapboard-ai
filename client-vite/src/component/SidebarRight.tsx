@@ -33,12 +33,6 @@ export const SidebarRight: FC = () => {
         }}><PaletteIcon/></IconButton>
       </Tooltip>
 
-      <Tooltip title="Tasks" placement="left-end">
-        <IconButton color='secondary' onClick={() => {
-          dispatch(actions.setPageState(PageState.WS_CREATE_TASK))
-        }}><TaskIcon/></IconButton>
-      </Tooltip>
-
       <Tooltip title="Density" placement="left-end">
         <IconButton color='secondary' onClick={() => {
           dispatch(actions.mapAction({type: 'changeDensity', payload: null}))

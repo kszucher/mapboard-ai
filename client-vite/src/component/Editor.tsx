@@ -23,7 +23,6 @@ import {Settings} from './Settings'
 import {Shares} from "./Shares"
 import {ModalShareThisMap} from "./ModalShareThisMap"
 import {ModalCreateMapInMap} from './ModalCreateMapInMap'
-import {ModalToggleTaskMode} from './ModalToggleTaskMode'
 import {TabMaps} from "./TabMaps"
 import {UndoRedo} from './UndoRedo'
 import {Window} from "./Window"
@@ -69,7 +68,6 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_EDIT_NOTE && <ModalEditNote/>}
       {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <ModalEditContentMermaid/>}
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
-      {pageState === PageState.WS_CREATE_TASK && <ModalToggleTaskMode/>}
       {pageState === PageState.WS_CREATE_TEMPLATE && <ModalCreateTemplate/>}
       {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
       {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
