@@ -16,32 +16,19 @@ export const TabMaps: FC = () => {
   return (
     <>
       {!tabShrink &&
-        <div
-          className="_bg fixed top-[80px] border-l-0 pt-4 pb-4 z-50"
-          style={{
-            width: 224,
-            borderTopRightRadius: 8,
-            borderBottomRightRadius: 8,
-          }}>
+        <div className="_bg fixed top-[80px] border-l-0 pt-4 pb-4 z-50" style={{width: 224, borderTopRightRadius: 8, borderBottomRightRadius: 8}}>
           <TreeView
             aria-label="file system navigator"
             defaultCollapseIcon={<ExpandMoreIcon />}
             defaultExpandIcon={<ChevronRightIcon />}
-            sx={{
-              flexGrow: 1,
-              maxWidth: 400,
-              overflowY: 'auto',
-            }}
+            sx={{flexGrow: 1, maxWidth: 400, overflowY: 'auto'}}
             defaultExpanded={['applications']}
             selected={tabMapIdList[tabId]}
           >
             <TreeItem
               nodeId="applications"
               label="Applications"
-              sx={{
-                '.MuiTreeItem-label': { color: 'var(--main-color)' },
-                '.MuiTreeItem-iconContainer': { color: 'var(--main-color)' },
-              }}
+              sx={{'.MuiTreeItem-label': { color: 'var(--main-color)' }, '.MuiTreeItem-iconContainer': { color: 'var(--main-color)' }}}
             >
               {
                 tabMapNameList.map((el: { name: string }, index: number) => (

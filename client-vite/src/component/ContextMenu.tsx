@@ -123,10 +123,10 @@ export const ContextMenu: FC = () => {
       </div>
       <div hidden={contextMenu.type !== 'map'}>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="">
-          { mExists && getG(m).density === 'small' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}}>{'Density --> Cozy'}</a></li> }
-          { mExists && getG(m).density === 'large' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}}>{'Density --> Compact'}</a></li> }
-          { mExists && getG(m).alignment === 'adaptive' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}}>{'Align --> Centered'}</a></li> }
-          { mExists && getG(m).alignment === 'centered' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}}>{'Align --> Adaptive'}</a></li> }
+          { mExists && getG(m).density === 'small' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}}>{'Set Cozy'}</a></li> }
+          { mExists && getG(m).density === 'large' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}}>{'Set Compact'}</a></li> }
+          { mExists && getG(m).alignment === 'adaptive' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}}>{'Set Centered'}</a></li> }
+          { mExists && getG(m).alignment === 'centered' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}}>{'Set Adaptive'}</a></li> }
         </ul>
       </div>
     </div>

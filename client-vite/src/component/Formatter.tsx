@@ -22,7 +22,7 @@ export const Formatter: FC = () => {
   const disabled = [AccessTypes.UNAUTHORIZED, AccessTypes.VIEW].includes(access)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="_bg fixed w-[216px] top-[80px] right-[47px] flex flex-col gap-3 rounded-lg p-3 z-50">
+    <div className="_bg fixed w-[224px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
       <div className="flex justify-center">
         <IconButton color='secondary' aria-label="text" onClick={() => {dispatch(actions.setFormatMode(FormatMode.text))}}><TextIcon/></IconButton>
         <IconButton color='secondary' aria-label="border" onClick={() => {dispatch(actions.setFormatMode(FormatMode.border))}}><BorderIcon selection={xn.selection}/></IconButton>

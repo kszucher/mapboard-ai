@@ -9,7 +9,6 @@ import {MenuProfile} from "./MenuProfile"
 import {ModalCreateTemplate} from "./ModalCreateTemplate"
 import {ModalEditContentMermaid} from "./ModalEditContentMermaid"
 import {ModalEditNote} from "./ModalEditNote"
-import {SidebarRight} from './SidebarRight'
 import {ModalCreateTable} from './ModalCreateTable'
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -54,7 +53,6 @@ export const Editor: FC = () => {
       {mExists && <UndoRedo/>}
       {mExists && <BreadcrumbMaps/>}
       {mExists && <TabMaps/>}
-      {mExists && <SidebarRight/>}
       {mExists && formatterVisible && <Formatter/>}
       {mExists && <FrameCarousel/>}
       {mExists && <Window/>}
