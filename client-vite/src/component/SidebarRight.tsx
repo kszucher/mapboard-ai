@@ -34,11 +34,7 @@ export const SidebarRight: FC = () => {
           dispatch(actions.openFrameMenu(Boolean(currentTarget)))
         }}><DynamicFeedIcon/></IconButton>
       </Tooltip>
-      <Tooltip title="Shares" placement="left-end">
-        <IconButton color='secondary' disabled={frameId !== ''} onClick={() => {
-          dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}
-        }><ShareIcon/></IconButton>
-      </Tooltip>
+
     </div>
   )
 }

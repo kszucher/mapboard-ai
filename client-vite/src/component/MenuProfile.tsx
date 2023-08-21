@@ -25,50 +25,20 @@ export const MenuProfile: FC = () => {
       }}>
       {
         [
-          <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.closeMoreMenu())
-            dispatch(actions.setPageState(PageState.WS_PROFILE))
-          }}>{'Profile'}</MenuItem>,
-          <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.closeMoreMenu())
-            dispatch(actions.setPageState(PageState.WS_SETTINGS))
-          }}>{'Settings'}</MenuItem>,
-          <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.closeMoreMenu())
-            dispatch(actions.setPageState(PageState.WS_SHARES))
-          }}>{'Shares'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(actions.setPageState(PageState.WS_PROFILE))}}>{'Profile'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(actions.setPageState(PageState.WS_SETTINGS))}}>{'Settings'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(actions.setPageState(PageState.WS_SHARES))}}>{'Shares'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}}>{'Share This Map'}</MenuItem>,
           <Divider key={genHash(8)}/>,
-          <MenuItem key={genHash(8)} disabled={false} onClick={() => {
-            dispatch(actions.closeMoreMenu())
-            dispatch(actions.setPageState(PageState.WS_CREATE_TEMPLATE))
-          }}>{'Add Template'}</MenuItem>,
-          <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.closeMoreMenu())
-            dispatch(actions.toggleConnectionRectsVisible())
-          }}>{connectionRectsVisible ? 'Hide Connection Anchors' : 'Show Connection Anchors'}</MenuItem>,
+          <MenuItem key={genHash(8)} disabled={false} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(actions.setPageState(PageState.WS_CREATE_TEMPLATE))}}>{'Add Template'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(actions.toggleConnectionRectsVisible())}}>{connectionRectsVisible ? 'Hide Connection Anchors' : 'Show Connection Anchors'}</MenuItem>,
           <Divider key={genHash(8)}/>,
-          <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.closeMoreMenu())
-            dispatch(api.endpoints.createMapInTab.initiate())
-          }}>{'Add Tab Map'}</MenuItem>,
-          <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.closeMoreMenu())
-            dispatch(api.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))
-          }}>{'Move Tab Map Up'}</MenuItem>,
-          <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.closeMoreMenu())
-            dispatch(api.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))
-          }}>{'Move Tab Map Down'}</MenuItem>,
-          <MenuItem key={genHash(8)} onClick={() => {
-            dispatch(actions.closeMoreMenu())
-            dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))
-          }}>{'Remove Tab Map'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(api.endpoints.createMapInTab.initiate())}}>{'Add Tab Map'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(api.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}}>{'Move Tab Map Up'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(api.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}}>{'Move Tab Map Down'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {dispatch(actions.closeMoreMenu()); dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))}}>{'Remove Tab Map'}</MenuItem>,
           <Divider key={genHash(8)}/>,
-          <MenuItem key={genHash(8)} onClick={() => {
-            logout({ logoutParams: { returnTo: window.location.origin }})
-            dispatch(actions.resetState())
-            dispatch(api.util.resetApiState())
-          }}>{'Sign Out'}</MenuItem>,
+          <MenuItem key={genHash(8)} onClick={() => {logout({ logoutParams: { returnTo: window.location.origin }}); dispatch(actions.resetState()); dispatch(api.util.resetApiState())}}>{'Sign Out'}</MenuItem>,
           <MenuItem key={genHash(8)} onClick={() => {
             logout({ logoutParams: { returnTo: window.location.origin }})
             dispatch(api.endpoints.signOutEverywhere.initiate())
