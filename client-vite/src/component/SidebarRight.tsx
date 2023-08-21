@@ -32,21 +32,13 @@ export const SidebarRight: FC = () => {
           dispatch(actions.toggleFormatterVisible())
         }}><PaletteIcon/></IconButton>
       </Tooltip>
-      {/*<Tooltip title="Cells" placement="left-end">*/}
-      {/*  <IconButton color='secondary' onClick={() => {*/}
-      {/*    dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))*/}
-      {/*  }}><CalendarViewMonthIcon/></IconButton>*/}
-      {/*</Tooltip>*/}
+
       <Tooltip title="Tasks" placement="left-end">
         <IconButton color='secondary' onClick={() => {
           dispatch(actions.setPageState(PageState.WS_CREATE_TASK))
         }}><TaskIcon/></IconButton>
       </Tooltip>
-      <Tooltip title="Submaps" placement="left-end">
-        <IconButton color='secondary' onClick={() => {
-          dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))
-        }}><CreateMapInMapIcon/></IconButton>
-      </Tooltip>
+
       <Tooltip title="Density" placement="left-end">
         <IconButton color='secondary' onClick={() => {
           dispatch(actions.mapAction({type: 'changeDensity', payload: null}))

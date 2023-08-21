@@ -52,6 +52,7 @@ export const ContextMenu: FC = () => {
           <button id="doubleDropdownButton" data-dropdown-toggle="editSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Edit{MenuButtonSvg}</button>
           <div id="editSubMenu" className={subMenuClassName}>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+              { mExists && isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}}>Turn Node Into Submap</a></li> }
 
             </ul>
           </div>
