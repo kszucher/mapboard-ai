@@ -13,7 +13,11 @@ export interface EditorState {
   formatterVisible: boolean
   moreMenu: boolean
   frameMenu: boolean
-  contextMenu: null | {x: number, y: number}
+  contextMenu: {
+    isActive: boolean
+    type: 'map' | 'node'
+    position: {x: number, y: number}
+  }
   moveCoords: number[]
   selectionRectCoords: number[]
   intersectingNodes: N[]

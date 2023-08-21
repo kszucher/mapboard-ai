@@ -27,11 +27,6 @@ export const SidebarRight: FC = () => {
 
   return (
     <div className={"_bg fixed right-0 w-[48px] flex flex-col items-center py-1 px-1 border-r-0 z-50"} style={{top: 80, borderRadius: '8px 0 0 8px'}}>
-      <Tooltip title="Formatter" placement="left-end">
-        <IconButton color='secondary' onClick={() => {
-          dispatch(actions.toggleFormatterVisible())
-        }}><PaletteIcon/></IconButton>
-      </Tooltip>
 
       <Tooltip title="Density" placement="left-end">
         <IconButton color='secondary' onClick={() => {

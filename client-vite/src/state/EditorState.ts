@@ -14,7 +14,11 @@ export const editorState: EditorState = {
   formatterVisible: false,
   moreMenu: false,
   frameMenu: false,
-  contextMenu: null,
+  contextMenu: {
+    isActive: false,
+    type: 'map',
+    position: {x: 0, y: 0}
+  },
   moveCoords: [],
   selectionRectCoords: [],
   intersectingNodes: [],

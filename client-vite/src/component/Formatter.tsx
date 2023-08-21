@@ -132,7 +132,7 @@ export const Formatter: FC = () => {
         </Button>
       </div>
       <div className="flex flex-row justify-center">
-        <Button color="primary" variant='outlined' onClick={() => dispatch(actions.toggleFormatterVisible())}>{'CLOSE'}</Button>
+        <Button color="primary" variant='outlined' onClick={() => dispatch(actions.closeFormatter())}>{'CLOSE'}</Button>
       </div>
     </div>
   )

@@ -122,7 +122,7 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 2) {
                   n.selected === 0 && n.selection === 's' && !(isR(n.path) && isXD(m) && getRi(n.path) === getXRi(m)) &&
                   dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
-                  dispatch(actions.openContextMenu({x: e.clientX, y: e.clientY}))
+                  dispatch(actions.openContextMenu({type: 'node', position: {x: e.clientX, y: e.clientY}}))
                 }
               }}
               onDoubleClick={(e) => {
