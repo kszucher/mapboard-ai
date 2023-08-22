@@ -19,7 +19,8 @@ export enum Templates {
   yana = `Pitch Deck - Yana's Framework`,
   // swot = 'Pitch Deck - SWOT',
   enterpriseArchitecture = 'Enterprise Architecture',
-  mermaidSample = 'Mermaid Sample'
+  mermaidSample = 'Mermaid Sample',
+  prd = 'Product Requirements Document',
 }
 
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
@@ -31,6 +32,28 @@ export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: n
         {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "New Root"} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: ""} as GN,
         {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",1], content: ""} as GN
+      ]
+      break
+    }
+    case Templates.prd: {
+      template = [
+        {selected: 1, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,], content: "Product Requirements Document", sFillColor: "#B25C6D"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0], content: "", sFillColor: undefined} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",0], content: "Vision", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",1], content: "Description", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",2], content: "Timing", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",3], content: "Status", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",4], content: "Team", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",5], content: "Background", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",6], content: "Strategic alignment", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",7], content: "Metrics", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",8], content: "Who it benefits", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",9], content: "Use cases", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",10], content: "Assumptions", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",11], content: "Investment required", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",12], content: "Product architecture and components", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",0,"s",13], content: "Core features", sFillColor: "#1C5D6C"} as GN,
+        {selected: 0, selection: "s", nodeId: 'node' + genHash(8), path: ["r",ri,"d",1], content: "", sFillColor: undefined} as GN
       ]
       break
     }
