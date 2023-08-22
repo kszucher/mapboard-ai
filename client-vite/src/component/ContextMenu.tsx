@@ -66,6 +66,15 @@ export const ContextMenu: FC = () => {
               </ul>
             </div>
           </li>
+          <li>
+            <button id="doubleDropdownButton" data-dropdown-toggle="sharesSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Shares{MenuButtonSvg}</button>
+            <div id="sharesSubMenu" className={subMenuClassName}>
+              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARES))}}>{'Shares'}</a></li> }
+                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}}>{'Share This Map'}</a></li> }
+              </ul>
+            </div>
+          </li>
         </ul>
       </div>
       <div hidden={contextMenu.type !== 'node'}>

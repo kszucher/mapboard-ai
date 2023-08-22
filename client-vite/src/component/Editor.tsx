@@ -5,7 +5,6 @@ import {RootState} from "../core/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {MenuFrames} from "./MenuFrames"
-import {MenuProfile} from "./MenuProfile"
 import {ModalCreateTemplate} from "./ModalCreateTemplate"
 import {ModalEditContentMermaid} from "./ModalEditContentMermaid"
 import {ModalEditNote} from "./ModalEditNote"
@@ -58,7 +57,6 @@ export const Editor: FC = () => {
       {mExists && <Window/>}
       <Logo/>
       <SidebarTop/>
-      <MenuProfile/>
       <MenuFrames/>
       {pageState === PageState.WS_PROFILE && <Profile/>}
       {pageState === PageState.WS_SETTINGS && <Settings/>}

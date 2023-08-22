@@ -16,7 +16,7 @@ export const ModalDeleteUser:FC = () => {
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
-      {<div className="_bg fixed top-[80px] right-[64px] w-[192px] flex flex-col gap-4 p-4 rounded-lg">
+      {<div className="_bg fixed top-[80px] left-[64px] w-[192px] flex flex-col gap-4 p-4 rounded-lg">
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
           <Typography variant="subtitle2" color='primary'>
             {'ARE YOU REALLY SURE?'}
