@@ -4,11 +4,10 @@ import {unselectNodes} from "./MapSelect"
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getSI1, getCountSCR, getCountSCC} from "./MapUtils"
 
 const mermaidExample = `pie
-         "FRIENDS" : 2
-         "FAMILY" : 3
-         "NOSE" : 45
+"FRIENDS" : 2
+"FAMILY" : 3
+"NOSE" : 45
 `
-
 
 export enum Templates {
   empty = 'Empty',

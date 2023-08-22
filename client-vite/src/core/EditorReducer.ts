@@ -97,7 +97,7 @@ export const editorSlice = createSlice({
           let m
           if (content.substring(0, 2) === '\\[') {
             m = mapReducer(pm, 'finishEdit', {path, contentType: 'equation', content})
-          } else if (content.startsWith('graph')) {
+          } else if (content.startsWith('graph') || content.startsWith('pie')) {
             m = mapReducer(pm, 'finishEdit', {path, contentType: 'mermaid', content})
           } else {
             m = mapReducer(pm, 'finishEdit', {path, contentType: 'text', content})
