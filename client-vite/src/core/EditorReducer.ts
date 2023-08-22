@@ -1,4 +1,12 @@
-import {combineReducers, configureStore, createListenerMiddleware, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
+import {
+  combineReducers,
+  configureStore,
+  createListenerMiddleware,
+  createSlice,
+  current,
+  isAction,
+  PayloadAction
+} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../component/MapDivUtils"
 import {editorState} from "../state/EditorState"
@@ -97,7 +105,7 @@ export const editorSlice = createSlice({
           let m
           if (content.substring(0, 2) === '\\[') {
             m = mapReducer(pm, 'finishEdit', {path, contentType: 'equation', content})
-          } else if (content.startsWith('graph') || content.startsWith('pie')) {
+          } else if (content.startsWith('graph') || content.startsWith('sequenceDiagram')) {
             m = mapReducer(pm, 'finishEdit', {path, contentType: 'mermaid', content})
           } else {
             m = mapReducer(pm, 'finishEdit', {path, contentType: 'text', content})
@@ -118,6 +126,9 @@ export const editorSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addMatcher(
+      isAction, (state, action) => {}
+    )
     builder.addMatcher(
       api.endpoints.signIn.matchFulfilled,
       (state) => {state.pageState = PageState.WS}

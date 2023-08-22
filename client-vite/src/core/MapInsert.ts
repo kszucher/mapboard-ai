@@ -3,10 +3,12 @@ import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 import {unselectNodes} from "./MapSelect"
 import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getSI1, getCountSCR, getCountSCC} from "./MapUtils"
 
-const mermaidExample = `pie
-"FRIENDS" : 2
-"FAMILY" : 3
-"NOSE" : 45
+const mermaidExample = `
+sequenceDiagram
+participant A as Customer
+participant B as Service
+A->>B: Request
+B->>A: Response
 `
 
 export enum Templates {
@@ -15,7 +17,7 @@ export enum Templates {
   leanCanvasFramework = 'Pitch Deck - Lean Canvas Framework',
   featureCanvasFramework = 'Pitch Deck - Feature Canvas Framework',
   yana = `Pitch Deck - Yana's Framework`,
-  swot = 'Pitch Deck - SWOT',
+  // swot = 'Pitch Deck - SWOT',
   enterpriseArchitecture = 'Enterprise Architecture',
   mermaidSample = 'Mermaid Sample'
 }
