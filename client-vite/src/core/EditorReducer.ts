@@ -1,12 +1,4 @@
-import {
-  combineReducers,
-  configureStore,
-  createListenerMiddleware,
-  createSlice,
-  current,
-  isAction,
-  PayloadAction
-} from "@reduxjs/toolkit"
+import {combineReducers, configureStore, createListenerMiddleware, createSlice, current, isAction, PayloadAction} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../component/MapDivUtils"
 import {editorState} from "../state/EditorState"
