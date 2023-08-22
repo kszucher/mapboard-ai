@@ -22,8 +22,10 @@ export enum AccessTypes {
 
 export enum FormatMode {
   text,
-  border,
-  fill,
+  sBorder,
+  fBorder,
+  sFill,
+  fFill,
   line
 }
 
