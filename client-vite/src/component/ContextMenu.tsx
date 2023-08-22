@@ -2,6 +2,7 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
 import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../core/GptPrompter"
+import {Templates} from "../core/MapInsert"
 import {getCountNSO1, getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXSO1, getCountXSO2, getG, getR0, getRi, getRXD0, getRXD1, getX, getXAF, getXP, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -23,12 +24,36 @@ export const ContextMenu: FC = () => {
     <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={!contextMenu.isActive} style={{left: contextMenu.position.x + 1, top: contextMenu.position.y -20}}>
       <div hidden={contextMenu.type !== 'map'}>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="">
-          { mExists && getG(m).density === 'small' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}}>{'Set Cozy'}</a></li> }
-          { mExists && getG(m).density === 'large' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}}>{'Set Compact'}</a></li> }
-          { mExists && getG(m).alignment === 'adaptive' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}}>{'Set Centered'}</a></li> }
-          { mExists && getG(m).alignment === 'centered' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}}>{'Set Adaptive'}</a></li> }
-          { mExists && !connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.showConnectionHelpers())}}>{'Show Connection Helpers'}</a></li> }
-          { mExists && connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Connection Helpers'}</a></li> }
+          <li>
+            <button id="doubleDropdownButton" data-dropdown-toggle="viewSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>View{MenuButtonSvg}</button>
+            <div id="viewSubMenu" className={subMenuClassName}>
+              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                { mExists && getG(m).density === 'small' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}}>{'Set Cozy'}</a></li> }
+                { mExists && getG(m).density === 'large' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}}>{'Set Compact'}</a></li> }
+                { mExists && getG(m).alignment === 'adaptive' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}}>{'Set Centered'}</a></li> }
+                { mExists && getG(m).alignment === 'centered' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}}>{'Set Adaptive'}</a></li> }
+              </ul>
+            </div>
+          </li>
+          <li>
+            <button id="doubleDropdownButton" data-dropdown-toggle="connectionsSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Connections{MenuButtonSvg}</button>
+            <div id="connectionsSubMenu" className={subMenuClassName}>
+              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                { mExists && !connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.showConnectionHelpers())}}>{'Show Helpers'}</a></li> }
+                { mExists && connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Helpers'}</a></li> }
+              </ul>
+            </div>
+          </li>
+          <li>
+            <button id="doubleDropdownButton" data-dropdown-toggle="templatesSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Templates{MenuButtonSvg}</button>
+            <div id="templatesSubMenu" className={subMenuClassName}>
+              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                { mExists && Object.values(Templates).map((el, idx) => (
+                  <li key={idx}><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertTemplateRR', payload: {template: el}}))}}>{el}</a></li>
+                ))}
+              </ul>
+            </div>
+          </li>
         </ul>
       </div>
       <div hidden={contextMenu.type !== 'node'}>
