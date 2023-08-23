@@ -96,7 +96,6 @@ export const api = createApi({
     }),
     saveMap: builder.mutation<void, { mapId: string, frameId: string, mapData: any }>({
       query: ({ mapId, frameId, mapData }) => ({ url: 'beta-private', method: 'POST', body: { type: 'saveMap', payload: { mapId, frameId, mapData } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: []
     }),
     getShares: builder.query<any, void>({
