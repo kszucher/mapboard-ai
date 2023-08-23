@@ -100,7 +100,6 @@ export const api = createApi({
     }),
     getShares: builder.query<any, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'getShares' } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       providesTags: ['Shares']
     }),
     createShare: builder.mutation<void, { mapId: string, shareEmail: string, shareAccess: string}>({
