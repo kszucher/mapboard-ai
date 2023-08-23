@@ -22,7 +22,7 @@ export const Map: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const resetView = () => {
-    dispatch(actions.setZoomInfo({scale: 1, xLast: 0, yLast: 0, xNew: 0, yNew: 0, xImage: 0, yImage: 0}))
+    dispatch(actions.setZoomInfo({scale: 1, prevMapX: 0, prevMapY: 0, translateX: 0, translateY: 0, originX: 0, originY: 0}))
     setScrollLeft((window.innerWidth + g.mapWidth) / 2)
     setScrollTop(window.innerHeight - 40 * 2)
   }
@@ -83,22 +83,22 @@ export const Map: FC = () => {
         }
       }}
       onWheel={(e) => {
-        const {scale, xLast, yLast, xImage, yImage } = zoomInfo
+        const {scale, prevMapX, prevMapY, originX, originY } = zoomInfo
         const mapX = getMapX(e)
         const mapY = getMapY(e)
-        const newXImage = xImage + ((mapX - xLast) / scale)
-        const newYImage = yImage + ((mapY - yLast) / scale)
+        const x = originX + ((mapX - prevMapX) / scale)
+        const y = originY + ((mapY - prevMapY) / scale)
         let newScale = scale * Math.exp((e.deltaY < 0 ? 1 : -1) * ZOOM_INTENSITY)
         if (newScale > 20) {newScale = 20}
         if (newScale < 0.2) {newScale = 0.2}
         dispatch(actions.setZoomInfo({
           scale: newScale,
-          xLast: mapX,
-          yLast: mapY,
-          xNew: (mapX - newXImage) / newScale,
-          yNew: (mapY - newYImage) / newScale,
-          xImage: newXImage,
-          yImage: newYImage,
+          prevMapX: mapX,
+          prevMapY: mapY,
+          translateX: (mapX - x) / newScale,
+          translateY: (mapY - y) / newScale,
+          originX: x,
+          originY: y,
         }))
       }}
     >
@@ -109,8 +109,8 @@ export const Map: FC = () => {
       <div style={{
         position: 'relative',
         display: 'flex',
-        transform: `scale(${zoomInfo.scale}) translate(${zoomInfo.xNew}px, ${zoomInfo.yNew}px)`,
-        transformOrigin: `${zoomInfo.xImage}px ${zoomInfo.yImage}px`
+        transform: `scale(${zoomInfo.scale}) translate(${zoomInfo.translateX}px, ${zoomInfo.translateY}px)`,
+        transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`
       }}>
         <MapSvg/>
         <MapDiv/>

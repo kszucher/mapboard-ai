@@ -24,12 +24,12 @@ export const editorState: EditorState = {
   intersectingNodes: [],
   zoomInfo: {
     scale: 1,
-    xLast: 0,
-    yLast: 0,
-    xNew: 0,
-    yNew: 0,
-    xImage: 0,
-    yImage: 0,
+    prevMapX: 0,
+    prevMapY: 0,
+    translateX: 0,
+    translateY: 0,
+    originX: 0,
+    originY: 0,
   },
   connectionHelpersVisible: false,
   connectionStart: {

@@ -23,12 +23,12 @@ export interface EditorState {
   intersectingNodes: N[]
   zoomInfo: {
     scale: number
-    xLast: number
-    yLast: number
-    xNew: number
-    yNew: number
-    xImage: number
-    yImage: number
+    prevMapX: number
+    prevMapY: number
+    translateX: number
+    translateY: number
+    originX: number
+    originY: number
   }
   connectionHelpersVisible: boolean
   connectionStart: {

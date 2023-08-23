@@ -55,11 +55,11 @@ export const MapSvg: FC = () => {
         if (e.button === 1) {
           e.preventDefault()
         }
-        const {scale, xLast, yLast, xImage, yImage } = zoomInfo
+        const {scale, prevMapX, prevMapY, originX, originY } = zoomInfo
         const mapX = getMapX(e)
         const mapY = getMapY(e)
-        const fromX = xImage + ((mapX - xLast) / scale)
-        const fromY = yImage + ((mapY - yLast) / scale)
+        const fromX = originX + ((mapX - prevMapX) / scale)
+        const fromY = originY + ((mapY - prevMapY) / scale)
         let didMove = false
         const abortController = new AbortController()
         const { signal } = abortController
@@ -67,11 +67,11 @@ export const MapSvg: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.buttons === 1) {
-            const {scale, xLast, yLast, xImage, yImage } = zoomInfo
+            const {scale, prevMapX, prevMapY, originX, originY } = zoomInfo
             const mapX = getMapX(e)
             const mapY = getMapY(e)
-            const toX = xImage + ((mapX - xLast) / scale)
-            const toY = yImage + ((mapY - yLast) / scale)
+            const toX = originX + ((mapX - prevMapX) / scale)
+            const toY = originY + ((mapY - prevMapY) / scale)
             dispatch(actions.setSelectionRectCoords([Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]))
             dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromX, fromY, toX, toY)))
           }
