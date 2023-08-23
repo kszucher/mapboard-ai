@@ -30,7 +30,6 @@ const getInnerHtml = (n: N) => {
 export const MapDiv: FC = () => {
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const editType = useSelector((state: RootState) => state.editor.editType)
-  const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
@@ -107,14 +106,14 @@ export const MapDiv: FC = () => {
                     e.ctrlKey && dispatch(actions.mapAction({type: 'selectStoo', payload: {path: n.path}}))
                     const abortController = new AbortController()
                     const { signal } = abortController
-                    zoomInfo.scale === 1 && window.addEventListener('mousemove', (e) => {
+                    window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
                       !isXR(m) && dispatch(actions.mapAction({type: 'simulateDrag', payload: {n, e}}))
                     }, { signal })
-                    zoomInfo.scale === 1 && window.addEventListener('mouseup', (e) => {
+                    window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      // !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {n, e}}))
+                      !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {n, e}}))
                     }, { signal })
                   }
                 } else if (e.button === 1) {

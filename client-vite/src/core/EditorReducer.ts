@@ -54,16 +54,22 @@ export const editorSlice = createSlice({
         }
         case 'simulateDrag': {
           const {n, e} = action.payload.payload
-          const toX = getMapX(e)
-          const toY = getMapY(e)
+          const {scale, xLast, yLast, xImage, yImage } = state.zoomInfo
+          const mapX = getMapX(e)
+          const mapY = getMapY(e)
+          const toX = xImage + ((mapX - xLast) / scale)
+          const toY = yImage + ((mapY - yLast) / scale)
           const {moveCoords} = mapFindNearest(pm, n, toX, toY)
           state.moveCoords = moveCoords
           break
         }
         case 'drag': {
           const {n, e} = action.payload.payload
-          const toX = getMapX(e)
-          const toY = getMapY(e)
+          const {scale, xLast, yLast, xImage, yImage } = state.zoomInfo
+          const mapX = getMapX(e)
+          const mapY = getMapY(e)
+          const toX = xImage + ((mapX - xLast) / scale)
+          const toY = yImage + ((mapY - yLast) / scale)
           const {moveTargetPath, moveTargetIndex} = mapFindNearest(pm, n, toX, toY)
           if (moveTargetPath.length) {
             const m = mapReducer(pm, 'drag', {moveTargetPath, moveTargetIndex})

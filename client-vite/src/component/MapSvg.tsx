@@ -55,8 +55,11 @@ export const MapSvg: FC = () => {
         if (e.button === 1) {
           e.preventDefault()
         }
-        const fromX = getMapX(e)
-        const fromY = getMapY(e)
+        const {scale, xLast, yLast, xImage, yImage } = zoomInfo
+        const mapX = getMapX(e)
+        const mapY = getMapY(e)
+        const fromX = xImage + ((mapX - xLast) / scale)
+        const fromY = yImage + ((mapY - yLast) / scale)
         let didMove = false
         const abortController = new AbortController()
         const { signal } = abortController
@@ -64,10 +67,13 @@ export const MapSvg: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.buttons === 1) {
-            const toX = getMapX(e)
-            const toY = getMapY(e)
-            zoomInfo.scale === 1 && dispatch(actions.setSelectionRectCoords([Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]))
-            zoomInfo.scale === 1 && dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromX, fromY, toX, toY)))
+            const {scale, xLast, yLast, xImage, yImage } = zoomInfo
+            const mapX = getMapX(e)
+            const mapY = getMapY(e)
+            const toX = xImage + ((mapX - xLast) / scale)
+            const toY = yImage + ((mapY - yLast) / scale)
+            dispatch(actions.setSelectionRectCoords([Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]))
+            dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromX, fromY, toX, toY)))
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
@@ -78,9 +84,9 @@ export const MapSvg: FC = () => {
           if (didMove) {
             if (e.button === 0) {
               const nList = mapFindIntersecting(m, fromX, fromY, toX, toY)
-              zoomInfo.scale === 1 && nList.length && dispatch(actions.mapAction({type: 'selectDragged', payload: {nList}}))
-              zoomInfo.scale === 1 && dispatch(actions.setSelectionRectCoords([]))
-              zoomInfo.scale === 1 && dispatch(actions.setIntersectingNodes([]))
+              nList.length && dispatch(actions.mapAction({type: 'selectDragged', payload: {nList}}))
+              dispatch(actions.setSelectionRectCoords([]))
+              dispatch(actions.setIntersectingNodes([]))
             }
           }
         }, { signal })
