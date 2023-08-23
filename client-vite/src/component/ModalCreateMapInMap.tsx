@@ -25,7 +25,7 @@ export const ModalCreateMapInMap: FC = () => {
             color="primary"
             variant='outlined'
             disabled={isFetching}
-            onClick={() => dispatch(api.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getX(m).nodeId, content: getX(m).content}))}
+            onClick={() => {dispatch(api.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getX(m).nodeId, content: getX(m).content}))}}
           >
             {'OK'}
           </Button>

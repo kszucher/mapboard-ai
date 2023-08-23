@@ -1,12 +1,13 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import {timeoutId} from "../component/Window"
+import {getFrameId, getMapId} from "../state/ApiState"
+import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/ApiStateTypes"
+import {getMap} from "../state/EditorState"
+import {PageState} from "../state/Enums"
 import {GN} from "../state/MapStateTypes"
 import {actions, RootState} from "./EditorReducer"
-import {timeoutId} from "../component/Window"
-import {backendUrl} from "./Urls"
-import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/ApiStateTypes"
-import {getFrameId, getMapId} from "../state/ApiState"
-import {getMap} from "../state/EditorState"
 import {mapDeInit} from "./MapDeInit"
+import {backendUrl} from "./Urls"
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -48,72 +49,88 @@ export const api = createApi({
       },
       providesTags: ['Workspace']
     }),
-    selectMap: builder.mutation<void, { mapId: string, frameId: string }>({query: ({ mapId, frameId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'selectMap', payload: { mapId, frameId } } }),
+    selectMap: builder.mutation<void, { mapId: string, frameId: string }>({
+      query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'selectMap', payload: { mapId, frameId } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
-    createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({query: ({ mapId, nodeId, content }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInMap', payload: { mapId, nodeId, content} } }),
+    createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({
+      query: ({ mapId, nodeId, content }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInMap', payload: { mapId, nodeId, content} } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
-    createMapInTab: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInTab' } }),
+    createMapInTab: builder.mutation<void, void>({
+      query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInTab' } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
-    createMapFrameImport: builder.mutation<void, { mapId: string, frameId: string }>({query: ({ mapId, frameId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameImport', payload: { mapId, frameId } } }),
+    createMapFrameImport: builder.mutation<void, { mapId: string, frameId: string }>({
+      query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameImport', payload: { mapId, frameId } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
-    createMapFrameDuplicate: builder.mutation<void, { mapId: string, frameId: string }>({query: ({ mapId, frameId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameDuplicate', payload: { mapId, frameId } } }),
+    createMapFrameDuplicate: builder.mutation<void, { mapId: string, frameId: string }>({
+      query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameDuplicate', payload: { mapId, frameId } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
-    moveUpMapInTab: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'moveUpMapInTab', payload: { mapId } } }),
+    moveUpMapInTab: builder.mutation<void, { mapId: string }>({
+      query: ({ mapId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'moveUpMapInTab', payload: { mapId } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
-    moveDownMapInTab: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'moveDownMapInTab', payload: { mapId } } }),
+    moveDownMapInTab: builder.mutation<void, { mapId: string }>({
+      query: ({ mapId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'moveDownMapInTab', payload: { mapId } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
-    deleteMap: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMap', payload: { mapId } } }),
+    deleteMap: builder.mutation<void, { mapId: string }>({
+      query: ({ mapId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMap', payload: { mapId } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
-    deleteMapFrame: builder.mutation<void, { mapId: string, frameId: string }>({query: ({ mapId, frameId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMapFrame', payload: { mapId, frameId } } }),
+    deleteMapFrame: builder.mutation<void, { mapId: string, frameId: string }>({
+      query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMapFrame', payload: { mapId, frameId } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
-    saveMap: builder.mutation<void, { mapId: string, frameId: string, mapData: any }>({query: ({ mapId, frameId, mapData }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'saveMap', payload: { mapId, frameId, mapData } } }),
+    saveMap: builder.mutation<void, { mapId: string, frameId: string, mapData: any }>({
+      query: ({ mapId, frameId, mapData }) => ({ url: 'beta-private', method: 'POST', body: { type: 'saveMap', payload: { mapId, frameId, mapData } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: []
     }),
-    getShares: builder.query<any, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'getShares' } }),
+    getShares: builder.query<any, void>({
+      query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'getShares' } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       providesTags: ['Shares']
     }),
-    createShare: builder.mutation<void, { mapId: string, shareEmail: string, shareAccess: string}>({query: ({ mapId, shareEmail, shareAccess }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'createShare', payload: { mapId, shareEmail, shareAccess } } }),
+    createShare: builder.mutation<void, { mapId: string, shareEmail: string, shareAccess: string}>({
+      query: ({ mapId, shareEmail, shareAccess }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createShare', payload: { mapId, shareEmail, shareAccess } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Shares']
     }),
-    acceptShare: builder.mutation<void, { shareId: string }>({query: ({ shareId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'acceptShare', payload: { shareId } } }),
+    acceptShare: builder.mutation<void, { shareId: string }>({
+      query: ({ shareId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'acceptShare', payload: { shareId } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace', 'Shares']
     }),
-    toggleColorMode: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'toggleColorMode' } }),
+    toggleColorMode: builder.mutation<void, void>({
+      query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'toggleColorMode' } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     deleteAccount: builder.mutation<void, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'deleteAccount' } }),
       async onQueryStarted(arg, { dispatch }) {
+        dispatch(actions.setPageState(PageState.WS_LOADING))
         dispatch(actions.resetState())
-        dispatch(api.util.resetApiState())
-      },
+        dispatch(api.util.resetApiState()
+        )},
       invalidatesTags: []
     }),
-    getGptSuggestions: builder.query<any, GptData>({query: (payload) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'getGptSuggestions', payload } })
+    getGptSuggestions: builder.query<any, GptData>({
+      query: (payload) => ({ url: 'beta-private', method: 'POST', body: { type: 'getGptSuggestions', payload } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
     }),
   })
 })
