@@ -79,8 +79,10 @@ export const MapSvg: FC = () => {
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          const toX = getMapX(e)
-          const toY = getMapY(e)
+          const mapX = getMapX(e)
+          const mapY = getMapY(e)
+          const toX = originX + ((mapX - prevMapX) / scale)
+          const toY = originY + ((mapY - prevMapY) / scale)
           if (didMove) {
             if (e.button === 0) {
               const nList = mapFindIntersecting(m, fromX, fromY, toX, toY)
