@@ -70,8 +70,6 @@ export const isNR = (p: P, pt: P): boolean => pt.length >= p.length && pt.at(p.l
 const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 const getXSF = (m: M) => m.find(n => n.selected)!
 const getXSL = (m: M) => m.findLast(n => n.selected)!
-const getXASI1 = (m: M) => getSI1(getXSFP(m))
-const getXASI2 = (m: M) => getSI2(getXSFP(m))
 
 export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 export const getSI1 = (p: P) => getSIL(p).at(-1) as P
@@ -143,7 +141,7 @@ export const makeSpaceFromCR = (m: M, p: P) => m.forEach(n => isCFDF(p, n.path) 
 export const makeSpaceFromCC = (m: M, p: P) => m.forEach(n => isCFRF(p, n.path) && n.path.splice(p.length - 1, 1, n.path.at(p.length - 1) as number + 1))
 
 export const getReselectR = (m: M) => ['r', getXRi(m) - 1] as P
-export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1(m) : (isXDS(m) ? getXASI2(m): getXASI1(m))
+export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1(m) : (isXDS(m) ? getSI2(getXSFP(m)): getSI1(getXSFP(m)))
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU1(m).map(n => n.path) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL1(m).map(n => n.path) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 
