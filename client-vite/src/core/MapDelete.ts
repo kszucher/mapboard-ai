@@ -1,8 +1,6 @@
 import {M, P} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
-import {getNodeByPath, getSIL, isSD, getReselectS, getReselectCR, getReselectCC, getXP, getXRi, getReselectR, getG, getX, isND, isNR, getXAF} from "./MapUtils"
-
-const decPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number - n : p)
+import {getReselectS, getReselectCR, getReselectCC, getXP, getXRi, getReselectR, getG, getX, isNCD, isNCR, getXAF, isNSD, getXAO, getXA} from "./MapUtils"
 
 export const deleteR = (m: M) => {
   const g = getG(m)
@@ -16,19 +14,21 @@ export const deleteR = (m: M) => {
 }
 
 export const deleteS = (m: M) => {
-  for (let i = m.length - 1; i > 0; i--) {
-    const n = m[i]
-    const parentPathList = [...getSIL(n.path), n.path]
-    parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
-    parentPathList.forEach(p => n.path = decPiN(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
-  }
+  const deleteNodeListO = getXAO(m)
+  const deleteNodeIdListO = deleteNodeListO.map(n => n.nodeId)
+  m.splice(0, m.length, ...m.filter(n => !deleteNodeIdListO.includes(n.nodeId)))
+  const deleteNodeList = getXA(m)
+  const deleteNodePathList = deleteNodeList.map(n => n.path)
+  const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
+  m.forEach(n => deleteNodePathList.map(dp => isNSD(dp, n.path) && n.path.splice(dp.length - 1, 1, n.path.at(dp.length - 1) as number - 1)))
+  m.splice(0, m.length, ...m.filter(n => !deleteNodeIdList.includes(n.nodeId)))
 }
 
 export const deleteCR = (m: M) => {
   const deleteNodeList = getXAF(m)
   const deleteNodePathList = deleteNodeList.map(n => n.path)
   const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
-  m.forEach(n => deleteNodePathList.some(dp => isND(dp, n.path)) && n.path.splice(getXP(m).length - 2, 1, n.path.at(getXP(m).length - 2) as number - 1))
+  m.forEach(n => deleteNodePathList.map(dp => isNCD(dp, n.path) && n.path.splice(getXP(m).length - 2, 1, n.path.at(getXP(m).length - 2) as number - 1)))
   m.splice(0, m.length, ...m.filter(n => !deleteNodeIdList.includes(n.nodeId)))
 }
 
@@ -36,7 +36,7 @@ export const deleteCC = (m: M) => {
   const deleteNodeList = getXAF(m)
   const deleteNodePathList = deleteNodeList.map(n => n.path)
   const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
-  m.forEach(n => deleteNodePathList.some(dp => isNR(dp, n.path)) && n.path.splice(getXP(m).length - 1, 1, n.path.at(getXP(m).length - 1) as number - 1))
+  m.forEach(n => deleteNodePathList.map(dp => isNCR(dp, n.path) && n.path.splice(getXP(m).length - 1, 1, n.path.at(getXP(m).length - 1) as number - 1)))
   m.splice(0, m.length, ...m.filter(n => !deleteNodeIdList.includes(n.nodeId)))
 }
 

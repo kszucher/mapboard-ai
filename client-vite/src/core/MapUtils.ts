@@ -64,8 +64,9 @@ export const isXCB = (m: M) => isC(getXP(m)) && getCountXCU(m) === getCountXCV(m
 export const isXCT = (m: M) => isC(getXP(m)) && getCountXCU(m) === 0
 export const isXCR = (m: M) => isC(getXP(m)) && getCountXCL(m) === getCountXCH(m) - 1
 export const isXCL = (m: M) => isC(getXP(m)) && getCountXCL(m) === 0
-export const isND = (p: P, pt: P): boolean => pt.length >= p.length && pt.at(p.length - 2)! > p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
-export const isNR = (p: P, pt: P): boolean => pt.length >= p.length && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! > p.at(-1)!
+export const isNSD = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
+export const isNCD = (p: P, pt: P): boolean => pt.length >= p.length && pt.at(p.length - 2)! > p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
+export const isNCR = (p: P, pt: P): boolean => pt.length >= p.length && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! > p.at(-1)!
 
 const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 const getXSF = (m: M) => m.find(n => n.selected)!
@@ -87,8 +88,8 @@ export const getXSO1 = (m: M) => m.filter(n => isSO1(getXP(m), n.path))
 export const getXSO2 = (m: M) => m.filter(n => isSO2(getXP(m), n.path))
 export const getXA = (m: M) => m.filter(n => n.selected)
 export const getXASU1 = (m: M) => getSU1(getXSFP(m))
-
 export const getXAF = (m: M) => m.filter(n => getXA(m).some(xn => isSF(xn.path, n.path)))
+export const getXAO = (m: M) => m.filter(n => getXA(m).some(xn => isSO(xn.path, n.path)))
 export const getXSSCR0 = (m: M) => m.filter(n => isSCR0(getXP(m), n.path))
 export const getXSSCC0 = (m: M) => m.filter(n => isSCC0(getXP(m), n.path))
 export const getXSSCXX = (m: M) => m.filter(n => isSCXX(getXP(m), n.path))
