@@ -3,11 +3,6 @@ import {MARGIN_X, MARGIN_Y, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/C
 import {G, GN, M, N, P} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "./Utils"
 
-export const incPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number + 1 : p)
-export const decPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number - 1 : p)
-export const incPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number + n : p)
-export const decPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number - n : p)
-
 export const sortPath = (a: GN, b: GN) => a.path.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('') > b.path.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('') ? 1 : -1
 export const sortNode = (a: GN, b: GN) => a.nodeId > b.nodeId ? 1 : -1
 
@@ -25,6 +20,11 @@ export const getXRi = (m: M): number  => getRi(getXP(m))
 export const getNRi = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getNRiD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
 export const getXRiD0 = (m: M) => getNRiD0(m, getX(m))
+
+const isCD1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number + 1 && pt.at(-1) as number === p.at(-1) as number
+const isCU1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number - 1 && pt.at(-1) as number === p.at(-1) as number
+const isCR1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number + 1
+const isCL1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number - 1
 
 export const isG = (p: P) => getPathPattern(p).endsWith('g')
 export const isR = (p: P) => getPathPattern(p).endsWith('r')
@@ -64,10 +64,8 @@ export const isXCB = (m: M) => isC(getXP(m)) && getCountXCU(m) === getCountXCV(m
 export const isXCT = (m: M) => isC(getXP(m)) && getCountXCU(m) === 0
 export const isXCR = (m: M) => isC(getXP(m)) && getCountXCL(m) === getCountXCH(m) - 1
 export const isXCL = (m: M) => isC(getXP(m)) && getCountXCL(m) === 0
-const isCD1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number + 1 && pt.at(-1) as number === p.at(-1) as number
-const isCU1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number - 1 && pt.at(-1) as number === p.at(-1) as number
-const isCR1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number + 1
-const isCL1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number - 1
+export const isND = (p: P, pt: P): boolean => pt.length >= p.length && pt.at(p.length - 2)! > p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
+export const isNR = (p: P, pt: P): boolean => pt.length >= p.length && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! > p.at(-1)!
 
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
@@ -137,9 +135,9 @@ export const getCountXCV = (m: M): number => getCountCV(m, getXP(m))
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
 export const getPropXAF = (m: M, prop: keyof N) => isArrayOfEqualValues(getXAF(m).map(n => n[prop])) ? getX(m)[prop] : null
 
-export const makeSpaceFromS = (m: M, p: P, length: number) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, length))
-export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 2))
-export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCFRF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
+export const makeSpaceFromS = (m: M, p: P, length: number) => m.forEach(n => isSFDF(p, n.path) && n.path.splice(p.length - 1, 1, n.path.at(p.length - 1) as number + length))
+export const makeSpaceFromCR = (m: M, p: P) => m.forEach(n => isCFDF(p, n.path) && n.path.splice(p.length - 2, 1, n.path.at(p.length - 2) as number + 1))
+export const makeSpaceFromCC = (m: M, p: P) => m.forEach(n => isCFRF(p, n.path) && n.path.splice(p.length - 1, 1, n.path.at(p.length - 1) as number + 1))
 
 export const getReselectR = (m: M) => ['r', getXRi(m) - 1] as P
 export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1(m) : (isXDS(m) ? getXASI2(m): getXASI1(m))

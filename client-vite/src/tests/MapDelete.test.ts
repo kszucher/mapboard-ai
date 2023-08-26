@@ -84,7 +84,7 @@ const deleteCCResult = [
 ] as M
 
 describe("DeleteTests", () => {
-  test('deleteS', () => {mapReducerAtomic(deleteSTest, 'deleteS', {}); expect(deleteSTest.sort(sortNode)).toEqual(deleteSResult)})
-  test('deleteCR', () => {mapReducerAtomic(deleteCRTest, 'deleteCR', {}); expect(deleteCRTest.sort(sortNode)).toEqual(deleteCRResult)})
-  test('deleteCC', () => {mapReducerAtomic(deleteCCTest, 'deleteCC', {}); expect(deleteCCTest.sort(sortNode)).toEqual(deleteCCResult)})
+  test('deleteS', () => {mapReducerAtomic(deleteSTest, 'deleteS', {}); expect(deleteSTest).toEqual(deleteSResult)})
+  test('deleteCR', () => {mapReducerAtomic(deleteCRTest, 'deleteCR', {}); expect(deleteCRTest).toEqual(deleteCRResult)})
+  test('deleteCC', () => {mapReducerAtomic(deleteCCTest, 'deleteCC', {}); expect(deleteCCTest).toEqual(deleteCCResult)})
 })

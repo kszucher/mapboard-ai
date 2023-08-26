@@ -1,6 +1,8 @@
-import {M} from "../state/MapStateTypes"
+import {M, P} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
-import {decPiN, getNodeByPath, getSIL, isSD, isCFDF, decPi, isCFRF, getReselectS, getReselectCR, getReselectCC, getXA, getXP, getXRi, getReselectR, getG, getX} from "./MapUtils"
+import {getNodeByPath, getSIL, isSD, getReselectS, getReselectCR, getReselectCC, getXA, getXP, getXRi, getReselectR, getG, getX, isSF, isND, isNR} from "./MapUtils"
+
+const decPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number - n : p)
 
 export const deleteR = (m: M) => {
   const g = getG(m)
@@ -23,23 +25,19 @@ export const deleteS = (m: M) => {
 }
 
 export const deleteCR = (m: M) => {
-  for (let i = m.length - 1; i > 0; i--) {
-    const n = m[i]
-    const parentPathList = [...getSIL(n.path), n.path]
-    parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
-    if (!getXA(m).length) break
-    isCFDF(getXP(m), n.path) && Object.assign(n, {path: decPi(n.path, getXP(m).length - 2)})
-  }
+  const deleteNodeList = m.filter(n => getXA(m).some(xn => isSF(xn.path, n.path)))
+  const deleteNodePathList = deleteNodeList.map(n => n.path)
+  const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
+  m.forEach(n => deleteNodePathList.some(dp => isND(dp, n.path)) && n.path.splice(getXP(m).length - 2, 1, n.path.at(getXP(m).length - 2) as number - 1))
+  m.splice(0, m.length, ...m.filter(n => deleteNodeIdList.every(dn => dn !== n.nodeId)))
 }
 
 export const deleteCC = (m: M) => {
-  for (let i = m.length - 1; i > 0; i--) {
-    const n = m[i]
-    const parentPathList = [...getSIL(n.path), n.path]
-    parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
-    if (!getXA(m).length) break
-    isCFRF(getXP(m), n.path) && Object.assign(n, {path: decPi(n.path, getXP(m).length - 1)})
-  }
+  const deleteNodeList = m.filter(n => getXA(m).some(xn => isSF(xn.path, n.path)))
+  const deleteNodePathList = deleteNodeList.map(n => n.path)
+  const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
+  m.forEach(n => deleteNodePathList.some(dp => isNR(dp, n.path)) && n.path.splice(getXP(m).length - 1, 1, n.path.at(getXP(m).length - 1) as number - 1))
+  m.splice(0, m.length, ...m.filter(n => deleteNodeIdList.every(dn => dn !== n.nodeId)))
 }
 
 export const deleteReselectR = (m: M) => {
