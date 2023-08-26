@@ -29,7 +29,7 @@ export const deleteCR = (m: M) => {
   const deleteNodePathList = deleteNodeList.map(n => n.path)
   const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
   m.forEach(n => deleteNodePathList.some(dp => isND(dp, n.path)) && n.path.splice(getXP(m).length - 2, 1, n.path.at(getXP(m).length - 2) as number - 1))
-  m.splice(0, m.length, ...m.filter(n => deleteNodeIdList.every(dn => dn !== n.nodeId)))
+  m.splice(0, m.length, ...m.filter(n => !deleteNodeIdList.includes(n.nodeId)))
 }
 
 export const deleteCC = (m: M) => {
@@ -37,7 +37,7 @@ export const deleteCC = (m: M) => {
   const deleteNodePathList = deleteNodeList.map(n => n.path)
   const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
   m.forEach(n => deleteNodePathList.some(dp => isNR(dp, n.path)) && n.path.splice(getXP(m).length - 1, 1, n.path.at(getXP(m).length - 1) as number - 1))
-  m.splice(0, m.length, ...m.filter(n => deleteNodeIdList.every(dn => dn !== n.nodeId)))
+  m.splice(0, m.length, ...m.filter(n => !deleteNodeIdList.includes(n.nodeId)))
 }
 
 export const deleteReselectR = (m: M) => {
