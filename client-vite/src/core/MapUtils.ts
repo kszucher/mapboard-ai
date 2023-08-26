@@ -21,11 +21,6 @@ export const getNRi = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getNRiD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
 export const getXRiD0 = (m: M) => getNRiD0(m, getX(m))
 
-const isCD1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number + 1 && pt.at(-1) as number === p.at(-1) as number
-const isCU1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number - 1 && pt.at(-1) as number === p.at(-1) as number
-const isCR1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number + 1
-const isCL1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number - 1
-
 export const isG = (p: P) => getPathPattern(p).endsWith('g')
 export const isR = (p: P) => getPathPattern(p).endsWith('r')
 export const isD = (p: P) => getPathPattern(p).endsWith('d')
@@ -34,15 +29,19 @@ export const isC = (p: P) => getPathPattern(p).endsWith('c')
 export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
-export const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
-export const isSO2 = (p: P, pt: P) => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
-export const isCO1 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
-export const isCO2 = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
-export const isCON = (p: P) => p.includes('c')
-export const isSCXX = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p)
-export const isSCYY = (p: P, pt: P) => isSCXX(p, pt) && pt.at(-2) as number > 0 && pt.at(-1) as number > 0
-export const isSCR0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) === 0
-export const isSCC0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-1) === 0
+const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
+const isSO2 = (p: P, pt: P) => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
+const isCO1 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
+const isCO2 = (p: P, pt: P) => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
+const isCON = (p: P) => p.includes('c')
+const isCD1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number + 1 && pt.at(-1) as number === p.at(-1) as number
+const isCU1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number - 1 && pt.at(-1) as number === p.at(-1) as number
+const isCR1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number + 1
+const isCL1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number - 1
+const isSCXX = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p)
+const isSCYY = (p: P, pt: P) => isSCXX(p, pt) && pt.at(-2) as number > 0 && pt.at(-1) as number > 0
+const isSCR0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) === 0
+const isSCC0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-1) === 0
 export const isSF = (p: P, pt: P) => isEqual(p, pt) || isSO(p, pt)
 export const isSDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
 export const isSFDF = (p: P, pt: P) => isSF(p, pt) || isSDF(p, pt)
@@ -85,10 +84,11 @@ export const getXSI2 = (m: M) => getSI2(getXP(m))
 export const getXSO1 = (m: M) => m.filter(n => isSO1(getXP(m), n.path))
 export const getXSO2 = (m: M) => m.filter(n => isSO2(getXP(m), n.path))
 export const getXA = (m: M) => m.filter(n => n.selected)
+
 export const getXASU1 = (m: M) => getSU1(getXSFP(m))
 export const getXASI1 = (m: M) => getSI1(getXSFP(m))
 export const getXASI2 = (m: M) => getSI2(getXSFP(m))
-export const getXAF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
+export const getXAF = (m: M) => m.filter(n => getXA(m).some(xn => isSF(xn.path, n.path)))
 export const getXSSCR0 = (m: M) => m.filter(n => isSCR0(getXP(m), n.path))
 export const getXSSCC0 = (m: M) => m.filter(n => isSCC0(getXP(m), n.path))
 export const getXSSCXX = (m: M) => m.filter(n => isSCXX(getXP(m), n.path))

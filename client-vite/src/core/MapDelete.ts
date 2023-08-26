@@ -1,6 +1,6 @@
 import {M, P} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
-import {getNodeByPath, getSIL, isSD, getReselectS, getReselectCR, getReselectCC, getXA, getXP, getXRi, getReselectR, getG, getX, isSF, isND, isNR} from "./MapUtils"
+import {getNodeByPath, getSIL, isSD, getReselectS, getReselectCR, getReselectCC, getXP, getXRi, getReselectR, getG, getX, isND, isNR, getXAF} from "./MapUtils"
 
 const decPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number - n : p)
 
@@ -25,7 +25,7 @@ export const deleteS = (m: M) => {
 }
 
 export const deleteCR = (m: M) => {
-  const deleteNodeList = m.filter(n => getXA(m).some(xn => isSF(xn.path, n.path)))
+  const deleteNodeList = getXAF(m)
   const deleteNodePathList = deleteNodeList.map(n => n.path)
   const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
   m.forEach(n => deleteNodePathList.some(dp => isND(dp, n.path)) && n.path.splice(getXP(m).length - 2, 1, n.path.at(getXP(m).length - 2) as number - 1))
@@ -33,7 +33,7 @@ export const deleteCR = (m: M) => {
 }
 
 export const deleteCC = (m: M) => {
-  const deleteNodeList = m.filter(n => getXA(m).some(xn => isSF(xn.path, n.path)))
+  const deleteNodeList = getXAF(m)
   const deleteNodePathList = deleteNodeList.map(n => n.path)
   const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
   m.forEach(n => deleteNodePathList.some(dp => isNR(dp, n.path)) && n.path.splice(getXP(m).length - 1, 1, n.path.at(getXP(m).length - 1) as number - 1))
