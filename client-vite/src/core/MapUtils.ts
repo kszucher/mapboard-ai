@@ -21,14 +21,6 @@ export const getNRi = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getNRiD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
 export const getXRiD0 = (m: M) => getNRiD0(m, getX(m))
 
-export const isG = (p: P) => getPathPattern(p).endsWith('g')
-export const isR = (p: P) => getPathPattern(p).endsWith('r')
-export const isD = (p: P) => getPathPattern(p).endsWith('d')
-export const isS = (p: P) => getPathPattern(p).endsWith('s')
-export const isC = (p: P) => getPathPattern(p).endsWith('c')
-export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
-export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
-export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
 const isSO2 = (p: P, pt: P) => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
 const isCO1 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
@@ -42,19 +34,28 @@ const isSCXX = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0
 const isSCYY = (p: P, pt: P) => isSCXX(p, pt) && pt.at(-2) as number > 0 && pt.at(-1) as number > 0
 const isSCR0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) === 0
 const isSCC0 = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-1) === 0
-export const isSF = (p: P, pt: P) => isEqual(p, pt) || isSO(p, pt)
-export const isSDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
-export const isSFDF = (p: P, pt: P) => isSF(p, pt) || isSDF(p, pt)
-export const isSV = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
+const isSF = (p: P, pt: P) => isEqual(p, pt) || isSO(p, pt)
+const isSDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
+const isSFDF = (p: P, pt: P) => isSF(p, pt) || isSDF(p, pt)
+const isSV = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
+const isCFRF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 1)! >= p.at(-1)!
+const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
+const isXASV = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
+
+export const isG = (p: P) => getPathPattern(p).endsWith('g')
+export const isR = (p: P) => getPathPattern(p).endsWith('r')
+export const isD = (p: P) => getPathPattern(p).endsWith('d')
+export const isS = (p: P) => getPathPattern(p).endsWith('s')
+export const isC = (p: P) => getPathPattern(p).endsWith('c')
+export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
+export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
+export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 export const isCV = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const isCH = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
-export const isCFRF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 1)! >= p.at(-1)!
-export const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
 export const isXR = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
 export const isXD = (m: M) => isD(getXP(m)) && !m.find(n => n.selected && !isD(n.path))
 export const isXS = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
 export const isXDS = (m: M) => getXP(m).length === 6
-export const isXASV = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
 export const isXASVN = (m: M) => isXASV(m) && ((getXSLP(m).at(-1) as number) - (getXSF(m).path.at(-1) as number)) === getXA(m).length - 1
 export const isXC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
 export const isXACR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCV(getXP(m), p))
@@ -66,7 +67,12 @@ export const isXCL = (m: M) => isC(getXP(m)) && getCountXCL(m) === 0
 export const isND = (p: P, pt: P): boolean => pt.length >= p.length && pt.at(p.length - 2)! > p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
 export const isNR = (p: P, pt: P): boolean => pt.length >= p.length && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! > p.at(-1)!
 
-export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
+const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
+const getXSF = (m: M) => m.find(n => n.selected)!
+const getXSL = (m: M) => m.findLast(n => n.selected)!
+const getXASI1 = (m: M) => getSI1(getXSFP(m))
+const getXASI2 = (m: M) => getSI2(getXSFP(m))
+
 export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 export const getSI1 = (p: P) => getSIL(p).at(-1) as P
 export const getSI2 = (p: P) => getSIL(p).at(-2) as P
@@ -75,19 +81,15 @@ export const getRL = (m: M) => m.filter(n => n.path.length === 2)
 export const getR0 = (m: M) => getNodeByPath(m, ['r', 0])
 export const getX = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getXP = (m: M) => getX(m).path
-export const getXSF = (m: M) => m.find(n => n.selected)!
 export const getXSFP = (m: M) => getXSF(m).path
-export const getXSL = (m: M) => m.findLast(n => n.selected)!
 export const getXSLP = (m: M) => getXSL(m).path
 export const getXSI1  = (m: M) => getSI1(getXP(m))
 export const getXSI2 = (m: M) => getSI2(getXP(m))
 export const getXSO1 = (m: M) => m.filter(n => isSO1(getXP(m), n.path))
 export const getXSO2 = (m: M) => m.filter(n => isSO2(getXP(m), n.path))
 export const getXA = (m: M) => m.filter(n => n.selected)
-
 export const getXASU1 = (m: M) => getSU1(getXSFP(m))
-export const getXASI1 = (m: M) => getSI1(getXSFP(m))
-export const getXASI2 = (m: M) => getSI2(getXSFP(m))
+
 export const getXAF = (m: M) => m.filter(n => getXA(m).some(xn => isSF(xn.path, n.path)))
 export const getXSSCR0 = (m: M) => m.filter(n => isSCR0(getXP(m), n.path))
 export const getXSSCC0 = (m: M) => m.filter(n => isSCC0(getXP(m), n.path))
@@ -110,6 +112,7 @@ const getCountRXD0S = (m: M, ri: number): number => m.filter(n => n.path.length 
 const getCountRXD1S  = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length
 const getCountCV = (m: M, p: P): number => m.filter(n => isCH(p, n.path)).length
 const getCountCH = (m: M, p: P): number => m.filter(n => isCV(p, n.path)).length
+
 export const getCountSCR = (m: M, p: P): number => getCountCV(m, [...p, 'c', 0, 0])
 export const getCountSCC = (m: M, p: P): number => getCountCH(m, [...p, 'c', 0, 0])
 
