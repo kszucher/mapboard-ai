@@ -14,6 +14,8 @@ export const selectNodeToo = (m: M, path: P, selection: 's' | 'f') => {
   Object.assign(getNodeByPath(m, path), {selected: getX(m).selected + 1, selection})
 }
 export const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
-  unselectNodes(m)
-  pList.map((p, i) => Object.assign(getNodeByPath(m, p), {selected: i + 1, selection}))
+  if (pList.length) {
+    unselectNodes(m)
+    pList.map((p, i) => Object.assign(getNodeByPath(m, p), {selected: i + 1, selection}))
+  }
 }

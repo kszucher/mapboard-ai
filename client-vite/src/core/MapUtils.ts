@@ -64,6 +64,10 @@ export const isXCB = (m: M) => isC(getXP(m)) && getCountXCU(m) === getCountXCV(m
 export const isXCT = (m: M) => isC(getXP(m)) && getCountXCU(m) === 0
 export const isXCR = (m: M) => isC(getXP(m)) && getCountXCL(m) === getCountXCH(m) - 1
 export const isXCL = (m: M) => isC(getXP(m)) && getCountXCL(m) === 0
+const isCD1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number + 1 && pt.at(-1) as number === p.at(-1) as number
+const isCU1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number - 1 && pt.at(-1) as number === p.at(-1) as number
+const isCR1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number + 1
+const isCL1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number - 1
 
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
@@ -82,10 +86,6 @@ export const getXSI1  = (m: M) => getSI1(getXP(m))
 export const getXSI2 = (m: M) => getSI2(getXP(m))
 export const getXSO1 = (m: M) => m.filter(n => isSO1(getXP(m), n.path))
 export const getXSO2 = (m: M) => m.filter(n => isSO2(getXP(m), n.path))
-export const getXCD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
-export const getXCU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
-export const getXCR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
-export const getXCL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
 export const getXA = (m: M) => m.filter(n => n.selected)
 export const getXASU1 = (m: M) => getSU1(getXSFP(m))
 export const getXASI1 = (m: M) => getSI1(getXSFP(m))
@@ -95,10 +95,10 @@ export const getXSSCR0 = (m: M) => m.filter(n => isSCR0(getXP(m), n.path))
 export const getXSSCC0 = (m: M) => m.filter(n => isSCC0(getXP(m), n.path))
 export const getXSSCXX = (m: M) => m.filter(n => isSCXX(getXP(m), n.path))
 export const getXSSCYY = (m: M) => m.filter(n => isSCYY(getXP(m), n.path))
-export const getXCRD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
-export const getXCRU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
-export const getXCCR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
-export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
+export const getXACD1 = (m: M) => m.filter(n => getXA(m).some(xn => isCD1(xn.path, n.path)))
+export const getXACU1 = (m: M) => m.filter(n => getXA(m).some(xn => isCU1(xn.path, n.path)))
+export const getXACR1 = (m: M) => m.filter(n => getXA(m).some(xn => isCR1(xn.path, n.path)))
+export const getXACL1 = (m: M) => m.filter(n => getXA(m).some(xn => isCL1(xn.path, n.path)))
 export const getRXD0 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 0])
 export const getRXD1 = (m: M, ri: number) => getNodeByPath(m, ['r', ri, 'd', 1])
 
@@ -143,8 +143,8 @@ export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCFRF(p, n.path)).
 
 export const getReselectR = (m: M) => ['r', getXRi(m) - 1] as P
 export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1(m) : (isXDS(m) ? getXASI2(m): getXASI1(m))
-export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
-export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
+export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU1(m).map(n => n.path) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
+export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL1(m).map(n => n.path) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1(m)] )
 
 export const fR = (m: M, n: N) => ['r', 0, ...n.path.slice(getXP(m).length)]
 export const fS = (m: M, n: N) => ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]
