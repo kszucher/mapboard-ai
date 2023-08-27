@@ -60,7 +60,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSU': insertS(m, [...getXP(m)], payload); break
     case 'insertSOR': insertS(m, ['r', getXRi(m), 'd', 0, 's', getCountXRXD0S(m)], payload); break
     case 'insertSO': insertS(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
-    case 'insertSCSO': insertS(m, [...getXP(m), 'c', payload.rowIndex, payload.colIndex, 's', 0], {}); break
     case 'insertSORText': insertS(m, ['r', getXRi(m), 'd', 0, 's', getCountXRXD0S(m)], {contentType: 'text', content: payload}); break
     case 'insertSOText': insertS(m, [...getXP(m), 's', getCountXSO1(m)], {contentType: 'text', content: payload}); break
     case 'insertSORLink': insertS(m, ['r', getXRi(m), 'd', 0, 's', getCountXRXD0S(m)], {contentType: 'text', content: payload, linkType: 'external', link: payload}); break

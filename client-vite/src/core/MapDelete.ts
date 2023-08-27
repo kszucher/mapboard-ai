@@ -1,6 +1,6 @@
 import {M, P} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
-import {getReselectS, getReselectCR, getReselectCC, getXP, getXRi, getReselectR, getG, getX, isNCD, isNCR, getXAF, isNSD, getXAO, getXA} from "./MapUtils"
+import {getReselectS, getReselectCR, getReselectCC, getXP, getXRi, getReselectR, getG, getX, isNCD, isNCR, isNSD, getXAO, getXA} from "./MapUtils"
 
 export const deleteR = (m: M) => {
   const g = getG(m)
@@ -25,7 +25,10 @@ export const deleteS = (m: M) => {
 }
 
 export const deleteCR = (m: M) => {
-  const deleteNodeList = getXAF(m)
+  const deleteNodeListO = getXAO(m)
+  const deleteNodeIdListO = deleteNodeListO.map(n => n.nodeId)
+  m.splice(0, m.length, ...m.filter(n => !deleteNodeIdListO.includes(n.nodeId)))
+  const deleteNodeList = getXA(m)
   const deleteNodePathList = deleteNodeList.map(n => n.path)
   const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
   m.forEach(n => deleteNodePathList.map(dp => isNCD(dp, n.path) && n.path.splice(getXP(m).length - 2, 1, n.path.at(getXP(m).length - 2) as number - 1)))
@@ -33,7 +36,10 @@ export const deleteCR = (m: M) => {
 }
 
 export const deleteCC = (m: M) => {
-  const deleteNodeList = getXAF(m)
+  const deleteNodeListO = getXAO(m)
+  const deleteNodeIdListO = deleteNodeListO.map(n => n.nodeId)
+  m.splice(0, m.length, ...m.filter(n => !deleteNodeIdListO.includes(n.nodeId)))
+  const deleteNodeList = getXA(m)
   const deleteNodePathList = deleteNodeList.map(n => n.path)
   const deleteNodeIdList = deleteNodeList.map(n => n.nodeId)
   m.forEach(n => deleteNodePathList.map(dp => isNCR(dp, n.path) && n.path.splice(getXP(m).length - 1, 1, n.path.at(getXP(m).length - 1) as number - 1)))
