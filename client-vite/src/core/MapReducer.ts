@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getXSFP, getXSLP, getCountSCV, getCountSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getXSFP, getXSLP, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -74,9 +74,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertCRU': insertCR(m, getXSI1(m), getCountXCU(m)); break
     case 'insertCCR': insertCC(m, getXSI1(m), getCountXCL(m) + 1); break
     case 'insertCCL': insertCC(m, getXSI1(m), getCountXCL(m)); break
-    case 'insertSCRD': insertCR(m, getX(m), getCountSCV(m, getXP(m))); break
+    case 'insertSCRD': insertCR(m, getX(m), getCountXSCV(m)); break
     case 'insertSCRU': insertCR(m, getX(m), 0); break
-    case 'insertSCCR': insertCC(m, getX(m), getCountSCH(m, getXP(m))); break
+    case 'insertSCCR': insertCC(m, getX(m), getCountXSCH(m)); break
     case 'insertSCCL': insertCC(m, getX(m), 0); break
     case 'insertTemplateRR': insertTemplateR(m, payload.template, getRiL(m) + 1, getRootStartX(m, getR0(m)) + getG(m).maxR + 200, 0); break
     case 'insertTemplateRD': insertTemplateR(m, payload.template, getRiL(m) + 1, 0, getRootStartY(m, getR0(m)) + getG(m).maxD + 500); break
