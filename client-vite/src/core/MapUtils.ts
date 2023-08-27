@@ -17,7 +17,7 @@ export const isDirL = (m: M) => getPathDir(getXP(m)) === -1
 
 export const getRi = (p: P): number => p.at(1) as number
 export const getRiL = (m: M): number => m.findLast(n => n.path.length === 2)!.path.at(1) as number
-export const getXRi = (m: M): number  => getRi(getXP(m))
+export const getXRi = (m: M): number => getRi(getXP(m))
 export const getNRi = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getNRiD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
 export const getXRiD0 = (m: M): N => getNRiD0(m, getX(m))
@@ -81,7 +81,7 @@ export const getSI2P = (p: P): P => getSIPL(p).at(-2) as P
 export const getXP = (m: M): P => getX(m).path
 export const getXSFP = (m: M): P => getXSF(m).path
 export const getXSLP = (m: M): P => getXSL(m).path
-export const getXSI1P  = (m: M): P => getSI1P(getXP(m))
+export const getXSI1P = (m: M): P => getSI1P(getXP(m))
 export const getXSI2P = (m: M): P => getSI2P(getXP(m))
 export const getXASU1P = (m: M): P => getSU1(getXSFP(m))
 
@@ -114,7 +114,7 @@ const getCountSO2 = (m: M, p: P): number => m.filter(n => isSO2(p, n.path)).leng
 const getCountCO1 = (m: M, p: P): number => m.filter(n => isCO1(p, n.path)).length
 const getCountCO2 = (m: M, p: P): number => m.filter(n => isCO2(p, n.path)).length
 const getCountRXD0S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === 1 && isS(n.path)).length
-const getCountRXD1S  = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length
+const getCountRXD1S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length
 const getCountCV = (m: M, p: P): number => m.filter(n => isCH(p, n.path)).length
 const getCountCH = (m: M, p: P): number => m.filter(n => isCV(p, n.path)).length
 export const getCountSCR = (m: M, p: P): number => getCountCV(m, [...p, 'c', 0, 0])
