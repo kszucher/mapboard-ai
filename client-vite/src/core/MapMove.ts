@@ -60,11 +60,10 @@ export const copyS = (m: M) => {
   cbSave(cbDeInit)
 }
 
-export const pasteS = (m: M, insertTargetPath: P, insertTargetIndex: number, payload: any) => {
-  const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
+export const pasteS = (m: M, insertTargetNode: N, insertTargetIndex: number, payload: any) => {
   const cb = JSON.parse(payload) as M
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
-  const ip = [...getNodeById(m, insertTargetNodeId).path, 's', insertTargetIndex] as P
+  const ip = [...insertTargetNode.path, 's', insertTargetIndex] as P
   unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
   m.push(...cb2ipS(cb, ip))

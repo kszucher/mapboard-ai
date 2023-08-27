@@ -104,8 +104,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'copyR': copyR(m); break
     case 'copyS': copyS(m); break
     case 'cutS': cutS(m); break
-    case 'pasteSOR': pasteS(m, ['r', getXRi(m), 'd', 0], getCountXRiD0S(m), payload); break
-    case 'pasteSO': pasteS(m, getXP(m), getCountXSO1(m), payload); break
+    case 'pasteSOR': pasteS(m, getXRiD0(m), getCountXRiD0S(m), payload); break
+    case 'pasteSO': pasteS(m, getX(m), getCountXSO1(m), payload); break
     case 'drag': moveS(m, payload.moveTargetPath, payload.moveTargetIndex); break
     case 'transpose': break
 
