@@ -35,8 +35,6 @@ const isSF = (p: P, pt: P): boolean => isEqual(p, pt) || isSO(p, pt)
 const isSDF = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
 export const isSFDF = (p: P, pt: P): boolean => isSF(p, pt) || isSDF(p, pt)
 const isSV = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
-const isCFRF = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 1)! >= p.at(-1)!
-const isCFDF = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
 const isXASV = (m: M): boolean => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
 
 export const isG = (p: P): boolean => getPathPattern(p).endsWith('g')
@@ -107,7 +105,6 @@ export const getXAF = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSF(xn.p
 export const getXAO = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSO(xn.path, n.path)))
 export const getXSSCR0 = (m: M): N[] => m.filter(n => isSCR0(getXP(m), n.path))
 export const getXSSCC0 = (m: M): N[] => m.filter(n => isSCC0(getXP(m), n.path))
-export const getXSSCXX = (m: M): N[] => m.filter(n => isSCXX(getXP(m), n.path))
 export const getXSSCYY = (m: M): N[] => m.filter(n => isSCYY(getXP(m), n.path))
 export const getXACD1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCD1(xn.path, n.path)))
 export const getXACU1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCU1(xn.path, n.path)))
@@ -149,7 +146,6 @@ export const getCountXSCV = (m: M): number => getCountCV(m, [...getXP(m), 'c', 0
 export const getCountXSCH = (m: M): number => getCountCH(m, [...getXP(m), 'c', 0, 0])
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
-export const getPropXAF = (m: M, prop: keyof N) => isArrayOfEqualValues(getXAF(m).map(n => n[prop])) ? getX(m)[prop] : null
 
 export const getReselectR = (m: M) => ['r', getXRi(m) - 1] as P
 export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1P(m) : (isXDS(m) ? getSI2P(getXSFP(m)): getSI1P(getXSFP(m)))
