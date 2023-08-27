@@ -57,7 +57,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectDragged': selectNodeList(m, payload.nList.map((n: N) => n.path), 's'); break
 
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
-    case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1) as number, payload); break
+    case 'insertSU': insertS(m, getXSI1(m), getXP(m).at(-1) as number, payload); break
     case 'insertSOR': insertS(m, getXRiD0(m), getCountXRiD0S(m), payload); break
     case 'insertSO': insertS(m, getX(m), getCountXSO1(m), payload); break
     case 'insertSORText': insertS(m, getXRiD0(m), getCountXRiD0S(m), {contentType: 'text', content: payload}); break
