@@ -1,21 +1,21 @@
 import {M, N} from "../state/MapStateTypes"
-import {getXSSCC0, getXSSCR0, m2cbS, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRiD0} from "./MapUtils"
+import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRiD0, getXAF} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
 export const genPromptJsonS = (m: M) => {
-  const cb = m2cbS(m)
-  return m2cbS(m).filter(n => getCountNSO1(cb, n) === 0).map(n => ({
-    keywords: [...getSIPL(n.path), n.path].map(p => getNodeByPath(cb, p).content),
+  const mr = structuredClone(getXAF(m) as M).sort(sortPath)
+  return mr.filter(n => getCountNSO1(mr, n) === 0).map(n => ({
+    keywords: [...getSIPL(n.path), n.path].map(p => getNodeByPath(mr, p)?.content || '').filter(el => el !== ''),
     suggestions: [],
     insertParentId: n.nodeId
   }))
 }
 
 export const genPromptJsonT = (m: M) => {
-  const cb = m2cbS(m).sort(sortPath)
-  const rowHeader = getXSSCR0(cb).map(n => getNodeByPath(cb, [...n.path, 's', 0])?.content || '')
-  const colHeader = getXSSCC0(cb).map(n => getNodeByPath(cb, [...n.path, 's', 0])?.content || '')
-  return getXSSCYY(cb).map((n: N) => ({
+  const mr = structuredClone(getXAF(m) as M).sort(sortPath)
+  const rowHeader = getXSSCR0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
+  const colHeader = getXSSCC0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
+  return getXSSCYY(mr).map((n: N) => ({
     keywords: [colHeader[0], colHeader[n.path.at(-2) as number], rowHeader[n.path.at(-1) as number]],
     suggestions: [],
     insertParentId: n.nodeId

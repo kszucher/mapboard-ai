@@ -4,7 +4,7 @@ import {genHash} from "./Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {getReselectS, getXA, m2cbS, sortPath, m2cbR, isNCED, getCountNSCH, getXAF, getXP, getCountXCU, getCountXCL, getCountNSCV, isNCER, isSFDF} from "./MapUtils"
+import {getReselectS, getXA, sortPath, isNCED, getCountNSCH, getXAF, getXP, getCountXCU, getCountXCL, getCountNSCV, isNCER, isSFDF, getCountXASU} from "./MapUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -39,14 +39,14 @@ const cbSave = (cb: any) => {
 
 export const cutS = (m: M) => {
   const reselectPath = getReselectS(m)
-  const cb = m2cbS(m)
+  const cb = getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]})) as M
   cbSave(cb)
   deleteS(m)
   selectNode(m, reselectPath, 's')
 }
 
 export const copyR = (m: M) => {
-  const cb = m2cbR(m)
+  const cb = getXAF(m).map(n => ({...n, path: ['r', 0, ...n.path.slice(getXP(m).length)]})) as M
   showTemplate(cb)
   // const cbDeInit = mapDeInit(cb)
   // cbSave(cbDeInit)
@@ -54,7 +54,7 @@ export const copyR = (m: M) => {
 }
 
 export const copyS = (m: M) => {
-  const cb = m2cbS(m)
+  const cb = getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]})) as M
   showTemplate(cb)
   const cbDeInit = mapDeInit(cb)
   cbSave(cbDeInit)
@@ -71,7 +71,7 @@ export const pasteS = (m: M, insertParentNode: N, insertTargetIndex: number, pay
 }
 
 export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
-  const cb = m2cbS(m)
+  const cb = getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]})) as M
   deleteS(m)
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   m.forEach(n => isSFDF(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
@@ -100,7 +100,7 @@ export const moveCC = (m: M, insertParentNode: N, insertTargetColumnIndex: numbe
 export const moveS2T = (m: M, insertParentNode: N, moveNodes: N[]) => {
   const rowLen = moveNodes.length
   selectNodeList(m, moveNodes.map(n => n.path), 's')
-  const cb = m2cbS(m)
+  const cb = getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]})) as M
   deleteS(m)
   insertTable(m, insertParentNode, 0, {rowLen, colLen: 1})
   cb.forEach(n => Object.assign(n, {

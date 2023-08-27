@@ -82,7 +82,6 @@ export const getXSFP = (m: M): P => getXSF(m).path
 export const getXSLP = (m: M): P => getXSL(m).path
 export const getXSI1P = (m: M): P => getSI1P(getXP(m))
 
-export const getXSI2P = (m: M): P => getSI2P(getXP(m))
 export const getXASU1P = (m: M): P => getSU1(getXSFP(m))
 
 const getXSF = (m: M): N => m.find(n => n.selected)!
@@ -156,10 +155,6 @@ export const getReselectR = (m: M) => ['r', getXRi(m) - 1] as P
 export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1P(m) : (isXDS(m) ? getSI2P(getXSFP(m)): getSI1P(getXSFP(m)))
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU1(m).map(n => n.path) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1P(m)] )
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL1(m).map(n => n.path) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1P(m)] )
-
-// TODO remove these from here as they are setters
-export const m2cbR = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: ['r', 0, ...n.path.slice(getXP(m).length)]}))) as M
-export const m2cbS = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]}))) as M
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
