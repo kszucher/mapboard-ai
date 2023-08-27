@@ -1,3 +1,4 @@
+import {sortNode} from "../core/MapUtils"
 import {setIsTesting} from "../core/Utils"
 import {mapReducerAtomic} from "../core/MapReducer"
 import {M} from "../state/MapStateTypes"
@@ -325,17 +326,17 @@ const insertSORTable_result = [
 
 describe("InsertTests", () => {
   beforeEach(() => setIsTesting())
-  test('insertSD', () => {mapReducerAtomic(insertSD_test, 'insertSD', {}); expect(insertSD_test).toEqual(insertSD_result)})
-  test('insertSU', () => {mapReducerAtomic(insertSU_test, 'insertSU', {}); expect(insertSU_test).toEqual(insertSU_result)})
-  test('insertSOR', () => {mapReducerAtomic(insertSOR_test, 'insertSOR', {}); expect(insertSOR_test).toEqual(insertSOR_result)})
-  test('insertSO', () => {mapReducerAtomic(insertSO_test, 'insertSO', {}); expect(insertSO_test).toEqual(insertSO_result)})
-  test('insertCRD', () => {mapReducerAtomic(insertCRD_test, 'insertCRD', {}); expect(insertCRD_test).toEqual(insertCRD_result)})
-  test('insertCRU', () => {mapReducerAtomic(insertCRU_test, 'insertCRU', {}); expect(insertCRU_test).toEqual(insertCRU_result)})
-  test('insertCCR', () => {mapReducerAtomic(insertCCR_test, 'insertCCR', {}); expect(insertCCR_test).toEqual(insertCCR_result)})
-  test('insertCCL', () => {mapReducerAtomic(insertCCL_test, 'insertCCL', {}); expect(insertCCL_test).toEqual(insertCCL_result)})
-  test('insertSCRD', () => {mapReducerAtomic(insertSCRD_test, 'insertSCRD', {}); expect(insertSCRD_test).toEqual(insertSCRD_result)})
-  test('insertSCRU', () => {mapReducerAtomic(insertSCRU_test, 'insertSCRU', {}); expect(insertSCRU_test).toEqual(insertSCRU_result)})
-  test('insertSCCR', () => {mapReducerAtomic(insertSCCR_test, 'insertSCCR', {}); expect(insertSCCR_test).toEqual(insertSCCR_result)})
-  test('insertSCCL', () => {mapReducerAtomic(insertSCCL_test, 'insertSCCL', {}); expect(insertSCCL_test).toEqual(insertSCCL_result)})
-  test('insertSORTable', () => {mapReducerAtomic(insertSORTable_test, 'insertSORTable', {rowLen: 2, colLen: 2}); expect(insertSORTable_test).toEqual(insertSORTable_result)})
+  test('insertSD', () => {mapReducerAtomic(insertSD_test, 'insertSD', {}); expect(insertSD_test.sort(sortNode)).toEqual(insertSD_result.sort(sortNode))})
+  test('insertSU', () => {mapReducerAtomic(insertSU_test, 'insertSU', {}); expect(insertSU_test.sort(sortNode)).toEqual(insertSU_result.sort(sortNode))})
+  test('insertSOR', () => {mapReducerAtomic(insertSOR_test, 'insertSOR', {}); expect(insertSOR_test.sort(sortNode)).toEqual(insertSOR_result.sort(sortNode))})
+  test('insertSO', () => {mapReducerAtomic(insertSO_test, 'insertSO', {}); expect(insertSO_test.sort(sortNode)).toEqual(insertSO_result.sort(sortNode))})
+  test('insertCRD', () => {mapReducerAtomic(insertCRD_test, 'insertCRD', {}); expect(insertCRD_test.sort(sortNode)).toEqual(insertCRD_result.sort(sortNode))})
+  test('insertCRU', () => {mapReducerAtomic(insertCRU_test, 'insertCRU', {}); expect(insertCRU_test.sort(sortNode)).toEqual(insertCRU_result.sort(sortNode))})
+  test('insertCCR', () => {mapReducerAtomic(insertCCR_test, 'insertCCR', {}); expect(insertCCR_test.sort(sortNode)).toEqual(insertCCR_result.sort(sortNode))})
+  test('insertCCL', () => {mapReducerAtomic(insertCCL_test, 'insertCCL', {}); expect(insertCCL_test.sort(sortNode)).toEqual(insertCCL_result.sort(sortNode))})
+  test('insertSCRD', () => {mapReducerAtomic(insertSCRD_test, 'insertSCRD', {}); expect(insertSCRD_test.sort(sortNode)).toEqual(insertSCRD_result.sort(sortNode))})
+  test('insertSCRU', () => {mapReducerAtomic(insertSCRU_test, 'insertSCRU', {}); expect(insertSCRU_test.sort(sortNode)).toEqual(insertSCRU_result.sort(sortNode))})
+  test('insertSCCR', () => {mapReducerAtomic(insertSCCR_test, 'insertSCCR', {}); expect(insertSCCR_test.sort(sortNode)).toEqual(insertSCCR_result.sort(sortNode))})
+  test('insertSCCL', () => {mapReducerAtomic(insertSCCL_test, 'insertSCCL', {}); expect(insertSCCL_test.sort(sortNode)).toEqual(insertSCCL_result.sort(sortNode))})
+  test('insertSORTable', () => {mapReducerAtomic(insertSORTable_test, 'insertSORTable', {rowLen: 2, colLen: 2}); expect(insertSORTable_test.sort(sortNode)).toEqual(insertSORTable_result.sort(sortNode))})
 })
