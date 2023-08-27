@@ -1,7 +1,7 @@
 import {GN, M, N, P} from "../state/MapStateTypes"
 import {getInsertTemplate} from "./MapInsertTemplates"
 import {unselectNodes} from "./MapSelect"
-import {getCountSCH, getCountSCV, getNodeByPath, getSI1P, getXP, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath} from "./MapUtils"
+import {getCountNSCV, getCountNSCH, getNodeByPath, getXP, makeSpaceFromS, sortPath, isNCED, isNCER} from "./MapUtils"
 import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
@@ -25,27 +25,17 @@ export const insertS = (m: M, insertParentNode: N, insertTargetIndex: number, at
   m.sort(sortPath)
 }
 
-export const insertCR = (m: M, ip: P) => {
-  const rowIndices = Array(getCountSCH(m, getSI1P(ip))).fill(null).map((el, i) => [ip.at(-2), i])
-  makeSpaceFromCR(m, ip)
-  m.push(...rowIndices.map((el, i) => ({
-    selected: 0,
-    selection: 's',
-    nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8),
-    path: [...ip.slice(0, -3), 'c', ...el]
-  }  as GN)))
+export const insertCR = (m: M, insertParentNode: N, insertTargetRowIndex: number) => {
+  const insertPathList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
+  m.forEach(n => insertPathList.map(ip => isNCED(ip, n.path) && n.path.splice(ip.length - 2, 1, n.path.at(ip.length - 2) as number + 1)))
+  m.push(...insertPathList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p}  as GN)))
   m.sort(sortPath)
 }
 
-export const insertCC = (m: M, ip: P) => {
-  const colIndices = Array(getCountSCV(m, getSI1P(ip))).fill(null).map((el, i) => [i, ip.at(-1)])
-  makeSpaceFromCC(m, ip)
-  m.push(...colIndices.map((el, i) => ({
-    selected: 0,
-    selection: 's',
-    nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8),
-    path: [...ip.slice(0, -3), 'c', ...el]
-  } as GN)))
+export const insertCC = (m: M, insertParentNode: N, insertTargetColumnIndex: number) => {
+  const insertPathList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
+  m.forEach(n => insertPathList.map(ip => isNCER(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + 1)))
+  m.push(...insertPathList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p} as GN)))
   m.sort(sortPath)
 }
 
