@@ -57,7 +57,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectDragged': selectNodeList(m, payload.nList.map((n: N) => n.path), 's'); break
 
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
-    case 'insertSU': insertS(m, getXSI1(m), 0, payload); break
+    case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1) as number, payload); break
     case 'insertSOR': insertS(m, getXRiD0(m), getCountXRiD0S(m), payload); break
     case 'insertSO': insertS(m, getX(m), getCountXSO1(m), payload); break
     case 'insertSORText': insertS(m, getXRiD0(m), getCountXRiD0S(m), {contentType: 'text', content: payload}); break
@@ -68,8 +68,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSOEquation': insertS(m, getX(m), getCountXSO1(m), {contentType: 'equation', content: payload}); break
     case 'insertSORImage': insertS(m, getXRiD0(m), getCountXRiD0S(m), {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insertSOImage': insertS(m, getX(m), getCountXSO1(m), {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
-    case 'insertSORTable': insertTable(m, ['r', getXRi(m), 'd', 0, 's', getCountXRiD0S(m)], payload); break
-    case 'insertSOTable': insertTable(m, [...getXP(m), 's', getCountXSO1(m)], payload); break
+    case 'insertSORTable': insertTable(m, getXRiD0(m), getCountXRiD0S(m), payload); break
+    case 'insertSOTable': insertTable(m, getX(m), getCountXSO1(m), payload); break
     case 'insertCRD': insertCR(m, [...getXSI1P(m), 'c', getCountXCU(m) + 1, 0]); break
     case 'insertCRU': insertCR(m, [...getXSI1P(m), 'c', getCountXCU(m), 0]); break
     case 'insertCCR': insertCC(m, [...getXSI1P(m), 'c', 0, getCountXCL(m) + 1]); break

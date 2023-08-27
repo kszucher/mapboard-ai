@@ -49,20 +49,21 @@ export const insertCC = (m: M, ip: P) => {
   m.sort(sortPath)
 }
 
-export const insertTable = (m: M, ip: P, payload: {rowLen: number, colLen: number}) => {
+export const insertTable = (m: M, insertParentNode: N, insertTargetIndex: number, payload: {rowLen: number, colLen: number}) => {
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
-  makeSpaceFromS(m, ip, 1)
+  makeSpaceFromS(m, [...insertParentNode.path, 's', insertTargetIndex], 1)
   unselectNodes(m)
   m.push({
     selected: 1,
     selection: 's',
-    nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip
+    nodeId: IS_TESTING ? 't' : 'node' + genHash(8),
+    path: [...insertParentNode.path, 's', insertTargetIndex]
   } as GN)
   m.push(...tableIndices.map((el, i) => ({
     selected: 0,
     selection: 's',
     nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8),
-    path: [...ip, 'c', ...el]
+    path: [...insertParentNode.path, 's', insertTargetIndex, 'c', ...el]
   } as GN)))
   m.sort(sortPath)
 }
