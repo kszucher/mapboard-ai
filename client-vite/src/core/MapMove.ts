@@ -102,7 +102,7 @@ export const moveS2T = (m: M, insertParentNode: N, moveNodes: N[]) => {
   selectNodeList(m, moveNodes.map(n => n.path), 's')
   const cb = m2cbS(m)
   deleteS(m)
-  insertTable(m, [...insertParentNode.path, 's', 0], {rowLen, colLen: 1})
+  insertTable(m, insertParentNode, 0, {rowLen, colLen: 1})
   cb.forEach(n => Object.assign(n, {selected: 0, selection: 's', path: [...insertParentNode.path, 's', 0, 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P}))
   m.push(...cb)
   m.sort(sortPath)
