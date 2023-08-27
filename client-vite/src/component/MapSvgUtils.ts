@@ -1,4 +1,4 @@
-import {getG, getNodeById, getNodeByPath, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1, getX, isD, isXACC, isXACR} from "../core/MapUtils"
+import {getG, getNodeById, getNodeByPath, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isD, isXACC, isXACR} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
 import {LineTypes, Sides} from "../state/Enums"
 import {Connection, M, N} from "../state/MapStateTypes"
@@ -111,7 +111,7 @@ export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
 
 export const getPolygonC = (m: M): PolygonPoints => {
   const xn = getX(m)
-  const ni = getNodeByPath(m, getSI1(xn.path)) as N
+  const ni = getNodeByPath(m, getSI1P(xn.path)) as N
   const n = getNodeByPath(m, xn.path)
   const dir = getPathDir(xn.path)
   let x, y, w, h
