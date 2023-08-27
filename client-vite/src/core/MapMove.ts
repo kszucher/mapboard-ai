@@ -64,10 +64,10 @@ export const pasteS = (m: M, insertTargetPath: P, insertTargetIndex: number, pay
   const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
   const cb = JSON.parse(payload) as M
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
-  const insertPath = [...getNodeById(m, insertTargetNodeId).path, 's', insertTargetIndex] as P
+  const ip = [...getNodeById(m, insertTargetNodeId).path, 's', insertTargetIndex] as P
   unselectNodes(m)
-  makeSpaceFromS(m, insertPath, getXA(cb).length)
-  m.push(...cb2ipS(cb, insertPath))
+  makeSpaceFromS(m, ip, getXA(cb).length)
+  m.push(...cb2ipS(cb, ip))
   m.sort(sortPath)
 }
 
@@ -75,9 +75,9 @@ export const moveS = (m: M, insertTargetPath: P, insertTargetIndex: number) => {
   const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
   const cb = m2cbS(m)
   deleteS(m)
-  const insertPath = [...getNodeById(m, insertTargetNodeId).path, 's', insertTargetIndex] as P
-  makeSpaceFromS(m, insertPath, getXA(cb).length)
-  m.push(...cb2ipS(cb, insertPath))
+  const ip = [...getNodeById(m, insertTargetNodeId).path, 's', insertTargetIndex] as P
+  makeSpaceFromS(m, ip, getXA(cb).length)
+  m.push(...cb2ipS(cb, ip))
   m.sort(sortPath)
 }
 
@@ -85,9 +85,9 @@ export const moveCR = (m: M, insertTargetPath: P, insertTargetRowIndex: number) 
   const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
   const cb = m2cbCR(m)
   deleteCR(m)
-  const insertPath = [...getNodeById(m, insertTargetNodeId).path, 'c', insertTargetRowIndex, 0] as P
-  makeSpaceFromCR(m, insertPath)
-  m.push(...cb2ipCR(cb, insertPath))
+  const ip = [...getNodeById(m, insertTargetNodeId).path, 'c', insertTargetRowIndex, 0] as P
+  makeSpaceFromCR(m, ip)
+  m.push(...cb2ipCR(cb, ip))
   m.sort(sortPath)
 }
 
@@ -95,9 +95,9 @@ export const moveCC = (m: M, insertTargetPath: P, insertTargetColIndex: number) 
   const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
   const cb = m2cbCC(m)
   deleteCC(m)
-  const insertPath = [...getNodeById(m, insertTargetNodeId).path, 'c', 0, insertTargetColIndex] as P
-  makeSpaceFromCC(m, insertPath)
-  m.push(...cb2ipCC(cb, insertPath))
+  const ip = [...getNodeById(m, insertTargetNodeId).path, 'c', 0, insertTargetColIndex] as P
+  makeSpaceFromCC(m, ip)
+  m.push(...cb2ipCC(cb, ip))
   m.sort(sortPath)
 }
 
