@@ -158,12 +158,8 @@ export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU1(m).map(n => n.p
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL1(m).map(n => n.path) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1P(m)] )
 
 // TODO remove these from here as they are setters
-export const fR = (m: M, n: N) => ['r', 0, ...n.path.slice(getXP(m).length)]
-export const fS = (m: M, n: N) => ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]
-export const m2cbR = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fR(m, n)}))) as M
-export const m2cbS = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fS(m, n)}))) as M
-export const tS = (ip: P, n: N) => [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]
-export const cb2ipS = (cb: M, ip: P) => structuredClone(cb.map(n => ({...n, path: tS(ip, n)}))) as M
+export const m2cbR = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: ['r', 0, ...n.path.slice(getXP(m).length)]}))) as M
+export const m2cbS = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]}))) as M
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
