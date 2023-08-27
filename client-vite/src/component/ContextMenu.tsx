@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
 import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../core/GptPrompter"
 import {Templates} from "../core/MapInsertTemplates";
-import {getCountNSO1, getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXSO1, getCountXSO2, getG, getR0, getRi, getRXD0, getRXD1, getX, getXAF, getXP, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
+import {getCountNSO1, getCountXASD, getCountXASU, getCountXCO1, getCountXRiD0S, getCountXSO1, getCountXSO2, getG, getR0, getRi, getRXD0, getRXD1, getX, getXAF, getXP, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
 import {getMapId} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -83,7 +83,7 @@ export const ContextMenu: FC = () => {
             <button id="doubleDropdownButton" data-dropdown-toggle="selectSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Select{MenuButtonSvg}</button>
             <div id="selectSubMenu" className={subMenuClassName}>
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-                { mExists && !isXS(m) && getCountXRXD0S(m) > 0 && !getRXD0(m, getRi(getXP(m))).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectRXD0F', payload: {path: getXP(m)}}))}}>Node Branch Right</a></li> }
+                { mExists && !isXS(m) && getCountXRiD0S(m) > 0 && !getRXD0(m, getRi(getXP(m))).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectRXD0F', payload: {path: getXP(m)}}))}}>Node Branch Right</a></li> }
                 { mExists && !isXS(m) && !!getRXD0(m, getRi(getXP(m))).selected && !getRXD1(m, getRi(getXP(m))).selected && getCountNSO1(m, getRXD1(m, getRi(getXP(m)))) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectRXD1F', payload: {path: getXP(m)}}))}}>Node Branch Left</a></li> }
                 { mExists && !isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectS', payload: {path: getXP(m)}}))}}>Node</a></li> }
                 { mExists && !isXR(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getXP(m)}}))}}>Node Branch</a></li> }

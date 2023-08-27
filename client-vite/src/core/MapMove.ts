@@ -71,11 +71,10 @@ export const pasteS = (m: M, insertTargetPath: P, insertTargetIndex: number, pay
   m.sort(sortPath)
 }
 
-export const moveS = (m: M, insertTargetPath: P, insertTargetIndex: number) => {
-  const insertTargetNode = getNodeByPath(m, insertTargetPath)
+export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   const cb = m2cbS(m)
   deleteS(m)
-  const ip = [...insertTargetNode.path, 's', insertTargetIndex] as P
+  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   makeSpaceFromS(m, ip, getXA(cb).length)
   m.push(...cb2ipS(cb, ip))
   m.sort(sortPath)
