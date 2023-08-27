@@ -33,7 +33,7 @@ const isSCR0 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(p
 const isSCC0 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-1) === 0
 const isSF = (p: P, pt: P): boolean => isEqual(p, pt) || isSO(p, pt)
 const isSDF = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
-const isSFDF = (p: P, pt: P): boolean => isSF(p, pt) || isSDF(p, pt)
+export const isSFDF = (p: P, pt: P): boolean => isSF(p, pt) || isSDF(p, pt)
 const isSV = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 const isCFRF = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 1)! >= p.at(-1)!
 const isCFDF = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
@@ -158,7 +158,6 @@ export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU1(m).map(n => n.p
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL1(m).map(n => n.path) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1P(m)] )
 
 // TODO remove these from here as they are setters
-export const makeSpaceFromS = (m: M, p: P, length: number) => m.forEach(n => isSFDF(p, n.path) && n.path.splice(p.length - 1, 1, n.path.at(p.length - 1) as number + length))
 export const fR = (m: M, n: N) => ['r', 0, ...n.path.slice(getXP(m).length)]
 export const fS = (m: M, n: N) => ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]
 export const m2cbR = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fR(m, n)}))) as M

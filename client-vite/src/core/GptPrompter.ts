@@ -1,5 +1,5 @@
 import {M, N} from "../state/MapStateTypes"
-import {getXSSCC0, getXSSCR0, m2cbS, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getNRiD0, getNRi, getCountNSO1, getXRiD0} from "./MapUtils"
+import {getXSSCC0, getXSSCR0, m2cbS, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRiD0} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
 export const genPromptJsonS = (m: M) => {

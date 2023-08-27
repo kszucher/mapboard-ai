@@ -4,7 +4,7 @@ import {genHash} from "./Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {cb2ipS, getReselectS, getXA, m2cbS, makeSpaceFromS, sortPath, m2cbR, isNCED, getCountNSCH, getXAF, getXP, getCountXCU, getCountXCL, getCountNSCV, isNCER} from "./MapUtils"
+import {cb2ipS, getReselectS, getXA, m2cbS, sortPath, m2cbR, isNCED, getCountNSCH, getXAF, getXP, getCountXCU, getCountXCL, getCountNSCV, isNCER, isSFDF} from "./MapUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -65,7 +65,7 @@ export const pasteS = (m: M, insertTargetNode: N, insertTargetIndex: number, pay
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
   const ip = [...insertTargetNode.path, 's', insertTargetIndex] as P
   unselectNodes(m)
-  makeSpaceFromS(m, ip, getXA(cb).length)
+  m.forEach(n => isSFDF(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
   m.push(...cb2ipS(cb, ip))
   m.sort(sortPath)
 }
@@ -74,7 +74,7 @@ export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   const cb = m2cbS(m)
   deleteS(m)
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
-  makeSpaceFromS(m, ip, getXA(cb).length)
+  m.forEach(n => isSFDF(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
   m.push(...cb2ipS(cb, ip))
   m.sort(sortPath)
 }
