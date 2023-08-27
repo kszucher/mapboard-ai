@@ -123,13 +123,15 @@ const getCountRiD0S = (m: M, ri: number): number => m.filter(n => n.path.length 
 const getCountRiD1S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length
 const getCountCV = (m: M, p: P): number => m.filter(n => isCH(p, n.path)).length
 const getCountCH = (m: M, p: P): number => m.filter(n => isCV(p, n.path)).length
-export const getCountSCR = (m: M, p: P): number => getCountCV(m, [...p, 'c', 0, 0])
-export const getCountSCC = (m: M, p: P): number => getCountCH(m, [...p, 'c', 0, 0])
+export const getCountSCR = (m: M, p: P): number => getCountCV(m, [...p, 'c', 0, 0]) // mark remove
+export const getCountSCC = (m: M, p: P): number => getCountCH(m, [...p, 'c', 0, 0]) // mark remove
 
 export const getCountNSO1 = (m: M, n: N): number => getCountSO1(m, n.path)
 export const getCountNSO2 = (m: M, n: N): number => getCountSO2(m, n.path)
 export const getCountNCO1 = (m: M, n: N): number => getCountCO1(m, n.path)
 export const getCountNCO2 = (m: M, n: N): number => getCountCO2(m, n.path)
+export const getCountNSCV = (m: M, n: N): number => getCountCV(m, [...n.path, 'c', 0, 0])
+export const getCountNSCH = (m: M, n: N): number => getCountCH(m, [...n.path, 'c', 0, 0])
 
 export const getCountXASD = (m: M): number => getCountSD(m, getXSLP(m))
 export const getCountXASU = (m: M): number => getCountSU(m, getXSFP(m))
@@ -142,8 +144,10 @@ export const getCountXRiD1S = (m: M): number => getCountRiD1S(m, getXRi(m))
 export const getCountXCO1 = (m: M): number => getCountCO1(m, getXP(m))
 export const getCountXCU = (m: M): number => getXP(m).at(-2) as number
 export const getCountXCL = (m: M): number => getXP(m).at(-1) as number
-export const getCountXCH = (m: M): number => getCountCH(m, getXP(m))
 export const getCountXCV = (m: M): number => getCountCV(m, getXP(m))
+export const getCountXCH = (m: M): number => getCountCH(m, getXP(m))
+export const getCountXSCH = (m: M): number => getCountCH(m, [...getXP(m), 'c', 0, 0])
+export const getCountXSCV = (m: M): number => getCountCV(m, [...getXP(m), 'c', 0, 0])
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
 export const getPropXAF = (m: M, prop: keyof N) => isArrayOfEqualValues(getXAF(m).map(n => n[prop])) ? getX(m)[prop] : null
