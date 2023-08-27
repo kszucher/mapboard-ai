@@ -4,7 +4,7 @@ import {genHash} from "./Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, m2cbR} from "./MapUtils"
+import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, m2cbR} from "./MapUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -103,7 +103,11 @@ export const moveS2T = (m: M, insertParentNode: N, moveNodes: N[]) => {
   const cb = m2cbS(m)
   deleteS(m)
   insertTable(m, insertParentNode, 0, {rowLen, colLen: 1})
-  cb.forEach(n => Object.assign(n, {selected: 0, selection: 's', path: [...insertParentNode.path, 's', 0, 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P}))
+  cb.forEach(n => Object.assign(n, {
+    selected: 0,
+    selection: 's',
+    path: [...insertParentNode.path, 's', 0, 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P
+  }))
   m.push(...cb)
   m.sort(sortPath)
 }
