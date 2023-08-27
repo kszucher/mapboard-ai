@@ -1,6 +1,6 @@
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {G, M, N} from "../state/MapStateTypes"
-import {getCountNCO2, getCountSCH, getCountSCV, getCountNSO1, getCountNSO2, getNodeByPath} from "./MapUtils"
+import {getCountNCO2, getCountNSCH, getCountNSCV, getCountNSO1, getCountNSO2, getNodeByPath} from "./MapUtils"
 import {createArray} from "./Utils"
 
 export const measureText = (g: G, pn: N, n: N) => {
@@ -39,8 +39,8 @@ export const measureText = (g: G, pn: N, n: N) => {
 }
 
 export const measureTable = (m: M, g: G, n: N) => {
-  const countSCR = getCountSCV(m, n.path)
-  const countSCC = getCountSCH(m, n.path)
+  const countSCR = getCountNSCV(m, n)
+  const countSCC = getCountNSCH(m, n)
   let maxCellHeightMat = createArray(countSCR, countSCC)
   let maxCellWidthMat = createArray(countSCR, countSCC)
   let isCellSpacingActivated = 0
