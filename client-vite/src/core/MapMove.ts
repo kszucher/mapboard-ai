@@ -4,7 +4,7 @@ import {genHash} from "./Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, m2cbR} from "./MapUtils"
+import {cb2ipS, getReselectS, getXA, m2cbS, makeSpaceFromS, sortPath, m2cbR, isNCED, getCountNSCH, getXAF, getXP, getCountXCU, getCountXCL, getCountNSCV, isNCER} from "./MapUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -80,20 +80,20 @@ export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
 }
 
 export const moveCR = (m: M, insertParentNode: N, insertTargetRowIndex: number) => {
-  const cb = m2cbCR(m)
+  const cb = getXAF(m).map(n => ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]})) as M
   deleteCR(m)
-  const ip = [...insertParentNode.path, 'c', insertTargetRowIndex, 0] as P
-  makeSpaceFromCR(m, ip)
-  m.push(...cb2ipCR(cb, ip))
+  const insertPathList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
+  m.forEach(n => insertPathList.map(ip => isNCED(ip, n.path) && n.path.splice(ip.length - 2, 1, n.path.at(ip.length - 2) as number + 1)))
+  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 'c', (n.path.at(1) as number) + insertTargetRowIndex, (n.path.at(2) as number), ...n.path.slice(3)]})) as M)
   m.sort(sortPath)
 }
 
-export const moveCC = (m: M, insertParentNode: N, insertTargetColIndex: number) => {
-  const cb = m2cbCC(m)
+export const moveCC = (m: M, insertParentNode: N, insertTargetColumnIndex: number) => {
+  const cb = getXAF(m).map(n => ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountXCL(m), ...n.path.slice(getXP(m).length)]})) as M
   deleteCC(m)
-  const ip = [...insertParentNode.path, 'c', 0, insertTargetColIndex] as P
-  makeSpaceFromCC(m, ip)
-  m.push(...cb2ipCC(cb, ip))
+  const insertPathList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
+  m.forEach(n => insertPathList.map(ip => isNCER(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + 1)))
+  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 'c', (n.path.at(1) as number), (n.path.at(2) as number) + insertTargetColumnIndex, ...n.path.slice(3)]})) as M)
   m.sort(sortPath)
 }
 

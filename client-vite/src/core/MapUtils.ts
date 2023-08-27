@@ -148,38 +148,23 @@ export const getCountXCU = (m: M): number => getXP(m).at(-2) as number
 export const getCountXCL = (m: M): number => getXP(m).at(-1) as number
 export const getCountXCV = (m: M): number => getCountCV(m, getXP(m))
 export const getCountXCH = (m: M): number => getCountCH(m, getXP(m))
-export const getCountXSCH = (m: M): number => getCountCH(m, [...getXP(m), 'c', 0, 0])
-export const getCountXSCV = (m: M): number => getCountCV(m, [...getXP(m), 'c', 0, 0])
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
 export const getPropXAF = (m: M, prop: keyof N) => isArrayOfEqualValues(getXAF(m).map(n => n[prop])) ? getX(m)[prop] : null
-
-export const makeSpaceFromS = (m: M, p: P, length: number) => m.forEach(n => isSFDF(p, n.path) && n.path.splice(p.length - 1, 1, n.path.at(p.length - 1) as number + length))
-export const makeSpaceFromCR = (m: M, p: P) => m.forEach(n => isCFDF(p, n.path) && n.path.splice(p.length - 2, 1, n.path.at(p.length - 2) as number + 1))
-export const makeSpaceFromCC = (m: M, p: P) => m.forEach(n => isCFRF(p, n.path) && n.path.splice(p.length - 1, 1, n.path.at(p.length - 1) as number + 1))
 
 export const getReselectR = (m: M) => ['r', getXRi(m) - 1] as P
 export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1P(m) : (isXDS(m) ? getSI2P(getXSFP(m)): getSI1P(getXSFP(m)))
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU1(m).map(n => n.path) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1P(m)] )
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL1(m).map(n => n.path) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1P(m)] )
 
+// TODO remove these from here as they are setters
+export const makeSpaceFromS = (m: M, p: P, length: number) => m.forEach(n => isSFDF(p, n.path) && n.path.splice(p.length - 1, 1, n.path.at(p.length - 1) as number + length))
 export const fR = (m: M, n: N) => ['r', 0, ...n.path.slice(getXP(m).length)]
 export const fS = (m: M, n: N) => ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]
-export const fCR = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]
-export const fCC = (m: M, n: N) => ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountXCL(m), ...n.path.slice(getXP(m).length)]
-
 export const m2cbR = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fR(m, n)}))) as M
 export const m2cbS = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fS(m, n)}))) as M
-export const m2cbCR = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fCR(m, n)}))) as M
-export const m2cbCC = (m: M) => structuredClone(getXAF(m).map(n => ({...n, path: fCC(m, n)}))) as M
-
 export const tS = (ip: P, n: N) => [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]
-export const tCR = (ip: P, n: N) => [...ip.slice(0, -3), 'c', (n.path.at(1) as number) + (ip.at(-2) as number), (n.path.at(2) as number), ...n.path.slice(3)]
-export const tCC = (ip: P, n: N) => [...ip.slice(0, -3), 'c', (n.path.at(1) as number), (n.path.at(2) as number) + (ip.at(-1) as number), ...n.path.slice(3)]
-
 export const cb2ipS = (cb: M, ip: P) => structuredClone(cb.map(n => ({...n, path: tS(ip, n)}))) as M
-export const cb2ipCR = (cb: M, ip: P) => structuredClone(cb.map(n => ({...n, path: tCR(ip, n)}))) as M
-export const cb2ipCC = (cb: M, ip: P) => structuredClone(cb.map(n => ({...n, path: tCC(ip, n)}))) as M
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
