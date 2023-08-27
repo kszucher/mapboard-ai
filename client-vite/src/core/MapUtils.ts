@@ -1,5 +1,6 @@
 import isEqual from "react-fast-compare"
-import {MARGIN_X, MARGIN_Y, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
+import {getTaskWidth} from "../component/MapSvgUtils";
+import {MARGIN_X, MARGIN_Y} from "../state/Consts";
 import {G, GN, M, N, P} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "./Utils"
 
@@ -25,7 +26,6 @@ const isSO1 = (p: P, pt: P): boolean => pt.length === p.length + 2 && isEqual(pt
 const isSO2 = (p: P, pt: P): boolean => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
 const isCO1 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 const isCO2 = (p: P, pt: P): boolean => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
-const isCON = (p: P): boolean => p.includes('c')
 const isCD1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number + 1 && pt.at(-1) as number === p.at(-1) as number
 const isCU1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number - 1 && pt.at(-1) as number === p.at(-1) as number
 const isCR1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number + 1
@@ -47,6 +47,7 @@ export const isR = (p: P): boolean => getPathPattern(p).endsWith('r')
 export const isD = (p: P): boolean => getPathPattern(p).endsWith('d')
 export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')
 export const isC = (p: P): boolean => getPathPattern(p).endsWith('c')
+export const isCON = (p: P): boolean => p.includes('c')
 export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
@@ -178,18 +179,6 @@ export const getClosestCellParent = (m: M, p: P) => getNodeByPath(m, getClosestC
 
 export const hasTaskRight = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
 export const hasTaskLeft = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
-
-export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' ? 24 : 20) + (TASK_CIRCLES_NUM - 1) * TASK_CIRCLES_GAP + 40
-export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
-export const getTaskStartPoint = (m: M, g: G, n: N) => {
-  switch (true) {
-    case getPathDir(n.path) === 1 && !isCON(n.path): return getRootEndX(m, getNRi(m, n)) - getTaskWidth(g)
-    case getPathDir(n.path) === -1 && !isCON(n.path): return getTaskWidth(g)
-    case getPathDir(n.path) === 1 && isCON(n.path): return getClosestCellParent(m, n.path).nodeEndX - 120
-    case getPathDir(n.path) === -1 && isCON(n.path): return getClosestCellParent(m, n.path).nodeStartX + 120
-    default: return 0
-  }
-}
 
 export const getRootStartX = (m: M, n: N) => n.nodeStartX - getRXD1(m, getRi(n.path)).familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, getRi(n.path)) - MARGIN_X
 export const getRootStartY = (m: M, n: N) => n.nodeY - Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) / 2 - MARGIN_Y

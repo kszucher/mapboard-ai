@@ -5,13 +5,21 @@ import {useOpenWorkspaceQuery} from "../core/Api"
 import {adjust} from "../core/Utils";
 import {TASK_CIRCLES_GAP} from "../state/Consts"
 import {getColors} from "./Colors"
-import {getClosestStructParent, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, getTaskRadius, getTaskStartPoint, isD, isR, isS} from "../core/MapUtils"
+import {getClosestStructParent, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {Connection, N} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
-import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getPolygonS} from "./MapSvgUtils"
+import {
+  getArcPath,
+  getGridPath,
+  getLinearLinePath,
+  getLinePathBetweenNodes,
+  getPolygonPath,
+  getPolygonS, getTaskRadius,
+  getTaskStartPoint
+} from "./MapSvgUtils"
 
 export const MapSvgLayer3NodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

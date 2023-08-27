@@ -1,7 +1,28 @@
-import {getG, getNodeById, getNodeByPath, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isD, isXACC, isXACR} from "../core/MapUtils"
+import {
+  getClosestCellParent,
+  getG,
+  getNodeById,
+  getNodeByPath,
+  getNRi,
+  getPathDir,
+  getRi,
+  getRootEndX,
+  getRootEndY,
+  getRootMidX,
+  getRootMidY,
+  getRootStartX,
+  getRootStartY,
+  getSI1P,
+  getX,
+  isCON,
+  isD,
+  isXACC,
+  isXACR
+} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
+import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
 import {LineTypes, Sides} from "../state/Enums"
-import {Connection, M, N} from "../state/MapStateTypes"
+import {Connection, G, M, N} from "../state/MapStateTypes"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -222,6 +243,21 @@ export const getGridPath = (n: N) => {
     path += `M${x},${yu} L${x},${yd}`
   }
   return path
+}
+
+export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' ? 24 : 20) + (TASK_CIRCLES_NUM - 1) * TASK_CIRCLES_GAP + 40
+
+export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
+
+export const getTaskStartPoint = (m: M, g: G, n: N) => {
+  switch (true) {
+    case getPathDir(n.path) === 1 && !isCON(n.path):return getRootEndX(m, getNRi(m, n)) - getTaskWidth(g)
+    case getPathDir(n.path) === -1 && !isCON(n.path):
+      return getTaskWidth(g)
+    case getPathDir(n.path) === 1 && isCON(n.path):return getClosestCellParent(m, n.path).nodeEndX - 120
+    case getPathDir(n.path) === -1 && isCON(n.path):return getClosestCellParent(m, n.path).nodeStartX + 120
+    default:return 0
+  }
 }
 
 // export const calculateMiddlePoint = (sx, sy, c1x, c1y, c2x, c2y, ex, ey) => {

@@ -1,7 +1,8 @@
+import {getTaskWidth} from "../component/MapSvgUtils";
 import {MARGIN_X, MARGIN_Y} from "../state/Consts";
 import {G, M, N} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils";
-import {getCountNCO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getTaskWidth, getCountNSO1} from "./MapUtils"
+import {getCountNCO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getCountNSO1} from "./MapUtils"
 
 export const mapMeasure = (pm: M, m: M) => {
   const g = getNodeByPath(m, ['g']) as G
