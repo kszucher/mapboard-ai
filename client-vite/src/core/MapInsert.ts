@@ -1,7 +1,7 @@
 import {GN, M, N, P} from "../state/MapStateTypes"
 import {getInsertTemplate} from "./MapInsertTemplates"
 import {unselectNodes} from "./MapSelect"
-import {getCountSCC, getCountSCR, getNodeByPath, getSI1P, getXP, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath} from "./MapUtils"
+import {getCountSCH, getCountSCV, getNodeByPath, getSI1P, getXP, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath} from "./MapUtils"
 import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
@@ -26,7 +26,7 @@ export const insertS = (m: M, insertParentNode: N, insertTargetIndex: number, at
 }
 
 export const insertCR = (m: M, ip: P) => {
-  const rowIndices = Array(getCountSCC(m, getSI1P(ip))).fill(null).map((el, i) => [ip.at(-2), i])
+  const rowIndices = Array(getCountSCH(m, getSI1P(ip))).fill(null).map((el, i) => [ip.at(-2), i])
   makeSpaceFromCR(m, ip)
   m.push(...rowIndices.map((el, i) => ({
     selected: 0,
@@ -38,7 +38,7 @@ export const insertCR = (m: M, ip: P) => {
 }
 
 export const insertCC = (m: M, ip: P) => {
-  const colIndices = Array(getCountSCR(m, getSI1P(ip))).fill(null).map((el, i) => [i, ip.at(-1)])
+  const colIndices = Array(getCountSCV(m, getSI1P(ip))).fill(null).map((el, i) => [i, ip.at(-1)])
   makeSpaceFromCC(m, ip)
   m.push(...colIndices.map((el, i) => ({
     selected: 0,
