@@ -2,9 +2,9 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
 import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../core/GptPrompter"
-import {Templates} from "../core/MapInsert"
+import {Templates} from "../core/MapInsertTemplates";
 import {getCountNSO1, getCountXASD, getCountXASU, getCountXCO1, getCountXRXD0S, getCountXSO1, getCountXSO2, getG, getR0, getRi, getRXD0, getRXD1, getX, getXAF, getXP, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
-import {getMapId} from "../state/ApiState";
+import {getMapId} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
