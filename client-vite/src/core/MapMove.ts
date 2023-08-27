@@ -4,7 +4,7 @@ import {genHash} from "./Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, getXSO1, m2cbR} from "./MapUtils"
+import {cb2ipS, cb2ipCC, cb2ipCR, getReselectS, getXA, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath, getNodeById, getNodeByPath, m2cbR} from "./MapUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -80,21 +80,19 @@ export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   m.sort(sortPath)
 }
 
-export const moveCR = (m: M, insertTargetPath: P, insertTargetRowIndex: number) => {
-  const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
+export const moveCR = (m: M, insertParentNode: N, insertTargetRowIndex: number) => {
   const cb = m2cbCR(m)
   deleteCR(m)
-  const ip = [...getNodeById(m, insertTargetNodeId).path, 'c', insertTargetRowIndex, 0] as P
+  const ip = [...insertParentNode.path, 'c', insertTargetRowIndex, 0] as P
   makeSpaceFromCR(m, ip)
   m.push(...cb2ipCR(cb, ip))
   m.sort(sortPath)
 }
 
-export const moveCC = (m: M, insertTargetPath: P, insertTargetColIndex: number) => {
-  const insertTargetNodeId = getNodeByPath(m, insertTargetPath).nodeId
+export const moveCC = (m: M, insertParentNode: N, insertTargetColIndex: number) => {
   const cb = m2cbCC(m)
   deleteCC(m)
-  const ip = [...getNodeById(m, insertTargetNodeId).path, 'c', 0, insertTargetColIndex] as P
+  const ip = [...insertParentNode.path, 'c', 0, insertTargetColIndex] as P
   makeSpaceFromCC(m, ip)
   m.push(...cb2ipCC(cb, ip))
   m.sort(sortPath)
