@@ -8,7 +8,7 @@ export const gptParseNodesS = (m: M, gptParsed: any) => {
   gptParsed.forEach((el: any) => {
     el.suggestions.forEach((suggestion: string) => {
       const insertParentNode = getNodeById(m, el.insertParentId)
-      insertS(m, [...insertParentNode.path, 's', getCountNSO1(m, insertParentNode)], {content: cleanSuggestion(suggestion)})
+      insertS(m, insertParentNode, getCountNSO1(m, insertParentNode), {content: cleanSuggestion(suggestion)})
     })
   })
 }
@@ -17,12 +17,12 @@ export const gptParseNodesT = (m: M, gptParsed: any) => {
   gptParsed.forEach((el: any) => {
     el.suggestions.forEach((suggestion: string) => {
       const insertParentNode = getNodeById(m, el.insertParentId)
-      insertS(m, [...insertParentNode.path, 's', getCountNSO1(m, insertParentNode)], {content: cleanSuggestion(suggestion)})
+      insertS(m, insertParentNode, getCountNSO1(m, insertParentNode), {content: cleanSuggestion(suggestion)})
     })
   })
 }
 
 export const gptParseNodeMermaid = (m: M, gptParsed: any) => {
   const insertParentNode = getNodeById(m, gptParsed[0].insertParentId)
-  insertS(m, [...insertParentNode.path, 's', getCountNSO1(m, insertParentNode)], {content: gptParsed[0].mermaidString, contentType: 'mermaid'})
+  insertS(m, insertParentNode, getCountNSO1(m, insertParentNode), {content: gptParsed[0].mermaidString, contentType: 'mermaid'})
 }
