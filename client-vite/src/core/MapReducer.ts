@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getXSFP, getXSLP, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getXSFP, getXSLP, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0, getNodeByPath} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -106,7 +106,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'cutS': cutS(m); break
     case 'pasteSOR': pasteS(m, getXRiD0(m), getCountXRiD0S(m), payload); break
     case 'pasteSO': pasteS(m, getX(m), getCountXSO1(m), payload); break
-    case 'drag': moveS(m, payload.moveTargetPath, payload.moveTargetIndex); break
+    case 'drag': moveS(m, getNodeByPath(m, payload.moveTargetPath), payload.moveTargetIndex); break
     case 'transpose': break
 
     case 'setLineWidth': getXA(m).forEach(n => Object.assign(n, {lineWidth: payload})); break
