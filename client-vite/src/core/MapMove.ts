@@ -4,7 +4,7 @@ import {genHash} from "./Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {getReselectS, getXA, sortPath, isNCED, getCountNSCH, getXAF, getXP, getCountXCU, getCountXCL, getCountNSCV, isNCER, isSFDF, getCountXASU} from "./MapUtils"
+import {getReselectS, getXA, sortPath, isNCED, getCountNSCH, getXAF, getXP, getCountXCU, getCountXCL, getCountNSCV, isNCER, isNSED, getCountXASU} from "./MapUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -65,7 +65,7 @@ export const pasteS = (m: M, insertParentNode: N, insertTargetIndex: number, pay
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   unselectNodes(m)
-  m.forEach(n => isSFDF(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
+  m.forEach(n => isNSED(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
   m.sort(sortPath)
 }
@@ -74,7 +74,7 @@ export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   const cb = getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXASU(m), ...n.path.slice(getXP(m).length)]})) as M
   deleteS(m)
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
-  m.forEach(n => isSFDF(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
+  m.forEach(n => isNSED(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
   m.sort(sortPath)
 }
