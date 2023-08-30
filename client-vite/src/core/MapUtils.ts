@@ -35,6 +35,7 @@ export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(
 export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: P, pt: P): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
 const isSO2 = (p: P, pt: P): boolean => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
+const isSEO = (p: P, pt: P): boolean => isEqual(p, pt) || isSO(p, pt)
 const isCO1 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 const isCO2 = (p: P, pt: P): boolean => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
 export const isCON = (p: P): boolean => p.includes('c')
@@ -46,7 +47,6 @@ const isSCXX = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(p
 const isSCYY = (p: P, pt: P): boolean => isSCXX(p, pt) && pt.at(-2) as number > 0 && pt.at(-1) as number > 0
 const isSCR0 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) === 0
 const isSCC0 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-1) === 0
-const isSF = (p: P, pt: P): boolean => isEqual(p, pt) || isSO(p, pt)
 const isSV = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 export const isCV = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const isCH = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
@@ -102,7 +102,7 @@ export const getRL = (m: M): N[] => m.filter(n => n.path.length === 2)
 export const getXSO1 = (m: M): N[] => m.filter(n => isSO1(getXP(m), n.path))
 export const getXSO2 = (m: M): N[] => m.filter(n => isSO2(getXP(m), n.path))
 export const getXA = (m: M): N[] => m.filter(n => n.selected)
-export const getXAF = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSF(xn.path, n.path)))
+export const getXAF = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSEO(xn.path, n.path)))
 export const getXAO = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSO(xn.path, n.path)))
 export const getXSSCR0 = (m: M): N[] => m.filter(n => isSCR0(getXP(m), n.path))
 export const getXSSCC0 = (m: M): N[] => m.filter(n => isSCC0(getXP(m), n.path))
