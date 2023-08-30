@@ -17,20 +17,20 @@ export const MapSvgLayer0RootBackground: FC = () => {
   return (
     <>
       <g>
-        <rect
-          key={`${g.nodeId}_svg_map_background`}
-          x={0}
-          y={0}
-          width={g.mapWidth}
-          height={g.mapHeight}
-          rx={0}
-          ry={0}
-          fill={'none'}
-          stroke={'#dddddd'}
-          strokeWidth={0.5}
-          style={{transition: '0.3s ease-out'}}
-        >
-        </rect>
+        {/*<rect*/}
+        {/*  key={`${g.nodeId}_svg_map_background`}*/}
+        {/*  x={0}*/}
+        {/*  y={0}*/}
+        {/*  width={g.mapWidth}*/}
+        {/*  height={g.mapHeight}*/}
+        {/*  rx={0}*/}
+        {/*  ry={0}*/}
+        {/*  fill={'none'}*/}
+        {/*  stroke={'#dddddd'}*/}
+        {/*  strokeWidth={0.5}*/}
+        {/*  style={{transition: '0.3s ease-out'}}*/}
+        {/*>*/}
+        {/*</rect>*/}
       </g>
       <g>
         {m.map((n: N) => (
