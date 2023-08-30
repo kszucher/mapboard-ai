@@ -19,10 +19,25 @@ export const getRi = (p: P): number => p.at(1) as number
 export const getRiL = (m: M): number => m.findLast(n => n.path.length === 2)!.path.at(1) as number
 export const getXRi = (m: M): number => getRi(getXP(m))
 
+export const isG = (p: P): boolean => getPathPattern(p).endsWith('g')
+export const isR = (p: P): boolean => getPathPattern(p).endsWith('r')
+export const isD = (p: P): boolean => getPathPattern(p).endsWith('d')
+export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')
+export const isC = (p: P): boolean => getPathPattern(p).endsWith('c')
+
+export const isXR = (m: M): boolean => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
+export const isXD = (m: M): boolean => isD(getXP(m)) && !m.find(n => n.selected && !isD(n.path))
+export const isXS = (m: M): boolean => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
+export const isXDS = (m: M): boolean => getXP(m).length === 6
+
+const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
+export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
+export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: P, pt: P): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
 const isSO2 = (p: P, pt: P): boolean => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
 const isCO1 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 const isCO2 = (p: P, pt: P): boolean => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
+export const isCON = (p: P): boolean => p.includes('c')
 const isCD1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number + 1 && pt.at(-1) as number === p.at(-1) as number
 const isCU1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number - 1 && pt.at(-1) as number === p.at(-1) as number
 const isCR1 = (p: P, pt: P): boolean => pt.length === p.length && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number + 1
@@ -33,23 +48,16 @@ const isSCR0 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(p
 const isSCC0 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-1) === 0
 const isSF = (p: P, pt: P): boolean => isEqual(p, pt) || isSO(p, pt)
 const isSV = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
-const isXASV = (m: M): boolean => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
-
-export const isG = (p: P): boolean => getPathPattern(p).endsWith('g')
-export const isR = (p: P): boolean => getPathPattern(p).endsWith('r')
-export const isD = (p: P): boolean => getPathPattern(p).endsWith('d')
-export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')
-export const isC = (p: P): boolean => getPathPattern(p).endsWith('c')
-export const isCON = (p: P): boolean => p.includes('c')
-export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
-export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
-export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 export const isCV = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const isCH = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
-export const isXR = (m: M): boolean => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
-export const isXD = (m: M): boolean => isD(getXP(m)) && !m.find(n => n.selected && !isD(n.path))
-export const isXS = (m: M): boolean => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
-export const isXDS = (m: M): boolean => getXP(m).length === 6
+export const isNSD = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
+export const isNSED = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! >= p.at(-1)!
+export const isNCD = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
+export const isNCED = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
+export const isNCR = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! > p.at(-1)!
+export const isNCER = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! >= p.at(-1)!
+
+const isXASV = (m: M): boolean => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
 export const isXASVN = (m: M): boolean => isXASV(m) && ((getXSLP(m).at(-1) as number) - (getXSF(m).path.at(-1) as number)) === getXA(m).length - 1
 export const isXC = (m: M): boolean => isC(getXP(m)) && getXA(m).length === 1
 export const isXACR = (m: M): boolean => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCV(getXP(m), p))
@@ -58,12 +66,6 @@ export const isXCB = (m: M): boolean => isC(getXP(m)) && getCountXCU(m) === getC
 export const isXCT = (m: M): boolean => isC(getXP(m)) && getCountXCU(m) === 0
 export const isXCR = (m: M): boolean => isC(getXP(m)) && getCountXCL(m) === getCountXCH(m) - 1
 export const isXCL = (m: M): boolean => isC(getXP(m)) && getCountXCL(m) === 0
-export const isNSD = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
-export const isNSED = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! >= p.at(-1)!
-export const isNCD = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
-export const isNCED = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
-export const isNCR = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! > p.at(-1)!
-export const isNCER = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! >= p.at(-1)!
 
 const getSU1 = (p: P): P => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 
@@ -110,14 +112,15 @@ export const getXACU1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCU1(x
 export const getXACR1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCR1(xn.path, n.path)))
 export const getXACL1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCL1(xn.path, n.path)))
 
+const getCountRiD0S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === 1 && isS(n.path)).length
+const getCountRiD1S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length
+
 const getCountSD = (m: M, p: P): number => m.filter(n => isSD(p, n.path)).length
 const getCountSU = (m: M, p: P): number => m.filter(n => isSU(p, n.path)).length
 const getCountSO1 = (m: M, p: P): number => m.filter(n => isSO1(p, n.path)).length
 const getCountSO2 = (m: M, p: P): number => m.filter(n => isSO2(p, n.path)).length
 const getCountCO1 = (m: M, p: P): number => m.filter(n => isCO1(p, n.path)).length
 const getCountCO2 = (m: M, p: P): number => m.filter(n => isCO2(p, n.path)).length
-const getCountRiD0S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === 1 && isS(n.path)).length
-const getCountRiD1S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length
 const getCountCV = (m: M, p: P): number => m.filter(n => isCH(p, n.path)).length
 const getCountCH = (m: M, p: P): number => m.filter(n => isCV(p, n.path)).length
 
