@@ -4,7 +4,9 @@ import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {G, GN, M, N, P} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "./Utils"
 
-export const sortPath = (a: GN, b: GN) => a.path.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('') > b.path.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('') ? 1 : -1
+export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
+
+export const sortPath = (a: GN, b: GN) => sortablePath(a.path) > sortablePath(b.path) ? 1 : -1
 export const sortNode = (a: GN, b: GN) => a.nodeId > b.nodeId ? 1 : -1
 
 export const getNodeByPath = (m: M, p: P) => m.find(n => isEqual(n.path, p)) as GN
@@ -81,6 +83,9 @@ export const getXSLP = (m: M): P => getXSL(m).path
 export const getXSI1P = (m: M): P => getSI1P(getXP(m))
 
 export const getXASU1P = (m: M): P => getSU1(getXSFP(m))
+
+export const getCountQuasiSU = (m: M): number => m.filter(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m))).length
+export const getQuasiSU = (m: M): N => m.findLast(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m)))!
 
 const getXSF = (m: M): N => m.find(n => n.selected)!
 const getXSL = (m: M): N => m.findLast(n => n.selected)!

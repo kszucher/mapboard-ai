@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getXSFP, getXSLP, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0, getNodeByPath} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getXSFP, getXSLP, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0, getNodeByPath, getQuasiSU} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -33,8 +33,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectall': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
     case 'selectSD': selectNode(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
     case 'selectSDtoo': selectNodeToo(m, structNavigate(m, getXSLP(m), Dir.D), 's'); break
-    case 'selectSU': selectNode(m, structNavigate(m, getXSFP(m), Dir.U), 's'); break
-    case 'selectSUtoo': selectNodeToo(m, structNavigate(m, getXSFP(m), Dir.U), 's'); break
+    case 'selectSU': selectNode(m, getQuasiSU(m).path, 's'); break
+    case 'selectSUtoo': selectNodeToo(m, getQuasiSU(m).path, 's'); break
     case 'selectSO': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break
     case 'selectSOR': selectNode(m, structNavigate(m, ['r', getXRi(m), 'd', 0], Dir.OR), 's'); break
     case 'selectSOL': selectNode(m, structNavigate(m, ['r', getXRi(m), 'd', 1], Dir.OL), 's'); break

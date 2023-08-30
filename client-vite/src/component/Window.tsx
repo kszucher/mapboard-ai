@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountXASD, getCountXASU, getCountXCO1, getCountXRiD0S, getCountXRiD1S, getCountXSO1, getX, getXP, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
+import {getCountQuasiSU, getCountXASD, getCountXASU, getCountXCO1, getCountXRiD0S, getCountXRiD1S, getCountXSO1, getX, getXP, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
 import {isUrl} from "../core/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -71,14 +71,14 @@ export const Window: FC = () => {
     ckm === '-s-' && e.code === 'ArrowDown' && isXC(m) && dispatch(actions.mapAction({type: 'selectCCSAME', payload: null}))
     ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && dispatch(actions.mapAction({type: 'insertCRD', payload: null}))
 
-    ckm === '---' && e.code === 'ArrowUp' && isXS(m) && dispatch(actions.mapAction({type: 'selectSU', payload: null}))
+    ckm === '---' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && dispatch(actions.mapAction({type: 'selectSU', payload: null}))
     ckm === '---' && e.code === 'ArrowUp' && isXC(m) && !isXCT(m) && dispatch(actions.mapAction({type: 'selectCU', payload: null}))
     ckm === '---' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && dispatch(actions.mapAction({type: 'selectCU', payload: null}))
     ckm === 'c--' && e.code === 'ArrowUp' && isXR(m) && getXRi(m) > 0 && dispatch(actions.mapAction({type: 'offsetU', payload: null}))
     ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getCountXASU(m) === 0 && dispatch(actions.mapAction({type: 'moveSB', payload: null}))
     ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getCountXASU(m) > 0 && dispatch(actions.mapAction({type: 'moveSU', payload: null}))
     ckm === 'c--' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && dispatch(actions.mapAction({type: 'moveCRU', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowUp' && isXS(m) && dispatch(actions.mapAction({type: 'selectSUtoo', payload: null}))
+    ckm === '-s-' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && dispatch(actions.mapAction({type: 'selectSUtoo', payload: null}))
     ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && dispatch(actions.mapAction({type: 'selectCCSAME', payload: null}))
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && dispatch(actions.mapAction({type: 'insertCRU', payload: null}))
 
