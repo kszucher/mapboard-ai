@@ -70,6 +70,16 @@ export const isNCR = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(
 
 export const getG = (m: M): G => m.filter(n => n.path.length === 1).at(0) as G
 
+export const getCountQuasiSU = (m: M): number => m.filter(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m))).length
+export const getQuasiSU = (m: M): N => m.findLast(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m)))!
+export const getCountQuasiSD = (m: M): number => m.filter(n => sortablePath(n.path) > sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m))).length
+export const getQuasiSD = (m: M): N => m.find(n => sortablePath(n.path) > sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m)))!
+
+export const getLastSO = (m: M): N => getNodeByPath(m, [...getXP(m), 's', getX(m).lastSelectedChild > - 1 && getX(m).lastSelectedChild < getCountXSO1(m) ? getX(m).lastSelectedChild : 0])
+export const getLastSOR = (m: M): N => getNodeByPath(m, [...getXRiD0(m).path, 's', getXRiD0(m).lastSelectedChild > - 1 && getXRiD0(m).lastSelectedChild < getCountXRiD0S(m) ? getXRiD0(m).lastSelectedChild : 0])
+export const getLastSOL = (m: M): N => getNodeByPath(m, [...getXRiD1(m).path, 's', getXRiD1(m).lastSelectedChild > - 1 && getXRiD1(m).lastSelectedChild < getCountXRiD1S(m) ? getXRiD1(m).lastSelectedChild : 0])
+
+
 const getSU1 = (p: P): P => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 
 export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
@@ -83,11 +93,6 @@ export const getXSLP = (m: M): P => getXSL(m).path
 export const getXSI1P = (m: M): P => getSI1P(getXP(m))
 
 export const getXASU1P = (m: M): P => getSU1(getXSFP(m))
-
-export const getCountQuasiSU = (m: M): number => m.filter(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m))).length
-export const getQuasiSU = (m: M): N => m.findLast(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m)))!
-export const getCountQuasiSD = (m: M): number => m.filter(n => sortablePath(n.path) > sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m))).length
-export const getQuasiSD = (m: M): N => m.find(n => sortablePath(n.path) > sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m)))!
 
 const getXSF = (m: M): N => m.find(n => n.selected)!
 const getXSL = (m: M): N => m.findLast(n => n.selected)!

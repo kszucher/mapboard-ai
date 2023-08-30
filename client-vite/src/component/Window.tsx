@@ -83,7 +83,7 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && dispatch(actions.mapAction({type: 'insertCRU', payload: null}))
 
     ckm === '---' && e.code === 'ArrowRight' && isXR(m) && getCountXRiD0S(m) > 0 && dispatch(actions.mapAction({type: 'selectSOR', payload: null}))
-    ckm === '---' && e.code === 'ArrowRight' && isDirR(m) && isXS(m) && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
+    ckm === '---' && e.code === 'ArrowRight' && isDirR(m) && isXS(m) && getCountXSO1(m) > 0 && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
     ckm === '---' && e.code === 'ArrowRight' && isDirL(m) && isXDS(m) && dispatch(actions.mapAction({type: 'selectXRi', payload: null}))
     ckm === '---' && e.code === 'ArrowRight' && isDirL(m) && !isXDS(m) && isXS(m) && dispatch(actions.mapAction({type: 'selectSI', payload: null}))
     ckm === '---' && e.code === 'ArrowRight' && isDirR(m) && isXC(m) && !isXCR(m) && dispatch(actions.mapAction({type: 'selectCR', payload: null}))
@@ -103,7 +103,7 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowRight' && isDirL(m) && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCL', payload: null}))
 
     ckm === '---' && e.code === 'ArrowLeft' && isXR(m) && getCountXRiD1S(m) > 0 && dispatch(actions.mapAction({type: 'selectSOL', payload: null}))
-    ckm === '---' && e.code === 'ArrowLeft' && isDirL(m) && isXS(m) && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
+    ckm === '---' && e.code === 'ArrowLeft' && isDirL(m) && isXS(m) && getCountXSO1(m) > 0 && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && isDirR(m) && isXDS(m) && dispatch(actions.mapAction({type: 'selectXRi', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && isDirR(m) && !isXDS(m) && isXS(m) && dispatch(actions.mapAction({type: 'selectSI', payload: null}))
     ckm === '---' && e.code === 'ArrowLeft' && isDirR(m) && isXC(m) && !isXCL(m) && dispatch(actions.mapAction({type: 'selectCL', payload: null}))

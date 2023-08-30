@@ -1,8 +1,6 @@
 import {shortcutColors} from "../component/Colors"
-import {Dir} from "../state/Enums"
 import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./GptParser"
 import {transpose} from './Utils'
-import {structNavigate} from './NodeNavigate'
 import {nSaveOptional} from "../state/MapState"
 import {M, N} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
@@ -13,7 +11,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getXSFP, getXSLP, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0, getNodeByPath, getQuasiSU, getQuasiSD} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -35,9 +33,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectSDtoo': selectNodeToo(m, getQuasiSD(m).path, 's'); break
     case 'selectSU': selectNode(m, getQuasiSU(m).path, 's'); break
     case 'selectSUtoo': selectNodeToo(m, getQuasiSU(m).path, 's'); break
-    case 'selectSO': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break
-    case 'selectSOR': selectNode(m, structNavigate(m, ['r', getXRi(m), 'd', 0], Dir.OR), 's'); break
-    case 'selectSOL': selectNode(m, structNavigate(m, ['r', getXRi(m), 'd', 1], Dir.OL), 's'); break
+    case 'selectSO': selectNode(m, getLastSO(m).path, 's'); break
+    case 'selectSOR': selectNode(m, getLastSOR(m).path, 's'); break
+    case 'selectSOL': selectNode(m, getLastSOL(m).path, 's'); break
     case 'selectSI': selectNode(m, getXSI1(m).path, 's'); break
     case 'selectSfamilyO': getX(m).selection = 'f'; break
     case 'selectSfamilyOR': selectNode(m, ['r', getXRi(m), 'd', 0], 'f'); break

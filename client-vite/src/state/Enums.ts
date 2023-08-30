@@ -48,17 +48,6 @@ export enum LineTypes {
   edge
 }
 
-export enum Dir {
-  I,
-  IR,
-  IL,
-  O,
-  OR,
-  OL,
-  U,
-  D,
-}
-
 export enum Sides {
   L = 'left',
   R = 'right',
