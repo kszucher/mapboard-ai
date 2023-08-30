@@ -79,7 +79,6 @@ export const getLastSO = (m: M): N => getNodeByPath(m, [...getXP(m), 's', getX(m
 export const getLastSOR = (m: M): N => getNodeByPath(m, [...getXRiD0(m).path, 's', getXRiD0(m).lastSelectedChild > - 1 && getXRiD0(m).lastSelectedChild < getCountXRiD0S(m) ? getXRiD0(m).lastSelectedChild : 0])
 export const getLastSOL = (m: M): N => getNodeByPath(m, [...getXRiD1(m).path, 's', getXRiD1(m).lastSelectedChild > - 1 && getXRiD1(m).lastSelectedChild < getCountXRiD1S(m) ? getXRiD1(m).lastSelectedChild : 0])
 
-
 const getSU1 = (p: P): P => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 
 export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
