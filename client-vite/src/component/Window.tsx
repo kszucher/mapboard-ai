@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountQuasiSU, getCountXASD, getCountXASU, getCountXCO1, getCountXRiD0S, getCountXRiD1S, getCountXSO1, getX, getXP, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
+import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRiD0S, getCountXRiD1S, getCountXSO1, getX, getXP, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath} from "../core/MapUtils"
 import {isUrl} from "../core/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -60,14 +60,14 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyY' && dispatch(actions.mapAction({type: 'undo', payload: null}))
     ckm === 'c--' && e.code === 'KeyE' && isXS(m) && dispatch(actions.mapAction({type: 'transpose', payload: null}))
 
-    ckm === '---' && e.code === 'ArrowDown' && isXS(m) && dispatch(actions.mapAction({type: 'selectSD', payload: null}))
+    ckm === '---' && e.code === 'ArrowDown' && isXS(m) && getCountQuasiSD(m) > 0 && dispatch(actions.mapAction({type: 'selectSD', payload: null}))
     ckm === '---' && e.code === 'ArrowDown' && isXC(m) && !isXCB(m) && dispatch(actions.mapAction({type: 'selectCD', payload: null}))
     ckm === '---' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && dispatch(actions.mapAction({type: 'selectCD', payload: null}))
     ckm === 'c--' && e.code === 'ArrowDown' && isXR(m) && getXRi(m) > 0 && dispatch(actions.mapAction({type: 'offsetD', payload: null}))
     ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getCountXASD(m) === 0 && dispatch(actions.mapAction({type: 'moveST', payload: null}))
     ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getCountXASD(m) > 0 && dispatch(actions.mapAction({type: 'moveSD', payload: null}))
     ckm === 'c--' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && dispatch(actions.mapAction({type: 'moveCRD', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowDown' && isXS(m) && dispatch(actions.mapAction({type: 'selectSDtoo', payload: null}))
+    ckm === '-s-' && e.code === 'ArrowDown' && isXS(m)  && getCountQuasiSD(m) > 0 && dispatch(actions.mapAction({type: 'selectSDtoo', payload: null}))
     ckm === '-s-' && e.code === 'ArrowDown' && isXC(m) && dispatch(actions.mapAction({type: 'selectCCSAME', payload: null}))
     ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && dispatch(actions.mapAction({type: 'insertCRD', payload: null}))
 

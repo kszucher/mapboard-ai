@@ -86,6 +86,8 @@ export const getXASU1P = (m: M): P => getSU1(getXSFP(m))
 
 export const getCountQuasiSU = (m: M): number => m.filter(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m))).length
 export const getQuasiSU = (m: M): N => m.findLast(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m)))!
+export const getCountQuasiSD = (m: M): number => m.filter(n => sortablePath(n.path) > sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m))).length
+export const getQuasiSD = (m: M): N => m.find(n => sortablePath(n.path) > sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m)))!
 
 const getXSF = (m: M): N => m.find(n => n.selected)!
 const getXSL = (m: M): N => m.findLast(n => n.selected)!
