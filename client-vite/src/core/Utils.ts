@@ -14,5 +14,5 @@ export const getLatexString = (s: string) => '\\Large ' + s.substring(2, s.lengt
 export const adjust = (x: number) => Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5
 export const adjustIcon = (x: number) => !Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5
 export const getTableIndices = (r: number, c: number) => Array(r*c).fill(null).map((el, i) => [Math.floor(i/c), i%c])
-export const filterEmpty = (array: any[]) => array.filter(value => Object.keys(value).length !== 0)
+export const filterEmpty = (array: any[]) => array.filter(el => Object.keys(el).length !== 0 && el.hasOwnProperty('nodeId') && el.hasOwnProperty('path'))
 export const generateCharacter = (index: number) => String.fromCharCode('u'.charCodeAt(0) + index)
