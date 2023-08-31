@@ -58,7 +58,6 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && dispatch(actions.mapAction({type: 'cutS', payload: null}))
     ckm === 'c--' && e.code === 'KeyZ' && dispatch(actions.mapAction({type: 'redo', payload: null}))
     ckm === 'c--' && e.code === 'KeyY' && dispatch(actions.mapAction({type: 'undo', payload: null}))
-    ckm === 'c--' && e.code === 'KeyE' && isXS(m) && dispatch(actions.mapAction({type: 'transpose', payload: null}))
 
     ckm === '---' && e.code === 'ArrowDown' && isXS(m) && getCountQuasiSD(m) > 0 && dispatch(actions.mapAction({type: 'selectSD', payload: null}))
     ckm === '---' && e.code === 'ArrowDown' && isXC(m) && !isXCB(m) && dispatch(actions.mapAction({type: 'selectCD', payload: null}))

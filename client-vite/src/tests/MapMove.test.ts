@@ -1,4 +1,5 @@
 import {mapReducerAtomic} from "../core/MapReducer"
+import {sortNode} from "../core/MapUtils"
 import {setIsTesting} from "../core/Utils"
 import {M} from "../state/MapStateTypes"
 
@@ -354,6 +355,44 @@ const moveS2TO_result = [
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 'c', 2, 0, 's', 0]},
 ] as M
 
+const transpose_test = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 1, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2]},
+  {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 2, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'm', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+  {selected: 0, selection: 's', nodeId: 'n', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'o', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
+  {selected: 0, selection: 's', nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
+] as M
+
+const transpose_result = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 1, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'm', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+  {selected: 0, selection: 's', nodeId: 'n', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
+  {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'o', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
+  {selected: 0, selection: 's', nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1, 's', 0]},
+] as M
+
 describe("Move_tests", () => {
   beforeEach(() => setIsTesting())
   test('moveSD', () => {mapReducerAtomic(moveSD_test, 'moveSD', {}); expect(moveSD_test).toEqual(moveSD_result)})
@@ -370,4 +409,5 @@ describe("Move_tests", () => {
   test('moveCCL', () => {mapReducerAtomic(moveCCL_test, 'moveCCL', {}); expect(moveCCL_test).toEqual(moveCCL_result)})
   test('moveS2TOR', () => {mapReducerAtomic(moveS2TOR_test, 'moveS2TOR', {}); expect(moveS2TOR_test).toEqual(moveS2TOR_result)})
   test('moveS2TO', () => {mapReducerAtomic(moveS2TO_test, 'moveS2TO', {}); expect(moveS2TO_test).toEqual(moveS2TO_result)})
+  test('transpose', () => {mapReducerAtomic(transpose_test, 'transpose', {}); expect(transpose_test.sort(sortNode)).toEqual(transpose_result.sort(sortNode))})
 })

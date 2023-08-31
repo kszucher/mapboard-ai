@@ -3,7 +3,6 @@ export const setIsTesting = () => IS_TESTING = true
 export const isArrayOfEqualValues = (array: any[]) => array.every(el => el === array[0])
 export const createArray = (dim1: number, dim2: number) => Array.from(Array(dim1), () => new Array(dim2))
 export const isUrl = (string: string) => { try { return Boolean(new URL(string)) } catch(e) { return false } }
-export const transpose = (array2d: any[][]) => array2d[0].map((col, i) => array2d.map(row => row[i]))
 export const dec2hex = (dec: number) => ('0' + dec.toString(16)).substr(-2)
 export const genHash = (len: number) => {
   const arr = new Uint8Array((len || 40) / 2)
