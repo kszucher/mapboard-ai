@@ -68,7 +68,7 @@ export const Landing: FC = () => {
                   <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
                     <div className="">
                       <h1 className="flex justify-center">AI Visual Workspaces For</h1>
-                      <h1 className="flex justify-center">Business Analytics:</h1>
+                      <h1 className="flex justify-center">Business Processes:</h1>
                       <h1 className="rotate-wrap leading-normal flex justify-center ">
                         <span> &nbsp;</span>
                         <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Gathering and Refining Requirements</span>

@@ -159,7 +159,7 @@ export const getCountXSCH = (m: M): number => getCountCH(m, [...getXP(m), 'c', 0
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
 
-export const getReselectR = (m: M) => m.findLast(n => isR(n.path))!.path
+export const getReselectR = (m: M) => m.findLast(n => !n.selected && isR(n.path))!.path
 export const getReselectS = (m: M) => getCountXASU(m) ? getXASU1P(m) : (isXDS(m) ? getSI2P(getXSFP(m)): getSI1P(getXSFP(m)))
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU1(m).map(n => n.path) : ( getCountXCV(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1P(m)] )
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL1(m).map(n => n.path) : ( getCountXCH(m) >= 2 ? getXA(m).map(n => n.path) : [getXSI1P(m)] )
