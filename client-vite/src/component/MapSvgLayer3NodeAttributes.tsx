@@ -64,7 +64,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             <path
               d={!getNodeById(pm, n.nodeId) && getNSI2(pm, n) ? getLinePathBetweenNodes(getNSI2(pm, n), n) : getLinePathBetweenNodes(getNSI2(m, n), n)}
               strokeWidth={n.lineWidth}
-              stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
+              stroke={n.lineColor}
               fill={'none'}
               {...pathCommonProps}
             >
