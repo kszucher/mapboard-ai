@@ -1,4 +1,4 @@
-import {getNSIC, getG, getNodeById, getNodeByPath, getNR, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isCON, isD, isXACC, isXACR} from "../core/MapUtils"
+import {getNSIC, getG, getNodeById, getNodeByPath, getNR, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
 import {LineTypes, Sides} from "../state/Enums"
@@ -113,17 +113,14 @@ export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
 export const getPolygonC = (m: M): PolygonPoints => {
   const ni = getNodeByPath(m, getSI1P(getX(m).path)) as N
   const n = getNodeByPath(m, getX(m).path)
-  const dir = getPathDir(getX(m).path)
-  let x, y, w, h, ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
+  let y, h, ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
   if (isXACR(m)) {
     const i = getX(m).path.at(-2) as number
-    x = dir === -1 ? ni.nodeEndX  : ni.nodeStartX
     y = - ni.maxRowHeight[i] / 2 + n.nodeY
-    w = ni.selfW
     h = ni.maxRowHeight[i]
-    ax = x + (dir === -1 ? -w : 0)
-    bx = x + dir * w
-    cx = x + (dir === 1 ? w : 0)
+    ax = getXA(m).slice().sort(sortPath).at(0)!.nodeStartX
+    bx = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndX
+    cx = bx
     ayu = y
     ayd = y + h
     byu = y
@@ -131,14 +128,11 @@ export const getPolygonC = (m: M): PolygonPoints => {
     cyu = y
     cyd = y + h
   } else if (isXACC(m)) {
-    const j = getX(m).path.at(-1) as number
-    x = dir === -1 ? ni.nodeEndX - ni.sumMaxColWidth[j] : ni.nodeStartX + ni.sumMaxColWidth[j]
     y = ni.nodeY - ni.selfH / 2
-    w = ni.maxColWidth[j]
     h = ni.selfH
-    ax = x + (dir === -1 ? -w : 0) // remove max / sumMax dependency: getXA(m).at(0).nodeStartX!!!
-    bx = x + dir * w
-    cx = x + (dir === 1 ? w : 0)
+    ax = getXA(m).at(0)!.nodeStartX
+    bx = getXA(m).at(0)!.nodeEndX
+    cx = bx
     ayu = y
     ayd = y + h
     byu = y
@@ -147,14 +141,11 @@ export const getPolygonC = (m: M): PolygonPoints => {
     cyd = y + h
   } else {
     const i = getX(m).path.at(-2) as number
-    const j = getX(m).path.at(-1) as number
-    x = dir === -1 ? ni.nodeEndX - ni.sumMaxColWidth[j] : ni.nodeStartX + ni.sumMaxColWidth[j]
     y = - ni.maxRowHeight[i] / 2 + n.nodeY
-    w = ni.maxColWidth[j]
     h = ni.maxRowHeight[i]
-    ax = x + (dir === -1 ? -w : 0)
-    bx = x + dir * w
-    cx = x + (dir === 1 ? w : 0)
+    ax = getX(m).nodeStartX
+    bx = getX(m).nodeEndX
+    cx = bx
     ayu = y
     ayd = y + h
     byu = y

@@ -108,7 +108,7 @@ export const getXRD1 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2
 export const getRL = (m: M): N[] => m.filter(n => n.path.length === 2)
 export const getXSO1 = (m: M): N[] => m.filter(n => isSO1(getX(m).path, n.path))
 export const getXSO2 = (m: M): N[] => m.filter(n => isSO2(getX(m).path, n.path))
-export const getXA = (m: M): N[] => m.filter(n => n.selected)
+export const getXA = (m: M): M => m.filter(n => n.selected)
 export const getXAF = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSEO(xn.path, n.path)))
 export const getXAO = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSO(xn.path, n.path)))
 export const getXSSCR0 = (m: M): N[] => m.filter(n => isSCR0(getX(m).path, n.path))
