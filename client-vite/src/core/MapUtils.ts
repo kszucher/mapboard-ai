@@ -17,7 +17,7 @@ export const getPathDir = (p: P) => p[3] ? -1 : 1
 export const isDirR = (m: M) => getPathDir(getX(m).path) === 1
 export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 
-export const getRi = (p: P): number => p.at(1) as number // TODO: remove this and replace dependencies with proper Node-getters
+export const getRi = (p: P): number => p.at(1) as number // TODO: remove this and replace dependencies with proper Node-getters AND getCountR / getCountXR
 export const getRiL = (m: M): number => m.findLast(n => n.path.length === 2)!.path.at(1) as number
 export const getXRi = (m: M): number => getRi(getX(m).path)
 
