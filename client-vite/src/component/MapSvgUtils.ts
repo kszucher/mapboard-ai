@@ -136,7 +136,7 @@ export const getPolygonC = (m: M): PolygonPoints => {
     y = ni.nodeY - ni.selfH / 2
     w = ni.maxColWidth[j]
     h = ni.selfH
-    ax = x + (dir === -1 ? -w : 0)
+    ax = x + (dir === -1 ? -w : 0) // remove max / sumMax dependency: getXA(m).at(0).nodeStartX!!!
     bx = x + dir * w
     cx = x + (dir === 1 ? w : 0)
     ayu = y
