@@ -83,9 +83,9 @@ export const ContextMenu: FC = () => {
             <button id="doubleDropdownButton" data-dropdown-toggle="selectSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Select{MenuButtonSvg}</button>
             <div id="selectSubMenu" className={subMenuClassName}>
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-                { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getX(m).path}}))}}>Node Branch</a></li> }
-                { mExists && isXR(m) && getCountXRD0S(m) > 0 && !getXRD0(m).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getXRD0(m).path}}))}}>Node Branch Right</a></li> }
-                { mExists && isXR(m) && getCountXRD1S(m) > 0 && !getXRD1(m).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getXRD1(m).path}}))}}>Node Branch Left</a></li> }
+                { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))}}>Node Family</a></li> }
+                { mExists && isXR(m) && getCountXRD0S(m) > 0 && !getXRD0(m).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD0', payload: null}))}}>Node Family Right</a></li> }
+                { mExists && isXR(m) && getCountXRD1S(m) > 0 && !getXRD1(m).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD1', payload: null}))}}>Node Family Left</a></li> }
                 { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectXS', payload: null}))}}>Node</a></li> }
                 { mExists && isXD(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectXR', payload: null}))}}>Node</a></li> }
                 { mExists && isXS(m) && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getX(m).path}}))}}>First Cell</a></li> }
