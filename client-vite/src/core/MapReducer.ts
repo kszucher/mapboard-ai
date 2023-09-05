@@ -10,7 +10,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getNRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO, getNR, getXR} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getNRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO, getNR, getXR, getClosestCellParent} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -39,11 +39,10 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectSOL': selectNode(m, getLastSOL(m), 's'); break
     case 'selectSI': selectNode(m, getXSI1(m), 's'); break
     case 'selectSF': selectNode(m, getNodeByPath(m, [...getX(m).path, 's', 0]), 's'); break
-    case 'selectSB': selectNode(m, getNodeByPath(m, getX(m).path.slice(0, -3)), 's'); break
     case 'selectCFfirstRow': selectNode(m, getNodeByPath(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -2 ? 0 : pi)), 's'); break
     case 'selectCFfirstCol': selectNode(m, getNodeByPath(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi)), 's'); break
     case 'selectCFF': selectNode(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
-    case 'selectCB': selectNode(m, getNodeByPath(m, [...getX(m).path.slice(0, getX(m).path.lastIndexOf('c') + 3)]), 's'); break
+    case 'selectCB': selectNode(m,  getClosestCellParent(m, getX(m).path), 's'); break
     case 'selectCRSAME': selectNodeList(m, m.filter(n => isCV(n.path, getX(m).path)), 's'); break
     case 'selectCCSAME': selectNodeList(m, m.filter(n => isCH(n.path, getX(m).path)), 's'); break
     case 'selectCD': selectNodeList(m, getXACD1(m), 's'); break
