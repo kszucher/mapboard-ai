@@ -93,6 +93,12 @@ export const getR0 = (m: M): N => getNodeByPath(m, ['r', 0])
 export const getXSI1 = (m: M): N => getNodeByPath(m, getSI1P(getX(m).path))
 export const getXSI2 = (m: M): N => getNodeByPath(m, getSI2P(getX(m).path))
 export const getXASU1 = (m: M): N => getNodeByPath(m, getSU1(getXSF(m).path))
+
+export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
+export const getXSIS = (m: M, p: P) => getNodeByPath(m, getClosestStructParentPath(p))
+export const getClosestCellParentPath = (p: P) => p.slice(0, p.lastIndexOf('c') + 3)
+export const getXSIC = (m: M, p: P) => getNodeByPath(m, getClosestCellParentPath(p))
+
 export const getNR = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getXR = (m: M): N => getNodeByPath(m, getX(m).path.slice(0, 2))
 export const getNRD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
@@ -158,11 +164,6 @@ export const getReselectCC = (m: M) : N[] => getCountXCL(m) ? getXACL1(m) : ( ge
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
-
-export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
-export const getClosestStructParent = (m: M, p: P) => getNodeByPath(m, getClosestStructParentPath(p))
-export const getClosestCellParentPath = (p: P) => p.slice(0, p.lastIndexOf('c') + 3)
-export const getClosestCellParent = (m: M, p: P) => getNodeByPath(m, getClosestCellParentPath(p))
 
 export const hasTaskRight = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
 export const hasTaskLeft = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
