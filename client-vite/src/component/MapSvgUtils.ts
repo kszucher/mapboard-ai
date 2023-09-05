@@ -1,4 +1,4 @@
-import {getNSIC, getG, getNodeById, getNodeByPath, getNR, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../core/MapUtils"
+import {getNSIC, getG, getNodeById, getNodeByPath, getNR, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
 import {LineTypes, Sides} from "../state/Enums"
@@ -111,32 +111,22 @@ export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
 }
 
 export const getPolygonC = (m: M): PolygonPoints => {
-  const ni = getNodeByPath(m, getSI1P(getX(m).path)) as N
-  const n = getNodeByPath(m, getX(m).path)
-  let y, h, ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
+  let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
   if (isXACR(m)) {
-    const i = getX(m).path.at(-2) as number
-    y = - ni.maxRowHeight[i] / 2 + n.nodeY
-    h = ni.maxRowHeight[i]
     ax = getXA(m).slice().sort(sortPath).at(0)!.nodeStartX
     bx = cx = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndX
-    ayu = byu = cyu = y
-    ayd = byd = cyd = y + h
+    ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeY - getXA(m).slice().sort(sortPath).at(0)!.selfH / 2
+    ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(0)!.nodeY + getXA(m).slice().sort(sortPath).at(0)!.selfH / 2
   } else if (isXACC(m)) {
-    y = ni.nodeY - ni.selfH / 2
-    h = ni.selfH
     ax = getXA(m).at(0)!.nodeStartX
     bx = cx = getXA(m).at(0)!.nodeEndX
-    ayu = byu = cyu = y
-    ayd = byd = cyd = y + h
+    ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeY - getXA(m).slice().sort(sortPath).at(0)!.selfH / 2
+    ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(-1)!.nodeY + getXA(m).slice().sort(sortPath).at(-1)!.selfH / 2
   } else {
-    const i = getX(m).path.at(-2) as number
-    y = - ni.maxRowHeight[i] / 2 + n.nodeY
-    h = ni.maxRowHeight[i]
     ax = getX(m).nodeStartX
-    bx = cx =getX(m).nodeEndX
-    ayu = byu = cyu = y
-    ayd = byd = cyd = y + h
+    bx = cx = getX(m).nodeEndX
+    ayu = byu = cyu = getX(m).nodeY - getX(m).selfH / 2
+    ayd = byd = cyd = getX(m).nodeY + getX(m).selfH / 2
   }
   return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
