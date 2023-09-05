@@ -4,7 +4,7 @@ import {genHash} from "./Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {getReselectS, getXA, sortPath, isNCED, getCountNSCH, getXAF, getX, getCountXCU, getCountXCL, getCountNSCV, isNCER, isNSED, getCountXASU} from "./MapUtils"
+import {getReselectS, getXA, sortPath, isNCED, getCountNSCH, getXAF, getX, getCountXCU, getCountXCL, getCountNSCV, isNCER, isNSED, getCountXASU, getNodeByPath} from "./MapUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -42,7 +42,7 @@ export const cutS = (m: M) => {
   const cb = getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
   cbSave(cb)
   deleteS(m)
-  selectNode(m, reselectPath, 's')
+  selectNode(m, getNodeByPath(m, reselectPath), 's')
 }
 
 export const copyR = (m: M) => {

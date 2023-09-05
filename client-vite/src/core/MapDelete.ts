@@ -1,6 +1,6 @@
 import {M, P} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
-import {getReselectS, getReselectCR, getReselectCC, getXRi, getReselectR, getG, getX, isNCD, isNCR, isNSD, getXAO, getXA} from "./MapUtils"
+import {getReselectS, getReselectCR, getReselectCC, getXRi, getReselectR, getG, getX, isNCD, isNCR, isNSD, getXAO, getXA, getNodeByPath} from "./MapUtils"
 
 export const deleteR = (m: M) => {
   const g = getG(m)
@@ -49,13 +49,13 @@ export const deleteCC = (m: M) => {
 export const deleteReselectR = (m: M) => {
   const reselectPath = getReselectR(m)
   deleteR(m)
-  selectNode(m, reselectPath, 's')
+  selectNode(m, getNodeByPath(m, reselectPath), 's')
 }
 
 export const deleteReselectS = (m: M) => {
   const reselectPath = getReselectS(m)
   deleteS(m)
-  selectNode(m, reselectPath, 's')
+  selectNode(m, getNodeByPath(m, reselectPath), 's')
 }
 
 export const deleteReselectCR = (m: M) => {
