@@ -1,24 +1,4 @@
-import {
-  getClosestCellParent,
-  getG,
-  getNodeById,
-  getNodeByPath,
-  getNRi,
-  getPathDir,
-  getRi,
-  getRootEndX,
-  getRootEndY,
-  getRootMidX,
-  getRootMidY,
-  getRootStartX,
-  getRootStartY,
-  getSI1P,
-  getX,
-  isCON,
-  isD,
-  isXACC,
-  isXACR
-} from "../core/MapUtils"
+import {getClosestCellParent, getG, getNodeById, getNodeByPath, getNRi, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isCON, isD, isXACC, isXACR} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
 import {LineTypes, Sides} from "../state/Enums"
@@ -256,6 +236,26 @@ export const getTaskStartPoint = (m: M, g: G, n: N) => {
       return getTaskWidth(g)
     case getPathDir(n.path) === 1 && isCON(n.path):return getClosestCellParent(m, n.path).nodeEndX - 120
     case getPathDir(n.path) === -1 && isCON(n.path):return getClosestCellParent(m, n.path).nodeStartX + 120
+    default:return 0
+  }
+}
+
+export const getRootSideX = (m: M, n: N, side: string) => {
+  switch (true) {
+    case (side === 'L'):return getRootStartX(m, n)
+    case (side === 'R'):return getRootEndX(m, n) - 24
+    case (side === 'T'):return getRootMidX(m, n) - 12
+    case (side === 'B'):return getRootMidX(m, n) - 12
+    default:return 0
+  }
+}
+
+export const getRootSideY = (m: M, n: N, side: string) => {
+  switch (true) {
+    case (side === 'L'):return getRootMidY(m, n) - 12
+    case (side === 'R'):return getRootMidY(m, n) - 12
+    case (side === 'T'):return getRootStartY(m, n)
+    case (side === 'B'):return getRootEndY(m, n) - 24
     default:return 0
   }
 }

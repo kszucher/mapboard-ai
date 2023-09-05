@@ -1,35 +1,15 @@
 import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
+import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {getG, isR,} from "../core/MapUtils"
 import {adjustIcon} from "../core/Utils";
-import {Sides} from "../state/Enums"
-import {Connection, M, N} from "../state/MapStateTypes"
-import {getRootStartX, getRootStartY, isR, getRootMidY, getRootMidX, getRootEndX, getRootEndY, getG,} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
-import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {Sides} from "../state/Enums"
+import {Connection, N} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg";
-import {getLinePathBetweenRoots} from "./MapSvgUtils";
-
-const getX = (m: M, n: N, side: string) => {
-  switch (true) {
-    case (side === 'L'): return getRootStartX(m, n)
-    case (side === 'R'): return getRootEndX(m, n) - 24
-    case (side === 'T'): return getRootMidX(m, n) - 12
-    case (side === 'B'): return getRootMidX(m, n) - 12
-    default: return 0
-  }
-}
-
-const getY = (m: M, n: N, side: string) => {
-  switch (true) {
-    case (side === 'L'): return getRootMidY(m, n) - 12
-    case (side === 'R'): return getRootMidY(m, n) - 12
-    case (side === 'T'): return getRootStartY(m, n)
-    case (side === 'B'): return getRootEndY(m, n) - 24
-    default: return 0
-  }
-}
+import {getLinePathBetweenRoots, getRootSideX, getRootSideY} from "./MapSvgUtils"
 
 export const MapSvgLayer10Connections: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -53,7 +33,7 @@ export const MapSvgLayer10Connections: FC = () => {
                 rx={4}
                 ry={4}
                 fill={'#666666'}
-                transform={`translate(${adjustIcon(getX(m, n, side))}, ${adjustIcon(getY(m, n, side))})`}
+                transform={`translate(${adjustIcon(getRootSideX(m, n, side))}, ${adjustIcon(getRootSideY(m, n, side))})`}
                 {...{vectorEffect: 'non-scaling-stroke'}}
                 style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
                 onMouseDown={(e) => {
