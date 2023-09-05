@@ -1,4 +1,4 @@
-import {getClosestCellParent, getG, getNodeById, getNodeByPath, getNRi, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isCON, isD, isXACC, isXACR} from "../core/MapUtils"
+import {getClosestCellParent, getG, getNodeById, getNodeByPath, getNR, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isCON, isD, isXACC, isXACR} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
 import {LineTypes, Sides} from "../state/Enums"
@@ -231,7 +231,7 @@ export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
 export const getTaskStartPoint = (m: M, g: G, n: N) => {
   switch (true) {
-    case getPathDir(n.path) === 1 && !isCON(n.path):return getRootEndX(m, getNRi(m, n)) - getTaskWidth(g)
+    case getPathDir(n.path) === 1 && !isCON(n.path):return getRootEndX(m, getNR(m, n)) - getTaskWidth(g)
     case getPathDir(n.path) === -1 && !isCON(n.path):
       return getTaskWidth(g)
     case getPathDir(n.path) === 1 && isCON(n.path):return getClosestCellParent(m, n.path).nodeEndX - 120

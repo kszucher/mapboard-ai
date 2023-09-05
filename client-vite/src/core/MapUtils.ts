@@ -95,7 +95,7 @@ export const getRXD1 = (m: M, ri: number): N => getNodeByPath(m, ['r', ri, 'd', 
 export const getXSI1 = (m: M): N => getNodeByPath(m, getSI1P(getX(m).path))
 export const getXSI2 = (m: M): N => getNodeByPath(m, getSI2P(getX(m).path))
 export const getXASU1 = (m: M): N => getNodeByPath(m, getSU1(getXSF(m).path))
-export const getNRi = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
+export const getNR = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getNRD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
 export const getNRD1 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 1])
 export const getXRD0 = (m: M): N => getNRD0(m, getX(m))
