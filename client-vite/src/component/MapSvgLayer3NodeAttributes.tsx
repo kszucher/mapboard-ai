@@ -46,7 +46,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               {...pathCommonProps}
             />
           }
-          {(getPathPattern(n.path).endsWith('ds') || (getPathPattern(n.path).endsWith('ss') && getCountNCO1(m, n) === 0)) &&
+          {(getPathPattern(n.path).endsWith('ds') && getCountNCO1(m, n) === 0 || (getPathPattern(n.path).endsWith('ss') && getCountNCO1(m, n) === 0)) &&
             <path
               d={!getNodeById(pm, n.nodeId) && getNSI1(pm, n) ? getLinePathBetweenNodes(getNSI1(pm, n), n) : getLinePathBetweenNodes(getNSI1(m, n), n)}
               strokeWidth={n.lineWidth}
