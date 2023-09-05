@@ -10,12 +10,14 @@ export const selectNode = (m: M, n: N, selection: 's' | 'f') => {
     getNodeByPath(m, getSI1P(n.path)).lastSelectedChild = n.path.at(-1) as number
   }
 }
-export const selectNodeToo = (m: M, path: P, selection: 's' | 'f') => {
-  Object.assign(getNodeByPath(m, path), {selected: getX(m).selected + 1, selection})
+
+export const selectNodeToo = (m: M, n: N, selection: 's' | 'f') => {
+  Object.assign(n, {selected: getX(m).selected + 1, selection})
 }
-export const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
-  if (pList.length) {
+
+export const selectNodeList = (m: M, nList: N[], selection: 's' | 'f') => {
+  if (nList.length) {
     unselectNodes(m)
-    pList.map((p, i) => Object.assign(getNodeByPath(m, p), {selected: i + 1, selection}))
+    nList.map((n, i) => Object.assign(n, {selected: i + 1, selection}))
   }
 }

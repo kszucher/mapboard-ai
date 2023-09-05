@@ -4,7 +4,7 @@ import {genHash} from "./Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {getReselectS, getXA, sortPath, isNCED, getCountNSCH, getXAF, getX, getCountXCU, getCountXCL, getCountNSCV, isNCER, isNSED, getCountXASU, getNodeByPath} from "./MapUtils"
+import {getReselectS, getXA, sortPath, isNCED, getCountNSCH, getXAF, getX, getCountXCU, getCountXCL, getCountNSCV, isNCER, isNSED, getCountXASU} from "./MapUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -38,11 +38,11 @@ const cbSave = (cb: any) => {
 }
 
 export const cutS = (m: M) => {
-  const reselectPath = getReselectS(m)
+  const reselect = getReselectS(m)
   const cb = getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
   cbSave(cb)
   deleteS(m)
-  selectNode(m, getNodeByPath(m, reselectPath), 's')
+  selectNode(m, reselect, 's')
 }
 
 export const copyR = (m: M) => {
@@ -99,7 +99,7 @@ export const moveCC = (m: M, insertParentNode: N, insertTargetColumnIndex: numbe
 
 export const moveS2T = (m: M, insertParentNode: N, moveNodes: N[]) => {
   const rowLen = moveNodes.length
-  selectNodeList(m, moveNodes.map(n => n.path), 's')
+  selectNodeList(m, moveNodes, 's')
   const cb = getXAF(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
   deleteS(m)
   insertTable(m, insertParentNode, 0, {rowLen, colLen: 1})

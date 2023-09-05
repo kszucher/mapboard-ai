@@ -24,13 +24,13 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectXRi': selectNode(m, getNodeByPath(m, ['r', getXRi(m)]), 's'); break
     case 'selectNS': selectNode(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectXS': selectNode(m, getX(m), 's'); break
-    case 'selectStoo': selectNodeToo(m, payload.path, 's'); break
+    case 'selectStoo': selectNodeToo(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectF': selectNode(m, payload.path, 'f'); break
-    case 'selectall': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
+    case 'selectall': selectNodeList(m, m.filter(n => n.content !== ''), 's'); break
     case 'selectSD': selectNode(m, getQuasiSD(m), 's'); break
-    case 'selectSDtoo': selectNodeToo(m, getQuasiSD(m).path, 's'); break
+    case 'selectSDtoo': selectNodeToo(m, getQuasiSD(m), 's'); break
     case 'selectSU': selectNode(m, getQuasiSU(m), 's'); break
-    case 'selectSUtoo': selectNodeToo(m, getQuasiSU(m).path, 's'); break
+    case 'selectSUtoo': selectNodeToo(m, getQuasiSU(m), 's'); break
     case 'selectSO': selectNode(m, getLastSO(m), 's'); break
     case 'selectSOR': selectNode(m, getLastSOR(m), 's'); break
     case 'selectSOL': selectNode(m, getLastSOL(m), 's'); break
@@ -41,13 +41,13 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCFfirstCol': selectNode(m, getNodeByPath(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi)), 's'); break
     case 'selectCFF': selectNode(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
     case 'selectCB': selectNode(m, getNodeByPath(m, [...getX(m).path.slice(0, getX(m).path.lastIndexOf('c') + 3)]), 's'); break
-    case 'selectCRSAME': selectNodeList(m, m.filter(n => isCV(n.path, getX(m).path)).map(n => n.path), 's'); break
-    case 'selectCCSAME': selectNodeList(m, m.filter(n => isCH(n.path, getX(m).path)).map(n => n.path), 's'); break
-    case 'selectCD': selectNodeList(m, getXACD1(m).map(n => n.path), 's'); break
-    case 'selectCU': selectNodeList(m, getXACU1(m).map(n => n.path), 's'); break
-    case 'selectCR': selectNodeList(m, getXACR1(m).map(n => n.path), 's'); break
-    case 'selectCL': selectNodeList(m, getXACL1(m).map(n => n.path), 's'); break
-    case 'selectDragged': selectNodeList(m, payload.nList.map((n: N) => n.path), 's'); break
+    case 'selectCRSAME': selectNodeList(m, m.filter(n => isCV(n.path, getX(m).path)), 's'); break
+    case 'selectCCSAME': selectNodeList(m, m.filter(n => isCH(n.path, getX(m).path)), 's'); break
+    case 'selectCD': selectNodeList(m, getXACD1(m), 's'); break
+    case 'selectCU': selectNodeList(m, getXACU1(m), 's'); break
+    case 'selectCR': selectNodeList(m, getXACR1(m), 's'); break
+    case 'selectCL': selectNodeList(m, getXACL1(m), 's'); break
+    case 'selectDragged': selectNodeList(m, payload.pathList.map((p: P) => getNodeByPath(m, p)), 's'); break
 
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
     case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1) as number, payload); break
