@@ -27,9 +27,12 @@ export const isD = (p: P): boolean => getPathPattern(p).endsWith('d')
 export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')
 export const isC = (p: P): boolean => getPathPattern(p).endsWith('c')
 
-export const isXR = (m: M): boolean => isR(getX(m).path) && !m.find(n => n.selected && !isR(n.path))
-export const isXD = (m: M): boolean => isD(getX(m).path) && !m.find(n => n.selected && !isD(n.path))
-export const isXS = (m: M): boolean => isS(getX(m).path) && !m.find(n => n.selected && !isS(n.path))
+export const isNR = (m: M, n: N): boolean => isR(n.path)
+export const isXR = (m: M): boolean => isR(getX(m).path)
+export const isXD = (m: M): boolean => isD(getX(m).path)
+export const isNS = (m: M, n: N): boolean => isS(n.path)
+export const isXS = (m: M): boolean => isS(getX(m).path)
+
 export const isXDS = (m: M): boolean => getX(m).path.length === 6
 const isXASV = (m: M): boolean => isS(getX(m).path) && getXA(m).map(n => n.path).every(p => isSV(getX(m).path, p))
 export const isXASVN = (m: M): boolean => isXASV(m) && ((getXSL(m).path.at(-1) as number) - (getXSF(m).path.at(-1) as number)) === getXA(m).length - 1
