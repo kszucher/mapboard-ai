@@ -10,7 +10,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getRXD0, getNRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -51,17 +51,17 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
 
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
     case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1) as number, payload); break
-    case 'insertSOR': insertS(m, getXRiD0(m), getCountXRiD0S(m), payload); break
+    case 'insertSOR': insertS(m, getXRD0(m), getCountXRD0S(m), payload); break
     case 'insertSO': insertS(m, getX(m), getCountXSO1(m), payload); break
-    case 'insertSORText': insertS(m, getXRiD0(m), getCountXRiD0S(m), {contentType: 'text', content: payload}); break
+    case 'insertSORText': insertS(m, getXRD0(m), getCountXRD0S(m), {contentType: 'text', content: payload}); break
     case 'insertSOText': insertS(m, getX(m), getCountXSO1(m), {contentType: 'text', content: payload}); break
-    case 'insertSORLink': insertS(m, getXRiD0(m), getCountXRiD0S(m), {contentType: 'text', content: payload, linkType: 'external', link: payload}); break
+    case 'insertSORLink': insertS(m, getXRD0(m), getCountXRD0S(m), {contentType: 'text', content: payload, linkType: 'external', link: payload}); break
     case 'insertSOLink': insertS(m, getX(m), getCountXSO1(m), {contentType: 'text', content: payload, linkType: 'external', link: payload}); break
-    case 'insertSOREquation': insertS(m, getXRiD0(m), getCountXRiD0S(m), {contentType: 'equation', content: payload}); break
+    case 'insertSOREquation': insertS(m, getXRD0(m), getCountXRD0S(m), {contentType: 'equation', content: payload}); break
     case 'insertSOEquation': insertS(m, getX(m), getCountXSO1(m), {contentType: 'equation', content: payload}); break
-    case 'insertSORImage': insertS(m, getXRiD0(m), getCountXRiD0S(m), {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
+    case 'insertSORImage': insertS(m, getXRD0(m), getCountXRD0S(m), {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insertSOImage': insertS(m, getX(m), getCountXSO1(m), {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
-    case 'insertSORTable': insertTable(m, getXRiD0(m), getCountXRiD0S(m), payload); break
+    case 'insertSORTable': insertTable(m, getXRD0(m), getCountXRD0S(m), payload); break
     case 'insertSOTable': insertTable(m, getX(m), getCountXSO1(m), payload); break
     case 'insertCRD': insertCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'insertCRU': insertCR(m, getXSI1(m), getCountXCU(m)); break
@@ -85,8 +85,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveSB': moveS(m, getXSI1(m), getCountXASD(m)); break
     case 'moveSO': moveS(m, getXASU1(m), getCountXASU1O1(m)); break
     case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
-    case 'moveSIR': moveS(m, getXRiD1(m), getCountXRiD1S(m)); break
-    case 'moveSIL': moveS(m, getXRiD0(m), getCountXRiD0S(m)); break
+    case 'moveSIR': moveS(m, getXRD1(m), getCountXRD1S(m)); break
+    case 'moveSIL': moveS(m, getXRD0(m), getCountXRD0S(m)); break
     case 'moveCRD': moveCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
     case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
@@ -98,7 +98,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'copyR': copyR(m); break
     case 'copyS': copyS(m); break
     case 'cutS': cutS(m); break
-    case 'pasteSOR': pasteS(m, getXRiD0(m), getCountXRiD0S(m), payload); break
+    case 'pasteSOR': pasteS(m, getXRD0(m), getCountXRD0S(m), payload); break
     case 'pasteSO': pasteS(m, getX(m), getCountXSO1(m), payload); break
     case 'drag': moveS(m, getNodeByPath(m, payload.moveTargetPath), payload.moveTargetIndex); break
 
@@ -106,19 +106,19 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setLineType': getXA(m).forEach(n => Object.assign(n, {lineType: payload})); break
     case 'setLineColor': getXA(m).forEach(n => Object.assign(n, {lineColor: payload})); break
     case 'setSBorderWidth': getXA(m).forEach(n => Object.assign(n, {sBorderWidth: payload})); break
-    case 'setFBorderWidth': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRiD0(m, n) : n, {fBorderWidth: payload})); break
+    case 'setFBorderWidth': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fBorderWidth: payload})); break
     case 'setSBorderColor': getXA(m).forEach(n => Object.assign(n, {sBorderColor: payload})); break
-    case 'setFBorderColor': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRiD0(m, n) : n, {fBorderColor: payload})); break
+    case 'setFBorderColor': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fBorderColor: payload})); break
     case 'setSFillColor': getXA(m).forEach(n => Object.assign(n, {sFillColor: payload})); break
-    case 'setFFillColor': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRiD0(m, n) : n, {fFillColor: payload})); break
+    case 'setFFillColor': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fFillColor: payload})); break
     case 'setTextFontSize': getXA(m).forEach(n => Object.assign(n, {textFontSize: payload})); break
     case 'setTextColor': getXA(m).forEach(n => Object.assign(n, {textColor: payload})); break
 
     case 'clearLine': getXA(m).forEach(n => Object.assign(n, {lineWidth: nSaveOptional.lineWidth, lineType: nSaveOptional.lineType, lineColor: nSaveOptional.lineColor})); break
     case 'clearSBorder': getXA(m).forEach(n => Object.assign(n, {sBorderWidth: nSaveOptional.sBorderWidth, sBorderColor: nSaveOptional.sBorderColor})); break
-    case 'clearFBorder': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRiD0(m, n) : n, {fBorderWidth: nSaveOptional.fBorderWidth, fBorderColor: nSaveOptional.fBorderColor})); break
+    case 'clearFBorder': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fBorderWidth: nSaveOptional.fBorderWidth, fBorderColor: nSaveOptional.fBorderColor})); break
     case 'clearSFill': getXA(m).forEach(n => Object.assign(n, {sFillColor: nSaveOptional.sFillColor})); break
-    case 'clearFFill': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRiD0(m, n) : n, {fFillColor: nSaveOptional.fFillColor})); break
+    case 'clearFFill': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fFillColor: nSaveOptional.fFillColor})); break
     case 'clearText': getXA(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break
 
     case 'applyColorFromKey': getXA(m).forEach(n => Object.assign(n, {textColor: shortcutColors[payload.currColor]})); break

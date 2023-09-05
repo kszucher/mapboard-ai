@@ -1,4 +1,4 @@
-import {getCountNSO1, getNodeByPath, getRi, isR, getCountXRiD1S, getCountXRiD0S} from "./MapUtils"
+import {getCountNSO1, getNodeByPath, getRi, isR, getCountXRD1S, getCountXRD0S} from "./MapUtils"
 import {M} from "../state/MapStateTypes"
 
 export const mapCalcTask = (m: M) => {
@@ -8,11 +8,11 @@ export const mapCalcTask = (m: M) => {
       const taskStatusRight = getNodeByPath(m, ['r', getRi(n.path), 'd', 0]).taskStatus
       const taskStatusLeft = getNodeByPath(m, ['r', getRi(n.path), 'd', 1]).taskStatus
       n.taskStatus = 0
-      if (getCountXRiD0S(m) && getCountXRiD1S(m)) {
+      if (getCountXRD0S(m) && getCountXRD1S(m)) {
         n.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
-      } else if (getCountXRiD0S(m)) {
+      } else if (getCountXRD0S(m)) {
         n.taskStatus = taskStatusRight
-      } else if (getCountXRiD1S(m)) {
+      } else if (getCountXRD1S(m)) {
         n.taskStatus = taskStatusLeft
       }
     } else if (getCountNSO1(m, n)) {

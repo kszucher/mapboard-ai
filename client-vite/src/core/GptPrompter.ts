@@ -1,5 +1,5 @@
 import {M, N} from "../state/MapStateTypes"
-import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRiD0, getXAF} from "./MapUtils"
+import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXAF} from "./MapUtils"
 import {GptData} from "../state/ApiStateTypes"
 
 export const genPromptJsonS = (m: M) => {
@@ -71,7 +71,7 @@ export const gptGenNodeMermaid = (m: M) => {
   const promptJson = [{
     description: getX(m).content,
     mermaidString: '',
-    insertParentId: isXR(m) ? getXRiD0(m).nodeId : getX(m).nodeId
+    insertParentId: isXR(m) ? getXRD0(m).nodeId : getX(m).nodeId
   }]
   const responseSchema = getResponseSchema({
     description: {type: "string", readOnly: true},
