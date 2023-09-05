@@ -102,7 +102,7 @@ export const MapDiv: FC = () => {
                     window.open(n.link, '_blank')
                     window.focus()
                   } else {
-                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
+                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectNS', payload: {path: n.path}}))
                     e.ctrlKey && dispatch(actions.mapAction({type: 'selectStoo', payload: {path: n.path}}))
                     const abortController = new AbortController()
                     const { signal } = abortController
@@ -120,7 +120,7 @@ export const MapDiv: FC = () => {
                   e.preventDefault()
                 } else if (e.button === 2) {
                   n.selected === 0 && n.selection === 's' && !(isR(n.path) && isXD(m) && getRi(n.path) === getXRi(m)) &&
-                  dispatch(actions.mapAction({type: 'selectS', payload: {path: n.path}}))
+                  dispatch(actions.mapAction({type: 'selectNS', payload: {path: n.path}}))
                   dispatch(actions.openContextMenu({type: 'node', position: {x: e.clientX, y: e.clientY}}))
                 }
               }}

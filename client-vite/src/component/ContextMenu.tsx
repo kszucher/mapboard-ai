@@ -86,7 +86,7 @@ export const ContextMenu: FC = () => {
                 { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getX(m).path}}))}}>Node Branch</a></li> }
                 { mExists && isXR(m) && getCountXRiD0S(m) > 0 && !getXRiD0(m).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getXRiD0(m).path}}))}}>Node Branch Right</a></li> }
                 { mExists && isXR(m) && getCountXRiD1S(m) > 0 && !getXRiD1(m).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectF', payload: {path: getXRiD1(m).path}}))}}>Node Branch Left</a></li> }
-                { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectS', payload: {path: getX(m).path}}))}}>Node</a></li> }
+                { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectXS', payload: null}))}}>Node</a></li> }
                 { mExists && isXD(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectXRi', payload: {path: getX(m).path}}))}}>Node</a></li> }
                 { mExists && isXS(m) && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getX(m).path}}))}}>First Cell</a></li> }
               </ul>
