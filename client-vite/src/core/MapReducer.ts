@@ -34,9 +34,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectSOR': selectNode(m, getLastSOR(m).path, 's'); break
     case 'selectSOL': selectNode(m, getLastSOL(m).path, 's'); break
     case 'selectSI': selectNode(m, getXSI1(m).path, 's'); break
-    case 'selectSfamilyO': getX(m).selection = 'f'; break
-    case 'selectSfamilyOR': selectNode(m, ['r', getXRi(m), 'd', 0], 'f'); break
-    case 'selectSfamilyOL': selectNode(m, ['r', getXRi(m), 'd', 1], 'f'); break
     case 'selectSF': selectNode(m, [...getX(m).path, 's', 0], 's'); break
     case 'selectSB': selectNode(m, getX(m).path.slice(0, -3), 's'); break
     case 'selectCFfirstRow': selectNode(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -2 ? 0 : pi), 's'); break
