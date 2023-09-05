@@ -95,9 +95,11 @@ export const getXSI2 = (m: M): N => getNodeByPath(m, getSI2P(getX(m).path))
 export const getXASU1 = (m: M): N => getNodeByPath(m, getSU1(getXSF(m).path))
 
 export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
-export const getXSIS = (m: M, p: P) => getNodeByPath(m, getClosestStructParentPath(p))
+export const getNSIS = (m: M, n: N) => getNodeByPath(m, getClosestStructParentPath(n.path))
+export const getXSIS = (m: M) => getNodeByPath(m, getClosestStructParentPath(getX(m).path))
 export const getClosestCellParentPath = (p: P) => p.slice(0, p.lastIndexOf('c') + 3)
-export const getXSIC = (m: M, p: P) => getNodeByPath(m, getClosestCellParentPath(p))
+export const getNSIC = (m: M, n: N) => getNodeByPath(m, getClosestCellParentPath(n.path))
+export const getXSIC = (m: M) => getNodeByPath(m, getClosestCellParentPath(getX(m).path))
 
 export const getNR = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getXR = (m: M): N => getNodeByPath(m, getX(m).path.slice(0, 2))

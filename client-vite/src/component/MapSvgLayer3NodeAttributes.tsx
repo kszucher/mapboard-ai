@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../core/Api"
 import {adjust} from "../core/Utils";
 import {TASK_CIRCLES_GAP} from "../state/Consts"
 import {getColors} from "./Colors"
-import {getXSIS, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS} from "../core/MapUtils"
+import {getNSIS, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -53,9 +53,9 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             ) &&
             <path
               d={
-                !getNodeById(pm, n.nodeId) && getXSIS(pm, n.path)
-                  ? getLinePathBetweenNodes(getXSIS(pm, n.path), n)
-                  : getLinePathBetweenNodes(getXSIS(m, n.path), n)
+                !getNodeById(pm, n.nodeId) && getNSIS(pm, n)
+                  ? getLinePathBetweenNodes(getNSIS(pm, n), n)
+                  : getLinePathBetweenNodes(getNSIS(m, n), n)
               }
               strokeWidth={n.lineWidth}
               stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -63,11 +63,11 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               {...pathCommonProps}
             >
               {
-                !getNodeById(pm, n.nodeId) && getXSIS(pm, n.path) &&
+                !getNodeById(pm, n.nodeId) && getNSIS(pm, n) &&
                 <animate
                   attributeName='d'
-                  from={getLinePathBetweenNodes(getXSIS(pm, n.path), n)}
-                  to={getLinePathBetweenNodes(getXSIS(m, n.path), n)}
+                  from={getLinePathBetweenNodes(getNSIS(pm, n), n)}
+                  to={getLinePathBetweenNodes(getNSIS(m, n), n)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}

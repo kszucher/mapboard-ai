@@ -42,7 +42,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCFfirstRow': selectNode(m, getNodeByPath(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -2 ? 0 : pi)), 's'); break
     case 'selectCFfirstCol': selectNode(m, getNodeByPath(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi)), 's'); break
     case 'selectCFF': selectNode(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
-    case 'selectCB': selectNode(m,  getXSIC(m, getX(m).path), 's'); break
+    case 'selectXSIC': selectNode(m,  getXSIC(m), 's'); break
     case 'selectCRSAME': selectNodeList(m, m.filter(n => isCV(n.path, getX(m).path)), 's'); break
     case 'selectCCSAME': selectNodeList(m, m.filter(n => isCH(n.path, getX(m).path)), 's'); break
     case 'selectCD': selectNodeList(m, getXACD1(m), 's'); break

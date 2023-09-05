@@ -1,4 +1,4 @@
-import {getXSIC, getG, getNodeById, getNodeByPath, getNR, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isCON, isD, isXACC, isXACR} from "../core/MapUtils"
+import {getNSIC, getG, getNodeById, getNodeByPath, getNR, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getSI1P, getX, isCON, isD, isXACC, isXACR} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
 import {LineTypes, Sides} from "../state/Enums"
@@ -234,8 +234,8 @@ export const getTaskStartPoint = (m: M, g: G, n: N) => {
     case getPathDir(n.path) === 1 && !isCON(n.path):return getRootEndX(m, getNR(m, n)) - getTaskWidth(g)
     case getPathDir(n.path) === -1 && !isCON(n.path):
       return getTaskWidth(g)
-    case getPathDir(n.path) === 1 && isCON(n.path):return getXSIC(m, n.path).nodeEndX - 120
-    case getPathDir(n.path) === -1 && isCON(n.path):return getXSIC(m, n.path).nodeStartX + 120
+    case getPathDir(n.path) === 1 && isCON(n.path):return getNSIC(m, n).nodeEndX - 120
+    case getPathDir(n.path) === -1 && isCON(n.path):return getNSIC(m, n).nodeStartX + 120
     default:return 0
   }
 }

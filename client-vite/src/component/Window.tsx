@@ -48,7 +48,7 @@ export const Window: FC = () => {
     ckm === '---' && e.code === 'Space' && isXC(m) && getCountXSO1(m) === 0 && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
     ckm === '---' && e.code === 'Space' && isXACR(m) && dispatch(actions.mapAction({type: 'selectCFfirstCol', payload: null}))
     ckm === '---' && e.code === 'Space' && isXACC(m) && dispatch(actions.mapAction({type: 'selectCFfirstRow', payload: null}))
-    ckm === '---' && e.code === 'Backspace' && isXS(m) && getX(m).path.includes('c') && dispatch(actions.mapAction({type: 'selectCB', payload: null}))
+    ckm === '---' && e.code === 'Backspace' && isXS(m) && getX(m).path.includes('c') && dispatch(actions.mapAction({type: 'selectXSIC', payload: null}))
     ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && dispatch(actions.mapAction({type: 'selectSI', payload: null}))
     ckm === '---' && e.code === 'Escape' && dispatch(actions.mapAction({type: 'selectR0', payload: null}))
     ckm === 'c--' && e.code === 'KeyA' && dispatch(actions.mapAction({type: 'selectall', payload: null}))
