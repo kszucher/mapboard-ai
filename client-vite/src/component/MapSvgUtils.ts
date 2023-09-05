@@ -111,26 +111,25 @@ export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
 }
 
 export const getPolygonC = (m: M): PolygonPoints => {
-  const xn = getX(m)
-  const ni = getNodeByPath(m, getSI1P(xn.path)) as N
-  const n = getNodeByPath(m, xn.path)
-  const dir = getPathDir(xn.path)
+  const ni = getNodeByPath(m, getSI1P(getX(m).path)) as N
+  const n = getNodeByPath(m, getX(m).path)
+  const dir = getPathDir(getX(m).path)
   let x, y, w, h
   if (isXACR(m)) {
-    const i = xn.path.at(-2) as number
+    const i = getX(m).path.at(-2) as number
     x = dir === -1 ? ni.nodeEndX  : ni.nodeStartX
     y = - ni.maxRowHeight[i] / 2 + n.nodeY
     w = ni.selfW
     h = ni.maxRowHeight[i]
   } else if (isXACC(m)) {
-    const j = xn.path.at(-1) as number
+    const j = getX(m).path.at(-1) as number
     x = dir === -1 ? ni.nodeEndX - ni.sumMaxColWidth[j] : ni.nodeStartX + ni.sumMaxColWidth[j]
     y = ni.nodeY - ni.selfH / 2
     w = ni.maxColWidth[j]
     h = ni.selfH
   } else {
-    const i = xn.path.at(-2) as number
-    const j = xn.path.at(-1) as number
+    const i = getX(m).path.at(-2) as number
+    const j = getX(m).path.at(-1) as number
     x = dir === -1 ? ni.nodeEndX - ni.sumMaxColWidth[j] : ni.nodeStartX + ni.sumMaxColWidth[j]
     y = - ni.maxRowHeight[i] / 2 + n.nodeY
     w = ni.maxColWidth[j]
