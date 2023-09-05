@@ -90,16 +90,15 @@ const getXSF = (m: M): N => m.find(n => n.selected)!
 const getXSL = (m: M): N => m.findLast(n => n.selected)!
 export const getX = (m: M): N => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getR0 = (m: M): N => getNodeByPath(m, ['r', 0])
-export const getRXD0 = (m: M, ri: number): N => getNodeByPath(m, ['r', ri, 'd', 0])
-export const getRXD1 = (m: M, ri: number): N => getNodeByPath(m, ['r', ri, 'd', 1])
 export const getXSI1 = (m: M): N => getNodeByPath(m, getSI1P(getX(m).path))
 export const getXSI2 = (m: M): N => getNodeByPath(m, getSI2P(getX(m).path))
 export const getXASU1 = (m: M): N => getNodeByPath(m, getSU1(getXSF(m).path))
 export const getNR = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
+export const getXR = (m: M): N => getNodeByPath(m, getX(m).path.slice(0, 2))
 export const getNRD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
 export const getNRD1 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 1])
-export const getXRD0 = (m: M): N => getNRD0(m, getX(m))
-export const getXRD1 = (m: M): N => getNRD1(m, getX(m))
+export const getXRD0 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 0])
+export const getXRD1 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 1])
 
 export const getRL = (m: M): N[] => m.filter(n => n.path.length === 2)
 export const getXSO1 = (m: M): N[] => m.filter(n => isSO1(getX(m).path, n.path))
@@ -168,10 +167,10 @@ export const getClosestCellParent = (m: M, p: P) => getNodeByPath(m, getClosestC
 export const hasTaskRight = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
 export const hasTaskLeft = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
 
-export const getRootStartX = (m: M, n: N) => n.nodeStartX - getRXD1(m, getRi(n.path)).familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, getRi(n.path)) - MARGIN_X
-export const getRootStartY = (m: M, n: N) => n.nodeY - Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) / 2 - MARGIN_Y
-export const getRootW = (m: M, n: N) => getRXD0(m, getRi(n.path)).familyW + getRXD1(m, getRi(n.path)).familyW + n.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, getRi(n.path)) + hasTaskRight(m, getRi(n.path))) + 2 * MARGIN_X
-export const getRootH = (m: M, n: N) => Math.max(...[getRXD0(m, getRi(n.path)).familyH, getRXD1(m, getRi(n.path)).familyH]) + 2 * MARGIN_Y
+export const getRootStartX = (m: M, n: N) => n.nodeStartX - getNRD1(m, n).familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, getRi(n.path)) - MARGIN_X
+export const getRootStartY = (m: M, n: N) => n.nodeY - Math.max(...[getNRD0(m, n).familyH, getNRD1(m, n).familyH]) / 2 - MARGIN_Y
+export const getRootW = (m: M, n: N) => getNRD0(m, n).familyW + getNRD1(m, n).familyW + n.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, getRi(n.path)) + hasTaskRight(m, getRi(n.path))) + 2 * MARGIN_X
+export const getRootH = (m: M, n: N) => Math.max(...[getNRD0(m, n).familyH, getNRD1(m, n).familyH]) + 2 * MARGIN_Y
 export const getRootMidX = (m: M, n: N) => getRootStartX(m, n) + getRootW(m, n) / 2
 export const getRootMidY = (m: M, n: N) => getRootStartY(m, n) + getRootH(m, n) / 2
 export const getRootEndX = (m: M, n: N) => getRootStartX(m, n) + getRootW(m, n)
