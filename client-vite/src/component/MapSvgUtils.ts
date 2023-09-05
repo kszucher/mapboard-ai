@@ -114,19 +114,37 @@ export const getPolygonC = (m: M): PolygonPoints => {
   const ni = getNodeByPath(m, getSI1P(getX(m).path)) as N
   const n = getNodeByPath(m, getX(m).path)
   const dir = getPathDir(getX(m).path)
-  let x, y, w, h
+  let x, y, w, h, ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
   if (isXACR(m)) {
     const i = getX(m).path.at(-2) as number
     x = dir === -1 ? ni.nodeEndX  : ni.nodeStartX
     y = - ni.maxRowHeight[i] / 2 + n.nodeY
     w = ni.selfW
     h = ni.maxRowHeight[i]
+    ax = x + (dir === -1 ? -w : 0)
+    bx = x + dir * w
+    cx = x + (dir === 1 ? w : 0)
+    ayu = y
+    ayd = y + h
+    byu = y
+    byd = y + h
+    cyu = y
+    cyd = y + h
   } else if (isXACC(m)) {
     const j = getX(m).path.at(-1) as number
     x = dir === -1 ? ni.nodeEndX - ni.sumMaxColWidth[j] : ni.nodeStartX + ni.sumMaxColWidth[j]
     y = ni.nodeY - ni.selfH / 2
     w = ni.maxColWidth[j]
     h = ni.selfH
+    ax = x + (dir === -1 ? -w : 0)
+    bx = x + dir * w
+    cx = x + (dir === 1 ? w : 0)
+    ayu = y
+    ayd = y + h
+    byu = y
+    byd = y + h
+    cyu = y
+    cyd = y + h
   } else {
     const i = getX(m).path.at(-2) as number
     const j = getX(m).path.at(-1) as number
@@ -134,18 +152,17 @@ export const getPolygonC = (m: M): PolygonPoints => {
     y = - ni.maxRowHeight[i] / 2 + n.nodeY
     w = ni.maxColWidth[j]
     h = ni.maxRowHeight[i]
+    ax = x + (dir === -1 ? -w : 0)
+    bx = x + dir * w
+    cx = x + (dir === 1 ? w : 0)
+    ayu = y
+    ayd = y + h
+    byu = y
+    byd = y + h
+    cyu = y
+    cyd = y + h
   }
-  return {
-    ax: x + (dir === -1 ? -w : 0),
-    bx: x + dir * w,
-    cx: x + (dir === 1 ? w : 0),
-    ayu: y,
-    ayd: y + h,
-    byu: y,
-    byd: y + h,
-    cyu: y,
-    cyd: y + h
-  }
+  return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
 
 export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: string, margin: number) => {
