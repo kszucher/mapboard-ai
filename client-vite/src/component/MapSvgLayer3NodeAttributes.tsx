@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../core/Api"
 import {adjust} from "../core/Utils";
 import {TASK_CIRCLES_GAP} from "../state/Consts"
 import {getColors} from "./Colors"
-import {getNSIS, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS} from "../core/MapUtils"
+import {getNSI1, getNSI2, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS} from "../core/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -46,32 +46,31 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               {...pathCommonProps}
             />
           }
-          {(
-              getPathPattern(n.path).endsWith('ds') ||
-              (getPathPattern(n.path).endsWith('ss') && getCountNCO1(m, n) === 0) ||
-              (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) && n.path.at(-2) as number > -1 && n.path.at(-1) === 0
-            ) &&
+          {(getPathPattern(n.path).endsWith('ds') || (getPathPattern(n.path).endsWith('ss') && getCountNCO1(m, n) === 0)) &&
             <path
-              d={
-                !getNodeById(pm, n.nodeId) && getNSIS(pm, n)
-                  ? getLinePathBetweenNodes(getNSIS(pm, n), n)
-                  : getLinePathBetweenNodes(getNSIS(m, n), n)
-              }
+              d={!getNodeById(pm, n.nodeId) && getNSI1(pm, n) ? getLinePathBetweenNodes(getNSI1(pm, n), n) : getLinePathBetweenNodes(getNSI1(m, n), n)}
               strokeWidth={n.lineWidth}
               stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
               fill={'none'}
               {...pathCommonProps}
             >
               {
-                !getNodeById(pm, n.nodeId) && getNSIS(pm, n) &&
-                <animate
-                  attributeName='d'
-                  from={getLinePathBetweenNodes(getNSIS(pm, n), n)}
-                  to={getLinePathBetweenNodes(getNSIS(m, n), n)}
-                  dur={'0.3s'}
-                  repeatCount={'once'}
-                  fill={'freeze'}
-                />
+                !getNodeById(pm, n.nodeId) && getNSI1(pm, n) &&
+                <animate attributeName='d' from={getLinePathBetweenNodes(getNSI1(pm, n), n)} to={getLinePathBetweenNodes(getNSI1(m, n), n)} dur={'0.3s'} repeatCount={'once'} fill={'freeze'}/>
+              }
+            </path>
+          }
+          {((getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) && n.path.at(-2) as number > -1 && n.path.at(-1) === 0) &&
+            <path
+              d={!getNodeById(pm, n.nodeId) && getNSI2(pm, n) ? getLinePathBetweenNodes(getNSI2(pm, n), n) : getLinePathBetweenNodes(getNSI2(m, n), n)}
+              strokeWidth={n.lineWidth}
+              stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
+              fill={'none'}
+              {...pathCommonProps}
+            >
+              {
+                !getNodeById(pm, n.nodeId) && getNSI2(pm, n) &&
+                <animate attributeName='d' from={getLinePathBetweenNodes(getNSI2(pm, n), n)} to={getLinePathBetweenNodes(getNSI2(m, n), n)} dur={'0.3s'} repeatCount={'once'} fill={'freeze'}/>
               }
             </path>
           }

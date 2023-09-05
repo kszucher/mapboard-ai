@@ -17,7 +17,7 @@ export const getPathDir = (p: P) => p[3] ? -1 : 1
 export const isDirR = (m: M) => getPathDir(getX(m).path) === 1
 export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 
-export const getRi = (p: P): number => p.at(1) as number // TODO: remove this and replace dependencies with proper Node-getters AND getCountR / getCountXR
+export const getRi = (p: P): number => p.at(1) as number
 export const getRiL = (m: M): number => m.findLast(n => n.path.length === 2)!.path.at(1) as number
 export const getXRi = (m: M): number => getRi(getX(m).path)
 
@@ -83,29 +83,26 @@ const getSU1 = (p: P): P => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1
 
 export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 
-export const getSI1P = (p: P): P => getSIPL(p).at(-1) as P
-export const getSI2P = (p: P): P => getSIPL(p).at(-2) as P
+export const getSI1P = (p: P): P => getSIPL(p).at(-1) as P // make no export
+export const getSI2P = (p: P): P => getSIPL(p).at(-2) as P // make no export
+const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
 const getXSF = (m: M): N => m.find(n => n.selected)!
 const getXSL = (m: M): N => m.findLast(n => n.selected)!
 export const getX = (m: M): N => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getR0 = (m: M): N => getNodeByPath(m, ['r', 0])
+export const getNSI1 = (m: M, n: N): N => getNodeByPath(m, getSI1P(n.path))
 export const getXSI1 = (m: M): N => getNodeByPath(m, getSI1P(getX(m).path))
+export const getNSI2 = (m: M, n: N): N => getNodeByPath(m, getSI2P(n.path))
 export const getXSI2 = (m: M): N => getNodeByPath(m, getSI2P(getX(m).path))
 export const getXASU1 = (m: M): N => getNodeByPath(m, getSU1(getXSF(m).path))
-
-export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
-export const getNSIS = (m: M, n: N) => getNodeByPath(m, getClosestStructParentPath(n.path))
-export const getXSIS = (m: M) => getNodeByPath(m, getClosestStructParentPath(getX(m).path))
-export const getClosestCellParentPath = (p: P) => p.slice(0, p.lastIndexOf('c') + 3)
-export const getNSIC = (m: M, n: N) => getNodeByPath(m, getClosestCellParentPath(n.path))
-export const getXSIC = (m: M) => getNodeByPath(m, getClosestCellParentPath(getX(m).path))
-
+export const getNSIC = (m: M, n: N) => getNodeByPath(m, getSIC(n.path))
+export const getXSIC = (m: M) => getNodeByPath(m, getSIC(getX(m).path))
 export const getNR = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getXR = (m: M): N => getNodeByPath(m, getX(m).path.slice(0, 2))
 export const getNRD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
-export const getNRD1 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 1])
 export const getXRD0 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 0])
+export const getNRD1 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 1])
 export const getXRD1 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 1])
 
 export const getRL = (m: M): N[] => m.filter(n => n.path.length === 2)
@@ -122,8 +119,8 @@ export const getXACU1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCU1(x
 export const getXACR1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCR1(xn.path, n.path)))
 export const getXACL1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCL1(xn.path, n.path)))
 
-const getCountRD0S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === 1 && isS(n.path)).length
-const getCountRD1S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length
+const getCountRD0S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === 1 && isS(n.path)).length // remove after simplify
+const getCountRD1S = (m: M, ri: number): number => m.filter(n => n.path.length === 6 && n.path.at(1) === ri && getPathDir(n.path) === -1 && isS(n.path)).length // remove after simplify
 
 const getCountSD = (m: M, p: P): number => m.filter(n => isSD(p, n.path)).length
 const getCountSU = (m: M, p: P): number => m.filter(n => isSU(p, n.path)).length
