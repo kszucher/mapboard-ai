@@ -9,17 +9,9 @@ import {getClosestStructParent, getCountNCO1, getCountNSO1, getG, getNodeById, g
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {Connection, N} from "../state/MapStateTypes"
+import {N} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
-import {
-  getArcPath,
-  getGridPath,
-  getLinearLinePath,
-  getLinePathBetweenNodes,
-  getPolygonPath,
-  getPolygonS, getTaskRadius,
-  getTaskStartPoint
-} from "./MapSvgUtils"
+import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getPolygonS, getTaskRadius, getTaskStartPoint} from "./MapSvgUtils"
 
 export const MapSvgLayer3NodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
