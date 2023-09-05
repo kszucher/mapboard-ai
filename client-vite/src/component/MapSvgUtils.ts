@@ -119,39 +119,24 @@ export const getPolygonC = (m: M): PolygonPoints => {
     y = - ni.maxRowHeight[i] / 2 + n.nodeY
     h = ni.maxRowHeight[i]
     ax = getXA(m).slice().sort(sortPath).at(0)!.nodeStartX
-    bx = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndX
-    cx = bx
-    ayu = y
-    ayd = y + h
-    byu = y
-    byd = y + h
-    cyu = y
-    cyd = y + h
+    bx = cx = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndX
+    ayu = byu = cyu = y
+    ayd = byd = cyd = y + h
   } else if (isXACC(m)) {
     y = ni.nodeY - ni.selfH / 2
     h = ni.selfH
     ax = getXA(m).at(0)!.nodeStartX
-    bx = getXA(m).at(0)!.nodeEndX
-    cx = bx
-    ayu = y
-    ayd = y + h
-    byu = y
-    byd = y + h
-    cyu = y
-    cyd = y + h
+    bx = cx = getXA(m).at(0)!.nodeEndX
+    ayu = byu = cyu = y
+    ayd = byd = cyd = y + h
   } else {
     const i = getX(m).path.at(-2) as number
     y = - ni.maxRowHeight[i] / 2 + n.nodeY
     h = ni.maxRowHeight[i]
     ax = getX(m).nodeStartX
-    bx = getX(m).nodeEndX
-    cx = bx
-    ayu = y
-    ayd = y + h
-    byu = y
-    byd = y + h
-    cyu = y
-    cyd = y + h
+    bx = cx =getX(m).nodeEndX
+    ayu = byu = cyu = y
+    ayd = byd = cyd = y + h
   }
   return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
