@@ -83,8 +83,8 @@ const getSU1 = (p: P): P => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1
 
 export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 
-export const getSI1P = (p: P): P => getSIPL(p).at(-1) as P // make no export
-export const getSI2P = (p: P): P => getSIPL(p).at(-2) as P // make no export
+export const getSI1P = (p: P): P => getSIPL(p).at(-1) as P
+const getSI2P = (p: P): P => getSIPL(p).at(-2) as P
 const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
 const getXSF = (m: M): N => m.find(n => n.selected)!

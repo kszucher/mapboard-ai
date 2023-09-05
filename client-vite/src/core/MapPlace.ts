@@ -1,5 +1,5 @@
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {getNodeByPath, getSI1P, getSI2P, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountNSO2, getCountNCO2, getRi, getG, getPathDir} from "./MapUtils"
+import {getNodeByPath, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountNSO2, getCountNCO2, getRi, getG, getPathDir, getNSI1, getNSI2} from "./MapUtils"
 import {G, M, N} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {
@@ -28,7 +28,7 @@ export const mapPlace = (m: M) => {
         break
       }
       case isS(n.path): {
-        const p1 = getNodeByPath(m, getSI1P(n.path)) as N
+        const p1 = getNSI1(m, n)
         const i = n.path.at(-1) as number
         const sumUpperSiblingMaxH = m.filter(nt => isSU(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * + Boolean(getCountNSO2(m, p1) || getCountNCO2(m, p1))
@@ -45,8 +45,8 @@ export const mapPlace = (m: M) => {
         break
       }
       case isC(n.path): {
-        const p1 = getNodeByPath(m, getSI1P(n.path)) as N
-        const p2 = getNodeByPath(m, getSI2P(n.path)) as N
+        const p1 = getNSI1(m, n) as N
+        const p2 = getNSI2(m, n) as N
         const i = n.path.at(-2) as number
         const j = n.path.at(-1) as number
         if (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) {

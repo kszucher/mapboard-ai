@@ -56,7 +56,7 @@ export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => 
       }
     }
   }
-  if (isEqual(getSI1P(moveNode.path), moveTargetPath) && moveNode.path.at(-1) === moveTargetIndex) {
+  if (isEqual(moveTargetPath, getSI1P(moveNode.path)) && moveNode.path.at(-1) === moveTargetIndex) {
     moveTargetPath = []
     moveTargetIndex = 0
     moveCoords = []
