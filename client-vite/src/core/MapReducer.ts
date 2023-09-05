@@ -25,8 +25,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectS': selectNode(m, payload.path, 's'); break
     case 'selectStoo': selectNodeToo(m, payload.path, 's'); break
     case 'selectF': selectNode(m, payload.path, 'f'); break
-    case 'selectRXD0F': selectNode(m, ['r', getRi(payload.path), 'd', 0], 'f'); break
-    case 'selectRXD1F': selectNode(m, ['r', getRi(payload.path), 'd', 1], 'f'); break
     case 'selectall': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
     case 'selectSD': selectNode(m, getQuasiSD(m).path, 's'); break
     case 'selectSDtoo': selectNodeToo(m, getQuasiSD(m).path, 's'); break
