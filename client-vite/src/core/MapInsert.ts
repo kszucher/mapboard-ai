@@ -1,7 +1,7 @@
 import {GN, M, N, P} from "../state/MapStateTypes"
 import {getInsertTemplate} from "./MapInsertTemplates"
 import {unselectNodes} from "./MapSelect"
-import {getCountNSCV, getCountNSCH, getNodeByPath, getXP, sortPath, isNCED, isNCER, isNSED} from "./MapUtils"
+import {getCountNSCV, getCountNSCH, getX, sortPath, isNCED, isNCER, isNSED} from "./MapUtils"
 import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "./Utils"
 
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
@@ -15,7 +15,7 @@ export const insertS = (m: M, insertParentNode: N, insertTargetIndex: number, at
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   m.forEach(n => isNSED(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + 1))
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip, taskStatus: getNodeByPath(m, getXP(m)).taskStatus, ...attributes} as GN)
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip, taskStatus: getX(m).taskStatus, ...attributes} as GN)
   m.sort(sortPath)
 }
 

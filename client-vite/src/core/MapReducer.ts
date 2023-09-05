@@ -10,7 +10,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getXRi, getRi, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRiD0S, getCountXRiD1S, getXSO1, getXSO2, getRXD0, getNRiD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRiD1, getXRiD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -37,14 +37,14 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectSfamilyO': getX(m).selection = 'f'; break
     case 'selectSfamilyOR': selectNode(m, ['r', getXRi(m), 'd', 0], 'f'); break
     case 'selectSfamilyOL': selectNode(m, ['r', getXRi(m), 'd', 1], 'f'); break
-    case 'selectSF': selectNode(m, [...getXP(m), 's', 0], 's'); break
-    case 'selectSB': selectNode(m, getXP(m).slice(0, -3), 's'); break
-    case 'selectCFfirstRow': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -2 ? 0 : pi), 's'); break
-    case 'selectCFfirstCol': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -1 ? 0 : pi), 's'); break
-    case 'selectCFF': selectNode(m, [...getXP(m), 'c', 0, 0], 's'); break
-    case 'selectCB': selectNode(m, [...getXP(m).slice(0, getXP(m).lastIndexOf('c') + 3)], 's'); break
-    case 'selectCRSAME': selectNodeList(m, m.filter(n => isCV(n.path, getXP(m))).map(n => n.path), 's'); break
-    case 'selectCCSAME': selectNodeList(m, m.filter(n => isCH(n.path, getXP(m))).map(n => n.path), 's'); break
+    case 'selectSF': selectNode(m, [...getX(m).path, 's', 0], 's'); break
+    case 'selectSB': selectNode(m, getX(m).path.slice(0, -3), 's'); break
+    case 'selectCFfirstRow': selectNode(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -2 ? 0 : pi), 's'); break
+    case 'selectCFfirstCol': selectNode(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi), 's'); break
+    case 'selectCFF': selectNode(m, [...getX(m).path, 'c', 0, 0], 's'); break
+    case 'selectCB': selectNode(m, [...getX(m).path.slice(0, getX(m).path.lastIndexOf('c') + 3)], 's'); break
+    case 'selectCRSAME': selectNodeList(m, m.filter(n => isCV(n.path, getX(m).path)).map(n => n.path), 's'); break
+    case 'selectCCSAME': selectNodeList(m, m.filter(n => isCH(n.path, getX(m).path)).map(n => n.path), 's'); break
     case 'selectCD': selectNodeList(m, getXACD1(m).map(n => n.path), 's'); break
     case 'selectCU': selectNodeList(m, getXACU1(m).map(n => n.path), 's'); break
     case 'selectCR': selectNodeList(m, getXACR1(m).map(n => n.path), 's'); break
@@ -52,7 +52,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectDragged': selectNodeList(m, payload.nList.map((n: N) => n.path), 's'); break
 
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
-    case 'insertSU': insertS(m, getXSI1(m), getXP(m).at(-1) as number, payload); break
+    case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1) as number, payload); break
     case 'insertSOR': insertS(m, getXRiD0(m), getCountXRiD0S(m), payload); break
     case 'insertSO': insertS(m, getX(m), getCountXSO1(m), payload); break
     case 'insertSORText': insertS(m, getXRiD0(m), getCountXRiD0S(m), {contentType: 'text', content: payload}); break
@@ -93,9 +93,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
     case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
     case 'moveCCL': moveCC(m, getXSI1(m), getCountXCL(m) - 1); break
-    case 'moveS2TOR': moveS2T(m, getRXD0(m, getRi(getXP(m))), getXSO2(m)); break
+    case 'moveS2TOR': moveS2T(m, getRXD0(m, getRi(getX(m).path)), getXSO2(m)); break
     case 'moveS2TO': moveS2T(m, getX(m), getXSO1(m)); break
-    case 'transpose': getXAO(m).forEach(n => n.path = [...n.path.slice(0, getXP(m).length + 1), n.path.at(getXP(m).length + 2), n.path.at(getXP(m).length + 1), ...n.path.slice(getXP(m).length + 3)] as P); break
+    case 'transpose': getXAO(m).forEach(n => n.path = [...n.path.slice(0, getX(m).path.length + 1), n.path.at(getX(m).path.length + 2), n.path.at(getX(m).path.length + 1), ...n.path.slice(getX(m).path.length + 3)] as P); break
 
     case 'copyR': copyR(m); break
     case 'copyS': copyS(m); break

@@ -14,12 +14,12 @@ export const getNodeById = (m: M, nodeId: string) => m.find(n => n.nodeId === no
 
 export const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 export const getPathDir = (p: P) => p[3] ? -1 : 1
-export const isDirR = (m: M) => getPathDir(getXP(m)) === 1
-export const isDirL = (m: M) => getPathDir(getXP(m)) === -1
+export const isDirR = (m: M) => getPathDir(getX(m).path) === 1
+export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 
 export const getRi = (p: P): number => p.at(1) as number
 export const getRiL = (m: M): number => m.findLast(n => n.path.length === 2)!.path.at(1) as number
-export const getXRi = (m: M): number => getRi(getXP(m))
+export const getXRi = (m: M): number => getRi(getX(m).path)
 
 export const isG = (p: P): boolean => getPathPattern(p).endsWith('g')
 export const isR = (p: P): boolean => getPathPattern(p).endsWith('r')
@@ -27,19 +27,19 @@ export const isD = (p: P): boolean => getPathPattern(p).endsWith('d')
 export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')
 export const isC = (p: P): boolean => getPathPattern(p).endsWith('c')
 
-export const isXR = (m: M): boolean => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
-export const isXD = (m: M): boolean => isD(getXP(m)) && !m.find(n => n.selected && !isD(n.path))
-export const isXS = (m: M): boolean => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
-export const isXDS = (m: M): boolean => getXP(m).length === 6
-const isXASV = (m: M): boolean => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
+export const isXR = (m: M): boolean => isR(getX(m).path) && !m.find(n => n.selected && !isR(n.path))
+export const isXD = (m: M): boolean => isD(getX(m).path) && !m.find(n => n.selected && !isD(n.path))
+export const isXS = (m: M): boolean => isS(getX(m).path) && !m.find(n => n.selected && !isS(n.path))
+export const isXDS = (m: M): boolean => getX(m).path.length === 6
+const isXASV = (m: M): boolean => isS(getX(m).path) && getXA(m).map(n => n.path).every(p => isSV(getX(m).path, p))
 export const isXASVN = (m: M): boolean => isXASV(m) && ((getXSLP(m).at(-1) as number) - (getXSF(m).path.at(-1) as number)) === getXA(m).length - 1
-export const isXC = (m: M): boolean => isC(getXP(m)) && getXA(m).length === 1
-export const isXACR = (m: M): boolean => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCV(getXP(m), p))
-export const isXACC = (m: M): boolean => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCH(getXP(m), p))
-export const isXCB = (m: M): boolean => isC(getXP(m)) && getCountXCU(m) === getCountXCV(m) - 1
-export const isXCT = (m: M): boolean => isC(getXP(m)) && getCountXCU(m) === 0
-export const isXCR = (m: M): boolean => isC(getXP(m)) && getCountXCL(m) === getCountXCH(m) - 1
-export const isXCL = (m: M): boolean => isC(getXP(m)) && getCountXCL(m) === 0
+export const isXC = (m: M): boolean => isC(getX(m).path) && getXA(m).length === 1
+export const isXACR = (m: M): boolean => isC(getX(m).path) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCV(getX(m).path, p))
+export const isXACC = (m: M): boolean => isC(getX(m).path) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCH(getX(m).path, p))
+export const isXCB = (m: M): boolean => isC(getX(m).path) && getCountXCU(m) === getCountXCV(m) - 1
+export const isXCT = (m: M): boolean => isC(getX(m).path) && getCountXCU(m) === 0
+export const isXCR = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === getCountXCH(m) - 1
+export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 0
 
 const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
@@ -70,12 +70,12 @@ export const isNCR = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(
 
 export const getG = (m: M): G => m.filter(n => n.path.length === 1).at(0) as G
 
-export const getCountQuasiSU = (m: M): number => m.filter(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m))).length
-export const getQuasiSU = (m: M): N => m.findLast(n => sortablePath(n.path) < sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m)))!
-export const getCountQuasiSD = (m: M): number => m.filter(n => sortablePath(n.path) > sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m))).length
-export const getQuasiSD = (m: M): N => m.find(n => sortablePath(n.path) > sortablePath(getXP(m)) && getPathDir(n.path) === getPathDir(getXP(m)) && getPathPattern(n.path) === getPathPattern(getXP(m)))!
+export const getCountQuasiSU = (m: M): number => m.filter(n => sortablePath(n.path) < sortablePath(getX(m).path) && getPathDir(n.path) === getPathDir(getX(m).path) && getPathPattern(n.path) === getPathPattern(getX(m).path)).length
+export const getQuasiSU = (m: M): N => m.findLast(n => sortablePath(n.path) < sortablePath(getX(m).path) && getPathDir(n.path) === getPathDir(getX(m).path) && getPathPattern(n.path) === getPathPattern(getX(m).path))!
+export const getCountQuasiSD = (m: M): number => m.filter(n => sortablePath(n.path) > sortablePath(getX(m).path) && getPathDir(n.path) === getPathDir(getX(m).path) && getPathPattern(n.path) === getPathPattern(getX(m).path)).length
+export const getQuasiSD = (m: M): N => m.find(n => sortablePath(n.path) > sortablePath(getX(m).path) && getPathDir(n.path) === getPathDir(getX(m).path) && getPathPattern(n.path) === getPathPattern(getX(m).path))!
 
-export const getLastSO = (m: M): N => getNodeByPath(m, [...getXP(m), 's', getX(m).lastSelectedChild > - 1 && getX(m).lastSelectedChild < getCountXSO1(m) ? getX(m).lastSelectedChild : 0])
+export const getLastSO = (m: M): N => getNodeByPath(m, [...getX(m).path, 's', getX(m).lastSelectedChild > - 1 && getX(m).lastSelectedChild < getCountXSO1(m) ? getX(m).lastSelectedChild : 0])
 export const getLastSOR = (m: M): N => getNodeByPath(m, [...getXRiD0(m).path, 's', getXRiD0(m).lastSelectedChild > - 1 && getXRiD0(m).lastSelectedChild < getCountXRiD0S(m) ? getXRiD0(m).lastSelectedChild : 0])
 export const getLastSOL = (m: M): N => getNodeByPath(m, [...getXRiD1(m).path, 's', getXRiD1(m).lastSelectedChild > - 1 && getXRiD1(m).lastSelectedChild < getCountXRiD1S(m) ? getXRiD1(m).lastSelectedChild : 0])
 
@@ -86,10 +86,9 @@ export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi 
 export const getSI1P = (p: P): P => getSIPL(p).at(-1) as P
 export const getSI2P = (p: P): P => getSIPL(p).at(-2) as P
 
-export const getXP = (m: M): P => getX(m).path
 export const getXSFP = (m: M): P => getXSF(m).path
 export const getXSLP = (m: M): P => getXSL(m).path
-export const getXSI1P = (m: M): P => getSI1P(getXP(m))
+export const getXSI1P = (m: M): P => getSI1P(getX(m).path)
 
 export const getXASU1P = (m: M): P => getSU1(getXSFP(m))
 
@@ -99,8 +98,8 @@ export const getX = (m: M): N => m.filter(n => n.path.length > 1).reduce((a, b) 
 export const getR0 = (m: M): N => getNodeByPath(m, ['r', 0])
 export const getRXD0 = (m: M, ri: number): N => getNodeByPath(m, ['r', ri, 'd', 0])
 export const getRXD1 = (m: M, ri: number): N => getNodeByPath(m, ['r', ri, 'd', 1])
-export const getXSI1 = (m: M): N => getNodeByPath(m, getSI1P(getXP(m)))
-export const getXSI2 = (m: M): N => getNodeByPath(m, getSI2P(getXP(m)))
+export const getXSI1 = (m: M): N => getNodeByPath(m, getSI1P(getX(m).path))
+export const getXSI2 = (m: M): N => getNodeByPath(m, getSI2P(getX(m).path))
 export const getXASU1 = (m: M): N => getNodeByPath(m, getSU1(getXSFP(m)))
 export const getNRi = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getNRiD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
@@ -109,14 +108,14 @@ export const getXRiD0 = (m: M): N => getNRiD0(m, getX(m))
 export const getXRiD1 = (m: M): N => getNRiD1(m, getX(m))
 
 export const getRL = (m: M): N[] => m.filter(n => n.path.length === 2)
-export const getXSO1 = (m: M): N[] => m.filter(n => isSO1(getXP(m), n.path))
-export const getXSO2 = (m: M): N[] => m.filter(n => isSO2(getXP(m), n.path))
+export const getXSO1 = (m: M): N[] => m.filter(n => isSO1(getX(m).path, n.path))
+export const getXSO2 = (m: M): N[] => m.filter(n => isSO2(getX(m).path, n.path))
 export const getXA = (m: M): N[] => m.filter(n => n.selected)
 export const getXAF = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSEO(xn.path, n.path)))
 export const getXAO = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSO(xn.path, n.path)))
-export const getXSSCR0 = (m: M): N[] => m.filter(n => isSCR0(getXP(m), n.path))
-export const getXSSCC0 = (m: M): N[] => m.filter(n => isSCC0(getXP(m), n.path))
-export const getXSSCYY = (m: M): N[] => m.filter(n => isSCYY(getXP(m), n.path))
+export const getXSSCR0 = (m: M): N[] => m.filter(n => isSCR0(getX(m).path, n.path))
+export const getXSSCC0 = (m: M): N[] => m.filter(n => isSCC0(getX(m).path, n.path))
+export const getXSSCYY = (m: M): N[] => m.filter(n => isSCYY(getX(m).path, n.path))
 export const getXACD1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCD1(xn.path, n.path)))
 export const getXACU1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCU1(xn.path, n.path)))
 export const getXACR1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCR1(xn.path, n.path)))
@@ -144,18 +143,18 @@ export const getCountNSCH = (m: M, n: N): number => getCountCH(m, [...n.path, 'c
 export const getCountXASD = (m: M): number => getCountSD(m, getXSLP(m))
 export const getCountXASU = (m: M): number => getCountSU(m, getXSFP(m))
 export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXASU1P(m))
-export const getCountXSO1 = (m: M): number => getCountSO1(m, getXP(m))
-export const getCountXSO2 = (m: M): number => getCountSO2(m, getXP(m))
-export const getCountXSI1U = (m: M): number => getCountSU(m, getSI1P(getXP(m)))
+export const getCountXSO1 = (m: M): number => getCountSO1(m, getX(m).path)
+export const getCountXSO2 = (m: M): number => getCountSO2(m, getX(m).path)
+export const getCountXSI1U = (m: M): number => getCountSU(m, getSI1P(getX(m).path))
 export const getCountXRiD0S = (m: M): number => getCountRiD0S(m, getXRi(m))
 export const getCountXRiD1S = (m: M): number => getCountRiD1S(m, getXRi(m))
-export const getCountXCO1 = (m: M): number => getCountCO1(m, getXP(m))
-export const getCountXCU = (m: M): number => getXP(m).at(-2) as number
-export const getCountXCL = (m: M): number => getXP(m).at(-1) as number
-export const getCountXCV = (m: M): number => getCountCV(m, getXP(m))
-export const getCountXCH = (m: M): number => getCountCH(m, getXP(m))
-export const getCountXSCV = (m: M): number => getCountCV(m, [...getXP(m), 'c', 0, 0])
-export const getCountXSCH = (m: M): number => getCountCH(m, [...getXP(m), 'c', 0, 0])
+export const getCountXCO1 = (m: M): number => getCountCO1(m, getX(m).path)
+export const getCountXCU = (m: M): number => getX(m).path.at(-2) as number
+export const getCountXCL = (m: M): number => getX(m).path.at(-1) as number
+export const getCountXCV = (m: M): number => getCountCV(m, getX(m).path)
+export const getCountXCH = (m: M): number => getCountCH(m, getX(m).path)
+export const getCountXSCV = (m: M): number => getCountCV(m, [...getX(m).path, 'c', 0, 0])
+export const getCountXSCH = (m: M): number => getCountCH(m, [...getX(m).path, 'c', 0, 0])
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
 

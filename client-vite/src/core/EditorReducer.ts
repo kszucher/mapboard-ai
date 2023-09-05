@@ -7,7 +7,7 @@ import {M} from "../state/MapStateTypes"
 import {api} from "./Api"
 import {mapFindNearest} from "./MapFindNearest"
 import {mapReducer} from "./MapReducer"
-import {getEditedNode, getXP} from "./MapUtils"
+import {getEditedNode, getX} from "./MapUtils"
 import {filterEmpty} from "./Utils"
 
 const editorStateDefault = JSON.stringify(editorState)
@@ -82,12 +82,12 @@ export const editorSlice = createSlice({
           break
         }
         case 'startEditReplace': {
-          state.editedNodeId = getEditedNode(pm, getXP(pm)).nodeId
+          state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
           state.editType = 'replace'
           break
         }
         case 'startEditAppend': {
-          state.editedNodeId = getEditedNode(pm, getXP(pm)).nodeId
+          state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
           state.editType = 'append'
           break
         }
