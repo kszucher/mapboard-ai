@@ -2,7 +2,7 @@ import {getTaskWidth} from "../component/MapSvgUtils";
 import {MARGIN_X, MARGIN_Y} from "../state/Consts";
 import {G, M, N} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils";
-import {getCountNCO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getCountNSO1} from "./MapUtils"
+import {getCountNCO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getCountNSO1, getNRD1, getNRD0, getNR} from "./MapUtils"
 
 export const mapMeasure = (pm: M, m: M) => {
   const g = getNodeByPath(m, ['g']) as G
@@ -12,16 +12,15 @@ export const mapMeasure = (pm: M, m: M) => {
     switch (true) {
       case isG(n.path): {
         getRL(m).forEach(r => {
-          const ri = getRi(r.path)
-          const rx = getNodeByPath(m, ['r', ri]) as N
-          const rid0 = getNodeByPath(m, ['r', ri, 'd', 0]) as N
-          const rid1 = getNodeByPath(m, ['r', ri, 'd', 1]) as N
-          const wr = rx.offsetW + rx.selfW + rid0.familyW + getTaskWidth(n) * hasTaskRight(m, getRi(r.path))
-          const wl = rx.offsetW - rid1.familyW - getTaskWidth(n) * hasTaskLeft(m, getRi(r.path))
-          if ((rx.offsetH + rid0.familyH / 2) > n.maxD) {n.maxD = rx.offsetH + rid0.familyH / 2}
-          if ((rx.offsetH + rid1.familyH / 2) > n.maxD) {n.maxD = rx.offsetH + rid1.familyH / 2}
-          if ((rx.offsetH - rid0.familyH / 2) < n.maxU) {n.maxU = rx.offsetH - rid0.familyH / 2}
-          if ((rx.offsetH - rid1.familyH / 2) < n.maxU) {n.maxU = rx.offsetH - rid1.familyH / 2}
+          const nr = getNR(m, r) as N
+          const nrd0 = getNRD0(m, r) as N
+          const nrd1 = getNRD1(m, r) as N
+          const wr = nr.offsetW + nr.selfW + nrd0.familyW + getTaskWidth(n) * hasTaskRight(m, getRi(r.path))
+          const wl = nr.offsetW - nrd1.familyW - getTaskWidth(n) * hasTaskLeft(m, getRi(r.path))
+          if ((nr.offsetH + nrd0.familyH / 2) > n.maxD) {n.maxD = nr.offsetH + nrd0.familyH / 2}
+          if ((nr.offsetH + nrd1.familyH / 2) > n.maxD) {n.maxD = nr.offsetH + nrd1.familyH / 2}
+          if ((nr.offsetH - nrd0.familyH / 2) < n.maxU) {n.maxU = nr.offsetH - nrd0.familyH / 2}
+          if ((nr.offsetH - nrd1.familyH / 2) < n.maxU) {n.maxU = nr.offsetH - nrd1.familyH / 2}
           if ((wr) > n.maxR) {n.maxR = wr}
           if ((wl) < n.maxL) {n.maxL = wl}
         })
