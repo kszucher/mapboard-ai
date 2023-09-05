@@ -231,32 +231,31 @@ export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
 export const getTaskStartPoint = (m: M, g: G, n: N) => {
   switch (true) {
-    case getPathDir(n.path) === 1 && !isCON(n.path):return getRootEndX(m, getNR(m, n)) - getTaskWidth(g)
-    case getPathDir(n.path) === -1 && !isCON(n.path):
-      return getTaskWidth(g)
-    case getPathDir(n.path) === 1 && isCON(n.path):return getNSIC(m, n).nodeEndX - 120
-    case getPathDir(n.path) === -1 && isCON(n.path):return getNSIC(m, n).nodeStartX + 120
-    default:return 0
+    case getPathDir(n.path) === 1 && !isCON(n.path): return getRootEndX(m, getNR(m, n)) - getTaskWidth(g)
+    case getPathDir(n.path) === -1 && !isCON(n.path): return getTaskWidth(g)
+    case getPathDir(n.path) === 1 && isCON(n.path): return getNSIC(m, n).nodeEndX - 120
+    case getPathDir(n.path) === -1 && isCON(n.path): return getNSIC(m, n).nodeStartX + 120
+    default: return 0
   }
 }
 
 export const getRootSideX = (m: M, n: N, side: string) => {
   switch (true) {
-    case (side === 'L'):return getRootStartX(m, n)
-    case (side === 'R'):return getRootEndX(m, n) - 24
-    case (side === 'T'):return getRootMidX(m, n) - 12
-    case (side === 'B'):return getRootMidX(m, n) - 12
-    default:return 0
+    case (side === 'L'): return getRootStartX(m, n)
+    case (side === 'R'): return getRootEndX(m, n) - 24
+    case (side === 'T'): return getRootMidX(m, n) - 12
+    case (side === 'B'): return getRootMidX(m, n) - 12
+    default: return 0
   }
 }
 
 export const getRootSideY = (m: M, n: N, side: string) => {
   switch (true) {
-    case (side === 'L'):return getRootMidY(m, n) - 12
-    case (side === 'R'):return getRootMidY(m, n) - 12
-    case (side === 'T'):return getRootStartY(m, n)
-    case (side === 'B'):return getRootEndY(m, n) - 24
-    default:return 0
+    case (side === 'L'): return getRootMidY(m, n) - 12
+    case (side === 'R'): return getRootMidY(m, n) - 12
+    case (side === 'T'): return getRootStartY(m, n)
+    case (side === 'B'): return getRootEndY(m, n) - 24
+    default: return 0
   }
 }
 
