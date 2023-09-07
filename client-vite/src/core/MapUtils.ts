@@ -99,8 +99,8 @@ export const getXSI1 = (m: M): N => getNodeByPath(m, getSI1P(getX(m).path))
 export const getNSI2 = (m: M, n: N): N => getNodeByPath(m, getSI2P(n.path))
 export const getXSI2 = (m: M): N => getNodeByPath(m, getSI2P(getX(m).path))
 export const getXASU1 = (m: M): N => getNodeByPath(m, getSU1(getXSF(m).path))
-export const getNSIC = (m: M, n: N) => getNodeByPath(m, getSIC(n.path))
-export const getXSIC = (m: M) => getNodeByPath(m, getSIC(getX(m).path))
+export const getNSIC = (m: M, n: N): N => getNodeByPath(m, getSIC(n.path))
+export const getXSIC = (m: M): N => getNodeByPath(m, getSIC(getX(m).path))
 export const getNR = (m: M, n: N): N => getNodeByPath(m, n.path.slice(0, 2))
 export const getXR = (m: M): N => getNodeByPath(m, getX(m).path.slice(0, 2))
 export const getNRD0 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 0])
@@ -157,20 +157,20 @@ export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).
 
 export const getReselectR = (m: M): N => m.findLast(n => !n.selected && isR(n.path))!
 export const getReselectS = (m: M): N => getCountXASU(m) ? getNodeByPath(m, getSU1(getXSF(m).path)) : (isXDS(m) ? getNodeByPath(m, getSI2P(getXSF(m).path)): getNodeByPath(m, getSI1P(getXSF(m).path)))
-export const getReselectCR = (m: M) : M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXA(m) : [getNodeByPath(m, getXSI1(m).path)] )
-export const getReselectCC = (m: M) : M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXA(m) : [getNodeByPath(m, getXSI1(m).path)] )
+export const getReselectCR = (m: M): M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXA(m) : [getNodeByPath(m, getXSI1(m).path)] )
+export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXA(m) : [getNodeByPath(m, getXSI1(m).path)] )
 
-export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
-export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
+export const getEditedPath = (p: P): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
+export const getEditedNode = (m: M, p: P): N => getNodeByPath(m, getEditedPath(p))
 
 export const hasTaskRight = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
 export const hasTaskLeft = (m: M, ri: number) => +m.filter(n => n.path.at(1) === ri).some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
 
-export const getRootStartX = (m: M, n: N) => n.nodeStartX - getNRD1(m, n).familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, getRi(n.path)) - MARGIN_X
-export const getRootStartY = (m: M, n: N) => n.nodeY - Math.max(...[getNRD0(m, n).familyH, getNRD1(m, n).familyH]) / 2 - MARGIN_Y
-export const getRootW = (m: M, n: N) => getNRD0(m, n).familyW + getNRD1(m, n).familyW + n.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, getRi(n.path)) + hasTaskRight(m, getRi(n.path))) + 2 * MARGIN_X
-export const getRootH = (m: M, n: N) => Math.max(...[getNRD0(m, n).familyH, getNRD1(m, n).familyH]) + 2 * MARGIN_Y
-export const getRootMidX = (m: M, n: N) => getRootStartX(m, n) + getRootW(m, n) / 2
-export const getRootMidY = (m: M, n: N) => getRootStartY(m, n) + getRootH(m, n) / 2
-export const getRootEndX = (m: M, n: N) => getRootStartX(m, n) + getRootW(m, n)
-export const getRootEndY = (m: M, n: N) => getRootStartY(m, n) + getRootH(m, n)
+export const getRootStartX = (m: M, n: N): number => n.nodeStartX - getNRD1(m, n).familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, getRi(n.path)) - MARGIN_X
+export const getRootStartY = (m: M, n: N): number => n.nodeY - Math.max(...[getNRD0(m, n).familyH, getNRD1(m, n).familyH]) / 2 - MARGIN_Y
+export const getRootW = (m: M, n: N): number => getNRD0(m, n).familyW + getNRD1(m, n).familyW + n.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, getRi(n.path)) + hasTaskRight(m, getRi(n.path))) + 2 * MARGIN_X
+export const getRootH = (m: M, n: N): number => Math.max(...[getNRD0(m, n).familyH, getNRD1(m, n).familyH]) + 2 * MARGIN_Y
+export const getRootMidX = (m: M, n: N):number => getRootStartX(m, n) + getRootW(m, n) / 2
+export const getRootMidY = (m: M, n: N):number => getRootStartY(m, n) + getRootH(m, n) / 2
+export const getRootEndX = (m: M, n: N):number => getRootStartX(m, n) + getRootW(m, n)
+export const getRootEndY = (m: M, n: N):number => getRootStartY(m, n) + getRootH(m, n)
