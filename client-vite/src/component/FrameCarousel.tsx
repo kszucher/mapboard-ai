@@ -1,11 +1,11 @@
 import {FC} from "react"
 import {useDispatch} from 'react-redux'
-import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import {AppDispatch} from "../core/EditorReducer"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../state/ApiState"
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../state/NodeApiState"
 
 export const FrameCarousel: FC = () => {
   const { data, isFetching } = useOpenWorkspaceQuery()
@@ -32,7 +32,7 @@ export const FrameCarousel: FC = () => {
               style={{paddingLeft:12}}
               size="large"
               disabled={frameIdPosition === 0 || isFetching}
-              onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: prevFrameId}))}
+              onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: prevFrameId}))}
             >
               <KeyboardArrowLeftIcon />
             </Button>
@@ -42,7 +42,7 @@ export const FrameCarousel: FC = () => {
               style={{paddingRight:12}}
               size="large"
               disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
-              onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: nextFrameId}))}
+              onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: nextFrameId}))}
             >
               <KeyboardArrowRightIcon />
             </Button>

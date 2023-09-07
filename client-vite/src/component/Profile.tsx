@@ -5,8 +5,8 @@ import { Button, Modal, Typography } from '@mui/material'
 import { ModalDeleteUser } from './ModalDeleteUser'
 import {actions, AppDispatch} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
-import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
+import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const Profile: FC = () => {
   const [childModalOpen, setChildModalOpen] = useState(false)
@@ -21,13 +21,13 @@ export const Profile: FC = () => {
         <Button color="primary" variant="contained" onClick={()=>{
           logout({ logoutParams: { returnTo: window.location.origin }})
           dispatch(actions.resetState())
-          dispatch(api.util.resetApiState())
+          dispatch(nodeApi.util.resetApiState())
         }}>{'SIGN OUT'}</Button>
         <Button color="primary" variant="contained" onClick={()=>{
           logout({ logoutParams: { returnTo: window.location.origin }})
-          dispatch(api.endpoints.signOutEverywhere.initiate())
+          dispatch(nodeApi.endpoints.signOutEverywhere.initiate())
           dispatch(actions.resetState())
-          dispatch(api.util.resetApiState())
+          dispatch(nodeApi.util.resetApiState())
         }}>{'SIGN OUT EVERYWHERE'}</Button>
         <Button color="primary" variant="outlined" onClick={_=>setChildModalOpen(true)}>{'DELETE ACCOUNT'}</Button>
         <Button color="primary" variant="outlined" onClick={_=>dispatch(actions.setPageState(PageState.WS))}>{'CLOSE'}</Button>

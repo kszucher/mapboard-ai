@@ -1,10 +1,10 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {api} from "../core/Api";
+import {nodeApi} from "../core/NodeApi";
 import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../core/GptPrompter"
 import {Templates} from "../core/MapInsertTemplates";
 import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
-import {getMapId} from "../state/ApiState"
+import {getMapId} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
@@ -59,10 +59,10 @@ export const ContextMenu: FC = () => {
             <button id="doubleDropdownButton" data-dropdown-toggle="tabsSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Tabs{MenuButtonSvg}</button>
             <div id="tabsSubMenu" className={subMenuClassName}>
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(api.endpoints.createMapInTab.initiate())}}>Add Tab Map</a></li> }
-                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(api.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}}>Move Tab Map Up</a></li> }
-                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(api.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}}>Move Tab Map Down</a></li> }
-                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))}}>Remove Tab Map</a></li> }
+                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.createMapInTab.initiate())}}>Add Tab Map</a></li> }
+                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}}>Move Tab Map Up</a></li> }
+                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}}>Move Tab Map Down</a></li> }
+                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.deleteMap.initiate({mapId: getMapId()}))}}>Remove Tab Map</a></li> }
               </ul>
             </div>
           </li>
@@ -139,9 +139,9 @@ export const ContextMenu: FC = () => {
             <button id="doubleDropdownButton" data-dropdown-toggle="generateSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Generate{MenuButtonSvg}</button>
             <div id="generateSubMenu" className={subMenuClassName}>
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-                { mExists && isXD(m) && getX(m).selection === 'f' && getR0(m).note !== '' && <li><a className={menuClassName} onClick={()=>{dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodesS(m)))}}>Structure Extension</a></li>}
-                { mExists && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))}}>Table Fill</a></li>}
-                { mExists && (isXR(m) || isXS(m)) && getCountXCO1(m) === 0 && getX(m).contentType === 'text' && <li><a className={menuClassName} onClick={()=>{dispatch(api.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))}}>Diagram</a></li>}
+                { mExists && isXD(m) && getX(m).selection === 'f' && getR0(m).note !== '' && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesS(m)))}}>Structure Extension</a></li>}
+                { mExists && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))}}>Table Fill</a></li>}
+                { mExists && (isXR(m) || isXS(m)) && getCountXCO1(m) === 0 && getX(m).contentType === 'text' && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))}}>Diagram</a></li>}
               </ul>
             </div>
           </li>

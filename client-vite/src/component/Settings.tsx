@@ -5,8 +5,8 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import {actions, AppDispatch} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
-import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
+import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const Settings: FC = () => {
   const { data } = useOpenWorkspaceQuery()
@@ -21,7 +21,7 @@ export const Settings: FC = () => {
       <div className="_bg fixed left-1/2 -translate-x-1/2 top-[80px] width-[1000px] flex flex-col items-center gap-4 p-5 rounded-lg">
         <IconButton
           color='secondary'
-          onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}
+          onClick={() => dispatch(nodeApi.endpoints.toggleColorMode.initiate())}
         >
           {colorMode === 'light' && <LightModeIcon/>}
           {colorMode === 'dark' && <DarkModeIcon/>}

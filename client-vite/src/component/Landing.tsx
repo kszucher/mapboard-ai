@@ -3,7 +3,7 @@ import {CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import React, {FC, useEffect, useState} from "react"
 import {useAuth0} from "@auth0/auth0-react"
-import {api} from "../core/Api"
+import {nodeApi} from "../core/NodeApi"
 import {authAudienceUrl} from "../core/Urls"
 import {setColors} from "./Colors"
 
@@ -39,7 +39,7 @@ export const Landing: FC = () => {
 
   useEffect(()=> {
     if (token !== '') {
-      dispatch(api.endpoints.signIn.initiate())
+      dispatch(nodeApi.endpoints.signIn.initiate())
     }
   }, [token])
 

@@ -4,7 +4,7 @@ import {getMapX, getMapY} from "../component/MapDivUtils"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState, Sides} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
-import {api} from "./Api"
+import {nodeApi} from "./NodeApi"
 import {mapFindNearest} from "./MapFindNearest"
 import {mapReducer} from "./MapReducer"
 import {getEditedNode, getX} from "./MapUtils"
@@ -128,11 +128,11 @@ export const editorSlice = createSlice({
       isAction, (state, action) => {}
     )
     builder.addMatcher(
-      api.endpoints.signIn.matchFulfilled,
+      nodeApi.endpoints.signIn.matchFulfilled,
       (state) => {state.pageState = PageState.WS}
     )
     builder.addMatcher(
-      api.endpoints.openWorkspace.matchFulfilled,
+      nodeApi.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
         const { mapDataList } = payload
         console.log(payload)
@@ -143,7 +143,7 @@ export const editorSlice = createSlice({
       }
     )
     builder.addMatcher(
-      api.endpoints.getGptSuggestions.matchFulfilled,
+      nodeApi.endpoints.getGptSuggestions.matchFulfilled,
       (state, { payload }) => {
         const { promptId, promptJson, prompt, maxToken, gptSuggestions } = payload
         console.log(payload)
@@ -171,7 +171,7 @@ export const editorSlice = createSlice({
       }
     )
     builder.addMatcher(
-      api.endpoints.saveMap.matchFulfilled,
+      nodeApi.endpoints.saveMap.matchFulfilled,
       (state) => {
         console.log('save completed')
       }
@@ -199,10 +199,10 @@ listenerMiddleware.startListening({
 })
 
 export const store = configureStore({
-  reducer: combineReducers({api: api.reducer, editor: editorSlice.reducer}),
+  reducer: combineReducers({api: nodeApi.reducer, editor: editorSlice.reducer}),
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
     .prepend(listenerMiddleware.middleware)
-    .concat(api.middleware)
+    .concat(nodeApi.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>

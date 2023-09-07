@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useSelector, useDispatch} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
-import {api} from "../core/Api"
+import {nodeApi} from "../core/NodeApi"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
 
@@ -27,7 +27,7 @@ export const ModalDeleteUser:FC = () => {
             color="primary"
             variant='outlined'
             disabled={interactionDisabled}
-            onClick={() => dispatch(api.endpoints.deleteAccount.initiate())}
+            onClick={() => dispatch(nodeApi.endpoints.deleteAccount.initiate())}
           >
             {'OK'}
           </Button>

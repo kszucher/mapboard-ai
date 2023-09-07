@@ -9,9 +9,9 @@ import {getG, getNodeById, isR, isS, isXR, isXS, getX, getCountNCO1, getNRD0, ge
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
-import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {N} from "../state/MapStateTypes"
 
 const getInnerHtml = (n: N) => {
@@ -97,7 +97,7 @@ export const MapDiv: FC = () => {
                 dispatch(actions.closeContextMenu())
                 if (e.button === 0) {
                   if (n.linkType === 'internal') {
-                    dispatch(api.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
+                    dispatch(nodeApi.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
                   } else if (n.linkType === 'external') {
                     window.open(n.link, '_blank')
                     window.focus()

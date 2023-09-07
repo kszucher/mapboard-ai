@@ -25,9 +25,9 @@ import {TabMaps} from "./TabMaps"
 import {UndoRedo} from './UndoRedo'
 import {Window} from "./Window"
 import {setColors} from "./Colors"
-import {useOpenWorkspaceQuery} from "../core/Api"
+import {useOpenWorkspaceQuery} from "../core/NodeApi"
 import {PageState} from "../state/Enums"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)

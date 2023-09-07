@@ -4,8 +4,8 @@ import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXC
 import {isUrl} from "../core/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
+import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
+import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/NodeApiState"
 import {getMap, mSelector} from "../state/EditorState"
 import {mapDeInit} from "../core/MapDeInit"
 import {GN} from "../state/MapStateTypes"
@@ -213,7 +213,7 @@ export const Window: FC = () => {
   }, [pageState, access, editedNodeId])
 
   const timeoutFun = () => {
-    dispatch(api.endpoints.saveMap.initiate({
+    dispatch(nodeApi.endpoints.saveMap.initiate({
       mapId: getMapId(),
       frameId: getFrameId(),
       mapData: mapDeInit(getMap().filter((gn: GN) => (gn.hasOwnProperty('path') && gn.hasOwnProperty('nodeId'))))

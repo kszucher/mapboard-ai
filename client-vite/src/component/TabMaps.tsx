@@ -4,9 +4,9 @@ import {useSelector, useDispatch} from "react-redux"
 import TreeView from '@mui/lab/TreeView'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
 import {AppDispatch, RootState} from "../core/EditorReducer"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const TabMaps: FC = () => {
   const tabShrink = useSelector((state: RootState) => state.editor.tabShrink)
@@ -38,7 +38,7 @@ export const TabMaps: FC = () => {
                     nodeId={tabMapIdList[index]}
                     key={index}
                     onClick={() => {
-                      dispatch(api.endpoints.selectMap.initiate({mapId: tabMapIdList[index], frameId: ''}))
+                      dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[index], frameId: ''}))
                     }}
                   />
                 ))

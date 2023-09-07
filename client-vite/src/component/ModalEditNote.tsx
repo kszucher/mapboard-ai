@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {Button, Modal, TextField, Typography} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
-import {useOpenWorkspaceQuery} from "../core/Api"
+import {useOpenWorkspaceQuery} from "../core/NodeApi"
 import {getR0} from "../core/MapUtils"
 import {mSelector} from "../state/EditorState"
 

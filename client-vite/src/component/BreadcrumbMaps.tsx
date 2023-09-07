@@ -2,9 +2,9 @@ import {FC} from "react"
 import {useDispatch,} from "react-redux"
 import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
-import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
 import {AppDispatch} from "../core/EditorReducer"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const BreadcrumbMaps: FC = () => {
   const { data } = useOpenWorkspaceQuery()
@@ -22,7 +22,7 @@ export const BreadcrumbMaps: FC = () => {
                   e.preventDefault()
                   frameId !== ''
                     ? console.log('prevent')
-                    : dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))
+                    : dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))
                 }
               }
               key={index}>

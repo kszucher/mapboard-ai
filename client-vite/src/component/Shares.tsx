@@ -7,7 +7,7 @@ import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import {actions, AppDispatch} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
-import {api, useGetSharesQuery} from "../core/Api"
+import {nodeApi, useGetSharesQuery} from "../core/NodeApi"
 
 export const Shares: FC = () => {
   const { data, isFetching } = useGetSharesQuery()
@@ -25,7 +25,7 @@ export const Shares: FC = () => {
           <IconButton
             aria-label="xxx"
             size="small"
-            onClick={()=>dispatch(api.endpoints.deleteMap.initiate({mapId: params.row._id}))}
+            onClick={()=>dispatch(nodeApi.endpoints.deleteMap.initiate({mapId: params.row._id}))}
             disabled={false}
           >
             <CancelOutlinedIcon/>
@@ -44,7 +44,7 @@ export const Shares: FC = () => {
           <IconButton
             aria-label="xxx"
             size="small"
-            onClick={()=>dispatch(api.endpoints.acceptShare.initiate({shareId: params.row._id}))}
+            onClick={()=>dispatch(nodeApi.endpoints.acceptShare.initiate({shareId: params.row._id}))}
             disabled={params.row.status === 'accepted'}
           >
             {params.row.status === 'waiting' && <AddCircleOutlineIcon/>}

@@ -3,9 +3,9 @@ import {useDispatch, useSelector} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
 import {PageState} from "../state/Enums"
-import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
 import {getX} from "../core/MapUtils"
-import {getMapId} from "../state/ApiState"
+import {getMapId} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 
 export const ModalCreateMapInMap: FC = () => {
@@ -25,7 +25,7 @@ export const ModalCreateMapInMap: FC = () => {
             color="primary"
             variant='outlined'
             disabled={isFetching}
-            onClick={() => {dispatch(api.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getX(m).nodeId, content: getX(m).content}))}}
+            onClick={() => {dispatch(nodeApi.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getX(m).nodeId, content: getX(m).content}))}}
           >
             {'OK'}
           </Button>

@@ -5,8 +5,8 @@ import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
 import {useDispatch, useSelector} from "react-redux"
 import {getMapX, getMapY, setScrollLeftAnimated} from "./MapDivUtils"
-import {useOpenWorkspaceQuery} from "../core/Api"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import {useOpenWorkspaceQuery} from "../core/NodeApi"
+import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {getG} from "../core/MapUtils"
 
 const ZOOM_INTENSITY = 0.2

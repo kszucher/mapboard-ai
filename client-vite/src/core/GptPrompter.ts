@@ -1,6 +1,6 @@
 import {M, N} from "../state/MapStateTypes"
 import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXAEO} from "./MapUtils"
-import {GptData} from "../state/ApiStateTypes"
+import {GptData} from "../state/NodeApiStateTypes"
 
 export const genPromptJsonS = (m: M) => {
   const mr = getXAEO(m).slice().sort(sortPath)

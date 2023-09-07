@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {timeoutId} from "../component/Window"
-import {getFrameId, getMapId} from "../state/ApiState"
-import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/ApiStateTypes"
+import {getFrameId, getMapId} from "../state/NodeApiState"
+import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/NodeApiStateTypes"
 import {getMap} from "../state/EditorState"
 import {PageState} from "../state/Enums"
 import {GN} from "../state/MapStateTypes"
@@ -9,7 +9,7 @@ import {actions, RootState} from "./EditorReducer"
 import {mapDeInit} from "./MapDeInit"
 import {backendUrl} from "./Urls"
 
-export const api = createApi({
+export const nodeApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: backendUrl,
     prepareHeaders: (headers, { getState }) => {
@@ -40,7 +40,7 @@ export const api = createApi({
         if (editor.mapList.length > 1) {
           console.log('save by listener')
           clearTimeout(timeoutId)
-          dispatch(api.endpoints.saveMap.initiate({
+          dispatch(nodeApi.endpoints.saveMap.initiate({
             mapId: getMapId(),
             frameId: getFrameId(),
             mapData: mapDeInit(getMap().filter((gn: GN) => (gn.hasOwnProperty('path') && gn.hasOwnProperty('nodeId'))))
@@ -122,7 +122,7 @@ export const api = createApi({
       async onQueryStarted(arg, { dispatch }) {
         dispatch(actions.setPageState(PageState.WS_LOADING))
         dispatch(actions.resetState())
-        dispatch(api.util.resetApiState()
+        dispatch(nodeApi.util.resetApiState()
         )},
       invalidatesTags: []
     }),
@@ -133,4 +133,4 @@ export const api = createApi({
   })
 })
 
-export const { useOpenWorkspaceQuery, useGetSharesQuery, useCreateShareMutation } = api
+export const { useOpenWorkspaceQuery, useGetSharesQuery, useCreateShareMutation } = nodeApi

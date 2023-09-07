@@ -3,8 +3,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Menu, MenuItem} from '@mui/material'
 import {actions, AppDispatch, RootState} from '../core/EditorReducer'
 import {genHash} from "../core/Utils"
-import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
-import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/NodeApiState"
+import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
 
 export const MenuFrames: FC = () => {
   const frameMenu = useSelector((state: RootState) => state.editor.frameMenu)
@@ -25,23 +25,23 @@ export const MenuFrames: FC = () => {
         [
           <MenuItem key={genHash(8)} disabled={frameId !== '' || frameIdList.length === 0} onClick={() => {
             dispatch(actions.closeFrameMenu())
-            dispatch(api.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))
+            dispatch(nodeApi.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))
           }}>{'Open Frames'}</MenuItem>,
           <MenuItem key={genHash(8)} disabled={false} onClick={() => {
             dispatch(actions.closeFrameMenu())
-            dispatch(api.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))
+            dispatch(nodeApi.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))
           }}>{'Import Map Into Frame'}</MenuItem>,
           <MenuItem key={genHash(8)} disabled={frameId === '' || frameIdList.length === 0} onClick={() => {
             dispatch(actions.closeFrameMenu())
-            dispatch(api.endpoints.createMapFrameDuplicate.initiate({mapId: getMapId(), frameId: getFrameId()}))
+            dispatch(nodeApi.endpoints.createMapFrameDuplicate.initiate({mapId: getMapId(), frameId: getFrameId()}))
           }}>{'Duplicate Frame'}</MenuItem>,
           <MenuItem key={genHash(8)} disabled={frameId === '' || frameIdList.length === 0} onClick={() => {
             dispatch(actions.closeFrameMenu())
-            dispatch(api.endpoints.deleteMapFrame.initiate({mapId: getMapId(), frameId: getFrameId()}))
+            dispatch(nodeApi.endpoints.deleteMapFrame.initiate({mapId: getMapId(), frameId: getFrameId()}))
           }}>{'Delete Frame'}</MenuItem>,
           <MenuItem key={genHash(8)} disabled={frameId === ''} onClick={() => {
             dispatch(actions.closeFrameMenu())
-            dispatch(api.endpoints.selectMap.initiate({mapId: getMapId(), frameId: ''}))
+            dispatch(nodeApi.endpoints.selectMap.initiate({mapId: getMapId(), frameId: ''}))
           }}>{'Exit Frames'}</MenuItem>,
         ]
       }
