@@ -19,19 +19,17 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
       {getRL(m).map((n: N) => (
         <g key={n.nodeId}>
           {n.controlType === ControlTypes.UPLOAD &&
-            <g key={'c'} width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(n.nodeStartX + n.selfW / 2 -12)}, ${adjustIcon(n.nodeY - n.selfH /2 - 12  - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
+            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(n.nodeStartX + n.selfW / 2 -12)}, ${adjustIcon(n.nodeY - n.selfH /2 - 12  - 24)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
               <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
-              {<g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
+              <g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
                 <path stroke="none" d="M0 0h24v24H0z"></path>
                 <path d="M14 3v4a1 1 0 001 1h4"></path>
                 <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2zM12 11v6"></path>
                 <path d="M9.5 13.5L12 11l2.5 2.5"></path>
-              </g>}
+              </g>
               <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                // dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
-
                 let input = document.createElement('input')
                 input.type = 'file'
                 input.onchange = (e) => {
@@ -44,8 +42,19 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
                     .catch((err) => {})
                 }
                 input.click()
-              }}
-              />
+              }}/>
+            </g>}
+          {n.controlType === ControlTypes.GENERATE &&
+            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(n.nodeStartX + n.selfW / 2 -12)}, ${adjustIcon(n.nodeY - n.selfH /2 - 12  - 24)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
+              <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
+              <g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M16 18a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zm0-12a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zM9 18a6 6 0 016-6 6 6 0 01-6-6 6 6 0 01-6 6 6 6 0 016 6z"></path>
+              </g>
+              <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+
+              }}/>
             </g>}
         </g>
       ))}
