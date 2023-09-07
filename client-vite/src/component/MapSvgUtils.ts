@@ -79,35 +79,27 @@ export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
   const ri = getRi(n.path)
   const rx = getNodeByPath(m, ['r', ri]) as N
   const dir = getPathDir(n.path)
-  const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
-  const xo = dir === -1 ? n.nodeStartX : n.nodeEndX
   const selfH = isD(n.path) ? rx.selfH : n.selfH
-  const yu = n.nodeY - selfH / 2
-  const yd = n.nodeY + selfH / 2
-  const myu = n.nodeY - n.maxH / 2
-  const myd = n.nodeY + n.maxH / 2
   const w = isD(n.path) ? rx.selfW + n.familyW : n.maxW
-  return selection === 's' ? {
-    ax: n.nodeStartX,
-    bx: xo - dir * R,
-    cx: n.nodeEndX,
-    ayu: yu,
-    ayd: yd,
-    byu: yu,
-    byd: yd,
-    cyu: yu,
-    cyd: yd
-  } : {
-    ax: xi + (dir === -1 ? -w : 0),
-    bx: xo + dir * g.sLineDeltaXDefault,
-    cx: xi + (dir === 1 ? w : 0),
-    ayu: dir === -1 ? myu : yu,
-    ayd: dir === -1 ? myd : yd,
-    byu: myu,
-    byd: myd,
-    cyu: dir === -1 ? yu : myu,
-    cyd: dir === -1 ? yd : myd
+  let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
+  if (selection === 's') {
+    ax = n.nodeStartX
+    bx = dir === -1 ? n.nodeStartX + R: n.nodeEndX - R
+    cx = n.nodeEndX
+    ayu = byu = cyu = n.nodeY - selfH / 2
+    ayd = byd = cyd = n.nodeY + selfH / 2
+  } else {
+    ax = dir === -1 ? n.nodeEndX - w : n.nodeStartX
+    bx = dir === -1 ? n.nodeStartX - g.sLineDeltaXDefault: n.nodeEndX + g.sLineDeltaXDefault
+    cx = dir === -1 ? n.nodeEndX : n.nodeStartX + w
+    ayu = n.nodeY + (dir === -1 ? - n.maxH / 2 : - selfH / 2)
+    ayd = n.nodeY + (dir === -1 ? + n.maxH / 2 : + selfH / 2)
+    byu = n.nodeY - n.maxH / 2
+    byd = n.nodeY + n.maxH / 2
+    cyu = n.nodeY + (dir === -1 ? - selfH / 2 : - n.maxH / 2)
+    cyd = n.nodeY + (dir === -1 ? + selfH / 2 : + n.maxH / 2)
   }
+  return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
 
 export const getPolygonC = (m: M): PolygonPoints => {
