@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api} from "../core/Api";
 import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../core/GptPrompter"
 import {Templates} from "../core/MapInsertTemplates";
-import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAF, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
+import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
 import {getMapId} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../core/EditorReducer"
@@ -114,9 +114,9 @@ export const ContextMenu: FC = () => {
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
                 { mExists && isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}}>Turn Into Submap</a></li> }
                 { mExists && isXS(m) && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'transpose', payload: null}))}}>Transpose</a></li> }
-                { mExists && getXAF(m).map(n => n.taskStatus).includes(0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'taskModeOn', payload: null}))}}>Task Mode On</a></li> }
-                { mExists && getXAF(m).map(n => n.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'taskModeOff', payload: null}))}}>Task Mode Off</a></li> }
-                { mExists && getXAF(m).map(n => n.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'taskModeReset', payload: null}))}}>Task Mode Reset</a></li> }
+                { mExists && getXAEO(m).map(n => n.taskStatus).includes(0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'taskModeOn', payload: null}))}}>Task Mode On</a></li> }
+                { mExists && getXAEO(m).map(n => n.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'taskModeOff', payload: null}))}}>Task Mode Off</a></li> }
+                { mExists && getXAEO(m).map(n => n.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'taskModeReset', payload: null}))}}>Task Mode Reset</a></li> }
               </ul>
             </div>
           </li>

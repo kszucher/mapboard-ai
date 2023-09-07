@@ -10,7 +10,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getRiL, getRootStartX, getRootStartY, getXA, getXAF, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getNRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO, getNR, getXR, getXSIC} from "./MapUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getRiL, getRootStartX, getRootStartY, getXA, getXAEO, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getNRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO, getNR, getXR, getXSIC} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -124,9 +124,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'clearText': getXA(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break
 
     case 'applyColorFromKey': getXA(m).forEach(n => Object.assign(n, {textColor: shortcutColors[payload.currColor]})); break
-    case 'taskModeOn': getXAF(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus === 0 ? 1 : n.taskStatus})); break
-    case 'taskModeOff': getXAF(m).forEach(n => Object.assign(n, {taskStatus: 0 })); break
-    case 'taskModeReset': getXAF(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus > 0 ? 1 : n.taskStatus})); break
+    case 'taskModeOn': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus === 0 ? 1 : n.taskStatus})); break
+    case 'taskModeOff': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: 0 })); break
+    case 'taskModeReset': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus > 0 ? 1 : n.taskStatus})); break
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.contentType, content: payload.content }); break
