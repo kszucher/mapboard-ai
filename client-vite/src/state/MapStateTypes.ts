@@ -1,4 +1,4 @@
-import {LineTypes} from "./Enums"
+import {LineTypes, ControlTypes} from "./Enums"
 
 export interface Connection {
   fromNodeId: string
@@ -29,6 +29,7 @@ export interface GSaveNever {
 }
 
 export interface NSaveOptional {
+  controlType: ControlTypes
   contentType: string
   content: string
   linkType: string

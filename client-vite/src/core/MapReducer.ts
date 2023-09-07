@@ -1,3 +1,4 @@
+import {ControlTypes} from "../state/Enums"
 import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./GptParser"
 import {nSaveOptional} from "../state/MapState"
 import {M, N, P} from "../state/MapStateTypes"
@@ -122,15 +123,19 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'clearFFill': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fFillColor: nSaveOptional.fFillColor})); break
     case 'clearText': getXA(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break
 
-    case 'taskModeOn': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus === 0 ? 1 : n.taskStatus})); break
-    case 'taskModeOff': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: 0 })); break
-    case 'taskModeReset': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus > 0 ? 1 : n.taskStatus})); break
+    case 'setTaskModeOn': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus === 0 ? 1 : n.taskStatus})); break
+    case 'setTaskModeOff': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: 0 })); break
+    case 'setTaskModeReset': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus > 0 ? 1 : n.taskStatus})); break
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
-    case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
-    case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.contentType, content: payload.content }); break
     case 'setNote': Object.assign(getR0(m), { note: payload.note }); break
     case 'setContent': Object.assign(getX(m), { content: payload.content }); break
+    case 'setControlTypeUpload': Object.assign(getX(m), { controlType: ControlTypes.UPLOAD }); break
+    case 'setControlTypeGenerate': Object.assign(getX(m), { controlType: ControlTypes.GENERATE }); break
+
     case 'resetDimensions': Object.assign(getX(m), { dimW: 0, dimH: 0 }); break
+
+    case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
+    case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.contentType, content: payload.content }); break
 
     case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
     case 'gptParseNodesT': gptParseNodesT(m, payload.gptParsed); break

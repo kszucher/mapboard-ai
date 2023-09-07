@@ -1,5 +1,5 @@
 import {GSaveAlways, GSaveNever, GSaveOptional, NSaveAlways, NSaveNever, NSaveOptional} from "./MapStateTypes"
-import {LineTypes} from "./Enums"
+import {ControlTypes, LineTypes} from "./Enums"
 
 export const gSaveAlways = {
   path: ['g'],
@@ -28,6 +28,7 @@ export const nSaveAlways = {
 } as NSaveAlways
 
 export const nSaveOptional = {
+  controlType: ControlTypes.NONE,
   contentType: 'text',
   content: '',
   linkType: '',

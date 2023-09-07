@@ -54,3 +54,9 @@ export enum Sides {
   T = 'top',
   B = 'bottom',
 }
+
+export enum ControlTypes {
+  NONE = '',
+  UPLOAD = 'upload',
+  GENERATE = 'generate',
+}
