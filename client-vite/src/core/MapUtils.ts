@@ -131,27 +131,26 @@ const getCountCO2 = (m: M, p: P): number => m.filter(n => isCO2(p, n.path)).leng
 const getCountCV = (m: M, p: P): number => m.filter(n => isCH(p, n.path)).length
 const getCountCH = (m: M, p: P): number => m.filter(n => isCV(p, n.path)).length
 
-export const getCountNSO1 = (m: M, n: N): number => getCountSO1(m, n.path)
-export const getCountNSO2 = (m: M, n: N): number => getCountSO2(m, n.path)
-export const getCountNCO1 = (m: M, n: N): number => getCountCO1(m, n.path)
-export const getCountNCO2 = (m: M, n: N): number => getCountCO2(m, n.path)
-export const getCountNSCV = (m: M, n: N): number => getCountCV(m, [...n.path, 'c', 0, 0])
-export const getCountNSCH = (m: M, n: N): number => getCountCH(m, [...n.path, 'c', 0, 0])
-
 export const getCountXASD = (m: M): number => getCountSD(m, getXSL(m).path)
 export const getCountXASU = (m: M): number => getCountSU(m, getXSF(m).path)
 export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXASU1(m).path)
+export const getCountNSO1 = (m: M, n: N): number => getCountSO1(m, n.path)
 export const getCountXSO1 = (m: M): number => getCountSO1(m, getX(m).path)
+export const getCountNSO2 = (m: M, n: N): number => getCountSO2(m, n.path)
 export const getCountXSO2 = (m: M): number => getCountSO2(m, getX(m).path)
 export const getCountXSI1U = (m: M): number => getCountSU(m, getSI1P(getX(m).path))
 export const getCountXRD0S = (m: M): number => getCountSO1(m, getXRD0(m).path)
 export const getCountXRD1S = (m: M): number => getCountSO1(m, getXRD1(m).path)
+export const getCountNCO1 = (m: M, n: N): number => getCountCO1(m, n.path)
 export const getCountXCO1 = (m: M): number => getCountCO1(m, getX(m).path)
+export const getCountNCO2 = (m: M, n: N): number => getCountCO2(m, n.path)
 export const getCountXCU = (m: M): number => getX(m).path.at(-2) as number
 export const getCountXCL = (m: M): number => getX(m).path.at(-1) as number
 export const getCountXCV = (m: M): number => getCountCV(m, getX(m).path)
 export const getCountXCH = (m: M): number => getCountCH(m, getX(m).path)
+export const getCountNSCV = (m: M, n: N): number => getCountCV(m, [...n.path, 'c', 0, 0])
 export const getCountXSCV = (m: M): number => getCountCV(m, [...getX(m).path, 'c', 0, 0])
+export const getCountNSCH = (m: M, n: N): number => getCountCH(m, [...n.path, 'c', 0, 0])
 export const getCountXSCH = (m: M): number => getCountCH(m, [...getX(m).path, 'c', 0, 0])
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
