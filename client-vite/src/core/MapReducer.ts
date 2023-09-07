@@ -148,6 +148,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'offsetL': getX(m).offsetW -= 20; break
 
     case 'saveConnection': getG(m).connections.push(payload); break
+    // TODO deleteConnection
   }
 }
 

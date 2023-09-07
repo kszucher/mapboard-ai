@@ -70,7 +70,7 @@ export const getLinePathBetweenRoots = (m: M, connection: Connection) => {
     case Sides.T: ex = getRootMidX(m, toNode); ey = getRootStartY(m, toNode); c2x = ex; c2y = ey - 100; break
     case Sides.B: ex = getRootMidX(m, toNode); ey = getRootEndY(m, toNode); c2x = ex; c2y = ey + 100;  break
   }
-  return getBezierLinePath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
+  return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
 
 export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
@@ -231,30 +231,13 @@ export const getRootSideY = (m: M, n: N, side: string) => {
   }
 }
 
-// export const calculateMiddlePoint = (sx, sy, c1x, c1y, c2x, c2y, ex, ey) => {
-//   // Calculate the middle point t value
-//   var t = 0.5;
-//
-//   // Calculate intermediate points based on the t value
-//   var p0x = sx + (c1x - sx) * t;
-//   var p0y = sy + (c1y - sy) * t;
-//   var p1x = c1x + (c2x - c1x) * t;
-//   var p1y = c1y + (c2y - c1y) * t;
-//   var p2x = c2x + (ex - c2x) * t;
-//   var p2y = c2y + (ey - c2y) * t;
-//
-//   // Calculate final point based on intermediate points
-//   var p3x = p0x + (p1x - p0x) * t;
-//   var p3y = p0y + (p1y) * t;
-//
-//   var p4x = p1x + (p2x - p1x) * t;
-//   var p4y = p1y + (p2y - p1y) * t;
-//
-//   var px = p3x + (p4x - p3x) * t;
-//   var py = p3y + (p4y - p3y) * t;
-//
-//   return {
-//     x: px,
-//     y: py
-//   };
-// }
+export const calculateMiddlePoint = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[]) => {
+  const t = 0.5; // t = 0.5 for calculating the middle point
+  const mt = 1 - t;
+  const bx = mt * mt * mt * sx + 3 * mt * mt * t * c1x + 3 * mt * t * t * c2x + t * t * t * ex;
+  const by = mt * mt * mt * sy + 3 * mt * mt * t * c1y + 3 * mt * t * t * c2y + t * t * t * ey;
+  return {
+    x: bx,
+    y: by
+  };
+};
