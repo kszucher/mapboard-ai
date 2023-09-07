@@ -129,6 +129,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
     case 'setNote': Object.assign(getR0(m), { note: payload.note }); break
     case 'setContent': Object.assign(getX(m), { content: payload.content }); break
+    case 'setControlTypeNone': Object.assign(getX(m), { controlType: ControlTypes.NONE }); break
     case 'setControlTypeUpload': Object.assign(getX(m), { controlType: ControlTypes.UPLOAD }); break
     case 'setControlTypeGenerate': Object.assign(getX(m), { controlType: ControlTypes.GENERATE }); break
 

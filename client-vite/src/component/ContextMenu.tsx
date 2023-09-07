@@ -117,6 +117,7 @@ export const ContextMenu: FC = () => {
                 { mExists && getXAEO(m).map(n => n.taskStatus).includes(0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOn', payload: null}))}}>Task Mode On</a></li> }
                 { mExists && getXAEO(m).map(n => n.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOff', payload: null}))}}>Task Mode Off</a></li> }
                 { mExists && getXAEO(m).map(n => n.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeReset', payload: null}))}}>Task Mode Reset</a></li> }
+                { mExists && isXR(m) && getX(m).controlType !== ControlTypes.NONE && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}}>Control Type None</a></li> }
                 { mExists && isXR(m) && getX(m).controlType !== ControlTypes.UPLOAD && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeUpload', payload: null}))}}>Control Type Upload</a></li> }
                 { mExists && isXR(m) && getX(m).controlType !== ControlTypes.GENERATE && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeGenerate', payload: null}))}}>Control Type Generate</a></li> }
               </ul>
