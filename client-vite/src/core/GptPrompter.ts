@@ -3,7 +3,7 @@ import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR,
 import {GptData} from "../state/ApiStateTypes"
 
 export const genPromptJsonS = (m: M) => {
-  const mr = structuredClone(getXAF(m) as M).sort(sortPath)
+  const mr = getXAF(m).slice().sort(sortPath)
   return mr.filter(n => getCountNSO1(mr, n) === 0).map(n => ({
     keywords: [...getSIPL(n.path), n.path].map(p => getNodeByPath(mr, p)?.content || '').filter(el => el !== ''),
     suggestions: [],
@@ -12,7 +12,7 @@ export const genPromptJsonS = (m: M) => {
 }
 
 export const genPromptJsonT = (m: M) => {
-  const mr = structuredClone(getXAF(m) as M).sort(sortPath)
+  const mr = getXAF(m).slice().sort(sortPath)
   const rowHeader = getXSSCR0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
   const colHeader = getXSSCC0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
   return getXSSCYY(mr).map((n: N) => ({

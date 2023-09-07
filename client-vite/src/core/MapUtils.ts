@@ -108,19 +108,19 @@ export const getXRD0 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2
 export const getNRD1 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 1])
 export const getXRD1 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 1])
 
-export const getRL = (m: M): N[] => m.filter(n => n.path.length === 2)
-export const getXSO1 = (m: M): N[] => m.filter(n => isSO1(getX(m).path, n.path))
-export const getXSO2 = (m: M): N[] => m.filter(n => isSO2(getX(m).path, n.path))
+export const getRL = (m: M): M => m.filter(n => n.path.length === 2)
+export const getXSO1 = (m: M): M => m.filter(n => isSO1(getX(m).path, n.path))
+export const getXSO2 = (m: M): M => m.filter(n => isSO2(getX(m).path, n.path))
 export const getXA = (m: M): M => m.filter(n => n.selected)
-export const getXAF = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSEO(xn.path, n.path)))
-export const getXAO = (m: M): N[] => m.filter(n => getXA(m).some(xn => isSO(xn.path, n.path)))
-export const getXSSCR0 = (m: M): N[] => m.filter(n => isSCR0(getX(m).path, n.path))
-export const getXSSCC0 = (m: M): N[] => m.filter(n => isSCC0(getX(m).path, n.path))
-export const getXSSCYY = (m: M): N[] => m.filter(n => isSCYY(getX(m).path, n.path))
-export const getXACD1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCD1(xn.path, n.path)))
-export const getXACU1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCU1(xn.path, n.path)))
-export const getXACR1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCR1(xn.path, n.path)))
-export const getXACL1 = (m: M): N[] => m.filter(n => getXA(m).some(xn => isCL1(xn.path, n.path)))
+export const getXAF = (m: M): M => m.filter(n => getXA(m).some(xn => isSEO(xn.path, n.path)))
+export const getXAO = (m: M): M => m.filter(n => getXA(m).some(xn => isSO(xn.path, n.path)))
+export const getXSSCR0 = (m: M): M => m.filter(n => isSCR0(getX(m).path, n.path))
+export const getXSSCC0 = (m: M): M => m.filter(n => isSCC0(getX(m).path, n.path))
+export const getXSSCYY = (m: M): M => m.filter(n => isSCYY(getX(m).path, n.path))
+export const getXACD1 = (m: M): M => m.filter(n => getXA(m).some(xn => isCD1(xn.path, n.path)))
+export const getXACU1 = (m: M): M => m.filter(n => getXA(m).some(xn => isCU1(xn.path, n.path)))
+export const getXACR1 = (m: M): M => m.filter(n => getXA(m).some(xn => isCR1(xn.path, n.path)))
+export const getXACL1 = (m: M): M => m.filter(n => getXA(m).some(xn => isCL1(xn.path, n.path)))
 
 const getCountSD = (m: M, p: P): number => m.filter(n => isSD(p, n.path)).length
 const getCountSU = (m: M, p: P): number => m.filter(n => isSU(p, n.path)).length
@@ -158,8 +158,8 @@ export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).
 
 export const getReselectR = (m: M): N => m.findLast(n => !n.selected && isR(n.path))!
 export const getReselectS = (m: M): N => getCountXASU(m) ? getNodeByPath(m, getSU1(getXSF(m).path)) : (isXDS(m) ? getNodeByPath(m, getSI2P(getXSF(m).path)): getNodeByPath(m, getSI1P(getXSF(m).path)))
-export const getReselectCR = (m: M) : N[] => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXA(m) : [getNodeByPath(m, getXSI1(m).path)] )
-export const getReselectCC = (m: M) : N[] => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXA(m) : [getNodeByPath(m, getXSI1(m).path)] )
+export const getReselectCR = (m: M) : M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXA(m) : [getNodeByPath(m, getXSI1(m).path)] )
+export const getReselectCC = (m: M) : M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXA(m) : [getNodeByPath(m, getXSI1(m).path)] )
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))

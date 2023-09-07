@@ -25,7 +25,7 @@ export const Window: FC = () => {
 
   const keydown = (e: KeyboardEvent) => {
     if ((+e.ctrlKey && e.code === 'KeyZ') || (+e.ctrlKey && e.code === 'KeyY') || (+e.ctrlKey && e.which >= 96 && e.which <= 105) || (e.which < 48)) {e.preventDefault()}
-    const m = structuredClone(getMap()).sort(sortPath)
+    const m = getMap().slice().sort(sortPath)
     const ckm = [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('')
 
     ckm === '---' && e.key === 'F1' && dispatch(actions.mapAction({type: '', payload: null}))
@@ -128,7 +128,7 @@ export const Window: FC = () => {
 
   const paste = (e: Event) => {
     e.preventDefault()
-    const m = structuredClone(getMap()).sort(sortPath)
+    const m = getMap().slice().sort(sortPath)
     navigator.permissions.query({name: "clipboard-write" as PermissionName}).then(result => {
       if (result.state === "granted" || result.state === "prompt") {
         navigator.clipboard.read().then(item => {

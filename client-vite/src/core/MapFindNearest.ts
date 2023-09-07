@@ -3,7 +3,7 @@ import isEqual from "react-fast-compare"
 import {getCountNSO1, getNodeById, getNodeByPath, getSI1P, getRi, isD, isS, isSO, sortPath} from "./MapUtils"
 
 export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => {
-  const m = structuredClone(pm).sort(sortPath)
+  const m = pm.slice().sort(sortPath)
   let moveCoords = [] as number[]
   let moveTargetPath = [] as P
   let moveTargetIndex = 0
