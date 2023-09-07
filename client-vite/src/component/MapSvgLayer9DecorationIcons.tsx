@@ -51,7 +51,20 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
         onMouseDown={(e) => {
           e.preventDefault()
           e.stopPropagation()
-          dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
+          // dispatch(actions.setPageState(PageState.WS_EDIT_NOTE))
+
+          let input = document.createElement('input')
+          input.type = 'file'
+          input.onchange = (e) => {
+            let files = Array.from(input.files!)
+            const formData = new FormData()
+            formData.append('username', 'Sandra Rodgers')
+            formData.append('files', files[0])
+            fetch('http://localhost:8080/upload_files', {method: 'post', body: formData})
+              .then((res) => console.log(res))
+              .catch((err) => {})
+          }
+          input.click()
         }}
       />
     </g>
