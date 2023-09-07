@@ -1,3 +1,4 @@
+import isEqual from "react-fast-compare";
 import {ControlTypes} from "../state/Enums"
 import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./GptParser"
 import {nSaveOptional} from "../state/MapState"
@@ -148,7 +149,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'offsetL': getX(m).offsetW -= 20; break
 
     case 'saveConnection': getG(m).connections.push(payload); break
-    // TODO deleteConnection
+    case 'deleteConnection': getG(m).connections.splice(0, getG(m).connections.length, ...getG(m).connections.filter(connection => !isEqual(connection, payload)))
   }
 }
 

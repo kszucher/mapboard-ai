@@ -76,8 +76,7 @@ export const MapSvgLayer10Connections: FC = () => {
               <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                // TODO delete connection
-
+                dispatch(actions.mapAction({type: 'deleteConnection', payload: connection}))
               }}/>
             </g>}
         </g>
