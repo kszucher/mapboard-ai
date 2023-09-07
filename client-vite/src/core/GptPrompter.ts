@@ -1,11 +1,10 @@
 import {M, N} from "../state/MapStateTypes"
-import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXAEO} from "./MapUtils"
+import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXRD0SO, getXAEO} from "./MapUtils"
 import {GptData} from "../state/NodeApiStateTypes"
 
 export const genPromptJsonS = (m: M) => {
-  const mr = getXAEO(m).slice().sort(sortPath)
-  return mr.filter(n => getCountNSO1(mr, n) === 0).map(n => ({
-    keywords: [...getSIPL(n.path), n.path].map(p => getNodeByPath(mr, p)?.content || '').filter(el => el !== ''),
+  return getXRD0SO(m).filter(n => getCountNSO1(m, n) === 0).map(n => ({
+    keywords: [...getSIPL(n.path), n.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''),
     suggestions: [],
     insertParentId: n.nodeId
   }))

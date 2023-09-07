@@ -8,7 +8,7 @@ export const gptParseNodesS = (m: M, gptParsed: any) => {
   gptParsed.forEach((el: any) => {
     el.suggestions.forEach((suggestion: string) => {
       const insertParentNode = getNodeById(m, el.insertParentId)
-      insertS(m, insertParentNode, getCountNSO1(m, insertParentNode), {content: cleanSuggestion(suggestion)})
+      insertS(m, insertParentNode, getCountNSO1(m, insertParentNode), {content: cleanSuggestion(suggestion), isGenerated: true})
     })
   })
 }
@@ -17,7 +17,7 @@ export const gptParseNodesT = (m: M, gptParsed: any) => {
   gptParsed.forEach((el: any) => {
     el.suggestions.forEach((suggestion: string) => {
       const insertParentNode = getNodeById(m, el.insertParentId)
-      insertS(m, insertParentNode, getCountNSO1(m, insertParentNode), {content: cleanSuggestion(suggestion)})
+      insertS(m, insertParentNode, getCountNSO1(m, insertParentNode), {content: cleanSuggestion(suggestion), isGenerated: true})
     })
   })
 }
