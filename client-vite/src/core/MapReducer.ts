@@ -1,4 +1,3 @@
-import {shortcutColors} from "../component/Colors"
 import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./GptParser"
 import {nSaveOptional} from "../state/MapState"
 import {M, N, P} from "../state/MapStateTypes"
@@ -123,7 +122,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'clearFFill': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fFillColor: nSaveOptional.fFillColor})); break
     case 'clearText': getXA(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break
 
-    case 'applyColorFromKey': getXA(m).forEach(n => Object.assign(n, {textColor: shortcutColors[payload.currColor]})); break
     case 'taskModeOn': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus === 0 ? 1 : n.taskStatus})); break
     case 'taskModeOff': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: 0 })); break
     case 'taskModeReset': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus > 0 ? 1 : n.taskStatus})); break

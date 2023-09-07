@@ -9,6 +9,7 @@ import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/
 import {getMap, mSelector} from "../state/EditorState"
 import {mapDeInit} from "../core/MapDeInit"
 import {GN} from "../state/MapStateTypes"
+import {shortcutColors} from "./Colors"
 
 export let timeoutId: NodeJS.Timeout
 let mapAreaListener: AbortController
@@ -121,7 +122,7 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowLeft' && isDirR(m) && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCL', payload: null}))
     ckm === '--a' && e.code === 'ArrowLeft' && isDirL(m) && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCR', payload: null}))
 
-    ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXS(m) && dispatch(actions.mapAction({type: 'applyColorFromKey', payload: {currColor: e.which - 96}}))
+    ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXS(m) && dispatch(actions.mapAction({type: 'setTextColor', payload: shortcutColors[e.which - 96]}))
     ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
     ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
   }
