@@ -1,4 +1,4 @@
-import {getNSIC, getG, getNodeById, getNodeByPath, getNR, getPathDir, getRi, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../core/MapUtils"
+import {getNSIC, getG, getNodeById, getNR, getPathDir, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../core/MapUtils"
 import {adjust} from "../core/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
 import {LineTypes, Sides} from "../state/Enums"
@@ -76,11 +76,9 @@ export const getLinePathBetweenRoots = (m: M, connection: Connection) => {
 export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
   const R = 8
   const g = getG(m)
-  const ri = getRi(n.path)
-  const rx = getNodeByPath(m, ['r', ri]) as N
   const dir = getPathDir(n.path)
-  const selfH = isD(n.path) ? rx.selfH : n.selfH
-  const w = isD(n.path) ? rx.selfW + n.familyW : n.maxW
+  const selfH = (isD(n.path) ? getNR(m, n).selfH : n.selfH)
+  const w = isD(n.path) ? getNR(m, n).selfW + n.familyW : n.maxW
   let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
   if (selection === 's') {
     ax = n.nodeStartX
