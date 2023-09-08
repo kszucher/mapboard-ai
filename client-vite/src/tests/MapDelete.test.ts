@@ -2,6 +2,29 @@ import {mapReducerAtomic} from "../core/MapReducer"
 import {M} from "../state/MapStateTypes"
 import {deleteS, deleteCR, deleteCC} from "../core/MapDelete"
 
+const deleteRTest = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g'], connections: [{fromNodeId: 'b', toNodeId: 'e'}, {fromNodeId: 'b', toNodeId: 'h'}]},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'e', path: ['r', 1]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 1, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 1, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 2]},
+  {selected: 0, selection: 's', nodeId: 'i', path: ['r', 2, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'j', path: ['r', 2, 'd', 0, 's', 0]},
+] as M
+
+const deleteRResult = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g'], connections: [{fromNodeId: 'b', toNodeId: 'h'}]},
+  {selected: 1, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 1]},
+  {selected: 0, selection: 's', nodeId: 'i', path: ['r', 1, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'j', path: ['r', 1, 'd', 0, 's', 0]},
+] as M
+
 const deleteSTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
@@ -83,6 +106,7 @@ const deleteCCResult = [
 ] as M
 
 describe("DeleteTests", () => {
+  test('deleteR', () => {mapReducerAtomic(deleteRTest, 'deleteR', {}); expect(deleteRTest).toEqual(deleteRResult)})
   test('deleteS', () => {mapReducerAtomic(deleteSTest, 'deleteS', {}); expect(deleteSTest).toEqual(deleteSResult)})
   test('deleteCR', () => {mapReducerAtomic(deleteCRTest, 'deleteCR', {}); expect(deleteCRTest).toEqual(deleteCRResult)})
   test('deleteCC', () => {mapReducerAtomic(deleteCCTest, 'deleteCC', {}); expect(deleteCCTest).toEqual(deleteCCResult)})
