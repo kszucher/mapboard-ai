@@ -149,7 +149,11 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'offsetL': getX(m).offsetW -= 20; break
 
     case 'saveConnection': getG(m).connections.push(payload); break
-    case 'deleteConnection': getG(m).connections = getG(m).connections.filter(connection => !isEqual(connection, payload))
+    case 'deleteConnection': getG(m).connections = getG(m).connections.filter(connection => !isEqual(connection, payload)); break
+
+    case 'devSetLinkTypeLlmAudio': getX(m).linkType = 'llmAudio'; break
+    case 'devResetLinkType': getX(m).linkType = ''; break
+
   }
 }
 

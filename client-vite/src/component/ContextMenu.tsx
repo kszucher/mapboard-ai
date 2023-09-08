@@ -142,11 +142,25 @@ export const ContextMenu: FC = () => {
             <button id="doubleDropdownButton" data-dropdown-toggle="generateSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Generate{MenuButtonSvg}</button>
             <div id="generateSubMenu" className={subMenuClassName}>
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log(genPromptJsonS(m))}}>Show Prompt</a></li>}
+                { mExists && isXD(m) && getX(m).selection === 'f' && getR0(m).note !== '' && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesS(m)))}}>Structure Extension</a></li>}
+                { mExists && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))}}>Table Fill</a></li>}
+                { mExists && (isXR(m) || isXS(m)) && getCountXCO1(m) === 0 && getX(m).contentType === 'text' && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))}}>Diagram</a></li>}
+              </ul>
+            </div>
+          </li>
+          <li>
+            <button id="doubleDropdownButton" data-dropdown-toggle="devSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Dev{MenuButtonSvg}</button>
+            <div id="devSubMenu" className={subMenuClassName}>
+              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m))}}>showNode</a></li> }
+                { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m).path)}}>showNodePath</a></li> }
+                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log(genPromptJsonS(m))}}>showPrompt</a></li>}
 
-                {/*{ mExists && isXD(m) && getX(m).selection === 'f' && getR0(m).note !== '' && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesS(m)))}}>Structure Extension</a></li>}*/}
-                {/*{ mExists && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))}}>Table Fill</a></li>}*/}
-                {/*{ mExists && (isXR(m) || isXS(m)) && getCountXCO1(m) === 0 && getX(m).contentType === 'text' && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))}}>Diagram</a></li>}*/}
+                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetLinkTypeLlmAudio', payload: null}))}}>devSetLinkTypeLlmAudio</a></li> }
+                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devResetLinkType', payload: null}))}}>devResetLinkType</a></li> }
+
+
+
               </ul>
             </div>
           </li>
