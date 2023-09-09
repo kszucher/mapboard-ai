@@ -151,8 +151,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'saveConnection': getG(m).connections.push(payload); break
     case 'deleteConnection': getG(m).connections = getG(m).connections.filter(connection => !isEqual(connection, payload)); break
 
-    case 'devSetLinkTypeLlmAudio': getX(m).linkType = 'llmAudio'; break
-    case 'devResetLinkType': getX(m).linkType = ''; break
+    case 'devSetEmulateLlmData': Object.assign(getX(m), { llmDataType: 'audio', llmDataId: 'llmDataId' }); break
+    case 'devClearLlmData': Object.assign(getX(m), { llmDataType: '', llmDataId: '' }); break
 
   }
 }

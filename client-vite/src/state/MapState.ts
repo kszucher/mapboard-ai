@@ -54,7 +54,9 @@ export const nSaveOptional = {
   textFontSize: 14,
   textColor: 'default',
   taskStatus: 0,
-  note: ''
+  note: '',
+  llmDataType: '',
+  llmDataId: '',
 } as NSaveOptional
 
 export const nSaveNever = {

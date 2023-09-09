@@ -152,15 +152,12 @@ export const ContextMenu: FC = () => {
             <button id="doubleDropdownButton" data-dropdown-toggle="devSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Dev{MenuButtonSvg}</button>
             <div id="devSubMenu" className={subMenuClassName}>
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-                { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m))}}>showNode</a></li> }
-                { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m).path)}}>showNodePath</a></li> }
-                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log(genPromptJsonS(m))}}>showPrompt</a></li>}
-
-                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetLinkTypeLlmAudio', payload: null}))}}>devSetLinkTypeLlmAudio</a></li> }
-                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devResetLinkType', payload: null}))}}>devResetLinkType</a></li> }
-
-
-
+                { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m))}}>show node</a></li> }
+                { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m).path)}}>show node path</a></li> }
+                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log(genPromptJsonS(m))}}>show prompt json</a></li>}
+                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}}>show llmData</a></li>}
+                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetEmulateLlmData', payload: null}))}}>set emulate llm data</a></li> }
+                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devClearLlmData', payload: null}))}}>reset llm data</a></li> }
               </ul>
             </div>
           </li>

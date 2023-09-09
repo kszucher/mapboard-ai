@@ -56,6 +56,8 @@ export interface NSaveOptional {
   textColor: string
   taskStatus: number
   note: string
+  llmDataType: string
+  llmDataId: string
 }
 
 export interface NSaveNever {
