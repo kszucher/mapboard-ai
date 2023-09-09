@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {nodeApi} from "../core/NodeApi";
-import {genPromptJsonS, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../core/GptPrompter"
+import {generateLlmInfo, genPromptJsonS, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../core/GptPrompter"
 import {Templates} from "../core/MapInsertTemplates";
 import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
 import {getMapId} from "../state/NodeApiState"
@@ -154,7 +154,7 @@ export const ContextMenu: FC = () => {
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
                 { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m))}}>show node</a></li> }
                 { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m).path)}}>show node path</a></li> }
-                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log(genPromptJsonS(m))}}>show prompt json</a></li>}
+                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log(generateLlmInfo(m))}}>show llm json</a></li>}
                 { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}}>show llmData</a></li>}
                 { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetLlmDataExample', payload: null}))}}>set llm data example</a></li> }
                 { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devClearLlmData', payload: null}))}}>reset llm data</a></li> }

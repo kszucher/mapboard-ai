@@ -55,7 +55,7 @@ export const nSaveOptional = {
   textColor: 'default',
   taskStatus: 0,
   note: '',
-  llmDataType: '',
+  llmDataType: 'text',
   llmDataId: '',
 } as NSaveOptional
 

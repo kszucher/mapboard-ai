@@ -152,7 +152,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'deleteConnection': getG(m).connections = getG(m).connections.filter(connection => !isEqual(connection, payload)); break
 
     case 'devSetLlmDataExample': Object.assign(getX(m), { llmDataType: 'audio', llmDataId: 'llmDataId' }); break
-    case 'devClearLlmData': Object.assign(getX(m), { llmDataType: '', llmDataId: '' }); break
+    case 'devClearLlmData': Object.assign(getX(m), { llmDataType: 'text', llmDataId: '' }); break
 
   }
 }
