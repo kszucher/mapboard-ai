@@ -156,7 +156,7 @@ export const ContextMenu: FC = () => {
                 { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m).path)}}>show node path</a></li> }
                 { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log(genPromptJsonS(m))}}>show prompt json</a></li>}
                 { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}}>show llmData</a></li>}
-                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetEmulateLlmData', payload: null}))}}>set emulate llm data</a></li> }
+                { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetLlmDataExample', payload: null}))}}>set llm data example</a></li> }
                 { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devClearLlmData', payload: null}))}}>reset llm data</a></li> }
               </ul>
             </div>
