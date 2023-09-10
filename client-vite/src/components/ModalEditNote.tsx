@@ -4,7 +4,7 @@ import {Button, Modal, TextField, Typography} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {PageState} from "../state/Enums"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {getR0} from "../selectors/MapUtils"
+import {getR0} from "../selectors/MapSelectorUtils"
 import {mSelector} from "../state/EditorState"
 
 export const ModalEditNote: FC = () => {

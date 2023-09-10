@@ -7,7 +7,7 @@ import {M} from "../state/MapStateTypes"
 import {nodeApi} from "../apis/NodeApi"
 import {mapFindNearest} from "../selectors/MapFindNearest"
 import {mapReducer} from "./MapReducer"
-import {getEditedNode, getX} from "../selectors/MapUtils"
+import {getEditedNode, getX} from "../selectors/MapSelectorUtils"
 import {filterEmpty} from "./Utils"
 
 const editorStateDefault = JSON.stringify(editorState)

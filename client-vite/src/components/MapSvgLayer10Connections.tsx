@@ -2,7 +2,7 @@ import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import {getG, isR,} from "../selectors/MapUtils"
+import {getG, isR,} from "../selectors/MapSelectorUtils"
 import {adjustIcon} from "../reducers/Utils";
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"

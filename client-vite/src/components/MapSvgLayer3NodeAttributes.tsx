@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {adjust} from "../reducers/Utils";
 import {TASK_CIRCLES_GAP} from "../state/Consts"
 import {getColors} from "./Colors"
-import {getNSI1, getNSI2, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS} from "../selectors/MapUtils"
+import {getNSI1, getNSI2, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS} from "../selectors/MapSelectorUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"

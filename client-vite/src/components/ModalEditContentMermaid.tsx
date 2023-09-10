@@ -4,7 +4,7 @@ import {Button, Modal, TextField, Typography} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {PageState} from "../state/Enums"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {getX} from "../selectors/MapUtils"
+import {getX} from "../selectors/MapSelectorUtils"
 import {mSelector} from "../state/EditorState"
 
 export const ModalEditContentMermaid: FC = () => {

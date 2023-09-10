@@ -1,4 +1,4 @@
-import {getCountNSO1, getNodeByPath, isR, getCountXRD1S, getCountXRD0S, getNRD0, getNRD1} from "../selectors/MapUtils"
+import {getCountNSO1, getNodeByPath, isR, getCountXRD1S, getCountXRD0S, getNRD0, getNRD1} from "../selectors/MapSelectorUtils"
 import {M} from "../state/MapStateTypes"
 
 export const mapCalcTask = (m: M) => {

@@ -1,5 +1,5 @@
 import {M, N} from "../state/MapStateTypes"
-import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXRD0SO, getXAEO, getG, getNodeById, getNRD0SO} from "./MapUtils"
+import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXRD0SO, getXAEO, getG, getNodeById, getNRD0SO} from "./MapSelectorUtils"
 import {GptData} from "../state/NodeApiStateTypes"
 
 export const generateLlmInfo = (m: M) => ({

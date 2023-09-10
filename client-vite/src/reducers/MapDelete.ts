@@ -1,6 +1,6 @@
 import {M} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
-import {getReselectS, getReselectCR, getReselectCC, getReselectR, getG, getX, isNCD, isNCR, isNSD, getXAO, getXA, isNRD} from "../selectors/MapUtils"
+import {getReselectS, getReselectCR, getReselectCC, getReselectR, getG, getX, isNCD, isNCR, isNSD, getXAO, getXA, isNRD} from "../selectors/MapSelectorUtils"
 
 const deleteConnections = (m: M) => {
   getG(m).connections = getG(m).connections.filter(el => el.fromNodeId !== getX(m).nodeId && el.toNodeId !== getX(m).nodeId)

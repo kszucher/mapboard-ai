@@ -4,7 +4,7 @@ import {genHash} from "./Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {getReselectS, getXA, sortPath, isNCED, getCountNSCH, getXAEO, getX, getCountXCU, getCountXCL, getCountNSCV, isNCER, isNSED, getCountXASU} from "../selectors/MapUtils"
+import {getReselectS, getXA, sortPath, isNCED, getCountNSCH, getXAEO, getX, getCountXCU, getCountXCL, getCountNSCV, isNCER, isNSED, getCountXASU} from "../selectors/MapSelectorUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
