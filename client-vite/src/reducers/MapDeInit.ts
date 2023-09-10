@@ -1,6 +1,6 @@
 import {M, GSaveNever, GSaveOptional, NSaveNever, NSaveOptional} from "../state/MapStateTypes"
 import {gSaveAlways, gSaveOptional, nSaveAlways, nSaveOptional} from "../state/MapState"
-import {isG, sortPath} from "./MapUtils"
+import {isG, sortPath} from "../selectors/MapUtils"
 
 export const mapDeInit = (m: M) => {
   const mlRemoved = structuredClone(m).sort(sortPath)

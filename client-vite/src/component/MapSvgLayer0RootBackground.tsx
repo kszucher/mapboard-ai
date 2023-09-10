@@ -3,7 +3,7 @@ import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
 import {N} from "../state/MapStateTypes";
 import {getColors} from "./Colors"
-import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR} from "../reducers/MapUtils"
+import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR} from "../selectors/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../reducers/EditorReducer"

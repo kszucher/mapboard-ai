@@ -1,5 +1,5 @@
 import {M} from "../state/MapStateTypes"
-import {genPromptJsonS, genPromptJsonT} from "../reducers/GptPrompter"
+import {genPromptJsonS, genPromptJsonT} from "../selectors/GptPrompter"
 
 const genPromptJsonS_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},

@@ -1,4 +1,4 @@
-import {sortNode} from "../reducers/MapUtils"
+import {sortNode} from "../selectors/MapUtils"
 import {setIsTesting} from "../reducers/Utils"
 import {mapReducerAtomic} from "../reducers/MapReducer"
 import {M} from "../state/MapStateTypes"

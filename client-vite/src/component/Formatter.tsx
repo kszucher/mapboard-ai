@@ -6,7 +6,7 @@ import {FBorderIcon, FFillIcon, LineIcon, SBorderIcon, SFillIcon, TextIcon} from
 import {colorList} from './Colors'
 import {actions, AppDispatch, RootState} from '../reducers/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
-import {getPropXA, getX, isXR, isXS} from "../reducers/MapUtils"
+import {getPropXA, getX, isXR, isXS} from "../selectors/MapUtils"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 

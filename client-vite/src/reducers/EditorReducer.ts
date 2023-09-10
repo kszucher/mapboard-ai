@@ -5,9 +5,9 @@ import {editorState} from "../state/EditorState"
 import {FormatMode, PageState, Sides} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
 import {nodeApi} from "./NodeApi"
-import {mapFindNearest} from "./MapFindNearest"
+import {mapFindNearest} from "../selectors/MapFindNearest"
 import {mapReducer} from "./MapReducer"
-import {getEditedNode, getX} from "./MapUtils"
+import {getEditedNode, getX} from "../selectors/MapUtils"
 import {filterEmpty} from "./Utils"
 
 const editorStateDefault = JSON.stringify(editorState)
