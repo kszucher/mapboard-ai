@@ -1,6 +1,6 @@
 import React, {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {getG, isR,} from "../selectors/MapUtils"
 import {adjustIcon} from "../reducers/Utils";

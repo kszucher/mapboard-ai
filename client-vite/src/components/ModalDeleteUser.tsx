@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useSelector, useDispatch} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
-import {nodeApi} from "../reducers/NodeApi"
+import {nodeApi} from "../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {PageState} from "../state/Enums"
 

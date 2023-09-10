@@ -1,6 +1,6 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi} from "../reducers/NodeApi";
+import {nodeApi} from "../apis/NodeApi";
 import {generateLlmInfo, genPromptJsonS, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
 import {Templates} from "../reducers/MapInsertTemplates";
 import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../selectors/MapUtils"

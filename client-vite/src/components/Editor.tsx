@@ -25,7 +25,7 @@ import {TabMaps} from "./TabMaps"
 import {UndoRedo} from './UndoRedo'
 import {Window} from "./Window"
 import {setColors} from "./Colors"
-import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {PageState} from "../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 

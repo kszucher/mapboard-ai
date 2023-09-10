@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from "react-redux"
 import TreeView from '@mui/lab/TreeView'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import {nodeApi, useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {AppDispatch, RootState} from "../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 

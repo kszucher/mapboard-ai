@@ -1,6 +1,6 @@
 import {FC} from "react"
 import {useDispatch} from 'react-redux'
-import {nodeApi, useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'

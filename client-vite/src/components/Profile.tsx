@@ -5,7 +5,7 @@ import { Button, Modal, Typography } from '@mui/material'
 import { ModalDeleteUser } from './ModalDeleteUser'
 import {actions, AppDispatch} from "../reducers/EditorReducer"
 import {PageState} from "../state/Enums"
-import {nodeApi, useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const Profile: FC = () => {

@@ -5,8 +5,8 @@ import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/NodeApiStateT
 import {getMap} from "../state/EditorState"
 import {PageState} from "../state/Enums"
 import {GN} from "../state/MapStateTypes"
-import {actions, RootState} from "./EditorReducer"
-import {mapDeInit} from "./MapDeInit"
+import {actions, RootState} from "../reducers/EditorReducer"
+import {mapDeInit} from "../reducers/MapDeInit"
 import {backendUrl} from "./Urls"
 
 export const nodeApi = createApi({

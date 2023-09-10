@@ -7,7 +7,7 @@ import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import {actions, AppDispatch} from "../reducers/EditorReducer"
 import {PageState} from "../state/Enums"
-import {nodeApi, useGetSharesQuery} from "../reducers/NodeApi"
+import {nodeApi, useGetSharesQuery} from "../apis/NodeApi"
 
 export const Shares: FC = () => {
   const { data, isFetching } = useGetSharesQuery()

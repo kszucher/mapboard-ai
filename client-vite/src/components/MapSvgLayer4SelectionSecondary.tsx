@@ -1,6 +1,6 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {getColors} from "./Colors"
 import {getX, isXACC, isXACR} from "../selectors/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"

@@ -5,7 +5,7 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import {actions, AppDispatch} from "../reducers/EditorReducer"
 import {PageState} from "../state/Enums"
-import {nodeApi, useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const Settings: FC = () => {

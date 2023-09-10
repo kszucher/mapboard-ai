@@ -9,7 +9,7 @@ import {getG, getNodeById, isR, isS, isXR, isXS, getX, getCountNCO1, getNRD0, ge
 import {adjust, getLatexString} from "../reducers/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
-import {nodeApi, useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {N} from "../state/MapStateTypes"

@@ -1,6 +1,6 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {N} from "../state/MapStateTypes";
 import {getColors} from "./Colors"
 import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR} from "../selectors/MapUtils"
