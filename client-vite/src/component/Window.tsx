@@ -178,38 +178,34 @@ export const Window: FC = () => {
     e.preventDefault()
   }
 
-  const addMapListeners = () => {
-    mapAreaListener = new AbortController()
-    const {signal} = mapAreaListener
-    window.addEventListener("keydown", keydown, {signal})
-    window.addEventListener("paste", paste, {signal})
-    window.addEventListener("wheel", wheel, {signal, passive: false})
-    window.addEventListener("mouseup", mouseup, {signal})
-    window.addEventListener("contextmenu", contextmenu, {signal})
-  }
-
-  const removeMapListeners = () => {
-    if (mapAreaListener !== undefined) {
-      mapAreaListener.abort()
-    }
-  }
-
   useEffect(() => {
     if (editedNodeId) {
       console.log('REMOVED')
-      removeMapListeners()
+      if (mapAreaListener !== undefined) {
+        mapAreaListener.abort()
+      }
     } else {
       if (pageState === PageState.WS) {
         if (access === AccessTypes.EDIT) {
           console.log('ADDED')
-          addMapListeners()
+          mapAreaListener = new AbortController()
+          const {signal} = mapAreaListener
+          window.addEventListener("keydown", keydown, {signal})
+          window.addEventListener("paste", paste, {signal})
+          window.addEventListener("wheel", wheel, {signal, passive: false})
+          window.addEventListener("mouseup", mouseup, {signal})
+          window.addEventListener("contextmenu", contextmenu, {signal})
         } else if (access === AccessTypes.VIEW) {
-          // TODO figure out view listeners
+          mapAreaListener = new AbortController()
+          const {signal} = mapAreaListener
+          window.addEventListener("wheel", wheel, {signal, passive: false})
         }
       }
     }
     return () => {
-      removeMapListeners()
+      if (mapAreaListener !== undefined) {
+        mapAreaListener.abort()
+      }
     }
   }, [pageState, access, editedNodeId])
 
