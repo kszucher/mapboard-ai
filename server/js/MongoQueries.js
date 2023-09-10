@@ -67,7 +67,7 @@ async function openWorkspace(users, userId, sessionId) {
         {
           $set: {
             access: {
-              $cond: { // TODO cond tests
+              $cond: { // TODO cond tests-reducers
                 if: { $eq: [ '$map.ownerUser', userId ] },
                 then: ACCESS_TYPES.EDIT,
                 else: {
@@ -95,7 +95,7 @@ async function openWorkspace(users, userId, sessionId) {
         {
           $set: {
             breadcrumbMapIdList: {
-              $cond: { // TODO cond tests
+              $cond: { // TODO cond tests-reducers
                 if: { $eq: [ '$map.ownerUser', userId ] },
                 then: '$breadcrumbMapIdList',
                 else: {
