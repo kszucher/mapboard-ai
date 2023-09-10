@@ -1,7 +1,7 @@
 import {getEquationDim, getTextDim} from "../components/MapDivUtils"
 import {G, M, N} from "../state/MapStateTypes"
 import {getCountNCO2, getCountNSCH, getCountNSCV, getCountNSO1, getCountNSO2, getNodeByPath} from "../selectors/MapSelectorUtils"
-import {createArray} from "./Utils"
+import {createArray} from "../utils/Utils"
 
 export const measureText = (g: G, pn: N, n: N) => {
   if (

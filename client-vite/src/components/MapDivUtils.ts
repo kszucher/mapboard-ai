@@ -1,6 +1,6 @@
 // @ts-ignore
 import katex from "katex/dist/katex.mjs"
-import {getLatexString} from "../reducers/Utils"
+import {getLatexString} from "../utils/Utils"
 
 const easeOut = (t: any, b: number, c: number, d: number) => {
   // t = current time

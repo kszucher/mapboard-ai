@@ -1,6 +1,6 @@
 import {mapDeInit} from "./MapDeInit";
 import {insertTable} from "./MapInsert"
-import {genHash} from "./Utils"
+import {genHash} from "../utils/Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"

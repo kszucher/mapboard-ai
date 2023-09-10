@@ -1,5 +1,5 @@
 import {getNSIC, getG, getNodeById, getNR, getPathDir, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../selectors/MapSelectorUtils"
-import {adjust} from "../reducers/Utils"
+import {adjust} from "../utils/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
 import {LineTypes, Sides} from "../state/Enums"
 import {Connection, G, M, N} from "../state/MapStateTypes"

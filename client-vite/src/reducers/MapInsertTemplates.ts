@@ -1,5 +1,5 @@
 import {GN} from "../state/MapStateTypes"
-import {genHash} from "./Utils"
+import {genHash} from "../utils/Utils"
 
 const mermaidExample = `
 sequenceDiagram

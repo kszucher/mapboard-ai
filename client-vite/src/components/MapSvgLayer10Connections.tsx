@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {getG, isR,} from "../selectors/MapSelectorUtils"
-import {adjustIcon} from "../reducers/Utils";
+import {adjustIcon} from "../utils/Utils";
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 import {Sides} from "../state/Enums"

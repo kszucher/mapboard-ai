@@ -1,5 +1,5 @@
 import {sortNode} from "../selectors/MapSelectorUtils"
-import {setIsTesting} from "./Utils"
+import {setIsTesting} from "../utils/Utils"
 import {mapReducerAtomic} from "./MapReducer"
 import {M} from "../state/MapStateTypes"
 

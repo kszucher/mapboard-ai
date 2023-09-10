@@ -2,7 +2,7 @@ import isEqual from "react-fast-compare"
 import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {G, GN, M, N, P} from "../state/MapStateTypes"
-import {isArrayOfEqualValues} from "../reducers/Utils"
+import {isArrayOfEqualValues} from "../utils/Utils"
 
 export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
 

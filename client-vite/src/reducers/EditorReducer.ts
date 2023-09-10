@@ -8,7 +8,7 @@ import {nodeApi} from "../apis/NodeApi"
 import {mapFindNearest} from "../selectors/MapFindNearest"
 import {mapReducer} from "./MapReducer"
 import {getEditedNode, getX} from "../selectors/MapSelectorUtils"
-import {filterEmpty} from "./Utils"
+import {filterEmpty} from "../utils/Utils"
 
 const editorStateDefault = JSON.stringify(editorState)
 
