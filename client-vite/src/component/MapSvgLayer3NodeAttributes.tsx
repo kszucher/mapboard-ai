@@ -1,14 +1,14 @@
 import React, {FC, Fragment,} from "react"
 import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../core/NodeApi"
-import {adjust} from "../core/Utils";
+import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {adjust} from "../reducers/Utils";
 import {TASK_CIRCLES_GAP} from "../state/Consts"
 import {getColors} from "./Colors"
-import {getNSI1, getNSI2, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS} from "../core/MapUtils"
+import {getNSI1, getNSI2, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS} from "../reducers/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
-import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {N} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
 import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getPolygonS, getTaskRadius, getTaskStartPoint} from "./MapSvgUtils"

@@ -2,7 +2,7 @@ import {Auth0Provider} from "@auth0/auth0-react"
 import mermaid from "mermaid"
 import React, {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
-import {RootState} from "../core/EditorReducer"
+import {RootState} from "../reducers/EditorReducer"
 import {Landing} from "./Landing"
 import {PageState} from "../state/Enums"
 import {ContextMenu} from "./ContextMenu";

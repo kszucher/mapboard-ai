@@ -1,8 +1,8 @@
 import React, {FC} from "react"
 import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../core/NodeApi"
+import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
 import {getColors} from "./Colors"
-import {RootState} from "../core/EditorReducer"
+import {RootState} from "../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const MapSvgLayer7SelectionArea: FC = () => {

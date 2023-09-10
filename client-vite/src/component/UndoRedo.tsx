@@ -5,8 +5,8 @@ import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
 import {mSelector} from "../state/EditorState"
 import {AccessTypes} from "../state/Enums"
-import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {useOpenWorkspaceQuery} from "../core/NodeApi"
+import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
+import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const UndoRedo: FC = () => {

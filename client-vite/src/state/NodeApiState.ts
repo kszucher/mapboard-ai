@@ -1,7 +1,7 @@
 import {AccessTypes} from "./Enums"
 import {DefaultUseOpenWorkspaceQueryState} from "./NodeApiStateTypes"
-import {nodeApi} from "../core/NodeApi"
-import {store} from "../core/EditorReducer"
+import {nodeApi} from "../reducers/NodeApi"
+import {store} from "../reducers/EditorReducer"
 
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   name: '',

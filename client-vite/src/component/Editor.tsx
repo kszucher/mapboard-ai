@@ -1,7 +1,7 @@
 import React, {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
 import {Backdrop, CircularProgress, ThemeProvider} from '@mui/material'
-import {RootState} from "../core/EditorReducer"
+import {RootState} from "../reducers/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {MenuFrames} from "./MenuFrames"
@@ -25,7 +25,7 @@ import {TabMaps} from "./TabMaps"
 import {UndoRedo} from './UndoRedo'
 import {Window} from "./Window"
 import {setColors} from "./Colors"
-import {useOpenWorkspaceQuery} from "../core/NodeApi"
+import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
 import {PageState} from "../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 

@@ -1,12 +1,12 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi} from "../core/NodeApi";
-import {generateLlmInfo, genPromptJsonS, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../core/GptPrompter"
-import {Templates} from "../core/MapInsertTemplates";
-import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../core/MapUtils"
+import {nodeApi} from "../reducers/NodeApi";
+import {generateLlmInfo, genPromptJsonS, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../reducers/GptPrompter"
+import {Templates} from "../reducers/MapInsertTemplates";
+import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../reducers/MapUtils"
 import {getMapId} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
-import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {ControlTypes, PageState} from "../state/Enums"
 
 const menuClassName = "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"

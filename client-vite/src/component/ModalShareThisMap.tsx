@@ -1,9 +1,9 @@
 import {FC, useState} from "react"
 import {useDispatch} from "react-redux"
-import {actions, AppDispatch} from '../core/EditorReducer'
+import {actions, AppDispatch} from '../reducers/EditorReducer'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
 import {AccessTypes, PageState} from "../state/Enums"
-import { useCreateShareMutation} from "../core/NodeApi"
+import { useCreateShareMutation} from "../reducers/NodeApi"
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes"
 import {getMapId} from "../state/NodeApiState"
 

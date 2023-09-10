@@ -3,7 +3,7 @@ import user from "@testing-library/user-event"
 import {Provider} from "react-redux"
 import {Formatter} from "../component/Formatter"
 import { describe, it } from 'vitest'
-import {actions, store} from "../core/EditorReducer"
+import {actions, store} from "../reducers/EditorReducer"
 import {colorList} from "../component/Colors"
 import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../state/Enums"
 import {getMap} from "../state/EditorState"

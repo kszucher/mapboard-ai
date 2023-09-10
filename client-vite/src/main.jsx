@@ -2,7 +2,7 @@ import React from 'react'
 import { createRoot } from 'react-dom/client';
 import './index.css'
 import {Provider} from "react-redux";
-import {store} from "./core/EditorReducer";
+import {store} from "./reducers/EditorReducer";
 import {Page} from "./component/Page";
 import './Layout.css';
 import './RotatingText.css'

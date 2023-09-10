@@ -1,11 +1,11 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../core/NodeApi"
+import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
 import {getColors} from "./Colors"
-import {getG} from "../core/MapUtils"
+import {getG} from "../reducers/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
-import {RootState} from "../core/EditorReducer"
+import {RootState} from "../reducers/EditorReducer"
 import {getBezierLinePath, getBezierLinePoints} from "./MapSvgUtils"
 
 export const MapSvgLayer8SelectionMove: FC = () => {

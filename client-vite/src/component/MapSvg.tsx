@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountNCO1, getG, getR0, isXACC, isXACR, isXC} from "../core/MapUtils"
-import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {getCountNCO1, getG, getR0, isXACC, isXACR, isXC} from "../reducers/MapUtils"
+import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {getMapX, getMapY} from "./MapDivUtils"
 import {MapSvgLayer0RootBackground} from "./MapSvgLayer0RootBackground"
@@ -15,7 +15,7 @@ import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
 import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
 import {MapSvgLayer9DecorationIcons} from "./MapSvgLayer9DecorationIcons"
 import {MapSvgLayer10Connections} from "./MapSvgLayer10Connections"
-import {mapFindIntersecting} from "../core/MapFindIntersecting"
+import {mapFindIntersecting} from "../reducers/MapFindIntersecting"
 import {M, N} from "../state/MapStateTypes"
 
 export const pathCommonProps = {

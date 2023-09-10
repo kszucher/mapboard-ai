@@ -1,6 +1,6 @@
-import {mapReducerAtomic} from "../core/MapReducer"
-import {sortNode} from "../core/MapUtils"
-import {setIsTesting} from "../core/Utils"
+import {mapReducerAtomic} from "../reducers/MapReducer"
+import {sortNode} from "../reducers/MapUtils"
+import {setIsTesting} from "../reducers/Utils"
 import {M} from "../state/MapStateTypes"
 
 const moveSD_test = [

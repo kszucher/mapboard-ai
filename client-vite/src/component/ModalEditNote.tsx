@@ -1,10 +1,10 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, Modal, TextField, Typography} from '@mui/material'
-import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {PageState} from "../state/Enums"
-import {useOpenWorkspaceQuery} from "../core/NodeApi"
-import {getR0} from "../core/MapUtils"
+import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
+import {getR0} from "../reducers/MapUtils"
 import {mSelector} from "../state/EditorState"
 
 export const ModalEditNote: FC = () => {

@@ -1,13 +1,13 @@
 import React, {FC, useEffect, useRef} from "react"
-import {actions, AppDispatch, RootState} from "../core/EditorReducer"
+import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
 import {useDispatch, useSelector} from "react-redux"
 import {getMapX, getMapY, setScrollLeftAnimated} from "./MapDivUtils"
-import {useOpenWorkspaceQuery} from "../core/NodeApi"
+import {useOpenWorkspaceQuery} from "../reducers/NodeApi"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
-import {getG} from "../core/MapUtils"
+import {getG} from "../reducers/MapUtils"
 
 const ZOOM_INTENSITY = 0.2
 

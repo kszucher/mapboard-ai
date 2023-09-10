@@ -1,13 +1,13 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getX, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath, getXRD0, getXRD1} from "../core/MapUtils"
-import {isUrl} from "../core/Utils";
+import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getX, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath, getXRD0, getXRD1} from "../reducers/MapUtils"
+import {isUrl} from "../reducers/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
-import {actions, AppDispatch, RootState} from "../core/EditorReducer"
-import {nodeApi, useOpenWorkspaceQuery} from "../core/NodeApi"
+import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
+import {nodeApi, useOpenWorkspaceQuery} from "../reducers/NodeApi"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/NodeApiState"
 import {getMap, mSelector} from "../state/EditorState"
-import {mapDeInit} from "../core/MapDeInit"
+import {mapDeInit} from "../reducers/MapDeInit"
 import {GN} from "../state/MapStateTypes"
 import {shortcutColors} from "./Colors"
 

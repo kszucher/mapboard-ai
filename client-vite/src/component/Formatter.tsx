@@ -4,9 +4,9 @@ import {Button, ButtonGroup, IconButton} from '@mui/material'
 import {mSelector} from "../state/EditorState"
 import {FBorderIcon, FFillIcon, LineIcon, SBorderIcon, SFillIcon, TextIcon} from './MuiSvgIcons'
 import {colorList} from './Colors'
-import {actions, AppDispatch, RootState} from '../core/EditorReducer'
+import {actions, AppDispatch, RootState} from '../reducers/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
-import {getPropXA, getX, isXR, isXS} from "../core/MapUtils"
+import {getPropXA, getX, isXR, isXS} from "../reducers/MapUtils"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 

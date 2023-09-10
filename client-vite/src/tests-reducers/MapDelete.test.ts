@@ -1,6 +1,6 @@
-import {mapReducerAtomic} from "../core/MapReducer"
+import {mapReducerAtomic} from "../reducers/MapReducer"
 import {M} from "../state/MapStateTypes"
-import {deleteS, deleteCR, deleteCC} from "../core/MapDelete"
+import {deleteS, deleteCR, deleteCC} from "../reducers/MapDelete"
 
 const deleteRTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g'], connections: [{fromNodeId: 'b', toNodeId: 'e'}, {fromNodeId: 'b', toNodeId: 'h'}]},
