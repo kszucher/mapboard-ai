@@ -74,7 +74,7 @@ export const Docs: FC = () => {
             {/*<p>*/}
             {/*  But then I found a{" "}*/}
             {/*  <a href="https://flowbite.com">*/}
-            {/*    component library based on Tailwind CSS called Flowbite*/}
+            {/*    components library based on Tailwind CSS called Flowbite*/}
             {/*  </a>*/}
             {/*  . It comes with the most commonly used UI components, such as buttons,*/}
             {/*  navigation bars, cards, form elements, and more which are conveniently*/}

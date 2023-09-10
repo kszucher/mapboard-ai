@@ -1,4 +1,4 @@
-import {getTaskWidth} from "../component/MapSvgUtils";
+import {getTaskWidth} from "../components/MapSvgUtils";
 import {MARGIN_X, MARGIN_Y} from "../state/Consts";
 import {G, M, N} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils";

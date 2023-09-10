@@ -1,6 +1,6 @@
 import {combineReducers, configureStore, createListenerMiddleware, createSlice, current, isAction, PayloadAction} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
-import {getMapX, getMapY} from "../component/MapDivUtils"
+import {getMapX, getMapY} from "../components/MapDivUtils"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState, Sides} from "../state/Enums"
 import {M} from "../state/MapStateTypes"

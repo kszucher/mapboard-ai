@@ -1,4 +1,4 @@
-import {getEquationDim, getTextDim} from "../component/MapDivUtils"
+import {getEquationDim, getTextDim} from "../components/MapDivUtils"
 import {G, M, N} from "../state/MapStateTypes"
 import {getCountNCO2, getCountNSCH, getCountNSCV, getCountNSO1, getCountNSO2, getNodeByPath} from "../selectors/MapUtils"
 import {createArray} from "./Utils"
