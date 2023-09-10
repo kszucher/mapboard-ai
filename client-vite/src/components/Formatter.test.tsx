@@ -1,10 +1,10 @@
 import {render, screen,} from "@testing-library/react"
 import user from "@testing-library/user-event"
 import {Provider} from "react-redux"
-import {Formatter} from "../components/Formatter"
+import {Formatter} from "./Formatter"
 import { describe, it } from 'vitest'
 import {actions, store} from "../reducers/EditorReducer"
-import {colorList} from "../components/Colors"
+import {colorList} from "./Colors"
 import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../state/Enums"
 import {getMap} from "../state/EditorState"
 import {nSaveOptional} from "../state/MapState"

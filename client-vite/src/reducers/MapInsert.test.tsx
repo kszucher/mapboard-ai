@@ -1,6 +1,6 @@
 import {sortNode} from "../selectors/MapSelectorUtils"
-import {setIsTesting} from "../reducers/Utils"
-import {mapReducerAtomic} from "../reducers/MapReducer"
+import {setIsTesting} from "./Utils"
+import {mapReducerAtomic} from "./MapReducer"
 import {M} from "../state/MapStateTypes"
 
 const insertSD_test = [
