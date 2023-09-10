@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare";
 import {ControlTypes} from "../state/Enums"
-import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./GptParser"
+import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./MapParseGpt"
 import {nSaveOptional} from "../state/MapState"
 import {M, N, P} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
