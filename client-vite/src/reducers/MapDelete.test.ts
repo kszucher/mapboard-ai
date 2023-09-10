@@ -1,8 +1,9 @@
+import {sortNode} from "../selectors/MapSelectorUtils"
 import {mapReducerAtomic} from "./MapReducer"
 import {M} from "../state/MapStateTypes"
 import {deleteS, deleteCR, deleteCC} from "./MapDelete"
 
-const deleteRTest = [
+const deleteR_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g'], connections: [{fromNodeId: 'b', toNodeId: 'e'}, {fromNodeId: 'b', toNodeId: 'h'}]},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -15,7 +16,7 @@ const deleteRTest = [
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 2, 'd', 0, 's', 0]},
 ] as M
 
-const deleteRResult = [
+const deleteR_result = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g'], connections: [{fromNodeId: 'b', toNodeId: 'h'}]},
   {selected: 1, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -25,7 +26,7 @@ const deleteRResult = [
   {selected: 0, selection: 's', nodeId: 'j', path: ['r', 1, 'd', 0, 's', 0]},
 ] as M
 
-const deleteSTest = [
+const deleteS_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -44,7 +45,7 @@ const deleteSTest = [
   {selected: 0, selection: 's', nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 's', 2, 's', 2]},
 ] as M
 
-const deleteSResult = [
+const deleteS_result = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0], lastSelectedChild: 0},
@@ -53,7 +54,7 @@ const deleteSResult = [
   {selected: 0, selection: 's', nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 0]},
 ] as M
 
-const deleteCRTest = [
+const deleteCR_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -68,7 +69,7 @@ const deleteCRTest = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
 ] as M
 
-const deleteCRResult = [
+const deleteCR_result = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -79,7 +80,7 @@ const deleteCRResult = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
 ] as M
 
-const deleteCCTest = [
+const deleteCC_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -94,7 +95,7 @@ const deleteCCTest = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
 ] as M
 
-const deleteCCResult = [
+const deleteCC_result = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -105,9 +106,9 @@ const deleteCCResult = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
 ] as M
 
-describe("DeleteTests", () => {
-  test('deleteR', () => {mapReducerAtomic(deleteRTest, 'deleteR', {}); expect(deleteRTest).toEqual(deleteRResult)})
-  test('deleteS', () => {mapReducerAtomic(deleteSTest, 'deleteS', {}); expect(deleteSTest).toEqual(deleteSResult)})
-  test('deleteCR', () => {mapReducerAtomic(deleteCRTest, 'deleteCR', {}); expect(deleteCRTest).toEqual(deleteCRResult)})
-  test('deleteCC', () => {mapReducerAtomic(deleteCCTest, 'deleteCC', {}); expect(deleteCCTest).toEqual(deleteCCResult)})
+describe("Delete_tests", () => {
+  test('deleteR', () => {mapReducerAtomic(deleteR_test, 'deleteR', {}); expect(deleteR_test.sort(sortNode)).toEqual(deleteR_result.sort(sortNode))})
+  test('deleteS', () => {mapReducerAtomic(deleteS_test, 'deleteS', {}); expect(deleteS_test.sort(sortNode)).toEqual(deleteS_result.sort(sortNode))})
+  test('deleteCR', () => {mapReducerAtomic(deleteCR_test, 'deleteCR', {}); expect(deleteCR_test.sort(sortNode)).toEqual(deleteCR_result.sort(sortNode))})
+  test('deleteCC', () => {mapReducerAtomic(deleteCC_test, 'deleteCC', {}); expect(deleteCC_test.sort(sortNode)).toEqual(deleteCC_result.sort(sortNode))})
 })
