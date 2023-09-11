@@ -8,7 +8,7 @@ import {deleteReselectCC, deleteReselectCR, deleteReselectR, deleteReselectS,} f
 import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertS, insertTable, insertTemplateR} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS, moveSD} from "./MapMove"
+import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
 import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getRiL, getRootStartX, getRootStartY, getXA, getXAEO, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getNRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO, getNR, getXR, getXSIC} from "../selectors/MapSelectorUtils"
