@@ -8,10 +8,15 @@ const moveSD_test = [
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {selected: 1, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 1]},
-  {selected: 1, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 2]},
-  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 3]},
-  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 4]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 1]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 2]},
+  {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 3]},
+  {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 4]},
+  {selected: 0, selection: 's', nodeId: 'm', path: ['r', 0, 'd', 0, 's', 4, 's', 0]},
 ] as M
 
 const moveSD_result = [
@@ -19,10 +24,15 @@ const moveSD_result = [
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1]},
-  {selected: 1, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 2]},
-  {selected: 1, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 3]},
-  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 4]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 1]},
+  {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 2]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 3]},
+  {selected: 0, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 4]},
+  {selected: 0, selection: 's', nodeId: 'm', path: ['r', 0, 'd', 0, 's', 4, 's', 0]},
 ] as M
 
 const moveST_test = [
@@ -394,6 +404,7 @@ const transpose_result = [
 ] as M
 
 describe("Move_tests", () => {
+  // @ts-ignore
   beforeEach(() => setIsTesting())
   test('moveSD', () => {mapReducerAtomic(moveSD_test, 'moveSD', {}); expect(moveSD_test.sort(sortNode)).toEqual(moveSD_result.sort(sortNode))})
   test('moveST', () => {mapReducerAtomic(moveST_test, 'moveST', {}); expect(moveST_test.sort(sortNode)).toEqual(moveST_result.sort(sortNode))})

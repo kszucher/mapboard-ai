@@ -4,7 +4,7 @@ import {genHash} from "../utils/Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {getReselectS, getXA, sortPath, isCED, getCountNSCH, getXAEO, getX, getCountXCU, getCountXCL, getCountNSCV, isCER, isSEODO, getCountXASU} from "../selectors/MapSelectorUtils"
+import {getReselectS, getXA, sortPath, isCED, getCountNSCH, getXAEO, getX, getCountXCU, getCountXCL, getCountNSCV, isCER, isSEODO, getCountXASU, isSEO, isSD1EO, getXSL, getXSI1} from "../selectors/MapSelectorUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -68,6 +68,26 @@ export const pasteS = (m: M, insertParentNode: N, insertTargetIndex: number, pay
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
   m.sort(sortPath)
+}
+
+export const moveSD = (m: M) => {
+  // moveS(m, getXSI1(m), getCountXASU(m) + 1);
+  m.splice(0, m.length, ...[
+      ...m.filter(n => getXA(m).some(xn => isSEO(xn.path, n.path))).map(n => ({...n, path: [
+          ...n.path.slice(0, getX(m).path.length - 1),
+          n.path.at(getX(m).path.length - 1) as number + 1,
+          ...n.path.slice(getX(m).path.length),
+        ]})),
+      ...m.filter(n => isSD1EO(getXSL(m).path, n.path)).map(n => ({...n, path:
+          [
+            ...n.path.slice(0, getX(m).path.length - 1),
+            n.path.at(getX(m).path.length - 1) as number - getXA(m).length,
+            ...n.path.slice(getX(m).path.length),
+          ]
+      })),
+      ...m.filter(n => getXA(m).every(xn => !isSEO(xn.path, n.path) && !isSD1EO(getXSL(m).path, n.path))),
+    ]
+  )
 }
 
 export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {

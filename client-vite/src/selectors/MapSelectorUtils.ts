@@ -45,8 +45,9 @@ export const isXCR = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 
 export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 0
 
 export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
+export const isSD1EO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! === p.at(-1) as number + 1
 export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
-const isSEO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
+export const isSEO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: P, pt: P): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
 const isSO2 = (p: P, pt: P): boolean => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
@@ -91,8 +92,8 @@ export const getSI1P = (p: P): P => getSIPL(p).at(-1) as P
 const getSI2P = (p: P): P => getSIPL(p).at(-2) as P
 const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
-const getXSF = (m: M): N => m.find(n => n.selected)!
-const getXSL = (m: M): N => m.findLast(n => n.selected)!
+export const getXSF = (m: M): N => m.find(n => n.selected)!
+export const getXSL = (m: M): N => m.findLast(n => n.selected)!
 export const getX = (m: M): N => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getR0 = (m: M): N => getNodeByPath(m, ['r', 0])
 export const getNSI1 = (m: M, n: N): N => getNodeByPath(m, getSI1P(n.path))
