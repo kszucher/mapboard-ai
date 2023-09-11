@@ -73,19 +73,8 @@ export const pasteS = (m: M, insertParentNode: N, insertTargetIndex: number, pay
 export const moveSD = (m: M) => {
   // moveS(m, getXSI1(m), getCountXASU(m) + 1);
   m.splice(0, m.length, ...[
-      ...m.filter(n => getXA(m).some(xn => isSEO(xn.path, n.path))).map(n => ({...n, path: [
-          ...n.path.slice(0, getX(m).path.length - 1),
-          n.path.at(getX(m).path.length - 1) as number + 1,
-          ...n.path.slice(getX(m).path.length),
-        ]
-      })),
-      ...m.filter(n => isSD1EO(getXSL(m).path, n.path)).map(n => ({...n, path:
-          [
-            ...n.path.slice(0, getX(m).path.length - 1),
-            n.path.at(getX(m).path.length - 1) as number - getXA(m).length,
-            ...n.path.slice(getX(m).path.length),
-          ]
-      })),
+      ...m.filter(n => getXA(m).some(xn => isSEO(xn.path, n.path))).map(n => ({...n, path: n.path.with(getX(m).path.length - 1, n.path.at(getX(m).path.length - 1) as number + 1)})),
+      ...m.filter(n => isSD1EO(getXSL(m).path, n.path)).map(n => ({...n, path: n.path.with(getX(m).path.length - 1, n.path.at(getX(m).path.length - 1) as number - getXA(m).length)})),
       ...m.filter(n => getXA(m).every(xn => !isSEO(xn.path, n.path) && !isSD1EO(getXSL(m).path, n.path))),
     ]
   )
