@@ -325,6 +325,7 @@ const insertSORTable_result = [
 ] as M
 
 describe("InsertTests", () => {
+  // @ts-ignore
   beforeEach(() => setIsTesting())
   test('insertSD', () => {mapReducerAtomic(insertSD_test, 'insertSD', {}); expect(insertSD_test.sort(sortNode)).toEqual(insertSD_result.sort(sortNode))})
   test('insertSU', () => {mapReducerAtomic(insertSU_test, 'insertSU', {}); expect(insertSU_test.sort(sortNode)).toEqual(insertSU_result.sort(sortNode))})
