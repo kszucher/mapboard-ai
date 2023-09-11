@@ -82,7 +82,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'deleteCR': deleteReselectCR(m); break
     case 'deleteCC': deleteReselectCC(m); break
 
-    case 'moveSD': moveSD(m); break
+    // case 'moveSD': moveSD(m); break
+    case 'moveSD': moveS(m, getXSI1(m), getCountXASU(m) + 1); break
     case 'moveST': moveS(m, getXSI1(m), 0); break
     case 'moveSU': moveS(m, getXSI1(m), getCountXASU(m) - 1); break
     case 'moveSB': moveS(m, getXSI1(m), getCountXASD(m)); break
