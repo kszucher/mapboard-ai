@@ -10,7 +10,10 @@ export const deleteR = (m: M) => {
   m.splice(0, m.length, ...m
     .filter(n => !getXAO(m).map(n => n.nodeId).includes(n.nodeId))
     .filter(n => !getXA(m).map(n => n.nodeId).includes(n.nodeId))
-    .map(n => getXA(m).some(xn => isRDO(xn.path, n.path)) ? {...n, path: [...n.path.slice(0, getX(m).path.length - 1), n.path.at(getX(m).path.length - 1) as number - 1, ...n.path.slice(getX(m).path.length)]} : n)
+    .map(n => getXA(m).some(xn => isRDO(xn.path, n.path))
+      ? {...n, path: [...n.path.slice(0, getX(m).path.length - 1), n.path.at(getX(m).path.length - 1) as number - 1, ...n.path.slice(getX(m).path.length)]}
+      : n
+    )
   )
 }
 
