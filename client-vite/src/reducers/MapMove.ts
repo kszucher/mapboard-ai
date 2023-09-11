@@ -77,7 +77,8 @@ export const moveSD = (m: M) => {
           ...n.path.slice(0, getX(m).path.length - 1),
           n.path.at(getX(m).path.length - 1) as number + 1,
           ...n.path.slice(getX(m).path.length),
-        ]})),
+        ]
+      })),
       ...m.filter(n => isSD1EO(getXSL(m).path, n.path)).map(n => ({...n, path:
           [
             ...n.path.slice(0, getX(m).path.length - 1),
@@ -88,6 +89,7 @@ export const moveSD = (m: M) => {
       ...m.filter(n => getXA(m).every(xn => !isSEO(xn.path, n.path) && !isSD1EO(getXSL(m).path, n.path))),
     ]
   )
+  m.sort(sortPath)
 }
 
 export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
