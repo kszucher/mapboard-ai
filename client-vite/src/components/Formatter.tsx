@@ -1,9 +1,9 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, ButtonGroup, IconButton} from '@mui/material'
+import colors from "tailwindcss/colors"
 import {mSelector} from "../state/EditorState"
 import {FBorderIcon, FFillIcon, LineIcon, SBorderIcon, SFillIcon, TextIcon} from './MuiSvgIcons'
-import {colorList} from './Colors'
 import {actions, AppDispatch, RootState} from '../reducers/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
 import {getPropXA, getX, isXR, isXS} from "../selectors/MapSelectorUtils"
@@ -13,6 +13,9 @@ const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) 
 export const Formatter: FC = () => {
   const o = 32
   const r = 12
+  const {gray, neutral, red, amber, lime, emerald, cyan, blue, violet, fuchsia, rose} = colors
+  const colorList = [gray, neutral, red, amber, lime, emerald, cyan, blue, violet, fuchsia, rose]
+    .map(c => [50, 200, 400, 700, 800, 950].map(index => c[index.toString() as keyof typeof c]))
   const width = o * colorList[0].length
   const height = o * colorList.length
   const formatMode = useSelector((state: RootState) => state.editor.formatMode)
