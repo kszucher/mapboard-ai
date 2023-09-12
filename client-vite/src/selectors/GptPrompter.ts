@@ -1,5 +1,5 @@
 import {M, N} from "../state/MapStateTypes"
-import {getXSSCC0, getXSSCR0, getSIPL, getNodeByPath, getXSSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXRD0SO, getXAEO, getG, getNodeById, getNRD0SO} from "./MapSelectorUtils"
+import {getXSCC0, getXSCR0, getSIPL, getNodeByPath, getXSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXRD0SO, getXAEO, getG, getNodeById, getNRD0SO} from "./MapSelectorUtils"
 import {GptData} from "../state/NodeApiStateTypes"
 
 export const generateLlmInfo = (m: M) => ({
@@ -41,9 +41,9 @@ export const genPromptJsonS = (m: M) => {
 
 export const genPromptJsonT = (m: M) => {
   const mr = getXAEO(m).slice().sort(sortPath)
-  const rowHeader = getXSSCR0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
-  const colHeader = getXSSCC0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
-  return getXSSCYY(mr).map((n: N) => ({
+  const rowHeader = getXSCR0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
+  const colHeader = getXSCC0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
+  return getXSCYY(mr).map((n: N) => ({
     keywords: [colHeader[0], colHeader[n.path.at(-2) as number], rowHeader[n.path.at(-1) as number]],
     suggestions: [],
     insertParentId: n.nodeId
