@@ -35,7 +35,7 @@ const COLOR_LIGHT = {
 const COLOR_DARK = {
   MAIN_COLOR: '#dddddd',
   PAGE_BACKGROUND: '#444444',
-  MAP_BACKGROUND: '#222529',
+  MAP_BACKGROUND: '#262626', // zinc-800
   BUTTON_COLOR: '#444444',
   TEXT_COLOR: '#dddddd',
   SELECTION_COLOR: '#aaaaaa',
