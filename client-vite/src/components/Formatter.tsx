@@ -19,7 +19,6 @@ export const Formatter: FC = () => {
   const height = o * colorList.length
   const formatMode = useSelector((state: RootState) => state.editor.formatMode)
   const m = useSelector((state:RootState) => mSelector(state))
-  const xn = getX(m)
   const access = useSelector((state: RootState) => state.editor.access)
   const disabled = [AccessTypes.UNAUTHORIZED, AccessTypes.VIEW].includes(access)
   const dispatch = useDispatch<AppDispatch>()
@@ -89,7 +88,7 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.sBorder &&
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(WidthTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === WidthTypes[xn.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXA(m, 'fBorderWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() => {
+              <Button key={idx} style={{backgroundColor: name === WidthTypes[getX(m).selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXA(m, 'fBorderWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() => {
                 dispatch(actions.mapAction({type: 'setSBorderWidth', payload: WidthTypes[name as keyof typeof WidthTypes]}))
               }}>{name}
               </Button>
@@ -99,7 +98,7 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.fBorder &&
           <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {getKeys(WidthTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === WidthTypes[xn.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXA(m, 'fBorderWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() => {
+              <Button key={idx} style={{backgroundColor: name === WidthTypes[getX(m).selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXA(m, 'fBorderWidth') as number || 0] ? 'var(--button-color)' : ''}} onClick={() => {
                 dispatch(actions.mapAction({type: 'setFBorderWidth', payload: WidthTypes[name as keyof typeof WidthTypes]}))
               }}>{name}
               </Button>
