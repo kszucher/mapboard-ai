@@ -67,7 +67,7 @@ export const MapDiv: FC = () => {
                 fontSize: n.textFontSize,
                 fontFamily: 'Roboto',
                 textDecoration: n.linkType.length ? "underline" : "",
-                cursor: 'default',
+                cursor: n.linkType !== '' ? 'pointer' : 'default',
                 color: n.textColor === 'default' ? C.TEXT_COLOR : n.textColor,
                 transition: 'all 0.3s',
                 transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
