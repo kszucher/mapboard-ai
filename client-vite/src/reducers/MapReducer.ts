@@ -11,7 +11,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getRiL, getRootStartX, getRootStartY, getXA, getXAEO, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getNRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXAO, getNR, getXR, getXSIC} from "../selectors/MapSelectorUtils"
+import {sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getRiL, getRootStartX, getRootStartY, getXA, getXAEO, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getNRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXASU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getNR, getXR, getXSIC, getXSCO} from "../selectors/MapSelectorUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -96,7 +96,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveCCL': moveCC(m, getXSI1(m), getCountXCL(m) - 1); break
     case 'moveS2TOR': moveS2T(m, getXRD0(m), getXSO2(m)); break
     case 'moveS2TO': moveS2T(m, getX(m), getXSO1(m)); break
-    case 'transpose': getXAO(m).forEach(n => n.path = [...n.path.slice(0, getX(m).path.length + 1), n.path.at(getX(m).path.length + 2), n.path.at(getX(m).path.length + 1), ...n.path.slice(getX(m).path.length + 3)] as P); break
+    case 'transpose': getXSCO(m).forEach(n => n.path = [...n.path.slice(0, getX(m).path.length + 1), n.path.at(getX(m).path.length + 2), n.path.at(getX(m).path.length + 1), ...n.path.slice(getX(m).path.length + 3)] as P); break
 
     case 'copyR': copyR(m); break
     case 'copyS': copyS(m); break

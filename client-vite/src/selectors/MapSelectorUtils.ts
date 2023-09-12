@@ -58,6 +58,7 @@ const isCD1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.sli
 const isCU1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) as number === p.at(-2) as number - 1 && pt.at(-1) as number === p.at(-1) as number
 const isCR1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number + 1
 const isCL1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number - 1
+const isSCO = (p: P, pt: P): boolean => pt.length >= p.length + 3 && isEqual(pt.slice(0, p.length), p) && pt.at(p.length) === 'c'
 const isSCXX = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p)
 const isSCYY = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) as number > 0 && pt.at(-1) as number > 0
 const isSCR0 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) === 0
@@ -113,6 +114,7 @@ export const getXRD1 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2
 export const getRL = (m: M): M => m.filter(n => n.path.length === 2)
 export const getXSO1 = (m: M): M => m.filter(n => isSO1(getX(m).path, n.path))
 export const getXSO2 = (m: M): M => m.filter(n => isSO2(getX(m).path, n.path))
+export const getXSCO = (m: M): M => m.filter(n => isSCO(getX(m).path, n.path))
 export const getXSCR0 = (m: M): M => m.filter(n => isSCR0(getX(m).path, n.path))
 export const getXSCC0 = (m: M): M => m.filter(n => isSCC0(getX(m).path, n.path))
 export const getXSCYY = (m: M): M => m.filter(n => isSCYY(getX(m).path, n.path))
