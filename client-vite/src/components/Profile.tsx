@@ -16,7 +16,7 @@ export const Profile: FC = () => {
   const { logout } = useAuth0()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      <div className="_bg fixed flex flex-col items-center gap-4 top-[80px] right-0 p-5 rounded-lg">
+      <div className="dark:bg-zinc-800 bg-zinc-50 fixed flex flex-col items-center gap-4 top-[80px] right-0 p-5 rounded-lg">
         <Typography component="h1" variant="h5" color="primary">{name}</Typography>
         <Button color="primary" variant="contained" onClick={()=>{
           logout({ logoutParams: { returnTo: window.location.origin }})

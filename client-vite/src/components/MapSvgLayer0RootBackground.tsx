@@ -1,7 +1,8 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {N} from "../state/MapStateTypes";
+import {N} from "../state/MapStateTypes"
+import colors from "tailwindcss/colors"
 import {getColors} from "./Colors"
 import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR} from "../selectors/MapSelectorUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
@@ -45,7 +46,7 @@ export const MapSvgLayer0RootBackground: FC = () => {
                 height={getRootH(m, n)}
                 rx={32}
                 ry={32}
-                fill={C.MAP_BACKGROUND}
+                fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
                 style={{transition: '0.3s ease-out'}}
               >
               </rect>

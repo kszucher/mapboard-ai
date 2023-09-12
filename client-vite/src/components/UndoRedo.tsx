@@ -20,7 +20,7 @@ export const UndoRedo: FC = () => {
   const disabled = [AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="_bg fixed top-0 left-[272px] w-[96px] flex flex-center h-[40px] py-1 px-2 border-t-0 rounded-b-lg z-50">
+    <div className="dark:bg-zinc-800 bg-zinc-50 fixed top-0 left-[272px] w-[96px] flex flex-center h-[40px] py-1 px-2 border-t-0 rounded-b-lg z-50">
       <div style={{ display: 'flex',  }}>
         <IconButton color='secondary' disabled={disabled || undoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'undo', payload: null}))}}><UndoIcon/></IconButton>
         <IconButton color='secondary' disabled={disabled || redoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}><RedoIcon/></IconButton>

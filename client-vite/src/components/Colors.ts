@@ -1,7 +1,6 @@
 const COLOR_LIGHT = {
   MAIN_COLOR: '#5f0a87',
   PAGE_BACKGROUND: '#dddddd',
-  MAP_BACKGROUND: '#fbfafc',
   BUTTON_COLOR: '#EEEAF2',
   TEXT_COLOR: '#222222',
   SELECTION_COLOR: '#666666',
@@ -35,7 +34,6 @@ const COLOR_LIGHT = {
 const COLOR_DARK = {
   MAIN_COLOR: '#dddddd',
   PAGE_BACKGROUND: '#444444',
-  MAP_BACKGROUND: '#262626', // zinc-800
   BUTTON_COLOR: '#444444',
   TEXT_COLOR: '#dddddd',
   SELECTION_COLOR: '#aaaaaa',
@@ -72,7 +70,6 @@ export const setColors = (colorMode: string) => {
   const root = document.querySelector(':root') as HTMLElement
   root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
   root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
-  root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
   root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
 }
 

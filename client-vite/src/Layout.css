@@ -62,18 +62,12 @@ body {
 :root {
     --main-color: #000;
     --page-background-color: #000;
-    --map-background-color: #000;
     --button-color: #000;
     /*z-index: -110;*/
 }
 
 body {
     background: var(--page-background-color);
-}
-
-._bg {
-    background: var(--map-background-color);
-    border: 1px solid var(--page-background-color);
 }
 
 

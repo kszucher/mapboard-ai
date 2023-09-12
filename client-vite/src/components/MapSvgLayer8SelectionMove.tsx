@@ -1,5 +1,6 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
+import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {getColors} from "./Colors"
 import {getG} from "../selectors/MapSelectorUtils"
@@ -34,7 +35,7 @@ export const MapSvgLayer8SelectionMove: FC = () => {
             height={20}
             rx={8}
             ry={8}
-            fill={C.MAP_BACKGROUND}
+            fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
             fillOpacity={1}
             stroke={C.MOVE_RECT_COLOR}
             strokeWidth={5}

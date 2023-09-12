@@ -44,6 +44,11 @@ export const Editor: FC = () => {
 
   useEffect(() => {
     setColors(colorMode)
+    if (colorMode === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
   }, [colorMode])
 
   return (
