@@ -15,7 +15,7 @@ export const ModalShareThisMap: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      <div className="dark:bg-zinc-800 bg-zinc-50 relative left-1/2 -translate-x-1/2 top-[80px] w-[384px] flex flex-col items-center inline-flex gap-4 p-5 rounded-lg">
+      <div className="dark:bg-zinc-800 bg-zinc-50 relative left-1/2 -translate-x-1/2 top-[80px] w-[384px] flex-col items-center inline-flex gap-4 p-5 rounded-lg">
         <Typography component="h1" variant="h5" color="primary">
           {'Share This Map'}
         </Typography>
@@ -41,10 +41,7 @@ export const ModalShareThisMap: FC = () => {
             {errorMessage}
           </Typography>
         }
-        <Button
-          color="primary" variant="outlined"
-          onClick={() => createShare({mapId: getMapId(), shareEmail, shareAccess})}
-        >
+        <Button color="primary" variant="outlined" onClick={() => createShare({mapId: getMapId(), shareEmail, shareAccess})}>
           {'SHARE'}
         </Button>
         <Button

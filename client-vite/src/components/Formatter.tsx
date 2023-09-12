@@ -14,8 +14,7 @@ export const Formatter: FC = () => {
   const o = 32
   const r = 12
   const {gray, neutral, red, amber, lime, emerald, cyan, blue, violet, fuchsia, rose} = colors
-  const colorList = [gray, neutral, red, amber, lime, emerald, cyan, blue, violet, fuchsia, rose]
-    .map(c => [50, 200, 400, 700, 800, 950].map(index => c[index.toString() as keyof typeof c]))
+  const colorList = [gray, neutral, red, amber, lime, emerald, cyan, blue, violet, fuchsia, rose].map(c => [50, 200, 400, 700, 800, 950].map(index => c[index.toString() as keyof typeof c]))
   const width = o * colorList[0].length
   const height = o * colorList.length
   const formatMode = useSelector((state: RootState) => state.editor.formatMode)

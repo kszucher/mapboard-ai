@@ -36,6 +36,7 @@ export const Editor: FC = () => {
   const mExists = m && m.length
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
+  const tabShrink = useSelector((state: RootState) => state.editor.tabShrink)
 
   useEffect(()=> {
     getTextDim('Test', 12)
@@ -56,7 +57,7 @@ export const Editor: FC = () => {
       {mExists && <Map/>}
       {mExists && <UndoRedo/>}
       {mExists && <BreadcrumbMaps/>}
-      {mExists && <TabMaps/>}
+      {mExists && !tabShrink && <TabMaps/>}
       {mExists && formatterVisible && <Formatter/>}
       {mExists && <FrameCarousel/>}
       {mExists && <Window/>}
