@@ -9,7 +9,7 @@ export const TabMaps: FC = () => {
   const { tabMapIdList, tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="dark:bg-zinc-800 bg-zinc-50 w-[224px] fixed top-[80px] border-l-0 pt-4 pb-4 z-50 rounded-r-lg">
+    <div className="fixed z-50 w-[224px] top-[80px] dark:bg-zinc-800 bg-zinc-50 border-l-0 border-2 dark:border-neutral-700 pt-4 rounded-r-lg">
       <h4 id="sidebar-label" className="sr-only">Browse docs</h4>
       <div id="navWrapper" className="overflow-y-auto z-50 h-full bg-white scrolling-touch max-w-2xs lg:h-[calc(100vh-3rem)] lg:block lg:sticky top:24 lg:top-28 dark:bg-zinc-800 lg:mr-0">
         <nav id="nav" className="ml-4 pt-16 px-1 pl-3 lg:pl-0 lg:pt-2 font-normal text-base lg:text-sm pb-10 lg:pb-20 sticky?lg:h-(screen-18)" aria-label="Docs navigation">

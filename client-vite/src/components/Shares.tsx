@@ -56,7 +56,7 @@ export const Shares: FC = () => {
   ]
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      <div className="dark:bg-zinc-800 bg-zinc-50 relative left-1/2 -translate-x-1/2 top-[80px] w-[860px] flex flex-col items-center gap-4 p-5 rounded-lg">
+      <div className="dark:bg-zinc-800 border-2 dark:border-neutral-700 bg-zinc-50 relative left-1/2 -translate-x-1/2 top-[80px] w-[860px] flex flex-col items-center gap-4 p-5 rounded-lg">
         <Typography component="h1" variant="h5" color="primary">
           {'Maps I Share With Others'}
         </Typography>

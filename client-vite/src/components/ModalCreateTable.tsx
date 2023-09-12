@@ -14,7 +14,7 @@ export const ModalCreateTable: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Modal open={true} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      <div className="dark:bg-zinc-800 bg-zinc-50 fixed top-[calc(48*2px)] right-[64px] w-[calc(6*32px)] flex flex-col gap-3 p-3 rounded-lg">
+      <div className="dark:bg-zinc-800 bg-zinc-50 border-2 dark:border-neutral-700 fixed top-[calc(48*2px)] right-[64px] w-[calc(6*32px)] flex flex-col gap-3 p-3 rounded-lg">
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
           <Typography variant='subtitle2' color='primary'>
             {'CREATE TABLE?'}

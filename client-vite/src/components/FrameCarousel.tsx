@@ -17,7 +17,7 @@ export const FrameCarousel: FC = () => {
   const nextFrameId = frameIdList[nextFrameIdPosition]
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="dark:bg-zinc-800 bg-zinc-50 fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-lg border-2 border-purple-700 border-b-0">
+    <div className="dark:bg-zinc-800 bg-zinc-50 border-2 border-b-0 border-purple-700 fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-lg ">
       {
         frameIdList.length > 0 && frameId !=='' &&
         <MobileStepper

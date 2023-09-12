@@ -33,7 +33,7 @@ const COLOR_LIGHT = {
 
 const COLOR_DARK = {
   MAIN_COLOR: '#dddddd',
-  PAGE_BACKGROUND: '#444444',
+  PAGE_BACKGROUND: '#404040', //'#444444', stone 600
   BUTTON_COLOR: '#444444',
   TEXT_COLOR: '#dddddd',
   SELECTION_COLOR: '#aaaaaa',
