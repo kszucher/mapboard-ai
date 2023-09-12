@@ -17,7 +17,7 @@ export const TabMaps: FC = () => {
           <div id="navWrapper" className="overflow-y-auto z-50 h-full bg-white scrolling-touch max-w-2xs lg:h-[calc(100vh-3rem)] lg:block lg:sticky top:24 lg:top-28 dark:bg-zinc-800 lg:mr-0">
             <nav id="nav" className="ml-4 pt-16 px-1 pl-3 lg:pl-0 lg:pt-2 font-normal text-base lg:text-sm pb-10 lg:pb-20 sticky?lg:h-(screen-18)" aria-label="Docs navigation">
               <ul className="mb-0 list-unstyled">
-                <li className="mt-8">
+                <li>
                   <h5 className="mb-2 text-sm font-semibold tracking-wide text-gray-900 uppercase lg:text-xs dark:text-white">Maps</h5>
                   <ul className="py-1 list-unstyled fw-normal small">
                     {tabMapNameList.map((el: { name: string }, index) => (
@@ -34,6 +34,8 @@ export const TabMaps: FC = () => {
                       </li>
                     ))}
                   </ul>
+                </li>
+                <li className="mt-8">
                 </li>
               </ul>
             </nav>
