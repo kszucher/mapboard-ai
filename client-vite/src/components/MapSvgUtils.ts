@@ -204,7 +204,7 @@ export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 export const getTaskStartPoint = (m: M, g: G, n: N) => {
   switch (true) {
     case getPathDir(n.path) === 1 && !isCON(n.path): return getRootEndX(m, getNR(m, n)) - getTaskWidth(g)
-    case getPathDir(n.path) === -1 && !isCON(n.path): return getTaskWidth(g)
+    case getPathDir(n.path) === -1 && !isCON(n.path): return getRootStartX(m, getNR(m, n)) + getTaskWidth(g)
     case getPathDir(n.path) === 1 && isCON(n.path): return getNSIC(m, n).nodeEndX - 120
     case getPathDir(n.path) === -1 && isCON(n.path): return getNSIC(m, n).nodeStartX + 120
     default: return 0
