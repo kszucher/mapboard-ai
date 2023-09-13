@@ -1,48 +1,11 @@
-import React, {FC, ReactNode} from "react"
+import React, {FC} from "react"
 import {useDispatch, useSelector} from 'react-redux'
 import {AccessTypes} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
-
-const UndoIcon = () => (
-  <g>
-    <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M9 14l-4-4 4-4"></path>
-    <path d="M5 10h11a4 4 0 110 8h-1"></path>
-  </g>
-)
-
-const RedoIcon = () => (
-  <g>
-    <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M15 14l4-4-4-4"></path>
-    <path d="M19 10H8a4 4 0 100 8h1"></path>
-  </g>
-)
-
-export const IconButton = ({colorMode, disabled, onClick, children} : {colorMode: string, disabled: boolean, onClick: Function, children: ReactNode}) => (
-  <button
-    type="button"
-    className="text-white focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:hover:bg-gray-700"
-    disabled={disabled}
-    onClick={() => onClick()}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="none"
-      stroke={colorMode === 'dark' ? "#ffffff" : '#000000'}
-      opacity={disabled ? '25%' : '100%'}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24">
-      ({children})
-    </svg>
-    <span className="sr-only">Icon description</span>
-  </button>
-)
+import {IconButton} from "./IconButton"
+import {RedoIcon, UndoIcon} from "./IconButtonSvg"
 
 export const UndoRedo: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)
