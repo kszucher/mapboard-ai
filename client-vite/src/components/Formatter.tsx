@@ -68,7 +68,7 @@ export const Formatter: FC = () => {
                         formatMode === FormatMode.fBorder && isXS(m) && dispatch(actions.mapAction({type: 'setFBorderColor', payload: color}))
                         formatMode === FormatMode.sFill && dispatch(actions.mapAction({type: 'setSFillColor', payload: color}))
                         formatMode === FormatMode.fFill && dispatch(actions.mapAction({type: 'setFFillColor', payload: color}))
-                        formatMode === FormatMode.line && dispatch(actions.mapAction({type: 'setSLineColor', payload: color}))
+                        formatMode === FormatMode.line && dispatch(actions.mapAction({type: 'setLineColor', payload: color}))
                       }}
                     />
                   )
