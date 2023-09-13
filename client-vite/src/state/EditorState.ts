@@ -5,7 +5,7 @@ import {RootState, store} from "../reducers/EditorReducer"
 export const editorState: EditorState = {
   token: '',
   pageState: PageState.AUTH,
-  formatMode: FormatMode.text,
+  formatMode: FormatMode.sFill,
   tabShrink: false,
   mapList: [],
   mapListIndex: 0,

@@ -30,14 +30,14 @@ export const Formatter: FC = () => {
   return (
     <div className="dark:bg-zinc-800 bg-zinc-50 border-r-0 border-2 dark:border-neutral-700 fixed w-[224px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
       <div className="flex justify-center">
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.text} onClick={() => {dispatch(actions.setFormatMode(FormatMode.text))}}><TextIcon/></IconButton>
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.sBorder} onClick={() => {dispatch(actions.setFormatMode(FormatMode.sBorder))}}><SBorderIcon/></IconButton>
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.fBorder} onClick={() => {dispatch(actions.setFormatMode(FormatMode.fBorder))}}><FBorderIcon/></IconButton>
-      </div>
-      <div className="flex justify-center">
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.line} onClick={() => {dispatch(actions.setFormatMode(FormatMode.line))}}><VectorSplineIcon/></IconButton>
         <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.sFill} onClick={() => {dispatch(actions.setFormatMode(FormatMode.sFill))}}><SFillIcon/></IconButton>
         <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.fFill} onClick={() => {dispatch(actions.setFormatMode(FormatMode.fFill))}}><FFillIcon/></IconButton>
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.text} onClick={() => {dispatch(actions.setFormatMode(FormatMode.text))}}><TextIcon/></IconButton>
+      </div>
+      <div className="flex justify-center">
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.sBorder} onClick={() => {dispatch(actions.setFormatMode(FormatMode.sBorder))}}><SBorderIcon/></IconButton>
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.fBorder} onClick={() => {dispatch(actions.setFormatMode(FormatMode.fBorder))}}><FBorderIcon/></IconButton>
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.line} onClick={() => {dispatch(actions.setFormatMode(FormatMode.line))}}><VectorSplineIcon/></IconButton>
       </div>
       <div className="flex justify-center">
         <div style={{ width, height }}>
