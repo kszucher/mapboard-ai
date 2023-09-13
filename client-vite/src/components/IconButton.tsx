@@ -1,6 +1,7 @@
 import React, {ReactNode} from "react"
+import colors from "tailwindcss/colors"
 
-export const IconButton = ({colorMode, disabled, onClick, children} : {colorMode: string, disabled: boolean, onClick: Function, children: ReactNode}) => (
+export const IconButton = ({colorMode, disabled, selected = false, onClick, children} : {colorMode: string, disabled: boolean, selected?:boolean, onClick: Function, children: ReactNode}) => (
   <button
     type="button"
     className="text-white focus:outline-none font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:hover:bg-gray-700"
@@ -10,8 +11,8 @@ export const IconButton = ({colorMode, disabled, onClick, children} : {colorMode
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
-      fill="none"
-      stroke={colorMode === 'dark' ? "#ffffff" : '#000000'}
+      stroke={colorMode === 'dark' ? (selected? colors.purple[600] : "#ffffff") : '#000000'}
+      color={colorMode === 'dark' ? (selected? colors.purple[600] : "#ffffff") : '#000000'}
       opacity={disabled ? '25%' : '100%'}
       strokeLinecap="round"
       strokeLinejoin="round"

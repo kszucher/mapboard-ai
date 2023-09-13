@@ -1,9 +1,12 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {Button, ButtonGroup, IconButton} from '@mui/material'
+import {Button, ButtonGroup} from '@mui/material'
 import colors from "tailwindcss/colors"
+import {useOpenWorkspaceQuery} from "../apis/NodeApi";
 import {mSelector} from "../state/EditorState"
-import {FBorderIcon, FFillIcon, LineIcon, SBorderIcon, SFillIcon, TextIcon} from './MuiSvgIcons'
+import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
+import {IconButton} from "./IconButton";
+import {FBorderIcon, FFillIcon, SBorderIcon, SFillIcon, TextIcon, VectorSplineIcon} from "./IconButtonSvg"
 import {actions, AppDispatch, RootState} from '../reducers/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
 import {getPropXA, getX, isXR, isXS} from "../selectors/MapSelectorUtils"
@@ -21,18 +24,20 @@ export const Formatter: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const access = useSelector((state: RootState) => state.editor.access)
   const disabled = [AccessTypes.UNAUTHORIZED, AccessTypes.VIEW].includes(access)
+  const { data } = useOpenWorkspaceQuery()
+  const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <div className="dark:bg-zinc-800 bg-zinc-50 border-r-0 border-2 dark:border-neutral-700 fixed w-[224px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
       <div className="flex justify-center">
-        <IconButton color='secondary' onClick={() => {dispatch(actions.setFormatMode(FormatMode.text))}}><TextIcon isSelected={formatMode == FormatMode.text}/></IconButton>
-        <IconButton color='secondary' onClick={() => {dispatch(actions.setFormatMode(FormatMode.sBorder))}}><SBorderIcon isSelected={formatMode == FormatMode.sBorder}/></IconButton>
-        <IconButton color='secondary' onClick={() => {dispatch(actions.setFormatMode(FormatMode.fBorder))}}><FBorderIcon isSelected={formatMode == FormatMode.fBorder} /></IconButton>
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.text} onClick={() => {dispatch(actions.setFormatMode(FormatMode.text))}}><TextIcon/></IconButton>
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.sBorder} onClick={() => {dispatch(actions.setFormatMode(FormatMode.sBorder))}}><SBorderIcon/></IconButton>
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.fBorder} onClick={() => {dispatch(actions.setFormatMode(FormatMode.fBorder))}}><FBorderIcon/></IconButton>
       </div>
       <div className="flex justify-center">
-        <IconButton color='secondary' onClick={() => {dispatch(actions.setFormatMode(FormatMode.line))}}><LineIcon isSelected={formatMode == FormatMode.line}/></IconButton>
-        <IconButton color='secondary' onClick={() => {dispatch(actions.setFormatMode(FormatMode.sFill))}}><SFillIcon isSelected={formatMode == FormatMode.sFill}/></IconButton>
-        <IconButton color='secondary' onClick={() => {dispatch(actions.setFormatMode(FormatMode.fFill))}}><FFillIcon isSelected={formatMode == FormatMode.fFill}/></IconButton>
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.line} onClick={() => {dispatch(actions.setFormatMode(FormatMode.line))}}><VectorSplineIcon/></IconButton>
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.sFill} onClick={() => {dispatch(actions.setFormatMode(FormatMode.sFill))}}><SFillIcon/></IconButton>
+        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.fFill} onClick={() => {dispatch(actions.setFormatMode(FormatMode.fFill))}}><FFillIcon/></IconButton>
       </div>
       <div className="flex justify-center">
         <div style={{ width, height }}>
