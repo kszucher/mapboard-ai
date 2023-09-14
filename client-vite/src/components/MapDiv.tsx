@@ -68,7 +68,7 @@ export const MapDiv: FC = () => {
                 fontFamily: 'Roboto',
                 textDecoration: n.linkType.length ? "underline" : "",
                 cursor: n.linkType !== '' ? 'pointer' : 'default',
-                color: n.textColor === 'default' ? C.TEXT_COLOR : n.textColor,
+                color: n.blur ? 'transparent' : (n.textColor === 'default' ? C.TEXT_COLOR : n.textColor),
                 transition: 'all 0.3s',
                 transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
                 whiteSpace: 'nowrap',
@@ -78,6 +78,7 @@ export const MapDiv: FC = () => {
                 zIndex: n.path.length,
                 border: 0,
                 margin: 0,
+                textShadow: n.blur? '#FFF 0 0 8px' : '',
                 // pointerEvents: n.selected && getCountNCO1(m, n) > 0 ? 'none' : 'auto'
               }}
               spellCheck={false}

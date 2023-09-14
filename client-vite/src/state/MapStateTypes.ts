@@ -58,6 +58,7 @@ export interface NSaveOptional {
   note: string
   llmDataType: string
   llmDataId: string
+  blur: number
 }
 
 export interface NSaveNever {

@@ -154,6 +154,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'devSetLlmDataExample': Object.assign(getX(m), { llmDataType: 'audio', llmDataId: 'llmDataId' }); break
     case 'devClearLlmData': Object.assign(getX(m), { llmDataType: 'text', llmDataId: '' }); break
 
+    case 'devSetBlur': getXA(m).forEach(n => Object.assign(n, {blur: 1})); break
+    case 'devClearBlur': getXA(m).forEach(n => Object.assign(n, {blur: 0})); break
+
   }
 }
 

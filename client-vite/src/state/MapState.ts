@@ -57,6 +57,7 @@ export const nSaveOptional = {
   note: '',
   llmDataType: 'text',
   llmDataId: '',
+  blur: 0,
 } as NSaveOptional
 
 export const nSaveNever = {

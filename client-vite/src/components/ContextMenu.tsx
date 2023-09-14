@@ -158,6 +158,8 @@ export const ContextMenu: FC = () => {
                 { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}}>show llmData</a></li>}
                 { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetLlmDataExample', payload: null}))}}>set llm data example</a></li> }
                 { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devClearLlmData', payload: null}))}}>reset llm data</a></li> }
+                { mExists && (isXR(m) || isXS(m)) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetBlur', payload: null}))}}>set blur</a></li> }
+                { mExists && (isXR(m) || isXS(m)) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devClearBlur', payload: null}))}}>clear blur</a></li> }
               </ul>
             </div>
           </li>
