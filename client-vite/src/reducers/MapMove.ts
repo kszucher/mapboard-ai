@@ -1,10 +1,10 @@
 import {mapDeInit} from "./MapDeInit";
 import {insertTable} from "./MapInsert"
-import {genHash} from "../utils/Utils"
+import {generateCharacter, genHash, IS_TESTING} from "../utils/Utils"
 import {M, N, P} from "../state/MapStateTypes"
-import {deleteCC, deleteCR, deleteS} from "./MapDelete"
+import {deleteCC, deleteCR, deleteR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {getReselectS, getXA, sortPath, isCED, getCountNSCH, getXAEO, getX, getCountXCU, getCountXCL, getCountNSCV, isCER, isSEODO, getCountXASU} from "../selectors/MapSelectorUtils"
+import {getReselectS, getXA, sortPath, isCED, getCountNSCH, getXAEO, getX, getCountXCU, getCountXCL, getCountNSCV, isCER, isSEODO, getCountXASU, getXSI1} from "../selectors/MapSelectorUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -37,6 +37,14 @@ const cbSave = (cb: any) => {
   })
 }
 
+export const cutR = (m: M) => {
+  // const reselect = getReselectR(m)
+  // const cb = getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
+  // cbSave(cb)
+  // deleteR(m)
+  // selectNode(m, reselect, 's')
+}
+
 export const cutS = (m: M) => {
   const reselect = getReselectS(m)
   const cb = getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
@@ -46,16 +54,13 @@ export const cutS = (m: M) => {
 }
 
 export const copyR = (m: M) => {
-  const cb = getXAEO(m).map(n => ({...n, path: ['r', 0, ...n.path.slice(getX(m).path.length)]})) as M
-  showTemplate(cb)
-  // const cbDeInit = mapDeInit(cb)
-  // cbSave(cbDeInit)
-  // TODO uncomment these when paste can detect and load R
+  const cb = getXAEO(m).map(n => ({...n, path: ['r', (n.path.at(getX(m).path.length - 1) as number), ...n.path.slice(getX(m).path.length)]})) as M
+  const cbDeInit = mapDeInit(cb)
+  cbSave(cbDeInit)
 }
 
 export const copyS = (m: M) => {
   const cb = getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
-  showTemplate(cb)
   const cbDeInit = mapDeInit(cb)
   cbSave(cbDeInit)
 }
@@ -68,6 +73,26 @@ export const pasteS = (m: M, insertParentNode: N, insertTargetIndex: number, pay
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
   m.sort(sortPath)
+}
+
+export const pasteR = (m: M) => {
+
+}
+
+export const duplicateS = (m: M) => {
+  const insertParentNode = getXSI1(m)
+  const insertTargetIndex = getCountXASU(m) + getXA(m).length
+  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
+  const cb = getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
+  cb.forEach((n, i) => Object.assign(n, {nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8)}))
+  unselectNodes(m)
+  m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
+  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
+  m.sort(sortPath)
+}
+
+export const duplicateR = (m: M) => {
+
 }
 
 export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
@@ -103,11 +128,7 @@ export const moveS2T = (m: M, insertParentNode: N, moveNodes: N[]) => {
   const cb = getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
   deleteS(m)
   insertTable(m, insertParentNode, 0, {rowLen, colLen: 1})
-  cb.forEach(n => Object.assign(n, {
-    selected: 0,
-    selection: 's',
-    path: [...insertParentNode.path, 's', 0, 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P
-  }))
+  cb.forEach(n => Object.assign(n, {selected: 0, path: [...insertParentNode.path, 's', 0, 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P}))
   m.push(...cb)
   m.sort(sortPath)
 }

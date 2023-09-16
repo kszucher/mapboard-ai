@@ -11,6 +11,10 @@ export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: n
   m.sort(sortPath)
 }
 
+export const insertR = (m: M) => {
+
+}
+
 export const insertS = (m: M, insertParentNode: N, insertTargetIndex: number, attributes: object) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + 1))
