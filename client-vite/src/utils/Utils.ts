@@ -1,8 +1,8 @@
-import {mapDeInit} from "../reducers/MapDeInit";
-import {mapInit} from "../reducers/MapInit";
-import {mapReducerAtomic} from "../reducers/MapReducer";
-import {sortNode} from "../selectors/MapSelectorUtils";
-import {M} from "../state/MapStateTypes";
+import {mapDeInit} from "../reducers/MapDeInit"
+import {mapInit} from "../reducers/MapInit"
+import {mapReducerAtomic} from "../reducers/MapReducer"
+import {sortNode} from "../selectors/MapSelectorUtils"
+import {M, MPartial} from "../state/MapStateTypes"
 
 export let IS_TESTING = false
 export const isArrayOfEqualValues = (array: any[]) => array.every(el => el === array[0])
@@ -21,8 +21,8 @@ export const getTableIndices = (r: number, c: number) => Array(r*c).fill(null).m
 export const filterEmpty = (array: any[]) => array.filter(el => Object.keys(el).length !== 0 && el.hasOwnProperty('nodeId') && el.hasOwnProperty('path'))
 export const generateCharacter = (index: number) => String.fromCharCode('u'.charCodeAt(0) + index)
 export const setIsTesting = () => IS_TESTING = true
-export const testFlow = (test: M, result: M, type: string, payload: object) => {
+export const testFlow = (test: MPartial, result: MPartial, type: string, payload: object) => {
   mapInit(test)
-  mapReducerAtomic(test, type, payload)
-  return expect(mapDeInit(test).sort(sortNode)).toEqual(result.sort(sortNode))
+  mapReducerAtomic(test as M, type, payload)
+  return expect(mapDeInit(test as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
 }

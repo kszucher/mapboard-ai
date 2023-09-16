@@ -1,5 +1,5 @@
 import {setIsTesting, testFlow} from "../utils/Utils"
-import {M} from "../state/MapStateTypes"
+import {MPartial} from "../state/MapStateTypes"
 
 const insertSD_test = [
   {nodeId: 'a', path: ['g']},
@@ -10,7 +10,7 @@ const insertSD_test = [
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 3]},
-] as M
+] as MPartial
 
 const insertSD_result = [
   {nodeId: 'a', path: ['g']},
@@ -22,7 +22,7 @@ const insertSD_result = [
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 3]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 4]},
-] as M
+] as MPartial
 
 const insertSU_test = [
   {nodeId: 'a', path: ['g']},
@@ -33,7 +33,7 @@ const insertSU_test = [
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 3], selected: 1},
-] as M
+] as MPartial
 
 const insertSU_result = [
   {nodeId: 'a', path: ['g']},
@@ -45,14 +45,14 @@ const insertSU_result = [
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
   {nodeId: 't', path: ['r', 0, 'd', 0, 's', 0, 's', 3], selected: 1},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 4]},
-] as M
+] as MPartial
 
 const insertSOR_test = [
   {nodeId: 'a', path: ['g']},
   {nodeId: 'b', path: ['r', 0], selected: 1},
   {nodeId: 'c', path: ['r', 0, 'd', 0]},
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-] as M
+] as MPartial
 
 const insertSOR_result = [
   {nodeId: 'a', path: ['g']},
@@ -60,7 +60,7 @@ const insertSOR_result = [
   {nodeId: 'c', path: ['r', 0, 'd', 0]},
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {nodeId: 't', path: ['r', 0, 'd', 0, 's', 1], selected: 1},
-] as M
+] as MPartial
 
 const insertSO_test = [
   {nodeId: 'a', path: ['g']},
@@ -68,7 +68,7 @@ const insertSO_test = [
   {nodeId: 'c', path: ['r', 0, 'd', 0]},
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0], selected: 1},
   {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
-] as M
+] as MPartial
 
 const insertSO_result = [
   {nodeId: 'a', path: ['g']},
@@ -77,7 +77,7 @@ const insertSO_result = [
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
   {nodeId: 't', path: ['r', 0, 'd', 0, 's', 0, 's', 1], selected: 1},
-] as M
+] as MPartial
 
 const insertCRD_test = [
   {nodeId: 'a', path: ['g']},
@@ -92,7 +92,7 @@ const insertCRD_test = [
   {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
-] as M
+] as MPartial
 
 const insertCRD_result = [
   {nodeId: 'a', path: ['g']},
@@ -109,7 +109,7 @@ const insertCRD_result = [
   {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0]},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1, 's', 0]},
-] as M
+] as MPartial
 
 const insertCRU_test = [
   {nodeId: 'a', path: ['g']},
@@ -124,7 +124,7 @@ const insertCRU_test = [
   {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1], selected: 1},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
-] as M
+] as MPartial
 
 const insertCRU_result = [
   {nodeId: 'a', path: ['g']},
@@ -141,7 +141,7 @@ const insertCRU_result = [
   {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0]},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1], selected: 1},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1, 's', 0]},
-] as M
+] as MPartial
 
 const insertCCR_test = [
   {nodeId: 'a', path: ['g']},
@@ -156,7 +156,7 @@ const insertCCR_test = [
   {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
-] as M
+] as MPartial
 
 const insertCCR_result = [
   {nodeId: 'a', path: ['g']},
@@ -173,7 +173,7 @@ const insertCCR_result = [
   {nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
-] as M
+] as MPartial
 
 const insertCCL_test = [
   {nodeId: 'a', path: ['g']},
@@ -188,7 +188,7 @@ const insertCCL_test = [
   {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1], selected: 1},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
-] as M
+] as MPartial
 
 const insertCCL_result = [
   {nodeId: 'a', path: ['g']},
@@ -205,7 +205,7 @@ const insertCCL_result = [
   {nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2], selected: 1},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
-] as M
+] as MPartial
 
 const insertSCRD_test = [
   {nodeId: 'a', path: ['g']},
@@ -216,7 +216,7 @@ const insertSCRD_test = [
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
-] as M
+] as MPartial
 
 const insertSCRD_result = [
   {nodeId: 'a', path: ['g']},
@@ -229,7 +229,7 @@ const insertSCRD_result = [
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {nodeId: 'u', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
   {nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
-] as M
+] as MPartial
 
 const insertSCRU_test = [
   {nodeId: 'a', path: ['g']},
@@ -240,7 +240,7 @@ const insertSCRU_test = [
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
-] as M
+] as MPartial
 
 const insertSCRU_result = [
   {nodeId: 'a', path: ['g']},
@@ -253,7 +253,7 @@ const insertSCRU_result = [
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
-] as M
+] as MPartial
 
 const insertSCCR_test = [
   {nodeId: 'a', path: ['g']},
@@ -264,7 +264,7 @@ const insertSCCR_test = [
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
-] as M
+] as MPartial
 
 const insertSCCR_result = [
   {nodeId: 'a', path: ['g']},
@@ -277,7 +277,7 @@ const insertSCCR_result = [
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
-] as M
+] as MPartial
 
 const insertSCCL_test = [
   {nodeId: 'a', path: ['g']},
@@ -288,7 +288,7 @@ const insertSCCL_test = [
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
-] as M
+] as MPartial
 
 const insertSCCL_result = [
   {nodeId: 'a', path: ['g']},
@@ -301,14 +301,14 @@ const insertSCCL_result = [
   {nodeId: 'v', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2]},
-] as M
+] as MPartial
 
 const insertSORTable_test = [
   {nodeId: 'a', path: ['g']},
   {nodeId: 'b', path: ['r', 0], selected: 1},
   {nodeId: 'c', path: ['r', 0, 'd', 0]},
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-] as M
+] as MPartial
 
 const insertSORTable_result = [
   {nodeId: 'a', path: ['g']},
@@ -320,7 +320,7 @@ const insertSORTable_result = [
   {nodeId: 'v', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 1]},
   {nodeId: 'w', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 0]},
   {nodeId: 'x', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 1]},
-] as M
+] as MPartial
 
 describe("InsertTests", () => {
   // @ts-ignore
