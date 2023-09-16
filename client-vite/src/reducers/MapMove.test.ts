@@ -10,7 +10,7 @@ const moveSD_test = [
   {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 1], selected: 1},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
-  {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 2], selected: 1},
+  {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 2], selected: 2},
   {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
   {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 3]},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
@@ -28,7 +28,7 @@ const moveSD_result = [
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 2], selected: 1},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
-  {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 3], selected: 1},
+  {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 3], selected: 2},
   {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 4]},
   {nodeId: 'm', path: ['r', 0, 'd', 0, 's', 4, 's', 0]},
@@ -42,7 +42,7 @@ const moveST_test = [
   {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 1]},
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 2]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 3], selected: 1},
-  {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 4], selected: 1},
+  {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 4], selected: 2},
 ] as MPartial
 
 const moveST_result = [
@@ -50,7 +50,7 @@ const moveST_result = [
   {nodeId: 'b', path: ['r', 0]},
   {nodeId: 'c', path: ['r', 0, 'd', 0]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0], selected: 1},
-  {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 1], selected: 1},
+  {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 1], selected: 2},
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 2]},
   {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 3]},
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 4]},
@@ -63,7 +63,7 @@ const moveSU_test = [
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 1]},
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 2], selected: 1},
-  {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 3], selected: 1},
+  {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 3], selected: 2},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 4]},
 ] as MPartial
 
@@ -73,7 +73,7 @@ const moveSU_result = [
   {nodeId: 'c', path: ['r', 0, 'd', 0]},
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 1], selected: 1},
-  {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 2], selected: 1},
+  {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 2], selected: 2},
   {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 3]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 4]},
 ] as MPartial
@@ -83,7 +83,7 @@ const moveSB_test = [
   {nodeId: 'b', path: ['r', 0]},
   {nodeId: 'c', path: ['r', 0, 'd', 0]},
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0], selected: 1},
-  {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 1], selected: 1},
+  {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 1], selected: 2},
   {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 2]},
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 3]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 4]},
@@ -97,7 +97,7 @@ const moveSB_result = [
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1]},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 2]},
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 3], selected: 1},
-  {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 4], selected: 1},
+  {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 4], selected: 2},
 ] as MPartial
 
 const moveSO_test = [
@@ -110,7 +110,7 @@ const moveSO_test = [
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1], selected: 1},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
   {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 1, 's', 1]},
-  {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 2], selected: 1},
+  {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 2], selected: 2},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 2, 's', 1]},
 ] as MPartial
@@ -125,7 +125,7 @@ const moveSO_result = [
   {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 2], selected: 1},
   {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 2, 's', 0]},
   {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 's', 2, 's', 1]},
-  {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 's', 3], selected: 1},
+  {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 's', 3], selected: 2},
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 's', 3, 's', 0]},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 's', 3, 's', 1]},
 ] as MPartial
