@@ -66,9 +66,9 @@ export const copyS = (m: M) => {
 }
 
 export const pasteS = (m: M, insertParentNode: N, insertTargetIndex: number, payload: any) => {
+  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   const cb = JSON.parse(payload) as M
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
-  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   unselectNodes(m)
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
@@ -96,27 +96,27 @@ export const duplicateR = (m: M) => {
 }
 
 export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
+  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   const cb = getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
   deleteS(m)
-  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
   m.sort(sortPath)
 }
 
 export const moveCR = (m: M, insertParentNode: N, insertTargetRowIndex: number) => {
+  const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
   const cb = getXAEO(m).map(n => ({...n, path: ['c', (n.path.at(getX(m).path.length - 2) as number) - getCountXCU(m), n.path.at(getX(m).path.length - 1), ...n.path.slice(getX(m).path.length)]})) as M
   deleteCR(m)
-  const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
   m.forEach(n => ipList.map(ip => isCED(ip, n.path) && n.path.splice(ip.length - 2, 1, n.path.at(ip.length - 2) as number + 1)))
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 'c', (n.path.at(1) as number) + insertTargetRowIndex, (n.path.at(2) as number), ...n.path.slice(3)]})) as M)
   m.sort(sortPath)
 }
 
 export const moveCC = (m: M, insertParentNode: N, insertTargetColumnIndex: number) => {
+  const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
   const cb = getXAEO(m).map(n => ({...n, path: ['c', (n.path.at(getX(m).path.length - 2) as number), (n.path.at(getX(m).path.length - 1) as number) - getCountXCL(m), ...n.path.slice(getX(m).path.length)]})) as M
   deleteCC(m)
-  const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
   m.forEach(n => ipList.map(ip => isCER(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + 1)))
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 'c', (n.path.at(1) as number), (n.path.at(2) as number) + insertTargetColumnIndex, ...n.path.slice(3)]})) as M)
   m.sort(sortPath)
