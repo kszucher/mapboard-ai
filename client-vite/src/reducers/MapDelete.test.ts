@@ -1,6 +1,9 @@
-import {testFlow} from "../utils/Utils"
-import {MPartial} from "../state/MapStateTypes"
+import {sortNode} from "../selectors/MapSelectorUtils"
+import {M, MPartial} from "../state/MapStateTypes"
+import {mapDeInit} from "./MapDeInit"
 import {deleteS, deleteCR, deleteCC} from "./MapDelete"
+import {mapInit} from "./MapInit"
+import {mapReducerAtomic} from "./MapReducer"
 
 const deleteR_test = [
   {nodeId: 'a', path: ['g'], connections: [{fromNodeId: 'b', toNodeId: 'e'}, {fromNodeId: 'b', toNodeId: 'h'}]},
@@ -104,6 +107,12 @@ const deleteCC_result = [
   {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0], selected: 2},
   {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
 ] as MPartial
+
+const testFlow = (test: MPartial, result: MPartial, type: string, payload: object) => {
+  mapInit(test)
+  mapReducerAtomic(test as M, type, payload)
+  return expect(mapDeInit(test as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+}
 
 describe("Delete_tests", () => {
   test('deleteR', () => testFlow(deleteR_test, deleteR_result, 'deleteR', {}))

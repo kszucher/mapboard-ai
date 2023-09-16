@@ -1,6 +1,9 @@
-import {testFlow} from "../utils/Utils"
+import {sortNode} from "../selectors/MapSelectorUtils"
 import {setIsTesting} from "../utils/Utils"
-import {MPartial} from "../state/MapStateTypes"
+import {M, MPartial} from "../state/MapStateTypes"
+import {mapDeInit} from "./MapDeInit"
+import {mapInit} from "./MapInit"
+import {mapReducerAtomic} from "./MapReducer"
 
 const moveSD_test = [
   {nodeId: 'a', path: ['g']},
@@ -431,6 +434,12 @@ const transpose_result = [
   {nodeId: 'o', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
   {nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1, 's', 0]},
 ] as MPartial
+
+const testFlow = (test: MPartial, result: MPartial, type: string, payload: object) => {
+  mapInit(test)
+  mapReducerAtomic(test as M, type, payload)
+  return expect(mapDeInit(test as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+}
 
 describe("Move_tests", () => {
   // @ts-ignore

@@ -1,5 +1,9 @@
-import {setIsTesting, testFlow} from "../utils/Utils"
-import {MPartial} from "../state/MapStateTypes"
+import {sortNode} from "../selectors/MapSelectorUtils"
+import {setIsTesting} from "../utils/Utils"
+import {M, MPartial} from "../state/MapStateTypes"
+import {mapDeInit} from "./MapDeInit"
+import {mapInit} from "./MapInit"
+import {mapReducerAtomic} from "./MapReducer"
 
 const insertSD_test = [
   {nodeId: 'a', path: ['g']},
@@ -321,6 +325,12 @@ const insertSORTable_result = [
   {nodeId: 'w', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 0]},
   {nodeId: 'x', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 1]},
 ] as MPartial
+
+const testFlow = (test: MPartial, result: MPartial, type: string, payload: object) => {
+  mapInit(test)
+  mapReducerAtomic(test as M, type, payload)
+  return expect(mapDeInit(test as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+}
 
 describe("InsertTests", () => {
   // @ts-ignore
