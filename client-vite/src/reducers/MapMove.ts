@@ -87,12 +87,12 @@ export const duplicateS = (m: M) => {
   cb.forEach((n, i) => Object.assign(n, {nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8)}))
   unselectNodes(m)
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
-  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
+  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M) // nid assign?
   m.sort(sortPath)
 }
 
 export const duplicateR = (m: M) => {
-
+  // TODO this, then the atomic copy-paste (using isRDO, etc.)
 }
 
 export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {

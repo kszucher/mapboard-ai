@@ -3,31 +3,29 @@ import {getXSCC0, getXSCR0, getSIPL, getNodeByPath, getXSCYY, sortPath, isXR, ge
 import {GptData} from "../state/NodeApiStateTypes"
 
 export const generateLlmInfo = (m: M) => ({
-  llmInfo: {
-    inputData: [
-      ...getG(m).connections.filter(connection => connection.toNodeId === getX(m).nodeId).map(connection => getNodeById(m, connection.fromNodeId)).map(n => ({
-        dataType: n.llmDataType,
-        dataId: n.llmDataId,
-        dataLabel: n.content,
-        data: n.llmDataType === 'text'
-          ? getNRD0SO(m, n).filter(n => getCountNSO1(m, n) === 0).map(n => ([...getSIPL(n.path), n.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
-          : ''
-      })),
-      {
-        dataType: 'text',
-        dataId: '',
-        dataLabel: getX(m).content,
-        data: getXRD0SO(m).filter(n => getCountNSO1(m, n) === 0).map(n => ([...getSIPL(n.path), n.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
-      }
-    ],
-    outputData: {
+  inputContext: [
+    ...getG(m).connections.filter(connection => connection.toNodeId === getX(m).nodeId).map(connection => getNodeById(m, connection.fromNodeId)).map(n => ({
+      dataType: n.llmDataType,
+      dataId: n.llmDataId,
+      dataLabel: n.content,
+      data: n.llmDataType === 'text'
+        ? getNRD0SO(m, n).filter(n => getCountNSO1(m, n) === 0).map(n => ([...getSIPL(n.path), n.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
+        : [[]]
+    })),
+    {
       dataType: 'text',
       dataId: '',
       dataLabel: getX(m).content,
-      data: getXRD0SO(m).filter(n => getCountNSO1(m, n) === 0).map(n => ([...getSIPL(n.path), n.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''))),
-      responseJsonSchema: getResponseSchema({keywords: {type: "array", readOnly: true}, suggestions: {type: "array"}, insertParentId: {type: "string", readOnly: true}}),
-      responseJson: getXRD0SO(m).filter(n => getCountNSO1(m, n) === 0).map(n => ({keywords: [...getSIPL(n.path), n.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''), suggestions: [], insertParentId: n.nodeId}))
+      data: getXRD0SO(m).filter(n => getCountNSO1(m, n) === 0).map(n => ([...getSIPL(n.path), n.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
     }
+  ],
+  outputContext: {
+    dataType: 'text',
+    dataId: '',
+    dataLabel: getX(m).content,
+    data: getXRD0SO(m).filter(n => getCountNSO1(m, n) === 0).map(n => ([...getSIPL(n.path), n.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''))),
+    responseJsonSchema: getResponseSchema({keywords: {type: "array", readOnly: true}, suggestions: {type: "array"}, insertParentId: {type: "string", readOnly: true}}),
+    responseJson: getXRD0SO(m).filter(n => getCountNSO1(m, n) === 0).map(n => ({keywords: [...getSIPL(n.path), n.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''), suggestions: [], insertParentId: n.nodeId}))
   }
 })
 
