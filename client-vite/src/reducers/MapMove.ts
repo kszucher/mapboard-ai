@@ -118,35 +118,33 @@ export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   m.sort(sortPath)
 }
 
-export const movexS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
-  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
-  const xaLength = getXA(m).length
-  m.splice(0, m.length, ... [
-    ...m.filter(n =>!getXA(m).some(xn => isSEODO(xn.path, n.path)) && !isSEODO(ip, n.path)),
-    ...m.filter(n =>
-      isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
-      (n.path.at(ip.length - 1) as number) >= (insertTargetIndex + xaLength) &&
-      (n.path.at(ip.length - 1) as number) >= (getXSF(m).path.at(-1) as number + xaLength)
-    ),
-    ...m.filter(n =>
-      getXA(m).some(xn => isSEO(xn.path, n.path))
-    ).map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m) + insertTargetIndex, ...n.path.slice(getX(m).path.length)] as P})),
-    ...m.filter(n =>
-      // !getXA(m).some(xn => isSEO(xn.path, n.path)) && // probably not needed
-      isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
-      (n.path.at(ip.length - 1) as number) >= (getXSF(m).path.at(-1) as number + xaLength) &&
-      (n.path.at(ip.length - 1) as number) < insertTargetIndex + xaLength
-    ).map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(getX(m).path.length - 1) as number) - xaLength, ...n.path.slice(getX(m).path.length)] as P})),
-    ...m.filter(n =>
-      // !getXA(m).some(xn => isSEO(xn.path, n.path)) && // probably not needed
-      isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
-      (n.path.at(ip.length - 1) as number) < (getXSF(m).path.at(-1) as number) &&
-      (n.path.at(ip.length - 1) as number) >= insertTargetIndex
-    ).map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(getX(m).path.length - 1) as number) + xaLength, ...n.path.slice(getX(m).path.length)] as P}))
-  ])
-  m.sort(sortPath)
-  console.log(m.slice().sort(sortNode).map(el =>el.nodeId))
-}
+// export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
+//   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
+//   const xaLength = getXA(m).length
+//   m.splice(0, m.length, ... [
+//     ...m.filter(n =>!getXA(m).some(xn => isSEODO(xn.path, n.path)) && !isSEODO(ip, n.path)),
+//     ...m.filter(n =>
+//       isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
+//       (n.path.at(ip.length - 1) as number) >= (insertTargetIndex + xaLength) &&
+//       (n.path.at(ip.length - 1) as number) >= (getXSF(m).path.at(-1) as number + xaLength)
+//     ),
+//     ...m.filter(n =>
+//       getXA(m).some(xn => isSEO(xn.path, n.path))
+//     ).map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m) + insertTargetIndex, ...n.path.slice(getX(m).path.length)] as P})),
+//     ...m.filter(n =>
+//       isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
+//       (n.path.at(ip.length - 1) as number) >= (getXSF(m).path.at(-1) as number + xaLength) &&
+//       (n.path.at(ip.length - 1) as number) < insertTargetIndex + xaLength
+//     ).map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(ip.length - 1) as number) - xaLength, ...n.path.slice(ip.length)] as P})),
+//     ...m.filter(n =>
+//       isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
+//       (n.path.at(ip.length - 1) as number) < (getXSF(m).path.at(-1) as number) &&
+//       (n.path.at(ip.length - 1) as number) >= insertTargetIndex
+//     ).map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(ip.length - 1) as number) + xaLength, ...n.path.slice(ip.length)] as P}))
+//   ])
+//   m.sort(sortPath)
+//   console.log(m.slice().sort(sortNode).map(el =>el.nodeId))
+// }
 
 export const moveCR = (m: M, insertParentNode: N, insertTargetRowIndex: number) => {
   const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)

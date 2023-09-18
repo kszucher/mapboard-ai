@@ -142,7 +142,7 @@ describe("Move_tests", () => {
     {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 4]},
     {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 4, 's', 0]},
   ] as MPartial,'moveST', {}))
-  
+
   test('moveSU', () => testFlow([
     {nodeId: 'a', path: ['g']},
     {nodeId: 'b', path: ['r', 0]},
@@ -241,8 +241,9 @@ describe("Move_tests", () => {
     {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 2], selected: 1},
     {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 3], selected: 2},
     {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 's', 3, 's', 0]},
-    {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 1]},
-    {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
+    {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 's', 4]},
+    {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 1]},
+    {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
   ] as MPartial, [
     {nodeId: 'a', path: ['g']},
     {nodeId: 'b', path: ['r', 0]},
@@ -250,11 +251,12 @@ describe("Move_tests", () => {
     {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
     {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
     {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
+    {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
     {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1], selected: 1},
     {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 2], selected: 2},
     {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
-    {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 3]},
-    {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
+    {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 3]},
+    {nodeId: 'l', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
   ] as MPartial,'moveSI', {}))
 
   test('moveSIR', () => testFlow([
