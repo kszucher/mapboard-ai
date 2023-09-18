@@ -1,10 +1,27 @@
+import isEqual from "react-fast-compare";
 import {mapDeInit} from "./MapDeInit";
 import {insertTable} from "./MapInsert"
 import {generateCharacter, genHash, IS_TESTING} from "../utils/Utils"
 import {M, N, P} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteR, deleteS} from "./MapDelete"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {getReselectS, getXA, sortPath, isCED, getCountNSCH, getXAEO, getX, getCountXCU, getCountXCL, getCountNSCV, isCER, isSEODO, getCountXASU, getXSI1} from "../selectors/MapSelectorUtils"
+import {
+  getReselectS,
+  getXA,
+  sortPath,
+  isCED,
+  getCountNSCH,
+  getXAEO,
+  getX,
+  getCountXCU,
+  getCountXCL,
+  getCountNSCV,
+  isCER,
+  isSEODO,
+  getCountXASU,
+  getXSI1,
+  getXSL, isSEO
+} from "../selectors/MapSelectorUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -114,6 +131,48 @@ export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   deleteS(m)
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
+  m.sort(sortPath)
+}
+
+export const moveSX = (m: M, insertParentNode: N, insertTargetIndex: number) => {
+  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
+  const xaLength = getXA(m).length
+
+  console.log(ip)
+
+  const newM =[
+    ...m
+      .filter(n =>
+          // !getXA(m).some(xn => isSEODO(xn.path, n.path)) ||
+          (
+            isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
+            (n.path.at(ip.length - 1) as number) >= (insertTargetIndex + xaLength)
+
+          )
+      )
+    ,
+    // ...m
+    //   .filter(n => getXA(m).some(xn => isSEO(xn.path, n.path)))
+    //   .map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m) + insertTargetIndex, ...n.path.slice(getX(m).path.length)] as P}))
+    // ,
+    // ...m
+    //   .filter(n =>
+    //     !getXA(m).some(xn => isSEO(xn.path, n.path)) &&
+    //     isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
+    //     (n.path.at(ip.length - 1) as number) >= insertTargetIndex &&
+    //     (n.path.at(ip.length - 1) as number) < (insertTargetIndex + xaLength)
+    //   )
+    //   .map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(getX(m).path.length - 1) as number) - xaLength, ...n.path.slice(getX(m).path.length)] as P}))
+    //
+
+  ] as M
+
+
+  console.log(newM.map(el =>el.nodeId))
+
+  m.splice(0, m.length, ...newM)
+
+
   m.sort(sortPath)
 }
 
