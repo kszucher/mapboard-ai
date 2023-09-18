@@ -84,15 +84,28 @@ export const duplicateS = (m: M) => {
   const insertTargetIndex = getCountXASU(m) + getXA(m).length
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   const cb = getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
-  cb.forEach((n, i) => Object.assign(n, {nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8)}))
   unselectNodes(m)
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
-  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M) // nid assign?
+  m.push(...cb.map((n, i) => ({...n,
+    nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8),
+    path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]
+  })) as M)
   m.sort(sortPath)
 }
 
 export const duplicateR = (m: M) => {
-  // TODO this, then the atomic copy-paste (using isRDO, etc.)
+  // // TODO this, then the atomic copy-paste (using isRDO, etc.)
+  //
+  // const insertParentNode = getXSI1(m)
+  // const insertTargetIndex = getCountXASU(m) + getXA(m).length
+  // const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
+  // const cb = getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
+  // cb.forEach((n, i) => Object.assign(n, {nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8)}))
+  // unselectNodes(m)
+  // m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + getXA(cb).length))
+  // m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M) // nid assign?
+  // m.sort(sortPath)
+
 }
 
 export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
