@@ -20,7 +20,7 @@ import {
   isSEODO,
   getCountXASU,
   getXSI1,
-  getXSL, isSEO
+  getXSL, isSEO, getXSF
 } from "../selectors/MapSelectorUtils"
 
 const templateReady = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
@@ -134,7 +134,7 @@ export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   m.sort(sortPath)
 }
 
-export const moveSX = (m: M, insertParentNode: N, insertTargetIndex: number) => {
+export const movesS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   const xaLength = getXA(m).length
 
@@ -143,18 +143,21 @@ export const moveSX = (m: M, insertParentNode: N, insertTargetIndex: number) => 
   const newM =[
     ...m
       .filter(n =>
-          // !getXA(m).some(xn => isSEODO(xn.path, n.path)) ||
-          (
-            isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
-            (n.path.at(ip.length - 1) as number) >= (insertTargetIndex + xaLength)
-
-          )
+          !getXA(m).some(xn => isSEODO(xn.path, n.path))
+          // ||
+          // (
+          //   isEqual(n.path.slice(0, ip.length - 1), ip.slice(0, -1)) &&
+          //   (n.path.at(ip.length - 1) as number) >= (insertTargetIndex + xaLength) &&
+          //   (n.path.at(ip.length - 1) as number) >= (getXSF(m).path.at(-1) as number + xaLength)
+          // )
       )
     ,
+
     // ...m
     //   .filter(n => getXA(m).some(xn => isSEO(xn.path, n.path)))
     //   .map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m) + insertTargetIndex, ...n.path.slice(getX(m).path.length)] as P}))
     // ,
+
     // ...m
     //   .filter(n =>
     //     !getXA(m).some(xn => isSEO(xn.path, n.path)) &&
@@ -163,7 +166,7 @@ export const moveSX = (m: M, insertParentNode: N, insertTargetIndex: number) => 
     //     (n.path.at(ip.length - 1) as number) < (insertTargetIndex + xaLength)
     //   )
     //   .map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(getX(m).path.length - 1) as number) - xaLength, ...n.path.slice(getX(m).path.length)] as P}))
-    //
+
 
   ] as M
 
