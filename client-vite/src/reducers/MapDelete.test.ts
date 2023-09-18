@@ -20,7 +20,7 @@ const deleteR_test = [
 
 const deleteR_result = [
   {nodeId: 'a', path: ['g'], connections: [{fromNodeId: 'b', toNodeId: 'h'}]},
-  {nodeId: 'b', path: ['r', 0]},
+  {nodeId: 'b', path: ['r', 0], selected: 1},
   {nodeId: 'c', path: ['r', 0, 'd', 0]},
   {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
   {nodeId: 'h', path: ['r', 1]},
