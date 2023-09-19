@@ -72,6 +72,10 @@ export const pasteR = (m: M) => {
 
 }
 
+export const duplicateR = (m: M) => {
+
+}
+
 export const duplicateS = (m: M) => {
   const ip = [...getXSI1(m).path, 's', getCountXASU(m) + getXA(m).length] as P
   const cb = structuredClone(sToCb(m))
@@ -81,11 +85,6 @@ export const duplicateS = (m: M) => {
   insertPathFromIpS(cb, ip)
   m.push(...cb)
   m.sort(sortPath)
-}
-
-export const duplicateR = (m: M) => {
-  // TODO this, then the atomic copy-paste (using isRDO, etc.)
-
 }
 
 export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {

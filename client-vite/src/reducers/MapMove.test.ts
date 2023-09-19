@@ -15,36 +15,6 @@ describe("Move_tests", () => {
   // @ts-ignore
   beforeEach(() => setIsTesting())
 
-  test('duplicateS', () => testFlow([
-    {nodeId: 'a', path: ['g']},
-    {nodeId: 'b', path: ['r', 0]},
-    {nodeId: 'c', path: ['r', 0, 'd', 0]},
-    {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-    {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
-    {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 1], selected: 1},
-    {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
-    {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 2], selected: 2},
-    {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
-    {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 3]},
-    {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
-  ] as MPartial, [
-    {nodeId: 'a', path: ['g']},
-    {nodeId: 'b', path: ['r', 0]},
-    {nodeId: 'c', path: ['r', 0, 'd', 0]},
-    {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-    {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
-    {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 1]},
-    {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
-    {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 2]},
-    {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
-    {nodeId: 'u', path: ['r', 0, 'd', 0, 's', 3], selected: 1},
-    {nodeId: 'v', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
-    {nodeId: 'w', path: ['r', 0, 'd', 0, 's', 4], selected: 2},
-    {nodeId: 'x', path: ['r', 0, 'd', 0, 's', 4, 's', 0]},
-    {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 5]},
-    {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 5, 's', 0]},
-  ] as MPartial, 'duplicateS', {}))
-
   test('duplicateR', () => testFlow([
     {nodeId: 'a', path: ['g'], connections: [['b', 'e'], ['b', 'h'], ['b', 'k'], ['h', 'k']].map(el => ({fromNodeId: el[0], toNodeId: el[1]}))},
     {nodeId: 'b', path: ['r', 0]},
@@ -80,6 +50,36 @@ describe("Move_tests", () => {
     {nodeId: 'y', path: ['r', 5, 'd', 0]},
     {nodeId: 'z', path: ['r', 5, 'd', 0, 's', 0]},
   ] as MPartial, 'duplicateR', {}))
+
+  test('duplicateS', () => testFlow([
+    {nodeId: 'a', path: ['g']},
+    {nodeId: 'b', path: ['r', 0]},
+    {nodeId: 'c', path: ['r', 0, 'd', 0]},
+    {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+    {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+    {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 1], selected: 1},
+    {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
+    {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 2], selected: 2},
+    {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
+    {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 3]},
+    {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
+  ] as MPartial, [
+    {nodeId: 'a', path: ['g']},
+    {nodeId: 'b', path: ['r', 0]},
+    {nodeId: 'c', path: ['r', 0, 'd', 0]},
+    {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+    {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+    {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 1]},
+    {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1, 's', 0]},
+    {nodeId: 'h', path: ['r', 0, 'd', 0, 's', 2]},
+    {nodeId: 'i', path: ['r', 0, 'd', 0, 's', 2, 's', 0]},
+    {nodeId: 'u', path: ['r', 0, 'd', 0, 's', 3], selected: 1},
+    {nodeId: 'v', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
+    {nodeId: 'w', path: ['r', 0, 'd', 0, 's', 4], selected: 2},
+    {nodeId: 'x', path: ['r', 0, 'd', 0, 's', 4, 's', 0]},
+    {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 5]},
+    {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 5, 's', 0]},
+  ] as MPartial, 'duplicateS', {}))
 
   test('moveSD', () => testFlow([
     {nodeId: 'a', path: ['g']},
