@@ -1,5 +1,5 @@
 import {M, N} from "../state/MapStateTypes"
-import {getNSI1, getX, isR} from "../selectors/MapSelectorUtils"
+import {getNSI1, getX, isR} from "../selectors/MapSelector"
 
 export const unselectNodes = (m: M) => m.forEach(n => n.path.length > 1 && Object.assign(n, {selected: 0, selection: 's'}))
 

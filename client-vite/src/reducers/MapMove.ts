@@ -1,4 +1,4 @@
-import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectS, getXA, getXSI1, rToCb, sortPath, sToCb} from "../selectors/MapSelectorUtils"
+import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectS, getXA, getXSI1, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, N, P} from "../state/MapStateTypes"
 import {generateCharacter, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"

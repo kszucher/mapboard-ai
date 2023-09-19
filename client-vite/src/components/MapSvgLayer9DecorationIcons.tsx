@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {AppDispatch, RootState} from "../reducers/EditorReducer"
-import {getRL} from "../selectors/MapSelectorUtils"
+import {getRL} from "../selectors/MapSelector"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {adjustIcon} from "../utils/Utils"
 import {mSelector} from "../state/EditorState"

@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {getMapX, getMapY, setScrollLeftAnimated} from "./MapDivUtils"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
-import {getG} from "../selectors/MapSelectorUtils"
+import {getG} from "../selectors/MapSelector"
 
 const ZOOM_INTENSITY = 0.2
 

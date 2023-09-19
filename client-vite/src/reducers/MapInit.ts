@@ -1,6 +1,6 @@
 import {GSaveOptional, GSaveNever, GPartial, NSaveAlways, NSaveOptional, NSaveNever, M, MPartial} from "../state/MapStateTypes"
 import {gSaveAlways, gSaveNever, gSaveOptional, nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapState"
-import {getNodeByPath, isG} from "../selectors/MapSelectorUtils"
+import {getNodeByPath, isG} from "../selectors/MapSelector"
 import {genHash} from "../utils/Utils"
 
 export const mapInit = (m: MPartial) => {

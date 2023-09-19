@@ -1,4 +1,4 @@
-import {sortNode} from "../selectors/MapSelectorUtils"
+import {sortNode} from "../selectors/MapSelector"
 import {setIsTesting} from "../utils/Utils"
 import {M, MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"

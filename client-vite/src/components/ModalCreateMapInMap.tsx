@@ -4,7 +4,7 @@ import { Button, Modal, Typography } from '@mui/material'
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {PageState} from "../state/Enums"
 import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {getX} from "../selectors/MapSelectorUtils"
+import {getX} from "../selectors/MapSelector"
 import {getMapId} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 

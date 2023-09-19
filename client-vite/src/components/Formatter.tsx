@@ -9,7 +9,7 @@ import {IconButton} from "./IconButton";
 import {FBorderIcon, FFillIcon, SBorderIcon, SFillIcon, TextIcon, VectorSplineIcon} from "./IconButtonSvg"
 import {actions, AppDispatch, RootState} from '../reducers/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
-import {getPropXA, getX, isXR, isXS} from "../selectors/MapSelectorUtils"
+import {getPropXA, getX, isXR, isXS} from "../selectors/MapSelector"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 

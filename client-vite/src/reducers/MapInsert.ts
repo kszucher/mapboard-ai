@@ -1,7 +1,7 @@
 import {GN, M, N, P} from "../state/MapStateTypes"
 import {getInsertTemplate} from "./MapInsertTemplates"
 import {unselectNodes} from "./MapSelect"
-import {getCountNSCV, getCountNSCH, getX, sortPath, isCED, isCER, isSEODO} from "../selectors/MapSelectorUtils"
+import {getCountNSCV, getCountNSCH, getX, sortPath, isCED, isCER, isSEODO} from "../selectors/MapSelector"
 import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
 
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {

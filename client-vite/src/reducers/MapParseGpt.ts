@@ -1,6 +1,6 @@
 import {M} from "../state/MapStateTypes"
 import {insertS} from "./MapInsert"
-import {getCountNSO1, getNodeById} from "../selectors/MapSelectorUtils"
+import {getCountNSO1, getNodeById} from "../selectors/MapSelector"
 
 const cleanSuggestion = (suggestion: string) => suggestion.startsWith('$') ? 'USD' + suggestion.slice(1) : suggestion
 

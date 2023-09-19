@@ -1,5 +1,5 @@
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {getNodeByPath, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountNSO2, getCountNCO2, getRi, getG, getPathDir, getNSI1, getNSI2} from "../selectors/MapSelectorUtils"
+import {getNodeByPath, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountNSO2, getCountNCO2, getRi, getG, getPathDir, getNSI1, getNSI2} from "../selectors/MapSelector"
 import {G, M, N} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {

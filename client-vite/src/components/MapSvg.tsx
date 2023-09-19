@@ -1,6 +1,6 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountNCO1, getG, getR0, isXACC, isXACR, isXC} from "../selectors/MapSelectorUtils"
+import {getCountNCO1, getG, getR0, isXACC, isXACR, isXC} from "../selectors/MapSelector"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {getMapX, getMapY} from "./MapDivUtils"
