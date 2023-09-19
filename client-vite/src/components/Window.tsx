@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getX, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath, getXRD0, getXRD1} from "../selectors/MapSelector"
+import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getX, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath, getXRD0, getXRD1, isXAR} from "../selectors/MapSelector"
 import {isUrl} from "../utils/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
@@ -54,8 +54,9 @@ export const Window: FC = () => {
     ckm === '---' && e.code === 'Escape' && dispatch(actions.mapAction({type: 'selectR0', payload: null}))
     ckm === 'c--' && e.code === 'KeyA' && dispatch(actions.mapAction({type: 'selectall', payload: null}))
     ckm === 'c--' && e.code === 'KeyM' && dispatch(actions.mapAction({type: 'createMapInMapDialog', payload: null}))
-    ckm === 'c--' && e.code === 'KeyC' && isXR(m) && dispatch(actions.mapAction({type: 'copyR', payload: null}))
+    ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && dispatch(actions.mapAction({type: 'copyR', payload: null}))
     ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && dispatch(actions.mapAction({type: 'copyS', payload: null}))
+    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && dispatch(actions.mapAction({type: 'cutR', payload: null}))
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && dispatch(actions.mapAction({type: 'cutS', payload: null}))
     ckm === 'c--' && e.code === 'KeyZ' && dispatch(actions.mapAction({type: 'redo', payload: null}))
     ckm === 'c--' && e.code === 'KeyY' && dispatch(actions.mapAction({type: 'undo', payload: null}))

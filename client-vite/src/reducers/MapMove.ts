@@ -1,8 +1,8 @@
-import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectS, getXA, getXSI1, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectR, getReselectS, getXA, getXSI1, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, N, P} from "../state/MapStateTypes"
 import {generateCharacter, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
-import {deleteCC, deleteCR, deleteS} from "./MapDelete"
+import {deleteCC, deleteCR, deleteR, deleteS} from "./MapDelete"
 import {insertTable} from "./MapInsert"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
@@ -30,11 +30,11 @@ const cbSave = (cb: any) => {
 }
 
 export const cutR = (m: M) => {
-  // const reselect = getReselectR(m)
-  // const cb = structuredClone(sToCb(m)) as M
-  // cbSave(cb)
-  // deleteR(m)
-  // selectNode(m, reselect, 's')
+  const reselect = getReselectR(m)
+  const cb = structuredClone(sToCb(m)) as M
+  cbSave(cb)
+  deleteR(m)
+  selectNode(m, reselect, 's')
 }
 
 export const cutS = (m: M) => {

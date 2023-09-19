@@ -34,6 +34,7 @@ export const isNS = (m: M, n: N): boolean => isS(n.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
 export const isXDS = (m: M): boolean => getX(m).path.length === 6
+export const isXAR = (m: M): boolean => getXA(m).map(n => n.path).every(p => isR(p))
 const isXASV = (m: M): boolean => isS(getX(m).path) && getXA(m).map(n => n.path).every(p => isSV(getX(m).path, p))
 export const isXASVN = (m: M): boolean => isXASV(m) && ((getXSL(m).path.at(-1) as number) - (getXSF(m).path.at(-1) as number)) === getXA(m).length - 1
 export const isXC = (m: M): boolean => isC(getX(m).path) && getXA(m).length === 1
