@@ -11,7 +11,8 @@ const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringi
 
 const clearNodeId = (m: M) => m.forEach((n, i) => n.nodeId = IS_TESTING ? generateCharacter(i) : 'node' + genHash(8))
 const insertPathFromIpS = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path : [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]}))
-
+const insertPathFromIpCr = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path: [...ip.slice(0, -3), 'c', (n.path.at(1) as number) + (ip.at(-2) as number), (n.path.at(2) as number), ...n.path.slice(3)]}))
+const insertPathFromIpCc = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path: [...ip.slice(0, -3), 'c', (n.path.at(1) as number), (n.path.at(2) as number) + (ip.at(-1) as number), ...n.path.slice(3)]}))
 
 const cbSave = (cb: any) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
@@ -62,7 +63,8 @@ export const pasteS = (m: M, insertParentNode: N, insertTargetIndex: number, pay
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
   unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
-  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
+  insertPathFromIpS(cb, ip)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
@@ -77,24 +79,14 @@ export const duplicateS = (m: M) => {
   const cb = structuredClone(sToCb(m))
   unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
-  insertPathFromIpS(cb, ip)
   clearNodeId(cb)
+  insertPathFromIpS(cb, ip)
   m.push(...cb)
   m.sort(sortPath)
 }
 
 export const duplicateR = (m: M) => {
-  // // TODO this, then the atomic copy-paste (using isRDO, etc.)
-  //
-  // const insertParentNode = getXSI1(m)
-  // const insertTargetIndex = getCountXASU(m) + getXA(m).length
-  // const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
-  // const cb = structuredClone(sToCb(m))
-  // cb.forEach((n, i) => Object.assign(n, {nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8)}))
-  // unselectNodes(m)
-  // makeSpaceFromS(m, ip, getXA(cb).length)
-  // m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M) // nid assign?
-  // m.sort(sortPath)
+  // TODO this, then the atomic copy-paste (using isRDO, etc.)
 
 }
 
@@ -103,27 +95,30 @@ export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   const cb = structuredClone(sToCb(m))
   deleteS(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
-
-  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
+  insertPathFromIpS(cb, ip)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
 export const moveCR = (m: M, insertParentNode: N, insertTargetRowIndex: number) => {
+  const ip = [...insertParentNode.path, 'c', insertTargetRowIndex, 0] as P
   const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
   const cb = structuredClone(crToCb(m))
   deleteCR(m)
   makeSpaceFromCr(m, ipList, 1)
-
-  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 'c', (n.path.at(1) as number) + insertTargetRowIndex, (n.path.at(2) as number), ...n.path.slice(3)]})) as M)
+  insertPathFromIpCr(cb, ip)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
 export const moveCC = (m: M, insertParentNode: N, insertTargetColumnIndex: number) => {
+  const ip = [...insertParentNode.path, 'c', 0, insertTargetColumnIndex] as P
   const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
   const cb = structuredClone(ccToCb(m))
   deleteCC(m)
   makeSpaceFromCc(m, ipList, 1)
-  m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 'c', (n.path.at(1) as number), (n.path.at(2) as number) + insertTargetColumnIndex, ...n.path.slice(3)]})) as M)
+  insertPathFromIpCc(cb, ip)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
