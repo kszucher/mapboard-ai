@@ -166,7 +166,7 @@ export const getReselectS = (m: M): N => getCountXASU(m) ? getNodeByPath(m, getS
 export const getReselectCR = (m: M): M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXACD1(m) : [getNodeByPath(m, getXSI1(m).path)] )
 export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXACR1(m) : [getNodeByPath(m, getXSI1(m).path)] )
 
-export const rToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['r', (n.path.at(getX(m).path.length - 1) as number), ...n.path.slice(getX(m).path.length)]})) as M
+export const rToCb = (m: M) => getXA(m).map(el => el.path.at(1)).map(ri => m.filter(n => n.path.at(1) === ri)).map((m, i) => m.map(n => ({...n, path: ['r', i, ...n.path.slice(2)]}))).flat() as M
 export const sToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
 export const crToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['c', (n.path.at(getX(m).path.length - 2) as number) - getCountXCU(m), n.path.at(getX(m).path.length - 1), ...n.path.slice(getX(m).path.length)]})) as M
 export const ccToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['c', (n.path.at(getX(m).path.length - 2) as number), (n.path.at(getX(m).path.length - 1) as number) - getCountXCL(m), ...n.path.slice(getX(m).path.length)]})) as M
