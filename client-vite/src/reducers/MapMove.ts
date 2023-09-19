@@ -1,21 +1,12 @@
-import {mapDeInit} from "./MapDeInit"
-import {insertTable} from "./MapInsert"
-import {generateCharacter, genHash, IS_TESTING} from "../utils/Utils"
+import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectS, getXA, getXSI1, makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS, rToCb, sortPath, sToCb} from "../selectors/MapSelectorUtils"
 import {M, N, P} from "../state/MapStateTypes"
+import {generateCharacter, genHash, IS_TESTING} from "../utils/Utils"
+import {mapDeInit} from "./MapDeInit"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
+import {insertTable} from "./MapInsert"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
-import {getReselectS, getXA, sortPath, isCED, getCountNSCH, getXAEO, getX, getCountXCU, getCountXCL, getCountNSCV, isCER, isSEODO, getCountXASU, getXSI1, isSEO, getXSF, sortNode} from "../selectors/MapSelectorUtils"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
-
-const rToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['r', (n.path.at(getX(m).path.length - 1) as number), ...n.path.slice(getX(m).path.length)]})) as M
-const sToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['s', (n.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...n.path.slice(getX(m).path.length)]})) as M
-const crToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['c', (n.path.at(getX(m).path.length - 2) as number) - getCountXCU(m), n.path.at(getX(m).path.length - 1), ...n.path.slice(getX(m).path.length)]})) as M
-const ccToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['c', (n.path.at(getX(m).path.length - 2) as number), (n.path.at(getX(m).path.length - 1) as number) - getCountXCL(m), ...n.path.slice(getX(m).path.length)]})) as M
-
-const makeSpaceFromS = (m: M, ip: P, length: number) => m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + length))
-const makeSpaceFromCr = (m: M, ipList: P[], length: number) => m.forEach(n => ipList.map(ip => isCED(ip, n.path) && n.path.splice(ip.length - 2, 1, n.path.at(ip.length - 2) as number + length)))
-const makeSpaceFromCc = (m: M, ipList: P[], length: number) => m.forEach(n => ipList.map(ip => isCER(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + length)))
 
 const showTemplate = (m: M) => {
   console.log(
