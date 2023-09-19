@@ -60,9 +60,9 @@ export const copyS = (m: M) => {
 export const pasteS = (m: M, insertParentNode: N, insertTargetIndex: number, payload: any) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   const cb = JSON.parse(payload) as M
-  cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
   unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
+  clearNodeId(cb)
   insertPathFromIpS(cb, ip)
   m.push(...cb)
   m.sort(sortPath)
