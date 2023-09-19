@@ -73,9 +73,7 @@ export const pasteR = (m: M) => {
 }
 
 export const duplicateS = (m: M) => {
-  const insertParentNode = getXSI1(m)
-  const insertTargetIndex = getCountXASU(m) + getXA(m).length
-  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
+  const ip = [...getXSI1(m).path, 's', getCountXASU(m) + getXA(m).length] as P
   const cb = structuredClone(sToCb(m))
   unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
