@@ -5,44 +5,6 @@ import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
 import {mapReducerAtomic} from "./MapReducer"
 
-const duplicateR_test = [
-  {nodeId: 'a', path: ['g'], connections: [['b', 'e'], ['b', 'h'], ['b', 'k'], ['h', 'k']].map(el => ({fromNodeId: el[0], toNodeId: el[1]}))},
-  {nodeId: 'b', path: ['r', 0]},
-  {nodeId: 'c', path: ['r', 0, 'd', 0]},
-  {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {nodeId: 'e', path: ['r', 1]},
-  {nodeId: 'f', path: ['r', 1, 'd', 0]},
-  {nodeId: 'g', path: ['r', 1, 'd', 0, 's', 0]},
-  {nodeId: 'h', path: ['r', 2], selected: 1},
-  {nodeId: 'i', path: ['r', 2, 'd', 0]},
-  {nodeId: 'j', path: ['r', 2, 'd', 0, 's', 0]},
-  {nodeId: 'k', path: ['r', 3], selected: 2},
-  {nodeId: 'l', path: ['r', 3, 'd', 0]},
-  {nodeId: 'm', path: ['r', 3, 'd', 0, 's', 0]},
-] as MPartial
-
-const duplicateR_result = [
-  {nodeId: 'a', path: ['g'], connections: [['b', 'e'], ['b', 'h'], ['b', 'k'], ['h', 'k'], ['b', 'u'], ['b', 'x'], ['u', 'x']].map(el => ({fromNodeId: el[0], toNodeId: el[1]}))},
-  {nodeId: 'b', path: ['r', 0]},
-  {nodeId: 'c', path: ['r', 0, 'd', 0]},
-  {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {nodeId: 'e', path: ['r', 1]},
-  {nodeId: 'f', path: ['r', 1, 'd', 0]},
-  {nodeId: 'g', path: ['r', 1, 'd', 0, 's', 0]},
-  {nodeId: 'h', path: ['r', 2]},
-  {nodeId: 'i', path: ['r', 2, 'd', 0]},
-  {nodeId: 'j', path: ['r', 2, 'd', 0, 's', 0]},
-  {nodeId: 'k', path: ['r', 3]},
-  {nodeId: 'l', path: ['r', 3, 'd', 0]},
-  {nodeId: 'm', path: ['r', 3, 'd', 0, 's', 0]},
-  {nodeId: 'u', path: ['r', 4], selected: 1},
-  {nodeId: 'v', path: ['r', 4, 'd', 0]},
-  {nodeId: 'w', path: ['r', 4, 'd', 0, 's', 0]},
-  {nodeId: 'x', path: ['r', 5], selected: 2},
-  {nodeId: 'y', path: ['r', 5, 'd', 0]},
-  {nodeId: 'z', path: ['r', 5, 'd', 0, 's', 0]},
-] as MPartial
-
 const testFlow = (test: MPartial, result: MPartial, type: string, payload: object) => {
   mapInit(test)
   mapReducerAtomic(test as M, type, payload)
@@ -82,6 +44,42 @@ describe("Move_tests", () => {
     {nodeId: 'j', path: ['r', 0, 'd', 0, 's', 5]},
     {nodeId: 'k', path: ['r', 0, 'd', 0, 's', 5, 's', 0]},
   ] as MPartial, 'duplicateS', {}))
+
+  test('duplicateR', () => testFlow([
+    {nodeId: 'a', path: ['g'], connections: [['b', 'e'], ['b', 'h'], ['b', 'k'], ['h', 'k']].map(el => ({fromNodeId: el[0], toNodeId: el[1]}))},
+    {nodeId: 'b', path: ['r', 0]},
+    {nodeId: 'c', path: ['r', 0, 'd', 0]},
+    {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+    {nodeId: 'e', path: ['r', 1]},
+    {nodeId: 'f', path: ['r', 1, 'd', 0]},
+    {nodeId: 'g', path: ['r', 1, 'd', 0, 's', 0]},
+    {nodeId: 'h', path: ['r', 2], selected: 1},
+    {nodeId: 'i', path: ['r', 2, 'd', 0]},
+    {nodeId: 'j', path: ['r', 2, 'd', 0, 's', 0]},
+    {nodeId: 'k', path: ['r', 3], selected: 2},
+    {nodeId: 'l', path: ['r', 3, 'd', 0]},
+    {nodeId: 'm', path: ['r', 3, 'd', 0, 's', 0]},
+  ] as MPartial, [
+    {nodeId: 'a', path: ['g'], connections: [['b', 'e'], ['b', 'h'], ['b', 'k'], ['h', 'k'], ['b', 'u'], ['b', 'x'], ['u', 'x']].map(el => ({fromNodeId: el[0], toNodeId: el[1]}))},
+    {nodeId: 'b', path: ['r', 0]},
+    {nodeId: 'c', path: ['r', 0, 'd', 0]},
+    {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+    {nodeId: 'e', path: ['r', 1]},
+    {nodeId: 'f', path: ['r', 1, 'd', 0]},
+    {nodeId: 'g', path: ['r', 1, 'd', 0, 's', 0]},
+    {nodeId: 'h', path: ['r', 2]},
+    {nodeId: 'i', path: ['r', 2, 'd', 0]},
+    {nodeId: 'j', path: ['r', 2, 'd', 0, 's', 0]},
+    {nodeId: 'k', path: ['r', 3]},
+    {nodeId: 'l', path: ['r', 3, 'd', 0]},
+    {nodeId: 'm', path: ['r', 3, 'd', 0, 's', 0]},
+    {nodeId: 'u', path: ['r', 4], selected: 1},
+    {nodeId: 'v', path: ['r', 4, 'd', 0]},
+    {nodeId: 'w', path: ['r', 4, 'd', 0, 's', 0]},
+    {nodeId: 'x', path: ['r', 5], selected: 2},
+    {nodeId: 'y', path: ['r', 5, 'd', 0]},
+    {nodeId: 'z', path: ['r', 5, 'd', 0, 's', 0]},
+  ] as MPartial, 'duplicateR', {}))
 
   test('moveSD', () => testFlow([
     {nodeId: 'a', path: ['g']},

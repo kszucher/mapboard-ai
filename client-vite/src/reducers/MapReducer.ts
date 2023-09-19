@@ -91,6 +91,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
     case 'moveSIR': moveS(m, getXRD1(m), getCountXRD1S(m)); break
     case 'moveSIL': moveS(m, getXRD0(m), getCountXRD0S(m)); break
+    case 'drag': moveS(m, getNodeByPath(m, payload.moveTargetPath), payload.moveTargetIndex); break
     case 'moveCRD': moveCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
     case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
@@ -98,13 +99,11 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveS2TOR': moveS2T(m, getXRD0(m), getXSO2(m)); break
     case 'moveS2TO': moveS2T(m, getX(m), getXSO1(m)); break
     case 'transpose': getXSCO(m).forEach(n => n.path = [...n.path.slice(0, getX(m).path.length + 1), n.path.at(getX(m).path.length + 2), n.path.at(getX(m).path.length + 1), ...n.path.slice(getX(m).path.length + 3)] as P); break
-
     case 'copyR': copyR(m); break
     case 'copyS': copyS(m); break
     case 'cutS': cutS(m); break
     case 'pasteSOR': pasteS(m, getXRD0(m), getCountXRD0S(m), payload); break
     case 'pasteSO': pasteS(m, getX(m), getCountXSO1(m), payload); break
-    case 'drag': moveS(m, getNodeByPath(m, payload.moveTargetPath), payload.moveTargetIndex); break
 
     case 'setLineWidth': getXA(m).forEach(n => Object.assign(n, {lineWidth: payload})); break
     case 'setLineType': getXA(m).forEach(n => Object.assign(n, {lineType: payload})); break
