@@ -171,10 +171,6 @@ export const sToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['s', (n.path.a
 export const crToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['c', (n.path.at(getX(m).path.length - 2) as number) - getCountXCU(m), n.path.at(getX(m).path.length - 1), ...n.path.slice(getX(m).path.length)]})) as M
 export const ccToCb = (m: M) => getXAEO(m).map(n => ({...n, path: ['c', (n.path.at(getX(m).path.length - 2) as number), (n.path.at(getX(m).path.length - 1) as number) - getCountXCL(m), ...n.path.slice(getX(m).path.length)]})) as M
 
-export const makeSpaceFromS = (m: M, ip: P, length: number) => m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + length))
-export const makeSpaceFromCr = (m: M, ipList: P[], length: number) => m.forEach(n => ipList.map(ip => isCED(ip, n.path) && n.path.splice(ip.length - 2, 1, n.path.at(ip.length - 2) as number + length)))
-export const makeSpaceFromCc = (m: M, ipList: P[], length: number) => m.forEach(n => ipList.map(ip => isCER(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + length)))
-
 export const getEditedPath = (p: P): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P): N => getNodeByPath(m, getEditedPath(p))
 

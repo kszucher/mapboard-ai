@@ -1,26 +1,17 @@
-import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectS, getXA, getXSI1, makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS, rToCb, sortPath, sToCb} from "../selectors/MapSelectorUtils"
+import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectS, getXA, getXSI1, rToCb, sortPath, sToCb} from "../selectors/MapSelectorUtils"
 import {M, N, P} from "../state/MapStateTypes"
 import {generateCharacter, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete"
 import {insertTable} from "./MapInsert"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
+import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
-const showTemplate = (m: M) => {
-  console.log(
-    '' + m.map(n => ('\n{' +
-      'selected: ' + JSON.stringify(n.selected) + ', ' +
-      'selection: ' + JSON.stringify(n.selection) + ', ' +
-      `nodeId: 'node' + genHash(8)` + ', ' +
-      `path: ["r",ri,${JSON.stringify(n.path.slice(2)).slice(1, -1)}]` + ', ' +
-      'content: ' + JSON.stringify(n.content) + ', ' +
-      'sFillColor: ' + JSON.stringify(n.sFillColor) +
-      '} as GN'
-    ))
-  )
-}
+const clearNodeId = (m: M) => m.forEach((n, i) => n.nodeId = IS_TESTING ? generateCharacter(i) : 'node' + genHash(8))
+const insertPathFromIpS = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path : [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]}))
+
 
 const cbSave = (cb: any) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
@@ -39,7 +30,7 @@ const cbSave = (cb: any) => {
 
 export const cutR = (m: M) => {
   // const reselect = getReselectR(m)
-  // const cb = sToCb(m) as M
+  // const cb = structuredClone(sToCb(m)) as M
   // cbSave(cb)
   // deleteR(m)
   // selectNode(m, reselect, 's')
@@ -47,20 +38,20 @@ export const cutR = (m: M) => {
 
 export const cutS = (m: M) => {
   const reselect = getReselectS(m)
-  const cb = sToCb(m)
+  const cb = structuredClone(sToCb(m))
   cbSave(cb)
   deleteS(m)
   selectNode(m, reselect, 's')
 }
 
 export const copyR = (m: M) => {
-  const cb = rToCb(m)
+  const cb = structuredClone(rToCb(m))
   const cbDeInit = mapDeInit(cb)
   cbSave(cbDeInit)
 }
 
 export const copyS = (m: M) => {
-  const cb = sToCb(m)
+  const cb = structuredClone(sToCb(m))
   const cbDeInit = mapDeInit(cb)
   cbSave(cbDeInit)
 }
@@ -83,13 +74,12 @@ export const duplicateS = (m: M) => {
   const insertParentNode = getXSI1(m)
   const insertTargetIndex = getCountXASU(m) + getXA(m).length
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
-  const cb = sToCb(m)
+  const cb = structuredClone(sToCb(m))
   unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
-  m.push(...cb.map((n, i) => ({...n,
-    nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8),
-    path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]
-  })) as M)
+  insertPathFromIpS(cb, ip)
+  clearNodeId(cb)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
@@ -99,7 +89,7 @@ export const duplicateR = (m: M) => {
   // const insertParentNode = getXSI1(m)
   // const insertTargetIndex = getCountXASU(m) + getXA(m).length
   // const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
-  // const cb = sToCb(m)
+  // const cb = structuredClone(sToCb(m))
   // cb.forEach((n, i) => Object.assign(n, {nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8)}))
   // unselectNodes(m)
   // makeSpaceFromS(m, ip, getXA(cb).length)
@@ -110,25 +100,27 @@ export const duplicateR = (m: M) => {
 
 export const moveS = (m: M, insertParentNode: N, insertTargetIndex: number) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
-  const cb = sToCb(m)
+  const cb = structuredClone(sToCb(m))
   deleteS(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
+
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 's', (n.path.at(1) as number) + insertTargetIndex, ...n.path.slice(2)]})) as M)
   m.sort(sortPath)
 }
 
 export const moveCR = (m: M, insertParentNode: N, insertTargetRowIndex: number) => {
   const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
-  const cb = crToCb(m)
+  const cb = structuredClone(crToCb(m))
   deleteCR(m)
   makeSpaceFromCr(m, ipList, 1)
+
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 'c', (n.path.at(1) as number) + insertTargetRowIndex, (n.path.at(2) as number), ...n.path.slice(3)]})) as M)
   m.sort(sortPath)
 }
 
 export const moveCC = (m: M, insertParentNode: N, insertTargetColumnIndex: number) => {
   const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
-  const cb = ccToCb(m)
+  const cb = structuredClone(ccToCb(m))
   deleteCC(m)
   makeSpaceFromCc(m, ipList, 1)
   m.push(...cb.map(n => ({...n, path: [...insertParentNode.path, 'c', (n.path.at(1) as number), (n.path.at(2) as number) + insertTargetColumnIndex, ...n.path.slice(3)]})) as M)
@@ -138,7 +130,7 @@ export const moveCC = (m: M, insertParentNode: N, insertTargetColumnIndex: numbe
 export const moveS2T = (m: M, insertParentNode: N, moveNodes: N[]) => {
   const rowLen = moveNodes.length
   selectNodeList(m, moveNodes, 's')
-  const cb = sToCb(m)
+  const cb = structuredClone(sToCb(m))
   deleteS(m)
   insertTable(m, insertParentNode, 0, {rowLen, colLen: 1})
   cb.forEach(n => Object.assign(n, {selected: 0, path: [...insertParentNode.path, 's', 0, 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P}))
