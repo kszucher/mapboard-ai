@@ -25,6 +25,7 @@ const cbSave = (cb: any) => {
 }
 
 const clearNodeId = (m: M) => m.forEach((n, i) => n.nodeId = IS_TESTING ? generateCharacter(i) : 'node' + genHash(8))
+const insertPathFromIpR = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path : ['r', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]}))
 const insertPathFromIpS = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path : [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]}))
 const insertPathFromIpCr = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path: [...ip.slice(0, -3), 'c', (n.path.at(1) as number) + (ip.at(-2) as number), (n.path.at(2) as number), ...n.path.slice(3)]}))
 const insertPathFromIpCc = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path: [...ip.slice(0, -3), 'c', (n.path.at(1) as number), (n.path.at(2) as number) + (ip.at(-1) as number), ...n.path.slice(3)]}))
@@ -73,7 +74,13 @@ export const pasteR = (m: M) => {
 }
 
 export const duplicateR = (m: M) => {
-
+  const ip = ['r', m.at(-1)!.path.at(1) as number + 1] as P
+  const cb = structuredClone(rToCb(m))
+  unselectNodes(m)
+  clearNodeId(cb)
+  insertPathFromIpR(cb, ip)
+  m.push(...cb)
+  m.sort(sortPath)
 }
 
 export const duplicateS = (m: M) => {
