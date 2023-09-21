@@ -52,6 +52,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCL': selectNodeList(m, getXACL1(m), 's'); break
     case 'selectDragged': selectNodeList(m, payload.pathList.map((p: P) => getNodeByPath(m, p)), 's'); break
 
+    case 'insertL': getG(m).connections.push(payload); break
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
     case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1) as number, payload); break
     case 'insertSOR': insertS(m, getXRD0(m), getCountXRD0S(m), payload); break
@@ -77,6 +78,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertTemplateRR': insertTemplateR(m, payload.template, getRiL(m) + 1, getRootStartX(m, getR0(m)) + getG(m).maxR + 200, 0); break
     case 'insertTemplateRD': insertTemplateR(m, payload.template, getRiL(m) + 1, 0, getRootStartY(m, getR0(m)) + getG(m).maxD + 500); break
 
+    case 'deleteL': getG(m).connections = getG(m).connections.filter(connection => !isEqual(connection, payload)); break
     case 'deleteR': deleteReselectR(m); break
     case 'deleteS': deleteReselectS(m); break
     case 'deleteCR': deleteReselectCR(m); break
@@ -149,9 +151,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'offsetU': getX(m).offsetH -= 20; break
     case 'offsetR': getX(m).offsetW += 20; break
     case 'offsetL': getX(m).offsetW -= 20; break
-
-    case 'saveConnection': getG(m).connections.push(payload); break
-    case 'deleteConnection': getG(m).connections = getG(m).connections.filter(connection => !isEqual(connection, payload)); break
 
     case 'devSetLlmDataExample': Object.assign(getX(m), { llmDataType: 'audio', llmDataId: 'llmDataId' }); break
     case 'devClearLlmData': Object.assign(getX(m), { llmDataType: 'text', llmDataId: '' }); break

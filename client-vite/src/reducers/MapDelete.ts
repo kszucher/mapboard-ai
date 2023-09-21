@@ -2,7 +2,9 @@ import {M} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
 import {getReselectS, getReselectCR, getReselectCC, getReselectR, getG, getX, isCD, isCR, getXA, isRDO, getNodeById, getSIPL, isSD, isSDO, getXAEO} from "../selectors/MapSelector"
 
-const deleteConnections = (m: M) => {
+export const deleteL = () => {}
+
+const deleteXL = (m: M) => {
   getG(m).connections = getG(m).connections.filter(el => el.fromNodeId !== getX(m).nodeId && el.toNodeId !== getX(m).nodeId)
 }
 
@@ -52,7 +54,7 @@ export const deleteCC = (m: M) => {
 
 export const deleteReselectR = (m: M) => {
   const reselect = getReselectR(m).nodeId
-  deleteConnections(m)
+  deleteXL(m)
   deleteR(m)
   selectNode(m, getNodeById(m, reselect), 's')
 }

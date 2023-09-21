@@ -45,7 +45,7 @@ export const MapSvgLayer10Connections: FC = () => {
                   e.preventDefault()
                   e.stopPropagation()
                   connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== n.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
-                  dispatch(actions.mapAction({type: 'saveConnection', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides[side as keyof typeof Sides]}}))
+                  dispatch(actions.mapAction({type: 'insertL', payload: {...connectionStart, toNodeId: n.nodeId, toNodeSide: Sides[side as keyof typeof Sides]}}))
                 }}
               />
             )
@@ -76,7 +76,7 @@ export const MapSvgLayer10Connections: FC = () => {
               <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                dispatch(actions.mapAction({type: 'deleteConnection', payload: connection}))
+                dispatch(actions.mapAction({type: 'deleteL', payload: connection}))
               }}/>
             </g>}
         </g>
