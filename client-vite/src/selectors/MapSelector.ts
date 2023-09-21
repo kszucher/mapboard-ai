@@ -18,7 +18,7 @@ export const isDirR = (m: M) => getPathDir(getX(m).path) === 1
 export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 
 export const getRi = (p: P): number => p.at(1) as number
-export const getRiL = (m: M): number => m.findLast(n => n.path.length === 2)!.path.at(1) as number
+export const getRiL = (m: M): number => m.findLast(n => getPathPattern(n.path) === 'r')!.path.at(1) as number
 export const getXRi = (m: M): number => getRi(getX(m).path)
 
 export const isG = (p: P): boolean => getPathPattern(p).endsWith('g')
@@ -33,7 +33,7 @@ export const isXD = (m: M): boolean => isD(getX(m).path)
 export const isNS = (m: M, n: N): boolean => isS(n.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
-export const isXDS = (m: M): boolean => getX(m).path.length === 6
+export const isXDS = (m: M): boolean => getPathPattern(getX(m).path) === 'rds'
 export const isXAR = (m: M): boolean => getXA(m).map(n => n.path).every(p => isR(p))
 const isXASV = (m: M): boolean => isS(getX(m).path) && getXA(m).map(n => n.path).every(p => isSV(getX(m).path, p))
 export const isXASVN = (m: M): boolean => isXASV(m) && ((getXSL(m).path.at(-1) as number) - (getXSF(m).path.at(-1) as number)) === getXA(m).length - 1
@@ -96,7 +96,7 @@ const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith
 
 export const getXSF = (m: M): N => m.find(n => n.selected)!
 export const getXSL = (m: M): N => m.findLast(n => n.selected)!
-export const getX = (m: M): N => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
+export const getX = (m: M): N => m.filter(n => !['g', 'l'].includes(getPathPattern(n.path))).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getR0 = (m: M): N => getNodeByPath(m, ['r', 0])
 export const getNSI1 = (m: M, n: N): N => getNodeByPath(m, getSI1P(n.path))
 export const getXSI1 = (m: M): N => getNodeByPath(m, getSI1P(getX(m).path))
@@ -112,7 +112,7 @@ export const getXRD0 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2
 export const getNRD1 = (m: M, n: N): N => getNodeByPath(m, [...n.path.slice(0, 2), 'd', 1])
 export const getXRD1 = (m: M): N => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 1])
 
-export const getRL = (m: M): M => m.filter(n => n.path.length === 2)
+export const getRL = (m: M): M => m.filter(n => getPathPattern(n.path) === 'r')
 export const getXSO1 = (m: M): M => m.filter(n => isSO1(getX(m).path, n.path))
 export const getXSO2 = (m: M): M => m.filter(n => isSO2(getX(m).path, n.path))
 export const getXSCO = (m: M): M => m.filter(n => isSCO(getX(m).path, n.path))

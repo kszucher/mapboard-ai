@@ -1,7 +1,7 @@
 import {M, N} from "../state/MapStateTypes"
-import {getNSI1, getX, isR} from "../selectors/MapSelector"
+import {getNSI1, getPathPattern, getX, isR} from "../selectors/MapSelector"
 
-export const unselectNodes = (m: M) => m.forEach(n => n.path.length > 1 && Object.assign(n, {selected: 0, selection: 's'}))
+export const unselectNodes = (m: M) => m.forEach(n => !['g', 'l'].includes(getPathPattern(n.path)) && Object.assign(n, {selected: 0, selection: 's'}))
 
 export const selectNode = (m: M, n: N, selection: 's' | 'f') => {
   unselectNodes(m)
