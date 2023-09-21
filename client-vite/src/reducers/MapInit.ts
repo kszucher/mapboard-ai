@@ -1,6 +1,6 @@
-import {GSaveOptional, GSaveNever, GPartial, NSaveAlways, NSaveOptional, NSaveNever, M, MPartial} from "../state/MapStateTypes"
-import {gSaveAlways, gSaveNever, gSaveOptional, nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapState"
-import {getNodeByPath, isG} from "../selectors/MapSelector"
+import {GSaveOptional, GSaveNever, GPartial, NSaveAlways, NSaveOptional, NSaveNever, M, MPartial, LSaveOptional, LSaveNever} from "../state/MapStateTypes"
+import {gSaveAlways, gSaveNever, gSaveOptional, lSaveAlways, lSaveNever, lSaveOptional, nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapState"
+import {getNodeByPath, isG, isL} from "../selectors/MapSelector"
 import {genHash} from "../utils/Utils"
 
 export const mapInit = (m: MPartial) => {
@@ -19,6 +19,18 @@ export const mapInit = (m: MPartial) => {
         Object.assign(g, {[prop]: structuredClone(gSaveNever[prop as keyof GSaveNever])})
       }
       g.sLineDeltaXDefault = g.density === 'large' ? 30 : 20 // 30 = 14 + 2*8, 20 = 14 + 2*3
+    } else if (isL(n.path)){
+      for (const prop in lSaveAlways) {
+        // do nothing
+      }
+      for (const prop in lSaveOptional) {
+        if (!g.hasOwnProperty(prop)) {
+          Object.assign(g, {[prop]: structuredClone(lSaveOptional[prop as keyof LSaveOptional])})
+        }
+      }
+      for (const prop in lSaveNever) {
+        Object.assign(g, {[prop]: structuredClone(lSaveNever[prop as keyof LSaveNever])})
+      }
     } else {
       for (const prop in nSaveAlways) {
         if (!n.hasOwnProperty(prop)) {

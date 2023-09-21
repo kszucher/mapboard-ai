@@ -32,7 +32,8 @@ export const lSaveAlways = {
 } as LSaveAlways
 
 export const lSaveOptional = {
-  lineColor: '#bbbbbb'
+  lineColor: '#bbbbbb',
+  lineWidth: 1,
 } as LSaveOptional
 
 export const lSaveNever = {

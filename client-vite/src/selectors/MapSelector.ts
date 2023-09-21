@@ -22,6 +22,7 @@ export const getRiL = (m: M): number => m.findLast(n => getPathPattern(n.path) =
 export const getXRi = (m: M): number => getRi(getX(m).path)
 
 export const isG = (p: P): boolean => getPathPattern(p).endsWith('g')
+export const isL = (p: P): boolean => getPathPattern(p).endsWith('l')
 export const isR = (p: P): boolean => getPathPattern(p).endsWith('r')
 export const isD = (p: P): boolean => getPathPattern(p).endsWith('d')
 export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')

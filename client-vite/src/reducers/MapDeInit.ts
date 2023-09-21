@@ -1,7 +1,7 @@
 import isEqual from "react-fast-compare"
-import {M, GSaveNever, GSaveOptional, NSaveNever, NSaveOptional} from "../state/MapStateTypes"
-import {gSaveAlways, gSaveOptional, nSaveAlways, nSaveOptional} from "../state/MapState"
-import {isG, sortPath} from "../selectors/MapSelector"
+import {M, GSaveNever, GSaveOptional, NSaveNever, NSaveOptional, LSaveOptional, LSaveNever} from "../state/MapStateTypes"
+import {gSaveAlways, gSaveOptional, lSaveAlways, lSaveOptional, nSaveAlways, nSaveOptional} from "../state/MapState"
+import {isG, isL, sortPath} from "../selectors/MapSelector"
 
 export const mapDeInit = (m: M) => {
   const mlRemoved = structuredClone(m).sort(sortPath)
@@ -16,6 +16,18 @@ export const mapDeInit = (m: M) => {
           }
         } else {
           delete nl[prop as keyof GSaveNever]
+        }
+      }
+    } else if (isL(nl.path)) {
+      for (const prop in nl) {
+        if (lSaveAlways.hasOwnProperty(prop)) {
+          // do nothing
+        } else if (lSaveOptional.hasOwnProperty(prop)) {
+          if (isEqual(nl[prop as keyof LSaveOptional], lSaveOptional[prop as keyof LSaveOptional])) {
+            delete nl[prop as keyof LSaveOptional]
+          }
+        } else {
+          delete nl[prop as keyof LSaveNever]
         }
       }
     } else {

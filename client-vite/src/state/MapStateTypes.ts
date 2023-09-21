@@ -39,6 +39,7 @@ export interface LSaveAlways {
 
 export interface LSaveOptional {
   lineColor: string
+  lineWidth: number
 }
 
 export interface LSaveNever {
