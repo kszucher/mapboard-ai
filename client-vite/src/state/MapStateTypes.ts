@@ -28,6 +28,23 @@ export interface GSaveNever {
   sLineDeltaXDefault: number
 }
 
+export interface LSaveAlways {
+  path: P
+  nodeId: string
+  fromNodeId: string
+  fromNodeSide: string
+  toNodeId: string
+  toNodeSide: string
+}
+
+export interface LSaveOptional {
+  lineColor: string
+}
+
+export interface LSaveNever {
+
+}
+
 export interface NSaveOptional {
   controlType: ControlTypes
   contentType: string
@@ -89,6 +106,8 @@ export interface NSaveAlways {
 
 export type G = GSaveAlways & GSaveOptional & GSaveNever
 export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
+export type L = LSaveAlways & LSaveOptional & LSaveNever
+export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<LSaveNever>
 export type N = NSaveAlways & NSaveOptional & NSaveNever
 export type NPartial = Required<NSaveAlways> & Partial<NSaveOptional> & Partial<NSaveNever>
 export type GN = G & N
