@@ -1,16 +1,16 @@
 import isEqual from "react-fast-compare"
 import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {G, GN, M, N, P} from "../state/MapStateTypes"
+import {G, GLN, M, N, P} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
 
 export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
 
-export const sortPath = (a: GN, b: GN) => sortablePath(a.path) > sortablePath(b.path) ? 1 : -1
-export const sortNode = (a: GN, b: GN) => a.nodeId > b.nodeId ? 1 : -1
+export const sortPath = (a: GLN, b: GLN) => sortablePath(a.path) > sortablePath(b.path) ? 1 : -1
+export const sortNode = (a: GLN, b: GLN) => a.nodeId > b.nodeId ? 1 : -1
 
-export const getNodeByPath = (m: M, p: P) => m.find(n => isEqual(n.path, p)) as GN
-export const getNodeById = (m: M, nodeId: string) => m.find(n => n.nodeId === nodeId) as GN
+export const getNodeByPath = (m: M, p: P) => m.find(n => isEqual(n.path, p)) as GLN
+export const getNodeById = (m: M, nodeId: string) => m.find(n => n.nodeId === nodeId) as GLN
 
 export const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 export const getPathDir = (p: P) => p[3] ? -1 : 1

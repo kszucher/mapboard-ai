@@ -1,4 +1,4 @@
-import {GN, M, N, P} from "../state/MapStateTypes"
+import {GLN, M, N, P} from "../state/MapStateTypes"
 import {getInsertTemplate} from "./MapInsertTemplates"
 import {unselectNodes} from "./MapSelect"
 import {getCountNSCV, getCountNSCH, getX, sortPath, isSEODO} from "../selectors/MapSelector"
@@ -20,21 +20,21 @@ export const insertS = (m: M, insertParentNode: N, insertTargetIndex: number, at
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   makeSpaceFromS(m, ip, 1)
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip, taskStatus: getX(m).taskStatus, ...attributes} as GN)
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip, taskStatus: getX(m).taskStatus, ...attributes} as GLN)
   m.sort(sortPath)
 }
 
 export const insertCR = (m: M, insertParentNode: N, insertTargetRowIndex: number) => {
   const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
   makeSpaceFromCr(m, ipList, 1)
-  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p}  as GN)))
+  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p}  as GLN)))
   m.sort(sortPath)
 }
 
 export const insertCC = (m: M, insertParentNode: N, insertTargetColumnIndex: number) => {
   const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
   makeSpaceFromCc(m, ipList, 1)
-  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p} as GN)))
+  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p} as GLN)))
   m.sort(sortPath)
 }
 
@@ -43,7 +43,7 @@ export const insertTable = (m: M, insertParentNode: N, insertTargetIndex: number
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + 1))
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip} as GN)
-  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: [...ip, 'c', ...el]} as GN)))
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip} as GLN)
+  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: [...ip, 'c', ...el]} as GLN)))
   m.sort(sortPath)
 }

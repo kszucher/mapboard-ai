@@ -8,7 +8,7 @@ import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/NodeApiState"
 import {getMap, mSelector} from "../state/EditorState"
 import {mapDeInit} from "../reducers/MapDeInit"
-import {GN} from "../state/MapStateTypes"
+import {GLN} from "../state/MapStateTypes"
 import {shortcutColors} from "./Colors"
 
 export let timeoutId: NodeJS.Timeout
@@ -214,7 +214,7 @@ export const Window: FC = () => {
     dispatch(nodeApi.endpoints.saveMap.initiate({
       mapId: getMapId(),
       frameId: getFrameId(),
-      mapData: mapDeInit(getMap().filter((gn: GN) => (gn.hasOwnProperty('path') && gn.hasOwnProperty('nodeId'))))
+      mapData: mapDeInit(getMap().filter((gln: GLN) => (gln.hasOwnProperty('path') && gln.hasOwnProperty('nodeId'))))
     }))
     console.log('save by timeout')
   }
