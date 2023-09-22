@@ -17,8 +17,9 @@ export const getPathDir = (p: P) => p[3] ? -1 : 1
 export const isDirR = (m: M) => getPathDir(getX(m).path) === 1
 export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 
+export const getLiL = (m: M): number => m.findLast(n => getPathPattern(n.path) === 'l')?.path.at(1) as number || -1
 export const getRi = (p: P): number => p.at(1) as number
-export const getRiL = (m: M): number => m.findLast(n => getPathPattern(n.path) === 'r')!.path.at(1) as number
+export const getRiL = (m: M): number => m.findLast(n => getPathPattern(n.path) === 'r')?.path.at(1) as number
 export const getXRi = (m: M): number => getRi(getX(m).path)
 
 export const isG = (p: P): boolean => getPathPattern(p).endsWith('g')

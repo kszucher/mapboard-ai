@@ -6,7 +6,7 @@ import {M, N, P} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteReselectCC, deleteReselectCR, deleteReselectR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
-import {insertCC, insertCR, insertS, insertTable, insertTemplateR} from "./MapInsert"
+import {insertCC, insertCR, insertL, insertS, insertTable, insertTemplateR} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyR, copyS, cutR, cutS, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
@@ -52,7 +52,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCL': selectNodeList(m, getXACL1(m), 's'); break
     case 'selectDragged': selectNodeList(m, payload.pathList.map((p: P) => getNodeByPath(m, p)), 's'); break
 
-    case 'insertL': getG(m).connections.push(payload); break
+    case 'insertL': insertL(m, payload); break
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
     case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1) as number, payload); break
     case 'insertSOR': insertS(m, getXRD0(m), getCountXRD0S(m), payload); break

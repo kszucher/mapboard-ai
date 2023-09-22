@@ -1,8 +1,8 @@
 import {getNSIC, getG, getNodeById, getNR, getPathDir, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../selectors/MapSelector"
 import {adjust} from "../utils/Utils"
-import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts";
+import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts"
 import {LineTypes, Sides} from "../state/Enums"
-import {Connection, G, M, N} from "../state/MapStateTypes"
+import {G, GLN, L, M, N} from "../state/MapStateTypes"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -52,8 +52,8 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
   return path
 }
 
-export const getLinePathBetweenRoots = (m: M, connection: Connection) => {
-  const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = connection
+export const getLinePathBetweenRoots = (m: M, l: N) => {
+  const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l as GLN
   const fromNode = getNodeById(m, fromNodeId)
   const toNode = getNodeById(m, toNodeId)
   let sx = 0, sy = 0, c1x = 0, c1y = 0
