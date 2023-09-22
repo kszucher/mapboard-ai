@@ -5,7 +5,7 @@ import {getColors} from "./Colors"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../reducers/EditorReducer"
-import {N} from "../state/MapStateTypes"
+import {T} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
 import {getArcPath} from "./MapSvgUtils"
 
@@ -16,7 +16,7 @@ export const MapSvgLayer2NodeBackground: FC = () => {
   const C = getColors(colorMode)
   return (
     <g>
-      {m.map((n: N) => (
+      {m.map((n: T) => (
         <Fragment key={n.nodeId}>
           {
             (n.sFillColor || n.taskStatus > 1) &&

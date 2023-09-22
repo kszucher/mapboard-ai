@@ -2,7 +2,7 @@ import {getNSIC, getG, getNodeById, getNR, getPathDir, getRootEndX, getRootEndY,
 import {adjust} from "../utils/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts"
 import {LineTypes, Sides} from "../state/Enums"
-import {G, GLN, L, M, N} from "../state/MapStateTypes"
+import {G, GLT, L, M, T} from "../state/MapStateTypes"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -26,7 +26,7 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
   return [ax, ay, ax + dx / 4, ay, ax + dx / 4, ay + dy, bx, by]
 }
 
-export const getLinePathBetweenNodes = (na: N, nb: N) => {
+export const getLinePathBetweenNodes = (na: T, nb: T) => {
   const dir = getPathDir(nb.path)
   const { lineType } = nb
   const sx = (dir === -1 ? na.nodeStartX : na.nodeEndX)
@@ -52,8 +52,8 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
   return path
 }
 
-export const getLinePathBetweenRoots = (m: M, l: N) => {
-  const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l as GLN
+export const getLinePathBetweenRoots = (m: M, l: T) => {
+  const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l as GLT
   const fromNode = getNodeById(m, fromNodeId)
   const toNode = getNodeById(m, toNodeId)
   let sx = 0, sy = 0, c1x = 0, c1y = 0
@@ -73,7 +73,7 @@ export const getLinePathBetweenRoots = (m: M, l: N) => {
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
 
-export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
+export const getPolygonS = (m: M, n: T, selection: string): PolygonPoints => {
   const R = 8
   const g = getG(m)
   const dir = getPathDir(n.path)
@@ -121,7 +121,7 @@ export const getPolygonC = (m: M): PolygonPoints => {
   return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
 
-export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: string, margin: number) => {
+export const getPolygonPath = (n: T, polygonPoints: PolygonPoints, selection: string, margin: number) => {
   const dir = getPathDir(n.path)
   let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
   ax = adjust(ax - margin)
@@ -154,7 +154,7 @@ export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: st
   return path + 'z'
 }
 
-export const getArcPath = (n: N, margin: number, closed: boolean) => {
+export const getArcPath = (n: T, margin: number, closed: boolean) => {
   const R = 8
   const dir = getPathDir(n.path)
   const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
@@ -178,7 +178,7 @@ export const getArcPath = (n: N, margin: number, closed: boolean) => {
       ${closed ? 'Z' : ''}`
 }
 
-export const getGridPath = (n: N) => {
+export const getGridPath = (n: T) => {
   const dir = getPathDir(n.path)
   const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
   const yu = n.nodeY - n.selfH / 2
@@ -201,7 +201,7 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
-export const getTaskStartPoint = (m: M, g: G, n: N) => {
+export const getTaskStartPoint = (m: M, g: G, n: T) => {
   switch (true) {
     case getPathDir(n.path) === 1 && !isCON(n.path): return getRootEndX(m, getNR(m, n)) - getTaskWidth(g)
     case getPathDir(n.path) === -1 && !isCON(n.path): return getRootStartX(m, getNR(m, n)) + getTaskWidth(g)
@@ -211,7 +211,7 @@ export const getTaskStartPoint = (m: M, g: G, n: N) => {
   }
 }
 
-export const getRootSideX = (m: M, n: N, side: string) => {
+export const getRootSideX = (m: M, n: T, side: string) => {
   switch (true) {
     case (side === 'L'): return getRootStartX(m, n)
     case (side === 'R'): return getRootEndX(m, n) - 24
@@ -221,7 +221,7 @@ export const getRootSideX = (m: M, n: N, side: string) => {
   }
 }
 
-export const getRootSideY = (m: M, n: N, side: string) => {
+export const getRootSideY = (m: M, n: T, side: string) => {
   switch (true) {
     case (side === 'L'): return getRootMidY(m, n) - 12
     case (side === 'R'): return getRootMidY(m, n) - 12

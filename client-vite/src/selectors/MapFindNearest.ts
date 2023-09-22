@@ -1,8 +1,8 @@
-import {M, GLN, P, N} from "../state/MapStateTypes"
+import {M, GLT, P, T} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
 import {getCountNSO1, getNodeById, getNodeByPath, getSI1P, getRi, isD, isS, isSO, sortPath} from "./MapSelector"
 
-export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => {
+export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
   let moveCoords = [] as number[]
   let moveTargetPath = [] as P
@@ -14,7 +14,7 @@ export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => 
     toY < moveNode.nodeY + moveNode.selfH / 2)
   ) {
     const ri = getRi(moveNode.path)
-    const rx = getNodeByPath(m, ['r', ri]) as N
+    const rx = getNodeByPath(m, ['r', ri]) as T
     const aboveRoot = toY >= rx.nodeY
     const belowRoot = toY < rx.nodeY
     const overlap = 6
@@ -37,7 +37,7 @@ export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => 
       }
     })
     if (moveTargetNodeId.length) {
-      const moveTargetNode = getNodeById(m, moveTargetNodeId) as GLN
+      const moveTargetNode = getNodeById(m, moveTargetNodeId) as GLT
       const moveTargetNodeCountSS = getCountNSO1(m, moveTargetNode)
       const fromX = moveTargetNode.path[3] ? moveTargetNode.nodeStartX : moveTargetNode.nodeEndX
       const fromY = moveTargetNode.nodeY
@@ -45,7 +45,7 @@ export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => 
       if (moveTargetNodeCountSS) {
         moveTargetIndex = moveTargetNodeCountSS
         for (let i = moveTargetNodeCountSS - 1; i > -1; i--) {
-          const currMoveTargetNodeChild = getNodeByPath(m, [...moveTargetNode.path, 's', i]) as GLN
+          const currMoveTargetNodeChild = getNodeByPath(m, [...moveTargetNode.path, 's', i]) as GLT
           if (toY < currMoveTargetNodeChild.nodeY) {
             moveTargetIndex = i
           }

@@ -9,7 +9,7 @@ import {getNSI1, getNSI2, getCountNCO1, getCountNSO1, getG, getNodeById, getPath
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import {N} from "../state/MapStateTypes"
+import {T} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
 import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getPolygonS, getTaskRadius, getTaskStartPoint} from "./MapSvgUtils"
 
@@ -24,7 +24,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
-      {m.map((n: N) => (
+      {m.map((n: T) => (
         <Fragment key={n.nodeId}>
           {
             n.fBorderColor &&

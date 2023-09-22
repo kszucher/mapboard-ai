@@ -1,4 +1,4 @@
-import {M, N} from "../state/MapStateTypes"
+import {M, T} from "../state/MapStateTypes"
 import {getXSCC0, getXSCR0, getSIPL, getNodeByPath, getXSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXRD0SO, getXAEO, getG, getNodeById, getNRD0SO} from "./MapSelector"
 import {GptData} from "../state/NodeApiStateTypes"
 
@@ -41,7 +41,7 @@ export const genPromptJsonT = (m: M) => {
   const mr = getXAEO(m).slice().sort(sortPath)
   const rowHeader = getXSCR0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
   const colHeader = getXSCC0(mr).map(n => getNodeByPath(mr, [...n.path, 's', 0])?.content || '')
-  return getXSCYY(mr).map((n: N) => ({
+  return getXSCYY(mr).map((n: T) => ({
     keywords: [colHeader[0], colHeader[n.path.at(-2) as number], rowHeader[n.path.at(-1) as number]],
     suggestions: [],
     insertParentId: n.nodeId

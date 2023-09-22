@@ -1,8 +1,8 @@
 import isEqual from "react-fast-compare"
 import {ControlTypes} from "../state/Enums"
 import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./MapParseGpt"
-import {nSaveOptional} from "../state/MapState"
-import {M, N, P} from "../state/MapStateTypes"
+import {tSaveOptional} from "../state/MapState"
+import {M, T, P} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteReselectCC, deleteReselectCR, deleteReselectR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
@@ -121,12 +121,12 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setTextFontSize': getXA(m).forEach(n => Object.assign(n, {textFontSize: payload})); break
     case 'setTextColor': getXA(m).forEach(n => Object.assign(n, {textColor: payload})); break
 
-    case 'clearLine': getXA(m).forEach(n => Object.assign(n, {lineWidth: nSaveOptional.lineWidth, lineType: nSaveOptional.lineType, lineColor: nSaveOptional.lineColor})); break
-    case 'clearSBorder': getXA(m).forEach(n => Object.assign(n, {sBorderWidth: nSaveOptional.sBorderWidth, sBorderColor: nSaveOptional.sBorderColor})); break
-    case 'clearFBorder': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fBorderWidth: nSaveOptional.fBorderWidth, fBorderColor: nSaveOptional.fBorderColor})); break
-    case 'clearSFill': getXA(m).forEach(n => Object.assign(n, {sFillColor: nSaveOptional.sFillColor})); break
-    case 'clearFFill': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fFillColor: nSaveOptional.fFillColor})); break
-    case 'clearText': getXA(m).forEach(n => Object.assign(n, {textColor: nSaveOptional.textColor, textFontSize: nSaveOptional.textFontSize})); break
+    case 'clearLine': getXA(m).forEach(n => Object.assign(n, {lineWidth: tSaveOptional.lineWidth, lineType: tSaveOptional.lineType, lineColor: tSaveOptional.lineColor})); break
+    case 'clearSBorder': getXA(m).forEach(n => Object.assign(n, {sBorderWidth: tSaveOptional.sBorderWidth, sBorderColor: tSaveOptional.sBorderColor})); break
+    case 'clearFBorder': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fBorderWidth: tSaveOptional.fBorderWidth, fBorderColor: tSaveOptional.fBorderColor})); break
+    case 'clearSFill': getXA(m).forEach(n => Object.assign(n, {sFillColor: tSaveOptional.sFillColor})); break
+    case 'clearFFill': getXA(m).forEach(n => Object.assign(isR(n.path) ? getNRD0(m, n) : n, {fFillColor: tSaveOptional.fFillColor})); break
+    case 'clearText': getXA(m).forEach(n => Object.assign(n, {textColor: tSaveOptional.textColor, textFontSize: tSaveOptional.textFontSize})); break
 
     case 'setTaskModeOn': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: n.taskStatus === 0 ? 1 : n.taskStatus})); break
     case 'setTaskModeOff': getXAEO(m).forEach(n => Object.assign(n, {taskStatus: 0 })); break

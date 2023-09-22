@@ -4,7 +4,7 @@ import {getFrameId, getMapId} from "../state/NodeApiState"
 import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/NodeApiStateTypes"
 import {getMap} from "../state/EditorState"
 import {PageState} from "../state/Enums"
-import {GLN} from "../state/MapStateTypes"
+import {GLT} from "../state/MapStateTypes"
 import {actions, RootState} from "../reducers/EditorReducer"
 import {mapDeInit} from "../reducers/MapDeInit"
 import {backendUrl} from "./Urls"
@@ -43,7 +43,7 @@ export const nodeApi = createApi({
           dispatch(nodeApi.endpoints.saveMap.initiate({
             mapId: getMapId(),
             frameId: getFrameId(),
-            mapData: mapDeInit(getMap().filter((gln: GLN) => (gln.hasOwnProperty('path') && gln.hasOwnProperty('nodeId'))))
+            mapData: mapDeInit(getMap().filter((gln: GLT) => (gln.hasOwnProperty('path') && gln.hasOwnProperty('nodeId'))))
           }))
         }
       },

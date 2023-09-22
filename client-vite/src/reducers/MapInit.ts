@@ -1,5 +1,5 @@
-import {GSaveOptional, GSaveNever, GPartial, NSaveAlways, NSaveOptional, NSaveNever, M, MPartial, LSaveOptional, LSaveNever} from "../state/MapStateTypes"
-import {gSaveAlways, gSaveNever, gSaveOptional, lSaveAlways, lSaveNever, lSaveOptional, nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapState"
+import {GSaveOptional, GSaveNever, GPartial, TSaveAlways, TSaveOptional, TSaveNever, M, MPartial, LSaveOptional, LSaveNever} from "../state/MapStateTypes"
+import {gSaveAlways, gSaveNever, gSaveOptional, lSaveAlways, lSaveNever, lSaveOptional, tSaveAlways, tSaveNever, tSaveOptional} from "../state/MapState"
 import {getNodeByPath, isG, isL} from "../selectors/MapSelector"
 import {genHash} from "../utils/Utils"
 
@@ -32,22 +32,22 @@ export const mapInit = (m: MPartial) => {
         Object.assign(g, {[prop]: structuredClone(lSaveNever[prop as keyof LSaveNever])})
       }
     } else {
-      for (const prop in nSaveAlways) {
+      for (const prop in tSaveAlways) {
         if (!n.hasOwnProperty(prop)) {
           if (prop === 'nodeId') {
             n[prop] = 'node' + genHash(8)
           } else {
-            Object.assign(n, {[prop]: structuredClone(nSaveAlways[prop as keyof NSaveAlways])})
+            Object.assign(n, {[prop]: structuredClone(tSaveAlways[prop as keyof TSaveAlways])})
           }
         }
       }
-      for (const prop in nSaveOptional) {
+      for (const prop in tSaveOptional) {
         if (!n.hasOwnProperty(prop)) {
-          Object.assign(n, {[prop]: structuredClone(nSaveOptional[prop as keyof NSaveOptional])})
+          Object.assign(n, {[prop]: structuredClone(tSaveOptional[prop as keyof TSaveOptional])})
         }
       }
-      for (const prop in nSaveNever) {
-        Object.assign(n, {[prop]: structuredClone(nSaveNever[prop as keyof NSaveNever])})
+      for (const prop in tSaveNever) {
+        Object.assign(n, {[prop]: structuredClone(tSaveNever[prop as keyof TSaveNever])})
       }
     }
   })

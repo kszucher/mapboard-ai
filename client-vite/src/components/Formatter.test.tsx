@@ -6,7 +6,7 @@ import { describe, it } from 'vitest'
 import {actions, store} from "../reducers/EditorReducer"
 import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../state/Enums"
 import {getMap} from "../state/EditorState"
-import {nSaveOptional} from "../state/MapState"
+import {tSaveOptional} from "../state/MapState"
 
 describe("Formatter test", () => {
   // beforeEach(() => {

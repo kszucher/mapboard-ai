@@ -1,9 +1,9 @@
 import {getEquationDim, getTextDim} from "../components/MapDivUtils"
-import {G, M, N} from "../state/MapStateTypes"
+import {G, M, T} from "../state/MapStateTypes"
 import {getCountNCO2, getCountNSCH, getCountNSCV, getCountNSO1, getCountNSO2, getNodeByPath} from "../selectors/MapSelector"
 import {createArray} from "../utils/Utils"
 
-export const measureText = (g: G, pn: N, n: N) => {
+export const measureText = (g: G, pn: T, n: T) => {
   if (
     n.content !== '' &&
     (
@@ -38,7 +38,7 @@ export const measureText = (g: G, pn: N, n: N) => {
   n.selfH = (n.dimH / 17 > 1 ? n.dimH : 20) + (g.density === 'large' ? 8 : 4)
 }
 
-export const measureTable = (m: M, g: G, n: N) => {
+export const measureTable = (m: M, g: G, n: T) => {
   const countSCR = getCountNSCV(m, n)
   const countSCC = getCountNSCH(m, n)
   let maxCellHeightMat = createArray(countSCR, countSCC)
@@ -46,7 +46,7 @@ export const measureTable = (m: M, g: G, n: N) => {
   let isCellSpacingActivated = 0
   for (let i = 0; i < countSCR; i++) {
     for (let j = 0; j < countSCC; j++) {
-      const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as N
+      const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as T
       maxCellHeightMat[i][j] = cn.maxH
       maxCellWidthMat[i][j] = cn.maxW
       if (cn.maxH > 20) {
@@ -80,7 +80,7 @@ export const measureTable = (m: M, g: G, n: N) => {
       if (cellWidth >= maxColWidth) {
         maxColWidth = cellWidth
       }
-      const cn = getNodeByPath(m, [...n.path, 'c', i, j, 's', 0]) as N
+      const cn = getNodeByPath(m, [...n.path, 'c', i, j, 's', 0]) as T
       if (cn && cn.taskStatus !== 0) {
         maxColWidth += 120
       }
@@ -91,18 +91,18 @@ export const measureTable = (m: M, g: G, n: N) => {
   }
   for (let j = 0; j < countSCC; j++) {
     for (let i = 0; i < countSCR; i++) {
-      const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as N
+      const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as T
       cn.selfW = n.maxColWidth[j]
       cn.selfH = n.maxRowHeight[i]
     }
   }
 }
 
-export const measureFamily = (m: M, g: G, n: N) => {
+export const measureFamily = (m: M, g: G, n: T) => {
   const countSS = getCountNSO1(m, n)
   let sMaxW = 0
   for (let i = 0; i < countSS; i++) {
-    const cn = getNodeByPath(m, [...n.path, 's', i]) as N
+    const cn = getNodeByPath(m, [...n.path, 's', i]) as T
     n.familyH += cn.maxH
     let currMaxW = cn.maxW
     if (currMaxW >= sMaxW) {

@@ -1,6 +1,6 @@
 import {getTaskWidth} from "../components/MapSvgUtils";
 import {MARGIN_X, MARGIN_Y} from "../state/Consts";
-import {G, M, N} from "../state/MapStateTypes"
+import {G, M, T} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils";
 import {getCountNCO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getCountNSO1, getNRD1, getNRD0, getNR} from "../selectors/MapSelector"
 
@@ -12,9 +12,9 @@ export const mapMeasure = (pm: M, m: M) => {
     switch (true) {
       case isG(n.path): {
         getRL(m).forEach(r => {
-          const nr = getNR(m, r) as N
-          const nrd0 = getNRD0(m, r) as N
-          const nrd1 = getNRD1(m, r) as N
+          const nr = getNR(m, r) as T
+          const nrd0 = getNRD0(m, r) as T
+          const nrd1 = getNRD1(m, r) as T
           const wr = nr.offsetW + nr.selfW + nrd0.familyW + getTaskWidth(n) * hasTaskRight(m, getRi(r.path))
           const wl = nr.offsetW - nrd1.familyW - getTaskWidth(n) * hasTaskLeft(m, getRi(r.path))
           if ((nr.offsetH + nrd0.familyH / 2) > n.maxD) {n.maxD = nr.offsetH + nrd0.familyH / 2}

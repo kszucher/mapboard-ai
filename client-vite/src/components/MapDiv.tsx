@@ -12,9 +12,9 @@ import {setEndOfContentEditable} from "./MapDivUtils"
 import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
-import {N} from "../state/MapStateTypes"
+import {T} from "../state/MapStateTypes"
 
-const getInnerHtml = (n: N) => {
+const getInnerHtml = (n: T) => {
   if (n.contentType === 'text') {
     return n.content
   } else if (n.contentType === 'mermaid') {
@@ -48,7 +48,7 @@ export const MapDiv: FC = () => {
 
   return (
     <>
-      {m.map((n: N) => (
+      {m.map((n: T) => (
         <Fragment key={n.nodeId}>
           {
             (isR(n.path) || isS(n.path)) &&

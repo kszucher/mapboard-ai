@@ -1,7 +1,7 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {N} from "../state/MapStateTypes"
+import {T} from "../state/MapStateTypes"
 import colors from "tailwindcss/colors"
 import {getColors} from "./Colors"
 import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR} from "../selectors/MapSelector"
@@ -34,7 +34,7 @@ export const MapSvgLayer0RootBackground: FC = () => {
         {/*</rect>*/}
       </g>
       <g>
-        {m.map((n: N) => (
+        {m.map((n: T) => (
           <Fragment key={n.nodeId}>
             {
               isR(n.path) &&

@@ -7,7 +7,7 @@ import {adjustIcon} from "../utils/Utils";
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 import {Sides} from "../state/Enums"
-import {N} from "../state/MapStateTypes"
+import {T} from "../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
 import {calculateMiddlePoint, getBezierLinePath, getLinePathBetweenRoots, getRootSideX, getRootSideY} from "./MapSvgUtils"
 
@@ -21,7 +21,7 @@ export const MapSvgLayer10Connections: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
-      {m.map((n: N) => (
+      {m.map((n: T) => (
         <Fragment key={n.nodeId}>
           {isR(n.path) && connectionHelpersVisible &&
             <g key={`${n.nodeId}`}>

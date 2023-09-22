@@ -16,7 +16,7 @@ import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
 import {MapSvgLayer9DecorationIcons} from "./MapSvgLayer9DecorationIcons"
 import {MapSvgLayer10Connections} from "./MapSvgLayer10Connections"
 import {mapFindIntersecting} from "../selectors/MapFindIntersecting"
-import {M, N} from "../state/MapStateTypes"
+import {M, T} from "../state/MapStateTypes"
 
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -27,7 +27,7 @@ export const pathCommonProps = {
   }
 }
 
-export const getSelectionMargin = (m: M, n: N) => (
+export const getSelectionMargin = (m: M, n: T) => (
   (
     isXC(m) ||
     isXACR(m) ||

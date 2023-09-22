@@ -1,6 +1,6 @@
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {getNodeByPath, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountNSO2, getCountNCO2, getRi, getG, getPathDir, getNSI1, getNSI2} from "../selectors/MapSelector"
-import {G, M, N} from "../state/MapStateTypes"
+import {G, M, T} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {
   const g = getNodeByPath(m, ['g']) as G
@@ -19,7 +19,7 @@ export const mapPlace = (m: M) => {
       }
       case isD(n.path): {
         const ri = getRi(n.path)
-        const rx = getNodeByPath(m, ['r', ri]) as N
+        const rx = getNodeByPath(m, ['r', ri]) as T
         n.nodeStartX = rx.nodeStartX
         n.nodeEndX = rx.nodeEndX
         n.nodeY = rx.nodeY
@@ -45,8 +45,8 @@ export const mapPlace = (m: M) => {
         break
       }
       case isC(n.path): {
-        const p1 = getNSI1(m, n) as N
-        const p2 = getNSI2(m, n) as N
+        const p1 = getNSI1(m, n) as T
+        const p2 = getNSI2(m, n) as T
         const i = n.path.at(-2) as number
         const j = n.path.at(-1) as number
         if (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) {

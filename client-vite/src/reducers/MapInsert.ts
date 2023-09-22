@@ -1,4 +1,4 @@
-import {GLN, LPartial, M, N, P} from "../state/MapStateTypes"
+import {GLT, LPartial, M, T, P} from "../state/MapStateTypes"
 import {getInsertTemplate} from "./MapInsertTemplates"
 import {unselectNodes} from "./MapSelect"
 import {getCountNSCV, getCountNSCH, getX, sortPath, isSEODO, getLiL} from "../selectors/MapSelector"
@@ -6,7 +6,7 @@ import {generateCharacter, genHash, getTableIndices, IS_TESTING} from "../utils/
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
 
 export const insertL = (m: M, lPartial: LPartial) => {
-  m.push({...lPartial, nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['l', getLiL(m) + 1]} as GLN)
+  m.push({...lPartial, nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['l', getLiL(m) + 1]} as GLT)
 }
 
 export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
@@ -20,34 +20,34 @@ export const insertR = (m: M) => {
 
 }
 
-export const insertS = (m: M, insertParentNode: N, insertTargetIndex: number, attributes: object) => {
+export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, attributes: object) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   makeSpaceFromS(m, ip, 1)
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip, taskStatus: getX(m).taskStatus, ...attributes} as GLN)
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip, taskStatus: getX(m).taskStatus, ...attributes} as GLT)
   m.sort(sortPath)
 }
 
-export const insertCR = (m: M, insertParentNode: N, insertTargetRowIndex: number) => {
+export const insertCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) => {
   const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
   makeSpaceFromCr(m, ipList, 1)
-  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p}  as GLN)))
+  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p}  as GLT)))
   m.sort(sortPath)
 }
 
-export const insertCC = (m: M, insertParentNode: N, insertTargetColumnIndex: number) => {
+export const insertCC = (m: M, insertParentNode: T, insertTargetColumnIndex: number) => {
   const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
   makeSpaceFromCc(m, ipList, 1)
-  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p} as GLN)))
+  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: p} as GLT)))
   m.sort(sortPath)
 }
 
-export const insertTable = (m: M, insertParentNode: N, insertTargetIndex: number, payload: {rowLen: number, colLen: number}) => {
+export const insertTable = (m: M, insertParentNode: T, insertTargetIndex: number, payload: {rowLen: number, colLen: number}) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
   m.forEach(n => isSEODO(ip, n.path) && n.path.splice(ip.length - 1, 1, n.path.at(ip.length - 1) as number + 1))
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip} as GLN)
-  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: [...ip, 'c', ...el]} as GLN)))
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip} as GLT)
+  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacter(i) : 'node' + genHash(8), path: [...ip, 'c', ...el]} as GLT)))
   m.sort(sortPath)
 }

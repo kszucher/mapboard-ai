@@ -1,5 +1,5 @@
 import {FormatMode, PageState, Sides} from "./Enums"
-import {M, N} from "./MapStateTypes"
+import {M, T} from "./MapStateTypes"
 
 export interface EditorState {
   token: string
@@ -20,7 +20,7 @@ export interface EditorState {
   }
   moveCoords: number[]
   selectionRectCoords: number[]
-  intersectingNodes: N[]
+  intersectingNodes: T[]
   zoomInfo: {
     scale: number
     prevMapX: number

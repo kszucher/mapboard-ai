@@ -6,7 +6,7 @@ import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {adjustIcon} from "../utils/Utils"
 import {mSelector} from "../state/EditorState"
 import {ControlTypes} from "../state/Enums"
-import {N} from "../state/MapStateTypes"
+import {T} from "../state/MapStateTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 
 export const MapSvgLayer9DecorationIcons: FC = () => {
@@ -16,7 +16,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
-      {getRL(m).map((n: N) => (
+      {getRL(m).map((n: T) => (
         <g key={n.nodeId}>
           {n.controlType === ControlTypes.UPLOAD &&
             <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(n.nodeStartX -36)}, ${adjustIcon(n.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>

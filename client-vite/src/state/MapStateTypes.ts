@@ -46,7 +46,7 @@ export interface LSaveNever {
 
 }
 
-export interface NSaveOptional {
+export interface TSaveOptional {
   controlType: ControlTypes
   contentType: string
   content: string
@@ -79,7 +79,7 @@ export interface NSaveOptional {
   blur: number
 }
 
-export interface NSaveNever {
+export interface TSaveNever {
   // mapMeasure
   selfW: number
   selfH: number
@@ -100,7 +100,7 @@ export interface NSaveNever {
   isBottom: number
 }
 
-export interface NSaveAlways {
+export interface TSaveAlways {
   path: P
   nodeId: string
 }
@@ -109,12 +109,12 @@ export type G = GSaveAlways & GSaveOptional & GSaveNever
 export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
 export type L = LSaveAlways & LSaveOptional & LSaveNever
 export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<LSaveNever>
-export type N = NSaveAlways & NSaveOptional & NSaveNever
-export type NPartial = Required<NSaveAlways> & Partial<NSaveOptional> & Partial<NSaveNever>
-export type GLN = G & L & N
-export type GLNPartial = GPartial & LPartial & NPartial
-export type M = GLN[]
-export type MPartial = GLNPartial[]
+export type T = TSaveAlways & TSaveOptional & TSaveNever
+export type TPartial = Required<TSaveAlways> & Partial<TSaveOptional> & Partial<TSaveNever>
+export type GLT = G & L & T
+export type GLTPartial = GPartial & LPartial & TPartial
+export type M = GLT[]
+export type MPartial = GLTPartial[]
 export type PIC = 'g' | 'l' | 'r' | 'd' | 's' | 'c'
 export type PI = PIC | number
 export type P = PI[]

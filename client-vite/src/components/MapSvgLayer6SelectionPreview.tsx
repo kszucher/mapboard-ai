@@ -2,7 +2,7 @@ import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../reducers/EditorReducer"
-import {N} from "../state/MapStateTypes"
+import {T} from "../state/MapStateTypes"
 import {getSelectionMargin, pathCommonProps} from "./MapSvg"
 import {getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
@@ -11,7 +11,7 @@ export const MapSvgLayer6SelectionPreview: FC = () => {
   const intersectingNodes = useSelector((state: RootState) => state.editor.intersectingNodes)
   return (
     <g>
-      {intersectingNodes.map((n: N) => (
+      {intersectingNodes.map((n: T) => (
         <Fragment key={n.nodeId}>
           <path
             d={getPolygonPath(n, getPolygonS(m, n, 's'), 's', getSelectionMargin(m, n))}

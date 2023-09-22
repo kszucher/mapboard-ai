@@ -1,4 +1,4 @@
-import {GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, NSaveAlways, NSaveNever, NSaveOptional} from "./MapStateTypes"
+import {GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, TSaveAlways, TSaveNever, TSaveOptional} from "./MapStateTypes"
 import {ControlTypes, LineTypes, Sides} from "./Enums"
 
 export const gSaveAlways = {
@@ -40,12 +40,12 @@ export const lSaveNever = {
 
 } as LSaveNever
 
-export const nSaveAlways = {
+export const tSaveAlways = {
   path: [],
   nodeId: '',
-} as NSaveAlways
+} as TSaveAlways
 
-export const nSaveOptional = {
+export const tSaveOptional = {
   controlType: ControlTypes.NONE,
   contentType: 'text',
   content: '',
@@ -76,9 +76,9 @@ export const nSaveOptional = {
   llmDataType: 'text',
   llmDataId: '',
   blur: 0,
-} as NSaveOptional
+} as TSaveOptional
 
-export const nSaveNever = {
+export const tSaveNever = {
   // mapMeasure
   selfW: 0,
   selfH: 0,
@@ -97,4 +97,4 @@ export const nSaveNever = {
   nodeY: 0,
   isTop: 0,
   isBottom: 0,
-} as NSaveNever
+} as TSaveNever

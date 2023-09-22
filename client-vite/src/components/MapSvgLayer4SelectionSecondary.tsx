@@ -6,7 +6,7 @@ import {getX, isXACC, isXACR} from "../selectors/MapSelector"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../reducers/EditorReducer"
-import {N} from "../state/MapStateTypes"
+import {T} from "../state/MapStateTypes"
 import {getSelectionMargin, pathCommonProps} from "./MapSvg"
 import {getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
@@ -18,7 +18,7 @@ export const MapSvgLayer4SelectionSecondary: FC = () => {
   const C = getColors(colorMode)
   return (
     <g>
-      {m.map((n: N) => (
+      {m.map((n: T) => (
         <Fragment key={n.nodeId}>
           {
             !selectionRectCoords.length && n.selected && n.selected !== getX(m).selected && !isXACR(m) && !isXACC(m) &&

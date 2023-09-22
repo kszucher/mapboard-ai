@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare"
-import {M, GSaveNever, GSaveOptional, NSaveNever, NSaveOptional, LSaveOptional, LSaveNever} from "../state/MapStateTypes"
-import {gSaveAlways, gSaveOptional, lSaveAlways, lSaveOptional, nSaveAlways, nSaveOptional} from "../state/MapState"
+import {M, GSaveNever, GSaveOptional, TSaveNever, TSaveOptional, LSaveOptional, LSaveNever} from "../state/MapStateTypes"
+import {gSaveAlways, gSaveOptional, lSaveAlways, lSaveOptional, tSaveAlways, tSaveOptional} from "../state/MapState"
 import {isG, isL, sortPath} from "../selectors/MapSelector"
 
 export const mapDeInit = (m: M) => {
@@ -32,14 +32,14 @@ export const mapDeInit = (m: M) => {
       }
     } else {
       for (const prop in nl) {
-        if (nSaveAlways.hasOwnProperty(prop)) {
+        if (tSaveAlways.hasOwnProperty(prop)) {
           // do nothing
-        } else if (nSaveOptional.hasOwnProperty(prop)) {
-          if (isEqual(nl[prop as keyof NSaveOptional], nSaveOptional[prop as keyof NSaveOptional])) {
-            delete nl[prop as keyof NSaveOptional]
+        } else if (tSaveOptional.hasOwnProperty(prop)) {
+          if (isEqual(nl[prop as keyof TSaveOptional], tSaveOptional[prop as keyof TSaveOptional])) {
+            delete nl[prop as keyof TSaveOptional]
           }
         } else {
-          delete nl[prop as keyof NSaveNever]
+          delete nl[prop as keyof TSaveNever]
         }
       }
     }
