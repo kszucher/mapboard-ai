@@ -1,27 +1,25 @@
-import {getCountNSO1, getNodeByPath, isR, getCountXRD1S, getCountXRD0S, getNRD0, getNRD1} from "../selectors/MapSelector"
+import {getCountNSO1, getNodeByPath, isR, getCountXRD1S, getCountXRD0S, getNRD0, getNRD1, mT} from "../selectors/MapSelector"
 import {M} from "../state/MapStateTypes"
 
 export const mapCalcTask = (m: M) => {
-  m.reverse()
-  m.forEach(n => {
-    if (isR(n.path)) {
-      const taskStatusRight = getNRD0(m, n).taskStatus
-      const taskStatusLeft = getNRD1(m, n).taskStatus
-      n.taskStatus = 0
+  mT(m).toReversed().forEach(t => {
+    if (isR(t.path)) {
+      const taskStatusRight = getNRD0(m, t).taskStatus
+      const taskStatusLeft = getNRD1(m, t).taskStatus
+      t.taskStatus = 0
       if (getCountXRD0S(m) && getCountXRD1S(m)) {
-        n.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
+        t.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
       } else if (getCountXRD0S(m)) {
-        n.taskStatus = taskStatusRight
+        t.taskStatus = taskStatusRight
       } else if (getCountXRD1S(m)) {
-        n.taskStatus = taskStatusLeft
+        t.taskStatus = taskStatusLeft
       }
-    } else if (getCountNSO1(m, n)) {
-      n.taskStatus = 4
-      for (let i = 0; i < getCountNSO1(m, n); i++) {
-        const cn = getNodeByPath(m, [...n.path, 's', i])
-        n.taskStatus = cn.taskStatus < n.taskStatus ? cn.taskStatus : n.taskStatus
+    } else if (getCountNSO1(m, t)) {
+      t.taskStatus = 4
+      for (let i = 0; i < getCountNSO1(m, t); i++) {
+        const cn = getNodeByPath(m, [...t.path, 's', i])
+        t.taskStatus = cn.taskStatus < t.taskStatus ? cn.taskStatus : t.taskStatus
       }
     }
   })
-  m.reverse()
 }

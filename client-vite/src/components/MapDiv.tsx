@@ -5,7 +5,7 @@ import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {PageState} from "../state/Enums"
 import {getColors} from "./Colors"
-import {getG, getNodeById, isR, isS, isXR, isXS, getX, getCountNCO1, getNRD0, getNRD1, isNS, isNR,} from "../selectors/MapSelector"
+import {getG, getNodeById, isR, isS, isXR, isXS, getX, getCountNCO1, getNRD0, getNRD1, isNS, isNR, mT} from "../selectors/MapSelector"
 import {adjust, getLatexString} from "../utils/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -14,16 +14,16 @@ import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {T} from "../state/MapStateTypes"
 
-const getInnerHtml = (n: T) => {
-  if (n.contentType === 'text') {
-    return n.content
-  } else if (n.contentType === 'mermaid') {
-    return n.content
-  } else if (n.contentType === 'equation') {
-    return katex.renderToString(getLatexString(n.content), {throwOnError: false})
-  } else if (n.contentType === 'image') {
+const getInnerHtml = (t: T) => {
+  if (t.contentType === 'text') {
+    return t.content
+  } else if (t.contentType === 'mermaid') {
+    return t.content
+  } else if (t.contentType === 'equation') {
+    return katex.renderToString(getLatexString(t.content), {throwOnError: false})
+  } else if (t.contentType === 'image') {
     let imageLink = 'https://mapboard.io/file/'
-    return '<img src="' + imageLink + n.content + '" alt="" id="img">'
+    return '<img src="' + imageLink + t.content + '" alt="" id="img">'
   }
 }
 
@@ -48,42 +48,42 @@ export const MapDiv: FC = () => {
 
   return (
     <>
-      {m.map((n: T) => (
-        <Fragment key={n.nodeId}>
+      {mT(m).map((t: T) => (
+        <Fragment key={t.nodeId}>
           {
-            (isR(n.path) || isS(n.path)) &&
+            (isR(t.path) || isS(t.path)) &&
             <div
-              id={n.nodeId}
+              id={t.nodeId}
               ref={ref => ref && ref.focus()}
-              className={n.contentType === 'mermaid' ? 'mermaidNode' : ''}
+              className={t.contentType === 'mermaid' ? 'mermaidNode' : ''}
               style={{
-                left: adjust(n.nodeStartX),
-                top: adjust( n.nodeY - n.selfH / 2),
-                minWidth: n.contentType === 'mermaid' ? 'inherit' : n.selfW + (g.density === 'large'? -10 : -8),
-                minHeight: n.contentType === 'mermaid' ? 'inherit' : n.selfH + (g.density === 'large'? -10 : 0),
+                left: adjust(t.nodeStartX),
+                top: adjust( t.nodeY - t.selfH / 2),
+                minWidth: t.contentType === 'mermaid' ? 'inherit' : t.selfW + (g.density === 'large'? -10 : -8),
+                minHeight: t.contentType === 'mermaid' ? 'inherit' : t.selfH + (g.density === 'large'? -10 : 0),
                 paddingLeft: g.density === 'large'? 8 : 8,
                 paddingTop: g.density === 'large'? 4 : 2,
                 position: 'absolute',
-                fontSize: n.textFontSize,
+                fontSize: t.textFontSize,
                 fontFamily: 'Roboto',
-                textDecoration: n.linkType.length ? "underline" : "",
-                cursor: n.linkType !== '' ? 'pointer' : 'default',
-                color: n.blur ? 'transparent' : (n.textColor === 'default' ? C.TEXT_COLOR : n.textColor),
+                textDecoration: t.linkType.length ? "underline" : "",
+                cursor: t.linkType !== '' ? 'pointer' : 'default',
+                color: t.blur ? 'transparent' : (t.textColor === 'default' ? C.TEXT_COLOR : t.textColor),
                 transition: 'all 0.3s',
                 transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 userSelect: 'none',
-                zIndex: n.path.length,
+                zIndex: t.path.length,
                 border: 0,
                 margin: 0,
-                textShadow: n.blur? '#FFF 0 0 8px' : '',
-                // pointerEvents: n.selected && getCountNCO1(m, n) > 0 ? 'none' : 'auto'
+                textShadow: t.blur? '#FFF 0 0 8px' : '',
+                // pointerEvents: t.selected && getCountNCO1(m, t) > 0 ? 'none' : 'auto'
               }}
               spellCheck={false}
-              dangerouslySetInnerHTML={n.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(n) }}
-              contentEditable={n.nodeId === editedNodeId}
+              dangerouslySetInnerHTML={t.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(t) }}
+              contentEditable={t.nodeId === editedNodeId}
               onFocus={(e) => {
                 if (editType === 'append') {
                   e.currentTarget.innerHTML = getNodeById(m, editedNodeId).content
@@ -91,50 +91,50 @@ export const MapDiv: FC = () => {
                 setEndOfContentEditable(e.currentTarget)
               }}
               onBlur={(e) => {
-                dispatch(actions.mapAction({type: 'finishEdit', payload: {path: n.path, content: e.currentTarget.innerHTML}}))
+                dispatch(actions.mapAction({type: 'finishEdit', payload: {path: t.path, content: e.currentTarget.innerHTML}}))
               }}
               onMouseDown={(e) => {
                 e.stopPropagation()
                 dispatch(actions.closeContextMenu())
                 if (e.button === 0) {
-                  if (n.linkType === 'internal') {
-                    dispatch(nodeApi.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
-                  } else if (n.linkType === 'external') {
-                    window.open(n.link, '_blank')
+                  if (t.linkType === 'internal') {
+                    dispatch(nodeApi.endpoints.selectMap.initiate({mapId: t.link, frameId: ''}))
+                  } else if (t.linkType === 'external') {
+                    window.open(t.link, '_blank')
                     window.focus()
                   } else {
-                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectNS', payload: {path: n.path}}))
-                    e.ctrlKey && dispatch(actions.mapAction({type: 'selectStoo', payload: {path: n.path}}))
+                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectNS', payload: {path: t.path}}))
+                    e.ctrlKey && dispatch(actions.mapAction({type: 'selectStoo', payload: {path: t.path}}))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      !isXR(m) && dispatch(actions.mapAction({type: 'simulateDrag', payload: {n, e}}))
+                      !isXR(m) && dispatch(actions.mapAction({type: 'simulateDrag', payload: {t, e}}))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {n, e}}))
+                      !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {t, e}}))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  if((isNS(m, n) && !n.selected || isNR(m, n) && !getNRD0(m, n).selected && !getNRD1(m, n).selected)) {
-                    dispatch(actions.mapAction({type: 'selectNS', payload: {path: n.path}}))
+                  if((isNS(t) && !t.selected || isNR(t) && !getNRD0(m, t).selected && !getNRD1(m, t).selected)) {
+                    dispatch(actions.mapAction({type: 'selectNS', payload: {path: t.path}}))
                   }
                   dispatch(actions.openContextMenu({type: 'node', position: {x: e.clientX, y: e.clientY}}))
                 }
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation();
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountNCO1(m, n) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}));
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountNCO1(m, n) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID));
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountNCO1(m, t) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}));
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountNCO1(m, t) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID));
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
                 if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
-                  dispatch(actions.mapAction({type: 'finishEdit', payload: {path: n.path, content: e.currentTarget.innerHTML}}))
+                  dispatch(actions.mapAction({type: 'finishEdit', payload: {path: t.path, content: e.currentTarget.innerHTML}}))
                 }
                 if (['Insert','Tab'].includes(e.key)) {
                   isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))

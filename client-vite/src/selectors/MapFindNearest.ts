@@ -1,6 +1,6 @@
-import {M, GLT, P, T} from "../state/MapStateTypes"
+import {M, N, P, T} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
-import {getCountNSO1, getNodeById, getNodeByPath, getSI1P, getRi, isD, isS, isSO, sortPath} from "./MapSelector"
+import {getCountNSO1, getNodeById, getNodeByPath, getSI1P, getRi, isD, isS, isSO, sortPath, mT} from "./MapSelector"
 
 export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
@@ -19,25 +19,25 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
     const belowRoot = toY < rx.nodeY
     const overlap = 6
     let moveTargetNodeId = ''
-    m.forEach(n => {
-      if (getRi(n.path) === ri && (isS(n.path) || isD(n.path)) && n.nodeId !== moveNode.nodeId && !isSO(moveNode.path, n.path)) { // this could be NOT isSEO
+    mT(m).forEach(t => {
+      if (getRi(t.path) === ri && (isS(t.path) || isD(t.path)) && t.nodeId !== moveNode.nodeId && !isSO(moveNode.path, t.path)) { // this could be NOT isSEO
         let vCondition
-        if (n.isTop && belowRoot) {
-          vCondition = toY < (n.nodeY + n.maxH / 2 + overlap)
-        } else if (n.isBottom && aboveRoot) {
-          vCondition = toY > (n.nodeY - n.maxH / 2 - overlap)
+        if (t.isTop && belowRoot) {
+          vCondition = toY < (t.nodeY + t.maxH / 2 + overlap)
+        } else if (t.isBottom && aboveRoot) {
+          vCondition = toY > (t.nodeY - t.maxH / 2 - overlap)
         } else {
-          vCondition = Math.abs(toY - n.nodeY) <= n.maxH / 2 + overlap
+          vCondition = Math.abs(toY - t.nodeY) <= t.maxH / 2 + overlap
         }
-        let hCondition = (n.path[3] === 0 && toX > n.nodeEndX) || (n.path[3] === 1 && toX < n.nodeStartX)
+        let hCondition = (t.path[3] === 0 && toX > t.nodeEndX) || (t.path[3] === 1 && toX < t.nodeStartX)
         if (vCondition && hCondition ) {
-          moveTargetPath = n.path
-          moveTargetNodeId = n.nodeId
+          moveTargetPath = t.path
+          moveTargetNodeId = t.nodeId
         }
       }
     })
     if (moveTargetNodeId.length) {
-      const moveTargetNode = getNodeById(m, moveTargetNodeId) as GLT
+      const moveTargetNode = getNodeById(m, moveTargetNodeId) as N
       const moveTargetNodeCountSS = getCountNSO1(m, moveTargetNode)
       const fromX = moveTargetNode.path[3] ? moveTargetNode.nodeStartX : moveTargetNode.nodeEndX
       const fromY = moveTargetNode.nodeY
@@ -45,7 +45,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
       if (moveTargetNodeCountSS) {
         moveTargetIndex = moveTargetNodeCountSS
         for (let i = moveTargetNodeCountSS - 1; i > -1; i--) {
-          const currMoveTargetNodeChild = getNodeByPath(m, [...moveTargetNode.path, 's', i]) as GLT
+          const currMoveTargetNodeChild = getNodeByPath(m, [...moveTargetNode.path, 's', i]) as N
           if (toY < currMoveTargetNodeChild.nodeY) {
             moveTargetIndex = i
           }

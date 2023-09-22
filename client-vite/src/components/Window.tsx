@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getX, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath, getXRD0, getXRD1, isXAR} from "../selectors/MapSelector"
+import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getX, getXRi, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath, getXRD0, getXRD1, isXAR, mT} from "../selectors/MapSelector"
 import {isUrl} from "../utils/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
@@ -8,7 +8,7 @@ import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/NodeApiState"
 import {getMap, mSelector} from "../state/EditorState"
 import {mapDeInit} from "../reducers/MapDeInit"
-import {GLT} from "../state/MapStateTypes"
+import {N} from "../state/MapStateTypes"
 import {shortcutColors} from "./Colors"
 
 export let timeoutId: NodeJS.Timeout
@@ -17,7 +17,7 @@ let mapAreaListener: AbortController
 export const Window: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
-  const m = useSelector((state:RootState) => mSelector(state))
+  const m = (useSelector((state:RootState) => mSelector(state)))
   const mExists = m && m.length
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()
@@ -214,7 +214,7 @@ export const Window: FC = () => {
     dispatch(nodeApi.endpoints.saveMap.initiate({
       mapId: getMapId(),
       frameId: getFrameId(),
-      mapData: mapDeInit(getMap().filter((gln: GLT) => (gln.hasOwnProperty('path') && gln.hasOwnProperty('nodeId'))))
+      mapData: mapDeInit(getMap().filter((n: N) => (n.hasOwnProperty('path') && n.hasOwnProperty('nodeId'))))
     }))
     console.log('save by timeout')
   }

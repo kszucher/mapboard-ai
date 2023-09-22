@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {AppDispatch, RootState} from "../reducers/EditorReducer"
-import {getRL} from "../selectors/MapSelector"
+import {getRL, mT} from "../selectors/MapSelector"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {adjustIcon} from "../utils/Utils"
 import {mSelector} from "../state/EditorState"
@@ -16,10 +16,10 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
-      {getRL(m).map((n: T) => (
-        <g key={n.nodeId}>
-          {n.controlType === ControlTypes.UPLOAD &&
-            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(n.nodeStartX -36)}, ${adjustIcon(n.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
+      {getRL(mT(m)).map((t: T) => (
+        <g key={t.nodeId}>
+          {t.controlType === ControlTypes.UPLOAD &&
+            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(t.nodeStartX -36)}, ${adjustIcon(t.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
               <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
               <g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
                 <path stroke="none" d="M0 0h24v24H0z"></path>
@@ -44,8 +44,8 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
                 input.click()
               }}/>
             </g>}
-          {n.controlType === ControlTypes.GENERATE &&
-            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(n.nodeStartX -36)}, ${adjustIcon(n.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
+          {t.controlType === ControlTypes.GENERATE &&
+            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(t.nodeStartX -36)}, ${adjustIcon(t.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
               <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
               <g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M16 18a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zm0-12a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zM9 18a6 6 0 016-6 6 6 0 01-6-6 6 6 0 01-6 6 6 6 0 016 6z"></path>

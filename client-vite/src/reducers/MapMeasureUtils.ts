@@ -1,52 +1,53 @@
 import {getEquationDim, getTextDim} from "../components/MapDivUtils"
-import {G, M, T} from "../state/MapStateTypes"
-import {getCountNCO2, getCountNSCH, getCountNSCV, getCountNSO1, getCountNSO2, getNodeByPath} from "../selectors/MapSelector"
+import {M, T} from "../state/MapStateTypes"
+import {getCountNCO2, getCountNSCH, getCountNSCV, getCountNSO1, getCountNSO2, getG, getNodeByPath} from "../selectors/MapSelector"
 import {createArray} from "../utils/Utils"
 
-export const measureText = (g: G, pn: T, n: T) => {
+export const measureText = (m: M, pt: T, t: T) => {
+  const g = getG(m)
   if (
-    n.content !== '' &&
+    t.content !== '' &&
     (
-      n.dimW === 0 ||
-      n.dimH === 0 ||
+      t.dimW === 0 ||
+      t.dimH === 0 ||
       (
-        pn && (
-          pn.content !== n.content ||
-          pn.contentType !== n.contentType ||
-          pn.textFontSize !== n.textFontSize
+        pt && (
+          pt.content !== t.content ||
+          pt.contentType !== t.contentType ||
+          pt.textFontSize !== t.textFontSize
         )
       )
     )
   ) {
-    if (n.contentType === 'text') {
-      const dim = getTextDim(n.content, n.textFontSize)
-      n.dimW = dim[0]
-      n.dimH = dim[1]
-    } else if (n.contentType === 'mermaid') {
-      const currDiv = document.getElementById(n.nodeId) as HTMLDivElement
+    if (t.contentType === 'text') {
+      const dim = getTextDim(t.content, t.textFontSize)
+      t.dimW = dim[0]
+      t.dimH = dim[1]
+    } else if (t.contentType === 'mermaid') {
+      const currDiv = document.getElementById(t.nodeId) as HTMLDivElement
       if (currDiv) {
-        n.dimW = currDiv.offsetWidth
-        n.dimH = currDiv.offsetHeight
+        t.dimW = currDiv.offsetWidth
+        t.dimH = currDiv.offsetHeight
       }
-    } else if (n.contentType === 'equation') {
-      const dim = getEquationDim(n.content)
-      n.dimW = dim[0]
-      n.dimH = dim[1]
+    } else if (t.contentType === 'equation') {
+      const dim = getEquationDim(t.content)
+      t.dimW = dim[0]
+      t.dimH = dim[1]
     }
   }
-  n.selfW = (n.dimW > 20 ? n.dimW : 20) + (g.density === 'large' ? 16 : 18)
-  n.selfH = (n.dimH / 17 > 1 ? n.dimH : 20) + (g.density === 'large' ? 8 : 4)
+  t.selfW = (t.dimW > 20 ? t.dimW : 20) + (g.density === 'large' ? 16 : 18)
+  t.selfH = (t.dimH / 17 > 1 ? t.dimH : 20) + (g.density === 'large' ? 8 : 4)
 }
 
-export const measureTable = (m: M, g: G, n: T) => {
-  const countSCR = getCountNSCV(m, n)
-  const countSCC = getCountNSCH(m, n)
+export const measureTable = (m: M, t: T) => {
+  const countSCR = getCountNSCV(m, t)
+  const countSCC = getCountNSCH(m, t)
   let maxCellHeightMat = createArray(countSCR, countSCC)
   let maxCellWidthMat = createArray(countSCR, countSCC)
   let isCellSpacingActivated = 0
   for (let i = 0; i < countSCR; i++) {
     for (let j = 0; j < countSCC; j++) {
-      const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as T
+      const cn = getNodeByPath(m, [...t.path, 'c', i, j]) as T
       maxCellHeightMat[i][j] = cn.maxH
       maxCellWidthMat[i][j] = cn.maxW
       if (cn.maxH > 20) {
@@ -57,7 +58,7 @@ export const measureTable = (m: M, g: G, n: T) => {
   if (isCellSpacingActivated === 1) {
     for (let i = 0; i < countSCR; i++) {
       for (let j = 0; j < countSCC; j++) {
-        maxCellHeightMat[i][j] += n.spacing
+        maxCellHeightMat[i][j] += t.spacing
       }
     }
   }
@@ -69,9 +70,9 @@ export const measureTable = (m: M, g: G, n: T) => {
         maxRowHeight = cellHeight
       }
     }
-    n.maxRowHeight.push(maxRowHeight)
-    n.sumMaxRowHeight.push(maxRowHeight + n.sumMaxRowHeight.slice(-1)[0])
-    n.selfH += maxRowHeight
+    t.maxRowHeight.push(maxRowHeight)
+    t.sumMaxRowHeight.push(maxRowHeight + t.sumMaxRowHeight.slice(-1)[0])
+    t.selfH += maxRowHeight
   }
   for (let j = 0; j < countSCC; j++) {
     let maxColWidth = 0
@@ -80,37 +81,38 @@ export const measureTable = (m: M, g: G, n: T) => {
       if (cellWidth >= maxColWidth) {
         maxColWidth = cellWidth
       }
-      const cn = getNodeByPath(m, [...n.path, 'c', i, j, 's', 0]) as T
+      const cn = getNodeByPath(m, [...t.path, 'c', i, j, 's', 0]) as T
       if (cn && cn.taskStatus !== 0) {
         maxColWidth += 120
       }
     }
-    n.maxColWidth.push(maxColWidth)
-    n.sumMaxColWidth.push(maxColWidth + n.sumMaxColWidth.slice(-1)[0])
-    n.selfW += maxColWidth
+    t.maxColWidth.push(maxColWidth)
+    t.sumMaxColWidth.push(maxColWidth + t.sumMaxColWidth.slice(-1)[0])
+    t.selfW += maxColWidth
   }
   for (let j = 0; j < countSCC; j++) {
     for (let i = 0; i < countSCR; i++) {
-      const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as T
-      cn.selfW = n.maxColWidth[j]
-      cn.selfH = n.maxRowHeight[i]
+      const cn = getNodeByPath(m, [...t.path, 'c', i, j]) as T
+      cn.selfW = t.maxColWidth[j]
+      cn.selfH = t.maxRowHeight[i]
     }
   }
 }
 
-export const measureFamily = (m: M, g: G, n: T) => {
-  const countSS = getCountNSO1(m, n)
+export const measureFamily = (m: M, t: T) => {
+  const g = getG(m)
+  const countSS = getCountNSO1(m, t)
   let sMaxW = 0
   for (let i = 0; i < countSS; i++) {
-    const cn = getNodeByPath(m, [...n.path, 's', i]) as T
-    n.familyH += cn.maxH
+    const cn = getNodeByPath(m, [...t.path, 's', i]) as T
+    t.familyH += cn.maxH
     let currMaxW = cn.maxW
     if (currMaxW >= sMaxW) {
       sMaxW = currMaxW
     }
   }
-  if (getCountNSO2(m, n) || getCountNCO2(m, n)) {
-    n.familyH += (countSS - 1) * n.spacing
+  if (getCountNSO2(m, t) || getCountNCO2(m, t)) {
+    t.familyH += (countSS - 1) * t.spacing
   }
-  n.familyW = sMaxW + g.sLineDeltaXDefault
+  t.familyW = sMaxW + g.sLineDeltaXDefault
 }

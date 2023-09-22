@@ -1,10 +1,10 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {T} from "../state/MapStateTypes"
+import {N, T} from "../state/MapStateTypes"
 import colors from "tailwindcss/colors"
 import {getColors} from "./Colors"
-import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR} from "../selectors/MapSelector"
+import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR, mT} from "../selectors/MapSelector"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../reducers/EditorReducer"
@@ -12,38 +12,41 @@ import {RootState} from "../reducers/EditorReducer"
 export const MapSvgLayer0RootBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
+  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
     <>
       <g>
-        {/*<rect*/}
-        {/*  key={`${g.nodeId}_svg_map_background`}*/}
-        {/*  x={0}*/}
-        {/*  y={0}*/}
-        {/*  width={g.mapWidth}*/}
-        {/*  height={g.mapHeight}*/}
-        {/*  rx={0}*/}
-        {/*  ry={0}*/}
-        {/*  fill={'none'}*/}
-        {/*  stroke={'#dddddd'}*/}
-        {/*  strokeWidth={0.5}*/}
-        {/*  style={{transition: '0.3s ease-out'}}*/}
-        {/*>*/}
-        {/*</rect>*/}
+        {connectionHelpersVisible &&
+          <rect
+            key={`${g.nodeId}_svg_map_background`}
+            x={0}
+            y={0}
+            width={g.mapWidth}
+            height={g.mapHeight}
+            rx={0}
+            ry={0}
+            fill={'none'}
+            stroke={'#dddddd'}
+            strokeWidth={0.5}
+            style={{transition: '0.3s ease-out'}}
+          >
+          </rect>
+        }
       </g>
       <g>
-        {m.map((n: T) => (
-          <Fragment key={n.nodeId}>
+        {mT(m).map((t: T) => (
+          <Fragment key={t.nodeId}>
             {
-              isR(n.path) &&
+              isR(t.path) &&
               <rect
                 key={`${g.nodeId}_svg_root_background`}
-                x={getRootStartX(m, n)}
-                y={getRootStartY(m, n)}
-                width={getRootW(m, n)}
-                height={getRootH(m, n)}
+                x={getRootStartX(m, t)}
+                y={getRootStartY(m, t)}
+                width={getRootW(m, t)}
+                height={getRootH(m, t)}
                 rx={32}
                 ry={32}
                 fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}

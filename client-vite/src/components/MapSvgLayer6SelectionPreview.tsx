@@ -11,10 +11,10 @@ export const MapSvgLayer6SelectionPreview: FC = () => {
   const intersectingNodes = useSelector((state: RootState) => state.editor.intersectingNodes)
   return (
     <g>
-      {intersectingNodes.map((n: T) => (
-        <Fragment key={n.nodeId}>
+      {intersectingNodes.map((t: T) => (
+        <Fragment key={t.nodeId}>
           <path
-            d={getPolygonPath(n, getPolygonS(m, n, 's'), 's', getSelectionMargin(m, n))}
+            d={getPolygonPath(t, getPolygonS(m, t, 's'), 's', getSelectionMargin(m, t))}
             stroke={'#555555'}
             strokeWidth={1}
             fill={'none'}

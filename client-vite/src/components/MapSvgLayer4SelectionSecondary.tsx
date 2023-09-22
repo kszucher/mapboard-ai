@@ -2,7 +2,7 @@ import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {getColors} from "./Colors"
-import {getX, isXACC, isXACR} from "../selectors/MapSelector"
+import {getX, isXACC, isXACR, mT} from "../selectors/MapSelector"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
 import {RootState} from "../reducers/EditorReducer"
@@ -18,12 +18,12 @@ export const MapSvgLayer4SelectionSecondary: FC = () => {
   const C = getColors(colorMode)
   return (
     <g>
-      {m.map((n: T) => (
-        <Fragment key={n.nodeId}>
+      {mT(m).map((t: T) => (
+        <Fragment key={t.nodeId}>
           {
-            !selectionRectCoords.length && n.selected && n.selected !== getX(m).selected && !isXACR(m) && !isXACC(m) &&
+            !selectionRectCoords.length && t.selected && t.selected !== getX(m).selected && !isXACR(m) && !isXACC(m) &&
             <path
-              d={getPolygonPath(n, getPolygonS(m, n, n.selection), n.selection, getSelectionMargin(m, n))}
+              d={getPolygonPath(t, getPolygonS(m, t, t.selection), t.selection, getSelectionMargin(m, t))}
               stroke={C.SELECTION_COLOR}
               strokeWidth={1}
               fill={'none'}

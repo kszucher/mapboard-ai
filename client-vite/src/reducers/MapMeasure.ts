@@ -1,67 +1,63 @@
-import {getTaskWidth} from "../components/MapSvgUtils";
-import {MARGIN_X, MARGIN_Y} from "../state/Consts";
-import {G, M, T} from "../state/MapStateTypes"
-import {measureFamily, measureTable, measureText} from "./MapMeasureUtils";
-import {getCountNCO1, getNodeById, getNodeByPath, getRi, getRL, isC, isD, isG, isR, isS, hasTaskLeft, hasTaskRight, getCountNSO1, getNRD1, getNRD0, getNR} from "../selectors/MapSelector"
+import {getTaskWidth} from "../components/MapSvgUtils"
+import {MARGIN_X, MARGIN_Y} from "../state/Consts"
+import {M, T} from "../state/MapStateTypes"
+import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
+import {getCountNCO1, getNodeById, getRi, getRL, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountNSO1, getNRD1, getNRD0, getNR, mT, mG} from "../selectors/MapSelector"
 
 export const mapMeasure = (pm: M, m: M) => {
-  const g = getNodeByPath(m, ['g']) as G
-  m.reverse()
-  m.forEach(n => {
-    const pn = getNodeById(pm, n.nodeId)
+  mT(m).toReversed().forEach(t => {
+    const pt = getNodeById(pm, t.nodeId)
     switch (true) {
-      case isG(n.path): {
-        getRL(m).forEach(r => {
-          const nr = getNR(m, r) as T
-          const nrd0 = getNRD0(m, r) as T
-          const nrd1 = getNRD1(m, r) as T
-          const wr = nr.offsetW + nr.selfW + nrd0.familyW + getTaskWidth(n) * hasTaskRight(m, getRi(r.path))
-          const wl = nr.offsetW - nrd1.familyW - getTaskWidth(n) * hasTaskLeft(m, getRi(r.path))
-          if ((nr.offsetH + nrd0.familyH / 2) > n.maxD) {n.maxD = nr.offsetH + nrd0.familyH / 2}
-          if ((nr.offsetH + nrd1.familyH / 2) > n.maxD) {n.maxD = nr.offsetH + nrd1.familyH / 2}
-          if ((nr.offsetH - nrd0.familyH / 2) < n.maxU) {n.maxU = nr.offsetH - nrd0.familyH / 2}
-          if ((nr.offsetH - nrd1.familyH / 2) < n.maxU) {n.maxU = nr.offsetH - nrd1.familyH / 2}
-          if ((wr) > n.maxR) {n.maxR = wr}
-          if ((wl) < n.maxL) {n.maxL = wl}
-        })
-        n.mapWidth = n.maxR + Math.abs(n.maxL) + 2 * MARGIN_X
-        n.mapHeight = n.maxD - n.maxU + 2 * MARGIN_Y
+      case isR(t.path): {
+        measureText(m, pt, t)
         break
       }
-      case isR(n.path): {
-        measureText(g, pn, n)
-        break
-      }
-      case isD(n.path): {
-        if (getCountNSO1(m, n)) {
-          measureFamily(m, g, n)
+      case isD(t.path): {
+        if (getCountNSO1(m, t)) {
+          measureFamily(m, t)
         }
-        n.maxW = n.familyW
-        n.maxH = n.familyH
+        t.maxW = t.familyW
+        t.maxH = t.familyH
         break
       }
-      case isS(n.path): {
-        if (getCountNCO1(m, n)) {
-          measureTable(m, g, n)
+      case isS(t.path): {
+        if (getCountNCO1(m, t)) {
+          measureTable(m, t)
         } else {
-          measureText(g, pn, n)
+          measureText(m, pt, t)
         }
-        if (getCountNSO1(m, n)) {
-          measureFamily(m, g, n)
+        if (getCountNSO1(m, t)) {
+          measureFamily(m, t)
         }
-        n.maxW = n.selfW + n.familyW
-        n.maxH = Math.max(...[n.selfH, n.familyH])
+        t.maxW = t.selfW + t.familyW
+        t.maxH = Math.max(...[t.selfH, t.familyH])
         break
       }
-      case isC(n.path): {
-        if (getCountNSO1(m, n)) {
-          measureFamily(m, g, n)
+      case isC(t.path): {
+        if (getCountNSO1(m, t)) {
+          measureFamily(m, t)
         }
-        n.maxW = n.familyW || 60
-        n.maxH = n.familyH || 30
+        t.maxW = t.familyW || 60
+        t.maxH = t.familyH || 30
         break
       }
     }
   })
-  m.reverse()
+  mG(m).forEach(g => {
+    getRL(m).forEach(r => {
+      const nr = getNR(m, r) as T
+      const nrd0 = getNRD0(m, r) as T
+      const nrd1 = getNRD1(m, r) as T
+      const wr = nr.offsetW + nr.selfW + nrd0.familyW + getTaskWidth(g) * hasTaskRight(m, getRi(r.path))
+      const wl = nr.offsetW - nrd1.familyW - getTaskWidth(g) * hasTaskLeft(m, getRi(r.path))
+      if ((nr.offsetH + nrd0.familyH / 2) > g.maxD) {g.maxD = nr.offsetH + nrd0.familyH / 2}
+      if ((nr.offsetH + nrd1.familyH / 2) > g.maxD) {g.maxD = nr.offsetH + nrd1.familyH / 2}
+      if ((nr.offsetH - nrd0.familyH / 2) < g.maxU) {g.maxU = nr.offsetH - nrd0.familyH / 2}
+      if ((nr.offsetH - nrd1.familyH / 2) < g.maxU) {g.maxU = nr.offsetH - nrd1.familyH / 2}
+      if ((wr) > g.maxR) {g.maxR = wr}
+      if ((wl) < g.maxL) {g.maxL = wl}
+    })
+    g.mapWidth = g.maxR + Math.abs(g.maxL) + 2 * MARGIN_X
+    g.mapHeight = g.maxD - g.maxU + 2 * MARGIN_Y
+  })
 }

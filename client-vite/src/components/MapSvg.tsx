@@ -27,15 +27,15 @@ export const pathCommonProps = {
   }
 }
 
-export const getSelectionMargin = (m: M, n: T) => (
+export const getSelectionMargin = (m: M, t: T) => (
   (
     isXC(m) ||
     isXACR(m) ||
     isXACC(m) ||
-    (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
-    (n.selection === 'f') ||
-    n.taskStatus > 1 ||
-    getCountNCO1(m, n)
+    (t.selection === 's' && (t.sBorderColor  || t.sFillColor)) ||
+    (t.selection === 'f') ||
+    t.taskStatus > 1 ||
+    getCountNCO1(m, t)
   ) ? 4 : -2
 )
 
@@ -86,7 +86,7 @@ export const MapSvg: FC = () => {
           if (didMove) {
             if (e.button === 0) {
               const nList = mapFindIntersecting(m, fromX, fromY, toX, toY)
-              nList.length && dispatch(actions.mapAction({type: 'selectDragged', payload: {pathList: nList.map(n => n.path)}}))
+              nList.length && dispatch(actions.mapAction({type: 'selectDragged', payload: {pathList: nList.map(t => t.path)}}))
               dispatch(actions.setSelectionRectCoords([]))
               dispatch(actions.setIntersectingNodes([]))
             }

@@ -113,6 +113,7 @@ export type T = TSaveAlways & TSaveOptional & TSaveNever
 export type TPartial = Required<TSaveAlways> & Partial<TSaveOptional> & Partial<TSaveNever>
 export type GLT = G & L & T
 export type GLTPartial = GPartial & LPartial & TPartial
+export type N = GLT
 export type M = GLT[]
 export type MPartial = GLTPartial[]
 export type PIC = 'g' | 'l' | 'r' | 'd' | 's' | 'c'

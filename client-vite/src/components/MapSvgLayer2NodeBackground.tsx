@@ -1,6 +1,7 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
+import {mT} from "../selectors/MapSelector"
 import {getColors} from "./Colors"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
@@ -16,13 +17,13 @@ export const MapSvgLayer2NodeBackground: FC = () => {
   const C = getColors(colorMode)
   return (
     <g>
-      {m.map((n: T) => (
-        <Fragment key={n.nodeId}>
+      {mT(m).map((t: T) => (
+        <Fragment key={t.nodeId}>
           {
-            (n.sFillColor || n.taskStatus > 1) &&
+            (t.sFillColor || t.taskStatus > 1) &&
             <path
-              d={getArcPath(n, -2, true)}
-              fill={n.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(n.taskStatus - 2) : n.sFillColor}
+              d={getArcPath(t, -2, true)}
+              fill={t.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(t.taskStatus - 2) : t.sFillColor}
               {...pathCommonProps}
             >
             </path>

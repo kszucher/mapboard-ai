@@ -1,4 +1,4 @@
-import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectR, getReselectS, getXA, getXSI1, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectR, getReselectS, getXA, getXSI1, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, T, P} from "../state/MapStateTypes"
 import {generateCharacter, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
@@ -24,11 +24,11 @@ const cbSave = (cb: any) => {
   })
 }
 
-const clearNodeId = (m: M) => m.forEach((n, i) => n.nodeId = IS_TESTING ? generateCharacter(i) : 'node' + genHash(8))
-const insertPathFromIpR = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path : ['r', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]}))
-const insertPathFromIpS = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path : [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]}))
-const insertPathFromIpCr = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path: [...ip.slice(0, -3), 'c', (n.path.at(1) as number) + (ip.at(-2) as number), (n.path.at(2) as number), ...n.path.slice(3)]}))
-const insertPathFromIpCc = (m: M, ip: P) => m.forEach((n, i) => Object.assign(n, {path: [...ip.slice(0, -3), 'c', (n.path.at(1) as number), (n.path.at(2) as number) + (ip.at(-1) as number), ...n.path.slice(3)]}))
+const clearNodeId = (m: M) => mT(m).forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacter(i) : 'node' + genHash(8))
+const insertPathFromIpR = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path : ['r', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]}))
+const insertPathFromIpS = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]}))
+const insertPathFromIpCr = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number) + (ip.at(-2) as number), (t.path.at(2) as number), ...t.path.slice(3)]}))
+const insertPathFromIpCc = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number), (t.path.at(2) as number) + (ip.at(-1) as number), ...t.path.slice(3)]}))
 
 export const cutR = (m: M) => {
   const reselect = getReselectR(m)
@@ -132,7 +132,7 @@ export const moveS2T = (m: M, insertParentNode: T, moveNodes: T[]) => {
   const cb = structuredClone(sToCb(m))
   deleteS(m)
   insertTable(m, insertParentNode, 0, {rowLen, colLen: 1})
-  cb.forEach(n => Object.assign(n, {selected: 0, path: [...insertParentNode.path, 's', 0, 'c', n.path.at(1), 0, 's', 0, ...n.path.slice(2)] as P}))
+  cb.forEach(t => Object.assign(t, {selected: 0, path: [...insertParentNode.path, 's', 0, 'c', t.path.at(1), 0, 's', 0, ...t.path.slice(2)] as P}))
   m.push(...cb)
   m.sort(sortPath)
 }

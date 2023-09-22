@@ -2,7 +2,7 @@ import {getNSIC, getG, getNodeById, getNR, getPathDir, getRootEndX, getRootEndY,
 import {adjust} from "../utils/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts"
 import {LineTypes, Sides} from "../state/Enums"
-import {G, GLT, L, M, T} from "../state/MapStateTypes"
+import {G, L, M, T} from "../state/MapStateTypes"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -52,8 +52,8 @@ export const getLinePathBetweenNodes = (na: T, nb: T) => {
   return path
 }
 
-export const getLinePathBetweenRoots = (m: M, l: T) => {
-  const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l as GLT
+export const getLinePathBetweenRoots = (m: M, l: L) => {
+  const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l
   const fromNode = getNodeById(m, fromNodeId)
   const toNode = getNodeById(m, toNodeId)
   let sx = 0, sy = 0, c1x = 0, c1y = 0
@@ -73,29 +73,29 @@ export const getLinePathBetweenRoots = (m: M, l: T) => {
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
 
-export const getPolygonS = (m: M, n: T, selection: string): PolygonPoints => {
+export const getPolygonS = (m: M, t: T, selection: string): PolygonPoints => {
   const R = 8
   const g = getG(m)
-  const dir = getPathDir(n.path)
-  const selfH = (isD(n.path) ? getNR(m, n).selfH : n.selfH)
-  const w = isD(n.path) ? getNR(m, n).selfW + n.familyW : n.maxW
+  const dir = getPathDir(t.path)
+  const selfH = (isD(t.path) ? getNR(m, t).selfH : t.selfH)
+  const w = isD(t.path) ? getNR(m, t).selfW + t.familyW : t.maxW
   let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
   if (selection === 's') {
-    ax = n.nodeStartX
-    bx = dir === -1 ? n.nodeStartX + R: n.nodeEndX - R
-    cx = n.nodeEndX
-    ayu = byu = cyu = n.nodeY - selfH / 2
-    ayd = byd = cyd = n.nodeY + selfH / 2
+    ax = t.nodeStartX
+    bx = dir === -1 ? t.nodeStartX + R: t.nodeEndX - R
+    cx = t.nodeEndX
+    ayu = byu = cyu = t.nodeY - selfH / 2
+    ayd = byd = cyd = t.nodeY + selfH / 2
   } else {
-    ax = dir === -1 ? n.nodeEndX - w : n.nodeStartX
-    bx = dir === -1 ? n.nodeStartX - g.sLineDeltaXDefault: n.nodeEndX + g.sLineDeltaXDefault
-    cx = dir === -1 ? n.nodeEndX : n.nodeStartX + w
-    ayu = n.nodeY + (dir === -1 ? - n.maxH / 2 : - selfH / 2)
-    ayd = n.nodeY + (dir === -1 ? + n.maxH / 2 : + selfH / 2)
-    byu = n.nodeY - n.maxH / 2
-    byd = n.nodeY + n.maxH / 2
-    cyu = n.nodeY + (dir === -1 ? - selfH / 2 : - n.maxH / 2)
-    cyd = n.nodeY + (dir === -1 ? + selfH / 2 : + n.maxH / 2)
+    ax = dir === -1 ? t.nodeEndX - w : t.nodeStartX
+    bx = dir === -1 ? t.nodeStartX - g.sLineDeltaXDefault: t.nodeEndX + g.sLineDeltaXDefault
+    cx = dir === -1 ? t.nodeEndX : t.nodeStartX + w
+    ayu = t.nodeY + (dir === -1 ? - t.maxH / 2 : - selfH / 2)
+    ayd = t.nodeY + (dir === -1 ? + t.maxH / 2 : + selfH / 2)
+    byu = t.nodeY - t.maxH / 2
+    byd = t.nodeY + t.maxH / 2
+    cyu = t.nodeY + (dir === -1 ? - selfH / 2 : - t.maxH / 2)
+    cyd = t.nodeY + (dir === -1 ? + selfH / 2 : + t.maxH / 2)
   }
   return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
@@ -121,8 +121,8 @@ export const getPolygonC = (m: M): PolygonPoints => {
   return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
 
-export const getPolygonPath = (n: T, polygonPoints: PolygonPoints, selection: string, margin: number) => {
-  const dir = getPathDir(n.path)
+export const getPolygonPath = (t: T, polygonPoints: PolygonPoints, selection: string, margin: number) => {
+  const dir = getPathDir(t.path)
   let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
   ax = adjust(ax - margin)
   bx = adjust(bx - dir * margin)
@@ -154,15 +154,15 @@ export const getPolygonPath = (n: T, polygonPoints: PolygonPoints, selection: st
   return path + 'z'
 }
 
-export const getArcPath = (n: T, margin: number, closed: boolean) => {
+export const getArcPath = (t: T, margin: number, closed: boolean) => {
   const R = 8
-  const dir = getPathDir(n.path)
-  const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
-  const yu = n.nodeY - n.selfH / 2
+  const dir = getPathDir(t.path)
+  const xi = dir === -1 ? t.nodeEndX : t.nodeStartX
+  const yu = t.nodeY - t.selfH / 2
   let x1 = adjust(xi - margin * dir)
   let y1 = adjust(yu + R - margin)
-  let dx = n.selfW - 2 * R + 2 * margin
-  let dy = n.selfH - 2 * R + 2 * margin
+  let dx = t.selfW - 2 * R + 2 * margin
+  let dy = t.selfH - 2 * R + 2 * margin
   return dir === -1
     ? `M${x1},${y1}
       a${+R},${+R} 0 0 0 ${-R},${-R} h${-dx} 
@@ -178,20 +178,20 @@ export const getArcPath = (n: T, margin: number, closed: boolean) => {
       ${closed ? 'Z' : ''}`
 }
 
-export const getGridPath = (n: T) => {
-  const dir = getPathDir(n.path)
-  const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
-  const yu = n.nodeY - n.selfH / 2
-  const yd = n.nodeY + n.selfH / 2
+export const getGridPath = (t: T) => {
+  const dir = getPathDir(t.path)
+  const xi = dir === -1 ? t.nodeEndX : t.nodeStartX
+  const yu = t.nodeY - t.selfH / 2
+  const yd = t.nodeY + t.selfH / 2
   let path = ''
-  for (let i = 1; i < n.sumMaxRowHeight.length - 1; i++) {
-    const x1 = adjust(n.nodeStartX)
-    const x2 = adjust(n.nodeEndX)
-    const y = adjust(yu + n.sumMaxRowHeight[i])
+  for (let i = 1; i < t.sumMaxRowHeight.length - 1; i++) {
+    const x1 = adjust(t.nodeStartX)
+    const x2 = adjust(t.nodeEndX)
+    const y = adjust(yu + t.sumMaxRowHeight[i])
     path += `M${x1},${y} L${x2},${y}`
   }
-  for (let j = 1; j < n.sumMaxColWidth.length - 1; j++) {
-    const x = adjust(xi + dir*n.sumMaxColWidth[j])
+  for (let j = 1; j < t.sumMaxColWidth.length - 1; j++) {
+    const x = adjust(xi + dir*t.sumMaxColWidth[j])
     path += `M${x},${yu} L${x},${yd}`
   }
   return path
@@ -201,32 +201,32 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
-export const getTaskStartPoint = (m: M, g: G, n: T) => {
+export const getTaskStartPoint = (m: M, g: G, t: T) => {
   switch (true) {
-    case getPathDir(n.path) === 1 && !isCON(n.path): return getRootEndX(m, getNR(m, n)) - getTaskWidth(g)
-    case getPathDir(n.path) === -1 && !isCON(n.path): return getRootStartX(m, getNR(m, n)) + getTaskWidth(g)
-    case getPathDir(n.path) === 1 && isCON(n.path): return getNSIC(m, n).nodeEndX - 120
-    case getPathDir(n.path) === -1 && isCON(n.path): return getNSIC(m, n).nodeStartX + 120
+    case getPathDir(t.path) === 1 && !isCON(t.path): return getRootEndX(m, getNR(m, t)) - getTaskWidth(g)
+    case getPathDir(t.path) === -1 && !isCON(t.path): return getRootStartX(m, getNR(m, t)) + getTaskWidth(g)
+    case getPathDir(t.path) === 1 && isCON(t.path): return getNSIC(m, t).nodeEndX - 120
+    case getPathDir(t.path) === -1 && isCON(t.path): return getNSIC(m, t).nodeStartX + 120
     default: return 0
   }
 }
 
-export const getRootSideX = (m: M, n: T, side: string) => {
+export const getRootSideX = (m: M, t: T, side: string) => {
   switch (true) {
-    case (side === 'L'): return getRootStartX(m, n)
-    case (side === 'R'): return getRootEndX(m, n) - 24
-    case (side === 'T'): return getRootMidX(m, n) - 12
-    case (side === 'B'): return getRootMidX(m, n) - 12
+    case (side === 'L'): return getRootStartX(m, t)
+    case (side === 'R'): return getRootEndX(m, t) - 24
+    case (side === 'T'): return getRootMidX(m, t) - 12
+    case (side === 'B'): return getRootMidX(m, t) - 12
     default: return 0
   }
 }
 
-export const getRootSideY = (m: M, n: T, side: string) => {
+export const getRootSideY = (m: M, t: T, side: string) => {
   switch (true) {
-    case (side === 'L'): return getRootMidY(m, n) - 12
-    case (side === 'R'): return getRootMidY(m, n) - 12
-    case (side === 'T'): return getRootStartY(m, n)
-    case (side === 'B'): return getRootEndY(m, n) - 24
+    case (side === 'L'): return getRootMidY(m, t) - 12
+    case (side === 'R'): return getRootMidY(m, t) - 12
+    case (side === 'T'): return getRootStartY(m, t)
+    case (side === 'B'): return getRootEndY(m, t) - 24
     default: return 0
   }
 }
