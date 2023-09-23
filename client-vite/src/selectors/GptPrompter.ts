@@ -1,17 +1,20 @@
 import {M, T} from "../state/MapStateTypes"
-import {getXSCC0, getXSCR0, getSIPL, getNodeByPath, getXSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXRD0SO, getXAEO, getG, getNodeById, getNRD0SO} from "./MapSelector"
+import {getXSCC0, getXSCR0, getSIPL, getNodeByPath, getXSCYY, sortPath, isXR, getX, getCountNSO1, getXRD0, getXRD0SO, getXAEO, getNodeById, getNRD0SO, mL} from "./MapSelector"
 import {GptData} from "../state/NodeApiStateTypes"
 
 export const generateLlmInfo = (m: M) => ({
   inputContext: [
-    ...getG(m).connections.filter(connection => connection.toNodeId === getX(m).nodeId).map(connection => getNodeById(m, connection.fromNodeId)).map(t => ({
-      dataType: t.llmDataType,
-      dataId: t.llmDataId,
-      dataLabel: t.content,
-      data: t.llmDataType === 'text'
-        ? getNRD0SO(m, t).filter(t => getCountNSO1(m, t) === 0).map(t => ([...getSIPL(t.path), t.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
-        : [[]]
-    })),
+    ...mL(m)
+      .filter(l => l.toNodeId === getX(m).nodeId)
+      .map(l => getNodeById(m, l.fromNodeId))
+      .map(t => ({
+        dataType: t.llmDataType,
+        dataId: t.llmDataId,
+        dataLabel: t.content,
+        data: t.llmDataType === 'text'
+          ? getNRD0SO(m, t).filter(t => getCountNSO1(m, t) === 0).map(t => ([...getSIPL(t.path), t.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
+          : [[]]
+      })),
     {
       dataType: 'text',
       dataId: '',
