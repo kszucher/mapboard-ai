@@ -2,7 +2,7 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import {getG, getRL, mL, mT,} from "../selectors/MapSelector"
+import { getRL, isExistingLink, mL, mT,} from "../selectors/MapSelector"
 import {adjustIcon} from "../utils/Utils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
@@ -13,7 +13,6 @@ import {calculateMiddlePoint, getBezierLinePath, getLinePathBetweenRoots, getRoo
 
 export const MapSvgLayer10Connections: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
-  const g = getG(m)
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)
   const { data } = useOpenWorkspaceQuery()
@@ -78,8 +77,14 @@ export const MapSvgLayer10Connections: FC = () => {
                   onMouseUp={(e) => {
                     e.preventDefault()
                     e.stopPropagation()
-                    connectionStart.fromNodeId !== '' && connectionStart.fromNodeId !== t.nodeId && !g.connections.some(el => el.fromNodeSide === connectionStart.fromNodeId) &&
-                    dispatch(actions.mapAction({type: 'insertL', payload: {...connectionStart, toNodeId: t.nodeId, toNodeSide: Sides[side as keyof typeof Sides]}}))
+                    const newLink = {...connectionStart, toNodeId: t.nodeId, toNodeSide: Sides[side as keyof typeof Sides]} as L
+                    if (
+                      connectionStart.fromNodeId !== '' &&
+                      connectionStart.fromNodeId !== t.nodeId &&
+                      !isExistingLink(m, newLink)
+                    ) {
+                      dispatch(actions.mapAction({type: 'insertL', payload: newLink}))
+                    }
                   }}
                 />
               )

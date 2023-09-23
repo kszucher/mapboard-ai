@@ -1,7 +1,7 @@
 import isEqual from "react-fast-compare"
 import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {G, N, M, T, P} from "../state/MapStateTypes"
+import {G, N, M, T, P, L} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
 
 export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
@@ -193,3 +193,5 @@ export const getRootMidX = (m: M, t: T):number => getRootStartX(m, t) + getRootW
 export const getRootMidY = (m: M, t: T):number => getRootStartY(m, t) + getRootH(m, t) / 2
 export const getRootEndX = (m: M, t: T):number => getRootStartX(m, t) + getRootW(m, t)
 export const getRootEndY = (m: M, t: T):number => getRootStartY(m, t) + getRootH(m, t)
+
+export const isExistingLink = (m: M, l: L): boolean => mL(m).some(lt => l.fromNodeId === lt.fromNodeId && l.toNodeId === lt.toNodeId)

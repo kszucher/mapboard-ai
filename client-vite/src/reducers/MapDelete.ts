@@ -1,11 +1,15 @@
-import {M, P} from "../state/MapStateTypes"
+import {L, M, P} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
-import {getReselectS, getReselectCR, getReselectCC, getReselectR, getG, getX, isCD, isCR, getXA, isRDO, getNodeById, getSIPL, isSD, isSDO, getXAEO, mG, mL, mT, isSEO} from "../selectors/MapSelector"
+import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getSIPL, isSD, isSDO, getXAEO, mG, mL, mT, isSEO} from "../selectors/MapSelector"
 
-export const deleteL = () => {}
-
-const deleteXL = (m: M) => {
-  getG(m).connections = getG(m).connections.filter(el => el.fromNodeId !== getX(m).nodeId && el.toNodeId !== getX(m).nodeId)
+export const deleteL = (m: M, l: L) => {
+  m.splice(0, m.length, ...[...mG(m),
+      ...mL(m)
+        .filter(l => getXA(m).every(xn => xn.nodeId !== l.fromNodeId && xn.nodeId !== l.toNodeId))
+        .map((l, i) => ({...l, path: ['l', i] as P})),
+      ...mT(m)
+    ]
+  )
 }
 
 export const deleteR = (m: M) => {
