@@ -1,6 +1,6 @@
 import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectR, getReselectS, getXA, getXSI1, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, T, P} from "../state/MapStateTypes"
-import {generateCharacter, genHash, IS_TESTING} from "../utils/Utils"
+import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
 import {deleteCC, deleteCR, deleteR, deleteS} from "./MapDelete"
 import {insertTable} from "./MapInsert"
@@ -24,7 +24,6 @@ const cbSave = (cb: any) => {
   })
 }
 
-const clearNodeId = (m: M) => mT(m).forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacter(i) : 'node' + genHash(8))
 const insertPathFromIpR = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path : ['r', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]}))
 const insertPathFromIpS = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]}))
 const insertPathFromIpCr = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number) + (ip.at(-2) as number), (t.path.at(2) as number), ...t.path.slice(3)]}))
@@ -63,7 +62,7 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
   const cb = JSON.parse(payload) as M
   unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
-  clearNodeId(cb)
+  mT(cb).forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
   insertPathFromIpS(cb, ip)
   m.push(...cb)
   m.sort(sortPath)
@@ -77,7 +76,7 @@ export const duplicateR = (m: M) => {
   const ip = ['r', m.at(-1)!.path.at(1) as number + 1] as P
   const cb = structuredClone(rToCb(m))
   unselectNodes(m)
-  clearNodeId(cb)
+  mT(cb).forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
   insertPathFromIpR(cb, ip)
   m.push(...cb)
   m.sort(sortPath)
@@ -88,7 +87,7 @@ export const duplicateS = (m: M) => {
   const cb = structuredClone(sToCb(m))
   unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cb).length)
-  clearNodeId(cb)
+  mT(cb).forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
   insertPathFromIpS(cb, ip)
   m.push(...cb)
   m.sort(sortPath)
