@@ -13,24 +13,28 @@ const testFlow = (test: MPartial, result: MPartial, type: string, payload: objec
 describe("Delete_tests", () => {
 
   test('deleteR', () => testFlow([
-    {nodeId: 'a', path: ['g'], connections: [{fromNodeId: 'b', toNodeId: 'e'}, {fromNodeId: 'b', toNodeId: 'h'}]},
-    {nodeId: 'b', path: ['r', 0]},
-    {nodeId: 'c', path: ['r', 0, 'd', 0]},
-    {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-    {nodeId: 'e', path: ['r', 1], selected: 1},
-    {nodeId: 'f', path: ['r', 1, 'd', 0]},
-    {nodeId: 'g', path: ['r', 1, 'd', 0, 's', 0]},
-    {nodeId: 'h', path: ['r', 2]},
-    {nodeId: 'i', path: ['r', 2, 'd', 0]},
-    {nodeId: 'j', path: ['r', 2, 'd', 0, 's', 0]},
-  ] as MPartial, [
-    {nodeId: 'a', path: ['g'], connections: [{fromNodeId: 'b', toNodeId: 'h'}]},
-    {nodeId: 'b', path: ['r', 0], selected: 1},
-    {nodeId: 'c', path: ['r', 0, 'd', 0]},
-    {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-    {nodeId: 'h', path: ['r', 1]},
-    {nodeId: 'i', path: ['r', 1, 'd', 0]},
+    {nodeId: 'a', path: ['g']},
+    {nodeId: 'b', path: ['l', 0], fromNodeId: 'e', toNodeId: 'h'},
+    {nodeId: 'c', path: ['l', 1], fromNodeId: 'e', toNodeId: 'k'},
+    {nodeId: 'd', path: ['l', 2], fromNodeId: 'h', toNodeId: 'k'},
+    {nodeId: 'e', path: ['r', 0]},
+    {nodeId: 'f', path: ['r', 0, 'd', 0]},
+    {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0]},
+    {nodeId: 'h', path: ['r', 1], selected: 1},
+    {nodeId: 'j', path: ['r', 1, 'd', 0]},
     {nodeId: 'j', path: ['r', 1, 'd', 0, 's', 0]},
+    {nodeId: 'k', path: ['r', 2]},
+    {nodeId: 'l', path: ['r', 2, 'd', 0]},
+    {nodeId: 'm', path: ['r', 2, 'd', 0, 's', 0]},
+  ] as MPartial, [
+    {nodeId: 'a', path: ['g']},
+    {nodeId: 'c', path: ['l', 0], fromNodeId: 'e', toNodeId: 'k'},
+    {nodeId: 'e', path: ['r', 0], selected: 1},
+    {nodeId: 'f', path: ['r', 0, 'd', 0]},
+    {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0]},
+    {nodeId: 'k', path: ['r', 1]},
+    {nodeId: 'l', path: ['r', 1, 'd', 0]},
+    {nodeId: 'm', path: ['r', 1, 'd', 0, 's', 0]},
   ] as MPartial, 'deleteR', {}))
 
   test('deleteS', () => testFlow([

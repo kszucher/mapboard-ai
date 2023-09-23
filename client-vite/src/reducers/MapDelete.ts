@@ -1,4 +1,4 @@
-import {M} from "../state/MapStateTypes"
+import {M, P} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
 import {getReselectS, getReselectCR, getReselectCC, getReselectR, getG, getX, isCD, isCR, getXA, isRDO, getNodeById, getSIPL, isSD, isSDO, getXAEO, mG, mL, mT, isSEO} from "../selectors/MapSelector"
 
@@ -9,56 +9,62 @@ const deleteXL = (m: M) => {
 }
 
 export const deleteR = (m: M) => {
-  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mT(m)
-      .filter(t => getXAEO(m).every(xn => !isSEO(xn.path, t.path)))
-      .map(t => getXA(m).some(xn => isRDO(xn.path, t.path))
-        ? {...t, path: [...t.path.slice(0, getX(m).path.length - 1), t.path.at(getX(m).path.length - 1) as number - 1, ...t.path.slice(getX(m).path.length)]}
-        : t
-      )
+  m.splice(0, m.length, ...[...mG(m),
+      ...mL(m)
+        .filter(l => getXA(m).every(xn => xn.nodeId !== l.fromNodeId && xn.nodeId !== l.toNodeId))
+        .map((l, i) => ({...l, path: ['l', i] as P})),
+      ...mT(m)
+        .filter(t => getXAEO(m).every(xn => !isSEO(xn.path, t.path)))
+        .map(t => getXA(m).some(xn => isRDO(xn.path, t.path))
+          ? {...t, path: [...t.path.slice(0, getX(m).path.length - 1), t.path.at(getX(m).path.length - 1) as number - 1, ...t.path.slice(getX(m).path.length)]}
+          : t
+        )
     ]
   )
 }
 
 export const deleteS = (m: M) => {
-  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mT(m)
-      .filter(t => getXAEO(m).every(xn => !isSEO(xn.path, t.path)))
-      .map(t => getXA(m).some(xn => isSDO(xn.path, t.path))
-        ? {...t, path:
-            [...getSIPL(t.path), t.path]
-              .map(sip => [...sip.slice(0, -1), sip.at(-1) as number - getXA(m).map(xn => +isSD(xn.path, sip)).reduce((a, b) => a + b, 0)])
-              .reduce((a, b) => a.concat(b.slice(a.length)), [])
-        }
-        : t
-      )
+  m.splice(0, m.length, ...[...mG(m), ...mL(m),
+      ...mT(m)
+        .filter(t => getXAEO(m).every(xn => !isSEO(xn.path, t.path)))
+        .map(t => getXA(m).some(xn => isSDO(xn.path, t.path))
+          ? {...t, path:
+              [...getSIPL(t.path), t.path]
+                .map(sip => [...sip.slice(0, -1), sip.at(-1) as number - getXA(m).map(xn => +isSD(xn.path, sip)).reduce((a, b) => a + b, 0)])
+                .reduce((a, b) => a.concat(b.slice(a.length)), [])
+          }
+          : t
+        )
     ]
   )
 }
 
 export const deleteCR = (m: M) => {
-  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mT(m)
-      .filter(t => getXAEO(m).every(xn => !isSEO(xn.path, t.path)))
-      .map(t => getXA(m).some(xn => isCD(xn.path, t.path))
-        ? {...t, path: [...t.path.slice(0, getX(m).path.length - 2), t.path.at(getX(m).path.length - 2) as number - 1, ...t.path.slice(getX(m).path.length - 1)]}
-        : t
-      )
+  m.splice(0, m.length, ...[...mG(m), ...mL(m),
+      ...mT(m)
+        .filter(t => getXAEO(m).every(xn => !isSEO(xn.path, t.path)))
+        .map(t => getXA(m).some(xn => isCD(xn.path, t.path))
+          ? {...t, path: [...t.path.slice(0, getX(m).path.length - 2), t.path.at(getX(m).path.length - 2) as number - 1, ...t.path.slice(getX(m).path.length - 1)]}
+          : t
+        )
     ]
   )
 }
 
 export const deleteCC = (m: M) => {
-  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mT(m)
-      .filter(t => getXAEO(m).every(xn => !isSEO(xn.path, t.path)))
-      .map(t => getXA(m).some(xn => isCR(xn.path, t.path))
-        ? {...t, path: [...t.path.slice(0, getX(m).path.length - 1), t.path.at(getX(m).path.length - 1) as number - 1, ...t.path.slice(getX(m).path.length)]}
-        : t
-      )
+  m.splice(0, m.length, ...[...mG(m), ...mL(m),
+      ...mT(m)
+        .filter(t => getXAEO(m).every(xn => !isSEO(xn.path, t.path)))
+        .map(t => getXA(m).some(xn => isCR(xn.path, t.path))
+          ? {...t, path: [...t.path.slice(0, getX(m).path.length - 1), t.path.at(getX(m).path.length - 1) as number - 1, ...t.path.slice(getX(m).path.length)]}
+          : t
+        )
     ]
   )
 }
 
 export const deleteReselectR = (m: M) => {
   const reselect = getReselectR(m).nodeId
-  deleteXL(m)
   deleteR(m)
   selectNode(m, getNodeById(m, reselect), 's')
 }
