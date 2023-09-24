@@ -26,7 +26,7 @@ const cbSave = (cb: any) => {
 
 export const cutR = (m: M) => {
   const reselect = getReselectR(m)
-  const cbR = structuredClone(rToCb(m)) as M
+  const cbR = structuredClone(rToCb(m))
   cbSave(cbR)
   deleteR(m)
   selectNode(m, reselect, 's')
@@ -87,6 +87,7 @@ export const duplicateR = (m: M) => {
   cbR.forEach((t, i) => Object.assign(t, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', (t.path.at(1) as number) + (ipR.at(-1) as number), ...t.path.slice(2)],
+    // TODO: assign offset
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)
