@@ -93,8 +93,7 @@ export const duplicateR = (m: M) => {
   insertPathFromIpL(cbL, ipL)
   insertPathFromIpR(cbR, ipR)
   unselectNodes(m)
-  m.push(...cbL)
-  m.push(...cbR)
+  m.push(...cbL, ...cbR)
   m.sort(sortPath)
 }
 
