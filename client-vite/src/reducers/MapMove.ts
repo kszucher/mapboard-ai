@@ -101,7 +101,7 @@ export const duplicateS = (m: M) => {
   const ip = [...getXSI1(m).path, 's', getCountXASU(m) + getXA(m).length] as P
   const cbS = structuredClone(sToCb(m))
   makeSpaceFromS(m, ip, getXA(cbS).length)
-  mT(cbS).forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
+  cbS.forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
   insertPathFromIpS(cbS, ip)
   unselectNodes(m)
   m.push(...cbS)
