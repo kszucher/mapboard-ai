@@ -24,7 +24,7 @@ const cbSave = (cb: any) => {
   })
 }
 
-export const cutR = (m: M) => {
+export const cutLR = (m: M) => {
   const reselect = getReselectR(m)
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
@@ -41,7 +41,7 @@ export const cutS = (m: M) => {
   selectNode(m, reselect, 's')
 }
 
-export const copyR = (m: M) => {
+export const copyLR = (m: M) => {
   const cbL = structuredClone(rToCb(m))
   const cbR = structuredClone(rToCb(m))
   const cbDeInit = mapDeInit([...cbL, ...cbR])
@@ -54,31 +54,7 @@ export const copyS = (m: M) => {
   cbSave(cbDeInit)
 }
 
-export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
-  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
-  const cbS = JSON.parse(payload) as M
-  cbS.forEach((t, i) => Object.assign(t, {
-    nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8),
-    path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]
-  }))
-  makeSpaceFromS(m, ip, getXA(cbS).length)
-  unselectNodes(m)
-  m.push(...cbS)
-  m.sort(sortPath)
-}
-
-export const pasteLR = (m: M, payload: any) => {
-  const cbLR = JSON.parse(payload) as M
-  const cbL = mL(cbLR)
-  const cbR = mT(cbLR)
-
-}
-
-export const duplicateR = (m: M) => {
-  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as P
-  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as P
-  const cbL = structuredClone(lToCb(m))
-  const cbR = structuredClone(rToCb(m))
+const cbToLR = (m: M, cbL: M, cbR: M, ipL: P, ipR: P) => {
   const nodeIdMappingR = cbR.map((t, i) => ({
     oldNodeId: t.nodeId,
     newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)
@@ -99,9 +75,7 @@ export const duplicateR = (m: M) => {
   m.sort(sortPath)
 }
 
-export const duplicateS = (m: M) => {
-  const ip = [...getXSI1(m).path, 's', getCountXASU(m) + getXA(m).length] as P
-  const cbS = structuredClone(sToCb(m))
+const cbToS = (m: M, cbS: M, ip: P) => {
   cbS.forEach((t, i) => Object.assign(t, {
     nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8),
     path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]
@@ -110,6 +84,35 @@ export const duplicateS = (m: M) => {
   unselectNodes(m)
   m.push(...cbS)
   m.sort(sortPath)
+}
+
+export const pasteLR = (m: M, payload: any) => {
+  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as P
+  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as P
+  const cbLR = JSON.parse(payload) as M
+  const cbL = mL(cbLR)
+  const cbR = mT(cbLR)
+  cbToLR(m, cbL, cbR, ipL, ipR)
+}
+
+export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
+  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
+  const cbS = JSON.parse(payload) as M
+  cbToS(m, cbS, ip)
+}
+
+export const duplicateR = (m: M) => {
+  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as P
+  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as P
+  const cbL = structuredClone(lToCb(m))
+  const cbR = structuredClone(rToCb(m))
+  cbToLR(m, cbL, cbR, ipL, ipR)
+}
+
+export const duplicateS = (m: M) => {
+  const ip = [...getXSI1(m).path, 's', getCountXASU(m) + getXA(m).length] as P
+  const cbS = structuredClone(sToCb(m))
+  cbToS(m, cbS, ip)
 }
 
 export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
