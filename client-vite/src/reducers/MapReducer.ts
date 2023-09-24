@@ -4,7 +4,7 @@ import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./MapParseGpt
 import {tSaveOptional} from "../state/MapState"
 import {M, P} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
-import {deleteReselectCC, deleteReselectCR, deleteReselectR, deleteReselectS,} from "./MapDelete"
+import {deleteL, deleteReselectCC, deleteReselectCR, deleteReselectR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertL, insertS, insertTable, insertTemplateR} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
@@ -78,7 +78,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertTemplateRR': insertTemplateR(m, payload.template, getRiL(m) + 1, getRootStartX(m, getR0(m)) + getG(m).maxR + 200, 0); break
     case 'insertTemplateRD': insertTemplateR(m, payload.template, getRiL(m) + 1, 0, getRootStartY(m, getR0(m)) + getG(m).maxD + 500); break
 
-    case 'deleteL': getG(m).connections = getG(m).connections.filter(connection => !isEqual(connection, payload)); break
+    case 'deleteL': deleteL(m, payload); break
     case 'deleteR': deleteReselectR(m); break
     case 'deleteS': deleteReselectS(m); break
     case 'deleteCR': deleteReselectCR(m); break

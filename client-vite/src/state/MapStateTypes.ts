@@ -1,12 +1,5 @@
 import {LineTypes, ControlTypes} from "./Enums"
 
-export interface Connection {
-  fromNodeId: string
-  fromNodeSide: string
-  toNodeId: string
-  toNodeSide: string
-}
-
 export interface GSaveAlways {
   path: P
   nodeId: string
@@ -15,7 +8,6 @@ export interface GSaveAlways {
 export interface GSaveOptional {
   alignment: string
   density: string
-  connections: Connection[]
 }
 
 export interface GSaveNever {

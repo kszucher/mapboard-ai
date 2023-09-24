@@ -1,4 +1,4 @@
-import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectR, getReselectS, getXA, getXSI1, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectR, getReselectS, getXA, getXSI1, lToCb, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, T, P} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
@@ -75,9 +75,25 @@ export const pasteR = (m: M) => {
 export const duplicateR = (m: M) => {
   const ip = ['r', m.at(-1)!.path.at(1) as number + 1] as P
   const cbR = structuredClone(rToCb(m))
+  const cbL = structuredClone(lToCb(m))
+
+  // TODO start with writing a test for lToCb because it returns nothing... it should instead return the subset of all L that matches my condition --> do it
+
   unselectNodes(m)
-  mT(cbR).forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
+
+  const nodeIdMapping = cbR.map((t, i) => ({oldNodeId: t.nodeId, newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)}))
+
+  cbL.forEach((t, i) => Object.assign(t, {
+    // TODO: we need PATH too here, mapped, starting from getLiL
+    nodeId: IS_TESTING ? generateCharacterFrom('o', i) : 'node' + genHash(8),
+    fromNodeId : nodeIdMapping.find(el => el.oldNodeId === t.fromNodeId)?.newNodeId || t.fromNodeSide,
+    toNodeId: nodeIdMapping.find(el => el.oldNodeId === t.toNodeId)?.newNodeId || t.nodeId
+  }))
+
+  cbR.forEach((t, i) => t.nodeId = nodeIdMapping[i].newNodeId)
+
   insertPathFromIpR(cbR, ip)
+  m.push(...cbL)
   m.push(...cbR)
   m.sort(sortPath)
 }

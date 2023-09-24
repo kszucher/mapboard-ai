@@ -9,7 +9,6 @@ export const gSaveAlways = {
 export const gSaveOptional = {
   alignment: 'adaptive',
   density: 'large',
-  connections: [],
 } as GSaveOptional
 
 export const gSaveNever = {

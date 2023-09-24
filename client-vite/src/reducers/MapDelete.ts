@@ -2,10 +2,10 @@ import {L, M, P} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
 import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getSIPL, isSD, isSDO, getXAEO, mG, mL, mT, isSEO} from "../selectors/MapSelector"
 
-export const deleteL = (m: M, l: L) => {
+export const deleteL = (m: M, dl: L) => {
   m.splice(0, m.length, ...[...mG(m),
       ...mL(m)
-        .filter(l => getXA(m).every(xn => xn.nodeId !== l.fromNodeId && xn.nodeId !== l.toNodeId))
+        .filter(l =>  l.nodeId !== dl.nodeId)
         .map((l, i) => ({...l, path: ['l', i] as P})),
       ...mT(m)
     ]
