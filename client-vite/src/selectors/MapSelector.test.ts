@@ -1,7 +1,7 @@
 import {mapDeInit} from "../reducers/MapDeInit"
 import {mapInit} from "../reducers/MapInit"
 import {M, MPartial} from "../state/MapStateTypes"
-import {rToCb, sortNode} from "./MapSelector"
+import {lToCb, rToCb, sortNode} from "./MapSelector"
 
 const testFlow = (fun: Function, test: MPartial, result: MPartial) => {
   mapInit(test)
@@ -9,6 +9,25 @@ const testFlow = (fun: Function, test: MPartial, result: MPartial) => {
 }
 
 describe("Selector_tests", () => {
+
+  test('lToCb', () => testFlow(lToCb, [
+    {nodeId: 'a', path: ['g']},
+    {nodeId: 'b', path: ['l', 0], fromNodeId: 'g', toNodeId: 'h'},
+    {nodeId: 'c', path: ['l', 1], fromNodeId: 'g', toNodeId: 'i'},
+    {nodeId: 'd', path: ['l', 2], fromNodeId: 'g', toNodeId: 'j'},
+    {nodeId: 'e', path: ['l', 3], fromNodeId: 'i', toNodeId: 'j'},
+    {nodeId: 'f', path: ['l', 4], fromNodeId: 'i', toNodeId: 'k'},
+    {nodeId: 'g', path: ['r', 0]},
+    {nodeId: 'h', path: ['r', 1]},
+    {nodeId: 'i', path: ['r', 2], selected: 1},
+    {nodeId: 'j', path: ['r', 3], selected: 2},
+    {nodeId: 'k', path: ['r', 4], selected: 3},
+
+  ] as MPartial, [
+    {nodeId: 'e', path: ['l', 0], fromNodeId: 'i', toNodeId: 'j'},
+    {nodeId: 'f', path: ['l', 1], fromNodeId: 'i', toNodeId: 'k'},
+  ] as MPartial))
+
   test('rToCb', () => testFlow(rToCb, [
     {nodeId: 'a', path: ['g']},
     {nodeId: 'b', path: ['r', 0]},
