@@ -26,8 +26,9 @@ const cbSave = (cb: any) => {
 
 export const cutR = (m: M) => {
   const reselect = getReselectR(m)
+  const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
-  cbSave(cbR)
+  cbSave([...cbL, cbR])
   deleteR(m)
   selectNode(m, reselect, 's')
 }
@@ -41,8 +42,9 @@ export const cutS = (m: M) => {
 }
 
 export const copyR = (m: M) => {
+  const cbL = structuredClone(rToCb(m))
   const cbR = structuredClone(rToCb(m))
-  const cbDeInit = mapDeInit(cbR)
+  const cbDeInit = mapDeInit([...cbL, ...cbR])
   cbSave(cbDeInit)
 }
 
@@ -55,17 +57,20 @@ export const copyS = (m: M) => {
 export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   const cbS = JSON.parse(payload) as M
-  unselectNodes(m)
-  makeSpaceFromS(m, ip, getXA(cbS).length)
   cbS.forEach((t, i) => Object.assign(t, {
     nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8),
     path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]
   }))
+  makeSpaceFromS(m, ip, getXA(cbS).length)
+  unselectNodes(m)
   m.push(...cbS)
   m.sort(sortPath)
 }
 
-export const pasteR = (m: M) => {
+export const pasteLR = (m: M, payload: any) => {
+  const cbLR = JSON.parse(payload) as M
+  const cbL = mL(cbLR)
+  const cbR = mT(cbLR)
 
 }
 
