@@ -82,10 +82,10 @@ export const duplicateR = (m: M) => {
     oldNodeId: t.nodeId,
     newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)
   }))
-  cbL.forEach((t, i) => Object.assign(t, {
+  cbL.forEach((l, i) => Object.assign(l, {
     nodeId: IS_TESTING ? generateCharacterFrom('r', i) : 'node' + genHash(8),
-    fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === t.fromNodeId)?.newNodeId || t.fromNodeSide,
-    toNodeId: nodeIdMappingR.find(el => el.oldNodeId === t.toNodeId)?.newNodeId || t.nodeId
+    fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === l.fromNodeId)?.newNodeId || l.fromNodeSide,
+    toNodeId: nodeIdMappingR.find(el => el.oldNodeId === l.toNodeId)?.newNodeId || l.nodeId
   }))
   cbR.forEach((t, i) => Object.assign(t, {
     nodeId: nodeIdMappingR[i].newNodeId
