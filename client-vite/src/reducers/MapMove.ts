@@ -1,4 +1,4 @@
-import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectR, getReselectS, getXA, getXSI1, lToCb, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, T, P} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
@@ -24,10 +24,11 @@ const cbSave = (cb: any) => {
   })
 }
 
-const insertPathFromIpR = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path : ['r', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]}))
-const insertPathFromIpS = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]}))
-const insertPathFromIpCr = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number) + (ip.at(-2) as number), (t.path.at(2) as number), ...t.path.slice(3)]}))
-const insertPathFromIpCc = (m: M, ip: P) => mT(m).forEach((t, i) => Object.assign(t, {path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number), (t.path.at(2) as number) + (ip.at(-1) as number), ...t.path.slice(3)]}))
+const insertPathFromIpL = (m: M, ip: P) => mL(m).forEach(l => Object.assign(l, {path : ['l', (l.path.at(1) as number) + (ip.at(-1) as number)]}))
+const insertPathFromIpR = (m: M, ip: P) => mT(m).forEach(t => Object.assign(t, {path : ['r', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]}))
+const insertPathFromIpS = (m: M, ip: P) => mT(m).forEach(t => Object.assign(t, {path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]}))
+const insertPathFromIpCr = (m: M, ip: P) => mT(m).forEach(t => Object.assign(t, {path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number) + (ip.at(-2) as number), (t.path.at(2) as number), ...t.path.slice(3)]}))
+const insertPathFromIpCc = (m: M, ip: P) => mT(m).forEach(t => Object.assign(t, {path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number), (t.path.at(2) as number) + (ip.at(-1) as number), ...t.path.slice(3)]}))
 
 export const cutR = (m: M) => {
   const reselect = getReselectR(m)
@@ -73,7 +74,8 @@ export const pasteR = (m: M) => {
 }
 
 export const duplicateR = (m: M) => {
-  const ip = ['r', m.at(-1)!.path.at(1) as number + 1] as P
+  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as P
+  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as P
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
   const nodeIdMappingR = cbR.map((t, i) => ({
@@ -81,13 +83,13 @@ export const duplicateR = (m: M) => {
     newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)
   }))
   cbL.forEach((t, i) => Object.assign(t, {
-    // TODO: we need PATH too here, mapped, starting from getLiL
-    nodeId: IS_TESTING ? generateCharacterFrom('o', i) : 'node' + genHash(8),
+    nodeId: IS_TESTING ? generateCharacterFrom('r', i) : 'node' + genHash(8),
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === t.fromNodeId)?.newNodeId || t.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === t.toNodeId)?.newNodeId || t.nodeId
   }))
   cbR.forEach((t, i) => t.nodeId = nodeIdMappingR[i].newNodeId)
-  insertPathFromIpR(cbR, ip)
+  insertPathFromIpL(cbL, ipL)
+  insertPathFromIpR(cbR, ipR)
   unselectNodes(m)
   m.push(...cbL)
   m.push(...cbR)
@@ -97,10 +99,10 @@ export const duplicateR = (m: M) => {
 export const duplicateS = (m: M) => {
   const ip = [...getXSI1(m).path, 's', getCountXASU(m) + getXA(m).length] as P
   const cbS = structuredClone(sToCb(m))
-  unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cbS).length)
   mT(cbS).forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
   insertPathFromIpS(cbS, ip)
+  unselectNodes(m)
   m.push(...cbS)
   m.sort(sortPath)
 }
