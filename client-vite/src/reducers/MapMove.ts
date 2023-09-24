@@ -87,7 +87,9 @@ export const duplicateR = (m: M) => {
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === t.fromNodeId)?.newNodeId || t.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === t.toNodeId)?.newNodeId || t.nodeId
   }))
-  cbR.forEach((t, i) => t.nodeId = nodeIdMappingR[i].newNodeId)
+  cbR.forEach((t, i) => Object.assign(t, {
+    nodeId: nodeIdMappingR[i].newNodeId
+  }))
   insertPathFromIpL(cbL, ipL)
   insertPathFromIpR(cbR, ipR)
   unselectNodes(m)
