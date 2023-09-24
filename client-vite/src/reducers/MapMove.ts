@@ -63,7 +63,7 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
   const cbS = JSON.parse(payload) as M
   unselectNodes(m)
   makeSpaceFromS(m, ip, getXA(cbS).length)
-  mT(cbS).forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
+  cbS.forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
   insertPathFromIpS(cbS, ip)
   m.push(...cbS)
   m.sort(sortPath)
@@ -100,9 +100,9 @@ export const duplicateR = (m: M) => {
 export const duplicateS = (m: M) => {
   const ip = [...getXSI1(m).path, 's', getCountXASU(m) + getXA(m).length] as P
   const cbS = structuredClone(sToCb(m))
-  makeSpaceFromS(m, ip, getXA(cbS).length)
   cbS.forEach((t, i) => t.nodeId = IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8))
   insertPathFromIpS(cbS, ip)
+  makeSpaceFromS(m, ip, getXA(cbS).length)
   unselectNodes(m)
   m.push(...cbS)
   m.sort(sortPath)
@@ -111,9 +111,9 @@ export const duplicateS = (m: M) => {
 export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
   const cbS = structuredClone(sToCb(m))
+  insertPathFromIpS(cbS, ip)
   deleteS(m)
   makeSpaceFromS(m, ip, getXA(cbS).length)
-  insertPathFromIpS(cbS, ip)
   m.push(...cbS)
   m.sort(sortPath)
 }
@@ -122,9 +122,9 @@ export const moveCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) 
   const ip = [...insertParentNode.path, 'c', insertTargetRowIndex, 0] as P
   const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
   const cbCr = structuredClone(crToCb(m))
+  insertPathFromIpCr(cbCr, ip)
   deleteCR(m)
   makeSpaceFromCr(m, ipList, 1)
-  insertPathFromIpCr(cbCr, ip)
   m.push(...cbCr)
   m.sort(sortPath)
 }
@@ -133,9 +133,9 @@ export const moveCC = (m: M, insertParentNode: T, insertTargetColumnIndex: numbe
   const ip = [...insertParentNode.path, 'c', 0, insertTargetColumnIndex] as P
   const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
   const cbCc = structuredClone(ccToCb(m))
+  insertPathFromIpCc(cbCc, ip)
   deleteCC(m)
   makeSpaceFromCc(m, ipList, 1)
-  insertPathFromIpCc(cbCc, ip)
   m.push(...cbCc)
   m.sort(sortPath)
 }
@@ -144,9 +144,9 @@ export const moveS2T = (m: M, insertParentNode: T, moveNodes: T[]) => {
   const rowLen = moveNodes.length
   selectNodeList(m, moveNodes, 's')
   const cbS = structuredClone(sToCb(m))
+  cbS.forEach(t => Object.assign(t, {selected: 0, path: [...insertParentNode.path, 's', 0, 'c', t.path.at(1), 0, 's', 0, ...t.path.slice(2)] as P}))
   deleteS(m)
   insertTable(m, insertParentNode, 0, {rowLen, colLen: 1})
-  cbS.forEach(t => Object.assign(t, {selected: 0, path: [...insertParentNode.path, 's', 0, 'c', t.path.at(1), 0, 's', 0, ...t.path.slice(2)] as P}))
   m.push(...cbS)
   m.sort(sortPath)
 }
