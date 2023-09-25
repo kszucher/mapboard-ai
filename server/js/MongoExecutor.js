@@ -27,6 +27,33 @@ async function mongoExecutorCommands (users, maps, shares) {
   //   }
   // ])
 
+
+
+  // await maps.aggregate(
+  //   [
+  //     {
+  //       $set: {
+  //         mapName: {
+  //           $getField: {
+  //             field: 'content',
+  //             input: {
+  //               $first: {
+  //                 $filter: {
+  //                   input: { $last: '$versions' },
+  //                   as: 'node',
+  //                   cond: { $eq: ["$$node.path", ['r', 0]] },
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     { $merge: 'maps' }
+  //   ]
+  // ).toArray()
+
+
 }
 
 async function mongoExecutor() {
