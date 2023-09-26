@@ -1,4 +1,4 @@
-import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, T, P} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
@@ -116,50 +116,56 @@ export const duplicateS = (m: M) => {
 }
 
 export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
-  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
+  const insertParentNodeId = insertParentNode.nodeId
   const cbS = structuredClone(sToCb(m))
+  deleteS(m)
+  const ip = [...getNodeById(m, insertParentNodeId).path, 's', insertTargetIndex] as P
   cbS.forEach((t, i) => Object.assign(t, {
     path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]
   }))
-  deleteS(m)
   makeSpaceFromS(m, ip, getXA(cbS).length)
   m.push(...cbS)
   m.sort(sortPath)
 }
 
 export const moveCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) => {
-  const ip = [...insertParentNode.path, 'c', insertTargetRowIndex, 0] as P
-  const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
+  const insertParentNodeId = insertParentNode.nodeId
   const cbCr = structuredClone(crToCb(m))
+  deleteCR(m)
+  const ip = [...getNodeById(m, insertParentNodeId).path, 'c', insertTargetRowIndex, 0] as P
+  const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
   cbCr.forEach(t => Object.assign(t, {
     path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number) + (ip.at(-2) as number), (t.path.at(2) as number), ...t.path.slice(3)]
   }))
-  deleteCR(m)
   makeSpaceFromCr(m, ipList, 1)
   m.push(...cbCr)
   m.sort(sortPath)
 }
 
 export const moveCC = (m: M, insertParentNode: T, insertTargetColumnIndex: number) => {
-  const ip = [...insertParentNode.path, 'c', 0, insertTargetColumnIndex] as P
-  const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
+  const insertParentNodeId = insertParentNode.nodeId
   const cbCc = structuredClone(ccToCb(m))
+  deleteCC(m)
+  const ip = [...getNodeById(m, insertParentNodeId).path, 'c', 0, insertTargetColumnIndex] as P
+  const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
   cbCc.forEach(t => Object.assign(t, {
     path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number), (t.path.at(2) as number) + (ip.at(-1) as number), ...t.path.slice(3)]
   }))
-  deleteCC(m)
   makeSpaceFromCc(m, ipList, 1)
   m.push(...cbCc)
   m.sort(sortPath)
 }
 
 export const moveS2T = (m: M, insertParentNode: T, moveNodes: T[]) => {
-  const rowLen = moveNodes.length
+  const insertParentNodeId = insertParentNode.nodeId
   selectNodeList(m, moveNodes, 's')
   const cbS = structuredClone(sToCb(m))
-  cbS.forEach(t => Object.assign(t, {selected: 0, path: [...insertParentNode.path, 's', 0, 'c', t.path.at(1), 0, 's', 0, ...t.path.slice(2)] as P}))
   deleteS(m)
-  insertTable(m, insertParentNode, 0, {rowLen, colLen: 1})
+  cbS.forEach(t => Object.assign(t, {
+    selected: 0,
+    path: [...getNodeById(m, insertParentNodeId).path, 's', 0, 'c', t.path.at(1), 0, 's', 0, ...t.path.slice(2)] as P
+  }))
+  insertTable(m, insertParentNode, 0, {rowLen: moveNodes.length, colLen: 1})
   m.push(...cbS)
   m.sort(sortPath)
 }
