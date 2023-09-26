@@ -21,8 +21,6 @@ export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 export const getLiL = (m: M): number => mT(m).findLast(t => getPathPattern(t.path) === 'l')?.path.at(1) as number || -1
 export const getRiL = (m: M): number => mT(m).findLast(t => getPathPattern(t.path) === 'r')?.path.at(1) as number
 
-export const getRi = (p: P): number => p.at(1) as number // TODO remove
-
 export const isG = (p: P): boolean => p.at(0) === 'g'
 export const isL = (p: P): boolean => p.at(0) === 'l'
 export const isT = (p: P): boolean => p.at(0) === 'r' || p.at(0) === 's' || p.at(0) === 'c'
@@ -118,7 +116,7 @@ export const getNSIC = (m: M, t: T): T => getNodeByPath(m, getSIC(t.path))
 export const getXSIC = (m: M): T => getNodeByPath(m, getSIC(getX(m).path))
 export const getNR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2))
 export const getXR = (m: M): T => getNodeByPath(m, getX(m).path.slice(0, 2))
-export const getNRD0 = (m: M, t: T): T => getNodeByPath(m, [...t.path.slice(0, 2), 'd', 0]) // could be done with filtering instead...
+export const getNRD0 = (m: M, t: T): T => getNodeByPath(m, [...t.path.slice(0, 2), 'd', 0]) // could be done with find plus isNRDO instead...
 export const getXRD0 = (m: M): T => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 0])
 export const getNRD1 = (m: M, t: T): T => getNodeByPath(m, [...t.path.slice(0, 2), 'd', 1])
 export const getXRD1 = (m: M): T => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 1])
@@ -133,8 +131,9 @@ export const getXSCYY = (m: M): M => mT(m).filter(t => isSCYY(getX(m).path, t.pa
 export const getXA = (m: M): M => mT(m).filter(t => t.selected)
 export const getNRD0SO = (m: M, t: T): M => mT(m).filter(tt => isNRD0SO(t.path, tt.path))
 export const getXRD0SO = (m: M): M => mT(m).filter(tt => isNRD0SO(getX(m).path, tt.path))
+export const getNRD1SO = (m: M, t: T): M => mT(m).filter(tt => isNRD1SO(t.path, tt.path))
+export const getXRD1SO = (m: M): M => mT(m).filter(tt => isNRD1SO(getX(m).path, tt.path))
 export const getXAEO = (m: M): M => mT(m).filter(t => getXA(m).some(xn => isSEO(xn.path, t.path)))
-export const getXAO = (m: M): M => mT(m).filter(t => getXA(m).some(xn => isSO(xn.path, t.path)))
 export const getXACD1 = (m: M): M => mT(m).filter(t => getXA(m).some(xn => isCD1(xn.path, t.path)))
 export const getXACU1 = (m: M): M => mT(m).filter(t => getXA(m).some(xn => isCU1(xn.path, t.path)))
 export const getXACR1 = (m: M): M => mT(m).filter(t => getXA(m).some(xn => isCR1(xn.path, t.path)))
@@ -187,12 +186,12 @@ export const ccToCb = (m: M) => getXAEO(m).map(t => ({...t, path: ['c', (t.path.
 export const getEditedPath = (p: P): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P): T => getNodeByPath(m, getEditedPath(p))
 
-export const hasTaskRight = (m: M, ri: number) => +mT(m).filter(t => t.path.at(1) === ri).some(t => t.taskStatus !== 0 && !t.path.includes('c') && t.path.length > 4 && t.path[3] === 0)
-export const hasTaskLeft = (m: M, ri: number) => +mT(m).filter(t => t.path.at(1) === ri).some(t => t.taskStatus !== 0 && !t.path.includes('c') && t.path.length > 4 && t.path[3] === 1)
+export const hasTaskRight = (m: M, t: T): number => +getNRD0SO(m, t).some(t => t.taskStatus !== 0)
+export const hasTaskLeft = (m: M, t: T): number => +getNRD1SO(m, t).some(t => t.taskStatus !== 0)
 
-export const getRootStartX = (m: M, t: T): number => t.nodeStartX - getNRD1(m, t).familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, getRi(t.path)) - MARGIN_X
+export const getRootStartX = (m: M, t: T): number => t.nodeStartX - getNRD1(m, t).familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, t) - MARGIN_X
 export const getRootStartY = (m: M, t: T): number => t.nodeY - Math.max(...[getNRD0(m, t).familyH, getNRD1(m, t).familyH]) / 2 - MARGIN_Y
-export const getRootW = (m: M, t: T): number => getNRD0(m, t).familyW + getNRD1(m, t).familyW + t.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, getRi(t.path)) + hasTaskRight(m, getRi(t.path))) + 2 * MARGIN_X
+export const getRootW = (m: M, t: T): number => getNRD0(m, t).familyW + getNRD1(m, t).familyW + t.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, t) + hasTaskRight(m, t)) + 2 * MARGIN_X
 export const getRootH = (m: M, t: T): number => Math.max(...[getNRD0(m, t).familyH, getNRD1(m, t).familyH]) + 2 * MARGIN_Y
 export const getRootMidX = (m: M, t: T):number => getRootStartX(m, t) + getRootW(m, t) / 2
 export const getRootMidY = (m: M, t: T):number => getRootStartY(m, t) + getRootH(m, t) / 2

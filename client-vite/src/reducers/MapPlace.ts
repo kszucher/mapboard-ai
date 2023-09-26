@@ -1,5 +1,5 @@
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {getNodeByPath, isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountNSO2, getCountNCO2, getRi, getG, getPathDir, getNSI1, getNSI2, mT, mG, mL} from "../selectors/MapSelector"
+import {isR, isD, isS, isC, isSU, getPathPattern, getCountNSO1, getCountNSO2, getCountNCO2, getG, getPathDir, getNSI1, getNSI2, mT, mG, mL, getNR} from "../selectors/MapSelector"
 import {M, T} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {
@@ -15,11 +15,10 @@ export const mapPlace = (m: M) => {
         break
       }
       case isD(t.path): {
-        const ri = getRi(t.path)
-        const rx = getNodeByPath(m, ['r', ri]) as T
-        t.nodeStartX = rx.nodeStartX
-        t.nodeEndX = rx.nodeEndX
-        t.nodeY = rx.nodeY
+        const nr = getNR(m, t)
+        t.nodeStartX = nr.nodeStartX
+        t.nodeEndX = nr.nodeEndX
+        t.nodeY = nr.nodeY
         t.isTop = 1
         t.isBottom = 1
         break

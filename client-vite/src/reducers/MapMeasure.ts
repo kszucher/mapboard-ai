@@ -2,7 +2,7 @@ import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {M, T} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
-import {getCountNCO1, getNodeById, getRi, getRL, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountNSO1, getNRD1, getNRD0, getNR, mT, mG} from "../selectors/MapSelector"
+import {getCountNCO1, getNodeById, getRL, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountNSO1, getNRD1, getNRD0, getNR, mT, mG} from "../selectors/MapSelector"
 
 export const mapMeasure = (pm: M, m: M) => {
   mT(m).toReversed().forEach(t => {
@@ -48,8 +48,8 @@ export const mapMeasure = (pm: M, m: M) => {
       const nr = getNR(m, r) as T
       const nrd0 = getNRD0(m, r) as T
       const nrd1 = getNRD1(m, r) as T
-      const wr = nr.offsetW + nr.selfW + nrd0.familyW + getTaskWidth(g) * hasTaskRight(m, getRi(r.path))
-      const wl = nr.offsetW - nrd1.familyW - getTaskWidth(g) * hasTaskLeft(m, getRi(r.path))
+      const wr = nr.offsetW + nr.selfW + nrd0.familyW + getTaskWidth(g) * hasTaskRight(m, r)
+      const wl = nr.offsetW - nrd1.familyW - getTaskWidth(g) * hasTaskLeft(m, r)
       if ((nr.offsetH + nrd0.familyH / 2) > g.maxD) {g.maxD = nr.offsetH + nrd0.familyH / 2}
       if ((nr.offsetH + nrd1.familyH / 2) > g.maxD) {g.maxD = nr.offsetH + nrd1.familyH / 2}
       if ((nr.offsetH - nrd0.familyH / 2) < g.maxU) {g.maxU = nr.offsetH - nrd0.familyH / 2}
