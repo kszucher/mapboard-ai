@@ -20,7 +20,8 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
     const overlap = 6
     let moveTargetNodeId = ''
     mT(m).forEach(t => {
-      if (getRi(t.path) === ri && (isS(t.path) || isD(t.path)) && t.nodeId !== moveNode.nodeId && !isSO(moveNode.path, t.path)) { // this could be NOT isSEO
+      // (isNRD0SO || isNRD1S0) && !isSEO(moveNode.path, t.path)
+      if (getRi(t.path) === ri && (isS(t.path) || isD(t.path)) && t.nodeId !== moveNode.nodeId && !isSO(moveNode.path, t.path)) {
         let vCondition
         if (t.isTop && belowRoot) {
           vCondition = toY < (t.nodeY + t.maxH / 2 + overlap)

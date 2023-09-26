@@ -14,12 +14,14 @@ export const getNodeById = (m: M, nodeId: string) => mT(m).find(t => t.nodeId ==
 
 export const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 export const getPathDir = (p: P) => p[3] ? -1 : 1
+
 export const isDirR = (m: M) => getPathDir(getX(m).path) === 1
 export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 
 export const getLiL = (m: M): number => mT(m).findLast(t => getPathPattern(t.path) === 'l')?.path.at(1) as number || -1
-export const getRi = (p: P): number => p.at(1) as number
 export const getRiL = (m: M): number => mT(m).findLast(t => getPathPattern(t.path) === 'r')?.path.at(1) as number
+
+export const getRi = (p: P): number => p.at(1) as number // TODO remove
 
 export const isG = (p: P): boolean => p.at(0) === 'g'
 export const isL = (p: P): boolean => p.at(0) === 'l'
@@ -35,6 +37,7 @@ export const mT = (m: M) => m.filter(n => isT(n.path))
 
 export const isNR = (t: T): boolean => isR(t.path)
 export const isXR = (m: M): boolean => isR(getX(m).path)
+export const isND = (t: T): boolean => isD(t.path)
 export const isXD = (m: M): boolean => isD(getX(m).path)
 export const isNS = (t: T): boolean => isS(t.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
@@ -50,6 +53,10 @@ export const isXCB = (m: M): boolean => isC(getX(m).path) && getCountXCU(m) === 
 export const isXCT = (m: M): boolean => isC(getX(m).path) && getCountXCU(m) === 0
 export const isXCR = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === getCountXCH(m) - 1
 export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 0
+
+const isNRD0 = (p: P, pt: P): boolean => isEqual(pt, [...p.slice(0, 2), 'd', 0])
+const isNRD0SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0])
+const isNRD1SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1])
 
 export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSD1EO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! === p.at(-1) as number + 1
@@ -113,7 +120,7 @@ export const getNSIC = (m: M, t: T): T => getNodeByPath(m, getSIC(t.path))
 export const getXSIC = (m: M): T => getNodeByPath(m, getSIC(getX(m).path))
 export const getNR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2))
 export const getXR = (m: M): T => getNodeByPath(m, getX(m).path.slice(0, 2))
-export const getNRD0 = (m: M, t: T): T => getNodeByPath(m, [...t.path.slice(0, 2), 'd', 0])
+export const getNRD0 = (m: M, t: T): T => getNodeByPath(m, [...t.path.slice(0, 2), 'd', 0]) // could be done with filtering instead...
 export const getXRD0 = (m: M): T => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 0])
 export const getNRD1 = (m: M, t: T): T => getNodeByPath(m, [...t.path.slice(0, 2), 'd', 1])
 export const getXRD1 = (m: M): T => getNodeByPath(m, [...getX(m).path.slice(0, 2), 'd', 1])
@@ -126,8 +133,8 @@ export const getXSCR0 = (m: M): M => mT(m).filter(t => isSCR0(getX(m).path, t.pa
 export const getXSCC0 = (m: M): M => mT(m).filter(t => isSCC0(getX(m).path, t.path))
 export const getXSCYY = (m: M): M => mT(m).filter(t => isSCYY(getX(m).path, t.path))
 export const getXA = (m: M): M => mT(m).filter(t => t.selected)
-export const getNRD0SO = (m: M, t: T): M => mT(m).filter(nt => isSO(getNRD0(m, t).path, nt.path))
-export const getXRD0SO = (m: M): M => mT(m).filter(t => isSO(getXRD0(m).path, t.path))
+export const getNRD0SO = (m: M, t: T): M => mT(m).filter(tt => isNRD0SO(t.path, tt.path))
+export const getXRD0SO = (m: M): M => mT(m).filter(tt => isNRD0SO(getX(m).path, tt.path))
 export const getXAEO = (m: M): M => mT(m).filter(t => getXA(m).some(xn => isSEO(xn.path, t.path)))
 export const getXAO = (m: M): M => mT(m).filter(t => getXA(m).some(xn => isSO(xn.path, t.path)))
 export const getXACD1 = (m: M): M => mT(m).filter(t => getXA(m).some(xn => isCD1(xn.path, t.path)))
