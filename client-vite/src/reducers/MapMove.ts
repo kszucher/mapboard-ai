@@ -42,7 +42,7 @@ export const cutS = (m: M) => {
 }
 
 export const copyLR = (m: M) => {
-  const cbL = structuredClone(rToCb(m))
+  const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
   const cbDeInit = mapDeInit([...cbL, ...cbR])
   cbSave(cbDeInit)
