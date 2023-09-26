@@ -176,8 +176,8 @@ export const getPropXA = (m: M, prop: keyof T) => isArrayOfEqualValues(getXA(m).
 
 export const getReselectR = (m: M): T => mT(m).find(t => !t.selected && isR(t.path))!
 export const getReselectS = (m: M): T => getCountXASU(m) ? getXASU1(m) : (isXDS(m) ? getXASI2(m): getXASI1(m))
-export const getReselectCR = (m: M): M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXACD1(m) : [getNodeByPath(m, getXSI1(m).path)] )
-export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXACR1(m) : [getNodeByPath(m, getXSI1(m).path)] )
+export const getReselectCR = (m: M): M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXACD1(m) : [getXSI1(m)] as M )
+export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXACR1(m) : [getXSI1(m)] as M )
 
 export const lToCb = (m: M) => mL(m).filter(l => getNodeById(m, l.fromNodeId)?.selected && getNodeById(m, l.toNodeId)?.selected).map((l, i) => ({...l, path: ['l', i]})) as M
 export const rToCb = (m: M) => getXA(m).map(el => el.path.at(1)).map(ri => mT(m).filter(t => isEqual(t.path.slice(0, 2), ['r', ri]))).map((m, i) => mT(m).map(t => ({...t, path: ['r', i, ...t.path.slice(2)]}))).flat() as M
