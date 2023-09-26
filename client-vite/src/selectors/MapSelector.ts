@@ -55,6 +55,7 @@ export const isXCR = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 
 export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 0
 
 export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
+const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
 export const isNRD0SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0])
 export const isNRD1SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1])
@@ -100,10 +101,6 @@ export const getQuasiSD = (m: M): T => mT(m).find(ti => sortablePath(ti.path) > 
 export const getLastSO = (m: M): T => getNodeByPath(m, [...getX(m).path, 's', getX(m).lastSelectedChild > - 1 && getX(m).lastSelectedChild < getCountXSO1(m) ? getX(m).lastSelectedChild : 0])
 export const getLastSOR = (m: M): T => getNodeByPath(m, [...getXRD0(m).path, 's', getXRD0(m).lastSelectedChild > - 1 && getXRD0(m).lastSelectedChild < getCountXRD0S(m) ? getXRD0(m).lastSelectedChild : 0])
 export const getLastSOL = (m: M): T => getNodeByPath(m, [...getXRD1(m).path, 's', getXRD1(m).lastSelectedChild > - 1 && getXRD1(m).lastSelectedChild < getCountXRD1S(m) ? getXRD1(m).lastSelectedChild : 0])
-
-export const getSI1P = (p: P): P => getSIPL(p).at(-1) as P
-const getSI2P = (p: P): P => getSIPL(p).at(-2) as P
-const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
 export const getXF = (m: M): T => mT(m).find(ti => ti.selected)!
 export const getXL = (m: M): T => mT(m).findLast(t => t.selected)!
