@@ -35,6 +35,8 @@ export const mG = (m: M) => m.filter(n => isG(n.path))
 export const mL = (m: M) => m.filter(n => isL(n.path))
 export const mT = (m: M) => m.filter(n => isT(n.path))
 
+export const getG = (m: M): G => mG(m).at(0) as G
+
 export const isNR = (t: T): boolean => isR(t.path)
 export const isXR = (m: M): boolean => isR(getX(m).path)
 export const isND = (t: T): boolean => isD(t.path)
@@ -54,12 +56,10 @@ export const isXCT = (m: M): boolean => isC(getX(m).path) && getCountXCU(m) === 
 export const isXCR = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === getCountXCH(m) - 1
 export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 0
 
-const isNRD0 = (p: P, pt: P): boolean => isEqual(pt, [...p.slice(0, 2), 'd', 0])
-const isNRD0SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0])
-const isNRD1SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1])
+export const isNRD0SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0])
+export const isNRD1SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1])
 
 export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
-export const isSD1EO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! === p.at(-1) as number + 1
 export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSEO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
@@ -87,8 +87,6 @@ export const isCED = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(
 export const isCD = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
 export const isCER = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! >= p.at(-1)!
 export const isCR = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! > p.at(-1)!
-
-export const getG = (m: M): G => mG(m).at(0) as G
 
 export const getCountQuasiSU = (m: M): number => mT(m).filter(t => sortablePath(t.path) < sortablePath(getX(m).path) && getPathDir(t.path) === getPathDir(getX(m).path) && getPathPattern(t.path) === getPathPattern(getX(m).path)).length
 export const getQuasiSU = (m: M): T => mT(m).findLast(t => sortablePath(t.path) < sortablePath(getX(m).path) && getPathDir(t.path) === getPathDir(getX(m).path) && getPathPattern(t.path) === getPathPattern(getX(m).path))!
