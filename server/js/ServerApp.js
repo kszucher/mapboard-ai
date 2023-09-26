@@ -53,6 +53,7 @@ const genHash = () => {
 }
 
 const getDefaultMap = (mapName, ownerUser, path) => ({
+  name: mapName,
   ownerUser,
   path,
   versions: [

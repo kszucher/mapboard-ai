@@ -11,29 +11,9 @@ async function openWorkspace(users, userId, sessionId) {
         let: { originalArray: `$${mapIdList}` },
         pipeline: [
           { $set: { "order": { $indexOfArray: [ '$$originalArray', '$_id' ] } } },
-          { $replaceWith: {
-              name: {
-                $getField: {
-                  field: 'content',
-                  input: {
-                    $first: {
-                      $filter: {
-                        input: { $last: '$versions' },
-                        as: 'node',
-                        cond: { $eq: [ "$$node.path", [ 'r', 0 ] ] },
-                      }
-                    }
-                  }
-                }
-              },
-              order: '$order'
-            }
-          },
+          { $replaceWith: { name: '$name', order: '$order' } },
           { $sort: { "order": 1 } },
-          { $replaceWith: {
-              name: '$name'
-            }
-          },
+          { $replaceWith: { name: '$name' } },
         ],
         as: mapNameList
       }
@@ -148,39 +128,12 @@ async function getUserShares(shares, userId) {
   const getShareData = (shareType) => (
     [
       { $match: { [ { export: 'ownerUser', import: 'shareUser' }[shareType] ]: userId } },
-      { $lookup: {
-          from: "users",
-          localField: { export: 'shareUser', import: 'ownerUser' }[shareType],
-          foreignField: "_id",
-          as: 'user'
-        }
-      },
+      { $lookup: { from: "users", localField: { export: 'shareUser', import: 'ownerUser' }[shareType], foreignField: "_id", as: 'user' } },
       { $unwind: "$user" },
       { $set: { [ { export: 'shareUserEmail', import: 'ownerUserEmail' }[shareType] ]: "$user.email" } },
-      { $lookup: {
-          from: "maps",
-          localField: "sharedMap",
-          foreignField: "_id",
-          as: 'map'
-        }
-      },
+      { $lookup: { from: "maps", localField: "sharedMap", foreignField: "_id", as: 'map' } },
       { $unwind: "$map" },
-      { $set: {
-          sharedMapName: {
-            $getField: {
-              field: 'content',
-              input: {
-                $arrayElemAt: [{
-                  $filter: {
-                    input: { $last: "$map.versions" },
-                    as: 'node',
-                    cond: { $eq: [ "$$node.path", [ 'r', 0 ] ] },
-                  }}, 0 ]
-              }
-            }
-          }
-        }
-      },
+      { $set: { sharedMapName: '$map.name' } },
       { $unset: [ "sharedMap", "map", "ownerUser", "shareUser", "user" ] },
     ]
   )
@@ -272,7 +225,7 @@ async function findDeadLinks (maps) {
         },
         then: [
           {
-            mapContent: { $getField: { field: 'content', input: { $arrayElemAt: ['$$map', 1] } } },
+            mapContent: '$name',
             nodeContent: '$$node.content',
           }
         ],
@@ -290,7 +243,7 @@ async function findDeadLinks (maps) {
               if: { $ne: [{ $size: '$subResult' }, 0] },
               then: {
                 mapId: '$_id',
-                info: '$subResult',
+                info: '$subResult'
               },
               else: '$$REMOVE'
             }

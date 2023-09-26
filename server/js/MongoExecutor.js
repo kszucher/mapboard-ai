@@ -33,7 +33,7 @@ async function mongoExecutorCommands (users, maps, shares) {
   //   [
   //     {
   //       $set: {
-  //         mapName: {
+  //         name: {
   //           $getField: {
   //             field: 'content',
   //             input: {
