@@ -64,6 +64,7 @@ export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(
 export const isSU1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) === (p.at(-1) as number) - 1
 const isSI1 = (p: P, pt: P): boolean => isEqual(pt, getSIPL(p).at(-1))
 const isSI2 = (p: P, pt: P): boolean => isEqual(pt, getSIPL(p).at(-2))
+const isSI1U = (p: P, pt: P): boolean => isSU(getSIPL(p).at(-1) as P, pt)
 export const isSEO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: P, pt: P): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
@@ -144,6 +145,7 @@ export const getXACL1 = (m: M): M => mT(m).filter(ti => getXA(m).some(xn => isCL
 
 const getCountSD = (m: M, p: P): number => mT(m).filter(ti => isSD(p, ti.path)).length
 const getCountSU = (m: M, p: P): number => mT(m).filter(ti => isSU(p, ti.path)).length
+const getCountSI1U = (m: M, p: P): number => mT(m).filter(ti => isSI1U(p, ti.path)).length
 const getCountSO1 = (m: M, p: P): number => mT(m).filter(ti => isSO1(p, ti.path)).length
 const getCountSO2 = (m: M, p: P): number => mT(m).filter(ti => isSO2(p, ti.path)).length
 const getCountCO1 = (m: M, p: P): number => mT(m).filter(ti => isCO1(p, ti.path)).length
@@ -158,7 +160,7 @@ export const getCountNSO1 = (m: M, t: T): number => getCountSO1(m, t.path)
 export const getCountXSO1 = (m: M): number => getCountSO1(m, getX(m).path)
 export const getCountNSO2 = (m: M, t: T): number => getCountSO2(m, t.path)
 export const getCountXSO2 = (m: M): number => getCountSO2(m, getX(m).path)
-export const getCountXSI1U = (m: M): number => getCountSU(m, getSI1P(getX(m).path))
+export const getCountXSI1U = (m: M): number => getCountSI1U(m, getX(m).path)
 export const getCountXRD0S = (m: M): number => getCountSO1(m, getXRD0(m).path)
 export const getCountXRD1S = (m: M): number => getCountSO1(m, getXRD1(m).path)
 export const getCountNCO1 = (m: M, t: T): number => getCountCO1(m, t.path)
