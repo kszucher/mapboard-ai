@@ -57,8 +57,8 @@ export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 
 export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
-export const isNRD0SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0])
-export const isNRD1SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1])
+export const isNRD0SO = (p: P, pt: P): boolean => isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0])
+export const isNRD1SO = (p: P, pt: P): boolean => isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1])
 
 export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) > (p.at(-1) as number)
 export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) < (p.at(-1) as number)
