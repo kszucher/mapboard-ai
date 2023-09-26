@@ -20,7 +20,6 @@ export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 export const getLiL = (m: M): number => mT(m).findLast(t => getPathPattern(t.path) === 'l')?.path.at(1) as number || -1
 export const getRi = (p: P): number => p.at(1) as number
 export const getRiL = (m: M): number => mT(m).findLast(t => getPathPattern(t.path) === 'r')?.path.at(1) as number
-export const getXRi = (m: M): number => getRi(getX(m).path)
 
 export const isG = (p: P): boolean => p.at(0) === 'g'
 export const isL = (p: P): boolean => p.at(0) === 'l'
