@@ -70,9 +70,9 @@ export const editorSlice = createSlice({
           const mapY = getMapY(e)
           const toX = originX + ((mapX - prevMapX) / scale)
           const toY = originY + ((mapY - prevMapY) / scale)
-          const {moveTargetPath, moveTargetIndex} = mapFindNearest(pm, t, toX, toY)
-          if (moveTargetPath.length) {
-            const m = mapReducer(pm, 'drag', {moveTargetPath, moveTargetIndex})
+          const {moveInsertParentNodeId, moveTargetIndex} = mapFindNearest(pm, t, toX, toY)
+          if (moveInsertParentNodeId.length) {
+            const m = mapReducer(pm, 'drag', {moveInsertParentNodeId, moveTargetIndex})
             if (!isEqual(pm, m)) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
               state.mapListIndex = state.mapListIndex + 1
