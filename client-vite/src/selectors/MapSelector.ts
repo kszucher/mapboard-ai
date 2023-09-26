@@ -45,7 +45,7 @@ export const isXS = (m: M): boolean => isS(getX(m).path)
 export const isXDS = (m: M): boolean => getPathPattern(getX(m).path) === 'rds'
 export const isXAR = (m: M): boolean => getXA(m).map(t => t.path).every(p => isR(p))
 const isXASV = (m: M): boolean => isS(getX(m).path) && getXA(m).map(t => t.path).every(p => isSV(getX(m).path, p))
-export const isXASVN = (m: M): boolean => isXASV(m) && ((getXSL(m).path.at(-1) as number) - (getXSF(m).path.at(-1) as number)) === getXA(m).length - 1
+export const isXASVN = (m: M): boolean => isXASV(m) && ((getXL(m).path.at(-1) as number) - (getXF(m).path.at(-1) as number)) === getXA(m).length - 1
 export const isXC = (m: M): boolean => isC(getX(m).path) && getXA(m).length === 1
 export const isXACR = (m: M): boolean => isC(getX(m).path) && getXA(m).length > 1 && getXA(m).map(t => t.path).every(p => isCV(getX(m).path, p))
 export const isXACC = (m: M): boolean => isC(getX(m).path) && getXA(m).length > 1 && getXA(m).map(t => t.path).every(p => isCH(getX(m).path, p))
@@ -103,17 +103,17 @@ export const getSI1P = (p: P): P => getSIPL(p).at(-1) as P
 const getSI2P = (p: P): P => getSIPL(p).at(-2) as P
 const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
-export const getXSF = (m: M): T => mT(m).find(t => t.selected)!
-export const getXSL = (m: M): T => mT(m).findLast(t => t.selected)!
+export const getXF = (m: M): T => mT(m).find(t => t.selected)!
+export const getXL = (m: M): T => mT(m).findLast(t => t.selected)!
 export const getX = (m: M): T => mT(m).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getR0 = (m: M): T => getNodeByPath(m, ['r', 0])
 export const getNSI1 = (m: M, t: T): T => getNodeByPath(m, getSI1P(t.path))
 export const getXSI1 = (m: M): T => getNodeByPath(m, getSI1P(getX(m).path))
 export const getNSI2 = (m: M, t: T): T => getNodeByPath(m, getSI2P(t.path))
 export const getXSI2 = (m: M): T => getNodeByPath(m, getSI2P(getX(m).path))
-export const getXASU1 = (m: M): T => getNodeByPath(m, getSU1(getXSF(m).path))
-export const getXASI1 = (m: M): T => getNodeByPath(m, getSI1P(getXSF(m).path))
-export const getXASI2 = (m: M): T => getNodeByPath(m, getSI2P(getXSF(m).path))
+export const getXFSU1 = (m: M): T => getNodeByPath(m, getSU1(getXF(m).path))
+export const getXFSI1 = (m: M): T => getNodeByPath(m, getSI1P(getXF(m).path))
+export const getXFSI2 = (m: M): T => getNodeByPath(m, getSI2P(getXF(m).path))
 export const getNSIC = (m: M, t: T): T => getNodeByPath(m, getSIC(t.path))
 export const getXSIC = (m: M): T => getNodeByPath(m, getSIC(getX(m).path))
 export const getNR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2))
@@ -150,9 +150,9 @@ const getCountCO2 = (m: M, p: P): number => mT(m).filter(t => isCO2(p, t.path)).
 const getCountCV = (m: M, p: P): number => mT(m).filter(t => isCH(p, t.path)).length
 const getCountCH = (m: M, p: P): number => mT(m).filter(t => isCV(p, t.path)).length
 
-export const getCountXASD = (m: M): number => getCountSD(m, getXSL(m).path)
-export const getCountXASU = (m: M): number => getCountSU(m, getXSF(m).path)
-export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXASU1(m).path)
+export const getCountXASD = (m: M): number => getCountSD(m, getXL(m).path)
+export const getCountXASU = (m: M): number => getCountSU(m, getXF(m).path)
+export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXFSU1(m).path)
 export const getCountNSO1 = (m: M, t: T): number => getCountSO1(m, t.path)
 export const getCountXSO1 = (m: M): number => getCountSO1(m, getX(m).path)
 export const getCountNSO2 = (m: M, t: T): number => getCountSO2(m, t.path)
@@ -175,7 +175,7 @@ export const getCountXSCH = (m: M): number => getCountCH(m, [...getX(m).path, 'c
 export const getPropXA = (m: M, prop: keyof T) => isArrayOfEqualValues(getXA(m).map(t => t[prop])) ? getX(m)[prop] : null
 
 export const getReselectR = (m: M): T => mT(m).find(t => !t.selected && isR(t.path))!
-export const getReselectS = (m: M): T => getCountXASU(m) ? getXASU1(m) : (isXDS(m) ? getXASI2(m): getXASI1(m))
+export const getReselectS = (m: M): T => getCountXASU(m) ? getXFSU1(m) : (isXDS(m) ? getXFSI2(m): getXFSI1(m))
 export const getReselectCR = (m: M): M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXACD1(m) : [getXSI1(m)] as M )
 export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXACR1(m) : [getXSI1(m)] as M )
 
