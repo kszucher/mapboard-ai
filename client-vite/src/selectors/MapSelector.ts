@@ -108,13 +108,13 @@ export const getXF = (m: M): T => mT(m).find(ti => ti.selected)!
 export const getXL = (m: M): T => mT(m).findLast(t => t.selected)!
 export const getX = (m: M): T => mT(m).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getR0 = (m: M): T => getNodeByPath(m, ['r', 0])
-export const getNSI1 = (m: M, t: T): T => getNodeByPath(m, getSI1P(t.path))
-export const getXSI1 = (m: M): T => getNodeByPath(m, getSI1P(getX(m).path))
-export const getNSI2 = (m: M, t: T): T => getNodeByPath(m, getSI2P(t.path))
-export const getXSI2 = (m: M): T => getNodeByPath(m, getSI2P(getX(m).path))
-export const getXFSU1 = (m: M): T => mT(m).find(t => isSU1(getXF(m).path, t.path))!
-export const getXFSI1 = (m: M): T => getNodeByPath(m, getSI1P(getXF(m).path))
-export const getXFSI2 = (m: M): T => getNodeByPath(m, getSI2P(getXF(m).path))
+export const getNSI1 = (m: M, t: T): T => mT(m).find(ti => isSI1(t.path, ti.path))!
+export const getXSI1 = (m: M): T => mT(m).find(ti => isSI1(getXF(m).path, ti.path))!
+export const getNSI2 = (m: M, t: T): T => mT(m).find(ti => isSI2(t.path, ti.path))!
+export const getXSI2 = (m: M): T => mT(m).find(ti => isSI2(getX(m).path, ti.path))!
+export const getXFSU1 = (m: M): T => mT(m).find(ti => isSU1(getXF(m).path, ti.path))!
+export const getXFSI1 = (m: M): T => mT(m).find(ti => isSI1(getXF(m).path, ti.path))!
+export const getXFSI2 = (m: M): T => mT(m).find(ti => isSI2(getXF(m).path, ti.path))!
 export const getNSIC = (m: M, t: T): T => getNodeByPath(m, getSIC(t.path))
 export const getXSIC = (m: M): T => getNodeByPath(m, getSIC(getX(m).path))
 export const getNR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2))
