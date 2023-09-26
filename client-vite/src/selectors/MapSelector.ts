@@ -57,8 +57,9 @@ export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 
 export const isNRD0SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0])
 export const isNRD1SO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1])
 
-export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
-export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
+export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) > (p.at(-1) as number)
+export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) < (p.at(-1) as number)
+export const isSU1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) === (p.at(-1) as number) - 1
 export const isSEO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: P, pt: P): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
@@ -95,8 +96,6 @@ export const getLastSO = (m: M): T => getNodeByPath(m, [...getX(m).path, 's', ge
 export const getLastSOR = (m: M): T => getNodeByPath(m, [...getXRD0(m).path, 's', getXRD0(m).lastSelectedChild > - 1 && getXRD0(m).lastSelectedChild < getCountXRD0S(m) ? getXRD0(m).lastSelectedChild : 0])
 export const getLastSOL = (m: M): T => getNodeByPath(m, [...getXRD1(m).path, 's', getXRD1(m).lastSelectedChild > - 1 && getXRD1(m).lastSelectedChild < getCountXRD1S(m) ? getXRD1(m).lastSelectedChild : 0])
 
-const getSU1 = (p: P): P => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
-
 export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 
 export const getSI1P = (p: P): P => getSIPL(p).at(-1) as P
@@ -111,7 +110,7 @@ export const getNSI1 = (m: M, t: T): T => getNodeByPath(m, getSI1P(t.path))
 export const getXSI1 = (m: M): T => getNodeByPath(m, getSI1P(getX(m).path))
 export const getNSI2 = (m: M, t: T): T => getNodeByPath(m, getSI2P(t.path))
 export const getXSI2 = (m: M): T => getNodeByPath(m, getSI2P(getX(m).path))
-export const getXFSU1 = (m: M): T => getNodeByPath(m, getSU1(getXF(m).path))
+export const getXFSU1 = (m: M): T => mT(m).find(t => isSU1(getXF(m).path, t.path))!
 export const getXFSI1 = (m: M): T => getNodeByPath(m, getSI1P(getXF(m).path))
 export const getXFSI2 = (m: M): T => getNodeByPath(m, getSI2P(getXF(m).path))
 export const getNSIC = (m: M, t: T): T => getNodeByPath(m, getSIC(t.path))
