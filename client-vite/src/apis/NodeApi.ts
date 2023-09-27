@@ -54,6 +54,11 @@ export const nodeApi = createApi({
       async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
+    renameMap: builder.mutation<void, { mapId: string, name: string }>({
+      query: ({ mapId, name }) => ({ url: 'beta-private', method: 'POST', body: { type: 'renameMap', payload: { mapId, name } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
+      invalidatesTags: ['Workspace']
+    }),
     createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({
       query: ({ mapId, nodeId, content }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInMap', payload: { mapId, nodeId, content} } }),
       async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},

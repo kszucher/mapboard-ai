@@ -148,6 +148,12 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         await MongoMutations.selectMap(users, userId, sessionId, mapId, frameId)
         return res.json({})
       }
+      case 'renameMap': {
+        const mapId = ObjectId(req.body.payload.mapId)
+        const name = req.body.payload.name
+        await maps.findOneAndUpdate({ _id: mapId }, [{ $set: { name } }])
+        return res.json({})
+      }
       case 'createMapInMap': {
         const mapId = ObjectId(req.body.payload.mapId)
         const { nodeId, content } = req.body.payload
