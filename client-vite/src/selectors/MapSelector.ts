@@ -47,7 +47,7 @@ export const isTS = (t: T): boolean => isS(t.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
 export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
-const getSI1 = (p :P) => p.slice(0, p.findLastIndex(el => typeof el === 'string'))
+const getSI1 = (p: P) => p.slice(0, p.findLastIndex(el => typeof el === 'string'))
 const getSI2 = (p: P) => getSI1(getSI1(p))
 const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
