@@ -1,13 +1,34 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {nodeApi} from "../apis/NodeApi";
-import {generateLlmInfo, genPromptJsonS, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
-import {Templates} from "../reducers/MapInsertTemplates";
-import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../selectors/MapSelector"
-import {getMapId} from "../state/NodeApiState"
-import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
+import {Templates} from "../reducers/MapInsertTemplates";
+import {generateLlmInfo, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
+import {
+  getCountXASD,
+  getCountXASU,
+  getCountXCO1,
+  getCountXRD0S,
+  getCountXRD1S,
+  getCountXSO1,
+  getCountXSO2,
+  getG,
+  getR0,
+  getX,
+  getXAEO,
+  getXRD0,
+  getXRD1,
+  isDirL,
+  isDirR,
+  isXASVN,
+  isXD,
+  isXDS,
+  isXR,
+  isXS
+} from "../selectors/MapSelector"
+import {mSelector} from "../state/EditorState"
 import {ControlTypes, PageState} from "../state/Enums"
+import {getMapId} from "../state/NodeApiState"
 
 const menuClassName = "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 const menuButtonClassName = "flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -59,6 +80,7 @@ export const ContextMenu: FC = () => {
             <button id="doubleDropdownButton" data-dropdown-toggle="tabsSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Tabs{MenuButtonSvg}</button>
             <div id="tabsSubMenu" className={subMenuClassName}>
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_RENAME_MAP))}}>Rename Map</a></li> }
                 { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.createMapInTab.initiate())}}>Add Tab Map</a></li> }
                 { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}}>Move Tab Map Up</a></li> }
                 { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}}>Move Tab Map Down</a></li> }

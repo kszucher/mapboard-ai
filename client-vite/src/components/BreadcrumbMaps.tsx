@@ -14,7 +14,7 @@ export const BreadcrumbMaps: FC = () => {
     <div className="dark:bg-zinc-800 bg-zinc-50 top-0 fixed left-1/2 -translate-x-1/2 h-[40px] flex items-center rounded-b-lg py-1 px-4 border-2 border-purple-700 border-t-0 z-50">
       <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
         {
-          breadcrumbMapNameList.map((el: { name: string }, index: number) => (
+          breadcrumbMapNameList.map((el, index) => (
             <Link
               underline={frameId !== '' ? 'none': 'hover'} href="/"
               onClick={
