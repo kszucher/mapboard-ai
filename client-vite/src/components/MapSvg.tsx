@@ -1,6 +1,6 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountNCO1, getG, getR0, isXACC, isXACR, isXC} from "../selectors/MapSelector"
+import {getCountTCO1, getG, getR0, isXACC, isXACR, isXC} from "../selectors/MapSelector"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {getMapX, getMapY} from "./MapDivUtils"
@@ -35,7 +35,7 @@ export const getSelectionMargin = (m: M, t: T) => (
     (t.selection === 's' && (t.sBorderColor  || t.sFillColor)) ||
     (t.selection === 'f') ||
     t.taskStatus > 1 ||
-    getCountNCO1(m, t)
+    getCountTCO1(m, t)
   ) ? 4 : -2
 )
 

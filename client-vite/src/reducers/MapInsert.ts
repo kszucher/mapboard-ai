@@ -1,7 +1,7 @@
 import {N, LPartial, M, T, P} from "../state/MapStateTypes"
 import {getInsertTemplate} from "./MapInsertTemplates"
 import {unselectNodes} from "./MapSelect"
-import {getCountNSCV, getCountNSCH, getX, sortPath, isSEODO, getLiL, mT} from "../selectors/MapSelector"
+import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLiL, mT} from "../selectors/MapSelector"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
 
@@ -29,14 +29,14 @@ export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, at
 }
 
 export const insertCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) => {
-  const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
+  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
   makeSpaceFromCr(m, ipList, 1)
   m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8), path: p}  as N)))
   m.sort(sortPath)
 }
 
 export const insertCC = (m: M, insertParentNode: T, insertTargetColumnIndex: number) => {
-  const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
+  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
   makeSpaceFromCc(m, ipList, 1)
   m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8), path: p} as N)))
   m.sort(sortPath)

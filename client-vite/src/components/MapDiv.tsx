@@ -5,7 +5,7 @@ import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {PageState} from "../state/Enums"
 import {getColors} from "./Colors"
-import {getG, getNodeById, isR, isS, isXR, isXS, getX, getCountNCO1, getNRD0, getNRD1, isNS, isNR, mT} from "../selectors/MapSelector"
+import {getG, getNodeById, isR, isS, isXR, isXS, getX, getCountTCO1, getTRD0, getTRD1, isTS, isTR, mT} from "../selectors/MapSelector"
 import {adjust, getLatexString} from "../utils/Utils"
 import {mSelector} from "../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -120,7 +120,7 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  if((isNS(t) && !t.selected || isNR(t) && !getNRD0(m, t).selected && !getNRD1(m, t).selected)) {
+                  if((isTS(t) && !t.selected || isTR(t) && !getTRD0(m, t).selected && !getTRD1(m, t).selected)) {
                     dispatch(actions.mapAction({type: 'selectNS', payload: {path: t.path}}))
                   }
                   dispatch(actions.openContextMenu({type: 'node', position: {x: e.clientX, y: e.clientY}}))
@@ -128,8 +128,8 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation();
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountNCO1(m, t) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}));
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountNCO1(m, t) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID));
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountTCO1(m, t) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}));
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountTCO1(m, t) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID));
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()

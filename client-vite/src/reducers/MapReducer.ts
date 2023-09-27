@@ -10,7 +10,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
-import {mT, sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getRiL, getRootStartX, getRootStartY, getXA, getXAEO, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getNRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXFSU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getNR, getXR, getXSIC, getXSCO} from "../selectors/MapSelector"
+import {mT, sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getRiL, getRootStartX, getRootStartY, getXA, getXAEO, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getTRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXFSU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getTR, getXR, getXSIC, getXSCO} from "../selectors/MapSelector"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -21,7 +21,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setAlignmentAdaptive': getG(m).alignment = 'adaptive'; break
 
     case 'selectR0': selectNode(m, getNodeByPath(m, ['r', 0]), 's'); break
-    case 'selectNR': selectNode(m, getNR(m, getNodeByPath(m, payload.path)), 's'); break
+    case 'selectNR': selectNode(m, getTR(m, getNodeByPath(m, payload.path)), 's'); break
     case 'selectXR': selectNode(m, getXR(m), 's'); break
     case 'selectFamilyX': selectNode(m, getX(m), 'f'); break
     case 'selectFamilyXRD0': selectNode(m, getXRD0(m), 'f'); break
@@ -112,19 +112,19 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setLineType': getXA(m).forEach(t => Object.assign(t, {lineType: payload})); break
     case 'setLineColor': getXA(m).forEach(t => Object.assign(t, {lineColor: payload})); break
     case 'setSBorderWidth': getXA(m).forEach(t => Object.assign(t, {sBorderWidth: payload})); break
-    case 'setFBorderWidth': getXA(m).forEach(t => Object.assign(isR(t.path) ? getNRD0(m, t) : t, {fBorderWidth: payload})); break
+    case 'setFBorderWidth': getXA(m).forEach(t => Object.assign(isR(t.path) ? getTRD0(m, t) : t, {fBorderWidth: payload})); break
     case 'setSBorderColor': getXA(m).forEach(t => Object.assign(t, {sBorderColor: payload})); break
-    case 'setFBorderColor': getXA(m).forEach(t => Object.assign(isR(t.path) ? getNRD0(m, t) : t, {fBorderColor: payload})); break
+    case 'setFBorderColor': getXA(m).forEach(t => Object.assign(isR(t.path) ? getTRD0(m, t) : t, {fBorderColor: payload})); break
     case 'setSFillColor': getXA(m).forEach(t => Object.assign(t, {sFillColor: payload})); break
-    case 'setFFillColor': getXA(m).forEach(t => Object.assign(isR(t.path) ? getNRD0(m, t) : t, {fFillColor: payload})); break
+    case 'setFFillColor': getXA(m).forEach(t => Object.assign(isR(t.path) ? getTRD0(m, t) : t, {fFillColor: payload})); break
     case 'setTextFontSize': getXA(m).forEach(t => Object.assign(t, {textFontSize: payload})); break
     case 'setTextColor': getXA(m).forEach(t => Object.assign(t, {textColor: payload})); break
 
     case 'clearLine': getXA(m).forEach(t => Object.assign(t, {lineWidth: tSaveOptional.lineWidth, lineType: tSaveOptional.lineType, lineColor: tSaveOptional.lineColor})); break
     case 'clearSBorder': getXA(m).forEach(t => Object.assign(t, {sBorderWidth: tSaveOptional.sBorderWidth, sBorderColor: tSaveOptional.sBorderColor})); break
-    case 'clearFBorder': getXA(m).forEach(t => Object.assign(isR(t.path) ? getNRD0(m, t) : t, {fBorderWidth: tSaveOptional.fBorderWidth, fBorderColor: tSaveOptional.fBorderColor})); break
+    case 'clearFBorder': getXA(m).forEach(t => Object.assign(isR(t.path) ? getTRD0(m, t) : t, {fBorderWidth: tSaveOptional.fBorderWidth, fBorderColor: tSaveOptional.fBorderColor})); break
     case 'clearSFill': getXA(m).forEach(t => Object.assign(t, {sFillColor: tSaveOptional.sFillColor})); break
-    case 'clearFFill': getXA(m).forEach(t => Object.assign(isR(t.path) ? getNRD0(m, t) : t, {fFillColor: tSaveOptional.fFillColor})); break
+    case 'clearFFill': getXA(m).forEach(t => Object.assign(isR(t.path) ? getTRD0(m, t) : t, {fFillColor: tSaveOptional.fFillColor})); break
     case 'clearText': getXA(m).forEach(t => Object.assign(t, {textColor: tSaveOptional.textColor, textFontSize: tSaveOptional.textFontSize})); break
 
     case 'setTaskModeOn': getXAEO(m).forEach(t => Object.assign(t, {taskStatus: t.taskStatus === 0 ? 1 : t.taskStatus})); break

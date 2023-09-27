@@ -1,4 +1,4 @@
-import {ccToCb, crToCb, getCountNSCH, getCountNSCV, getCountXASU, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, T, P} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
@@ -133,7 +133,7 @@ export const moveCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) 
   const cbCr = structuredClone(crToCb(m))
   deleteCR(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 'c', insertTargetRowIndex, 0] as P
-  const ipList = Array(getCountNSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
+  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
   cbCr.forEach(t => Object.assign(t, {
     path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number) + (ip.at(-2) as number), (t.path.at(2) as number), ...t.path.slice(3)]
   }))
@@ -147,7 +147,7 @@ export const moveCC = (m: M, insertParentNode: T, insertTargetColumnIndex: numbe
   const cbCc = structuredClone(ccToCb(m))
   deleteCC(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 'c', 0, insertTargetColumnIndex] as P
-  const ipList = Array(getCountNSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
+  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
   cbCc.forEach(t => Object.assign(t, {
     path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number), (t.path.at(2) as number) + (ip.at(-1) as number), ...t.path.slice(3)]
   }))

@@ -1,5 +1,5 @@
 import {M, T} from "../state/MapStateTypes"
-import {getNSI1, getX, isR, mT} from "../selectors/MapSelector"
+import {getTSI1, getX, isR, mT} from "../selectors/MapSelector"
 
 export const unselectNodes = (m: M) => mT(m).forEach(t => Object.assign(t, {selected: 0, selection: 's'}))
 
@@ -7,7 +7,7 @@ export const selectNode = (m: M, t: T, selection: 's' | 'f') => {
   unselectNodes(m)
   Object.assign(t, {selected: 1, selection})
   if (!isR(t.path)) {
-    getNSI1(m, t).lastSelectedChild = t.path.at(-1) as number
+    getTSI1(m, t).lastSelectedChild = t.path.at(-1) as number
   }
 }
 

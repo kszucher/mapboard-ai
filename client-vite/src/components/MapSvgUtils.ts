@@ -1,4 +1,4 @@
-import {getNSIC, getG, getNodeById, getNR, getPathDir, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../selectors/MapSelector"
+import {getTSIC, getG, getNodeById, getTR, getPathDir, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../selectors/MapSelector"
 import {adjust} from "../utils/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts"
 import {LineTypes, Sides} from "../state/Enums"
@@ -77,8 +77,8 @@ export const getPolygonS = (m: M, t: T, selection: string): PolygonPoints => {
   const R = 8
   const g = getG(m)
   const dir = getPathDir(t.path)
-  const selfH = (isD(t.path) ? getNR(m, t).selfH : t.selfH)
-  const w = isD(t.path) ? getNR(m, t).selfW + t.familyW : t.maxW
+  const selfH = (isD(t.path) ? getTR(m, t).selfH : t.selfH)
+  const w = isD(t.path) ? getTR(m, t).selfW + t.familyW : t.maxW
   let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
   if (selection === 's') {
     ax = t.nodeStartX
@@ -203,10 +203,10 @@ export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
 export const getTaskStartPoint = (m: M, g: G, t: T) => {
   switch (true) {
-    case getPathDir(t.path) === 1 && !isCON(t.path): return getRootEndX(m, getNR(m, t)) - getTaskWidth(g)
-    case getPathDir(t.path) === -1 && !isCON(t.path): return getRootStartX(m, getNR(m, t)) + getTaskWidth(g)
-    case getPathDir(t.path) === 1 && isCON(t.path): return getNSIC(m, t).nodeEndX - 120
-    case getPathDir(t.path) === -1 && isCON(t.path): return getNSIC(m, t).nodeStartX + 120
+    case getPathDir(t.path) === 1 && !isCON(t.path): return getRootEndX(m, getTR(m, t)) - getTaskWidth(g)
+    case getPathDir(t.path) === -1 && !isCON(t.path): return getRootStartX(m, getTR(m, t)) + getTaskWidth(g)
+    case getPathDir(t.path) === 1 && isCON(t.path): return getTSIC(m, t).nodeEndX - 120
+    case getPathDir(t.path) === -1 && isCON(t.path): return getTSIC(m, t).nodeStartX + 120
     default: return 0
   }
 }

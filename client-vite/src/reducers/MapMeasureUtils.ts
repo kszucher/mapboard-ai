@@ -1,6 +1,6 @@
 import {getEquationDim, getTextDim} from "../components/MapDivUtils"
 import {M, T} from "../state/MapStateTypes"
-import {getCountNCO2, getCountNSCH, getCountNSCV, getCountNSO1, getCountNSO2, getG, getNodeByPath} from "../selectors/MapSelector"
+import {getCountTCO2, getCountTSCH, getCountTSCV, getCountTSO1, getCountTSO2, getG, getNodeByPath} from "../selectors/MapSelector"
 import {createArray} from "../utils/Utils"
 
 export const measureText = (m: M, pt: T, t: T) => {
@@ -40,8 +40,8 @@ export const measureText = (m: M, pt: T, t: T) => {
 }
 
 export const measureTable = (m: M, t: T) => {
-  const countSCR = getCountNSCV(m, t)
-  const countSCC = getCountNSCH(m, t)
+  const countSCR = getCountTSCV(m, t)
+  const countSCC = getCountTSCH(m, t)
   let maxCellHeightMat = createArray(countSCR, countSCC)
   let maxCellWidthMat = createArray(countSCR, countSCC)
   let isCellSpacingActivated = 0
@@ -101,7 +101,7 @@ export const measureTable = (m: M, t: T) => {
 
 export const measureFamily = (m: M, t: T) => {
   const g = getG(m)
-  const countSS = getCountNSO1(m, t)
+  const countSS = getCountTSO1(m, t)
   let sMaxW = 0
   for (let i = 0; i < countSS; i++) {
     const cn = getNodeByPath(m, [...t.path, 's', i]) as T
@@ -111,7 +111,7 @@ export const measureFamily = (m: M, t: T) => {
       sMaxW = currMaxW
     }
   }
-  if (getCountNSO2(m, t) || getCountNCO2(m, t)) {
+  if (getCountTSO2(m, t) || getCountTCO2(m, t)) {
     t.familyH += (countSS - 1) * t.spacing
   }
   t.familyW = sMaxW + g.sLineDeltaXDefault

@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {adjust} from "../utils/Utils";
 import {TASK_CIRCLES_GAP} from "../state/Consts"
 import {getColors} from "./Colors"
-import {getNSI1, getNSI2, getCountNCO1, getCountNSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS, mT} from "../selectors/MapSelector"
+import {getTSI1, getTSI2, getCountTCO1, getCountTSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS, mT} from "../selectors/MapSelector"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
@@ -37,7 +37,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
             />
           }
           {
-            t.sBorderColor && getCountNCO1(m, t) === 0 &&
+            t.sBorderColor && getCountTCO1(m, t) === 0 &&
             <path
               d={getArcPath(t, -2, true)}
               stroke={t.sBorderColor}
@@ -46,44 +46,44 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               {...pathCommonProps}
             />
           }
-          {(getPathPattern(t.path).endsWith('ds') && getCountNCO1(m, t) === 0 || (getPathPattern(t.path).endsWith('ss') && getCountNCO1(m, t) === 0)) &&
+          {(getPathPattern(t.path).endsWith('ds') && getCountTCO1(m, t) === 0 || (getPathPattern(t.path).endsWith('ss') && getCountTCO1(m, t) === 0)) &&
             <path
-              d={!getNodeById(pm, t.nodeId) && getNSI1(pm, t) ? getLinePathBetweenNodes(getNSI1(pm, t), t) : getLinePathBetweenNodes(getNSI1(m, t), t)}
+              d={!getNodeById(pm, t.nodeId) && getTSI1(pm, t) ? getLinePathBetweenNodes(getTSI1(pm, t), t) : getLinePathBetweenNodes(getTSI1(m, t), t)}
               strokeWidth={t.lineWidth}
               stroke={t.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(t.taskStatus - 2) : t.lineColor}
               fill={'none'}
               {...pathCommonProps}
             >
               {
-                !getNodeById(pm, t.nodeId) && getNSI1(pm, t) &&
-                <animate attributeName='d' from={getLinePathBetweenNodes(getNSI1(pm, t), t)} to={getLinePathBetweenNodes(getNSI1(m, t), t)} dur={'0.3s'} repeatCount={'once'} fill={'freeze'}/>
+                !getNodeById(pm, t.nodeId) && getTSI1(pm, t) &&
+                <animate attributeName='d' from={getLinePathBetweenNodes(getTSI1(pm, t), t)} to={getLinePathBetweenNodes(getTSI1(m, t), t)} dur={'0.3s'} repeatCount={'once'} fill={'freeze'}/>
               }
             </path>
           }
           {((getPathPattern(t.path).endsWith('dsc') || getPathPattern(t.path).endsWith('ssc')) && t.path.at(-2) as number > -1 && t.path.at(-1) === 0) &&
             <path
-              d={!getNodeById(pm, t.nodeId) && getNSI2(pm, t) ? getLinePathBetweenNodes(getNSI2(pm, t), t) : getLinePathBetweenNodes(getNSI2(m, t), t)}
+              d={!getNodeById(pm, t.nodeId) && getTSI2(pm, t) ? getLinePathBetweenNodes(getTSI2(pm, t), t) : getLinePathBetweenNodes(getTSI2(m, t), t)}
               strokeWidth={t.lineWidth}
               stroke={t.lineColor}
               fill={'none'}
               {...pathCommonProps}
             >
               {
-                !getNodeById(pm, t.nodeId) && getNSI2(pm, t) &&
-                <animate attributeName='d' from={getLinePathBetweenNodes(getNSI2(pm, t), t)} to={getLinePathBetweenNodes(getNSI2(m, t), t)} dur={'0.3s'} repeatCount={'once'} fill={'freeze'}/>
+                !getNodeById(pm, t.nodeId) && getTSI2(pm, t) &&
+                <animate attributeName='d' from={getLinePathBetweenNodes(getTSI2(pm, t), t)} to={getLinePathBetweenNodes(getTSI2(m, t), t)} dur={'0.3s'} repeatCount={'once'} fill={'freeze'}/>
               }
             </path>
           }
           {
-            isS(t.path) && getCountNCO1(m, t) &&
+            isS(t.path) && getCountTCO1(m, t) &&
             <path d={getArcPath(t, 0, false)} stroke={t.sBorderColor ? t.sBorderColor : C.TABLE_FRAME_COLOR} strokeWidth={t.sBorderWidth} fill={'none'} {...pathCommonProps}/>
           }
           {
-            isS(t.path) && getCountNCO1(m, t) &&
+            isS(t.path) && getCountTCO1(m, t) &&
             <path d={getGridPath(t)} stroke={C.TABLE_GRID} strokeWidth={1} fill={'none'} {...pathCommonProps}/>
           }
           {
-            t.taskStatus > 0 && !isR(t.path) && !isD(t.path) && getCountNSO1(m, t) === 0 && getCountNCO1(m, t) === 0 && t.contentType !== 'image' &&
+            t.taskStatus > 0 && !isR(t.path) && !isD(t.path) && getCountTSO1(m, t) === 0 && getCountTCO1(m, t) === 0 && t.contentType !== 'image' &&
             <Fragment key={`${t.nodeId}_svg_task`}>
               {
                 !isEqual(t.nodeId, editedNodeId) &&

@@ -2,7 +2,7 @@ import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {M, T} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
-import {getCountNCO1, getNodeById, getRL, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountNSO1, getNRD1, getNRD0, getNR, mT, mG} from "../selectors/MapSelector"
+import {getCountTCO1, getNodeById, getRL, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountTSO1, getTRD1, getTRD0, getTR, mT, mG} from "../selectors/MapSelector"
 
 export const mapMeasure = (pm: M, m: M) => {
   mT(m).toReversed().forEach(t => {
@@ -13,7 +13,7 @@ export const mapMeasure = (pm: M, m: M) => {
         break
       }
       case isD(t.path): {
-        if (getCountNSO1(m, t)) {
+        if (getCountTSO1(m, t)) {
           measureFamily(m, t)
         }
         t.maxW = t.familyW
@@ -21,12 +21,12 @@ export const mapMeasure = (pm: M, m: M) => {
         break
       }
       case isS(t.path): {
-        if (getCountNCO1(m, t)) {
+        if (getCountTCO1(m, t)) {
           measureTable(m, t)
         } else {
           measureText(m, pt, t)
         }
-        if (getCountNSO1(m, t)) {
+        if (getCountTSO1(m, t)) {
           measureFamily(m, t)
         }
         t.maxW = t.selfW + t.familyW
@@ -34,7 +34,7 @@ export const mapMeasure = (pm: M, m: M) => {
         break
       }
       case isC(t.path): {
-        if (getCountNSO1(m, t)) {
+        if (getCountTSO1(m, t)) {
           measureFamily(m, t)
         }
         t.maxW = t.familyW || 60
@@ -45,9 +45,9 @@ export const mapMeasure = (pm: M, m: M) => {
   })
   mG(m).forEach(g => {
     getRL(m).forEach(r => {
-      const nr = getNR(m, r) as T
-      const nrd0 = getNRD0(m, r) as T
-      const nrd1 = getNRD1(m, r) as T
+      const nr = getTR(m, r) as T
+      const nrd0 = getTRD0(m, r) as T
+      const nrd1 = getTRD1(m, r) as T
       const wr = nr.offsetW + nr.selfW + nrd0.familyW + getTaskWidth(g) * hasTaskRight(m, r)
       const wl = nr.offsetW - nrd1.familyW - getTaskWidth(g) * hasTaskLeft(m, r)
       if ((nr.offsetH + nrd0.familyH / 2) > g.maxD) {g.maxD = nr.offsetH + nrd0.familyH / 2}
