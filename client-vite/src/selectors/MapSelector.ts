@@ -56,8 +56,8 @@ export const isTRD1SO = (p: P, pt: P): boolean => isEqual(pt.slice(0, 4), [...p.
 export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) > (p.at(-1) as number)
 export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) < (p.at(-1) as number)
 export const isSU1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) === (p.at(-1) as number) - 1
-const isSI1 = (p: P, pt: P): boolean => isEqual(pt, getSI1(p))
-const isSI2 = (p: P, pt: P): boolean => isEqual(pt, getSI2(p))
+const isSI1 = (p: P, pt: P): boolean => pt.length < p.length && isEqual(pt, getSI1(p))
+const isSI2 = (p: P, pt: P): boolean => pt.length < p.length && isEqual(pt, getSI2(p))
 const isSI1U = (p: P, pt: P): boolean => isSU(getSI1(p) as P, pt)
 export const isSEO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
