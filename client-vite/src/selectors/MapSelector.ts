@@ -47,6 +47,8 @@ export const isTS = (t: T): boolean => isS(t.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
 export const getSIPL = (p: P): P[] => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
+const getSI1 = (p :P) => p.slice(0, p.findLastIndex(el => typeof el === 'string'))
+const getSI2 = (p: P) => getSI1(getSI1(p))
 const getSIC = (p: P) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
 export const isTRD0SO = (p: P, pt: P): boolean => isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0])
@@ -54,9 +56,9 @@ export const isTRD1SO = (p: P, pt: P): boolean => isEqual(pt.slice(0, 4), [...p.
 export const isSD = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) > (p.at(-1) as number)
 export const isSU = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) < (p.at(-1) as number)
 export const isSU1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && (pt.at(-1) as number) === (p.at(-1) as number) - 1
-const isSI1 = (p: P, pt: P): boolean => isEqual(pt, getSIPL(p).at(-1))
-const isSI2 = (p: P, pt: P): boolean => isEqual(pt, getSIPL(p).at(-2))
-const isSI1U = (p: P, pt: P): boolean => isSU(getSIPL(p).at(-1) as P, pt)
+const isSI1 = (p: P, pt: P): boolean => isEqual(pt, getSI1(p))
+const isSI2 = (p: P, pt: P): boolean => isEqual(pt, getSI2(p))
+const isSI1U = (p: P, pt: P): boolean => isSU(getSI1(p) as P, pt)
 export const isSEO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSO = (p: P, pt: P): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: P, pt: P): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'

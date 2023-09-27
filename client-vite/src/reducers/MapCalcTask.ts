@@ -7,11 +7,13 @@ export const mapCalcTask = (m: M) => {
       const taskStatusRight = getTRD0(m, t).taskStatus
       const taskStatusLeft = getTRD1(m, t).taskStatus
       t.taskStatus = 0
-      if (getCountXRD0S(m) && getCountXRD1S(m)) {
+      const countXRD0S = getCountXRD0S(m)
+      const countXRD1S = getCountXRD1S(m)
+      if (countXRD0S && countXRD1S) {
         t.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
-      } else if (getCountXRD0S(m)) {
+      } else if (countXRD0S) {
         t.taskStatus = taskStatusRight
-      } else if (getCountXRD1S(m)) {
+      } else if (countXRD0S) {
         t.taskStatus = taskStatusLeft
       }
     } else if (getCountTSO1(m, t)) {
