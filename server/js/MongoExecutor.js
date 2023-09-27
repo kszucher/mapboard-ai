@@ -21,37 +21,11 @@ async function mongoExecutorCommands (users, maps, shares) {
   // await maps.updateMany({}, [
   //   {
   //     $set: {
-  //       versions: [ {$first: '$versions'} ],
-  //       versionsInfo: [ {$first: '$versionsInfo'} ],
+  //       versions: [ {$last: '$versions'} ],
+  //       versionsInfo: [ {$last: '$versionsInfo'} ],
   //     }
   //   }
   // ])
-
-
-
-  // await maps.aggregate(
-  //   [
-  //     {
-  //       $set: {
-  //         name: {
-  //           $getField: {
-  //             field: 'content',
-  //             input: {
-  //               $first: {
-  //                 $filter: {
-  //                   input: { $last: '$versions' },
-  //                   as: 'node',
-  //                   cond: { $eq: ["$$node.path", ['r', 0]] },
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     },
-  //     { $merge: 'maps' }
-  //   ]
-  // ).toArray()
 
 
 }
@@ -60,7 +34,7 @@ async function mongoExecutor() {
   const client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true })
   try {
     await client.connect()
-    const db = client.db("app_dev")
+    const db = client.db("app_prod")
     const users = db.collection("users")
     const maps = db.collection("maps")
     const shares = db.collection("shares")
