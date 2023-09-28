@@ -85,6 +85,7 @@ export const ContextMenu: FC = () => {
             { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectXS', payload: null}))}} subMenuId={'Node'}/> }
             { mExists && isXD(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectXR', payload: null}))}} subMenuId={'Node'}/> }
             { mExists && isXS(m) && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getX(m).path}}))}} subMenuId={'First Cell'}/> }
+            { mExists && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectRL', payload: null}))}} subMenuId={'All Root'}/> }
           </Li1>
           <Li1 menuId={'Insert'}>
             { mExists && isXS(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSU', payload: null}))}} subMenuId={'Node Above'}/> }
