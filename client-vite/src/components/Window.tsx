@@ -147,9 +147,9 @@ export const Window: FC = () => {
                     el.hasOwnProperty('nodeId') && typeof el.nodeId === 'string'
                   )
                   if (isValidMap) {
-                    let isPastedLR = mapJson.at(-1).path.at(0) === 'r'
-                    let isPastedS = mapJson.at(-1).path.at(0) === 's'
-                    isPastedLR && console.log('R pasted')
+                    const isPastedLR = mapJson.at(-1).path.at(0) === 'r'
+                    const isPastedS = mapJson.at(-1).path.at(0) === 's'
+                    isPastedLR && dispatch(actions.mapAction({type: 'pasteLR', payload: text}))
                     isPastedS && isXR(m) && dispatch(actions.mapAction({type: 'pasteSOR', payload: text}))
                     isPastedS && isXS(m) && dispatch(actions.mapAction({type: 'pasteSO', payload: text}))
                   } else {

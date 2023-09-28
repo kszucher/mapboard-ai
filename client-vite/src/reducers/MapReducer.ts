@@ -7,7 +7,7 @@ import {deleteL, deleteReselectCC, deleteReselectCR, deleteReselectLR, deleteRes
 import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertL, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteS} from "./MapMove"
+import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteLR, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
 import {mT, sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getXA, getXAEO, getCountXRD0S, getCountXRD1S, getXSO1, getXSO2, getTRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXFSU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getTR, getXR, getXSIC, getXSCO, getRL} from "../selectors/MapSelector"
@@ -106,6 +106,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'copyS': copyS(m); break
     case 'cutLR': cutLR(m); break
     case 'cutS': cutS(m); break
+    case 'pasteLR': pasteLR(m, payload); break
     case 'pasteSOR': pasteS(m, getXRD0(m), getCountXRD0S(m), payload); break
     case 'pasteSO': pasteS(m, getX(m), getCountXSO1(m), payload); break
 
