@@ -28,7 +28,7 @@ export const cutLR = (m: M) => {
   const reselect = getReselectR(m)
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
-  cbSave([...cbL, cbR])
+  cbSave(mapDeInit([...cbL, ...cbR]))
   deleteLR(m)
   selectNode(m, reselect, 's')
 }
@@ -36,7 +36,7 @@ export const cutLR = (m: M) => {
 export const cutS = (m: M) => {
   const reselect = getReselectS(m)
   const cbS = structuredClone(sToCb(m))
-  cbSave(cbS)
+  cbSave(mapDeInit(cbS))
   deleteS(m)
   selectNode(m, reselect, 's')
 }
@@ -44,14 +44,12 @@ export const cutS = (m: M) => {
 export const copyLR = (m: M) => {
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
-  const cbDeInit = mapDeInit([...cbL, ...cbR])
-  cbSave(cbDeInit)
+  cbSave(mapDeInit([...cbL, ...cbR]))
 }
 
 export const copyS = (m: M) => {
   const cbS = structuredClone(sToCb(m))
-  const cbDeInit = mapDeInit(cbS)
-  cbSave(cbDeInit)
+  cbSave(mapDeInit(cbS))
 }
 
 const cbToLR = (m: M, cbL: L[], cbR: M, ipL: P, ipR: P) => {
