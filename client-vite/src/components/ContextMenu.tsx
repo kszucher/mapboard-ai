@@ -8,9 +8,16 @@ import {mSelector} from "../state/EditorState"
 import {ControlTypes, PageState} from "../state/Enums"
 import {getMapId} from "../state/NodeApiState"
 
-const menuClassName = "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+const Li2 = ({subMenuId, onClick}: {subMenuId: string, onClick: Function}) => {
+  return (<li>
+      <a className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={() => onClick()}>
+        {subMenuId}
+      </a>
+    </li>
+  )
+}
 
-const ContextMenuList = ({menuId, children}: {menuId: string, children: ReactNode}) => {
+const Li1 = ({menuId, children}: {menuId: string, children: ReactNode}) => {
   return (
     <li>
       <button
@@ -47,91 +54,91 @@ export const ContextMenu: FC = () => {
     <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={!contextMenu.isActive} style={{left: contextMenu.position.x + 1, top: contextMenu.position.y -20}}>
       <div hidden={contextMenu.type !== 'map'}>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="">
-          <ContextMenuList menuId={'View'}>
-            { mExists && getG(m).density === 'small' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}}>{'Set Cozy'}</a></li> }
-            { mExists && getG(m).density === 'large' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}}>{'Set Compact'}</a></li> }
-            { mExists && getG(m).alignment === 'adaptive' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}}>{'Set Centered'}</a></li> }
-            { mExists && getG(m).alignment === 'centered' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}}>{'Set Adaptive'}</a></li> }
-          </ContextMenuList>
-          <ContextMenuList menuId={'Connections'}>
-            { mExists && !connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.showConnectionHelpers())}}>{'Show Helpers'}</a></li> }
-            { mExists && connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Helpers'}</a></li> }
-          </ContextMenuList>
-          <ContextMenuList menuId={'Tabs'}>
-            { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_RENAME_MAP))}}>Rename Map</a></li> }
-            { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.createMapInTab.initiate())}}>Add Tab Map</a></li> }
-            { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}}>Move Tab Map Up</a></li> }
-            { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}}>Move Tab Map Down</a></li> }
-            { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.deleteMap.initiate({mapId: getMapId()}))}}>Remove Tab Map</a></li> }
-          </ContextMenuList>
-          <ContextMenuList menuId={'Shares'}>
-            { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARES))}}>{'Shares'}</a></li> }
-            { mExists && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}}>{'Share This Map'}</a></li> }
-          </ContextMenuList>
+          <Li1 menuId={'View'}>
+            { mExists && getG(m).density === 'small' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}} subMenuId={'Set Cozy'}/> }
+            { mExists && getG(m).density === 'large' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}} subMenuId={'Set Compact'}/> }
+            { mExists && getG(m).alignment === 'adaptive' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}} subMenuId={'Set Centered'}/> }
+            { mExists && getG(m).alignment === 'centered' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}} subMenuId={'Set Adaptive'}/> }
+          </Li1>
+          <Li1 menuId={'Connections'}>
+            { mExists && !connectionHelpersVisible && <Li2 onClick={()=>{dispatch(actions.showConnectionHelpers())}} subMenuId={'Show Helpers'}/> }
+            { mExists && connectionHelpersVisible && <Li2 onClick={()=>{dispatch(actions.hideConnectionHelpers())}} subMenuId={'Hide Helpers'}/> }
+          </Li1>
+          <Li1 menuId={'Tabs'}>
+            { mExists && <Li2 onClick={()=>{dispatch(actions.setPageState(PageState.WS_RENAME_MAP))}} subMenuId={'Rename Map'}/> }
+            { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.createMapInTab.initiate())}} subMenuId={'Add Tab Map'}/> }
+            { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}} subMenuId={'Move Tab Map Up'}/> }
+            { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}} subMenuId={'Move Tab Map Down'}/> }
+            { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.deleteMap.initiate({mapId: getMapId()}))}} subMenuId={'Remove Tab Map'}/> }
+          </Li1>
+          <Li1 menuId={'Shares'}>
+            { mExists && <Li2 onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARES))}} subMenuId={'Shares'}/> }
+            { mExists && <Li2 onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}} subMenuId={'Share This Map'}/> }
+          </Li1>
         </ul>
       </div>
       <div hidden={contextMenu.type !== 'node'}>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
-          <ContextMenuList menuId={'Select'}>
-            { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))}}>Node Family</a></li> }
-            { mExists && isXR(m) && getCountXRD0S(m) > 0 && !getXRD0(m).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD0', payload: null}))}}>Node Family Right</a></li> }
-            { mExists && isXR(m) && getCountXRD1S(m) > 0 && !getXRD1(m).selected && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD1', payload: null}))}}>Node Family Left</a></li> }
-            { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectXS', payload: null}))}}>Node</a></li> }
-            { mExists && isXD(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectXR', payload: null}))}}>Node</a></li> }
-            { mExists && isXS(m) && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getX(m).path}}))}}>First Cell</a></li> }
-          </ContextMenuList>
-          <ContextMenuList menuId={'Insert'}>
-            { mExists && isXS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSU', payload: null}))}}>Node Above</a></li> }
-            { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSOR', payload: null}))}}>Node Right</a></li> }
-            { mExists && isXS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSO', payload: null}))}}>Node Out</a></li> }
-            { mExists && isXS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSD', payload: null}))}}>Node Below</a></li> }
-            { mExists && (isXR(m) || isXS(m))  && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}}>Table Out</a></li> }
-            { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))}}>Table Row Above</a></li> }
-            { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSCRD', payload: null}))}}>Table Row Below</a></li> }
-            { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSCCL', payload: null}))}}>Table Column Left</a></li> }
-            { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertSCCR', payload: null}))}}>Table Column Right</a></li> }
-          </ContextMenuList>
-          <ContextMenuList menuId={'Edit'}>
-            { mExists && isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <li><a className={menuClassName} onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}}>Turn Into Submap</a></li> }
-            { mExists && isXS(m) && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'transpose', payload: null}))}}>Transpose</a></li> }
-            { mExists && getXAEO(m).map(ti => ti.taskStatus).includes(0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOn', payload: null}))}}>Task Mode On</a></li> }
-            { mExists && getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOff', payload: null}))}}>Task Mode Off</a></li> }
-            { mExists && getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeReset', payload: null}))}}>Task Mode Reset</a></li> }
-            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.NONE && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}}>Control Type None</a></li> }
-            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.UPLOAD && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeUpload', payload: null}))}}>Control Type Upload</a></li> }
-            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.GENERATE && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeGenerate', payload: null}))}}>Control Type Generate</a></li> }
-          </ContextMenuList>
-          <ContextMenuList menuId={'Move'}>
-            { mExists && isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveSU', payload: null}))}}>Node Up</a></li> }
-            { mExists && isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveSD', payload: null}))}}>Node Down</a></li> }
-            { mExists && isXS(m) && isDirR(m) && isXASVN(m) && getCountXASU(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveSO', payload: null}))}}>Node Out</a></li> }
-            { mExists && isXS(m) && isDirL(m) && isXASVN(m) && getCountXASU(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveSO', payload: null}))}}>Node Out</a></li> }
-            { mExists && isXS(m) && isDirL(m) && isXASVN(m) && !isXDS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveSI', payload: null}))}}>Node In</a></li> }
-            { mExists && isXS(m) && isDirR(m) && isXASVN(m) && !isXDS(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveSI', payload: null}))}}>Node In</a></li> }
-            { mExists && (isXR(m) && getCountXSO2(m) > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveS2TOR', payload: null}))}}>Sub Nodes To Table</a></li> }
-            { mExists && (isXS(m) && getCountXSO1(m) > 0) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'moveS2TO', payload: null}))}}>Sub Nodes To Table</a></li> }
-          </ContextMenuList>
-          <ContextMenuList menuId={'Generate'}>
-            { mExists && isXD(m) && getX(m).selection === 'f' && getR0(m).note !== '' && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesS(m)))}}>Structure Extension</a></li>}
-            { mExists && getCountXCO1(m) > 0 && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))}}>Table Fill</a></li>}
-            { mExists && (isXR(m) || isXS(m)) && getCountXCO1(m) === 0 && getX(m).contentType === 'text' && <li><a className={menuClassName} onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))}}>Diagram</a></li>}
-          </ContextMenuList>
-          <ContextMenuList menuId={'Dev'}>
-            { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m))}}>show node</a></li> }
-            { mExists && <li><a className={menuClassName} onClick={()=>{console.log(getX(m).path)}}>show node path</a></li> }
-            { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log(generateLlmInfo(m))}}>show llm json</a></li>}
-            { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}}>show llmData</a></li>}
-            { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetLlmDataExample', payload: null}))}}>set llm data example</a></li> }
-            { mExists && isXR(m) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devClearLlmData', payload: null}))}}>reset llm data</a></li> }
-            { mExists && (isXR(m) || isXS(m)) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devSetBlur', payload: null}))}}>set blur</a></li> }
-            { mExists && (isXR(m) || isXS(m)) && <li><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'devClearBlur', payload: null}))}}>clear blur</a></li> }
-          </ContextMenuList>
+          <Li1 menuId={'Select'}>
+            { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))}} subMenuId={'Node Family'}/> }
+            { mExists && isXR(m) && getCountXRD0S(m) > 0 && !getXRD0(m).selected && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD0', payload: null}))}} subMenuId={'Node Family Right'}/> }
+            { mExists && isXR(m) && getCountXRD1S(m) > 0 && !getXRD1(m).selected && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD1', payload: null}))}} subMenuId={'Node Family Left'}/> }
+            { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectXS', payload: null}))}} subMenuId={'Node'}/> }
+            { mExists && isXD(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectXR', payload: null}))}} subMenuId={'Node'}/> }
+            { mExists && isXS(m) && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getX(m).path}}))}} subMenuId={'First Cell'}/> }
+          </Li1>
+          <Li1 menuId={'Insert'}>
+            { mExists && isXS(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSU', payload: null}))}} subMenuId={'Node Above'}/> }
+            { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSOR', payload: null}))}} subMenuId={'Node Right'}/> }
+            { mExists && isXS(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSO', payload: null}))}} subMenuId={'Node Out'}/> }
+            { mExists && isXS(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSD', payload: null}))}} subMenuId={'Node Below'}/> }
+            { mExists && (isXR(m) || isXS(m))  && <Li2 onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}} subMenuId={'Table Out'}/> }
+            { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))}} subMenuId={'Table Row Above'}/> }
+            { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSCRD', payload: null}))}} subMenuId={'Table Row Below'}/> }
+            { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSCCL', payload: null}))}} subMenuId={'Table Column Left'}/> }
+            { mExists && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSCCR', payload: null}))}} subMenuId={'Table Column Right'}/> }
+          </Li1>
+          <Li1 menuId={'Edit'}>
+            { mExists && isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <Li2 onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}} subMenuId={'Turn Into Submap'}/> }
+            { mExists && isXS(m) && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'transpose', payload: null}))}} subMenuId={'Transpose'}/> }
+            { mExists && getXAEO(m).map(ti => ti.taskStatus).includes(0) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOn', payload: null}))}} subMenuId={'Task Mode On'}/> }
+            { mExists && getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOff', payload: null}))}} subMenuId={'Task Mode Off'}/> }
+            { mExists && getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeReset', payload: null}))}} subMenuId={'Task Mode Reset'}/> }
+            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.NONE && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}} subMenuId={'Control Type None'}/> }
+            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.UPLOAD && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeUpload', payload: null}))}} subMenuId={'Control Type Upload'}/> }
+            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.GENERATE && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeGenerate', payload: null}))}} subMenuId={'Control Type Generate'}/> }
+          </Li1>
+          <Li1 menuId={'Move'}>
+            { mExists && isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'moveSU', payload: null}))}} subMenuId={'Node Up'}/> }
+            { mExists && isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'moveSD', payload: null}))}} subMenuId={'Node Down'}/> }
+            { mExists && isXS(m) && isDirR(m) && isXASVN(m) && getCountXASU(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'moveSO', payload: null}))}} subMenuId={'Node Out'}/> }
+            { mExists && isXS(m) && isDirL(m) && isXASVN(m) && getCountXASU(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'moveSO', payload: null}))}} subMenuId={'Node Out'}/> }
+            { mExists && isXS(m) && isDirL(m) && isXASVN(m) && !isXDS(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'moveSI', payload: null}))}} subMenuId={'Node In'}/> }
+            { mExists && isXS(m) && isDirR(m) && isXASVN(m) && !isXDS(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'moveSI', payload: null}))}} subMenuId={'Node In'}/> }
+            { mExists && (isXR(m) && getCountXSO2(m) > 0) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'moveS2TOR', payload: null}))}} subMenuId={'Sub Nodes To Table'}/> }
+            { mExists && (isXS(m) && getCountXSO1(m) > 0) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'moveS2TO', payload: null}))}} subMenuId={'Sub Nodes To Table'}/> }
+          </Li1>
+          <Li1 menuId={'Generate'}>
+            { mExists && isXD(m) && getX(m).selection === 'f' && getR0(m).note !== '' && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesS(m)))}} subMenuId={'Structure Extension'}/> }
+            { mExists && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))}} subMenuId={'Table Fill'}/> }
+            { mExists && (isXR(m) || isXS(m)) && getCountXCO1(m) === 0 && getX(m).contentType === 'text' && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodeMermaid(m)))}} subMenuId={'Diagram'}/> }
+          </Li1>
+          <Li1 menuId={'Dev'}>
+            { mExists && <Li2 onClick={()=>{console.log(getX(m))}} subMenuId={'show node'}/> }
+            { mExists && <Li2 onClick={()=>{console.log(getX(m).path)}} subMenuId={'show node path'}/> }
+            { mExists && isXR(m) && <Li2 onClick={()=>{console.log(generateLlmInfo(m))}} subMenuId={'show llm json'}/> }
+            { mExists && isXR(m) && <Li2 onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}} subMenuId={'show llmData'}/> }
+            { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'devSetLlmDataExample', payload: null}))}} subMenuId={'set llm data example'}/> }
+            { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'devClearLlmData', payload: null}))}} subMenuId={'reset llm data'}/> }
+            { mExists && (isXR(m) || isXS(m)) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'devSetBlur', payload: null}))}} subMenuId={'set blur'}/> }
+            { mExists && (isXR(m) || isXS(m)) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'devClearBlur', payload: null}))}} subMenuId={'clear blur'}/> }
+          </Li1>
         </ul>
       </div>
       <div>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="">
-          { mExists && !formatterVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.openFormatter())}}>Open Formatter</a></li> }
-          { mExists && formatterVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.closeFormatter())}}>Close Formatter</a></li> }
+          { mExists && !formatterVisible && <Li2 onClick={()=>{dispatch(actions.openFormatter())}} subMenuId={'Open Formatter'}/> }
+          { mExists && formatterVisible && <Li2 onClick={()=>{dispatch(actions.closeFormatter())}} subMenuId={'Close Formatter'}/> }
         </ul>
       </div>
     </div>
