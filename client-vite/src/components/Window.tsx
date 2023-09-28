@@ -56,7 +56,7 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyM' && dispatch(actions.mapAction({type: 'createMapInMapDialog', payload: null}))
     ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && dispatch(actions.mapAction({type: 'copyLR', payload: null}))
     ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && dispatch(actions.mapAction({type: 'copyS', payload: null}))
-    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && dispatch(actions.mapAction({type: 'cutLR', payload: null}))
+    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getRiL(m) > 0 && dispatch(actions.mapAction({type: 'cutLR', payload: null}))
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && dispatch(actions.mapAction({type: 'cutS', payload: null}))
     ckm === 'c--' && e.code === 'KeyZ' && dispatch(actions.mapAction({type: 'redo', payload: null}))
     ckm === 'c--' && e.code === 'KeyY' && dispatch(actions.mapAction({type: 'undo', payload: null}))
