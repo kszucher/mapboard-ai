@@ -18,12 +18,13 @@ export const getPathDir = (p: P) => p[3] ? -1 : 1
 export const getXF = (m: M): T => mT(m).find(ti => ti.selected)! as T
 export const getXL = (m: M): T => mT(m).findLast(ti => ti.selected)!
 export const getX = (m: M): T => mT(m).reduce((a, b) => a.selected > b.selected ? a : b)
+export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected)
 
 export const isDirR = (m: M) => getPathDir(getX(m).path) === 1
 export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 
-export const getLiL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) as number || -1
-export const getRiL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) as number
+export const getLiL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')!.path.at(1) as number || -1
+export const getRiL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')!.path.at(1) as number
 
 export const isG = (p: P): boolean => p.at(0) === 'g'
 export const isL = (p: P): boolean => p.at(0) === 'l'
@@ -112,7 +113,6 @@ export const getXSCO = (m: M): M => m.filter(ti => isSCO(getX(m).path, ti.path))
 export const getXSCR0 = (m: M): M => m.filter(ti => isSCR0(getX(m).path, ti.path))
 export const getXSCC0 = (m: M): M => m.filter(ti => isSCC0(getX(m).path, ti.path))
 export const getXSCYY = (m: M): T[] => m.filter(ti => isSCYY(getX(m).path, ti.path)) as T[]
-export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected)
 export const getTRD0SO = (m: M, t: T): T[] => m.filter(ti => isTRD0SO(t.path, ti.path)) as T[]
 export const getXRD0SO = (m: M): T[] => m.filter(ti => isTRD0SO(getX(m).path, ti.path)) as T[]
 export const getTRD1SO = (m: M, t: T): T[] => m.filter(ti => isTRD1SO(t.path, ti.path)) as T[]
@@ -178,7 +178,7 @@ export const getReselectS = (m: M): T => getCountXASU(m) ? getXFSU1(m) : (isXDS(
 export const getReselectCR = (m: M): M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXACD1(m) : [getXSI1(m)] as M )
 export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXACR1(m) : [getXSI1(m)] as M )
 
-export const lToCb = (m: M) => mL(m).filter(li => getNodeById(m, li.fromNodeId)?.selected && getNodeById(m, li.toNodeId)?.selected).map((li, i) => ({...li, path: ['l', i]})) as M
+export const lToCb = (m: M) => mL(m).filter(li => getNodeById(m, li.fromNodeId).selected && getNodeById(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]})) as M
 export const rToCb = (m: M) => getXA(m).map(el => el.path.at(1)).map(ri => m.filter(ti => isEqual(ti.path.slice(0, 2), ['r', ri]))).map((m, i) => mT(m).map(ti => ({...ti, path: ['r', i, ...ti.path.slice(2)]}))).flat() as M
 export const sToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['s', (ti.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...ti.path.slice(getX(m).path.length)]})) as M
 export const crToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', (ti.path.at(getX(m).path.length - 2) as number) - getCountXCU(m), ti.path.at(getX(m).path.length - 1), ...ti.path.slice(getX(m).path.length)]})) as M
