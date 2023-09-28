@@ -117,11 +117,11 @@ export const getTRD0SO = (m: M, t: T): T[] => m.filter(ti => isTRD0SO(t.path, ti
 export const getXRD0SO = (m: M): T[] => m.filter(ti => isTRD0SO(getX(m).path, ti.path)) as T[]
 export const getTRD1SO = (m: M, t: T): T[] => m.filter(ti => isTRD1SO(t.path, ti.path)) as T[]
 export const getXRD1SO = (m: M): T[] => m.filter(ti => isTRD1SO(getX(m).path, ti.path)) as T[]
-export const getXAEO = (m: M): T[] => m.filter(ti => getXA(m).some(xti => isSEO(xti.path, ti.path))) as T[]
-export const getXACD1 = (m: M): T[] => m.filter(ti => getXA(m).some(xti => isCD1(xti.path, ti.path))) as T[]
-export const getXACU1 = (m: M): T[] => m.filter(ti => getXA(m).some(xti => isCU1(xti.path, ti.path))) as T[]
-export const getXACR1 = (m: M): T[] => m.filter(ti => getXA(m).some(xti => isCR1(xti.path, ti.path))) as T[]
-export const getXACL1 = (m: M): T[] => m.filter(ti => getXA(m).some(xti => isCL1(xti.path, ti.path))) as T[]
+export const getXAEO = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isSEO(xti.path, ti.path))) as T[]}
+export const getXACD1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCD1(xti.path, ti.path))) as T[]}
+export const getXACU1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCU1(xti.path, ti.path))) as T[]}
+export const getXACR1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCR1(xti.path, ti.path))) as T[]}
+export const getXACL1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCL1(xti.path, ti.path))) as T[]}
 
 const getCountSD = (m: M, p: P): number => m.filter(ti => isSD(p, ti.path)).length
 const getCountSU = (m: M, p: P): number => m.filter(ti => isSU(p, ti.path)).length
