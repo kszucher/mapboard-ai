@@ -2,7 +2,7 @@ import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getNodeById, g
 import {M, T, P, L} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
-import {deleteCC, deleteCR, deleteR, deleteS} from "./MapDelete"
+import {deleteCC, deleteCR, deleteLR, deleteS} from "./MapDelete"
 import {insertTable} from "./MapInsert"
 import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
@@ -29,7 +29,7 @@ export const cutLR = (m: M) => {
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
   cbSave([...cbL, cbR])
-  deleteR(m)
+  deleteLR(m)
   selectNode(m, reselect, 's')
 }
 

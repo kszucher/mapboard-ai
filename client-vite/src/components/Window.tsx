@@ -41,7 +41,7 @@ export const Window: FC = () => {
     ckm === '---' && ['Insert','Tab'].includes(e.key) && isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
     ckm === '---' && ['Insert','Tab'].includes(e.key) && isXC(m) && dispatch(actions.mapAction({type: 'selectCO', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXS(m) && dispatch(actions.mapAction({type: 'deleteS', payload: null}))
-    ckm === '---' && e.key === 'Delete' && isXR(m) && getRiL(m) > 0 && dispatch(actions.mapAction({type: 'deleteR', payload: null}))
+    ckm === '---' && e.key === 'Delete' && isXR(m) && getRiL(m) > 0 && dispatch(actions.mapAction({type: 'deleteLR', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXACR(m) && dispatch(actions.mapAction({type: 'deleteCR', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXACC(m) && dispatch(actions.mapAction({type: 'deleteCC', payload: null}))
     ckm === '---' && e.code === 'Space' && isXS(m) && getCountXCO1(m) > 0 && dispatch(actions.mapAction({type: 'selectCFF', payload: null}))

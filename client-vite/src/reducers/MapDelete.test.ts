@@ -12,7 +12,7 @@ const testFlow = (test: MPartial, result: MPartial, type: string, payload: objec
 
 describe("Delete_tests", () => {
 
-  test('deleteR', () => testFlow([
+  test('deleteLR', () => testFlow([
     {nodeId: 'a', path: ['g']},
     {nodeId: 'b', path: ['l', 0], fromNodeId: 'e', toNodeId: 'h'},
     {nodeId: 'c', path: ['l', 1], fromNodeId: 'e', toNodeId: 'k'},
@@ -35,7 +35,7 @@ describe("Delete_tests", () => {
     {nodeId: 'k', path: ['r', 1]},
     {nodeId: 'l', path: ['r', 1, 'd', 0]},
     {nodeId: 'm', path: ['r', 1, 'd', 0, 's', 0]},
-  ] as MPartial, 'deleteR', {}))
+  ] as MPartial, 'deleteLR', {}))
 
   test('deleteS', () => testFlow([
     {nodeId: 'a', path: ['g']},

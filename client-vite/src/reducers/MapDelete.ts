@@ -13,7 +13,7 @@ export const deleteL = (m: M, l: L) => {
   )
 }
 
-export const deleteR = (m: M) => {
+export const deleteLR = (m: M) => {
   const xa = getXA(m)
   m.splice(0, m.length, ...[
       ...mG(m),
@@ -79,9 +79,9 @@ export const deleteCC = (m: M) => {
   )
 }
 
-export const deleteReselectR = (m: M) => {
+export const deleteReselectLR = (m: M) => {
   const reselect = getReselectR(m).nodeId
-  deleteR(m)
+  deleteLR(m)
   selectNode(m, getNodeById(m, reselect), 's')
 }
 
