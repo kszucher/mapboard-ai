@@ -45,9 +45,9 @@ export const mapMeasure = (pm: M, m: M) => {
   })
   mG(m).forEach(g => {
     getRL(m).forEach(r => {
-      const nr = getTR(m, r) as T
-      const nrd0 = getTRD0(m, r) as T
-      const nrd1 = getTRD1(m, r) as T
+      const nr = getTR(m, r)
+      const nrd0 = getTRD0(m, r)
+      const nrd1 = getTRD1(m, r)
       const wr = nr.offsetW + nr.selfW + nrd0.familyW + getTaskWidth(g) * hasTaskRight(m, r)
       const wl = nr.offsetW - nrd1.familyW - getTaskWidth(g) * hasTaskLeft(m, r)
       if ((nr.offsetH + nrd0.familyH / 2) > g.maxD) {g.maxD = nr.offsetH + nrd0.familyH / 2}

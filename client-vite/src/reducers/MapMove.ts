@@ -1,5 +1,5 @@
 import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
-import {M, T, P} from "../state/MapStateTypes"
+import {M, T, P, L} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
 import {deleteCC, deleteCR, deleteR, deleteS} from "./MapDelete"
@@ -54,7 +54,7 @@ export const copyS = (m: M) => {
   cbSave(cbDeInit)
 }
 
-const cbToLR = (m: M, cbL: M, cbR: M, ipL: P, ipR: P) => {
+const cbToLR = (m: M, cbL: L[], cbR: M, ipL: P, ipR: P) => {
   const nodeIdMappingR = cbR.map((t, i) => ({
     oldNodeId: t.nodeId,
     newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)
@@ -104,7 +104,7 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
 export const duplicateR = (m: M) => {
   const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as P
   const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as P
-  const cbL = structuredClone(lToCb(m))
+  const cbL = structuredClone(lToCb(m)) as L[]
   const cbR = structuredClone(rToCb(m))
   cbToLR(m, cbL, cbR, ipL, ipR)
 }

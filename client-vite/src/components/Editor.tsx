@@ -5,7 +5,6 @@ import {RootState} from "../reducers/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {MenuFrames} from "./MenuFrames"
-import {ModalCreateTemplate} from "./ModalCreateTemplate"
 import {ModalEditContentMermaid} from "./ModalEditContentMermaid"
 import {ModalEditNote} from "./ModalEditNote"
 import {ModalCreateTable} from './ModalCreateTable'
@@ -71,7 +70,6 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_EDIT_NOTE && <ModalEditNote/>}
       {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <ModalEditContentMermaid/>}
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
-      {pageState === PageState.WS_CREATE_TEMPLATE && <ModalCreateTemplate/>}
       {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
       {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
       {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}

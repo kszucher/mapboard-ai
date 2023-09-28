@@ -1,4 +1,4 @@
-import {M, N, P, T} from "../state/MapStateTypes"
+import {M, P, T} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
 import {getCountTSO1, getNodeByPath, sortPath, mT, isSEO, getTR, getSIPL, getTRD0SO, getTRD1SO} from "./MapSelector"
 
@@ -42,7 +42,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
       if (moveInsertParentNodeNSO1) {
         moveTargetIndex = moveInsertParentNodeNSO1
         for (let i = moveInsertParentNodeNSO1 - 1; i > -1; i--) {
-          const currMoveTargetNodeChild = getNodeByPath(m, [...moveInsertParentNode.path, 's', i]) as N
+          const currMoveTargetNodeChild = getNodeByPath(m, [...moveInsertParentNode.path, 's', i])
           if (toY < currMoveTargetNodeChild.nodeY) {
             moveTargetIndex = i
           }

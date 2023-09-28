@@ -2,30 +2,8 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {nodeApi} from "../apis/NodeApi";
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import {Templates} from "../reducers/MapInsertTemplates";
 import {generateLlmInfo, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
-import {
-  getCountXASD,
-  getCountXASU,
-  getCountXCO1,
-  getCountXRD0S,
-  getCountXRD1S,
-  getCountXSO1,
-  getCountXSO2,
-  getG,
-  getR0,
-  getX,
-  getXAEO,
-  getXRD0,
-  getXRD1,
-  isDirL,
-  isDirR,
-  isXASVN,
-  isXD,
-  isXDS,
-  isXR,
-  isXS
-} from "../selectors/MapSelector"
+import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../selectors/MapSelector"
 import {mSelector} from "../state/EditorState"
 import {ControlTypes, PageState} from "../state/Enums"
 import {getMapId} from "../state/NodeApiState"
@@ -63,16 +41,6 @@ export const ContextMenu: FC = () => {
               <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
                 { mExists && !connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.showConnectionHelpers())}}>{'Show Helpers'}</a></li> }
                 { mExists && connectionHelpersVisible && <li><a className={menuClassName} onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Helpers'}</a></li> }
-              </ul>
-            </div>
-          </li>
-          <li>
-            <button id="doubleDropdownButton" data-dropdown-toggle="templatesSubMenu" data-dropdown-placement="right-start" type="button" className={menuButtonClassName}>Templates{MenuButtonSvg}</button>
-            <div id="templatesSubMenu" className={subMenuClassName}>
-              <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
-                { mExists && Object.values(Templates).map((el, idx) => (
-                  <li key={idx}><a className={menuClassName} onClick={()=>{dispatch(actions.mapAction({type: 'insertTemplateRR', payload: {template: el}}))}}>{el}</a></li>
-                ))}
               </ul>
             </div>
           </li>

@@ -1,5 +1,4 @@
 import {N, LPartial, M, T, P} from "../state/MapStateTypes"
-import {getInsertTemplate} from "./MapInsertTemplates"
 import {unselectNodes} from "./MapSelect"
 import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLiL, mT} from "../selectors/MapSelector"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
@@ -9,12 +8,12 @@ export const insertL = (m: M, lPartial: LPartial) => {
   m.push({...lPartial, nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['l', getLiL(m) + 1]} as N)
 }
 
-export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
-  unselectNodes(m)
-  const template = getInsertTemplate(templateId, ri, offsetW, offsetH)
-  m.push(...template)
-  m.sort(sortPath)
-}
+// export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
+//   unselectNodes(m)
+//   const template = getInsertTemplate(templateId, ri, offsetW, offsetH)
+//   m.push(...template)
+//   m.sort(sortPath)
+// }
 
 export const insertR = (m: M) => {
 
