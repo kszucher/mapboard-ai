@@ -138,14 +138,32 @@ export const Window: FC = () => {
           if (type === 'text/plain') {
             navigator.clipboard.readText()
               .then(text => {
-                !text.startsWith('[') && isXR(m) && dispatch(actions.mapAction({type: 'insertSORText', payload: text}))
-                !text.startsWith('[') && isXS(m) && dispatch(actions.mapAction({type: 'insertSOText', payload: text}))
-                text.startsWith('[') && isXR(m) && dispatch(actions.mapAction({type: 'pasteSOR', payload: text}))
-                text.startsWith('[') && isXS(m) && dispatch(actions.mapAction({type: 'pasteSO', payload: text}))
-                text.startsWith('\\[') && isXR(m) && dispatch(actions.mapAction({type: 'insertSOREquation', payload: text}))
-                text.startsWith('\\[') && isXS(m) && dispatch(actions.mapAction({type: 'insertSOEquation', payload: text}))
-                isUrl(text) && isXR(m) && dispatch(actions.mapAction({type: 'insertSORLink', payload: text}))
-                isUrl(text) && isXS(m) && dispatch(actions.mapAction({type: 'insertSOLink', payload: text}))
+                let isValidJson = true
+                try { JSON.parse(text) } catch { isValidJson = false }
+                if (isValidJson) {
+                  let mapJson = JSON.parse(text)
+                  let isValidMap = Array.isArray(mapJson) && mapJson.every(el =>
+                    el.hasOwnProperty('path') && Array.isArray(el.path) &&
+                    el.hasOwnProperty('nodeId') && typeof el.nodeId === 'string'
+                  )
+                  if (isValidMap) {
+                    isXR(m) && dispatch(actions.mapAction({type: 'pasteSOR', payload: text}))
+                    isXS(m) && dispatch(actions.mapAction({type: 'pasteSO', payload: text}))
+                  } else {
+                    window.alert('invalid map')
+                  }
+                } else {
+                  if (text.startsWith('\\[')) {
+                    isXR(m) && dispatch(actions.mapAction({type: 'insertSOREquation', payload: text}))
+                    isXS(m) && dispatch(actions.mapAction({type: 'insertSOEquation', payload: text}))
+                  } else if (isUrl(text)) {
+                    isUrl(text) && isXR(m) && dispatch(actions.mapAction({type: 'insertSORLink', payload: text}))
+                    isUrl(text) && isXS(m) && dispatch(actions.mapAction({type: 'insertSOLink', payload: text}))
+                  } else {
+                    isXR(m) && dispatch(actions.mapAction({type: 'insertSORText', payload: text}))
+                    isXS(m) && dispatch(actions.mapAction({type: 'insertSOText', payload: text}))
+                  }
+                }
               })
           } else if (type === 'image/png') {
             item[0].getType('image/png').then(image => {
