@@ -55,8 +55,8 @@ export const copyS = (m: M) => {
 }
 
 const cbToLR = (m: M, cbL: L[], cbR: M, ipL: P, ipR: P) => {
-  const nodeIdMappingR = cbR.map((t, i) => ({
-    oldNodeId: t.nodeId,
+  const nodeIdMappingR = cbR.map((ti, i) => ({
+    oldNodeId: ti.nodeId,
     newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)
   }))
   cbL.forEach((l, i) => Object.assign(l, {
@@ -65,9 +65,9 @@ const cbToLR = (m: M, cbL: L[], cbR: M, ipL: P, ipR: P) => {
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === l.fromNodeId)?.newNodeId || l.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === l.toNodeId)?.newNodeId || l.nodeId
   }))
-  cbR.forEach((t, i) => Object.assign(t, {
+  cbR.forEach((ti, i) => Object.assign(ti, {
     nodeId: nodeIdMappingR[i].newNodeId,
-    path: ['r', (t.path.at(1) as number) + (ipR.at(-1) as number), ...t.path.slice(2)],
+    path: ['r', (ti.path.at(1) as number) + (ipR.at(-1) as number), ...ti.path.slice(2)],
     // TODO: assign offset
   }))
   unselectNodes(m)
@@ -76,9 +76,9 @@ const cbToLR = (m: M, cbL: L[], cbR: M, ipL: P, ipR: P) => {
 }
 
 const cbToS = (m: M, cbS: M, ip: P) => {
-  cbS.forEach((t, i) => Object.assign(t, {
+  cbS.forEach((ti, i) => Object.assign(ti, {
     nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8),
-    path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]
+    path : [...ip.slice(0, -2), 's', (ti.path.at(1) as number) + (ip.at(-1) as number), ...ti.path.slice(2)]
   }))
   makeSpaceFromS(m, ip, getXA(cbS).length)
   unselectNodes(m)
@@ -120,8 +120,8 @@ export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
   const cbS = structuredClone(sToCb(m))
   deleteS(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 's', insertTargetIndex] as P
-  cbS.forEach((t, i) => Object.assign(t, {
-    path : [...ip.slice(0, -2), 's', (t.path.at(1) as number) + (ip.at(-1) as number), ...t.path.slice(2)]
+  cbS.forEach((ti, i) => Object.assign(ti, {
+    path : [...ip.slice(0, -2), 's', (ti.path.at(1) as number) + (ip.at(-1) as number), ...ti.path.slice(2)]
   }))
   makeSpaceFromS(m, ip, getXA(cbS).length)
   m.push(...cbS)
@@ -134,8 +134,8 @@ export const moveCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) 
   deleteCR(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 'c', insertTargetRowIndex, 0] as P
   const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
-  cbCr.forEach(t => Object.assign(t, {
-    path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number) + (ip.at(-2) as number), (t.path.at(2) as number), ...t.path.slice(3)]
+  cbCr.forEach(ti => Object.assign(ti, {
+    path: [...ip.slice(0, -3), 'c', (ti.path.at(1) as number) + (ip.at(-2) as number), (ti.path.at(2) as number), ...ti.path.slice(3)]
   }))
   makeSpaceFromCr(m, ipList, 1)
   m.push(...cbCr)
@@ -148,8 +148,8 @@ export const moveCC = (m: M, insertParentNode: T, insertTargetColumnIndex: numbe
   deleteCC(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 'c', 0, insertTargetColumnIndex] as P
   const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
-  cbCc.forEach(t => Object.assign(t, {
-    path: [...ip.slice(0, -3), 'c', (t.path.at(1) as number), (t.path.at(2) as number) + (ip.at(-1) as number), ...t.path.slice(3)]
+  cbCc.forEach(ti => Object.assign(ti, {
+    path: [...ip.slice(0, -3), 'c', (ti.path.at(1) as number), (ti.path.at(2) as number) + (ip.at(-1) as number), ...ti.path.slice(3)]
   }))
   makeSpaceFromCc(m, ipList, 1)
   m.push(...cbCc)
@@ -161,9 +161,9 @@ export const moveS2T = (m: M, insertParentNode: T, moveNodes: T[]) => {
   selectNodeList(m, moveNodes, 's')
   const cbS = structuredClone(sToCb(m))
   deleteS(m)
-  cbS.forEach(t => Object.assign(t, {
+  cbS.forEach(ti => Object.assign(ti, {
     selected: 0,
-    path: [...getNodeById(m, insertParentNodeId).path, 's', 0, 'c', t.path.at(1), 0, 's', 0, ...t.path.slice(2)] as P
+    path: [...getNodeById(m, insertParentNodeId).path, 's', 0, 'c', ti.path.at(1), 0, 's', 0, ...ti.path.slice(2)] as P
   }))
   insertTable(m, insertParentNode, 0, {rowLen: moveNodes.length, colLen: 1})
   m.push(...cbS)

@@ -48,42 +48,42 @@ export const MapDiv: FC = () => {
 
   return (
     <>
-      {mT(m).map((t: T) => (
-        <Fragment key={t.nodeId}>
+      {mT(m).map(ti => (
+        <Fragment key={ti.nodeId}>
           {
-            (isR(t.path) || isS(t.path)) &&
+            (isR(ti.path) || isS(ti.path)) &&
             <div
-              id={t.nodeId}
+              id={ti.nodeId}
               ref={ref => ref && ref.focus()}
-              className={t.contentType === 'mermaid' ? 'mermaidNode' : ''}
+              className={ti.contentType === 'mermaid' ? 'mermaidNode' : ''}
               style={{
-                left: adjust(t.nodeStartX),
-                top: adjust( t.nodeY - t.selfH / 2),
-                minWidth: t.contentType === 'mermaid' ? 'inherit' : t.selfW + (g.density === 'large'? -10 : -8),
-                minHeight: t.contentType === 'mermaid' ? 'inherit' : t.selfH + (g.density === 'large'? -10 : 0),
+                left: adjust(ti.nodeStartX),
+                top: adjust( ti.nodeY - ti.selfH / 2),
+                minWidth: ti.contentType === 'mermaid' ? 'inherit' : ti.selfW + (g.density === 'large'? -10 : -8),
+                minHeight: ti.contentType === 'mermaid' ? 'inherit' : ti.selfH + (g.density === 'large'? -10 : 0),
                 paddingLeft: g.density === 'large'? 8 : 8,
                 paddingTop: g.density === 'large'? 4 : 2,
                 position: 'absolute',
-                fontSize: t.textFontSize,
+                fontSize: ti.textFontSize,
                 fontFamily: 'Roboto',
-                textDecoration: t.linkType.length ? "underline" : "",
-                cursor: t.linkType !== '' ? 'pointer' : 'default',
-                color: t.blur ? 'transparent' : (t.textColor === 'default' ? C.TEXT_COLOR : t.textColor),
+                textDecoration: ti.linkType.length ? "underline" : "",
+                cursor: ti.linkType !== '' ? 'pointer' : 'default',
+                color: ti.blur ? 'transparent' : (ti.textColor === 'default' ? C.TEXT_COLOR : ti.textColor),
                 transition: 'all 0.3s',
                 transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 userSelect: 'none',
-                zIndex: t.path.length,
+                zIndex: ti.path.length,
                 border: 0,
                 margin: 0,
-                textShadow: t.blur? '#FFF 0 0 8px' : '',
-                // pointerEvents: t.selected && getCountNCO1(m, t) > 0 ? 'none' : 'auto'
+                textShadow: ti.blur? '#FFF 0 0 8px' : '',
+                // pointerEvents: ti.selected && getCountNCO1(m, ti) > 0 ? 'none' : 'auto'
               }}
               spellCheck={false}
-              dangerouslySetInnerHTML={t.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(t) }}
-              contentEditable={t.nodeId === editedNodeId}
+              dangerouslySetInnerHTML={ti.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(ti) }}
+              contentEditable={ti.nodeId === editedNodeId}
               onFocus={(e) => {
                 if (editType === 'append') {
                   e.currentTarget.innerHTML = getNodeById(m, editedNodeId).content
@@ -91,50 +91,50 @@ export const MapDiv: FC = () => {
                 setEndOfContentEditable(e.currentTarget)
               }}
               onBlur={(e) => {
-                dispatch(actions.mapAction({type: 'finishEdit', payload: {path: t.path, content: e.currentTarget.innerHTML}}))
+                dispatch(actions.mapAction({type: 'finishEdit', payload: {path: ti.path, content: e.currentTarget.innerHTML}}))
               }}
               onMouseDown={(e) => {
                 e.stopPropagation()
                 dispatch(actions.closeContextMenu())
                 if (e.button === 0) {
-                  if (t.linkType === 'internal') {
-                    dispatch(nodeApi.endpoints.selectMap.initiate({mapId: t.link, frameId: ''}))
-                  } else if (t.linkType === 'external') {
-                    window.open(t.link, '_blank')
+                  if (ti.linkType === 'internal') {
+                    dispatch(nodeApi.endpoints.selectMap.initiate({mapId: ti.link, frameId: ''}))
+                  } else if (ti.linkType === 'external') {
+                    window.open(ti.link, '_blank')
                     window.focus()
                   } else {
-                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectNS', payload: {path: t.path}}))
-                    e.ctrlKey && dispatch(actions.mapAction({type: 'selectStoo', payload: {path: t.path}}))
+                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectNS', payload: {path: ti.path}}))
+                    e.ctrlKey && dispatch(actions.mapAction({type: 'selectStoo', payload: {path: ti.path}}))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      !isXR(m) && dispatch(actions.mapAction({type: 'simulateDrag', payload: {t, e}}))
+                      !isXR(m) && dispatch(actions.mapAction({type: 'simulateDrag', payload: {ti, e}}))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {t, e}}))
+                      !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {ti, e}}))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  if((isTS(t) && !t.selected || isTR(t) && !getTRD0(m, t).selected && !getTRD1(m, t).selected)) {
-                    dispatch(actions.mapAction({type: 'selectNS', payload: {path: t.path}}))
+                  if((isTS(ti) && !ti.selected || isTR(ti) && !getTRD0(m, ti).selected && !getTRD1(m, ti).selected)) {
+                    dispatch(actions.mapAction({type: 'selectNS', payload: {path: ti.path}}))
                   }
                   dispatch(actions.openContextMenu({type: 'node', position: {x: e.clientX, y: e.clientY}}))
                 }
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation();
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountTCO1(m, t) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}));
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountTCO1(m, t) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID));
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}));
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountTCO1(m, ti) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID));
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
                 if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
-                  dispatch(actions.mapAction({type: 'finishEdit', payload: {path: t.path, content: e.currentTarget.innerHTML}}))
+                  dispatch(actions.mapAction({type: 'finishEdit', payload: {path: ti.path, content: e.currentTarget.innerHTML}}))
                 }
                 if (['Insert','Tab'].includes(e.key)) {
                   isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))

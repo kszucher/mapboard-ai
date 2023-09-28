@@ -86,7 +86,7 @@ export const MapSvg: FC = () => {
           if (didMove) {
             if (e.button === 0) {
               const nList = mapFindIntersecting(m, fromX, fromY, toX, toY)
-              nList.length && dispatch(actions.mapAction({type: 'selectDragged', payload: {pathList: nList.map(t => t.path)}}))
+              nList.length && dispatch(actions.mapAction({type: 'selectDragged', payload: {pathList: nList.map(ti => ti.path)}}))
               dispatch(actions.setSelectionRectCoords([]))
               dispatch(actions.setIntersectingNodes([]))
             }

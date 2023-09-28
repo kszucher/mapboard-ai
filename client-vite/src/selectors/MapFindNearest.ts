@@ -18,19 +18,19 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
     const belowRoot = toY < nr.nodeY
     const overlap = 6
     const stuff = [...getTRD0SO(mT(m), moveNode), ...getTRD1SO(mT(m), moveNode)]
-    stuff.forEach(t => {
-      if (!isSEO(moveNode.path, t.path)) {
+    stuff.forEach(ti => {
+      if (!isSEO(moveNode.path, ti.path)) {
         let vCondition
-        if (t.isTop && belowRoot) {
-          vCondition = toY < (t.nodeY + t.maxH / 2 + overlap)
-        } else if (t.isBottom && aboveRoot) {
-          vCondition = toY > (t.nodeY - t.maxH / 2 - overlap)
+        if (ti.isTop && belowRoot) {
+          vCondition = toY < (ti.nodeY + ti.maxH / 2 + overlap)
+        } else if (ti.isBottom && aboveRoot) {
+          vCondition = toY > (ti.nodeY - ti.maxH / 2 - overlap)
         } else {
-          vCondition = Math.abs(toY - t.nodeY) <= t.maxH / 2 + overlap
+          vCondition = Math.abs(toY - ti.nodeY) <= ti.maxH / 2 + overlap
         }
-        let hCondition = (t.path[3] === 0 && toX > t.nodeEndX) || (t.path[3] === 1 && toX < t.nodeStartX)
+        let hCondition = (ti.path[3] === 0 && toX > ti.nodeEndX) || (ti.path[3] === 1 && toX < ti.nodeStartX)
         if (vCondition && hCondition ) {
-          moveInsertParentNode = t
+          moveInsertParentNode = ti
         }
       }
     })

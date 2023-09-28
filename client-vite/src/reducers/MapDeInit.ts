@@ -18,29 +18,29 @@ export const mapDeInit = (m: M) => {
       }
     }
   })
-  mL(mlRemoved as M).forEach(l => {
-    for (const prop in l) {
+  mL(mlRemoved as M).forEach(li => {
+    for (const prop in li) {
       if (lSaveAlways.hasOwnProperty(prop)) {
         // do nothing
       } else if (lSaveOptional.hasOwnProperty(prop)) {
-        if (isEqual(l[prop as keyof LSaveOptional], lSaveOptional[prop as keyof LSaveOptional])) {
-          delete l[prop as keyof LSaveOptional]
+        if (isEqual(li[prop as keyof LSaveOptional], lSaveOptional[prop as keyof LSaveOptional])) {
+          delete li[prop as keyof LSaveOptional]
         }
       } else {
-        delete l[prop as keyof LSaveNever]
+        delete li[prop as keyof LSaveNever]
       }
     }
   })
-  mT(mlRemoved as M).forEach(t => {
-    for (const prop in t) {
+  mT(mlRemoved as M).forEach(ti => {
+    for (const prop in ti) {
       if (tSaveAlways.hasOwnProperty(prop)) {
         // do nothing
       } else if (tSaveOptional.hasOwnProperty(prop)) {
-        if (isEqual(t[prop as keyof TSaveOptional], tSaveOptional[prop as keyof TSaveOptional])) {
-          delete t[prop as keyof TSaveOptional]
+        if (isEqual(ti[prop as keyof TSaveOptional], tSaveOptional[prop as keyof TSaveOptional])) {
+          delete ti[prop as keyof TSaveOptional]
         }
       } else {
-        delete t[prop as keyof TSaveNever]
+        delete ti[prop as keyof TSaveNever]
       }
     }
   })

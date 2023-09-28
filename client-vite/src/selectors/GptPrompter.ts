@@ -5,45 +5,45 @@ import {GptData} from "../state/NodeApiStateTypes"
 export const generateLlmInfo = (m: M) => ({
   inputContext: [
     ...mL(m)
-      .filter(l => l.toNodeId === getX(m).nodeId)
-      .map(l => getNodeById(m, l.fromNodeId))
-      .map(t => ({
-        dataType: t.llmDataType,
-        dataId: t.llmDataId,
-        dataLabel: t.content,
-        data: t.llmDataType === 'text'
-          ? getTRD0SO(m, t).filter(t => getCountTSO1(m, t) === 0).map(t => ([...getSIPL(t.path), t.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
+      .filter(li => li.toNodeId === getX(m).nodeId)
+      .map(li => getNodeById(m, li.fromNodeId))
+      .map(ti => ({
+        dataType: ti.llmDataType,
+        dataId: ti.llmDataId,
+        dataLabel: ti.content,
+        data: ti.llmDataType === 'text'
+          ? getTRD0SO(m, ti).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ([...getSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
           : [[]]
       })),
     {
       dataType: 'text',
       dataId: '',
       dataLabel: getX(m).content,
-      data: getXRD0SO(m).filter(t => getCountTSO1(m, t) === 0).map(t => ([...getSIPL(t.path), t.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
+      data: getXRD0SO(m).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ([...getSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== '')))
     }
   ],
   outputContext: {
     dataType: 'text',
     dataId: '',
     dataLabel: getX(m).content,
-    data: getXRD0SO(m).filter(t => getCountTSO1(m, t) === 0).map(t => ([...getSIPL(t.path), t.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''))),
+    data: getXRD0SO(m).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ([...getSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''))),
     responseJsonSchema: getResponseSchema({keywords: {type: "array", readOnly: true}, suggestions: {type: "array"}, insertParentId: {type: "string", readOnly: true}}),
-    responseJson: getXRD0SO(m).filter(t => getCountTSO1(m, t) === 0).map(t => ({keywords: [...getSIPL(t.path), t.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''), suggestions: [], insertParentId: t.nodeId}))
+    responseJson: getXRD0SO(m).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ({keywords: [...getSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''), suggestions: [], insertParentId: ti.nodeId}))
   }
 })
 
 export const genPromptJsonS = (m: M) => {
-  return getXRD0SO(m).filter(t => getCountTSO1(m, t) === 0).map(t => ({
-    keywords: [...getSIPL(t.path), t.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''),
+  return getXRD0SO(m).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ({
+    keywords: [...getSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p)?.content || '').filter(el => el !== ''),
     suggestions: [],
-    insertParentId: t.nodeId
+    insertParentId: ti.nodeId
   }))
 }
 
 export const genPromptJsonT = (m: M) => {
   const mr = getXAEO(m).slice().sort(sortPath)
-  const rowHeader = getXSCR0(mr).map(t => getNodeByPath(mr, [...t.path, 's', 0])?.content || '')
-  const colHeader = getXSCC0(mr).map(t => getNodeByPath(mr, [...t.path, 's', 0])?.content || '')
+  const rowHeader = getXSCR0(mr).map(ti => getNodeByPath(mr, [...ti.path, 's', 0])?.content || '')
+  const colHeader = getXSCC0(mr).map(ti => getNodeByPath(mr, [...ti.path, 's', 0])?.content || '')
   return getXSCYY(mr).map((t: T) => ({
     keywords: [colHeader[0], colHeader[t.path.at(-2) as number], rowHeader[t.path.at(-1) as number]],
     suggestions: [],
