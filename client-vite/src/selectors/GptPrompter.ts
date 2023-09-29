@@ -45,7 +45,7 @@ export const genPromptJsonT = (m: M) => {
   const rowHeader = getXSCR0(mr).map(ti => getNodeByPath(mr, [...ti.path, 's', 0])?.content || '')
   const colHeader = getXSCC0(mr).map(ti => getNodeByPath(mr, [...ti.path, 's', 0])?.content || '')
   return getXSCYY(mr).map((t: T) => ({
-    keywords: [colHeader[0], colHeader[t.path.at(-2) as number], rowHeader[t.path.at(-1) as number]],
+    keywords: [colHeader[0], colHeader[t.path.at(-2)], rowHeader[t.path.at(-1)]],
     suggestions: [],
     insertParentId: t.nodeId
   }))

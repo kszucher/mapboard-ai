@@ -183,7 +183,7 @@ export const sToCb = (m: M): T[] => getXAEO(m).map(ti => ({...ti, path: ['s', ti
 export const crToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2) - getCountXCU(m), ti.path.at(getX(m).path.length - 1), ...ti.path.slice(getX(m).path.length)] as PT})) as M
 export const ccToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2), ti.path.at(getX(m).path.length - 1) - getCountXCL(m), ...ti.path.slice(getX(m).path.length)] as PT})) as M
 
-export const getEditedPath = (p: PT): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
+export const getEditedPath = (p: PT): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] : p
 export const getEditedNode = (m: M, p: PT): T => getNodeByPath(m, getEditedPath(p) as PT)
 
 export const getPropXA = (m: M, prop: keyof T) => isArrayOfEqualValues(getXA(m).map(ti => ti[prop])) ? getX(m)[prop] : null

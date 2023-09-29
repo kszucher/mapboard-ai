@@ -47,13 +47,13 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
             moveTargetIndex = i
           }
         }
-        if (isEqual(moveInsertParentNode.path, getSIPL(moveNode.path).at(-1) as P) && (moveNode.path.at(-1) as number) < moveTargetIndex) {
+        if (isEqual(moveInsertParentNode.path, getSIPL(moveNode.path).at(-1)) && moveNode.path.at(-1) < moveTargetIndex) {
           moveTargetIndex -= 1
         }
       }
     }
   }
-  if (isEqual(moveInsertParentNode.path, getSIPL(moveNode.path).at(-1) as P) && moveNode.path.at(-1) === moveTargetIndex) {
+  if (isEqual(moveInsertParentNode.path, getSIPL(moveNode.path).at(-1)) && moveNode.path.at(-1) === moveTargetIndex) {
     moveInsertParentNode = {} as T
     moveTargetIndex = 0
     moveCoords = []

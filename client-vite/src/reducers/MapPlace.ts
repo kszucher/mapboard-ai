@@ -24,7 +24,7 @@ export const mapPlace = (m: M) => {
       case isS(ti.path): {
         const g = getG(m)
         const p1 = getTSI1(m, ti)
-        const i = ti.path.at(-1) as number
+        const i = ti.path.at(-1)
         const sumUpperSiblingMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * + Boolean(getCountTSO2(m, p1) || getCountTCO2(m, p1))
         if (getPathPattern(ti.path).endsWith('ds') || getPathPattern(ti.path).endsWith('ss')) {
@@ -43,8 +43,8 @@ export const mapPlace = (m: M) => {
         const g = getG(m)
         const p1 = getTSI1(m, ti) as T
         const p2 = getTSI2(m, ti) as T
-        const i = ti.path.at(-2) as number
-        const j = ti.path.at(-1) as number
+        const i = ti.path.at(-2)
+        const j = ti.path.at(-1)
         if (getPathPattern(ti.path).endsWith('dsc') || getPathPattern(ti.path).endsWith('ssc')) {
           ti.nodeStartX = getPathDir(ti.path) === 1
             ? p2.nodeEndX + g.sLineDeltaXDefault + p1.sumMaxColWidth[j]
