@@ -59,7 +59,7 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   }))
   cbL.forEach((li, i) => Object.assign(li, {
     nodeId: IS_TESTING ? generateCharacterFrom('r', i) : 'node' + genHash(8),
-    path : ['l', li.path[1] + ipL[1]], // this should work with .at() also, but I have a TS error
+    path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
   }))
@@ -85,8 +85,8 @@ const cbToS = (m: M, cbS: M, ip: PT) => {
 }
 
 export const pasteLR = (m: M, payload: any) => {
-  const ipL = ['l', mL(m).at(-1)!.path[1] + 1] as PL
-  const ipR = ['r', mT(m).at(-1)!.path[1] + 1] as PTR
+  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
+  const ipR = ['r', mT(m).at(-1)!.path.at(1) + 1] as PTR
   const cbLR = JSON.parse(payload) as M
   const cbL = mL(cbLR)
   const cbR = mT(cbLR)
@@ -100,8 +100,8 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
 }
 
 export const duplicateR = (m: M) => {
-  const ipL = ['l', mL(m).at(-1)!.path[1] + 1] as PL
-  const ipR = ['r', mT(m).at(-1)!.path[1] + 1] as PTR
+  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
+  const ipR = ['r', mT(m).at(-1)!.path.at(1) + 1] as PTR
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
   cbToLR(m, cbL, cbR, ipL, ipR)
