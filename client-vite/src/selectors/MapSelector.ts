@@ -23,8 +23,8 @@ export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected) as T[]
 export const isDirR = (m: M) => getPathDir(getX(m).path) === 1
 export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
 
-export const getLiL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')!.path.at(1) as number || -1
-export const getRiL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')!.path.at(1) as number
+export const getLiL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')!.path.at(1) || -1
+export const getRiL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')!.path.at(1)
 
 export const isG = (p: P): boolean => p.at(0) === 'g'
 export const isL = (p: P): boolean => p.at(0) === 'l'

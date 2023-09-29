@@ -7,7 +7,7 @@ export const selectNode = (m: M, ti: T, selection: 's' | 'f') => {
   unselectNodes(m)
   Object.assign(ti, {selected: 1, selection})
   if (!isR(ti.path)) {
-    getTSI1(m, ti).lastSelectedChild = ti.path.at(-1) as number
+    getTSI1(m, ti).lastSelectedChild = ti.path.at(-1)
   }
 }
 

@@ -44,7 +44,7 @@ export const insertCC = (m: M, insertParentNode: T, insertTargetColumnIndex: num
 export const insertTable = (m: M, insertParentNode: T, insertTargetIndex: number, payload: {rowLen: number, colLen: number}) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PT
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
-  mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) as number + 1))
+  mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + 1))
   unselectNodes(m)
   m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip} as N)
   m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8), path: [...ip, 'c', ...el]} as N)))

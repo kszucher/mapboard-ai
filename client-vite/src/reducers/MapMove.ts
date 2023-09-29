@@ -85,8 +85,8 @@ const cbToS = (m: M, cbS: M, ip: PT) => {
 }
 
 export const pasteLR = (m: M, payload: any) => {
-  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
-  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as PTR
+  const ipL = ['l', mL(m).at(-1)!.path[1] + 1] as PL
+  const ipR = ['r', mT(m).at(-1)!.path[1] + 1] as PTR
   const cbLR = JSON.parse(payload) as M
   const cbL = mL(cbLR)
   const cbR = mT(cbLR)
@@ -100,8 +100,8 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
 }
 
 export const duplicateR = (m: M) => {
-  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
-  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as PTR
+  const ipL = ['l', mL(m).at(-1)!.path[1] + 1] as PL
+  const ipR = ['r', mT(m).at(-1)!.path[1] + 1] as PTR
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
   cbToLR(m, cbL, cbR, ipL, ipR)
@@ -119,7 +119,7 @@ export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
   deleteS(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 's', insertTargetIndex] as PT
   cbS.forEach((ti, i) => Object.assign(ti, {
-    path : [...ip.slice(0, -2), 's', (ti.path.at(1) as number) + (ip.at(-1) as number), ...ti.path.slice(2)]
+    path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)]
   }))
   makeSpaceFromS(m, ip, getXA(cbS).length)
   m.push(...cbS)
@@ -133,7 +133,7 @@ export const moveCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) 
   const ip = [...getNodeById(m, insertParentNodeId).path, 'c', insertTargetRowIndex, 0] as PT
   const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as PT)
   cbCr.forEach(ti => Object.assign(ti, {
-    path: [...ip.slice(0, -3), 'c', (ti.path.at(1) as number) + (ip.at(-2) as number), (ti.path.at(2) as number), ...ti.path.slice(3)]
+    path: [...ip.slice(0, -3), 'c', ti.path.at(1) + ip.at(-2), ti.path.at(2), ...ti.path.slice(3)]
   }))
   makeSpaceFromCr(m, ipList, 1)
   m.push(...cbCr)
@@ -147,7 +147,7 @@ export const moveCC = (m: M, insertParentNode: T, insertTargetColumnIndex: numbe
   const ip = [...getNodeById(m, insertParentNodeId).path, 'c', 0, insertTargetColumnIndex] as PT
   const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as PT)
   cbCc.forEach(ti => Object.assign(ti, {
-    path: [...ip.slice(0, -3), 'c', (ti.path.at(1) as number), (ti.path.at(2) as number) + (ip.at(-1) as number), ...ti.path.slice(3)]
+    path: [...ip.slice(0, -3), 'c', ti.path.at(1), ti.path.at(2) + ip.at(-1), ...ti.path.slice(3)]
   }))
   makeSpaceFromCc(m, ipList, 1)
   m.push(...cbCc)

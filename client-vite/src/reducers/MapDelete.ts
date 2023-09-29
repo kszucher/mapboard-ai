@@ -25,7 +25,7 @@ export const deleteLR = (m: M) => {
       ...mT(m)
         .filter(ti => xa.every(xti => !isSEO(xti.path, ti.path)))
         .map(ti => xa.some(xti => isRDO(xti.path, ti.path))
-          ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 1), ti.path.at(getX(m).path.length - 1) as number - 1, ...ti.path.slice(getX(m).path.length)] as PT}
+          ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 1), ti.path.at(getX(m).path.length - 1) - 1, ...ti.path.slice(getX(m).path.length)] as PT}
           : ti
         )
     ]
@@ -42,7 +42,7 @@ export const deleteS = (m: M) => {
         .map(ti => xa.some(xti => isSDO(xti.path, ti.path))
           ? {...ti, path:
               [...getSIPL(ti.path), ti.path]
-                .map(sip => [...sip.slice(0, -1), sip.at(-1) as number - xa.map(xti => +isSD(xti.path, sip)).reduce((a, b) => a + b, 0)])
+                .map(sip => [...sip.slice(0, -1), sip.at(-1) - xa.map(xti => +isSD(xti.path, sip)).reduce((a, b) => a + b, 0)])
                 .reduce((a, b) => a.concat(b.slice(a.length)), []) as PT
           }
           : ti
@@ -59,7 +59,7 @@ export const deleteCR = (m: M) => {
       ...mT(m)
         .filter(ti => xa.every(xti => !isSEO(xti.path, ti.path)))
         .map(ti => xa.some(xti => isCD(xti.path, ti.path))
-          ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 2), ti.path.at(getX(m).path.length - 2) as number - 1, ...ti.path.slice(getX(m).path.length - 1)] as PT}
+          ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 2), ti.path.at(getX(m).path.length - 2) - 1, ...ti.path.slice(getX(m).path.length - 1)] as PT}
           : ti
         )
     ]
@@ -74,7 +74,7 @@ export const deleteCC = (m: M) => {
       ...mT(m)
         .filter(ti => xa.every(xti => !isSEO(xti.path, ti.path)))
         .map(ti => xa.some(xti => isCR(xti.path, ti.path))
-          ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 1), ti.path.at(getX(m).path.length - 1) as number - 1, ...ti.path.slice(getX(m).path.length)] as PT}
+          ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 1), ti.path.at(getX(m).path.length - 1) - 1, ...ti.path.slice(getX(m).path.length)] as PT}
           : ti
         )
     ]

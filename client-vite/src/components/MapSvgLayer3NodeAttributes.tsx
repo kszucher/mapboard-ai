@@ -59,7 +59,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               }
             </path>
           }
-          {((getPathPattern(ti.path).endsWith('dsc') || getPathPattern(ti.path).endsWith('ssc')) && ti.path.at(-2) as number > -1 && ti.path.at(-1) === 0) &&
+          {((getPathPattern(ti.path).endsWith('dsc') || getPathPattern(ti.path).endsWith('ssc')) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0) &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti) ? getLinePathBetweenNodes(getTSI2(pm, ti), ti) : getLinePathBetweenNodes(getTSI2(m, ti), ti)}
               strokeWidth={ti.lineWidth}
