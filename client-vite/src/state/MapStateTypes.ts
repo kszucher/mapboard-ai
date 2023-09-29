@@ -1,17 +1,13 @@
 import {LineTypes, ControlTypes} from "./Enums"
 
-export type PIC = 'g' | 'l' | 'r' | 'd' | 's' | 'c'
-export type PI = PIC | number
-export type P = PI[]
-
 export type PG = ['g']
 export type PL = ['l', number]
 export type PTR = ['r', number]
 export type PTD = ['r', number, 'd', number]
-export type PTS = [...any[], 's', number]
-export type PTC = [...any[], 'c', number, number]
+export type PTS = [...any[], 's', number] | ['s', number]
+export type PTC = [...any[], 'c', number, number] | ['c', number, number]
 export type PT = PTR | PTD | PTS | PTC
-// export type P = PG | PL | PT
+export type P = PG | PL | PT
 
 export interface GSaveAlways {
   path: PG
