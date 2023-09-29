@@ -11,9 +11,10 @@ export type PTD = ['r', number, 'd', number]
 export type PTS = [...any[], 's', number]
 export type PTC = [...any[], 'c', number, number]
 export type PT = PTR | PTD | PTS | PTC
+// export type P = PG | PL | PT
 
 export interface GSaveAlways {
-  path: P
+  path: PG
   nodeId: string
 }
 
@@ -33,7 +34,7 @@ export interface GSaveNever {
 }
 
 export interface LSaveAlways {
-  path: P
+  path: PL
   nodeId: string
   fromNodeId: string
   fromNodeSide: string

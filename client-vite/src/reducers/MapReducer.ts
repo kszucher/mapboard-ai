@@ -101,7 +101,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveCCL': moveCC(m, getXSI1(m), getCountXCL(m) - 1); break
     case 'moveS2TOR': moveS2T(m, getXRD0(m), getXSO2(m)); break
     case 'moveS2TO': moveS2T(m, getX(m), getXSO1(m)); break
-    case 'transpose': getXSCO(m).forEach(ti => ti.path = [...ti.path.slice(0, getX(m).path.length + 1), ti.path.at(getX(m).path.length + 2), ti.path.at(getX(m).path.length + 1), ...ti.path.slice(getX(m).path.length + 3)] as P); break
+    case 'transpose': getXSCO(m).forEach(ti => ti.path = [...ti.path.slice(0, getX(m).path.length + 1), ti.path.at(getX(m).path.length + 2), ti.path.at(getX(m).path.length + 1), ...ti.path.slice(getX(m).path.length + 3)] as PT); break
     case 'copyLR': copyLR(m); break
     case 'copyS': copyS(m); break
     case 'cutLR': cutLR(m); break
