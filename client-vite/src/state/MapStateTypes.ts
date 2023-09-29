@@ -67,10 +67,10 @@ export interface TSaveOptional {
   lineColor: string
   sBorderWidth: number
   fBorderWidth: number
-  sBorderColor: string | undefined
-  fBorderColor: string | undefined
-  sFillColor: string | undefined
-  fFillColor: string | undefined
+  sBorderColor: string
+  fBorderColor: string
+  sFillColor: string
+  fFillColor: string
   textFontSize: number
   textColor: string
   taskStatus: number

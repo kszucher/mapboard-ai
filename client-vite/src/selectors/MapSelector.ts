@@ -1,7 +1,8 @@
 import isEqual from "react-fast-compare"
 import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {G, N, M, T, P, L, PTC, PT} from "../state/MapStateTypes"
+import {tSaveOptional} from "../state/MapState"
+import {G, N, M, T, P, L, PTC, PT, TSaveOptional} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
 
 export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
@@ -186,7 +187,17 @@ export const ccToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', ti.pat
 export const getEditedPath = (p: PT): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] : p
 export const getEditedNode = (m: M, p: PT): T => getNodeByPath(m, getEditedPath(p) as PT)
 
-export const getPropXA = (m: M, prop: keyof T) => isArrayOfEqualValues(getXA(m).map(ti => ti[prop])) ? getX(m)[prop] : null
+export const getLineWidth = (m: M): TSaveOptional['lineWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineWidth)) ? getX(m).lineWidth : tSaveOptional.lineWidth
+export const getLineType = (m: M): TSaveOptional['lineType'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineType)) ? getX(m).lineType : tSaveOptional.lineType
+export const getLineColor = (m: M): TSaveOptional['lineColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineColor)) ? getX(m).lineColor : tSaveOptional.lineColor
+export const getSBorderWidth = (m: M): TSaveOptional['sBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderWidth)) ? getX(m).sBorderWidth : tSaveOptional.sBorderWidth
+export const getFBorderWidth = (m: M): TSaveOptional['fBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderWidth)) ? getX(m).fBorderWidth : tSaveOptional.fBorderWidth
+export const getSBorderColor = (m: M): TSaveOptional['sBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderColor)) ? getX(m).sBorderColor : tSaveOptional.sBorderColor
+export const getFBorderColor = (m: M): TSaveOptional['fBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderColor)) ? getX(m).fBorderColor : tSaveOptional.fBorderColor
+export const getSFillColor = (m: M): TSaveOptional['sFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sFillColor)) ? getX(m).sFillColor : tSaveOptional.sFillColor
+export const getFFillColor = (m: M): TSaveOptional['fFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fFillColor)) ? getX(m).fFillColor : tSaveOptional.fFillColor
+export const getTextFontSize = (m: M): TSaveOptional['textFontSize'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textFontSize)) ? getX(m).textFontSize : tSaveOptional.textFontSize
+export const getTextColor = (m: M): TSaveOptional['textColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textColor)) ? getX(m).textColor : tSaveOptional.textColor
 
 export const hasTaskRight = (m: M, t: T): number => +getTRD0SO(m, t).some(ti => ti.taskStatus !== 0)
 export const hasTaskLeft = (m: M, t: T): number => +getTRD1SO(m, t).some(ti => ti.taskStatus !== 0)
