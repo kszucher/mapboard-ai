@@ -59,7 +59,7 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   }))
   cbL.forEach((li, i) => Object.assign(li, {
     nodeId: IS_TESTING ? generateCharacterFrom('r', i) : 'node' + genHash(8),
-    path : ['l', li.path[1] + ipL[1]],
+    path : ['l', li.path[1] + ipL[1]], // this should work with .at() also, but I have a TS error
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
   }))
