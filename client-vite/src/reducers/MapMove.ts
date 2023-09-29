@@ -52,20 +52,20 @@ export const copyS = (m: M) => {
   cbSave(mapDeInit(cbS))
 }
 
-const cbToLR = (m: M, cbL: L[], cbR: M, ipL: PL, ipR: PTR) => {
+const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   const nodeIdMappingR = cbR.map((ti, i) => ({
     oldNodeId: ti.nodeId,
     newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)
   }))
   cbL.forEach((li, i) => Object.assign(li, {
     nodeId: IS_TESTING ? generateCharacterFrom('r', i) : 'node' + genHash(8),
-    path : ['l', (li.path.at(1) as number) + (ipL.at(-1) as number)],
+    path : ['l', li.path[1] + ipL[1]],
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
   }))
   cbR.forEach((ti, i) => Object.assign(ti, {
     nodeId: nodeIdMappingR[i].newNodeId,
-    path: ['r', (ti.path.at(1) as number) + (ipR.at(-1) as number), ...ti.path.slice(2)],
+    path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
     // TODO: assign offset
   }))
   unselectNodes(m)
@@ -76,7 +76,7 @@ const cbToLR = (m: M, cbL: L[], cbR: M, ipL: PL, ipR: PTR) => {
 const cbToS = (m: M, cbS: M, ip: PT) => {
   cbS.forEach((ti, i) => Object.assign(ti, {
     nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8),
-    path : [...ip.slice(0, -2), 's', (ti.path.at(1) as number) + (ip.at(-1) as number), ...ti.path.slice(2)]
+    path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)]
   }))
   makeSpaceFromS(m, ip, getXA(cbS).length)
   unselectNodes(m)
@@ -102,7 +102,7 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
 export const duplicateR = (m: M) => {
   const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
   const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as PTR
-  const cbL = structuredClone(lToCb(m)) as L[]
+  const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
   cbToLR(m, cbL, cbR, ipL, ipR)
 }
