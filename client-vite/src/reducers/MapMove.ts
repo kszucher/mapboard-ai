@@ -1,4 +1,4 @@
-import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getNodeById, getReselectR, getReselectS, getRL, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, T, PT, L, PL, PTR} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
@@ -57,6 +57,8 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
     oldNodeId: ti.nodeId,
     newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)
   }))
+  const minOffsetW = Math.min(...getRL(cbR).map(ti => ti.offsetW))
+  const minOffsetH = Math.min(...getRL(cbR).map(ti => ti.offsetH))
   cbL.forEach((li, i) => Object.assign(li, {
     nodeId: IS_TESTING ? generateCharacterFrom('r', i) : 'node' + genHash(8),
     path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
@@ -66,7 +68,8 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   cbR.forEach((ti, i) => Object.assign(ti, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
-    // TODO: assign offset
+    offsetW: ti.selected ? ti.offsetW - minOffsetW : ti.offsetW,
+    offsetH: ti.selected ? ti.offsetH - minOffsetH : ti.offsetH,
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)
@@ -118,7 +121,7 @@ export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
   const cbS = structuredClone(sToCb(m))
   deleteS(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 's', insertTargetIndex] as PT
-  cbS.forEach((ti, i) => Object.assign(ti, {
+  cbS.forEach(ti => Object.assign(ti, {
     path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)]
   }))
   makeSpaceFromS(m, ip, getXA(cbS).length)
