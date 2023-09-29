@@ -1,4 +1,4 @@
-import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getNodeById, getReselectR, getReselectS, getRL, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getG, getNodeById, getReselectR, getReselectS, getRL, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, T, PT, L, PL, PTR} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
@@ -68,8 +68,8 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   cbR.forEach((ti, i) => Object.assign(ti, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
-    offsetW: ti.selected ? ti.offsetW - minOffsetW : ti.offsetW,
-    offsetH: ti.selected ? ti.offsetH - minOffsetH : ti.offsetH,
+    offsetW: ti.selected ? ti.offsetW - minOffsetW + getG(m).mapWidth : ti.offsetW,
+    offsetH: ti.selected ? ti.offsetH - minOffsetH + getG(m).mapHeight : ti.offsetH,
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)
@@ -88,8 +88,8 @@ const cbToS = (m: M, cbS: M, ip: PT) => {
 }
 
 export const pasteLR = (m: M, payload: any) => {
-  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
-  const ipR = ['r', mT(m).at(-1)!.path.at(1) + 1] as PTR
+  const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
+  const ipR = ['r', mT(m).at(-1)?.path.at(1) + 1] as PTR
   const cbLR = JSON.parse(payload) as M
   const cbL = mL(cbLR)
   const cbR = mT(cbLR)

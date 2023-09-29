@@ -53,6 +53,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectDragged': selectNodeList(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
 
     case 'insertL': insertL(m, payload); break
+    // case 'insertTemplateRD': insertTemplateR(m, payload.template, getRiL(m) + 1, 0, getRootStartY(m, getR0(m)) + getG(m).maxD + 500); break
+    // case 'insertTemplateRR': insertTemplateR(m, payload.template, getRiL(m) + 1, getRootStartX(m, getR0(m)) + getG(m).maxR + 200, 0); break
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
     case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1), payload); break
     case 'insertSOR': insertS(m, getXRD0(m), getCountXRD0SO1(m), payload); break
@@ -75,8 +77,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSCRU': insertCR(m, getX(m), 0); break
     case 'insertSCCR': insertCC(m, getX(m), getCountXSCH(m)); break
     case 'insertSCCL': insertCC(m, getX(m), 0); break
-    // case 'insertTemplateRR': insertTemplateR(m, payload.template, getRiL(m) + 1, getRootStartX(m, getR0(m)) + getG(m).maxR + 200, 0); break
-    // case 'insertTemplateRD': insertTemplateR(m, payload.template, getRiL(m) + 1, 0, getRootStartY(m, getR0(m)) + getG(m).maxD + 500); break
 
     case 'deleteL': deleteL(m, payload); break
     case 'deleteLR': deleteReselectLR(m); break
