@@ -141,8 +141,8 @@ export const getCountXSO1 = (m: M): number => getCountSO1(m, getX(m).path)
 export const getCountTSO2 = (m: M, t: T): number => getCountSO2(m, t.path)
 export const getCountXSO2 = (m: M): number => getCountSO2(m, getX(m).path)
 export const getCountXSI1U = (m: M): number => getCountSI1U(m, getX(m).path)
-export const getCountXRD0S = (m: M): number => getCountSO1(m, getXRD0(m).path)
-export const getCountXRD1S = (m: M): number => getCountSO1(m, getXRD1(m).path)
+export const getCountXRD0SO1 = (m: M): number => getCountSO1(m, getXRD0(m).path)
+export const getCountXRD1SO1 = (m: M): number => getCountSO1(m, getXRD1(m).path)
 export const getCountTCO1 = (m: M, t: T): number => getCountCO1(m, t.path)
 export const getCountXCO1 = (m: M): number => getCountCO1(m, getX(m).path)
 export const getCountTCO2 = (m: M, t: T): number => getCountCO2(m, t.path)
@@ -169,8 +169,8 @@ export const isXCR = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 
 export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 0
 
 export const getLastSO = (m: M): T => getNodeByPath(m, [...getX(m).path, 's', getX(m).lastSelectedChild > - 1 && getX(m).lastSelectedChild < getCountXSO1(m) ? getX(m).lastSelectedChild : 0])
-export const getLastSOR = (m: M): T => getNodeByPath(m, [...getXRD0(m).path, 's', getXRD0(m).lastSelectedChild > - 1 && getXRD0(m).lastSelectedChild < getCountXRD0S(m) ? getXRD0(m).lastSelectedChild : 0])
-export const getLastSOL = (m: M): T => getNodeByPath(m, [...getXRD1(m).path, 's', getXRD1(m).lastSelectedChild > - 1 && getXRD1(m).lastSelectedChild < getCountXRD1S(m) ? getXRD1(m).lastSelectedChild : 0])
+export const getLastSOR = (m: M): T => getNodeByPath(m, [...getXRD0(m).path, 's', getXRD0(m).lastSelectedChild > - 1 && getXRD0(m).lastSelectedChild < getCountXRD0SO1(m) ? getXRD0(m).lastSelectedChild : 0])
+export const getLastSOL = (m: M): T => getNodeByPath(m, [...getXRD1(m).path, 's', getXRD1(m).lastSelectedChild > - 1 && getXRD1(m).lastSelectedChild < getCountXRD1SO1(m) ? getXRD1(m).lastSelectedChild : 0])
 
 export const getReselectR = (m: M): T => mT(m).find(ti => !ti.selected && isR(ti.path))!
 export const getReselectS = (m: M): T => getCountXASU(m) ? getXFSU1(m) : (isXDS(m) ? getXFSI2(m): getXFSI1(m))

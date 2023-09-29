@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {nodeApi} from "../apis/NodeApi";
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {generateLlmInfo, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
-import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0S, getCountXRD1S, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../selectors/MapSelector"
+import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../selectors/MapSelector"
 import {mSelector} from "../state/EditorState"
 import {ControlTypes, PageState} from "../state/Enums"
 import {getMapId} from "../state/NodeApiState"
@@ -80,8 +80,8 @@ export const ContextMenu: FC = () => {
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
           <Li1 menuId={'Select'}>
             { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))}} subMenuId={'Node Family'}/> }
-            { mExists && isXR(m) && getCountXRD0S(m) > 0 && !getXRD0(m).selected && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD0', payload: null}))}} subMenuId={'Node Family Right'}/> }
-            { mExists && isXR(m) && getCountXRD1S(m) > 0 && !getXRD1(m).selected && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD1', payload: null}))}} subMenuId={'Node Family Left'}/> }
+            { mExists && isXR(m) && getCountXRD0SO1(m) > 0 && !getXRD0(m).selected && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD0', payload: null}))}} subMenuId={'Node Family Right'}/> }
+            { mExists && isXR(m) && getCountXRD1SO1(m) > 0 && !getXRD1(m).selected && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD1', payload: null}))}} subMenuId={'Node Family Left'}/> }
             { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectXS', payload: null}))}} subMenuId={'Node'}/> }
             { mExists && isXD(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectXR', payload: null}))}} subMenuId={'Node'}/> }
             { mExists && isXS(m) && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getX(m).path}}))}} subMenuId={'First Cell'}/> }
