@@ -1,7 +1,7 @@
 import {ControlTypes} from "../state/Enums"
 import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./MapParseGpt"
 import {tSaveOptional} from "../state/MapState"
-import {M, P, T} from "../state/MapStateTypes"
+import {M, P, PT, T} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteL, deleteReselectCC, deleteReselectCR, deleteReselectLR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
@@ -40,8 +40,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectSOL': selectNode(m, getLastSOL(m), 's'); break
     case 'selectSI': selectNode(m, getXSI1(m), 's'); break
     case 'selectSF': selectNode(m, getNodeByPath(m, [...getX(m).path, 's', 0]), 's'); break
-    case 'selectCFfirstRow': selectNode(m, getNodeByPath(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -2 ? 0 : pi)), 's'); break
-    case 'selectCFfirstCol': selectNode(m, getNodeByPath(m, (getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi)), 's'); break
+    case 'selectCFfirstRow': selectNode(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -2 ? 0 : pi) as PT) as T, 's'); break
+    case 'selectCFfirstCol': selectNode(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -1 ? 0 : pi) as PT) as T, 's'); break
     case 'selectCFF': selectNode(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
     case 'selectXSIC': selectNode(m,  getXSIC(m), 's'); break
     case 'selectCRSAME': selectNodeList(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break
@@ -50,7 +50,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCU': selectNodeList(m, getXACU1(m), 's'); break
     case 'selectCR': selectNodeList(m, getXACR1(m), 's'); break
     case 'selectCL': selectNodeList(m, getXACL1(m), 's'); break
-    case 'selectDragged': selectNodeList(m, payload.pathList.map((p: P) => getNodeByPath(m, p)), 's'); break
+    case 'selectDragged': selectNodeList(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
 
     case 'insertL': insertL(m, payload); break
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
