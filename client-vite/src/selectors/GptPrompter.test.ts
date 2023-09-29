@@ -1,4 +1,4 @@
-import {M} from "../state/MapStateTypes"
+import {M, MPartial} from "../state/MapStateTypes"
 import {genPromptJsonS, genPromptJsonT} from "./GptPrompter"
 
 const genPromptJsonS_test = [
@@ -11,7 +11,7 @@ const genPromptJsonS_test = [
   {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 1], content: 's0s0s1'},
   {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 1], content: 's0s1'},
   {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 2], content: 's0s2'},
-] as M
+] as MPartial
 
 const genPromptJsonS_result = [
   {keywords: ['s0', 's0s0', 's0s0s0'], suggestions: [], insertParentId: 'e'},
@@ -39,7 +39,7 @@ const genPromptJsonT_test = [
   {selected: 0, selection: 's', nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 0, 's', 0], content: 'c20s0'},
   {selected: 0, selection: 's', nodeId: 'q', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 1]},
   {selected: 0, selection: 's', nodeId: 'r', path: ['r', 0, 'd', 0, 's', 0, 'c', 2, 2]},
-] as M
+] as MPartial
 
 const genPromptJsonT_result = [
   {keywords: ['c00s0', 'c10s0', 'c01s0'], suggestions: [], insertParentId: 'm'},
@@ -49,6 +49,6 @@ const genPromptJsonT_result = [
 ]
 
 describe("GenPromptJsonTests", () => {
-  test('genPromptJsonS_test', () => expect(genPromptJsonS(genPromptJsonS_test)).toEqual(genPromptJsonS_result))
-  test('genPromptJsonT_test', () => expect(genPromptJsonT(genPromptJsonT_test)).toEqual(genPromptJsonT_result))
+  test('genPromptJsonS_test', () => expect(genPromptJsonS(genPromptJsonS_test as M)).toEqual(genPromptJsonS_result))
+  test('genPromptJsonT_test', () => expect(genPromptJsonT(genPromptJsonT_test as M)).toEqual(genPromptJsonT_result))
 })

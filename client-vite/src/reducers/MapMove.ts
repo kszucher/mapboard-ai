@@ -1,5 +1,5 @@
 import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
-import {M, T, P, L} from "../state/MapStateTypes"
+import {M, T, PT, L, PL, PTR} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
 import {deleteCC, deleteCR, deleteLR, deleteS} from "./MapDelete"
@@ -52,7 +52,7 @@ export const copyS = (m: M) => {
   cbSave(mapDeInit(cbS))
 }
 
-const cbToLR = (m: M, cbL: L[], cbR: M, ipL: P, ipR: P) => {
+const cbToLR = (m: M, cbL: L[], cbR: M, ipL: PL, ipR: PTR) => {
   const nodeIdMappingR = cbR.map((ti, i) => ({
     oldNodeId: ti.nodeId,
     newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)
@@ -73,7 +73,7 @@ const cbToLR = (m: M, cbL: L[], cbR: M, ipL: P, ipR: P) => {
   m.sort(sortPath)
 }
 
-const cbToS = (m: M, cbS: M, ip: P) => {
+const cbToS = (m: M, cbS: M, ip: PT) => {
   cbS.forEach((ti, i) => Object.assign(ti, {
     nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8),
     path : [...ip.slice(0, -2), 's', (ti.path.at(1) as number) + (ip.at(-1) as number), ...ti.path.slice(2)]
@@ -85,8 +85,8 @@ const cbToS = (m: M, cbS: M, ip: P) => {
 }
 
 export const pasteLR = (m: M, payload: any) => {
-  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as P
-  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as P
+  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
+  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as PTR
   const cbLR = JSON.parse(payload) as M
   const cbL = mL(cbLR)
   const cbR = mT(cbLR)
@@ -94,21 +94,21 @@ export const pasteLR = (m: M, payload: any) => {
 }
 
 export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
-  const ip = [...insertParentNode.path, 's', insertTargetIndex] as P
+  const ip = [...insertParentNode.path, 's', insertTargetIndex] as PT
   const cbS = JSON.parse(payload) as M
   cbToS(m, cbS, ip)
 }
 
 export const duplicateR = (m: M) => {
-  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as P
-  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as P
+  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
+  const ipR = ['r', mT(m).at(-1)!.path.at(1) as number + 1] as PTR
   const cbL = structuredClone(lToCb(m)) as L[]
   const cbR = structuredClone(rToCb(m))
   cbToLR(m, cbL, cbR, ipL, ipR)
 }
 
 export const duplicateS = (m: M) => {
-  const ip = [...getXSI1(m).path, 's', getCountXASU(m) + getXA(m).length] as P
+  const ip = [...getXSI1(m).path, 's', getCountXASU(m) + getXA(m).length] as PT
   const cbS = structuredClone(sToCb(m))
   cbToS(m, cbS, ip)
 }
@@ -117,7 +117,7 @@ export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
   const insertParentNodeId = insertParentNode.nodeId
   const cbS = structuredClone(sToCb(m))
   deleteS(m)
-  const ip = [...getNodeById(m, insertParentNodeId).path, 's', insertTargetIndex] as P
+  const ip = [...getNodeById(m, insertParentNodeId).path, 's', insertTargetIndex] as PT
   cbS.forEach((ti, i) => Object.assign(ti, {
     path : [...ip.slice(0, -2), 's', (ti.path.at(1) as number) + (ip.at(-1) as number), ...ti.path.slice(2)]
   }))
@@ -130,8 +130,8 @@ export const moveCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) 
   const insertParentNodeId = insertParentNode.nodeId
   const cbCr = structuredClone(crToCb(m))
   deleteCR(m)
-  const ip = [...getNodeById(m, insertParentNodeId).path, 'c', insertTargetRowIndex, 0] as P
-  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as P)
+  const ip = [...getNodeById(m, insertParentNodeId).path, 'c', insertTargetRowIndex, 0] as PT
+  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as PT)
   cbCr.forEach(ti => Object.assign(ti, {
     path: [...ip.slice(0, -3), 'c', (ti.path.at(1) as number) + (ip.at(-2) as number), (ti.path.at(2) as number), ...ti.path.slice(3)]
   }))
@@ -144,8 +144,8 @@ export const moveCC = (m: M, insertParentNode: T, insertTargetColumnIndex: numbe
   const insertParentNodeId = insertParentNode.nodeId
   const cbCc = structuredClone(ccToCb(m))
   deleteCC(m)
-  const ip = [...getNodeById(m, insertParentNodeId).path, 'c', 0, insertTargetColumnIndex] as P
-  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as P)
+  const ip = [...getNodeById(m, insertParentNodeId).path, 'c', 0, insertTargetColumnIndex] as PT
+  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as PT)
   cbCc.forEach(ti => Object.assign(ti, {
     path: [...ip.slice(0, -3), 'c', (ti.path.at(1) as number), (ti.path.at(2) as number) + (ip.at(-1) as number), ...ti.path.slice(3)]
   }))
@@ -161,7 +161,7 @@ export const moveS2T = (m: M, insertParentNode: T, moveNodes: T[]) => {
   deleteS(m)
   cbS.forEach(ti => Object.assign(ti, {
     selected: 0,
-    path: [...getNodeById(m, insertParentNodeId).path, 's', 0, 'c', ti.path.at(1), 0, 's', 0, ...ti.path.slice(2)] as P
+    path: [...getNodeById(m, insertParentNodeId).path, 's', 0, 'c', ti.path.at(1), 0, 's', 0, ...ti.path.slice(2)] as PT
   }))
   insertTable(m, insertParentNode, 0, {rowLen: moveNodes.length, colLen: 1})
   m.push(...cbS)

@@ -1,4 +1,4 @@
-import {GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, TSaveAlways, TSaveNever, TSaveOptional} from "./MapStateTypes"
+import {GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, PT, TSaveAlways, TSaveNever, TSaveOptional} from "./MapStateTypes"
 import {ControlTypes, LineTypes, Sides} from "./Enums"
 
 export const gSaveAlways = {
@@ -40,7 +40,7 @@ export const lSaveNever = {
 } as LSaveNever
 
 export const tSaveAlways = {
-  path: [],
+  path: [] as unknown as PT,
   nodeId: '',
 } as TSaveAlways
 

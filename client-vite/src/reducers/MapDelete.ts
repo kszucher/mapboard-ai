@@ -1,4 +1,4 @@
-import {L, M, P} from "../state/MapStateTypes"
+import {L, M, P, T} from "../state/MapStateTypes"
 import {selectNode, selectNodeList} from "./MapSelect"
 import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getSIPL, isSD, isSDO, mG, mL, mT, isSEO} from "../selectors/MapSelector"
 
@@ -25,7 +25,7 @@ export const deleteLR = (m: M) => {
         .map(ti => xa.some(xti => isRDO(xti.path, ti.path))
           ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 1), ti.path.at(getX(m).path.length - 1) as number - 1, ...ti.path.slice(getX(m).path.length)]}
           : ti
-        )
+        ) as T[]
     ]
   )
 }
@@ -44,7 +44,7 @@ export const deleteS = (m: M) => {
                 .reduce((a, b) => a.concat(b.slice(a.length)), [])
           }
           : ti
-        )
+        ) as T[]
     ]
   )
 }
@@ -59,7 +59,7 @@ export const deleteCR = (m: M) => {
         .map(ti => xa.some(xti => isCD(xti.path, ti.path))
           ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 2), ti.path.at(getX(m).path.length - 2) as number - 1, ...ti.path.slice(getX(m).path.length - 1)]}
           : ti
-        )
+        ) as T[]
     ]
   )
 }
@@ -74,7 +74,7 @@ export const deleteCC = (m: M) => {
         .map(ti => xa.some(xti => isCR(xti.path, ti.path))
           ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 1), ti.path.at(getX(m).path.length - 1) as number - 1, ...ti.path.slice(getX(m).path.length)]}
           : ti
-        )
+        ) as T[]
     ]
   )
 }

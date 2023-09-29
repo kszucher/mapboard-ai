@@ -1,7 +1,7 @@
 import isEqual from "react-fast-compare"
 import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {G, N, M, T, P, L} from "../state/MapStateTypes"
+import {G, N, M, T, P, L, PTC, PT} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
 
 export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
@@ -18,7 +18,7 @@ export const getPathDir = (p: P) => p[3] ? -1 : 1
 export const getXF = (m: M): T => mT(m).find(ti => ti.selected)! as T
 export const getXL = (m: M): T => mT(m).findLast(ti => ti.selected)!
 export const getX = (m: M): T => mT(m).reduce((a, b) => a.selected > b.selected ? a : b)
-export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected)
+export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected) as T[]
 
 export const isDirR = (m: M) => getPathDir(getX(m).path) === 1
 export const isDirL = (m: M) => getPathDir(getX(m).path) === -1
@@ -67,10 +67,10 @@ const isSO2 = (p: P, pt: P): boolean => pt.length === p.length + 4 && isEqual(pt
 const isCO1 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 const isCO2 = (p: P, pt: P): boolean => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
 export const isCON = (p: P): boolean => p.includes('c')
-const isCD1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) as number === p.at(-2) as number + 1 && pt.at(-1) as number === p.at(-1) as number
-const isCU1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) as number === p.at(-2) as number - 1 && pt.at(-1) as number === p.at(-1) as number
-const isCR1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number + 1
-const isCL1 = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) as number === p.at(-2) as number && pt.at(-1) as number === p.at(-1) as number - 1
+const isCD1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) + 1 && pt.at(-1) === p.at(-1)
+const isCU1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) - 1 && pt.at(-1) === p.at(-1)
+const isCR1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) + 1
+const isCL1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) - 1
 const isSCO = (p: P, pt: P): boolean => pt.length >= p.length + 3 && isEqual(pt.slice(0, p.length), p) && pt.at(p.length) === 'c'
 const isSCXX = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p)
 const isSCYY = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) as number > 0 && pt.at(-1) as number > 0
@@ -79,13 +79,13 @@ const isSCC0 = (p: P, pt: P): boolean => pt.length === p.length + 3 && isEqual(p
 const isSV = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 export const isCV = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const isCH = (p: P, pt: P): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
-export const isRDO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
-export const isSEODO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! >= p.at(-1)!
-export const isSDO = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
-export const isCED = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
-export const isCD = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)! && pt.at(p.length - 1)! === p.at(-1)!
-export const isCER = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! >= p.at(-1)!
-export const isCR = (p: P, pt: P): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! === p.at(-2)! && pt.at(p.length - 1)! > p.at(-1)!
+export const isRDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
+export const isSEODO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) >= p.at(-1)
+export const isSDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
+export const isCED = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) >= p.at(-2)! && pt.at(p.length - 1) === p.at(-1)
+export const isCD = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) > p.at(-2)! && pt.at(p.length - 1) === p.at(-1)
+export const isCER = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) >= p.at(-1)
+export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) > p.at(-1)
 
 export const getR0 = (m: M): T => getNodeByPath(m, ['r', 0])
 export const getTSI1 = (m: M, t: T): T => m.find(ti => isSI1(t.path, ti.path))! as T
@@ -118,10 +118,10 @@ export const getXRD0SO = (m: M): T[] => m.filter(ti => isTRD0SO(getX(m).path, ti
 export const getTRD1SO = (m: M, t: T): T[] => m.filter(ti => isTRD1SO(t.path, ti.path)) as T[]
 export const getXRD1SO = (m: M): T[] => m.filter(ti => isTRD1SO(getX(m).path, ti.path)) as T[]
 export const getXAEO = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isSEO(xti.path, ti.path))) as T[]}
-export const getXACD1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCD1(xti.path, ti.path))) as T[]}
-export const getXACU1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCU1(xti.path, ti.path))) as T[]}
-export const getXACR1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCR1(xti.path, ti.path))) as T[]}
-export const getXACL1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCL1(xti.path, ti.path))) as T[]}
+export const getXACD1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCD1(xti.path as PTC, ti.path as PTC))) as T[]}
+export const getXACU1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCU1(xti.path as PTC, ti.path as PTC))) as T[]}
+export const getXACR1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCR1(xti.path as PTC, ti.path as PTC))) as T[]}
+export const getXACL1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCL1(xti.path as PTC, ti.path as PTC))) as T[]}
 
 const getCountSD = (m: M, p: P): number => m.filter(ti => isSD(p, ti.path)).length
 const getCountSU = (m: M, p: P): number => m.filter(ti => isSU(p, ti.path)).length
@@ -179,9 +179,9 @@ export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCo
 
 export const lToCb = (m: M) => mL(m).filter(li => getNodeById(m, li.fromNodeId).selected && getNodeById(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]})) as M
 export const rToCb = (m: M) => getXA(m).map(el => el.path.at(1)).map(ri => m.filter(ti => isEqual(ti.path.slice(0, 2), ['r', ri]))).map((m, i) => mT(m).map(ti => ({...ti, path: ['r', i, ...ti.path.slice(2)]}))).flat() as M
-export const sToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['s', (ti.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...ti.path.slice(getX(m).path.length)]})) as M
-export const crToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', (ti.path.at(getX(m).path.length - 2) as number) - getCountXCU(m), ti.path.at(getX(m).path.length - 1), ...ti.path.slice(getX(m).path.length)]})) as M
-export const ccToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', (ti.path.at(getX(m).path.length - 2) as number), (ti.path.at(getX(m).path.length - 1) as number) - getCountXCL(m), ...ti.path.slice(getX(m).path.length)]})) as M
+export const sToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['s', (ti.path.at(getX(m).path.length - 1) as number) - getCountXASU(m), ...ti.path.slice(getX(m).path.length)] as P})) as M
+export const crToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', (ti.path.at(getX(m).path.length - 2) as number) - getCountXCU(m), ti.path.at(getX(m).path.length - 1), ...ti.path.slice(getX(m).path.length)] as P})) as M
+export const ccToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', (ti.path.at(getX(m).path.length - 2) as number), (ti.path.at(getX(m).path.length - 1) as number) - getCountXCL(m), ...ti.path.slice(getX(m).path.length)] as P})) as M
 
 export const getEditedPath = (p: P): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P): T => getNodeByPath(m, getEditedPath(p))

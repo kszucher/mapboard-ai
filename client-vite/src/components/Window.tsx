@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getX, getRiL, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath, getXRD0, getXRD1, isXAR, mT} from "../selectors/MapSelector"
+import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getX, getRiL, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath, getXRD0, getXRD1, isXAR} from "../selectors/MapSelector"
 import {isUrl} from "../utils/Utils";
 import {AccessTypes, PageState} from "../state/Enums"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
@@ -8,7 +8,7 @@ import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/NodeApiState"
 import {getMap, mSelector} from "../state/EditorState"
 import {mapDeInit} from "../reducers/MapDeInit"
-import {N} from "../state/MapStateTypes"
+import {N, P} from "../state/MapStateTypes"
 import {shortcutColors} from "./Colors"
 
 export let timeoutId: NodeJS.Timeout
@@ -49,7 +49,7 @@ export const Window: FC = () => {
     ckm === '---' && e.code === 'Space' && isXC(m) && getCountXSO1(m) === 0 && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
     ckm === '---' && e.code === 'Space' && isXACR(m) && dispatch(actions.mapAction({type: 'selectCFfirstCol', payload: null}))
     ckm === '---' && e.code === 'Space' && isXACC(m) && dispatch(actions.mapAction({type: 'selectCFfirstRow', payload: null}))
-    ckm === '---' && e.code === 'Backspace' && isXS(m) && getX(m).path.includes('c') && dispatch(actions.mapAction({type: 'selectXSIC', payload: null}))
+    ckm === '---' && e.code === 'Backspace' && isXS(m) && (getX(m).path as P).includes('c') && dispatch(actions.mapAction({type: 'selectXSIC', payload: null}))
     ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && dispatch(actions.mapAction({type: 'selectSI', payload: null}))
     ckm === '---' && e.code === 'Escape' && dispatch(actions.mapAction({type: 'selectR0', payload: null}))
     ckm === 'c--' && e.code === 'KeyA' && dispatch(actions.mapAction({type: 'selectall', payload: null}))
