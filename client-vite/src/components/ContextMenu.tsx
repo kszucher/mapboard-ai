@@ -82,10 +82,10 @@ export const ContextMenu: FC = () => {
             { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))}} subMenuId={'Node Family'}/> }
             { mExists && isXR(m) && getCountXRD0SO1(m) > 0 && !getXRD0(m).selected && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD0', payload: null}))}} subMenuId={'Node Family Right'}/> }
             { mExists && isXR(m) && getCountXRD1SO1(m) > 0 && !getXRD1(m).selected && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD1', payload: null}))}} subMenuId={'Node Family Left'}/> }
-            { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectXS', payload: null}))}} subMenuId={'Node'}/> }
+            { mExists && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectSelfX', payload: null}))}} subMenuId={'Node'}/> }
             { mExists && isXD(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectXR', payload: null}))}} subMenuId={'Node'}/> }
             { mExists && isXS(m) && getCountXCO1(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getX(m).path}}))}} subMenuId={'First Cell'}/> }
-            { mExists && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectRL', payload: null}))}} subMenuId={'All Root'}/> }
+            { mExists && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectRA', payload: null}))}} subMenuId={'All Root'}/> }
           </Li1>
           <Li1 menuId={'Insert'}>
             { mExists && isXS(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSU', payload: null}))}} subMenuId={'Node Above'}/> }

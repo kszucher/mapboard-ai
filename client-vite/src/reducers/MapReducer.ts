@@ -20,17 +20,13 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setAlignmentCentered': getG(m).alignment = 'centered'; break
     case 'setAlignmentAdaptive': getG(m).alignment = 'adaptive'; break
 
-    case 'selectR0': selectNode(m, getNodeByPath(m, ['r', 0]), 's'); break
-    case 'selectRL': selectNodeList(m, mTR(m), 's'); break
-    case 'selectNR': selectNode(m, getTR(m, getNodeByPath(m, payload.path)), 's'); break
     case 'selectXR': selectNode(m, getXR(m), 's'); break
+    case 'selectSelfX': selectNode(m, getX(m), 's'); break
     case 'selectFamilyX': selectNode(m, getX(m), 'f'); break
     case 'selectFamilyXRD0': selectNode(m, getXRD0(m), 'f'); break
     case 'selectFamilyXRD1': selectNode(m, getXRD1(m), 'f'); break
-    case 'selectNS': selectNode(m, getNodeByPath(m, payload.path), 's'); break
-    case 'selectXS': selectNode(m, getX(m), 's'); break
-    case 'selectStoo': selectNodeToo(m, getNodeByPath(m, payload.path), 's'); break
-    case 'selectall': selectNodeList(m, mT(m).filter(ti => ti.content !== ''), 's'); break
+    case 'selectTS': selectNode(m, getNodeByPath(m, payload.path), 's'); break
+    case 'selectTStoo': selectNodeToo(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectSD': selectNode(m, getQuasiSD(m), 's'); break
     case 'selectSDtoo': selectNodeToo(m, getQuasiSD(m), 's'); break
     case 'selectSU': selectNode(m, getQuasiSU(m), 's'); break
@@ -44,6 +40,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCFfirstCol': selectNode(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -1 ? 0 : pi) as PT) as T, 's'); break
     case 'selectCFF': selectNode(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
     case 'selectXSIC': selectNode(m,  getXSIC(m), 's'); break
+    case 'selectRA': selectNodeList(m, mTR(m), 's'); break
+    case 'selectSA': selectNodeList(m, mT(m).filter(ti => ti.content !== ''), 's'); break
     case 'selectCRSAME': selectNodeList(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break
     case 'selectCCSAME': selectNodeList(m, mT(m).filter(ti => isCH(ti.path, getX(m).path)), 's'); break
     case 'selectCD': selectNodeList(m, getXACD1(m), 's'); break

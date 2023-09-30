@@ -103,8 +103,8 @@ export const MapDiv: FC = () => {
                     window.open(ti.link, '_blank')
                     window.focus()
                   } else {
-                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectNS', payload: {path: ti.path}}))
-                    e.ctrlKey && dispatch(actions.mapAction({type: 'selectStoo', payload: {path: ti.path}}))
+                    !e.ctrlKey && dispatch(actions.mapAction({type: 'selectTS', payload: {path: ti.path}}))
+                    e.ctrlKey && dispatch(actions.mapAction({type: 'selectTStoo', payload: {path: ti.path}}))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
@@ -121,7 +121,7 @@ export const MapDiv: FC = () => {
                   e.preventDefault()
                 } else if (e.button === 2) {
                   if((isTS(ti) && !ti.selected || isTR(ti) && !getTRD0(m, ti).selected && !getTRD1(m, ti).selected)) {
-                    dispatch(actions.mapAction({type: 'selectNS', payload: {path: ti.path}}))
+                    dispatch(actions.mapAction({type: 'selectTS', payload: {path: ti.path}}))
                   }
                   dispatch(actions.openContextMenu({type: 'node', position: {x: e.clientX, y: e.clientY}}))
                 }
