@@ -1,5 +1,5 @@
 import {L, M, PL, PT} from "../state/MapStateTypes"
-import {selectT, selectNodeList} from "./MapSelect"
+import {selectT, selectTL} from "./MapSelect"
 import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getSIPL, isSD, isSDO, mG, mL, mT, isSEO} from "../selectors/MapSelector"
 
 export const deleteL = (m: M, l: L) => {
@@ -98,11 +98,11 @@ export const deleteReselectS = (m: M) => {
 export const deleteReselectCR = (m: M) => {
   const reselectList = getReselectCR(m).map(ti => ti.nodeId)
   deleteCR(m)
-  selectNodeList(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's')
+  selectTL(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's')
 }
 
 export const deleteReselectCC = (m: M) => {
   const reselectList = getReselectCC(m).map(ti => ti.nodeId)
   deleteCC(m)
-  selectNodeList(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's')
+  selectTL(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's')
 }

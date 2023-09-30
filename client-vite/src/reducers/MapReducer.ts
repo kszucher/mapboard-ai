@@ -9,7 +9,7 @@ import {insertCC, insertCR, insertL, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteLR, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
-import {selectT, selectNodeList, selectTToo} from "./MapSelect"
+import {selectT, selectTL, selectTToo} from "./MapSelect"
 import {mT, sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getXA, getXAEO, getCountXRD0SO1, getCountXRD1SO1, getXSO1, getXSO2, getTRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXFSU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getTR, getXR, getXSIC, getXSCO, mTR} from "../selectors/MapSelector"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
@@ -40,15 +40,15 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCFfirstCol': selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -1 ? 0 : pi) as PT) as T, 's'); break
     case 'selectCFF': selectT(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
     case 'selectXSIC': selectT(m,  getXSIC(m), 's'); break
-    case 'selectRA': selectNodeList(m, mTR(m), 's'); break
-    case 'selectSA': selectNodeList(m, mT(m).filter(ti => ti.content !== ''), 's'); break
-    case 'selectCRSAME': selectNodeList(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break
-    case 'selectCCSAME': selectNodeList(m, mT(m).filter(ti => isCH(ti.path, getX(m).path)), 's'); break
-    case 'selectCD': selectNodeList(m, getXACD1(m), 's'); break
-    case 'selectCU': selectNodeList(m, getXACU1(m), 's'); break
-    case 'selectCR': selectNodeList(m, getXACR1(m), 's'); break
-    case 'selectCL': selectNodeList(m, getXACL1(m), 's'); break
-    case 'selectDragged': selectNodeList(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
+    case 'selectRA': selectTL(m, mTR(m), 's'); break
+    case 'selectSA': selectTL(m, mT(m).filter(ti => ti.content !== ''), 's'); break
+    case 'selectCRSAME': selectTL(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break
+    case 'selectCCSAME': selectTL(m, mT(m).filter(ti => isCH(ti.path, getX(m).path)), 's'); break
+    case 'selectCD': selectTL(m, getXACD1(m), 's'); break
+    case 'selectCU': selectTL(m, getXACU1(m), 's'); break
+    case 'selectCR': selectTL(m, getXACR1(m), 's'); break
+    case 'selectCL': selectTL(m, getXACL1(m), 's'); break
+    case 'selectDragged': selectTL(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
 
     case 'insertL': insertL(m, payload); break
     // case 'insertTemplateRD': insertTemplateR(m, payload.template, getRiL(m) + 1, 0, getRootStartY(m, getR0(m)) + getG(m).maxD + 500); break

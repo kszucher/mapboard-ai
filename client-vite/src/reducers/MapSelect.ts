@@ -15,7 +15,7 @@ export const selectTToo = (m: M, ti: T, selection: 's' | 'f') => {
   Object.assign(ti, {selected: getX(m).selected + 1, selection})
 }
 
-export const selectNodeList = (m: M, nList: T[], selection: 's' | 'f') => {
+export const selectTL = (m: M, nList: T[], selection: 's' | 'f') => {
   if (nList.length) {
     unselectNodes(m)
     nList.map((ti, i) => Object.assign(ti, {selected: i + 1, selection}))
