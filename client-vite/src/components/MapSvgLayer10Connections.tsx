@@ -2,7 +2,7 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import { getRL, isExistingLink, mL, mT,} from "../selectors/MapSelector"
+import { mTR, isExistingLink, mL} from "../selectors/MapSelector"
 import {adjustIcon} from "../utils/Utils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {mSelector} from "../state/EditorState"
@@ -55,7 +55,7 @@ export const MapSvgLayer10Connections: FC = () => {
       }
       {
         connectionHelpersVisible &&
-        getRL(mT(m)).map((t: T) => (
+        mTR(m).map((t: T) => (
           <g key={`${t.nodeId}`}>
             {['L', 'R', 'T', 'B'].map(side => (
                 <rect

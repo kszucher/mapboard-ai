@@ -35,9 +35,10 @@ export const isD = (p: PT): boolean => getPathPattern(p).endsWith('d')
 export const isS = (p: PT): boolean => getPathPattern(p).endsWith('s')
 export const isC = (p: PT): boolean => getPathPattern(p).endsWith('c')
 
-export const mG = (m: M) => m.filter(n => isG(n.path)) as G[]
-export const mL = (m: M) => m.filter(n => isL(n.path)) as L[]
-export const mT = (m: M) => m.filter(n => isT(n.path)) as T[]
+export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
+export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]
+export const mT = (m: M): T[] => m.filter(n => isT(n.path)) as T[]
+export const mTR = (m: M): T[] => m.filter(n => isT(n.path) && isR(n.path as PT)) as T[]
 
 export const getG = (m: M): G => mG(m).at(0) as G
 
@@ -107,7 +108,6 @@ export const getXRD1 = (m: M): T => getNodeByPath(m, [...getX(m).path.slice(0, 2
 export const getQuasiSU = (m: M): T => m.findLast(ti => sortablePath(ti.path) < sortablePath(getX(m).path) && getPathDir(ti.path as PT) === getPathDir(getX(m).path) && getPathPattern(ti.path) === getPathPattern(getX(m).path))! as T
 export const getQuasiSD = (m: M): T => m.find(ti => sortablePath(ti.path) > sortablePath(getX(m).path) && getPathDir(ti.path as PT) === getPathDir(getX(m).path) && getPathPattern(ti.path) === getPathPattern(getX(m).path))! as T
 
-export const getRL = (m: M): T[] => m.filter(ti => getPathPattern(ti.path) === 'r') as T[]
 export const getXSO1 = (m: M): T[] => m.filter(ti => isSO1(getX(m).path, ti.path as PT)) as T[]
 export const getXSO2 = (m: M): T[] => m.filter(ti => isSO2(getX(m).path, ti.path as PT)) as T[]
 export const getXSCO = (m: M): M => m.filter(ti => isSCO(getX(m).path, ti.path as PT))

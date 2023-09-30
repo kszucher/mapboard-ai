@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {AppDispatch, RootState} from "../reducers/EditorReducer"
-import {getRL, mT} from "../selectors/MapSelector"
+import {mTR} from "../selectors/MapSelector"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {adjustIcon} from "../utils/Utils"
 import {mSelector} from "../state/EditorState"
@@ -16,7 +16,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
-      {getRL(mT(m)).map((t: T) => (
+      {mTR(m).map((t: T) => (
         <g key={t.nodeId}>
           {t.controlType === ControlTypes.UPLOAD &&
             <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(t.nodeStartX -36)}, ${adjustIcon(t.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>

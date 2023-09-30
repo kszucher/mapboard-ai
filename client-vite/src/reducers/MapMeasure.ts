@@ -2,7 +2,7 @@ import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {M} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
-import {getCountTCO1, getNodeById, getRL, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountTSO1, getTRD1, getTRD0, getTR, mT, mG} from "../selectors/MapSelector"
+import {getCountTCO1, getNodeById, mTR, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountTSO1, getTRD1, getTRD0, getTR, mT, mG} from "../selectors/MapSelector"
 
 export const mapMeasure = (pm: M, m: M) => {
   mT(m).toReversed().forEach(ti => {
@@ -44,7 +44,7 @@ export const mapMeasure = (pm: M, m: M) => {
     }
   })
   mG(m).forEach(g => {
-    getRL(m).forEach(ri => {
+    mTR(m).forEach(ri => {
       const tr = getTR(m, ri)
       const trd0 = getTRD0(m, ri)
       const trd1 = getTRD1(m, ri)
