@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react"
+import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, Modal, TextField, Typography} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
@@ -22,7 +22,7 @@ export const ModalEditContentMermaid: FC = () => {
         <div style={{ display: "flex", flexDirection: 'column', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <TextField id="filled-multiline-static" label="Multiline" multiline rows={20} defaultValue={getX(m).content} variant="filled" inputProps={{ maxLength: 1000 }} onChange={(e) => {
             document.getElementById(getX(m).nodeId)!.removeAttribute('data-processed')
-            dispatch(actions.mapAction({type: 'setContent', payload: {content: e.target.value}}))
+            dispatch(actions.mapAction({type: 'setContentMermaid', payload: {content: e.target.value}}))
           }}/>
           <Button color="primary" variant='outlined' disabled={isFetching} onClick={() =>
             dispatch(actions.setPageState(PageState.WS))

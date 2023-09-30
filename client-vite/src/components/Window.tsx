@@ -156,10 +156,7 @@ export const Window: FC = () => {
                     window.alert('invalid map')
                   }
                 } else {
-                  if (text.startsWith('\\[')) {
-                    isXR(m) && dispatch(actions.mapAction({type: 'insertSOREquation', payload: text}))
-                    isXS(m) && dispatch(actions.mapAction({type: 'insertSOEquation', payload: text}))
-                  } else if (isUrl(text)) {
+                  if (isUrl(text)) {
                     isUrl(text) && isXR(m) && dispatch(actions.mapAction({type: 'insertSORLink', payload: text}))
                     isUrl(text) && isXS(m) && dispatch(actions.mapAction({type: 'insertSOLink', payload: text}))
                   } else {

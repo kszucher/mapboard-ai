@@ -10,6 +10,7 @@ export interface EditorState {
   mapListIndex: number
   editedNodeId: string
   editType: '' | 'append' | 'replace'
+  editStartMapListIndex: number
   formatterVisible: boolean
   moreMenu: boolean
   frameMenu: boolean

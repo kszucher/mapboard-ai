@@ -90,8 +90,8 @@ export const MapDiv: FC = () => {
                 }
                 setEndOfContentEditable(e.currentTarget)
               }}
-              onBlur={(e) => {
-                dispatch(actions.mapAction({type: 'finishEdit', payload: {path: ti.path, content: e.currentTarget.innerHTML}}))
+              onBlur={() => {
+                dispatch(actions.mapAction({type: 'removeMapListEntriesOfEdit', payload: null}))
               }}
               onMouseDown={(e) => {
                 e.stopPropagation()
@@ -129,12 +129,13 @@ export const MapDiv: FC = () => {
               onDoubleClick={(e) => {
                 e.stopPropagation();
                 (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}));
+                (isXR(m) || isXS(m)) && getX(m).contentType === 'equation' && getCountTCO1(m, ti) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_EQUATION));
                 (isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountTCO1(m, ti) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID));
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
                 if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
-                  dispatch(actions.mapAction({type: 'finishEdit', payload: {path: ti.path, content: e.currentTarget.innerHTML}}))
+                  dispatch(actions.mapAction({type: 'removeMapListEntriesOfEdit', payload: null}))
                 }
                 if (['Insert','Tab'].includes(e.key)) {
                   isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))
@@ -142,14 +143,14 @@ export const MapDiv: FC = () => {
                 }
               }}
               onInput={(e) => {
-                dispatch(actions.mapAction({type: 'typeText', payload: {content:  e.currentTarget.innerHTML}}))
+                dispatch(actions.mapAction({type: 'setContentText', payload: {content: e.currentTarget.innerHTML}}))
               }}
               onPaste={(e) => {
                 e.preventDefault()
                 const pasted = e.clipboardData.getData('Text')
                 e.currentTarget.innerHTML += pasted
                 setEndOfContentEditable(e.currentTarget)
-                dispatch(actions.mapAction({type: 'typeText', payload: {content:  e.currentTarget.innerHTML}}))
+                dispatch(actions.mapAction({type: 'setContentText', payload: {content: e.currentTarget.innerHTML}}))
               }}
             >
             </div>

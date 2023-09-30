@@ -128,10 +128,10 @@ export const ContextMenu: FC = () => {
             { mExists && <Li2 onClick={()=>{console.log(getX(m).path)}} subMenuId={'show node path'}/> }
             { mExists && isXR(m) && <Li2 onClick={()=>{console.log(generateLlmInfo(m))}} subMenuId={'show llm json'}/> }
             { mExists && isXR(m) && <Li2 onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}} subMenuId={'show llmData'}/> }
-            { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'devSetLlmDataExample', payload: null}))}} subMenuId={'set llm data example'}/> }
-            { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'devClearLlmData', payload: null}))}} subMenuId={'reset llm data'}/> }
-            { mExists && (isXR(m) || isXS(m)) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'devSetBlur', payload: null}))}} subMenuId={'set blur'}/> }
-            { mExists && (isXR(m) || isXS(m)) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'devClearBlur', payload: null}))}} subMenuId={'clear blur'}/> }
+            { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}} subMenuId={'set llm data example'}/> }
+            { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}} subMenuId={'reset llm data'}/> }
+            { mExists && (isXR(m) || isXS(m)) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setBlur', payload: null}))}} subMenuId={'set blur'}/> }
+            { mExists && (isXR(m) || isXS(m)) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'clearBlur', payload: null}))}} subMenuId={'clear blur'}/> }
           </Li1>
         </ul>
       </div>

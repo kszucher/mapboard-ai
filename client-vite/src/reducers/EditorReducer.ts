@@ -82,34 +82,22 @@ export const editorSlice = createSlice({
           break
         }
         case 'startEditReplace': {
+          state.editStartMapListIndex = state.mapListIndex
           state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
           state.editType = 'replace'
           break
         }
         case 'startEditAppend': {
+          state.editStartMapListIndex = state.mapListIndex
           state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
           state.editType = 'append'
           break
         }
-        case 'typeText': {
-          const m = mapReducer(pm, 'typeText', action.payload.payload)
-          if (!isEqual(pm, m)) {
-            state.mapList = [...state.mapList.slice(0, state.mapListIndex), m]
-          }
-          break
-        }
-        case 'finishEdit': {
-          const { path, content } = action.payload.payload
-          let m
-          if (content.substring(0, 2) === '\\[') {
-            m = mapReducer(pm, 'finishEdit', {path, contentType: 'equation', content})
-          } else if (content.startsWith('graph') || content.startsWith('sequenceDiagram')) {
-            m = mapReducer(pm, 'finishEdit', {path, contentType: 'mermaid', content})
-          } else {
-            m = mapReducer(pm, 'finishEdit', {path, contentType: 'text', content})
-          }
+        case 'removeMapListEntriesOfEdit': {
           state.editedNodeId = ''
           state.editType = ''
+          state.mapList = [...state.mapList.slice(0, state.editStartMapListIndex + 1), ...state.mapList.slice(-1)]
+          state.mapListIndex = state.editStartMapListIndex + 1
           break
         }
         default: {
@@ -121,7 +109,7 @@ export const editorSlice = createSlice({
           break
         }
       }
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addMatcher(

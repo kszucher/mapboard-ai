@@ -5,8 +5,8 @@ import {RootState} from "../reducers/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {MenuFrames} from "./MenuFrames"
+import {ModalEditContentEquation} from "./ModalEditContentEquation"
 import {ModalEditContentMermaid} from "./ModalEditContentMermaid"
-import {ModalEditNote} from "./ModalEditNote"
 import {ModalCreateTable} from './ModalCreateTable'
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -67,7 +67,7 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_PROFILE && <Profile/>}
       {pageState === PageState.WS_SETTINGS && <Settings/>}
       {pageState === PageState.WS_SHARES && <Shares/>}
-      {pageState === PageState.WS_EDIT_NOTE && <ModalEditNote/>}
+      {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <ModalEditContentEquation/>}
       {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <ModalEditContentMermaid/>}
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
       {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}

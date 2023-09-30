@@ -11,6 +11,7 @@ export const editorState: EditorState = {
   mapListIndex: 0,
   editedNodeId: '',
   editType: '',
+  editStartMapListIndex: Infinity,
   formatterVisible: false,
   moreMenu: false,
   frameMenu: false,
