@@ -20,13 +20,13 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setAlignmentCentered': getG(m).alignment = 'centered'; break
     case 'setAlignmentAdaptive': getG(m).alignment = 'adaptive'; break
 
+    case 'selectT': selectNode(m, getNodeByPath(m, payload.path), 's'); break
+    case 'selectTtoo': selectNodeToo(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectXR': selectNode(m, getXR(m), 's'); break
     case 'selectSelfX': selectNode(m, getX(m), 's'); break
     case 'selectFamilyX': selectNode(m, getX(m), 'f'); break
     case 'selectFamilyXRD0': selectNode(m, getXRD0(m), 'f'); break
     case 'selectFamilyXRD1': selectNode(m, getXRD1(m), 'f'); break
-    case 'selectTS': selectNode(m, getNodeByPath(m, payload.path), 's'); break
-    case 'selectTStoo': selectNodeToo(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectSD': selectNode(m, getQuasiSD(m), 's'); break
     case 'selectSDtoo': selectNodeToo(m, getQuasiSD(m), 's'); break
     case 'selectSU': selectNode(m, getQuasiSU(m), 's'); break
