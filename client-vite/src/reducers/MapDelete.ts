@@ -1,5 +1,5 @@
 import {L, M, PL, PT} from "../state/MapStateTypes"
-import {selectNode, selectNodeList} from "./MapSelect"
+import {selectT, selectNodeList} from "./MapSelect"
 import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getSIPL, isSD, isSDO, mG, mL, mT, isSEO} from "../selectors/MapSelector"
 
 export const deleteL = (m: M, l: L) => {
@@ -16,6 +16,7 @@ export const deleteL = (m: M, l: L) => {
 
 export const deleteLR = (m: M) => {
   const xa = getXA(m)
+  // const nonSelectedMaxOffsetW =
   m.splice(0, m.length, ...[
       ...mG(m),
       ...mL(m)
@@ -28,6 +29,7 @@ export const deleteLR = (m: M) => {
           ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 1), ti.path.at(getX(m).path.length - 1) - 1, ...ti.path.slice(getX(m).path.length)] as PT}
           : ti
         )
+        // .map(ti => )
     ]
   )
 }
@@ -84,13 +86,13 @@ export const deleteCC = (m: M) => {
 export const deleteReselectLR = (m: M) => {
   const reselect = getReselectR(m).nodeId
   deleteLR(m)
-  selectNode(m, getNodeById(m, reselect), 's')
+  selectT(m, getNodeById(m, reselect), 's')
 }
 
 export const deleteReselectS = (m: M) => {
   const reselect = getReselectS(m).nodeId
   deleteS(m)
-  selectNode(m, getNodeById(m, reselect), 's')
+  selectT(m, getNodeById(m, reselect), 's')
 }
 
 export const deleteReselectCR = (m: M) => {

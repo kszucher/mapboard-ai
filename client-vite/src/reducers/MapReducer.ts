@@ -9,7 +9,7 @@ import {insertCC, insertCR, insertL, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteLR, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
-import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect"
+import {selectT, selectNodeList, selectTToo} from "./MapSelect"
 import {mT, sortNode, sortPath, isCH, isCV, getEditedNode, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getR0, getXA, getXAEO, getCountXRD0SO1, getCountXRD1SO1, getXSO1, getXSO2, getTRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXFSU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getTR, getXR, getXSIC, getXSCO, mTR} from "../selectors/MapSelector"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
@@ -20,26 +20,26 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setAlignmentCentered': getG(m).alignment = 'centered'; break
     case 'setAlignmentAdaptive': getG(m).alignment = 'adaptive'; break
 
-    case 'selectT': selectNode(m, getNodeByPath(m, payload.path), 's'); break
-    case 'selectTtoo': selectNodeToo(m, getNodeByPath(m, payload.path), 's'); break
-    case 'selectXR': selectNode(m, getXR(m), 's'); break
-    case 'selectSelfX': selectNode(m, getX(m), 's'); break
-    case 'selectFamilyX': selectNode(m, getX(m), 'f'); break
-    case 'selectFamilyXRD0': selectNode(m, getXRD0(m), 'f'); break
-    case 'selectFamilyXRD1': selectNode(m, getXRD1(m), 'f'); break
-    case 'selectSD': selectNode(m, getQuasiSD(m), 's'); break
-    case 'selectSDtoo': selectNodeToo(m, getQuasiSD(m), 's'); break
-    case 'selectSU': selectNode(m, getQuasiSU(m), 's'); break
-    case 'selectSUtoo': selectNodeToo(m, getQuasiSU(m), 's'); break
-    case 'selectSO': selectNode(m, getLastSO(m), 's'); break
-    case 'selectSOR': selectNode(m, getLastSOR(m), 's'); break
-    case 'selectSOL': selectNode(m, getLastSOL(m), 's'); break
-    case 'selectSI': selectNode(m, getXSI1(m), 's'); break
-    case 'selectSF': selectNode(m, getNodeByPath(m, [...getX(m).path, 's', 0]), 's'); break
-    case 'selectCFfirstRow': selectNode(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -2 ? 0 : pi) as PT) as T, 's'); break
-    case 'selectCFfirstCol': selectNode(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -1 ? 0 : pi) as PT) as T, 's'); break
-    case 'selectCFF': selectNode(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
-    case 'selectXSIC': selectNode(m,  getXSIC(m), 's'); break
+    case 'selectT': selectT(m, getNodeByPath(m, payload.path), 's'); break
+    case 'selectTtoo': selectTToo(m, getNodeByPath(m, payload.path), 's'); break
+    case 'selectXR': selectT(m, getXR(m), 's'); break
+    case 'selectSelfX': selectT(m, getX(m), 's'); break
+    case 'selectFamilyX': selectT(m, getX(m), 'f'); break
+    case 'selectFamilyXRD0': selectT(m, getXRD0(m), 'f'); break
+    case 'selectFamilyXRD1': selectT(m, getXRD1(m), 'f'); break
+    case 'selectSD': selectT(m, getQuasiSD(m), 's'); break
+    case 'selectSDtoo': selectTToo(m, getQuasiSD(m), 's'); break
+    case 'selectSU': selectT(m, getQuasiSU(m), 's'); break
+    case 'selectSUtoo': selectTToo(m, getQuasiSU(m), 's'); break
+    case 'selectSO': selectT(m, getLastSO(m), 's'); break
+    case 'selectSOR': selectT(m, getLastSOR(m), 's'); break
+    case 'selectSOL': selectT(m, getLastSOL(m), 's'); break
+    case 'selectSI': selectT(m, getXSI1(m), 's'); break
+    case 'selectSF': selectT(m, getNodeByPath(m, [...getX(m).path, 's', 0]), 's'); break
+    case 'selectCFfirstRow': selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -2 ? 0 : pi) as PT) as T, 's'); break
+    case 'selectCFfirstCol': selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -1 ? 0 : pi) as PT) as T, 's'); break
+    case 'selectCFF': selectT(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
+    case 'selectXSIC': selectT(m,  getXSIC(m), 's'); break
     case 'selectRA': selectNodeList(m, mTR(m), 's'); break
     case 'selectSA': selectNodeList(m, mT(m).filter(ti => ti.content !== ''), 's'); break
     case 'selectCRSAME': selectNodeList(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break

@@ -3,7 +3,7 @@ import {getTSI1, getX, isR, mT} from "../selectors/MapSelector"
 
 export const unselectNodes = (m: M) => mT(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
 
-export const selectNode = (m: M, ti: T, selection: 's' | 'f') => {
+export const selectT = (m: M, ti: T, selection: 's' | 'f') => {
   unselectNodes(m)
   Object.assign(ti, {selected: 1, selection})
   if (!isR(ti.path)) {
@@ -11,7 +11,7 @@ export const selectNode = (m: M, ti: T, selection: 's' | 'f') => {
   }
 }
 
-export const selectNodeToo = (m: M, ti: T, selection: 's' | 'f') => {
+export const selectTToo = (m: M, ti: T, selection: 's' | 'f') => {
   Object.assign(ti, {selected: getX(m).selected + 1, selection})
 }
 

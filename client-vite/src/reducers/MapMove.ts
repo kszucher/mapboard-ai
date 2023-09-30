@@ -4,7 +4,7 @@ import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
 import {deleteCC, deleteCR, deleteLR, deleteS} from "./MapDelete"
 import {insertTable} from "./MapInsert"
-import {selectNode, selectNodeList, unselectNodes} from "./MapSelect"
+import {selectT, selectNodeList, unselectNodes} from "./MapSelect"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
@@ -30,7 +30,7 @@ export const cutLR = (m: M) => {
   const cbR = structuredClone(rToCb(m))
   cbSave(mapDeInit([...cbL, ...cbR]))
   deleteLR(m)
-  selectNode(m, reselect, 's')
+  selectT(m, reselect, 's')
 }
 
 export const cutS = (m: M) => {
@@ -38,7 +38,7 @@ export const cutS = (m: M) => {
   const cbS = structuredClone(sToCb(m))
   cbSave(mapDeInit(cbS))
   deleteS(m)
-  selectNode(m, reselect, 's')
+  selectT(m, reselect, 's')
 }
 
 export const copyLR = (m: M) => {
