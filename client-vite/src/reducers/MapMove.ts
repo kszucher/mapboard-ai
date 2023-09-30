@@ -24,34 +24,6 @@ const cbSave = (cb: any) => {
   })
 }
 
-export const cutLR = (m: M) => {
-  const reselect = getReselectR(m)
-  const cbL = structuredClone(lToCb(m))
-  const cbR = structuredClone(rToCb(m))
-  cbSave(mapDeInit([...cbL, ...cbR]))
-  deleteLR(m)
-  selectT(m, reselect, 's')
-}
-
-export const cutS = (m: M) => {
-  const reselect = getReselectS(m)
-  const cbS = structuredClone(sToCb(m))
-  cbSave(mapDeInit(cbS))
-  deleteS(m)
-  selectT(m, reselect, 's')
-}
-
-export const copyLR = (m: M) => {
-  const cbL = structuredClone(lToCb(m))
-  const cbR = structuredClone(rToCb(m))
-  cbSave(mapDeInit([...cbL, ...cbR]))
-}
-
-export const copyS = (m: M) => {
-  const cbS = structuredClone(sToCb(m))
-  cbSave(mapDeInit(cbS))
-}
-
 const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   const nodeIdMappingR = cbR.map((ti, i) => ({
     oldNodeId: ti.nodeId,
@@ -85,6 +57,34 @@ const cbToS = (m: M, cbS: M, ip: PT) => {
   unselectNodes(m)
   m.push(...cbS)
   m.sort(sortPath)
+}
+
+export const cutLR = (m: M) => {
+  const reselect = getReselectR(m)
+  const cbL = structuredClone(lToCb(m))
+  const cbR = structuredClone(rToCb(m))
+  cbSave(mapDeInit([...cbL, ...cbR]))
+  deleteLR(m)
+  selectT(m, reselect, 's')
+}
+
+export const cutS = (m: M) => {
+  const reselect = getReselectS(m)
+  const cbS = structuredClone(sToCb(m))
+  cbSave(mapDeInit(cbS))
+  deleteS(m)
+  selectT(m, reselect, 's')
+}
+
+export const copyLR = (m: M) => {
+  const cbL = structuredClone(lToCb(m))
+  const cbR = structuredClone(rToCb(m))
+  cbSave(mapDeInit([...cbL, ...cbR]))
+}
+
+export const copyS = (m: M) => {
+  const cbS = structuredClone(sToCb(m))
+  cbSave(mapDeInit(cbS))
 }
 
 export const pasteLR = (m: M, payload: any) => {

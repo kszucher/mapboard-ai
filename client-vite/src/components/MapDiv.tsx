@@ -41,7 +41,7 @@ export const MapDiv: FC = () => {
     mermaid.run({
       nodes: document.querySelectorAll('.mermaidNode'),
       postRenderCallback: () => {
-        dispatch(actions.mapAction({type: 'resetDimensions', payload: null}))
+        dispatch(actions.mapAction({type: 'clearDimensions', payload: null}))
       }
     })
   }, [m])
