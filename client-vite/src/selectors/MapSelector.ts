@@ -55,8 +55,8 @@ const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string
 const getSI2 = (p: PT) => getSI1(getSI1(p))
 const getSIC = (p: PT) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
-const isTRD0SO = (p: PT, pt: PT): boolean => isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0] as PT)
-const isTRD1SO = (p: PT, pt: PT): boolean => isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1] as PT)
+const isTRD0SO = (p: PT, pt: PT): boolean => pt.length >= 6 && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0] as PT)
+const isTRD1SO = (p: PT, pt: PT): boolean => pt.length >= 6 && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1] as PT)
 export const isSD = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
 export const isSU = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
 const isSU1 = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) === p.at(-1) - 1
