@@ -112,7 +112,7 @@ export const Landing: FC = () => {
                     className="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[16px] rounded-t-xl h-[344px] max-w-[602px] md:h-[588px] md:max-w-[1024px]">
                     <div className="rounded-lg overflow-hidden h-[312px] md:h-[556px] bg-white dark:bg-gray-800">
                       <img
-                        src="https://lh3.googleusercontent.com/drive-viewer/AITFw-yL0I39v-OFP-NVyzJPajpth9eLlkoXYzpUY0sfTwWgF4oofzjg4_lnK0NjdiWPgfgKLus9MIzkc9OyodLKVx-rLPcrwg=w2560-h1323"
+                        src="https://lh3.googleusercontent.com/drive-viewer/AK7aPaCtybouPO8IzhxO95_rl-DS9ykxVqkE9-VLoeU6mCC-xK328oRL3brBZI-Qv7_vueuKFcO2Td4Mgmbr1pzhZgnt1PPmRg=w2560-h1323"
                         className="hidden dark:block h-[312px] md:h-[556px] w-full rounded-lg" alt=""/>
                     </div>
                   </div>
