@@ -66,6 +66,7 @@ export const ContextMenu: FC = () => {
           <Li1 menuId={'Tabs'}>
             { mExists && <Li2 onClick={()=>{dispatch(actions.setPageState(PageState.WS_RENAME_MAP))}} subMenuId={'Rename Map'}/> }
             { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.createMapInTab.initiate())}} subMenuId={'Add Tab Map'}/> }
+            { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.createMapInTabDuplicate.initiate({mapId: getMapId()}))}} subMenuId={'Add Tab Map Duplicate'}/> }
             { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}} subMenuId={'Move Tab Map Up'}/> }
             { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}} subMenuId={'Move Tab Map Down'}/> }
             { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.deleteMap.initiate({mapId: getMapId()}))}} subMenuId={'Remove Tab Map'}/> }

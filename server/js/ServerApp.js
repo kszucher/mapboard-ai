@@ -159,13 +159,41 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const { nodeId, content } = req.body.payload
         const map = await maps.findOne({ _id: mapId })
         const { path } = map
-        const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [...path, mapId]))).insertedId
+        const newMap = getDefaultMap(content, userId, [...path, mapId])
+        const newMapId = (await maps.insertOne(newMap)).insertedId
         await MongoMutations.selectMap(users, userId, sessionId, newMapId, '')
         await MongoMutations.saveMap(maps, mapId, sessionId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
         return res.json({})
       }
       case 'createMapInTab': {
-        const newMapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
+        const newMap = getDefaultMap('New Map', userId, [])
+        const newMapId = (await maps.insertOne(newMap)).insertedId
+        await MongoMutations.selectMap(users, userId, sessionId, newMapId, '')
+        await MongoMutations.appendMapInTab(users, userId, newMapId)
+        return res.json({})
+      }
+      case 'createMapInTabDuplicate': {
+        const mapId = ObjectId(req.body.payload.mapId)
+        const map = await maps.findOne({ _id: mapId })
+        const newMap = getDefaultMap(`${map.name} - copy`, userId, [])
+        const nodeIdMapping = map.versions.at(-1).map(ti => ({
+          oldNodeId: ti.nodeId,
+          newNodeId: 'node' + genHash(8)
+        }))
+        newMap.versions = [map.versions.at(-1)]
+        newMap.versions.at(-1).forEach((ti, i) => {
+          if (ti.path.at(0) === 'l') {
+            Object.assign(ti, {
+              fromNodeId : nodeIdMapping.find(el => el.oldNodeId === ti.fromNodeId)?.newNodeId || ti.fromNodeSide,
+              toNodeId: nodeIdMapping.find(el => el.oldNodeId === ti.toNodeId)?.newNodeId || ti.nodeId
+            })
+          } else if (ti.path.at(0) === 'r') {
+            Object.assign(ti, {
+              nodeId: nodeIdMapping.at(i).newNodeId,
+            })
+          }
+        })
+        const newMapId = (await maps.insertOne(newMap)).insertedId
         await MongoMutations.selectMap(users, userId, sessionId, newMapId, '')
         await MongoMutations.appendMapInTab(users, userId, newMapId)
         return res.json({})

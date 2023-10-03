@@ -69,6 +69,11 @@ export const nodeApi = createApi({
       async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
+    createMapInTabDuplicate: builder.mutation<void, { mapId: string }>({
+      query: ({ mapId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInTabDuplicate', payload: { mapId } } }),
+      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
+      invalidatesTags: ['Workspace']
+    }),
     createMapFrameImport: builder.mutation<void, { mapId: string, frameId: string }>({
       query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameImport', payload: { mapId, frameId } } }),
       async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
