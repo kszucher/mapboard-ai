@@ -207,9 +207,9 @@ export const getRootStartX = (m: M, t: T): number => t.nodeStartX - getTRD1(m, t
 export const getRootStartY = (m: M, t: T): number => t.nodeY - Math.max(...[getTRD0(m, t).familyH, getTRD1(m, t).familyH]) / 2 - MARGIN_Y
 export const getRootW = (m: M, t: T): number => getTRD0(m, t).familyW + getTRD1(m, t).familyW + t.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, t) + hasTaskRight(m, t)) + 2 * MARGIN_X
 export const getRootH = (m: M, t: T): number => Math.max(...[getTRD0(m, t).familyH, getTRD1(m, t).familyH]) + 2 * MARGIN_Y
-export const getRootMidX = (m: M, t: T):number => getRootStartX(m, t) + getRootW(m, t) / 2
-export const getRootMidY = (m: M, t: T):number => getRootStartY(m, t) + getRootH(m, t) / 2
-export const getRootEndX = (m: M, t: T):number => getRootStartX(m, t) + getRootW(m, t)
-export const getRootEndY = (m: M, t: T):number => getRootStartY(m, t) + getRootH(m, t)
+export const getRootMidX = (m: M, t: T): number => getRootStartX(m, t) + getRootW(m, t) / 2
+export const getRootMidY = (m: M, t: T): number => getRootStartY(m, t) + getRootH(m, t) / 2
+export const getRootEndX = (m: M, t: T): number => getRootStartX(m, t) + getRootW(m, t)
+export const getRootEndY = (m: M, t: T): number => getRootStartY(m, t) + getRootH(m, t)
 
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li => l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId)
