@@ -50,10 +50,10 @@ export const isXD = (m: M): boolean => isD(getX(m).path)
 export const isTS = (t: T): boolean => isS(t.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
-export const getSIPL = (p: PT): PT[] => p.map((pi, i) => p.slice(0, i)).filter(pi => (['r', 'd', 's'].includes(pi.at(-2)) || pi.at(-3) === 'c' )).map(el => el as PT)
+export const getRDSCIPL = (p: PT): PT[] => p.map((pi, i) => p.slice(0, i)).filter(pi => (['r', 'd', 's'].includes(pi.at(-2)) || pi.at(-3) === 'c' )).map(el => el as PT)
 const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string')) as PT
 const getSI2 = (p: PT) => getSI1(getSI1(p))
-const getSIC = (p: PT) => getSIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
+const getSIC = (p: PT) => getRDSCIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
 const isTRD0SO = (p: PT, pt: PT): boolean => pt.length >= 6 && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 0] as PT)
 const isTRD1SO = (p: PT, pt: PT): boolean => pt.length >= 6 && isEqual(pt.slice(0, 4), [...p.slice(0, 2), 'd', 1] as PT)

@@ -1,6 +1,6 @@
 import {M, T} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
-import {getCountTSO1, getNodeByPath, sortPath, mT, isSEO, getTR, getSIPL, getTRD0SO, getTRD1SO} from "./MapSelector"
+import {getCountTSO1, getNodeByPath, sortPath, mT, isSEO, getTR, getRDSCIPL, getTRD0SO, getTRD1SO} from "./MapSelector"
 
 export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
@@ -47,13 +47,13 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
             moveTargetIndex = i
           }
         }
-        if (isEqual(moveInsertParentNode.path, getSIPL(moveNode.path).at(-1)) && moveNode.path.at(-1) < moveTargetIndex) {
+        if (isEqual(moveInsertParentNode.path, getRDSCIPL(moveNode.path).at(-1)) && moveNode.path.at(-1) < moveTargetIndex) {
           moveTargetIndex -= 1
         }
       }
     }
   }
-  if (isEqual(moveInsertParentNode.path, getSIPL(moveNode.path).at(-1)) && moveNode.path.at(-1) === moveTargetIndex) {
+  if (isEqual(moveInsertParentNode.path, getRDSCIPL(moveNode.path).at(-1)) && moveNode.path.at(-1) === moveTargetIndex) {
     moveInsertParentNode = {} as T
     moveTargetIndex = 0
     moveCoords = []
