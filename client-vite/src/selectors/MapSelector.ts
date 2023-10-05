@@ -51,6 +51,7 @@ export const isTS = (t: T): boolean => isS(t.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
 export const getRDSCIPL = (p: PT): PT[] => p.map((pi, i) => p.slice(0, i)).filter(pi => (['r', 'd', 's'].includes(pi.at(-2)) || pi.at(-3) === 'c' )).map(el => el as PT)
+export const getRSIPL = (p: PT): PT[] => getRDSCIPL(p).filter(pi => !isD(pi) && !isC(pi))
 const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string')) as PT
 const getSI2 = (p: PT) => getSI1(getSI1(p))
 const getSIC = (p: PT) => getRDSCIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
@@ -213,3 +214,7 @@ export const getRootEndX = (m: M, t: T): number => getRootStartX(m, t) + getRoot
 export const getRootEndY = (m: M, t: T): number => getRootStartY(m, t) + getRootH(m, t)
 
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li => l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId)
+
+export const getOuterNodeChain = (m: M, t: T): {nodeId: string, contentList: string[]}[] =>
+  getTRD0SO(m, t).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ({nodeId: ti.nodeId, contentList: [...getRSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)}))
+

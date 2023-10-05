@@ -50,4 +50,5 @@ export const mapInit = (m: MPartial) => {
       Object.assign(ti, {[prop]: structuredClone(tSaveNever[prop as keyof TSaveNever])})
     }
   })
+  return m
 }
