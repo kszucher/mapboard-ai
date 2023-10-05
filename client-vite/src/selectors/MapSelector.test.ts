@@ -1,7 +1,7 @@
 import {mapDeInit} from "../reducers/MapDeInit"
 import {mapInit} from "../reducers/MapInit"
-import {M, MPartial} from "../state/MapStateTypes"
-import {lToCb, rToCb, sortNode} from "./MapSelector"
+import {M, MPartial, T} from "../state/MapStateTypes"
+import {getReadableTree, lToCb, rToCb, sortNode} from "./MapSelector"
 
 describe("Selector_tests", () => {
   test('lToCb', () => expect(mapDeInit(lToCb(mapInit([
@@ -21,8 +21,7 @@ describe("Selector_tests", () => {
       {nodeId: 'f', path: ['l', 1], fromNodeId: 'i', toNodeId: 'k'},
     ] as M).sort(sortNode))
   )
-  test('rToCb', () =>
-    expect(mapDeInit(rToCb(mapInit([
+  test('rToCb', () => expect(mapDeInit(rToCb(mapInit([
       {nodeId: 'a', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -50,5 +49,20 @@ describe("Selector_tests", () => {
       {nodeId: 'o', path: ['r', 1, 'd', 0]},
       {nodeId: 'p', path: ['r', 1, 'd', 0, 's', 0]},
     ] as M).sort(sortNode))
+  )
+  test('getReadableTree', () => expect(getReadableTree(mapInit([
+      {nodeId: 'a', path: ['g']},
+      {nodeId: 'b', path: ['r', 0], selected: 1, content: 'contentR0'},
+      {nodeId: 'c', path: ['r', 0, 'd', 0]},
+      {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0], content: 'contentR0D0S0'},
+      {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 1], content: 'contentR0D0S1'},
+      {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 2], content: 'contentR0D0S2'},
+      {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 2, 's', 0], content: 'contentR0D0S2S0'},
+    ] as MPartial) as M, {nodeId: 'b', path: ['r', 0], selected: 1, content: 'contentR0'} as T)).toEqual([
+      {nodeId: 'b', contentList: ['contentR0']},
+      {nodeId: 'd', contentList: ['contentR0', 'contentR0D0S0']},
+      {nodeId: 'e', contentList: ['contentR0', 'contentR0D0S1']},
+      {nodeId: 'g', contentList: ['contentR0', 'contentR0D0S2', 'contentR0D0S2S0']},
+    ] as {nodeId: string, contentList: string[]}[])
   )
 })

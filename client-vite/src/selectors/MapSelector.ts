@@ -117,6 +117,7 @@ export const getXSCR0 = (m: M): M => m.filter(ti => isSCR0(getX(m).path, ti.path
 export const getXSCC0 = (m: M): M => m.filter(ti => isSCC0(getX(m).path, ti.path as PT))
 export const getXSCYY = (m: M): T[] => m.filter(ti => isSCYY(getX(m).path, ti.path as PT)) as T[]
 export const getTRD0SO = (m: M, t: T): T[] => m.filter(ti => isTRD0SO(t.path, ti.path as PT)) as T[]
+export const getTRD0SOL = (m: M, t: T): T[] => getTRD0SO(m, t).filter(ti => getCountTSO1(m, ti) === 0)
 export const getXRD0SO = (m: M): T[] => m.filter(ti => isTRD0SO(getX(m).path, ti.path as PT)) as T[]
 export const getTRD1SO = (m: M, t: T): T[] => m.filter(ti => isTRD1SO(t.path, ti.path as PT)) as T[]
 export const getXRD1SO = (m: M): T[] => m.filter(ti => isTRD1SO(getX(m).path, ti.path as PT)) as T[]
@@ -215,6 +216,5 @@ export const getRootEndY = (m: M, t: T): number => getRootStartY(m, t) + getRoot
 
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li => l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId)
 
-export const getOuterNodeChain = (m: M, t: T): {nodeId: string, contentList: string[]}[] =>
-  getTRD0SO(m, t).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ({nodeId: ti.nodeId, contentList: [...getRSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)}))
-
+export const getReadableTree = (m: M, t: T): {nodeId: string, contentList: string[]}[] =>
+  [{nodeId: t.nodeId, contentList: [t.content]}, ...getTRD0SOL(m, t).map(ti => ({nodeId: ti.nodeId, contentList: [...getRSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)}))]
