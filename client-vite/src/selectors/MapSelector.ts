@@ -1,6 +1,7 @@
 import isEqual from "react-fast-compare"
 import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
+import {Sides} from "../state/Enums"
 import {tSaveOptional} from "../state/MapState"
 import {G, N, M, T, P, L, PTC, PT, TSaveOptional} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
@@ -218,3 +219,10 @@ export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li => l.fromNo
 
 export const getReadableTree = (m: M, t: T): {nodeId: string, contentList: string[]}[] =>
   [{nodeId: t.nodeId, contentList: [t.content]}, ...getTRD0SOL(m, t).map(ti => ({nodeId: ti.nodeId, contentList: [...getRSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)}))]
+
+export const getDependencySortedR = (m: M): {nodeId: string}[] =>
+  mTR(m).sort((a: T, b: T) => (mL(m).filter(li => (
+      li.fromNodeId === b.nodeId && li.fromNodeSide === Sides.R && li.toNodeId === a.nodeId && li.toNodeSide === Sides.L ||
+      li.fromNodeId === a.nodeId && li.fromNodeSide === Sides.L && li.toNodeId === b.nodeId && li.toNodeSide === Sides.R
+    )).length ? 1 : -1
+  )).map(ti => ({nodeId: ti.nodeId})) // optional grouping in the next stage by ingestion vs extraction r-s

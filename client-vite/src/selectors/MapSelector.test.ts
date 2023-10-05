@@ -1,7 +1,8 @@
 import {mapDeInit} from "../reducers/MapDeInit"
 import {mapInit} from "../reducers/MapInit"
+import {Sides} from "../state/Enums"
 import {M, MPartial, T} from "../state/MapStateTypes"
-import {getReadableTree, lToCb, rToCb, sortNode} from "./MapSelector"
+import {getDependencySortedR, getReadableTree, lToCb, rToCb, sortNode} from "./MapSelector"
 
 describe("Selector_tests", () => {
   test('lToCb', () => expect(mapDeInit(lToCb(mapInit([
@@ -64,5 +65,30 @@ describe("Selector_tests", () => {
       {nodeId: 'e', contentList: ['contentR0', 'contentR0D0S1']},
       {nodeId: 'g', contentList: ['contentR0', 'contentR0D0S2', 'contentR0D0S2S0']},
     ] as {nodeId: string, contentList: string[]}[])
+  )
+  test('getDependencySortedR', () => expect(getDependencySortedR(mapInit([
+      {nodeId: 'a', path: ['g']},
+      {nodeId: 'b', path: ['l', 0], fromNodeId: 'h', fromNodeSide: Sides.R, toNodeId: 'i', toNodeSide: Sides.L},
+      {nodeId: 'c', path: ['l', 1], fromNodeId: 'i', fromNodeSide: Sides.R, toNodeId: 'j', toNodeSide: Sides.L},
+      {nodeId: 'd', path: ['l', 2], fromNodeId: 'k', fromNodeSide: Sides.R, toNodeId: 'l', toNodeSide: Sides.L},
+      {nodeId: 'e', path: ['l', 3], fromNodeId: 'l', fromNodeSide: Sides.R, toNodeId: 'j', toNodeSide: Sides.L},
+      {nodeId: 'f', path: ['l', 4], fromNodeId: 'm', fromNodeSide: Sides.R, toNodeId: 'n', toNodeSide: Sides.L},
+      {nodeId: 'g', path: ['l', 5], fromNodeId: 'n', fromNodeSide: Sides.R, toNodeId: 'l', toNodeSide: Sides.L},
+      {nodeId: 'h', path: ['r', 0], selected: 1},
+      {nodeId: 'i', path: ['r', 1]},
+      {nodeId: 'j', path: ['r', 2]},
+      {nodeId: 'k', path: ['r', 3]},
+      {nodeId: 'l', path: ['r', 4]},
+      {nodeId: 'm', path: ['r', 5]},
+      {nodeId: 'n', path: ['r', 6]},
+    ] as MPartial) as M)).toEqual([
+      {nodeId: 'm'},
+      {nodeId: 'n'},
+      {nodeId: 'k'},
+      {nodeId: 'l'},
+      {nodeId: 'h'},
+      {nodeId: 'i'},
+      {nodeId: 'j'}
+    ] as {nodeId: string}[])
   )
 })
