@@ -50,9 +50,16 @@ export const editorSlice = createSlice({
           state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
           break
         }
-        case 'selectByRectanglePreview': {
-          const {e, fromX, fromY} = action.payload.payload
+        case 'saveFromCoordinates': {
+          const {e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
+          state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
+          state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
+          break
+        }
+        case 'selectByRectanglePreview': {
+          const {e} = action.payload.payload
+          const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
           state.selectionRectCoords = [Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]
@@ -60,8 +67,8 @@ export const editorSlice = createSlice({
           break
         }
         case 'selectByRectangle': {
-          const {e, fromX, fromY} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
+          const {e} = action.payload.payload
+          const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
           const nList = mapFindIntersecting(pm, fromX, fromY, toX, toY)
@@ -76,7 +83,7 @@ export const editorSlice = createSlice({
         }
         case 'moveByDragPreview': {
           const {ti, e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
+          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
           const {moveCoords} = mapFindNearest(pm, ti, toX, toY)
@@ -85,7 +92,7 @@ export const editorSlice = createSlice({
         }
         case 'moveByDrag': {
           const {ti, e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
+          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
           const {moveInsertParentNodeId, moveTargetIndex} = mapFindNearest(pm, ti, toX, toY)

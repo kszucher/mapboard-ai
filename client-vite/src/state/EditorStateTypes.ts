@@ -23,6 +23,8 @@ export interface EditorState {
   selectionRectCoords: number[]
   intersectingNodes: T[]
   zoomInfo: {
+    fromX: number
+    fromY: number
     scale: number
     prevMapX: number
     prevMapY: number

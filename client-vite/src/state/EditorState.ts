@@ -24,6 +24,8 @@ export const editorState: EditorState = {
   selectionRectCoords: [],
   intersectingNodes: [],
   zoomInfo: {
+    fromX: 0,
+    fromY: 0,
     scale: 1,
     prevMapX: 0,
     prevMapY: 0,

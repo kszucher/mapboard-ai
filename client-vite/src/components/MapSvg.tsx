@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux"
 import {getCountTCO1, getG, getR0, isXACC, isXACR, isXC} from "../selectors/MapSelector"
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {mSelector} from "../state/EditorState"
-import {getMapX, getMapY} from "./MapDivUtils"
 import {MapSvgLayer0RootBackground} from "./MapSvgLayer0RootBackground"
 import {MapSvgLayer1NodeFamilyBackground} from "./MapSvgLayer1NodeFamilyBackground"
 import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
@@ -39,7 +38,6 @@ export const getSelectionMargin = (m: M, t: T) => (
 )
 
 export const MapSvg: FC = () => {
-  const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
   const r0 = getR0(m)
   const g = getG(m)
@@ -54,11 +52,7 @@ export const MapSvg: FC = () => {
         if (e.button === 1) {
           e.preventDefault()
         }
-        const {scale, prevMapX, prevMapY, originX, originY } = zoomInfo
-        const mapX = getMapX(e)
-        const mapY = getMapY(e)
-        const fromX = originX + ((mapX - prevMapX) / scale)
-        const fromY = originY + ((mapY - prevMapY) / scale)
+        dispatch(actions.mapAction({type: 'saveFromCoordinates', payload: {e}}))
         let didMove = false
         const abortController = new AbortController()
         const { signal } = abortController
@@ -66,7 +60,7 @@ export const MapSvg: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.buttons === 1) {
-            dispatch(actions.mapAction({type: 'selectByRectanglePreview', payload: {e, fromX, fromY}}))
+            dispatch(actions.mapAction({type: 'selectByRectanglePreview', payload: {e}}))
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
@@ -74,7 +68,7 @@ export const MapSvg: FC = () => {
           abortController.abort()
           if (didMove) {
             if (e.button === 0) {
-              dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e, fromX, fromY}}))
+              dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e}}))
             }
           }
         }, { signal })
