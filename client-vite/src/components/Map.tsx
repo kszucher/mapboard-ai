@@ -4,12 +4,10 @@ import {mSelector} from "../state/EditorState"
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
 import {useDispatch, useSelector} from "react-redux"
-import {getMapX, getMapY, setScrollLeftAnimated} from "./MapDivUtils"
+import {setScrollLeftAnimated} from "./MapDivUtils"
 import {useOpenWorkspaceQuery} from "../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {getG} from "../selectors/MapSelector"
-
-const ZOOM_INTENSITY = 0.2
 
 export const Map: FC = () => {
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
@@ -83,23 +81,7 @@ export const Map: FC = () => {
         }
       }}
       onWheel={(e) => {
-        const {scale, prevMapX, prevMapY, originX, originY } = zoomInfo
-        const mapX = getMapX(e)
-        const mapY = getMapY(e)
-        const x = originX + ((mapX - prevMapX) / scale)
-        const y = originY + ((mapY - prevMapY) / scale)
-        let newScale = scale * Math.exp((e.deltaY < 0 ? 1 : -1) * ZOOM_INTENSITY)
-        if (newScale > 20) {newScale = 20}
-        if (newScale < 0.2) {newScale = 0.2}
-        dispatch(actions.setZoomInfo({
-          scale: newScale,
-          prevMapX: mapX,
-          prevMapY: mapY,
-          translateX: (mapX - x) / newScale,
-          translateY: (mapY - y) / newScale,
-          originX: x,
-          originY: y,
-        }))
+        dispatch(actions.mapAction({type: 'saveView', payload: {e}}))
       }}
     >
       <div/>

@@ -96,6 +96,7 @@ export const MapDiv: FC = () => {
               onMouseDown={(e) => {
                 e.stopPropagation()
                 dispatch(actions.closeContextMenu())
+                let didMove = false
                 if (e.button === 0) {
                   if (ti.linkType === 'internal') {
                     dispatch(nodeApi.endpoints.selectMap.initiate({mapId: ti.link, frameId: ''}))
@@ -109,12 +110,15 @@ export const MapDiv: FC = () => {
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      !isXR(m) && dispatch(actions.mapAction({type: 'moveByDragPreview', payload: {ti, e}}))
+                      didMove = true
+                      !isXR(m) && dispatch(actions.mapAction({type: 'moveByDragPreview', payload: {t: ti, e}}))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      !isXR(m) && dispatch(actions.mapAction({type: 'moveByDrag', payload: {ti, e}}))
+                      if (didMove) {
+                        !isXR(m) && dispatch(actions.mapAction({type: 'moveByDrag', payload: {t: ti, e}}))
+                      }
                     }, { signal })
                   }
                 } else if (e.button === 1) {

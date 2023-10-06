@@ -50,9 +50,29 @@ export const editorSlice = createSlice({
           state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
           break
         }
+        case 'saveView': {
+          const {e} = action.payload.payload
+          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+          const mapX = getMapX(e)
+          const mapY = getMapY(e)
+          const x = originX + ((mapX - prevMapX) / scale)
+          const y = originY + ((mapY - prevMapY) / scale)
+          const ZOOM_INTENSITY = 0.2
+          let newScale = scale * Math.exp((e.deltaY < 0 ? 1 : -1) * ZOOM_INTENSITY)
+          if (newScale > 20) {newScale = 20}
+          if (newScale < 0.2) {newScale = 0.2}
+          state.zoomInfo.scale = newScale
+          state.zoomInfo.prevMapX = mapX
+          state.zoomInfo.prevMapY = mapY
+          state.zoomInfo.translateX = (mapX - x) / newScale
+          state.zoomInfo.translateY = (mapY - y) / newScale
+          state.zoomInfo.originX = x
+          state.zoomInfo.originY = y
+          break
+        }
         case 'saveFromCoordinates': {
           const {e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
+          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
           state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
           break
@@ -82,20 +102,20 @@ export const editorSlice = createSlice({
           break
         }
         case 'moveByDragPreview': {
-          const {ti, e} = action.payload.payload
+          const {t, e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const {moveCoords} = mapFindNearest(pm, ti, toX, toY)
+          const {moveCoords} = mapFindNearest(pm, t, toX, toY)
           state.moveCoords = moveCoords
           break
         }
         case 'moveByDrag': {
-          const {ti, e} = action.payload.payload
+          const {t, e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const {moveInsertParentNodeId, moveTargetIndex} = mapFindNearest(pm, ti, toX, toY)
+          const {moveInsertParentNodeId, moveTargetIndex} = mapFindNearest(pm, t, toX, toY)
           if (moveInsertParentNodeId.length) {
             const m = mapReducer(pm, 'moveByDrag', {moveInsertParentNodeId, moveTargetIndex})
             if (!isEqual(pm, m)) {
@@ -202,13 +222,13 @@ const listenerMiddleware = createListenerMiddleware()
 
 listenerMiddleware.startListening({
   predicate: (action, currentState) => {
-   return (
-    action.type.startsWith('editor') &&
-    action.type !== 'editor/closeContextMenu' &&
-    action.type !== 'editor/openContextMenu' &&
-    action.type !== 'editor/resetConnectionStart' &&
-    (currentState as RootState).editor.contextMenu !== null
-   )
+    return (
+      action.type.startsWith('editor') &&
+      action.type !== 'editor/closeContextMenu' &&
+      action.type !== 'editor/openContextMenu' &&
+      action.type !== 'editor/resetConnectionStart' &&
+      (currentState as RootState).editor.contextMenu !== null
+    )
   },
   effect: async (action, listenerApi) => {
     listenerApi.dispatch(actions.closeContextMenu())
