@@ -15,7 +15,6 @@ import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
 import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
 import {MapSvgLayer9DecorationIcons} from "./MapSvgLayer9DecorationIcons"
 import {MapSvgLayer10Connections} from "./MapSvgLayer10Connections"
-import {mapFindIntersecting} from "../selectors/MapFindIntersecting"
 import {M, T} from "../state/MapStateTypes"
 
 export const pathCommonProps = {
@@ -67,22 +66,15 @@ export const MapSvg: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.buttons === 1) {
-            dispatch(actions.mapAction({type: 'rectangleSelectionPreview', payload: {e, fromX, fromY}}))
+            dispatch(actions.mapAction({type: 'selectByRectanglePreview', payload: {e, fromX, fromY}}))
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          const mapX = getMapX(e)
-          const mapY = getMapY(e)
-          const toX = originX + ((mapX - prevMapX) / scale)
-          const toY = originY + ((mapY - prevMapY) / scale)
           if (didMove) {
             if (e.button === 0) {
-              const nList = mapFindIntersecting(m, fromX, fromY, toX, toY)
-              nList.length && dispatch(actions.mapAction({type: 'selectDragged', payload: {pathList: nList.map(ti => ti.path)}}))
-              dispatch(actions.setSelectionRectCoords([]))
-              dispatch(actions.setIntersectingNodes([]))
+              dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e, fromX, fromY}}))
             }
           }
         }, { signal })

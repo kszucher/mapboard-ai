@@ -109,12 +109,12 @@ export const MapDiv: FC = () => {
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      !isXR(m) && dispatch(actions.mapAction({type: 'simulateDrag', payload: {ti, e}}))
+                      !isXR(m) && dispatch(actions.mapAction({type: 'moveByDragPreview', payload: {ti, e}}))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      !isXR(m) && dispatch(actions.mapAction({type: 'drag', payload: {ti, e}}))
+                      !isXR(m) && dispatch(actions.mapAction({type: 'moveByDrag', payload: {ti, e}}))
                     }, { signal })
                   }
                 } else if (e.button === 1) {

@@ -32,8 +32,6 @@ export const editorSlice = createSlice({
       state.contextMenu = {isActive: true, type: action.payload.type, position: action.payload.position }
     },
     closeContextMenu(state) { state.contextMenu.isActive = false },
-    setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
-    setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
     setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload},
     showConnectionHelpers(state) { state.connectionHelpersVisible = true },
     hideConnectionHelpers(state) { state.connectionHelpersVisible = false },
@@ -52,7 +50,7 @@ export const editorSlice = createSlice({
           state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
           break
         }
-        case 'rectangleSelectionPreview': {
+        case 'selectByRectanglePreview': {
           const {e, fromX, fromY} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
           const mapX = getMapX(e)
@@ -63,7 +61,24 @@ export const editorSlice = createSlice({
           state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
           break
         }
-        case 'simulateDrag': {
+        case 'selectByRectangle': {
+          const {e, fromX, fromY} = action.payload.payload
+          const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
+          const mapX = getMapX(e)
+          const mapY = getMapY(e)
+          const toX = originX + ((mapX - prevMapX) / scale)
+          const toY = originY + ((mapY - prevMapY) / scale)
+          const nList = mapFindIntersecting(pm, fromX, fromY, toX, toY)
+          const m = mapReducer(pm, 'selectByRectangle', {pathList: nList.map(ti => ti.path)})
+          if (!isEqual(pm, m)) {
+            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+            state.mapListIndex = state.mapListIndex + 1
+          }
+          state.selectionRectCoords = []
+          state.intersectingNodes = []
+          break
+        }
+        case 'moveByDragPreview': {
           const {ti, e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
           const mapX = getMapX(e)
@@ -74,7 +89,7 @@ export const editorSlice = createSlice({
           state.moveCoords = moveCoords
           break
         }
-        case 'drag': {
+        case 'moveByDrag': {
           const {ti, e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
           const mapX = getMapX(e)
@@ -83,7 +98,7 @@ export const editorSlice = createSlice({
           const toY = originY + ((mapY - prevMapY) / scale)
           const {moveInsertParentNodeId, moveTargetIndex} = mapFindNearest(pm, ti, toX, toY)
           if (moveInsertParentNodeId.length) {
-            const m = mapReducer(pm, 'drag', {moveInsertParentNodeId, moveTargetIndex})
+            const m = mapReducer(pm, 'moveByDrag', {moveInsertParentNodeId, moveTargetIndex})
             if (!isEqual(pm, m)) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
               state.mapListIndex = state.mapListIndex + 1

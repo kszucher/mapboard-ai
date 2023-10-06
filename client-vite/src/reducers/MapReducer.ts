@@ -49,7 +49,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCU': selectTL(m, getXACU1(m), 's'); break
     case 'selectCR': selectTL(m, getXACR1(m), 's'); break
     case 'selectCL': selectTL(m, getXACL1(m), 's'); break
-    case 'selectDragged': selectTL(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
+    case 'selectByRectangle': selectTL(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
 
     case 'insertL': insertL(m, payload); break
     // case 'insertTemplateRD': insertTemplateR(m, payload.template, getRiL(m) + 1, 0, getRootStartY(m, getR0(m)) + getG(m).maxD + 500); break
@@ -102,7 +102,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
     case 'moveSIR': moveS(m, getXRD1(m), getCountXRD1SO1(m)); break
     case 'moveSIL': moveS(m, getXRD0(m), getCountXRD0SO1(m)); break
-    case 'drag': moveS(m, getNodeById(m, payload.moveInsertParentNodeId), payload.moveTargetIndex); break
+    case 'moveByDrag': moveS(m, getNodeById(m, payload.moveInsertParentNodeId), payload.moveTargetIndex); break
     case 'moveCRD': moveCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
     case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
