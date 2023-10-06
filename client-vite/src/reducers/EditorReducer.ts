@@ -52,7 +52,7 @@ export const editorSlice = createSlice({
           state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
           break
         }
-        case 'simulateSelection': {
+        case 'rectangleSelectionPreview': {
           const {e, fromX, fromY} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
           const mapX = getMapX(e)

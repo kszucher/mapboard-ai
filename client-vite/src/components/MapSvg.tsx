@@ -67,7 +67,7 @@ export const MapSvg: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.buttons === 1) {
-            dispatch(actions.mapAction({type: 'simulateSelection', payload: {e, fromX, fromY}}))
+            dispatch(actions.mapAction({type: 'rectangleSelectionPreview', payload: {e, fromX, fromY}}))
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
