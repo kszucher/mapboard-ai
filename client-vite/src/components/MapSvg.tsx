@@ -67,13 +67,7 @@ export const MapSvg: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.buttons === 1) {
-            const {scale, prevMapX, prevMapY, originX, originY } = zoomInfo
-            const mapX = getMapX(e)
-            const mapY = getMapY(e)
-            const toX = originX + ((mapX - prevMapX) / scale)
-            const toY = originY + ((mapY - prevMapY) / scale)
-            dispatch(actions.setSelectionRectCoords([Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]))
-            dispatch(actions.setIntersectingNodes(mapFindIntersecting(m, fromX, fromY, toX, toY)))
+            dispatch(actions.mapAction({type: 'simulateSelection', payload: {e, fromX, fromY}}))
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {

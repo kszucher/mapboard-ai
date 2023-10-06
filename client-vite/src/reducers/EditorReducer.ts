@@ -1,6 +1,7 @@
 import {combineReducers, configureStore, createListenerMiddleware, createSlice, current, isAction, PayloadAction} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../components/MapDivUtils"
+import {mapFindIntersecting} from "../selectors/MapFindIntersecting"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState, Sides} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
@@ -39,7 +40,6 @@ export const editorSlice = createSlice({
     setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload},
     resetConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Sides.R}},
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
-      // TODO check edit/view condition
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
         case 'undo': {
@@ -50,6 +50,17 @@ export const editorSlice = createSlice({
         case 'redo': {
           state.editedNodeId = ''
           state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
+          break
+        }
+        case 'simulateSelection': {
+          const {e, fromX, fromY} = action.payload.payload
+          const {scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
+          const mapX = getMapX(e)
+          const mapY = getMapY(e)
+          const toX = originX + ((mapX - prevMapX) / scale)
+          const toY = originY + ((mapY - prevMapY) / scale)
+          state.selectionRectCoords = [Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]
+          state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
           break
         }
         case 'simulateDrag': {
