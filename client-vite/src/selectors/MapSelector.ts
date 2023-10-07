@@ -1,9 +1,9 @@
 import isEqual from "react-fast-compare"
 import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {Sides} from "../state/Enums"
+import {ControlTypes, Sides} from "../state/Enums"
 import {tSaveOptional} from "../state/MapState"
-import {G, N, M, T, P, L, PTC, PT, TSaveOptional} from "../state/MapStateTypes"
+import {G, L, M, N, P, PT, PTC, T, TSaveOptional} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
 
 export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
@@ -222,6 +222,12 @@ export type ReadableTree = {
   contentList: string[]
 }[]
 
+export enum SubProcessTypes {
+  INGESTION = 'ingestion',
+  EXTRACTION = 'extraction',
+  NONE = ''
+}
+
 export type SubProcess = {
   subProcessId: string
   subProcessType: 'ingestion' | 'extraction'
@@ -230,6 +236,16 @@ export type SubProcess = {
   shouldQueryAndStoreResultAsMindMapToo: boolean
   subProcessInputLink: string
   subProcessPromptOverride: string
+}
+
+export const getSubProcessType = (controlType: ControlTypes): SubProcessTypes => {
+  if (controlType === ControlTypes.UPLOAD) {
+    return SubProcessTypes.INGESTION
+  } else if (controlType === ControlTypes.GENERATE) {
+    return SubProcessTypes.EXTRACTION
+  } else {
+    return SubProcessTypes.NONE
+  }
 }
 
 export const getReadableTree = (m: M, t: T): ReadableTree => [
@@ -246,8 +262,8 @@ export const getSubProcessList = (m: M): SubProcess[] =>
         li.fromNodeId === a.nodeId && li.fromNodeSide === Sides.L && li.toNodeId === b.nodeId && li.toNodeSide === Sides.R
       )).length ? 1 : -1
     ))
-    .map(ti => ({
-        subProcessId: ti.nodeId
-
+    .map(ri => ({
+        subProcessId: ri.nodeId,
+        subProcessType: getSubProcessType(ri.controlType)
       } as SubProcess)
     )
