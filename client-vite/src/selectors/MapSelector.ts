@@ -264,6 +264,7 @@ export const getSubProcessList = (m: M): SubProcess[] =>
     ))
     .map(ri => ({
         subProcessId: ri.nodeId,
-        subProcessType: getSubProcessType(ri.controlType)
+        subProcessType: getSubProcessType(ri.controlType),
+        subProcessMindMapData: getReadableTree(m, ri),
       } as SubProcess)
     )

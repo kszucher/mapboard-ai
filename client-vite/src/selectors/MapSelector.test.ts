@@ -74,21 +74,21 @@ describe("Selector_tests", () => {
       {nodeId: 'e', path: ['l', 3], fromNodeId: 'l', fromNodeSide: Sides.R, toNodeId: 'j', toNodeSide: Sides.L},
       {nodeId: 'f', path: ['l', 4], fromNodeId: 'm', fromNodeSide: Sides.R, toNodeId: 'n', toNodeSide: Sides.L},
       {nodeId: 'g', path: ['l', 5], fromNodeId: 'n', fromNodeSide: Sides.R, toNodeId: 'l', toNodeSide: Sides.L},
-      {nodeId: 'h', path: ['r', 0], controlType: ControlTypes.UPLOAD, selected: 1},
-      {nodeId: 'i', path: ['r', 1], controlType: ControlTypes.GENERATE},
-      {nodeId: 'j', path: ['r', 2], controlType: ControlTypes.GENERATE},
-      {nodeId: 'k', path: ['r', 3], controlType: ControlTypes.UPLOAD},
-      {nodeId: 'l', path: ['r', 4], controlType: ControlTypes.GENERATE},
-      {nodeId: 'm', path: ['r', 5], controlType: ControlTypes.UPLOAD},
-      {nodeId: 'n', path: ['r', 6], controlType: ControlTypes.GENERATE},
+      {nodeId: 'h', path: ['r', 0], content: 'ch', controlType: ControlTypes.UPLOAD, selected: 1},
+      {nodeId: 'i', path: ['r', 1], content: 'ci', controlType: ControlTypes.GENERATE},
+      {nodeId: 'j', path: ['r', 2], content: 'cj', controlType: ControlTypes.GENERATE},
+      {nodeId: 'k', path: ['r', 3], content: 'ck', controlType: ControlTypes.UPLOAD},
+      {nodeId: 'l', path: ['r', 4], content: 'cl', controlType: ControlTypes.GENERATE},
+      {nodeId: 'm', path: ['r', 5], content: 'cm', controlType: ControlTypes.UPLOAD},
+      {nodeId: 'n', path: ['r', 6], content: 'cn', controlType: ControlTypes.GENERATE},
     ] as MPartial) as M)).toEqual([
-      {subProcessId: 'm', subProcessType: SubProcessTypes.INGESTION},
-      {subProcessId: 'n', subProcessType: SubProcessTypes.EXTRACTION},
-      {subProcessId: 'k', subProcessType: SubProcessTypes.INGESTION},
-      {subProcessId: 'l', subProcessType: SubProcessTypes.EXTRACTION},
-      {subProcessId: 'h', subProcessType: SubProcessTypes.INGESTION},
-      {subProcessId: 'i', subProcessType: SubProcessTypes.EXTRACTION},
-      {subProcessId: 'j', subProcessType: SubProcessTypes.EXTRACTION}
+      {subProcessId: 'm', subProcessType: SubProcessTypes.INGESTION, subProcessMindMapData: [{nodeId: 'm', contentList: ['cm']}] as ReadableTree},
+      {subProcessId: 'n', subProcessType: SubProcessTypes.EXTRACTION, subProcessMindMapData: [{nodeId: 'n', contentList: ['cn']}] as ReadableTree},
+      {subProcessId: 'k', subProcessType: SubProcessTypes.INGESTION, subProcessMindMapData: [{nodeId: 'k', contentList: ['ck']}] as ReadableTree},
+      {subProcessId: 'l', subProcessType: SubProcessTypes.EXTRACTION, subProcessMindMapData: [{nodeId: 'l', contentList: ['cl']}] as ReadableTree},
+      {subProcessId: 'h', subProcessType: SubProcessTypes.INGESTION, subProcessMindMapData: [{nodeId: 'h', contentList: ['ch']}] as ReadableTree},
+      {subProcessId: 'i', subProcessType: SubProcessTypes.EXTRACTION, subProcessMindMapData: [{nodeId: 'i', contentList: ['ci']}] as ReadableTree},
+      {subProcessId: 'j', subProcessType: SubProcessTypes.EXTRACTION, subProcessMindMapData: [{nodeId: 'j', contentList: ['cj']}] as ReadableTree}
     ] as SubProcess[])
   )
 })
