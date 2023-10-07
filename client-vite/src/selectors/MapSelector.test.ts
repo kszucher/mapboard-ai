@@ -66,7 +66,19 @@ describe("Selector_tests", () => {
       {nodeId: 'g', contentList: ['contentR0', 'contentR0D0S2', 'contentR0D0S2S0']},
     ] as ReadableTree)
   )
-  test('getSubProcessList', () => expect(getSubProcessList(mapInit([
+  test('getSubProcessList', () =>
+    //      [h]
+    //         \
+    //          [i]
+    //             \
+    //      [k]     [j]
+    //         \   /
+    //          [l]
+    //         /
+    //      [n]
+    //     /
+    //  [m]
+    expect(getSubProcessList(mapInit([
       {nodeId: 'a', path: ['g']},
       {nodeId: 'b', path: ['l', 0], fromNodeId: 'h', fromNodeSide: Sides.R, toNodeId: 'i', toNodeSide: Sides.L},
       {nodeId: 'c', path: ['l', 1], fromNodeId: 'i', fromNodeSide: Sides.R, toNodeId: 'j', toNodeSide: Sides.L},

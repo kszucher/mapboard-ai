@@ -266,7 +266,7 @@ export const getSubProcessList = (m: M): SubProcess[] =>
         subProcessId: ri.nodeId,
         subProcessType: getSubProcessType(ri.controlType),
         subProcessMindMapData: getReadableTree(m, ri),
-        inputSubProcesses: [''],
+        inputSubProcesses: [''], // TODO start here
         shouldQueryAndStoreResultAsMindMapToo: false,
         subProcessInputLink: '',
         subProcessPromptOverride: ''
