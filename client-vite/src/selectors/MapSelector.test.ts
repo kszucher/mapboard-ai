@@ -2,7 +2,7 @@ import {mapDeInit} from "../reducers/MapDeInit"
 import {mapInit} from "../reducers/MapInit"
 import {Sides} from "../state/Enums"
 import {M, MPartial, T} from "../state/MapStateTypes"
-import {getDependencySortedR, getReadableTree, lToCb, rToCb, sortNode} from "./MapSelector"
+import {getSubProcessList, getReadableTree, lToCb, ReadableTree, SubProcess, rToCb, sortNode} from "./MapSelector"
 
 describe("Selector_tests", () => {
   test('lToCb', () => expect(mapDeInit(lToCb(mapInit([
@@ -64,9 +64,9 @@ describe("Selector_tests", () => {
       {nodeId: 'd', contentList: ['contentR0', 'contentR0D0S0']},
       {nodeId: 'e', contentList: ['contentR0', 'contentR0D0S1']},
       {nodeId: 'g', contentList: ['contentR0', 'contentR0D0S2', 'contentR0D0S2S0']},
-    ] as {nodeId: string, contentList: string[]}[])
+    ] as ReadableTree)
   )
-  test('getDependencySortedR', () => expect(getDependencySortedR(mapInit([
+  test('getSubProcessList', () => expect(getSubProcessList(mapInit([
       {nodeId: 'a', path: ['g']},
       {nodeId: 'b', path: ['l', 0], fromNodeId: 'h', fromNodeSide: Sides.R, toNodeId: 'i', toNodeSide: Sides.L},
       {nodeId: 'c', path: ['l', 1], fromNodeId: 'i', fromNodeSide: Sides.R, toNodeId: 'j', toNodeSide: Sides.L},
@@ -82,13 +82,13 @@ describe("Selector_tests", () => {
       {nodeId: 'm', path: ['r', 5]},
       {nodeId: 'n', path: ['r', 6]},
     ] as MPartial) as M)).toEqual([
-      {nodeId: 'm'},
-      {nodeId: 'n'},
-      {nodeId: 'k'},
-      {nodeId: 'l'},
-      {nodeId: 'h'},
-      {nodeId: 'i'},
-      {nodeId: 'j'}
-    ] as {nodeId: string}[])
+      {subProcessId: 'm'},
+      {subProcessId: 'n'},
+      {subProcessId: 'k'},
+      {subProcessId: 'l'},
+      {subProcessId: 'h'},
+      {subProcessId: 'i'},
+      {subProcessId: 'j'}
+    ] as SubProcess[])
   )
 })

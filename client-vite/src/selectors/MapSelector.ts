@@ -217,12 +217,37 @@ export const getRootEndY = (m: M, t: T): number => getRootStartY(m, t) + getRoot
 
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li => l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId)
 
-export const getReadableTree = (m: M, t: T): {nodeId: string, contentList: string[]}[] =>
-  [{nodeId: t.nodeId, contentList: [t.content]}, ...getTRD0SOL(m, t).map(ti => ({nodeId: ti.nodeId, contentList: [...getRSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)}))]
+export type ReadableTree = {
+  nodeId: string,
+  contentList: string[]
+}[]
 
-export const getDependencySortedR = (m: M): {nodeId: string}[] =>
-  mTR(m).sort((a: T, b: T) => (mL(m).filter(li => (
-      li.fromNodeId === b.nodeId && li.fromNodeSide === Sides.R && li.toNodeId === a.nodeId && li.toNodeSide === Sides.L ||
-      li.fromNodeId === a.nodeId && li.fromNodeSide === Sides.L && li.toNodeId === b.nodeId && li.toNodeSide === Sides.R
-    )).length ? 1 : -1
-  )).map(ti => ({nodeId: ti.nodeId})) // optional grouping in the next stage by ingestion vs extraction r-s
+export type SubProcess = {
+  subProcessId: string
+  subProcessType: 'ingestion' | 'extraction'
+  subProcessMindMapData: ReadableTree,
+  inputSubProcesses: string[]
+  shouldQueryAndStoreResultAsMindMapToo: boolean
+  subProcessInputLink: string
+  subProcessPromptOverride: string
+}
+
+export const getReadableTree = (m: M, t: T): ReadableTree => [
+  {nodeId: t.nodeId, contentList: [t.content]}, ...getTRD0SOL(m, t).map(ti => ({
+    nodeId: ti.nodeId,
+    contentList: [...getRSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)
+  }))
+]
+
+export const getSubProcessList = (m: M): SubProcess[] =>
+  mTR(m)
+    .sort((a: T, b: T) => (mL(m).filter(li => (
+        li.fromNodeId === b.nodeId && li.fromNodeSide === Sides.R && li.toNodeId === a.nodeId && li.toNodeSide === Sides.L ||
+        li.fromNodeId === a.nodeId && li.fromNodeSide === Sides.L && li.toNodeId === b.nodeId && li.toNodeSide === Sides.R
+      )).length ? 1 : -1
+    ))
+    .map(ti => ({
+        subProcessId: ti.nodeId
+
+      } as SubProcess)
+    )
