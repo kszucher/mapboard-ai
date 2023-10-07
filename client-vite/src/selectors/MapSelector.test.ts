@@ -81,14 +81,63 @@ describe("Selector_tests", () => {
       {nodeId: 'l', path: ['r', 4], content: 'cl', controlType: ControlTypes.GENERATE},
       {nodeId: 'm', path: ['r', 5], content: 'cm', controlType: ControlTypes.UPLOAD},
       {nodeId: 'n', path: ['r', 6], content: 'cn', controlType: ControlTypes.GENERATE},
-    ] as MPartial) as M)).toEqual([
-      {subProcessId: 'm', subProcessType: SubProcessTypes.INGESTION, subProcessMindMapData: [{nodeId: 'm', contentList: ['cm']}] as ReadableTree},
-      {subProcessId: 'n', subProcessType: SubProcessTypes.EXTRACTION, subProcessMindMapData: [{nodeId: 'n', contentList: ['cn']}] as ReadableTree},
-      {subProcessId: 'k', subProcessType: SubProcessTypes.INGESTION, subProcessMindMapData: [{nodeId: 'k', contentList: ['ck']}] as ReadableTree},
-      {subProcessId: 'l', subProcessType: SubProcessTypes.EXTRACTION, subProcessMindMapData: [{nodeId: 'l', contentList: ['cl']}] as ReadableTree},
-      {subProcessId: 'h', subProcessType: SubProcessTypes.INGESTION, subProcessMindMapData: [{nodeId: 'h', contentList: ['ch']}] as ReadableTree},
-      {subProcessId: 'i', subProcessType: SubProcessTypes.EXTRACTION, subProcessMindMapData: [{nodeId: 'i', contentList: ['ci']}] as ReadableTree},
-      {subProcessId: 'j', subProcessType: SubProcessTypes.EXTRACTION, subProcessMindMapData: [{nodeId: 'j', contentList: ['cj']}] as ReadableTree}
+    ] as MPartial) as M)).toEqual([{
+      subProcessId: 'm',
+      subProcessType: SubProcessTypes.INGESTION,
+      subProcessMindMapData: [{nodeId: 'm', contentList: ['cm']}] as ReadableTree,
+      inputSubProcesses: [''],
+      shouldQueryAndStoreResultAsMindMapToo: false,
+      subProcessInputLink: '',
+      subProcessPromptOverride: ''
+    }, {
+      subProcessId: 'n',
+      subProcessType: SubProcessTypes.EXTRACTION,
+      subProcessMindMapData: [{nodeId: 'n', contentList: ['cn']}] as ReadableTree,
+      inputSubProcesses: [''],
+      shouldQueryAndStoreResultAsMindMapToo: false,
+      subProcessInputLink: '',
+      subProcessPromptOverride: ''
+    }, {
+      subProcessId: 'k',
+      subProcessType: SubProcessTypes.INGESTION,
+      subProcessMindMapData: [{nodeId: 'k', contentList: ['ck']}] as ReadableTree,
+      inputSubProcesses: [''],
+      shouldQueryAndStoreResultAsMindMapToo: false,
+      subProcessInputLink: '',
+      subProcessPromptOverride: ''
+    }, {
+      subProcessId: 'l',
+      subProcessType: SubProcessTypes.EXTRACTION,
+      subProcessMindMapData: [{nodeId: 'l', contentList: ['cl']}] as ReadableTree,
+      inputSubProcesses: [''],
+      shouldQueryAndStoreResultAsMindMapToo: false,
+      subProcessInputLink: '',
+      subProcessPromptOverride: ''
+    }, {
+      subProcessId: 'h',
+      subProcessType: SubProcessTypes.INGESTION,
+      subProcessMindMapData: [{nodeId: 'h', contentList: ['ch']}] as ReadableTree,
+      inputSubProcesses: [''],
+      shouldQueryAndStoreResultAsMindMapToo: false,
+      subProcessInputLink: '',
+      subProcessPromptOverride: ''
+    }, {
+      subProcessId: 'i',
+      subProcessType: SubProcessTypes.EXTRACTION,
+      subProcessMindMapData: [{nodeId: 'i', contentList: ['ci']}] as ReadableTree,
+      inputSubProcesses: [''],
+      shouldQueryAndStoreResultAsMindMapToo: false,
+      subProcessInputLink: '',
+      subProcessPromptOverride: ''
+    }, {
+      subProcessId: 'j',
+      subProcessType: SubProcessTypes.EXTRACTION,
+      subProcessMindMapData: [{nodeId: 'j', contentList: ['cj']}] as ReadableTree,
+      inputSubProcesses: [''],
+      shouldQueryAndStoreResultAsMindMapToo: false,
+      subProcessInputLink: '',
+      subProcessPromptOverride: ''
+    }
     ] as SubProcess[])
   )
 })
