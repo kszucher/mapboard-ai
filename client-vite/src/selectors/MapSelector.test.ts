@@ -98,58 +98,57 @@ describe("Selector_tests", () => {
       subProcessType: SubProcessTypes.INGESTION,
       subProcessMindMapData: [{nodeId: 'm', contentList: ['cm']}] as ReadableTree,
       inputSubProcesses: [''],
-      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessInputLink: '',
+      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
       subProcessId: 'n',
       subProcessType: SubProcessTypes.EXTRACTION,
       subProcessMindMapData: [{nodeId: 'n', contentList: ['cn']}] as ReadableTree,
       inputSubProcesses: [''],
-      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessInputLink: '',
+      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
       subProcessId: 'k',
       subProcessType: SubProcessTypes.INGESTION,
       subProcessMindMapData: [{nodeId: 'k', contentList: ['ck']}] as ReadableTree,
       inputSubProcesses: [''],
-      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessInputLink: '',
+      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
       subProcessId: 'l',
       subProcessType: SubProcessTypes.EXTRACTION,
       subProcessMindMapData: [{nodeId: 'l', contentList: ['cl']}] as ReadableTree,
       inputSubProcesses: [''],
-      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessInputLink: '',
+      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
       subProcessId: 'h',
       subProcessType: SubProcessTypes.INGESTION,
       subProcessMindMapData: [{nodeId: 'h', contentList: ['ch']}] as ReadableTree,
       inputSubProcesses: [''],
-      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessInputLink: '',
+      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
       subProcessId: 'i',
       subProcessType: SubProcessTypes.EXTRACTION,
       subProcessMindMapData: [{nodeId: 'i', contentList: ['ci']}] as ReadableTree,
       inputSubProcesses: [''],
-      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessInputLink: '',
+      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
       subProcessId: 'j',
       subProcessType: SubProcessTypes.EXTRACTION,
       subProcessMindMapData: [{nodeId: 'j', contentList: ['cj']}] as ReadableTree,
       inputSubProcesses: [''],
-      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessInputLink: '',
+      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
-    }
-    ] as SubProcess[])
+    }] as SubProcess[])
   )
 })

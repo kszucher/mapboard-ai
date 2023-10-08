@@ -233,8 +233,8 @@ export type SubProcess = {
   subProcessType: 'ingestion' | 'extraction'
   subProcessMindMapData: ReadableTree,
   inputSubProcesses: string[]
-  shouldQueryAndStoreResultAsMindMapToo: boolean
   subProcessInputLink: string
+  shouldQueryAndStoreResultAsMindMapToo: boolean
   subProcessPromptOverride: string
 }
 
@@ -267,8 +267,8 @@ export const getSubProcessList = (m: M): SubProcess[] =>
         subProcessType: getSubProcessType(ri.controlType),
         subProcessMindMapData: getReadableTree(m, ri),
         inputSubProcesses: [''], // TODO start here
-        shouldQueryAndStoreResultAsMindMapToo: false,
         subProcessInputLink: '',
+        shouldQueryAndStoreResultAsMindMapToo: false,
         subProcessPromptOverride: ''
       } as SubProcess)
     )
