@@ -165,10 +165,6 @@ export const editorSlice = createSlice({
       (state) => {state.pageState = PageState.WS}
     )
     builder.addMatcher(
-      nodeApi.endpoints.getShares.matchFulfilled,
-      (state) => {state.pageState = PageState.WS}
-    )
-    builder.addMatcher(
       nodeApi.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
         const { mapDataList } = payload
