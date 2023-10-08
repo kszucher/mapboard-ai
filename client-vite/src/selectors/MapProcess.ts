@@ -40,6 +40,11 @@ export const getReadableTree = (m: M, t: T): ReadableTree => [
   }))
 ]
 
+export const getDependencies = (m: M, r: T): string[] => [
+  ...mL(m).filter(li => li.fromNodeId === r.nodeId && li.fromNodeSide === Sides.L).map(li => li.toNodeId),
+  ...mL(m).filter(li => li.toNodeId === r.nodeId && li.toNodeSide === Sides.L).map(li => li.fromNodeId)
+]
+
 export const getSubProcessList = (m: M): SubProcess[] =>
   mTR(m)
     .sort((a: T, b: T) => (mL(m).filter(li => (
@@ -51,7 +56,7 @@ export const getSubProcessList = (m: M): SubProcess[] =>
         subProcessId: ri.nodeId,
         subProcessType: getSubProcessType(ri.controlType),
         subProcessMindMapData: getReadableTree(m, ri),
-        inputSubProcesses: [''], // TODO start here
+        inputSubProcesses: getDependencies(m, ri),
         subProcessInputLink: '',
         shouldQueryAndStoreResultAsMindMapToo: false,
         subProcessPromptOverride: ''
