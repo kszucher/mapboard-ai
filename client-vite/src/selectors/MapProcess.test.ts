@@ -39,19 +39,19 @@ describe("Process_tests", () => {
       {nodeId: 'e', path: ['l', 3], fromNodeId: 'l', fromNodeSide: Sides.R, toNodeId: 'j', toNodeSide: Sides.L},
       {nodeId: 'f', path: ['l', 4], fromNodeId: 'm', fromNodeSide: Sides.R, toNodeId: 'n', toNodeSide: Sides.L},
       {nodeId: 'g', path: ['l', 5], fromNodeId: 'n', fromNodeSide: Sides.R, toNodeId: 'l', toNodeSide: Sides.L},
-      {nodeId: 'h', path: ['r', 0], content: 'ch', controlType: ControlTypes.UPLOAD, selected: 1},
+      {nodeId: 'h', path: ['r', 0], content: 'ch', controlType: ControlTypes.UPLOAD, llmDataType: 'text', llmDataId: 'hTextUrl', selected: 1},
       {nodeId: 'i', path: ['r', 1], content: 'ci', controlType: ControlTypes.GENERATE},
       {nodeId: 'j', path: ['r', 2], content: 'cj', controlType: ControlTypes.GENERATE},
-      {nodeId: 'k', path: ['r', 3], content: 'ck', controlType: ControlTypes.UPLOAD},
+      {nodeId: 'k', path: ['r', 3], content: 'ck', controlType: ControlTypes.UPLOAD, llmDataType: 'audio', llmDataId: 'kAudioUrl'},
       {nodeId: 'l', path: ['r', 4], content: 'cl', controlType: ControlTypes.GENERATE},
-      {nodeId: 'm', path: ['r', 5], content: 'cm', controlType: ControlTypes.UPLOAD},
+      {nodeId: 'm', path: ['r', 5], content: 'cm', controlType: ControlTypes.UPLOAD, llmDataType: 'text', llmDataId: 'mTextUrl'},
       {nodeId: 'n', path: ['r', 6], content: 'cn', controlType: ControlTypes.GENERATE},
     ] as MPartial) as M)).toEqual([{
       subProcessId: 'm',
       subProcessType: SubProcessTypes.INGESTION,
       subProcessMindMapData: [{nodeId: 'm', contentList: ['cm']}] as ReadableTree,
       inputSubProcesses: [],
-      subProcessInputLink: '',
+      subProcessInputLink: 'mTextUrl',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
@@ -67,7 +67,7 @@ describe("Process_tests", () => {
       subProcessType: SubProcessTypes.INGESTION,
       subProcessMindMapData: [{nodeId: 'k', contentList: ['ck']}] as ReadableTree,
       inputSubProcesses: [],
-      subProcessInputLink: '',
+      subProcessInputLink: 'kAudioUrl',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
@@ -83,7 +83,7 @@ describe("Process_tests", () => {
       subProcessType: SubProcessTypes.INGESTION,
       subProcessMindMapData: [{nodeId: 'h', contentList: ['ch']}] as ReadableTree,
       inputSubProcesses: [],
-      subProcessInputLink: '',
+      subProcessInputLink: 'hTextUrl',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
