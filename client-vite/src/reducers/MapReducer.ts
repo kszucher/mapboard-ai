@@ -149,6 +149,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'clearText': getXA(m).forEach(ti => Object.assign(ti, {textColor: tSaveOptional.textColor, textFontSize: tSaveOptional.textFontSize})); break
     case 'clearBlur': getXA(m).forEach(ti => Object.assign(ti, {blur: tSaveOptional.blur})); break
   }
+  return m
 }
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
