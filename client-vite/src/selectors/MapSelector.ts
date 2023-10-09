@@ -214,26 +214,4 @@ export const getRootMidY = (m: M, t: T): number => getRootStartY(m, t) + getRoot
 export const getRootEndX = (m: M, t: T): number => getRootStartX(m, t) + getRootW(m, t)
 export const getRootEndY = (m: M, t: T): number => getRootStartY(m, t) + getRootH(m, t)
 
-export const getBlockDimensions = (m: M): {blockR: number, blockL: number, blockD: number, blockU: number, blockW: number, blockH: number} => {
-  let blockR = 0
-  let blockL = 0
-  let blockD = 0
-  let blockU = 0
-  mTR(m).forEach(ri => {
-    const trd0 = getTRD0(m, ri)
-    const trd1 = getTRD1(m, ri)
-    const wr = ri.offsetW + ri.selfW + trd0.familyW + getTaskWidth(getG(m)) * hasTaskRight(m, ri)
-    const wl = ri.offsetW - trd1.familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, ri)
-    if ((ri.offsetH + trd0.familyH / 2) > blockD) {blockD = ri.offsetH + trd0.familyH / 2}
-    if ((ri.offsetH + trd1.familyH / 2) > blockD) {blockD = ri.offsetH + trd1.familyH / 2}
-    if ((ri.offsetH - trd0.familyH / 2) < blockU) {blockU = ri.offsetH - trd0.familyH / 2}
-    if ((ri.offsetH - trd1.familyH / 2) < blockU) {blockU = ri.offsetH - trd1.familyH / 2}
-    if ((wr) > blockR) {blockR = wr}
-    if ((wl) < blockL) {blockL = wl}
-  })
-  let blockW = blockR + Math.abs(blockL) + 2 * MARGIN_X
-  let blockH = blockD - blockU + 2 * MARGIN_Y
-  return {blockR, blockL, blockD, blockU, blockW, blockH}
-}
-
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li => l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId)
