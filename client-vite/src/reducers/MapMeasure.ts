@@ -2,7 +2,7 @@ import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {M} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
-import {getCountTCO1, getNodeById, mTR, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountTSO1, getTRD1, getTRD0, mT, mG} from "../selectors/MapSelector"
+import {getCountTCO1, getNodeById, mTR, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountTSO1, getTRD1, getTRD0, mT, getG} from "../selectors/MapSelector"
 
 export const mapMeasure = (pm: M, m: M) => {
   mT(m).toReversed().forEach(ti => {
@@ -43,20 +43,29 @@ export const mapMeasure = (pm: M, m: M) => {
       }
     }
   })
-  mG(m).forEach(g => {
-    mTR(m).forEach(ri => {
-      const trd0 = getTRD0(m, ri)
-      const trd1 = getTRD1(m, ri)
-      const wr = ri.offsetW + ri.selfW + trd0.familyW + getTaskWidth(g) * hasTaskRight(m, ri)
-      const wl = ri.offsetW - trd1.familyW - getTaskWidth(g) * hasTaskLeft(m, ri)
-      if ((ri.offsetH + trd0.familyH / 2) > g.maxD) {g.maxD = ri.offsetH + trd0.familyH / 2}
-      if ((ri.offsetH + trd1.familyH / 2) > g.maxD) {g.maxD = ri.offsetH + trd1.familyH / 2}
-      if ((ri.offsetH - trd0.familyH / 2) < g.maxU) {g.maxU = ri.offsetH - trd0.familyH / 2}
-      if ((ri.offsetH - trd1.familyH / 2) < g.maxU) {g.maxU = ri.offsetH - trd1.familyH / 2}
-      if ((wr) > g.maxR) {g.maxR = wr}
-      if ((wl) < g.maxL) {g.maxL = wl}
-    })
-    g.mapWidth = g.maxR + Math.abs(g.maxL) + 2 * MARGIN_X
-    g.mapHeight = g.maxD - g.maxU + 2 * MARGIN_Y
+  let maxR = 0
+  let maxL = 0
+  let maxD = 0
+  let maxU = 0
+  mTR(m).forEach(ri => {
+    const trd0 = getTRD0(m, ri)
+    const trd1 = getTRD1(m, ri)
+    const wr = ri.offsetW + ri.selfW + trd0.familyW + getTaskWidth(getG(m)) * hasTaskRight(m, ri)
+    const wl = ri.offsetW - trd1.familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, ri)
+    if ((ri.offsetH + trd0.familyH / 2) > maxD) {maxD = ri.offsetH + trd0.familyH / 2}
+    if ((ri.offsetH + trd1.familyH / 2) > maxD) {maxD = ri.offsetH + trd1.familyH / 2}
+    if ((ri.offsetH - trd0.familyH / 2) < maxU) {maxU = ri.offsetH - trd0.familyH / 2}
+    if ((ri.offsetH - trd1.familyH / 2) < maxU) {maxU = ri.offsetH - trd1.familyH / 2}
+    if ((wr) > maxR) {maxR = wr}
+    if ((wl) < maxL) {maxL = wl}
   })
+  let width = maxR + Math.abs(maxL) + 2 * MARGIN_X
+  let height = maxD - maxU + 2 * MARGIN_Y
+
+  getG(m).maxR = maxR
+  getG(m).maxL = maxL
+  getG(m).maxD = maxD
+  getG(m).maxU = maxU
+  getG(m).mapWidth = width
+  getG(m).mapHeight = height
 }
