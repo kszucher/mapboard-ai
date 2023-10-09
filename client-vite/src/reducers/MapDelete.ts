@@ -1,6 +1,6 @@
 import {L, M, PL, PT} from "../state/MapStateTypes"
 import {selectT, selectTL} from "./MapSelect"
-import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getRDSCIPL, isSD, isSDO, mG, mL, mT, isSEO} from "../selectors/MapSelector"
+import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getRDSCIPL, isSD, isSDO, mG, mL, mT, isSEO, mTR, getRootStartX, getRootStartY, isR} from "../selectors/MapSelector"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[
@@ -16,7 +16,8 @@ export const deleteL = (m: M, l: L) => {
 
 export const deleteLR = (m: M) => {
   const xa = getXA(m)
-  // const nonSelectedMaxOffsetW =
+  const nonSelectedMinOffsetW = Math.min(...mTR(m).map(ri => ri.offsetW))
+  const nonSelectedMinOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
   m.splice(0, m.length, ...[
       ...mG(m),
       ...mL(m)
@@ -25,11 +26,8 @@ export const deleteLR = (m: M) => {
         ),
       ...mT(m)
         .filter(ti => xa.every(xti => !isSEO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isRDO(xti.path, ti.path))
-          ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 1), ti.path.at(getX(m).path.length - 1) - 1, ...ti.path.slice(getX(m).path.length)] as PT}
-          : ti
-        )
-        // .map(ti => )
+        .map(ti => xa.some(xti => isRDO(xti.path, ti.path)) ? {...ti, path: [...ti.path.slice(0, getX(m).path.length - 1), ti.path.at(getX(m).path.length - 1) - 1, ...ti.path.slice(getX(m).path.length)] as PT} : ti)
+        .map(ti => isR(ti.path) ? {...ti, offsetW: ti.offsetW - nonSelectedMinOffsetW, offsetH: ti.offsetH - nonSelectedMinOffsetH} : ti)
     ]
   )
 }

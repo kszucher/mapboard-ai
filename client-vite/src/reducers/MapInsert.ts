@@ -16,7 +16,7 @@ export const insertL = (m: M, lPartial: LPartial) => {
 // }
 
 export const insertR = (m: M) => {
-
+  // must insert d0 and d1 as well
 }
 
 export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, attributes: object) => {
