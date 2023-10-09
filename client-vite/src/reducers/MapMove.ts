@@ -60,20 +60,20 @@ const cbToS = (m: M, cbS: M, ip: PT) => {
 }
 
 export const cutLR = (m: M) => {
-  const reselect = getReselectR(m)
+  const reselect = getReselectR(m).nodeId
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
   cbSave(mapDeInit([...cbL, ...cbR]))
   deleteLR(m)
-  selectT(m, reselect, 's')
+  selectT(m, getNodeById(m, reselect), 's')
 }
 
 export const cutS = (m: M) => {
-  const reselect = getReselectS(m)
+  const reselect = getReselectS(m).nodeId
   const cbS = structuredClone(sToCb(m))
   cbSave(mapDeInit(cbS))
   deleteS(m)
-  selectT(m, reselect, 's')
+  selectT(m, getNodeById(m, reselect), 's')
 }
 
 export const copyLR = (m: M) => {

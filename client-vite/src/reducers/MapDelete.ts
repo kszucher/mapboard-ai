@@ -1,6 +1,6 @@
 import {L, M, PL, PT} from "../state/MapStateTypes"
 import {selectT, selectTL} from "./MapSelect"
-import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getRDSCIPL, isSD, isSDO, mG, mL, mT, isSEO, mTR, getRootStartX, getRootStartY, isR} from "../selectors/MapSelector"
+import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getRDSCIPL, isSD, isSDO, mG, mL, mT, isSEO, mTR, isR} from "../selectors/MapSelector"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[
