@@ -251,7 +251,6 @@ describe("Move_tests", () => {
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'moveSO', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
-
   test('moveSI', () => {
     const test = [
       {nodeId: 'a', path: ['g']},
@@ -325,7 +324,6 @@ describe("Move_tests", () => {
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'moveSIL', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
-
   test('moveCRD', () => {
     const test = [
       {nodeId: 'a', path: ['g']},
@@ -473,7 +471,6 @@ describe("Move_tests", () => {
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'moveS2TOR', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
-
   test('moveS2TO', () => {
     const test = [
       {nodeId: 'a', path: ['g']},
