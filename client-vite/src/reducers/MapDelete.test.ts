@@ -30,7 +30,7 @@ describe("Delete_tests", () => {
       {nodeId: 'k', path: ['r', 1]},
       {nodeId: 'l', path: ['r', 1, 'd', 0]},
       {nodeId: 'm', path: ['r', 1, 'd', 0, 's', 0]},
-    ]
+    ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'deleteLR', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
   test('deleteS', () => {

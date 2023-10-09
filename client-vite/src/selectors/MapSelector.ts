@@ -215,4 +215,3 @@ export const getRootEndX = (m: M, t: T): number => getRootStartX(m, t) + getRoot
 export const getRootEndY = (m: M, t: T): number => getRootStartY(m, t) + getRootH(m, t)
 
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li => l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId)
-
