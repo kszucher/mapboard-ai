@@ -5,7 +5,7 @@ import {getCountTSO1, getNodeByPath, sortPath, mT, isSEO, getTR, getRDSCIPL, get
 export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
   let moveCoords = [] as number[]
-  let moveInsertParentNode = {} as T
+  let moveInsertParentNode = {nodeId: ''} as T
   let moveTargetIndex = 0
   if (!(
     moveNode.nodeStartX < toX &&
