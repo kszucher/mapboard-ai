@@ -59,7 +59,7 @@ export const mapMeasure = (pm: M, m: M) => {
     if ((wr) > maxR) {maxR = wr}
     if ((wl) < maxL) {maxL = wl}
   })
-  let maxW = maxR + Math.abs(maxL) + 2 * MARGIN_X
-  let maxH = maxD - maxU + 2 * MARGIN_Y
-  Object.assign(getG(m), {maxR: maxR, maxL: maxL, maxD: maxD, maxU: maxU, mapWidth: maxW, mapHeight: maxH})
+  let mapWidth = maxR + Math.abs(maxL) + 2 * MARGIN_X
+  let mapHeight = maxD - maxU + 2 * MARGIN_Y
+  Object.assign(getG(m), {maxR, maxL, maxD, maxU, mapWidth, mapHeight})
 }
