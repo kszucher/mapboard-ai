@@ -43,23 +43,23 @@ export const mapMeasure = (pm: M, m: M) => {
       }
     }
   })
-  let blockR = 0
-  let blockL = 0
-  let blockD = 0
-  let blockU = 0
+  let maxR = 0
+  let maxL = 0
+  let maxD = 0
+  let maxU = 0
   mTR(m).forEach(ri => {
     const trd0 = getTRD0(m, ri)
     const trd1 = getTRD1(m, ri)
     const wr = ri.offsetW + ri.selfW + trd0.familyW + getTaskWidth(getG(m)) * hasTaskRight(m, ri)
     const wl = ri.offsetW - trd1.familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, ri)
-    if ((ri.offsetH + trd0.familyH / 2) > blockD) {blockD = ri.offsetH + trd0.familyH / 2}
-    if ((ri.offsetH + trd1.familyH / 2) > blockD) {blockD = ri.offsetH + trd1.familyH / 2}
-    if ((ri.offsetH - trd0.familyH / 2) < blockU) {blockU = ri.offsetH - trd0.familyH / 2}
-    if ((ri.offsetH - trd1.familyH / 2) < blockU) {blockU = ri.offsetH - trd1.familyH / 2}
-    if ((wr) > blockR) {blockR = wr}
-    if ((wl) < blockL) {blockL = wl}
+    if ((ri.offsetH + trd0.familyH / 2) > maxD) {maxD = ri.offsetH + trd0.familyH / 2}
+    if ((ri.offsetH + trd1.familyH / 2) > maxD) {maxD = ri.offsetH + trd1.familyH / 2}
+    if ((ri.offsetH - trd0.familyH / 2) < maxU) {maxU = ri.offsetH - trd0.familyH / 2}
+    if ((ri.offsetH - trd1.familyH / 2) < maxU) {maxU = ri.offsetH - trd1.familyH / 2}
+    if ((wr) > maxR) {maxR = wr}
+    if ((wl) < maxL) {maxL = wl}
   })
-  let blockW = blockR + Math.abs(blockL) + 2 * MARGIN_X
-  let blockH = blockD - blockU + 2 * MARGIN_Y
-  Object.assign(getG(m), {maxR: blockR, maxL: blockL, maxD: blockD, maxU: blockU, mapWidth: blockW, mapHeight: blockH})
+  let maxW = maxR + Math.abs(maxL) + 2 * MARGIN_X
+  let maxH = maxD - maxU + 2 * MARGIN_Y
+  Object.assign(getG(m), {maxR: maxR, maxL: maxL, maxD: maxD, maxU: maxU, mapWidth: maxW, mapHeight: maxH})
 }
