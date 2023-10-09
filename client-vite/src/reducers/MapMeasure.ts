@@ -2,7 +2,7 @@ import {getTaskWidth} from "../components/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {M} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
-import {getCountTCO1, getNodeById, mTR, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountTSO1, getTRD1, getTRD0, getTR, mT, mG} from "../selectors/MapSelector"
+import {getCountTCO1, getNodeById, mTR, isC, isD, isR, isS, hasTaskLeft, hasTaskRight, getCountTSO1, getTRD1, getTRD0, mT, mG} from "../selectors/MapSelector"
 
 export const mapMeasure = (pm: M, m: M) => {
   mT(m).toReversed().forEach(ti => {
@@ -45,15 +45,14 @@ export const mapMeasure = (pm: M, m: M) => {
   })
   mG(m).forEach(g => {
     mTR(m).forEach(ri => {
-      const tr = getTR(m, ri)
       const trd0 = getTRD0(m, ri)
       const trd1 = getTRD1(m, ri)
-      const wr = tr.offsetW + tr.selfW + trd0.familyW + getTaskWidth(g) * hasTaskRight(m, ri)
-      const wl = tr.offsetW - trd1.familyW - getTaskWidth(g) * hasTaskLeft(m, ri)
-      if ((tr.offsetH + trd0.familyH / 2) > g.maxD) {g.maxD = tr.offsetH + trd0.familyH / 2}
-      if ((tr.offsetH + trd1.familyH / 2) > g.maxD) {g.maxD = tr.offsetH + trd1.familyH / 2}
-      if ((tr.offsetH - trd0.familyH / 2) < g.maxU) {g.maxU = tr.offsetH - trd0.familyH / 2}
-      if ((tr.offsetH - trd1.familyH / 2) < g.maxU) {g.maxU = tr.offsetH - trd1.familyH / 2}
+      const wr = ri.offsetW + ri.selfW + trd0.familyW + getTaskWidth(g) * hasTaskRight(m, ri)
+      const wl = ri.offsetW - trd1.familyW - getTaskWidth(g) * hasTaskLeft(m, ri)
+      if ((ri.offsetH + trd0.familyH / 2) > g.maxD) {g.maxD = ri.offsetH + trd0.familyH / 2}
+      if ((ri.offsetH + trd1.familyH / 2) > g.maxD) {g.maxD = ri.offsetH + trd1.familyH / 2}
+      if ((ri.offsetH - trd0.familyH / 2) < g.maxU) {g.maxU = ri.offsetH - trd0.familyH / 2}
+      if ((ri.offsetH - trd1.familyH / 2) < g.maxU) {g.maxU = ri.offsetH - trd1.familyH / 2}
       if ((wr) > g.maxR) {g.maxR = wr}
       if ((wl) < g.maxL) {g.maxL = wl}
     })
