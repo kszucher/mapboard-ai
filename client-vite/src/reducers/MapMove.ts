@@ -1,8 +1,10 @@
-import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getG, getNodeById, getReselectR, getReselectS, mTR, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getG, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {M, T, PT, L, PL, PTR} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
-import {mapDeInit} from "./MapDeInit"
 import {deleteCC, deleteCR, deleteLR, deleteS} from "./MapDelete"
+import {mapInit} from "./MapInit"
+import {mapMeasure} from "./MapMeasure"
+import {mapDeInit} from "./MapDeInit"
 import {insertTable} from "./MapInsert"
 import {selectT, selectTL, unselectNodes} from "./MapSelect"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
@@ -29,19 +31,20 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
     oldNodeId: ti.nodeId,
     newNodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8)
   }))
-  const minOffsetW = Math.min(...mTR(cbR).map(ti => ti.offsetW))
-  const minOffsetH = Math.min(...mTR(cbR).map(ti => ti.offsetH))
   cbL.forEach((li, i) => Object.assign(li, {
     nodeId: IS_TESTING ? generateCharacterFrom('r', i) : 'node' + genHash(8),
     path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
   }))
+  const preLoadCbR = [{nodeId: 'node' + genHash(8), path: ['g']}, ...structuredClone(cbR)] as M
+  mapInit(preLoadCbR)
+  mapMeasure(preLoadCbR, preLoadCbR)
   cbR.forEach((ti, i) => Object.assign(ti, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
-    offsetW: ti.selected ? ti.offsetW - minOffsetW + getG(m).mapWidth : ti.offsetW,
-    offsetH: ti.selected ? ti.offsetH - minOffsetH + getG(m).mapHeight : ti.offsetH,
+    offsetW: ti.selected ? ti.offsetW - getG(preLoadCbR).maxL + getG(m).mapWidth : ti.offsetW,
+    offsetH: ti.selected ? ti.offsetH - getG(preLoadCbR).maxU + getG(m).mapHeight : ti.offsetH,
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)

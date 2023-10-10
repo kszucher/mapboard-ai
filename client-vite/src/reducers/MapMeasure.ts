@@ -43,10 +43,10 @@ export const mapMeasure = (pm: M, m: M) => {
       }
     }
   })
-  let maxR = 0
-  let maxL = 0
-  let maxD = 0
-  let maxU = 0
+  let maxR = -Infinity
+  let maxL = Infinity
+  let maxD = -Infinity
+  let maxU = Infinity
   mTR(m).forEach(ri => {
     const trd0 = getTRD0(m, ri)
     const trd1 = getTRD1(m, ri)
@@ -56,10 +56,10 @@ export const mapMeasure = (pm: M, m: M) => {
     if ((ri.offsetH + trd1.familyH / 2) > maxD) {maxD = ri.offsetH + trd1.familyH / 2}
     if ((ri.offsetH - trd0.familyH / 2) < maxU) {maxU = ri.offsetH - trd0.familyH / 2}
     if ((ri.offsetH - trd1.familyH / 2) < maxU) {maxU = ri.offsetH - trd1.familyH / 2}
-    if ((wr) > maxR) {maxR = wr}
-    if ((wl) < maxL) {maxL = wl}
+    if (wr > maxR) {maxR = wr}
+    if (wl < maxL) {maxL = wl}
   })
-  let mapWidth = maxR + Math.abs(maxL) + 2 * MARGIN_X
+  let mapWidth = maxR - maxL + 2 * MARGIN_X
   let mapHeight = maxD - maxU + 2 * MARGIN_Y
   Object.assign(getG(m), {maxR, maxL, maxD, maxU, mapWidth, mapHeight})
 }
