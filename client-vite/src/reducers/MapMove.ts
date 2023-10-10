@@ -1,4 +1,5 @@
 import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getG, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {tSaveOptional} from "../state/MapState"
 import {M, T, PT, L, PL, PTR} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {deleteCC, deleteCR, deleteLR, deleteS} from "./MapDelete"
@@ -43,8 +44,8 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   cbR.forEach((ti, i) => Object.assign(ti, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
-    offsetW: ti.selected ? ti.offsetW - getG(preLoadCbR).maxL + getG(m).mapWidth : ti.offsetW,
-    offsetH: ti.selected ? ti.offsetH - getG(preLoadCbR).maxU + getG(m).mapHeight : ti.offsetH,
+    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) - getG(preLoadCbR).maxL + getG(m).mapWidth : ti.offsetW,
+    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) - getG(preLoadCbR).maxU + getG(m).mapHeight : ti.offsetH,
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)
