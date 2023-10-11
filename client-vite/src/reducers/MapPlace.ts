@@ -7,9 +7,9 @@ export const mapPlace = (m: M) => {
     switch (true) {
       case isR(ti.path): {
         const g = getG(m)
-        ti.nodeStartX = ti.offsetW + Math.abs(g.maxL)  + MARGIN_X
-        ti.nodeEndX = ti.offsetW + Math.abs(g.maxL) + ti.selfW + MARGIN_X
-        ti.nodeY = ti.offsetH + Math.abs(g.maxU) + MARGIN_Y
+        ti.nodeStartX = ti.offsetW + Math.abs(g.minX)  + MARGIN_X
+        ti.nodeEndX = ti.offsetW + Math.abs(g.minX) + ti.selfW + MARGIN_X
+        ti.nodeY = ti.offsetH + Math.abs(g.minY) + MARGIN_Y
         break
       }
       case isD(ti.path): {

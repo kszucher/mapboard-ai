@@ -43,23 +43,23 @@ export const mapMeasure = (pm: M, m: M) => {
       }
     }
   })
-  let maxR = -Infinity
-  let maxL = Infinity
-  let maxD = -Infinity
-  let maxU = Infinity
+  let minX = Infinity
+  let maxX = -Infinity
+  let minY = Infinity
+  let maxY = -Infinity
   mTR(m).forEach(ri => {
     const trd0 = getTRD0(m, ri)
     const trd1 = getTRD1(m, ri)
     const wr = ri.offsetW + ri.selfW + trd0.familyW + getTaskWidth(getG(m)) * hasTaskRight(m, ri)
     const wl = ri.offsetW - trd1.familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, ri)
-    if ((ri.offsetH + trd0.familyH / 2) > maxD) {maxD = ri.offsetH + trd0.familyH / 2}
-    if ((ri.offsetH + trd1.familyH / 2) > maxD) {maxD = ri.offsetH + trd1.familyH / 2}
-    if ((ri.offsetH - trd0.familyH / 2) < maxU) {maxU = ri.offsetH - trd0.familyH / 2}
-    if ((ri.offsetH - trd1.familyH / 2) < maxU) {maxU = ri.offsetH - trd1.familyH / 2}
-    if (wr > maxR) {maxR = wr}
-    if (wl < maxL) {maxL = wl}
+    if (wl < minX) {minX = wl}
+    if (wr > maxX) {maxX = wr}
+    if ((ri.offsetH - trd0.familyH / 2) < minY) {minY = ri.offsetH - trd0.familyH / 2}
+    if ((ri.offsetH - trd1.familyH / 2) < minY) {minY = ri.offsetH - trd1.familyH / 2}
+    if ((ri.offsetH + trd0.familyH / 2) > maxY) {maxY = ri.offsetH + trd0.familyH / 2}
+    if ((ri.offsetH + trd1.familyH / 2) > maxY) {maxY = ri.offsetH + trd1.familyH / 2}
   })
-  let mapWidth = maxR - maxL + 2 * MARGIN_X
-  let mapHeight = maxD - maxU + 2 * MARGIN_Y
-  Object.assign(getG(m), {maxR, maxL, maxD, maxU, mapWidth, mapHeight})
+  let mapWidth = maxX - minX + 2 * MARGIN_X
+  let mapHeight = maxY - minY + 2 * MARGIN_Y
+  Object.assign(getG(m), {maxX, minX, maxY, minY, mapWidth, mapHeight})
 }
