@@ -90,6 +90,7 @@ export const ContextMenu: FC = () => {
             { mExists && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'selectRA', payload: null}))}} subMenuId={'All Root'}/> }
           </Li1>
           <Li1 menuId={'Insert'}>
+            { mExists && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertR', payload: null}))}} subMenuId={'Root'}/> }
             { mExists && isXS(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSU', payload: null}))}} subMenuId={'Node Above'}/> }
             { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSOR', payload: null}))}} subMenuId={'Node Right'}/> }
             { mExists && isXS(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'insertSO', payload: null}))}} subMenuId={'Node Out'}/> }

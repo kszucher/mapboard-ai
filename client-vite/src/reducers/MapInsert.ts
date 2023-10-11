@@ -1,6 +1,9 @@
-import {N, LPartial, M, T, P, PT} from "../state/MapStateTypes"
+import {tSaveOptional} from "../state/MapState"
+import {N, LPartial, M, T, PT} from "../state/MapStateTypes"
+import {mapInit} from "./MapInit"
+import {mapMeasure} from "./MapMeasure"
 import {unselectNodes} from "./MapSelect"
-import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLiL, mT} from "../selectors/MapSelector"
+import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLiL, mT, getRiL, getG} from "../selectors/MapSelector"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
 
@@ -8,15 +11,22 @@ export const insertL = (m: M, lPartial: LPartial) => {
   m.push({...lPartial, nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['l', getLiL(m) + 1]} as N)
 }
 
-// export const insertTemplateR = (m: M, templateId: string, ri: number, offsetW: number, offsetH: number) => {
-//   unselectNodes(m)
-//   const template = getInsertTemplate(templateId, ri, offsetW, offsetH)
-//   m.push(...template)
-//   m.sort(sortPath)
-// }
-
 export const insertR = (m: M) => {
-  // must insert d0 and d1 as well
+  const newRoot = [
+    {nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['r', getRiL(m) + 1], selected: 1, content: 'New Root'},
+    {nodeId: IS_TESTING ? 'u' : 'node' + genHash(8), path: ['r', getRiL(m) + 1, 'd', 0]},
+    {nodeId: IS_TESTING ? 'v' : 'node' + genHash(8), path: ['r', getRiL(m) + 1, 'd', 1]},
+  ] as T[]
+  const preLoadNewRoot = [{nodeId: 'node' + genHash(8), path: ['g']}, ...structuredClone(newRoot)] as M
+  mapInit(preLoadNewRoot)
+  mapMeasure(preLoadNewRoot, preLoadNewRoot)
+  newRoot.forEach(ti => Object.assign(ti, {
+    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) - getG(preLoadNewRoot).minX + getG(m).mapWidth : ti.offsetW,
+    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) - getG(preLoadNewRoot).minY + getG(m).mapHeight : ti.offsetH,
+  }))
+  unselectNodes(m)
+  m.push(...newRoot)
+  m.sort(sortPath)
 }
 
 export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, attributes: object) => {
