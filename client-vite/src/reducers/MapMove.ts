@@ -44,6 +44,8 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   cbR.forEach((ti, i) => Object.assign(ti, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
+    linkType: tSaveOptional.linkType,
+    link: tSaveOptional.link,
     offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) - getG(preLoadCbR).minX + getG(m).mapWidth : ti.offsetW,
     offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) - getG(preLoadCbR).minY + getG(m).mapHeight : ti.offsetH,
   }))
@@ -55,7 +57,9 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
 const cbToS = (m: M, cbS: M, ip: PT) => {
   cbS.forEach((ti, i) => Object.assign(ti, {
     nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8),
-    path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)]
+    path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)],
+    linkType: tSaveOptional.linkType,
+    link: tSaveOptional.link
   }))
   makeSpaceFromS(m, ip, getXA(cbS).length)
   unselectNodes(m)
