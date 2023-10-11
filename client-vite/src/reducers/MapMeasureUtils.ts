@@ -1,4 +1,5 @@
 import {getEquationDim, getTextDim} from "../components/MapDivUtils"
+import {MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL} from "../state/Consts"
 import {M, T} from "../state/MapStateTypes"
 import {getCountTCO2, getCountTSCH, getCountTSCV, getCountTSO1, getCountTSO2, getG, getNodeByPath} from "../selectors/MapSelector"
 import {createArray} from "../utils/Utils"
@@ -35,8 +36,8 @@ export const measureText = (m: M, pt: T, t: T) => {
       t.dimH = dim[1]
     }
   }
-  t.selfW = (t.dimW > 20 ? t.dimW : 20) + (g.density === 'large' ? 16 : 18)
-  t.selfH = (t.dimH / 17 > 1 ? t.dimH : 20) + (g.density === 'large' ? 8 : 4)
+  t.selfW = (t.dimW > 20 ? t.dimW : MIN_NODE_W) + (g.density === 'large' ? NODE_MARGIN_X_LARGE : NODE_MARGIN_X_SMALL)
+  t.selfH = (t.dimH / 17 > 1 ? t.dimH : MIN_NODE_H) + (g.density === 'large' ? NODE_MARGIN_Y_LARGE : NODE_MARGIN_Y_SMALL)
 }
 
 export const measureTable = (m: M, t: T) => {

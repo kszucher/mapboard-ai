@@ -1,4 +1,5 @@
 import {sortNode} from "../selectors/MapSelector"
+import {MIN_NODE_H, NODE_MARGIN_Y_LARGE} from "../state/Consts";
 import {setIsTesting} from "../utils/Utils"
 import {M, MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
@@ -52,11 +53,11 @@ describe("Move_tests", () => {
       {nodeId: 'rm', path: ['r', 3, 'd', 0]},
       {nodeId: 'rn', path: ['r', 3, 'd', 0, 's', 0]},
       {nodeId: 'ro', path: ['r', 3, 'd', 1]},
-      {nodeId: 'rp', path: ['r', 4], selected: 1},
+      {nodeId: 'rp', path: ['r', 4], selected: 1, offsetH: (MIN_NODE_H + NODE_MARGIN_Y_LARGE) / 2},
       {nodeId: 'rq', path: ['r', 4, 'd', 0]},
       {nodeId: 'rr', path: ['r', 4, 'd', 0, 's', 0]},
       {nodeId: 'rs', path: ['r', 4, 'd', 1]},
-      {nodeId: 'rt', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20},
+      {nodeId: 'rt', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20 + (MIN_NODE_H + NODE_MARGIN_Y_LARGE) / 2},
       {nodeId: 'ru', path: ['r', 5, 'd', 0]},
       {nodeId: 'rv', path: ['r', 5, 'd', 0, 's', 0]},
       {nodeId: 'rw', path: ['r', 5, 'd', 1]},
