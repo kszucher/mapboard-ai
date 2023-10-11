@@ -2,7 +2,7 @@ import React, {FC, ReactNode} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {nodeApi} from "../apis/NodeApi";
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import {generateLlmInfo, gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
+import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
 import {getProcess} from "../selectors/MapProcess"
 import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../selectors/MapSelector"
 import {mSelector} from "../state/EditorState"
