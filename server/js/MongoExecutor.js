@@ -34,7 +34,7 @@ async function mongoExecutor() {
   const client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true })
   try {
     await client.connect()
-    const db = client.db("app_prod")
+    const db = client.db("app_dev")
     const users = db.collection("users")
     const maps = db.collection("maps")
     const shares = db.collection("shares")
