@@ -5,7 +5,7 @@ import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
 import {getCountTCO1, getNodeById, isC, isD, isR, isS, getCountTSO1, mT, getG, mTR, getTRD0, getTRD1, hasTaskRight, hasTaskLeft} from "../selectors/MapSelector"
 
 export const mapMeasure = (pm: M, m: M) => {
-  mT(m).toReversed().forEach(ti => {
+  mT(m).slice().reverse().forEach(ti => {
     const pt = getNodeById(pm, ti.nodeId)
     switch (true) {
       case isR(ti.path): {
