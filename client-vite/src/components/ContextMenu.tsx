@@ -130,7 +130,12 @@ export const ContextMenu: FC = () => {
             { mExists && <Li2 onClick={()=>{console.log(getX(m))}} subMenuId={'show node'}/> }
             { mExists && <Li2 onClick={()=>{console.log(getX(m).path)}} subMenuId={'show node/path'}/> }
             { mExists && <Li2 onClick={()=>{console.log(getX(m).nodeId)}} subMenuId={'show node/nodeId'}/> }
-            { mExists && <Li2 onClick={()=>{console.log(getSubProcessList(m, getX(m).nodeId))}} subMenuId={'show PROCESS'}/> }
+            { mExists && <Li2 onClick={()=>{console.log(
+              {
+                processId: getMapId(),
+                subProcesses: getSubProcessList(m, getX(m).nodeId)
+              }
+            )}} subMenuId={'show PROCESS'}/> }
             { mExists && isXR(m) && <Li2 onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}} subMenuId={'show llmData'}/> }
             { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}} subMenuId={'set llm data example'}/> }
             { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}} subMenuId={'reset llm data'}/> }

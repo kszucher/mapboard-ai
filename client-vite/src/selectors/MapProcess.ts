@@ -1,6 +1,5 @@
 import {ControlTypes, Sides} from "../state/Enums"
 import {M, T} from "../state/MapStateTypes"
-import {getMapId} from "../state/NodeApiState"
 import {getNodeByPath, getRSIPL, getTRD0SOL, mL, mTR} from "./MapSelector"
 
 export type ReadableTree = {
@@ -23,11 +22,6 @@ export type SubProcess = {
   subProcessInputLink: string
   shouldQueryAndStoreResultAsMindMapToo: boolean
   subProcessPromptOverride: string
-}
-
-export type Process = {
-  processId: string
-  subProcesses: SubProcess[]
 }
 
 export const getSubProcessType = (controlType: ControlTypes): SubProcessTypes => {
@@ -73,8 +67,3 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
     .filter(el => getAllDependencies(subProcessId, subProcesses).includes(el.subProcessId) || el.subProcessId === subProcessId)
     .sort((a, b) => a.inputSubProcessesAll.includes(b.subProcessId) ? 1 : -1)
 }
-
-// export const getProcess = (m: M, subProcessId: string) => ({
-//   processId: getMapId(),
-//   subProcesses: getSubProcessList(m, subProcessId),
-// })
