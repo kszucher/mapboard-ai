@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {nodeApi} from "../apis/NodeApi";
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
-import {getProcess} from "../selectors/MapProcess"
+import {getSubProcessListFiltered} from "../selectors/MapProcess"
 import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../selectors/MapSelector"
 import {mSelector} from "../state/EditorState"
 import {ControlTypes, PageState} from "../state/Enums"
@@ -130,7 +130,7 @@ export const ContextMenu: FC = () => {
             { mExists && <Li2 onClick={()=>{console.log(getX(m))}} subMenuId={'show node'}/> }
             { mExists && <Li2 onClick={()=>{console.log(getX(m).path)}} subMenuId={'show node/path'}/> }
             { mExists && <Li2 onClick={()=>{console.log(getX(m).nodeId)}} subMenuId={'show node/nodeId'}/> }
-            { mExists && <Li2 onClick={()=>{console.log(getProcess(m, getX(m).nodeId))}} subMenuId={'show PROCESS'}/> }
+            { mExists && <Li2 onClick={()=>{console.log(getSubProcessListFiltered(m, getX(m).nodeId))}} subMenuId={'show PROCESS'}/> }
             { mExists && isXR(m) && <Li2 onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}} subMenuId={'show llmData'}/> }
             { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}} subMenuId={'set llm data example'}/> }
             { mExists && isXR(m) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}} subMenuId={'reset llm data'}/> }
