@@ -46,11 +46,12 @@ describe("Process_tests", () => {
       {nodeId: 'l', path: ['r', 4], content: 'cl', controlType: ControlTypes.GENERATE},
       {nodeId: 'm', path: ['r', 5], content: 'cm', controlType: ControlTypes.UPLOAD, llmDataType: 'text', llmDataId: 'mTextUrl'},
       {nodeId: 'n', path: ['r', 6], content: 'cn', controlType: ControlTypes.GENERATE},
-    ] as MPartial) as M)).toEqual([{
+    ] as MPartial) as M, 'j')).toEqual([{
       subProcessId: 'm',
       subProcessType: SubProcessTypes.INGESTION,
       subProcessMindMapData: [{nodeId: 'm', contentList: ['cm']}] as ReadableTree,
       inputSubProcesses: [],
+      inputSubProcessesAll: [],
       subProcessInputLink: 'mTextUrl',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
@@ -59,6 +60,7 @@ describe("Process_tests", () => {
       subProcessType: SubProcessTypes.EXTRACTION,
       subProcessMindMapData: [{nodeId: 'n', contentList: ['cn']}] as ReadableTree,
       inputSubProcesses: ['m'],
+      inputSubProcessesAll: ['m'],
       subProcessInputLink: '',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
@@ -67,6 +69,7 @@ describe("Process_tests", () => {
       subProcessType: SubProcessTypes.INGESTION,
       subProcessMindMapData: [{nodeId: 'k', contentList: ['ck']}] as ReadableTree,
       inputSubProcesses: [],
+      inputSubProcessesAll: [],
       subProcessInputLink: 'kAudioUrl',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
@@ -75,6 +78,7 @@ describe("Process_tests", () => {
       subProcessType: SubProcessTypes.EXTRACTION,
       subProcessMindMapData: [{nodeId: 'l', contentList: ['cl']}] as ReadableTree,
       inputSubProcesses: ['k', 'n'],
+      inputSubProcessesAll: ['k', 'n', 'm'],
       subProcessInputLink: '',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
@@ -83,6 +87,7 @@ describe("Process_tests", () => {
       subProcessType: SubProcessTypes.INGESTION,
       subProcessMindMapData: [{nodeId: 'h', contentList: ['ch']}] as ReadableTree,
       inputSubProcesses: [],
+      inputSubProcessesAll: [],
       subProcessInputLink: 'hTextUrl',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
@@ -91,6 +96,7 @@ describe("Process_tests", () => {
       subProcessType: SubProcessTypes.EXTRACTION,
       subProcessMindMapData: [{nodeId: 'i', contentList: ['ci']}] as ReadableTree,
       inputSubProcesses: ['h'],
+      inputSubProcessesAll: ['h'],
       subProcessInputLink: '',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
@@ -99,6 +105,7 @@ describe("Process_tests", () => {
       subProcessType: SubProcessTypes.EXTRACTION,
       subProcessMindMapData: [{nodeId: 'j', contentList: ['cj']}] as ReadableTree,
       inputSubProcesses: ['i', 'l'],
+      inputSubProcessesAll: ['i', 'l', 'h', 'k', 'n', 'm'],
       subProcessInputLink: '',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''

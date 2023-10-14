@@ -19,6 +19,7 @@ export type SubProcess = {
   subProcessType: 'ingestion' | 'extraction'
   subProcessMindMapData: ReadableTree,
   inputSubProcesses: string[]
+  inputSubProcessesAll: string[]
   subProcessInputLink: string
   shouldQueryAndStoreResultAsMindMapToo: boolean
   subProcessPromptOverride: string
@@ -46,43 +47,34 @@ export const getReadableTree = (m: M, t: T): ReadableTree => [
   }))
 ]
 
-export const getDependencies = (m: M, r: T): string[] => [
-  ...mL(m).filter(li => li.fromNodeId === r.nodeId && li.fromNodeSide === Sides.L).map(li => li.toNodeId),
-  ...mL(m).filter(li => li.toNodeId === r.nodeId && li.toNodeSide === Sides.L).map(li => li.fromNodeId)
-]
-
-export const getSubProcessList = (m: M): SubProcess[] =>
-  mTR(m)
-    .sort((a: T, b: T) => (mL(m).filter(li => (
-        li.fromNodeId === b.nodeId && li.fromNodeSide === Sides.R && li.toNodeId === a.nodeId && li.toNodeSide === Sides.L ||
-        li.fromNodeId === a.nodeId && li.fromNodeSide === Sides.L && li.toNodeId === b.nodeId && li.toNodeSide === Sides.R
-      )).length ? 1 : -1
-    ))
-    .map(ri => ({
-        subProcessId: ri.nodeId,
-        subProcessType: getSubProcessType(ri.controlType),
-        subProcessMindMapData: getReadableTree(m, ri),
-        inputSubProcesses: getDependencies(m, ri),
-        subProcessInputLink: ri.llmDataId,
-        shouldQueryAndStoreResultAsMindMapToo: false,
-        subProcessPromptOverride: ''
-      } as SubProcess)
-    )
-
 const getAllDependencies = (subProcessId: string, subProcessList: SubProcess[]): string[] => {
   const process = subProcessList.find(el => el.subProcessId === subProcessId)
   if (!process) {return []}
   return process.inputSubProcesses.concat(process.inputSubProcesses.reduce((acc: string[], curr) => acc.concat(getAllDependencies(curr, subProcessList)), []))
 }
 
-export const getSubProcessListFiltered = (m: M, subProcessId: string): SubProcess[] => {
-  const subProcessList = getSubProcessList(m)
-  const subProcessListFiltered = subProcessList.filter(el => getAllDependencies(subProcessId, subProcessList).includes(el.subProcessId) || el.subProcessId === subProcessId)
-  console.log(subProcessListFiltered.map(el  => el.subProcessMindMapData[0].contentList))
-  return subProcessListFiltered
+export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
+  const subProcesses = mTR(m).map(ri => ({
+      subProcessId: ri.nodeId,
+      subProcessType: getSubProcessType(ri.controlType),
+      subProcessMindMapData: getReadableTree(m, ri),
+      inputSubProcesses: [
+        ...mL(m).filter(li => li.fromNodeId === ri.nodeId && li.fromNodeSide === Sides.L).map(li => li.toNodeId),
+        ...mL(m).filter(li => li.toNodeId === ri.nodeId && li.toNodeSide === Sides.L).map(li => li.fromNodeId)
+      ],
+      inputSubProcessesAll: [],
+      subProcessInputLink: ri.llmDataId,
+      shouldQueryAndStoreResultAsMindMapToo: false,
+      subProcessPromptOverride: ''
+    } as SubProcess)
+  )
+  subProcesses.forEach(sp => sp.inputSubProcessesAll = getAllDependencies(sp.subProcessId, subProcesses))
+  return subProcesses
+    .filter(el => getAllDependencies(subProcessId, subProcesses).includes(el.subProcessId) || el.subProcessId === subProcessId)
+    .sort((a, b) => a.inputSubProcessesAll.includes(b.subProcessId) ? 1 : -1)
 }
 
 // export const getProcess = (m: M, subProcessId: string) => ({
 //   processId: getMapId(),
-//   subProcesses: getSubProcessListFiltered(m, subProcessId),
+//   subProcesses: getSubProcessList(m, subProcessId),
 // })
