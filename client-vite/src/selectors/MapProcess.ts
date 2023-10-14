@@ -69,7 +69,18 @@ export const getSubProcessList = (m: M): SubProcess[] =>
       } as SubProcess)
     )
 
-export const getProcess = (m: M): Process => ({
-  processId: getMapId(),
-  subProcesses: getSubProcessList(m),
-})
+const getAllDependencies = (subProcessId: string, subProcessList: SubProcess[]): string[] => {
+  const process = subProcessList.find(el => el.subProcessId === subProcessId)
+  if (!process) {return []}
+  return process.inputSubProcesses.concat(process.inputSubProcesses.reduce((acc: string[], curr) => acc.concat(getAllDependencies(curr, subProcessList)), []))
+}
+
+export const getProcess = (m: M, subProcessId: string): Process => {
+  const subProcessList = getSubProcessList(m)
+  const subProcessListFiltered = subProcessList.filter(el => getAllDependencies(subProcessId, subProcessList).includes(el.subProcessId) || el.subProcessId === subProcessId)
+  console.log(subProcessListFiltered.map(el  => el.subProcessMindMapData[0].contentList))
+  return {
+    processId: getMapId(),
+    subProcesses: subProcessListFiltered,
+  }
+}
