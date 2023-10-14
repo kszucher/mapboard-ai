@@ -24,8 +24,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
               <g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
                 <path stroke="none" d="M0 0h24v24H0z"></path>
                 <path d="M14 3v4a1 1 0 001 1h4"></path>
-                <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2zM12 11v6"></path>
-                <path d="M9.5 13.5L12 11l2.5 2.5"></path>
+                <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"></path>
               </g>
               <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                 e.preventDefault()
