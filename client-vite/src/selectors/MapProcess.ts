@@ -63,7 +63,8 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
     } as SubProcess)
   )
   subProcesses.forEach(sp => sp.inputSubProcessesAll = getAllDependencies(sp.subProcessId, subProcesses))
+  const subProcessInputSubProcessesAll = getAllDependencies(subProcessId, subProcesses)
   return subProcesses
-    .filter(el => getAllDependencies(subProcessId, subProcesses).includes(el.subProcessId) || el.subProcessId === subProcessId)
+    .filter(el => subProcessInputSubProcessesAll.includes(el.subProcessId) || el.subProcessId === subProcessId)
     .sort((a, b) => a.inputSubProcessesAll.includes(b.subProcessId) ? 1 : -1)
 }
