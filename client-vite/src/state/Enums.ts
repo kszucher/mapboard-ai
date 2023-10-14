@@ -57,6 +57,6 @@ export enum Sides {
 
 export enum ControlTypes {
   NONE = '',
-  UPLOAD = 'upload',
-  GENERATE = 'generate',
+  INGESTION = 'ingestion',
+  EXTRACTION = 'extraction',
 }

@@ -115,8 +115,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setContentEquation': Object.assign(getX(m), {contentType: 'equation', content: payload.content}); break
     case 'setContentMermaid': Object.assign(getX(m), {contentType: 'mermaid', content: payload.content}); break
     case 'setControlTypeNone': Object.assign(getX(m), { controlType: ControlTypes.NONE }); break
-    case 'setControlTypeUpload': Object.assign(getX(m), { controlType: ControlTypes.UPLOAD }); break
-    case 'setControlTypeGenerate': Object.assign(getX(m), { controlType: ControlTypes.GENERATE }); break
+    case 'setControlTypeIngestion': Object.assign(getX(m), { controlType: ControlTypes.INGESTION }); break
+    case 'setControlTypeExtraction': Object.assign(getX(m), { controlType: ControlTypes.EXTRACTION }); break
     case 'offsetD': Object.assign(getX(m), { offsetH: getX(m).offsetH += 20 }); break
     case 'offsetU': Object.assign(getX(m), { offsetH: getX(m).offsetH -= 20 }); break
     case 'offsetR': Object.assign(getX(m), { offsetW: getX(m).offsetW += 20 }); break

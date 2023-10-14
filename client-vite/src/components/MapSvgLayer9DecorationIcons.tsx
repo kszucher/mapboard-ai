@@ -18,7 +18,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
     <g>
       {mTR(m).map((t: T) => (
         <g key={t.nodeId}>
-          {t.controlType === ControlTypes.UPLOAD &&
+          {t.controlType === ControlTypes.INGESTION &&
             <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(t.nodeStartX -36)}, ${adjustIcon(t.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
               <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
               <g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
                 input.click()
               }}/>
             </g>}
-          {t.controlType === ControlTypes.GENERATE &&
+          {t.controlType === ControlTypes.EXTRACTION &&
             <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(t.nodeStartX -36)}, ${adjustIcon(t.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
               <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
               <g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">

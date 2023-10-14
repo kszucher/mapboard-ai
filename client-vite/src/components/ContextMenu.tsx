@@ -108,8 +108,8 @@ export const ContextMenu: FC = () => {
             { mExists && getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOff', payload: null}))}} subMenuId={'Task Mode Off'}/> }
             { mExists && getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeReset', payload: null}))}} subMenuId={'Task Mode Reset'}/> }
             { mExists && isXR(m) && getX(m).controlType !== ControlTypes.NONE && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}} subMenuId={'Control Type None'}/> }
-            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.UPLOAD && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeUpload', payload: null}))}} subMenuId={'Control Type Upload'}/> }
-            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.GENERATE && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeGenerate', payload: null}))}} subMenuId={'Control Type Generate'}/> }
+            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.INGESTION && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeIngestion', payload: null}))}} subMenuId={'Control Type Ingestion'}/> }
+            { mExists && isXR(m) && getX(m).controlType !== ControlTypes.EXTRACTION && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeExtraction', payload: null}))}} subMenuId={'Control Type Extraction'}/> }
           </Li1>
           <Li1 menuId={'Move'}>
             { mExists && isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <Li2 onClick={()=>{dispatch(actions.mapAction({type: 'moveSU', payload: null}))}} subMenuId={'Node Up'}/> }

@@ -1,4 +1,4 @@
-import {ControlTypes, Sides} from "../state/Enums"
+import {Sides} from "../state/Enums"
 import {M, T} from "../state/MapStateTypes"
 import {getNodeByPath, getRSIPL, getTRD0SOL, mL, mTR} from "./MapSelector"
 
@@ -24,16 +24,6 @@ export type SubProcess = {
   subProcessPromptOverride: string
 }
 
-export const getSubProcessType = (controlType: ControlTypes): SubProcessTypes => {
-  if (controlType === ControlTypes.UPLOAD) {
-    return SubProcessTypes.INGESTION
-  } else if (controlType === ControlTypes.GENERATE) {
-    return SubProcessTypes.EXTRACTION
-  } else {
-    return SubProcessTypes.NONE
-  }
-}
-
 export const getReadableTree = (m: M, t: T): ReadableTree => [
   {nodeId: t.nodeId, contentList: [t.content]}, ...getTRD0SOL(m, t).map(ti => ({
     nodeId: ti.nodeId,
@@ -50,7 +40,7 @@ const getAllDependencies = (subProcessId: string, subProcessList: SubProcess[]):
 export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
   const subProcesses = mTR(m).map(ri => ({
       subProcessId: ri.nodeId,
-      subProcessType: getSubProcessType(ri.controlType),
+      subProcessType: ri.controlType,
       subProcessMindMapData: getReadableTree(m, ri),
       inputSubProcesses: [
         ...mL(m).filter(li => li.fromNodeId === ri.nodeId && li.fromNodeSide === Sides.L).map(li => li.toNodeId),
