@@ -67,21 +67,21 @@ export const Landing: FC = () => {
                 <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
                   <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
                     <div className="">
-                      <h1 className="flex justify-center">AI Visual Workspaces For</h1>
-                      <h1 className="flex justify-center">Business Processes:</h1>
+                      <h1 className="flex justify-center">No-Code Automation and Analytics For</h1>
+                      <h1 className="flex justify-center">HR and People Ops:</h1>
                       <h1 className="rotate-wrap leading-normal flex justify-center ">
                         <span> &nbsp;</span>
-                        <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Gathering and Refining Requirements</span>
-                        <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-teal-600 from-green-400">Use Cases and User Stories</span>
-                        <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-orange-600 from-amber-400">Data Exploration and Analysis</span>
-                        <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-sky-600 from-indigo-400">Documentation and Report Writing</span>
+                        <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Recruitment & Talent Acquisition</span>
+                        <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-teal-600 from-green-400">Learning & Development</span>
+                        <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-orange-600 from-amber-400">Performance Management</span>
+                        <span className="rotatingtext text-transparent bg-clip-text bg-gradient-to-r to-sky-600 from-indigo-400">Engagement & Retention</span>
                       </h1>
                     </div>
                   </h1>
                   <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
-                    Create AI-powered Hyper-Personalized Visual Workspaces
+                    MapBoard gives HR and People Ops Professionals Superpowers,
                     <br/>
-                    To Speed Up Your Research, Analysis and Reporting
+                    With Expert-level Data Assessment and Analytics based on LLMs
                   </p>
                   <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                     <a href="#"
@@ -99,12 +99,12 @@ export const Landing: FC = () => {
                     </a>
                     <a href="#"
                        className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
-                       onClick={() => window.open("https://watch.screencastify.com/v/bRfxCpLhlY5BgWOu17BW")}
+                       onClick={() => window.location.href = "mailto:krisztian@mapboard.io"}
                     >
                       <svg className="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
                       </svg>
-                      Watch video
+                      Contact Us For A Presentation
                     </a>
                   </div>
                   <br/>
@@ -112,7 +112,7 @@ export const Landing: FC = () => {
                     className="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[16px] rounded-t-xl h-[344px] max-w-[602px] md:h-[588px] md:max-w-[1024px]">
                     <div className="rounded-lg overflow-hidden h-[312px] md:h-[556px] bg-white dark:bg-gray-800">
                       <img
-                        src="https://lh3.googleusercontent.com/drive-viewer/AK7aPaCtybouPO8IzhxO95_rl-DS9ykxVqkE9-VLoeU6mCC-xK328oRL3brBZI-Qv7_vueuKFcO2Td4Mgmbr1pzhZgnt1PPmRg=w2560-h1323"
+                        src="https://lh3.googleusercontent.com/u/0/drive-viewer/AK7aPaD1NNvv4U6OG2qYQYn768IotkTerk7VQcysXfVxKinu7Zwfhbko-GXNs6YwdXAtdMvc8W7JaaWYUXjZaXsFakK_HYDv=w2560-h1323"
                         className="hidden dark:block h-[312px] md:h-[556px] w-full rounded-lg" alt=""/>
                     </div>
                   </div>
