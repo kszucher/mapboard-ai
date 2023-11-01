@@ -1,13 +1,13 @@
-import React, {FC, ReactNode} from "react"
+import React, {FC, ReactNode, useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi} from "../apis/NodeApi";
+import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi";
 import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
 import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
 import {getSubProcessList} from "../selectors/MapProcess"
 import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../selectors/MapSelector"
 import {mSelector} from "../state/EditorState"
 import {ControlTypes, PageState} from "../state/Enums"
-import {getMapId} from "../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/NodeApiState"
 
 const Li2 = ({subMenuId, onClick}: {subMenuId: string, onClick: Function}) => {
   return (
@@ -49,6 +49,8 @@ export const ContextMenu: FC = () => {
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
+  // const { data } = useOpenWorkspaceQuery()
+  // const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={!contextMenu.isActive} style={{left: contextMenu.position.x + 1, top: contextMenu.position.y -20}}>
@@ -72,6 +74,13 @@ export const ContextMenu: FC = () => {
             { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}} subMenuId={'Move Tab Map Down'}/> }
             { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.deleteMap.initiate({mapId: getMapId()}))}} subMenuId={'Remove Tab Map'}/> }
           </Li1>
+          {/*<Li1 menuId={'Frames'}>*/}
+          {/*  { mExists && frameId === '' && frameIdList.length > 0 && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))}} subMenuId={'Open Frames'}/> }*/}
+          {/*  { mExists && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))}} subMenuId={'Import Map Into Frame'}/> }*/}
+          {/*  { mExists && frameId !== '' && frameIdList.length > 0 && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.createMapFrameDuplicate.initiate({mapId: getMapId(), frameId: getFrameId()}))}} subMenuId={'Duplicate Frame'}/> }*/}
+          {/*  { mExists && frameId !== '' && frameIdList.length > 0 && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.deleteMapFrame.initiate({mapId: getMapId(), frameId: getFrameId()}))}} subMenuId={'Delete Frame'}/> }*/}
+          {/*  { mExists && frameId !== '' && <Li2 onClick={()=>{dispatch(nodeApi.endpoints.selectMap.initiate({mapId: getMapId(), frameId: ''}))}} subMenuId={'Exit Frames'}/> }*/}
+          {/*</Li1>*/}
           <Li1 menuId={'Shares'}>
             { mExists && <Li2 onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARES))}} subMenuId={'Shares'}/> }
             { mExists && <Li2 onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}} subMenuId={'Share This Map'}/> }
