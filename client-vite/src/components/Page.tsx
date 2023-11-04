@@ -5,7 +5,6 @@ import {useSelector} from "react-redux"
 import {RootState} from "../reducers/EditorReducer"
 import {Landing} from "./Landing"
 import {PageState} from "../state/Enums"
-import {ContextMenu} from "./ContextMenu";
 import {getEquationDim, getTextDim} from "./MapDivUtils"
 import {Editor} from "./Editor"
 
@@ -40,7 +39,6 @@ export const Page: FC = () => {
     >
       {pageState === PageState.AUTH && <Landing/>}
       {pageState!== PageState.AUTH && <Editor/>}
-      {<ContextMenu/>}
     </Auth0Provider>
   )
 }

@@ -4,6 +4,7 @@ import {Backdrop, CircularProgress, ThemeProvider} from '@mui/material'
 import {RootState} from "../reducers/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
+import {ContextMenu} from "./ContextMenu"
 import {MenuFrames} from "./MenuFrames"
 import {ModalEditContentEquation} from "./ModalEditContentEquation"
 import {ModalEditContentMermaid} from "./ModalEditContentMermaid"
@@ -60,6 +61,7 @@ export const Editor: FC = () => {
       {mExists && !tabShrink && <TabMaps/>}
       {mExists && formatterVisible && <Formatter/>}
       {mExists && <FrameCarousel/>}
+      {mExists && <ContextMenu/>}
       {mExists && <Window/>}
       <Logo/>
       <SidebarTop/>
