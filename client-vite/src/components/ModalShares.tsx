@@ -9,7 +9,7 @@ import {actions, AppDispatch} from "../reducers/EditorReducer"
 import {PageState} from "../state/Enums"
 import {nodeApi, useGetSharesQuery} from "../apis/NodeApi"
 
-export const Shares: FC = () => {
+export const ModalShares: FC = () => {
   const { data, isFetching } = useGetSharesQuery()
   let { shareDataExport, shareDataImport } = data || { shareDataExport: [], shareDataImport: []}
   shareDataExport = shareDataExport.map((el: any) => ({...el, id: el._id}))

@@ -19,7 +19,7 @@ import {getMuiTheme} from "./Mui"
 import {Profile} from './Profile'
 import {SidebarTop} from './SidebarTop'
 import {Settings} from './Settings'
-import {Shares} from "./Shares"
+import {ModalShares} from "./ModalShares"
 import {ModalShareThisMap} from "./ModalShareThisMap"
 import {ModalCreateMapInMap} from './ModalCreateMapInMap'
 import {TabMaps} from "./TabMaps"
@@ -68,7 +68,7 @@ export const Editor: FC = () => {
       <MenuFrames/>
       {pageState === PageState.WS_PROFILE && <Profile/>}
       {pageState === PageState.WS_SETTINGS && <Settings/>}
-      {pageState === PageState.WS_SHARES && <Shares/>}
+      {pageState === PageState.WS_SHARES && <ModalShares/>}
       {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <ModalEditContentEquation/>}
       {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <ModalEditContentMermaid/>}
       {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
