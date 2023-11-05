@@ -97,7 +97,7 @@ export const nodeApi = createApi({
     deleteMap: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMap', payload: { mapId } } }),
       async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
-      invalidatesTags: ['Workspace']
+      invalidatesTags: ['Workspace', 'Shares']
     }),
     deleteMapFrame: builder.mutation<void, { mapId: string, frameId: string }>({
       query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMapFrame', payload: { mapId, frameId } } }),
