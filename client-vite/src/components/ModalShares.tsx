@@ -47,7 +47,7 @@ export const ModalShares: FC = () => {
                   <Table.Cell>{el.status}</Table.Cell>
                   <Table.Cell>
                     <a
-                      onClick={() => dispatch(nodeApi.endpoints.deleteMap.initiate({mapId: el._id}))}
+                      onClick={() => window.alert('TODO: implement')/*dispatch(nodeApi.endpoints.withdrawShare.initiate({shareId: el._id}))*/}
                       className="font-medium text-cyan-600 hover:underline hover:cursor-pointer dark:text-cyan-500"
                     >{'Withdraw'}</a>
                   </Table.Cell>
