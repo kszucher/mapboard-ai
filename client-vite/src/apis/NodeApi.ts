@@ -114,7 +114,6 @@ export const nodeApi = createApi({
     }),
     createShare: builder.mutation<void, { mapId: string, shareEmail: string, shareAccess: string}>({
       query: ({ mapId, shareEmail, shareAccess }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createShare', payload: { mapId, shareEmail, shareAccess } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Shares']
     }),
     acceptShare: builder.mutation<void, { shareId: string }>({

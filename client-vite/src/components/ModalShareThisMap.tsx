@@ -1,55 +1,73 @@
-import {FC, useState} from "react"
+import {Button, Label, Modal, Select, TextInput} from "flowbite-react"
+import React, {FC, useState, useEffect} from "react"
 import {useDispatch} from "react-redux"
 import {actions, AppDispatch} from '../reducers/EditorReducer'
-import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
 import {AccessTypes, PageState} from "../state/Enums"
-import { useCreateShareMutation} from "../apis/NodeApi"
+import {useCreateShareMutation} from "../apis/NodeApi"
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes"
 import {getMapId} from "../state/NodeApiState"
 
 export const ModalShareThisMap: FC = () => {
-  const [ createShare,  response ] = useCreateShareMutation()
-  const errorMessage = (response.error as BaseQueryError<any>)?.data?.message
+  const [ createShare, {isError, error, isLoading, isSuccess, reset} ] = useCreateShareMutation()
+  const errorMessage = (error as BaseQueryError<any>)?.data?.message
   const [shareEmail, setShareEmail] = useState('')
   const [shareAccess, setShareAccess] = useState(AccessTypes.VIEW)
   const dispatch = useDispatch<AppDispatch>()
+  useEffect(()=> {
+    if (isSuccess) {
+      dispatch(actions.setPageState(PageState.WS))
+    }
+  }, [isSuccess])
   return (
-    <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      <div className="dark:bg-zinc-800 bg-zinc-50 border-2 dark:border-neutral-700 relative left-1/2 -translate-x-1/2 top-[80px] w-[384px] flex-col items-center inline-flex gap-4 p-5 rounded-lg">
-        <Typography component="h1" variant="h5" color="primary">
-          {'Share This Map'}
-        </Typography>
-        <TextField
-          variant="outlined" fullWidth label="Share email"
-          value={shareEmail}
-          onChange={(e) => setShareEmail(e.target.value)}/>
-        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 32 }}>
-          <FormLabel component="legend">
-            {'Access'}
-          </FormLabel>
-          <RadioGroup
-            aria-label="my-aria-label" name="my-name" row={true}
-            value={shareAccess}
-            onChange={(e) => setShareAccess(e.target.value as AccessTypes)}>
-            {[AccessTypes.VIEW, AccessTypes.EDIT].map(
-              (name, index) => <FormControlLabel value={name} control={<Radio />} label={name} key={index}/>
-            )}
-          </RadioGroup>
-        </div>
-        {errorMessage !== '' &&
-          <Typography variant="body2" color="textSecondary" align="center">
-            {errorMessage}
-          </Typography>
+    <Modal
+      theme={{
+        root: {
+          show: {
+            on: "flex bg-zinc-700 bg-opacity-25 dark:bg-opacity-40"
+          }
+        },
+        content: {
+          base: "top-[64px] relative h-full w-full p-4 md:h-auto",
+          inner: "relative rounded-lg bg-white shadow dark:bg-zinc-800 flex flex-col max-h-[90vh]"
         }
-        <Button color="primary" variant="outlined" onClick={() => createShare({mapId: getMapId(), shareEmail, shareAccess})}>
-          {'SHARE'}
+      }}
+      show={true}
+      onClose={() => dispatch(actions.setPageState(PageState.WS))}
+      position="top-center"
+      size="lg"
+    >
+      <Modal.Header>Share This Map</Modal.Header>
+      <Modal.Body>
+        <div className="max-w-md">
+          <div className="mb-2 block">
+            <Label htmlFor="small" value="Email" />
+          </div>
+          <TextInput
+            type="text"
+            value={shareEmail}
+            onClick={() => reset()}
+            onChange={(e) => setShareEmail(e.target.value)}
+            color={isError ? 'failure' : 'gray'}
+            helperText={<span className="font-medium text-red-600">{errorMessage}</span>}
+          />
+          <br/>
+          <div className="mb-2 block">
+            <Label htmlFor="access" value="Access" />
+          </div>
+          <Select id="access" required onChange={(e) => setShareAccess(e.target.value as AccessTypes)}>
+            <option>{AccessTypes.EDIT}</option>
+            <option>{AccessTypes.VIEW}</option>
+          </Select>
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button disabled={isLoading || shareEmail === ''} onClick={() => createShare({mapId: getMapId(), shareEmail, shareAccess})}>
+          OK
         </Button>
-        <Button
-          color="primary" variant="outlined"
-          onClick={_=>dispatch(actions.setPageState(PageState.WS))}>
-          {'CLOSE'}
+        <Button color="gray" onClick={() => dispatch(actions.setPageState(PageState.WS))}>
+          Cancel
         </Button>
-      </div>
+      </Modal.Footer>
     </Modal>
   )
 }

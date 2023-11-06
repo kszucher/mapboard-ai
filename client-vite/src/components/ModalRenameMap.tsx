@@ -27,6 +27,7 @@ export const ModalRenameMap: FC = () => {
       show={true}
       onClose={() => dispatch(actions.setPageState(PageState.WS))}
       position="top-center"
+      size="lg"
     >
       <Modal.Header>Rename Map</Modal.Header>
       <Modal.Body>
