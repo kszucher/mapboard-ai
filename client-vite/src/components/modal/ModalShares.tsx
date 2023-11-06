@@ -1,8 +1,8 @@
 import React, {FC} from 'react'
 import {useDispatch} from "react-redux"
-import {actions, AppDispatch} from "../reducers/EditorReducer"
-import {PageState} from "../state/Enums"
-import {nodeApi, useGetSharesQuery} from "../apis/NodeApi"
+import {actions, AppDispatch} from "../../reducers/EditorReducer"
+import {PageState} from "../../state/Enums"
+import {nodeApi, useGetSharesQuery} from "../../apis/NodeApi"
 import {Modal, Table,} from 'flowbite-react'
 
 export const ModalShares: FC = () => {

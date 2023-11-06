@@ -1,14 +1,14 @@
 import {Dropdown} from "flowbite-react"
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../selectors/GptPrompter"
-import {getSubProcessList} from "../selectors/MapProcess"
-import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../selectors/MapSelector"
-import {mSelector} from "../state/EditorState"
-import {ControlTypes, PageState} from "../state/Enums"
-import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/NodeApiState"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {gptGenNodeMermaid, gptGenNodesS, gptGenNodesT} from "../../selectors/GptPrompter"
+import {getSubProcessList} from "../../selectors/MapProcess"
+import {getCountXASD, getCountXASU, getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getCountXSO2, getG, getR0, getX, getXAEO, getXRD0, getXRD1, isDirL, isDirR, isXASVN, isXD, isXDS, isXR, isXS} from "../../selectors/MapSelector"
+import {mSelector} from "../../state/EditorState"
+import {ControlTypes, PageState} from "../../state/Enums"
+import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
 
 const DropdownHelper = (label: string) => {
   return (

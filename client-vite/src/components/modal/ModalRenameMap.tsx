@@ -1,9 +1,9 @@
 import React, {FC, useState} from "react"
 import {useDispatch} from "react-redux"
-import {actions, AppDispatch} from "../reducers/EditorReducer"
-import {PageState} from "../state/Enums"
-import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../state/NodeApiState"
+import {actions, AppDispatch} from "../../reducers/EditorReducer"
+import {PageState} from "../../state/Enums"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 import {Button, Label, Modal, TextInput} from "flowbite-react"
 
 export const ModalRenameMap: FC = () => {

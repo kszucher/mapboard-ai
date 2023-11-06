@@ -1,11 +1,11 @@
 import {Button, Label, Modal, Select, TextInput} from "flowbite-react"
 import React, {FC, useState, useEffect} from "react"
 import {useDispatch} from "react-redux"
-import {actions, AppDispatch} from '../reducers/EditorReducer'
-import {AccessTypes, PageState} from "../state/Enums"
-import {useCreateShareMutation} from "../apis/NodeApi"
+import {actions, AppDispatch} from '../../reducers/EditorReducer'
+import {AccessTypes, PageState} from "../../state/Enums"
+import {useCreateShareMutation} from "../../apis/NodeApi"
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes"
-import {getMapId} from "../state/NodeApiState"
+import {getMapId} from "../../state/NodeApiState"
 
 export const ModalShareThisMap: FC = () => {
   const [ createShare, {isError, error, isLoading, isSuccess, reset} ] = useCreateShareMutation()
