@@ -52,7 +52,6 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
               <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-
               }}/>
             </g>}
         </g>
