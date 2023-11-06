@@ -6,6 +6,7 @@ import {AccessTypes, PageState} from "../../state/Enums"
 import {useCreateShareMutation} from "../../apis/NodeApi"
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes"
 import {getMapId} from "../../state/NodeApiState"
+import {modalTheme} from "./Theme"
 
 export const ShareThisMapModal: FC = () => {
   const [ createShare, {isError, error, isLoading, isSuccess, reset} ] = useCreateShareMutation()
@@ -19,23 +20,7 @@ export const ShareThisMapModal: FC = () => {
     }
   }, [isSuccess])
   return (
-    <Modal
-      theme={{
-        root: {
-          show: {
-            on: "flex bg-zinc-700 bg-opacity-25 dark:bg-opacity-40"
-          }
-        },
-        content: {
-          base: "top-[64px] relative h-full w-full p-4 md:h-auto",
-          inner: "relative rounded-lg bg-white shadow dark:bg-zinc-800 flex flex-col max-h-[90vh]"
-        }
-      }}
-      show={true}
-      onClose={() => dispatch(actions.setPageState(PageState.WS))}
-      position="top-center"
-      size="lg"
-    >
+    <Modal theme={modalTheme} show={true} onClose={() => dispatch(actions.setPageState(PageState.WS))} position="top-center" size="lg">
       <Modal.Header>Share This Map</Modal.Header>
       <Modal.Body>
         <div className="max-w-md">
