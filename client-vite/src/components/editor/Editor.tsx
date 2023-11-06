@@ -14,7 +14,6 @@ import {Logo} from "./Logo"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {ModalRenameMap} from "../modal/ModalRenameMap"
-import {getMuiTheme} from "../misc/Mui"
 import {Profile} from './Profile'
 import {SidebarTop} from './SidebarTop'
 import {Settings} from './Settings'
@@ -53,7 +52,7 @@ export const Editor: FC = () => {
   }, [colorMode])
 
   return (
-    <ThemeProvider theme={getMuiTheme('dark')}>
+    <>
       {mExists && <Map/>}
       {mExists && <UndoRedo/>}
       {mExists && <BreadcrumbMaps/>}
@@ -74,6 +73,6 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
       {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
       {pageState === PageState.WS_RENAME_MAP && <ModalRenameMap/>}
-    </ThemeProvider>
+    </>
   )
 }
