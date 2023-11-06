@@ -1,13 +1,13 @@
 import React, {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {N, T} from "../state/MapStateTypes"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {N, T} from "../../state/MapStateTypes"
 import colors from "tailwindcss/colors"
-import {getColors} from "./Colors"
-import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR, mT} from "../selectors/MapSelector"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
-import {mSelector} from "../state/EditorState"
-import {RootState} from "../reducers/EditorReducer"
+import {getColors} from "../misc/Colors"
+import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR, mT} from "../../selectors/MapSelector"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {mSelector} from "../../state/EditorState"
+import {RootState} from "../../reducers/EditorReducer"
 
 export const MapSvgLayer0RootBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

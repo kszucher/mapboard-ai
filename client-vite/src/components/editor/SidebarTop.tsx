@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux'
 import { IconButton } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
 import SettingsIcon from '@mui/icons-material/Settings'
-import {actions, AppDispatch} from "../reducers/EditorReducer"
-import {PageState} from "../state/Enums"
+import {actions, AppDispatch} from "../../reducers/EditorReducer"
+import {PageState} from "../../state/Enums"
 
 export const SidebarTop: FC = () => {
   const dispatch = useDispatch<AppDispatch>()

@@ -1,11 +1,11 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from 'react-redux'
-import {AccessTypes} from "../state/Enums"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
-import {IconButton} from "./IconButton"
-import {RedoIcon, UndoIcon} from "./IconButtonSvg"
+import {AccessTypes} from "../../state/Enums"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {IconButton} from "../misc/IconButton"
+import {RedoIcon, UndoIcon} from "../misc/IconButtonSvg"
 
 export const UndoRedo: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)

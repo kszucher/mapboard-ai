@@ -3,11 +3,11 @@ import { createRoot } from 'react-dom/client';
 import './index.css'
 import {Provider} from "react-redux";
 import {store} from "./reducers/EditorReducer";
-import {Page} from "./components/Page";
+import {Page} from "./components/misc/Page";
 import './Layout.css';
 import './RotatingText.css'
 import './input.css';
-import { Docs } from './components/Docs'
+import { Docs } from './components/misc/Docs'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 const container = document.getElementById('root');

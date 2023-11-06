@@ -1,9 +1,9 @@
 import React, {FC} from "react"
 import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {getColors} from "./Colors"
-import {RootState} from "../reducers/EditorReducer"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {getColors} from "../misc/Colors"
+import {RootState} from "../../reducers/EditorReducer"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
 export const MapSvgLayer7SelectionArea: FC = () => {
   const selectionRectCoords = useSelector((state: RootState) => state.editor.selectionRectCoords)

@@ -1,4 +1,4 @@
-import {getEquationDim, getTextDim} from "../components/MapDivUtils"
+import {getEquationDim, getTextDim} from "../components/map/MapDivUtils"
 import {MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL} from "../state/Consts"
 import {M, T} from "../state/MapStateTypes"
 import {getCountTCO2, getCountTSCH, getCountTSCV, getCountTSO1, getCountTSO2, getG, getNodeByPath} from "../selectors/MapSelector"

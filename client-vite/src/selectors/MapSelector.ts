@@ -1,5 +1,5 @@
 import isEqual from "react-fast-compare"
-import {getTaskWidth} from "../components/MapSvgUtils"
+import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {tSaveOptional} from "../state/MapState"
 import {G, L, M, N, P, PT, PTC, T, TSaveOptional} from "../state/MapStateTypes"

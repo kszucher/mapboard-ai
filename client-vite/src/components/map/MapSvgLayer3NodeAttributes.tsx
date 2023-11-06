@@ -1,14 +1,14 @@
 import React, {FC, Fragment,} from "react"
 import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {adjust} from "../utils/Utils";
-import {TASK_CIRCLES_GAP} from "../state/Consts"
-import {getColors} from "./Colors"
-import {getTSI1, getTSI2, getCountTCO1, getCountTSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS, mT} from "../selectors/MapSelector"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
-import {mSelector, pmSelector} from "../state/EditorState"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {adjust} from "../../utils/Utils";
+import {TASK_CIRCLES_GAP} from "../../state/Consts"
+import {getColors} from "../misc/Colors"
+import {getTSI1, getTSI2, getCountTCO1, getCountTSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS, mT} from "../../selectors/MapSelector"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {mSelector, pmSelector} from "../../state/EditorState"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {pathCommonProps} from "./MapSvg"
 import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getPolygonS, getTaskRadius, getTaskStartPoint} from "./MapSvgUtils"
 

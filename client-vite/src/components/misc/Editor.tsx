@@ -1,34 +1,34 @@
 import React, {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
 import {Backdrop, CircularProgress, ThemeProvider} from '@mui/material'
-import {RootState} from "../reducers/EditorReducer"
-import {mSelector} from "../state/EditorState"
-import {BreadcrumbMaps} from "./BreadcrumbMaps"
-import {ContextMenu} from "./menu/ContextMenu"
+import {RootState} from "../../reducers/EditorReducer"
+import {mSelector} from "../../state/EditorState"
+import {BreadcrumbMaps} from "../editor/BreadcrumbMaps"
+import {ContextMenu} from "../menu/ContextMenu"
 import {MenuFrames} from "./MenuFrames"
-import {ModalEditContentEquation} from "./modal/ModalEditContentEquation"
-import {ModalEditContentMermaid} from "./modal/ModalEditContentMermaid"
-import {ModalCreateTable} from './modal/ModalCreateTable'
-import {Formatter} from "./Formatter"
-import {FrameCarousel} from "./FrameCarousel"
-import {Logo} from "./Logo"
-import {Map} from "./Map"
-import {getEquationDim, getTextDim} from "./MapDivUtils"
-import {ModalRenameMap} from "./modal/ModalRenameMap"
+import {ModalEditContentEquation} from "../modal/ModalEditContentEquation"
+import {ModalEditContentMermaid} from "../modal/ModalEditContentMermaid"
+import {ModalCreateTable} from '../modal/ModalCreateTable'
+import {Formatter} from "../editor/Formatter"
+import {FrameCarousel} from "../editor/FrameCarousel"
+import {Logo} from "../editor/Logo"
+import {Map} from "../map/Map"
+import {getEquationDim, getTextDim} from "../map/MapDivUtils"
+import {ModalRenameMap} from "../modal/ModalRenameMap"
 import {getMuiTheme} from "./Mui"
-import {Profile} from './Profile'
-import {SidebarTop} from './SidebarTop'
-import {Settings} from './Settings'
-import {ModalShares} from "./modal/ModalShares"
-import {ModalShareThisMap} from "./modal/ModalShareThisMap"
-import {ModalCreateMapInMap} from './modal/ModalCreateMapInMap'
-import {TabMaps} from "./TabMaps"
-import {UndoRedo} from './UndoRedo'
+import {Profile} from '../editor/Profile'
+import {SidebarTop} from '../editor/SidebarTop'
+import {Settings} from '../editor/Settings'
+import {ModalShares} from "../modal/ModalShares"
+import {ModalShareThisMap} from "../modal/ModalShareThisMap"
+import {ModalCreateMapInMap} from '../modal/ModalCreateMapInMap'
+import {TabMaps} from "../editor/TabMaps"
+import {UndoRedo} from '../editor/UndoRedo'
 import {Window} from "./Window"
 import {setColors} from "./Colors"
-import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {PageState} from "../state/Enums"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {PageState} from "../../state/Enums"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)

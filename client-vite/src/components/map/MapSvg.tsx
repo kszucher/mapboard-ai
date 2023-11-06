@@ -1,8 +1,8 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountTCO1, getG, getR0, isXACC, isXACR, isXC} from "../selectors/MapSelector"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import {mSelector} from "../state/EditorState"
+import {getCountTCO1, getG, getR0, isXACC, isXACR, isXC} from "../../selectors/MapSelector"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {mSelector} from "../../state/EditorState"
 import {MapSvgLayer0RootBackground} from "./MapSvgLayer0RootBackground"
 import {MapSvgLayer1NodeFamilyBackground} from "./MapSvgLayer1NodeFamilyBackground"
 import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
@@ -14,7 +14,7 @@ import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
 import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
 import {MapSvgLayer9DecorationIcons} from "./MapSvgLayer9DecorationIcons"
 import {MapSvgLayer10Connections} from "./MapSvgLayer10Connections"
-import {M, T} from "../state/MapStateTypes"
+import {M, T} from "../../state/MapStateTypes"
 
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',

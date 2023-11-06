@@ -1,8 +1,8 @@
 import React, {FC} from "react"
 import {useDispatch} from "react-redux"
-import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {AppDispatch} from "../reducers/EditorReducer"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {AppDispatch} from "../../reducers/EditorReducer"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
 export const TabMaps: FC = () => {
   const { data } = useOpenWorkspaceQuery()

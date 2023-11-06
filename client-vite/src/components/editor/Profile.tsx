@@ -2,11 +2,11 @@ import {useAuth0} from "@auth0/auth0-react";
 import {FC, useState} from 'react'
 import {useDispatch} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
-import { ModalDeleteUser } from './modal/ModalDeleteUser'
-import {actions, AppDispatch} from "../reducers/EditorReducer"
-import {PageState} from "../state/Enums"
-import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
+import { ModalDeleteUser } from '../modal/ModalDeleteUser'
+import {actions, AppDispatch} from "../../reducers/EditorReducer"
+import {PageState} from "../../state/Enums"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
 export const Profile: FC = () => {
   const [childModalOpen, setChildModalOpen] = useState(false)

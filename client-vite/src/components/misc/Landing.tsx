@@ -1,10 +1,10 @@
 import {useDispatch, useSelector} from "react-redux"
 import {CircularProgress} from '@mui/material'
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import React, {FC, useEffect, useState} from "react"
 import {useAuth0} from "@auth0/auth0-react"
-import {nodeApi} from "../apis/NodeApi"
-import {authAudienceUrl} from "../apis/Urls"
+import {nodeApi} from "../../apis/NodeApi"
+import {authAudienceUrl} from "../../apis/Urls"
 import {setColors} from "./Colors"
 
 export const Landing: FC = () => {

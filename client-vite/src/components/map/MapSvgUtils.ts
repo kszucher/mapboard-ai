@@ -1,8 +1,8 @@
-import {getTSIC, getG, getNodeById, getTR, getPathDir, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../selectors/MapSelector"
-import {adjust} from "../utils/Utils"
-import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts"
-import {LineTypes, Sides} from "../state/Enums"
-import {G, L, M, T} from "../state/MapStateTypes"
+import {getTSIC, getG, getNodeById, getTR, getPathDir, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../../selectors/MapSelector"
+import {adjust} from "../../utils/Utils"
+import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
+import {LineTypes, Sides} from "../../state/Enums"
+import {G, L, M, T} from "../../state/MapStateTypes"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 

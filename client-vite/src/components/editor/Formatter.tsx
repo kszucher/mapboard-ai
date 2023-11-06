@@ -2,14 +2,14 @@ import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, ButtonGroup} from '@mui/material'
 import colors from "tailwindcss/colors"
-import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {mSelector} from "../state/EditorState"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
-import {IconButton} from "./IconButton";
-import {FBorderIcon, FFillIcon, SBorderIcon, SFillIcon, TextIcon, VectorSplineIcon} from "./IconButtonSvg"
-import {actions, AppDispatch, RootState} from '../reducers/EditorReducer'
-import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../state/Enums"
-import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, getX, isXR, isXS} from "../selectors/MapSelector"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {mSelector} from "../../state/EditorState"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {IconButton} from "../misc/IconButton";
+import {FBorderIcon, FFillIcon, SBorderIcon, SFillIcon, TextIcon, VectorSplineIcon} from "../misc/IconButtonSvg"
+import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
+import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../../state/Enums"
+import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, getX, isXR, isXS} from "../../selectors/MapSelector"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 

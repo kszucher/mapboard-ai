@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import {timeoutId} from "../components/Window"
+import {timeoutId} from "../components/misc/Window"
 import {getFrameId, getMapId} from "../state/NodeApiState"
 import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/NodeApiStateTypes"
 import {getMap} from "../state/EditorState"

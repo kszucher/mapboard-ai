@@ -1,13 +1,13 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {AppDispatch, RootState} from "../reducers/EditorReducer"
-import {mTR} from "../selectors/MapSelector"
-import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {adjustIcon} from "../utils/Utils"
-import {mSelector} from "../state/EditorState"
-import {ControlTypes} from "../state/Enums"
-import {T} from "../state/MapStateTypes"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
+import {AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {mTR} from "../../selectors/MapSelector"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {adjustIcon} from "../../utils/Utils"
+import {mSelector} from "../../state/EditorState"
+import {ControlTypes} from "../../state/Enums"
+import {T} from "../../state/MapStateTypes"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
 export const MapSvgLayer9DecorationIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

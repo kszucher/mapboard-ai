@@ -1,13 +1,13 @@
 import React, {FC, useEffect, useRef} from "react"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer"
-import {mSelector} from "../state/EditorState"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {mSelector} from "../../state/EditorState"
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
 import {useDispatch, useSelector} from "react-redux"
 import {setScrollLeftAnimated} from "./MapDivUtils"
-import {useOpenWorkspaceQuery} from "../apis/NodeApi"
-import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
-import {getG} from "../selectors/MapSelector"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {getG} from "../../selectors/MapSelector"
 
 export const Map: FC = () => {
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)

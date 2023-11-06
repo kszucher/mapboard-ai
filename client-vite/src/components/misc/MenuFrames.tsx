@@ -1,10 +1,10 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from 'react-redux'
 import {Menu, MenuItem} from '@mui/material'
-import {actions, AppDispatch, RootState} from '../reducers/EditorReducer'
-import {genHash} from "../utils/Utils"
-import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/NodeApiState"
-import {nodeApi, useOpenWorkspaceQuery} from "../apis/NodeApi"
+import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
+import {genHash} from "../../utils/Utils"
+import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 
 export const MenuFrames: FC = () => {
   const frameMenu = useSelector((state: RootState) => state.editor.frameMenu)
