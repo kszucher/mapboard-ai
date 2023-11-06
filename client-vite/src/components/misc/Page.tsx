@@ -3,7 +3,7 @@ import mermaid from "mermaid"
 import React, {FC, useEffect} from 'react'
 import {useSelector} from "react-redux"
 import {RootState} from "../../reducers/EditorReducer"
-import {Landing} from "./Landing"
+import {Landing} from "../landing/Landing"
 import {PageState} from "../../state/Enums"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Editor} from "../editor/Editor"

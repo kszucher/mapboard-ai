@@ -7,7 +7,7 @@ import {Page} from "./components/misc/Page";
 import './Layout.css';
 import './RotatingText.css'
 import './input.css';
-import { Docs } from './components/misc/Docs'
+import { Docs } from './components/docs/Docs'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 const container = document.getElementById('root');
