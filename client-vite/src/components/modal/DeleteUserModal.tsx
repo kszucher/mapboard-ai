@@ -5,7 +5,7 @@ import {nodeApi} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {PageState} from "../../state/Enums"
 
-export const ModalDeleteUser:FC = () => {
+export const DeleteUserModal:FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const interactionDisabled = useSelector((state: RootState) => state.editor.interactionDisabled)
   const dispatch = useDispatch<AppDispatch>()

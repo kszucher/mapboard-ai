@@ -7,7 +7,7 @@ import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {getX} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
 
-export const ModalEditContentMermaid: FC = () => {
+export const EditContentMermaidModal: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const { isFetching } = useOpenWorkspaceQuery()
   const dispatch = useDispatch<AppDispatch>()

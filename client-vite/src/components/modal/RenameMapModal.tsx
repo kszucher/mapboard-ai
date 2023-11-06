@@ -6,7 +6,7 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 import {Button, Label, Modal, TextInput} from "flowbite-react"
 
-export const ModalRenameMap: FC = () => {
+export const RenameMapModal: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
   const [mapName, setMapName] = useState(tabMapNameList[tabId].name)

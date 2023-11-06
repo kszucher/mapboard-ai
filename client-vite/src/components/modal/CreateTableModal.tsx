@@ -6,7 +6,7 @@ import {isXR, isXS} from "../../selectors/MapSelector"
 import {PageState} from "../../state/Enums"
 import {mSelector} from "../../state/EditorState"
 
-export const ModalCreateTable: FC = () => {
+export const CreateTableModal: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const [row, setRow] = useState<string>('1')
   const [col, setCol] = useState<string>('1')

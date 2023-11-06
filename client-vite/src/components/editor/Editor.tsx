@@ -5,21 +5,21 @@ import {RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {ContextMenu} from "../menu/ContextMenu"
-import {ModalEditContentEquation} from "../modal/ModalEditContentEquation"
-import {ModalEditContentMermaid} from "../modal/ModalEditContentMermaid"
-import {ModalCreateTable} from '../modal/ModalCreateTable'
+import {EditContentEquationModal} from "../modal/EditContentEquationModal"
+import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
+import {CreateTableModal} from '../modal/CreateTableModal'
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Logo} from "./Logo"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
-import {ModalRenameMap} from "../modal/ModalRenameMap"
+import {RenameMapModal} from "../modal/RenameMapModal"
 import {Profile} from './Profile'
 import {SidebarTop} from './SidebarTop'
 import {Settings} from './Settings'
-import {ModalShares} from "../modal/ModalShares"
-import {ModalShareThisMap} from "../modal/ModalShareThisMap"
-import {ModalCreateMapInMap} from '../modal/ModalCreateMapInMap'
+import {SharesModal} from "../modal/SharesModal"
+import {ShareThisMapModal} from "../modal/ShareThisMapModal"
+import {CreateMapInMapModal} from '../modal/CreateMapInMapModal'
 import {TabMaps} from "./TabMaps"
 import {UndoRedo} from './UndoRedo'
 import {Window} from "../misc/Window"
@@ -65,14 +65,14 @@ export const Editor: FC = () => {
       <SidebarTop/>
       {pageState === PageState.WS_PROFILE && <Profile/>}
       {pageState === PageState.WS_SETTINGS && <Settings/>}
-      {pageState === PageState.WS_SHARES && <ModalShares/>}
-      {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <ModalEditContentEquation/>}
-      {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <ModalEditContentMermaid/>}
-      {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
-      {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
-      {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
+      {pageState === PageState.WS_SHARES && <SharesModal/>}
+      {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <EditContentEquationModal/>}
+      {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <EditContentMermaidModal/>}
+      {pageState === PageState.WS_CREATE_TABLE && <CreateTableModal/>}
+      {pageState === PageState.WS_CREATE_MAP_IN_MAP && <CreateMapInMapModal/>}
+      {pageState === PageState.WS_SHARE_THIS_MAP && <ShareThisMapModal/>}
       {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
-      {pageState === PageState.WS_RENAME_MAP && <ModalRenameMap/>}
+      {pageState === PageState.WS_RENAME_MAP && <RenameMapModal/>}
     </>
   )
 }

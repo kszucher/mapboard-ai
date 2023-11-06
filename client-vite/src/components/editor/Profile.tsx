@@ -2,7 +2,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import {FC, useState} from 'react'
 import {useDispatch} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
-import { ModalDeleteUser } from '../modal/ModalDeleteUser'
+import { DeleteUserModal } from '../modal/DeleteUserModal'
 import {actions, AppDispatch} from "../../reducers/EditorReducer"
 import {PageState} from "../../state/Enums"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
@@ -31,7 +31,7 @@ export const Profile: FC = () => {
         }}>{'SIGN OUT EVERYWHERE'}</Button>
         <Button color="primary" variant="outlined" onClick={_=>setChildModalOpen(true)}>{'DELETE ACCOUNT'}</Button>
         <Button color="primary" variant="outlined" onClick={_=>dispatch(actions.setPageState(PageState.WS))}>{'CLOSE'}</Button>
-        {childModalOpen && <ModalDeleteUser/>}
+        {childModalOpen && <DeleteUserModal/>}
       </div>
     </Modal>
   )
