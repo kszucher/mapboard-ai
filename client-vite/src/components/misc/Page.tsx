@@ -6,7 +6,7 @@ import {RootState} from "../../reducers/EditorReducer"
 import {Landing} from "./Landing"
 import {PageState} from "../../state/Enums"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
-import {Editor} from "./Editor"
+import {Editor} from "../editor/Editor"
 
 export const Page: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
