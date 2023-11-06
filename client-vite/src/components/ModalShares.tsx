@@ -73,11 +73,12 @@ export const ModalShares: FC = () => {
                   <Table.Cell>{el.ownerUserEmail}</Table.Cell>
                   <Table.Cell>{el.access}</Table.Cell>
                   <Table.Cell>{el.status}</Table.Cell>
-                  {el.status === 'waiting' && <Table.Cell>
-                    <a
-                      onClick={() => {dispatch(nodeApi.endpoints.acceptShare.initiate({shareId: el._id}))}}
-                      className="font-medium text-cyan-600 hover:underline hover:cursor-pointer dark:text-cyan-500"
-                    >{'Accept'}</a></Table.Cell>}
+                  {el.status === 'waiting' &&
+                    <Table.Cell>
+                      <a className="font-medium text-cyan-600 hover:underline hover:cursor-pointer dark:text-cyan-500" onClick={() => {dispatch(nodeApi.endpoints.acceptShare.initiate({shareId: el._id}))}}>
+                        {'Accept'}
+                      </a>
+                    </Table.Cell>}
                   {el.status === 'accepted' && <Table.Cell><a>{'Accepted'}</a></Table.Cell>}
                 </Table.Row>
               )
