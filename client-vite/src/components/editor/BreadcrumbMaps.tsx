@@ -16,7 +16,8 @@ export const BreadcrumbMaps: FC = () => {
           <Breadcrumb.Item
             href="/"
             onClick={e => {e.preventDefault(); frameId !== '' ? console.log('prevent') : dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))}}
-            key={index}>
+            key={index}
+          >
             {el.name}
           </Breadcrumb.Item>
         ))}

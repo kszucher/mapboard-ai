@@ -17,9 +17,8 @@ export const Logo: FC = () => {
           color="inherit">
           <MenuIcon/>
         </IconButton>
-        <Typography variant="h6">
-          {'mapboard'}
-        </Typography>
+        <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
+
       </Toolbar>
     </div>
   )
