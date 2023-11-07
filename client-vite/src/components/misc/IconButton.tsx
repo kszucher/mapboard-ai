@@ -13,6 +13,7 @@ export const IconButton = ({colorMode, disabled, selected = false, onClick, chil
       height="24"
       stroke={colorMode === 'dark' ? (selected? colors.purple[600] : "#ffffff") : '#000000'}
       color={colorMode === 'dark' ? (selected? colors.purple[600] : "#ffffff") : '#000000'}
+      fill={'none'}
       opacity={disabled ? '25%' : '100%'}
       strokeLinecap="round"
       strokeLinejoin="round"
