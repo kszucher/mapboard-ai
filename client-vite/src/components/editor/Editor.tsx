@@ -20,7 +20,6 @@ import {Settings} from './Settings'
 import {SharesModal} from "../modal/SharesModal"
 import {ShareThisMapModal} from "../modal/ShareThisMapModal"
 import {CreateMapInMapModal} from '../modal/CreateMapInMapModal'
-import {TabMaps} from "./TabMaps"
 import {Window} from "../misc/Window"
 import {setColors} from "../misc/Colors"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
@@ -36,7 +35,7 @@ export const Editor: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const { data } = useOpenWorkspaceQuery()
-  const { colorMode, access, frameId, breadcrumbMapIdList, breadcrumbMapNameList } = data || defaultUseOpenWorkspaceQueryState
+  const { colorMode, access, frameId, breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access)
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
@@ -58,13 +57,13 @@ export const Editor: FC = () => {
 
   return (
     <>
-      <div className="fixed top-0 w-[224px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50">
+      <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50">
         <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
       </div>
       {
         mExists && <>
           <Map/>
-          <div className="dark:bg-zinc-800 bg-zinc-50 top-0 fixed left-1/2 -translate-x-1/2 h-[40px] flex items-center rounded-b-lg py-1 px-4 border-2 border-purple-700 border-t-0 z-50">
+          <div className="dark:bg-zinc-800 bg-zinc-50 top-0 fixed left-[260px] h-[40px] flex items-center rounded-b-lg py-1 px-4 border-2 border-purple-700 border-t-0 z-50">
             <Breadcrumb aria-label="Default breadcrumb example">
               {breadcrumbMapNameList.map((el, index) => (
                 <Breadcrumb.Item
@@ -77,7 +76,35 @@ export const Editor: FC = () => {
               ))}
             </Breadcrumb>
           </div>
-          {!tabShrink && <TabMaps/>}
+          {!tabShrink &&
+            <div className="fixed z-50 w-[224px] top-[80px] dark:bg-zinc-800 bg-zinc-50 border-l-0 border-2 dark:border-neutral-700 pt-4 rounded-r-lg">
+              <h4 id="sidebar-label" className="sr-only">Browse docs</h4>
+              <div id="navWrapper" className="overflow-y-auto z-50 h-full bg-white scrolling-touch max-w-2xs lg:h-[calc(100vh-3rem)] lg:block lg:sticky top:24 lg:top-28 dark:bg-zinc-800 lg:mr-0">
+                <nav id="nav" className="ml-4 pt-16 px-1 pl-3 lg:pl-0 lg:pt-2 font-normal text-base lg:text-sm pb-10 lg:pb-20 sticky?lg:h-(screen-18)" aria-label="Docs navigation">
+                  <ul className="mb-0 list-unstyled">
+                    <li>
+                      <h5 className="mb-2 text-sm font-semibold tracking-wide text-gray-900 uppercase lg:text-xs dark:text-white">Maps</h5>
+                      <ul className="py-1 list-unstyled fw-normal small">
+                        {tabMapNameList.map((el: { name: string }, index) => (
+                          <li key={index}>
+                            <a
+                              style={{color: tabId === index ? '#ffffff': '', backgroundColor: tabId === index ? '#666666': ''}}
+                              data-sidebar-item=""
+                              className="rounded hover:bg-purple-700 cursor-pointer py-1 px-1 transition-colors relative flex items-center flex-wrap font-medium hover:text-gray-900 text-gray-500 dark:text-gray-400 dark:hover:text-white"
+                              onClick={() => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[index], frameId: ''}))}}
+                            >{el.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                    <li className="mt-8">
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          }
           {formatterVisible && <Formatter/>}
           <FrameCarousel/>
           <ContextMenu/>
