@@ -1,5 +1,11 @@
 /* theme-config.css */
 .radix-themes {
     background-color: #404040;
+}
 
+textarea:focus, input:focus{
+    outline: none !important
+}
+*:focus {
+    outline: none !important
 }
