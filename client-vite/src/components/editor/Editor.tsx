@@ -1,3 +1,5 @@
+import {BookmarkIcon} from "@radix-ui/react-icons";
+import {Button, Theme} from "@radix-ui/themes"
 import {Breadcrumb} from "flowbite-react"
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
@@ -56,79 +58,81 @@ export const Editor: FC = () => {
   }, [colorMode])
 
   return (
-    <>
-      <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50">
-        <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
-      </div>
-      {
-        mExists && <>
-          <Map/>
-          <div className="dark:bg-zinc-800 bg-zinc-50 top-0 fixed left-[260px] h-[40px] flex items-center rounded-b-lg py-1 px-4 border-2 border-purple-700 border-t-0 z-50">
-            <Breadcrumb aria-label="Default breadcrumb example">
-              {breadcrumbMapNameList.map((el, index) => (
-                <Breadcrumb.Item
-                  href="/"
-                  onClick={e => {e.preventDefault(); frameId !== '' ? console.log('prevent') : dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))}}
-                  key={index}
-                >
-                  {el.name}
-                </Breadcrumb.Item>
-              ))}
-            </Breadcrumb>
-          </div>
-          {!tabShrink &&
-            <div className="fixed z-50 w-[224px] top-[80px] dark:bg-zinc-800 bg-zinc-50 border-l-0 border-2 dark:border-neutral-700 pt-4 rounded-r-lg">
-              <h4 id="sidebar-label" className="sr-only">Browse docs</h4>
-              <div id="navWrapper" className="overflow-y-auto z-50 h-full bg-white scrolling-touch max-w-2xs lg:h-[calc(100vh-3rem)] lg:block lg:sticky top:24 lg:top-28 dark:bg-zinc-800 lg:mr-0">
-                <nav id="nav" className="ml-4 pt-16 px-1 pl-3 lg:pl-0 lg:pt-2 font-normal text-base lg:text-sm pb-10 lg:pb-20 sticky?lg:h-(screen-18)" aria-label="Docs navigation">
-                  <ul className="mb-0 list-unstyled">
-                    <li>
-                      <h5 className="mb-2 text-sm font-semibold tracking-wide text-gray-900 uppercase lg:text-xs dark:text-white">Maps</h5>
-                      <ul className="py-1 list-unstyled fw-normal small">
-                        {tabMapNameList.map((el: { name: string }, index) => (
-                          <li key={index}>
-                            <a
-                              style={{color: tabId === index ? '#ffffff': '', backgroundColor: tabId === index ? '#666666': ''}}
-                              data-sidebar-item=""
-                              className="rounded hover:bg-purple-700 cursor-pointer py-1 px-1 transition-colors relative flex items-center flex-wrap font-medium hover:text-gray-900 text-gray-500 dark:text-gray-400 dark:hover:text-white"
-                              onClick={() => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[index], frameId: ''}))}}
-                            >{el.name}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                    <li className="mt-8">
-                    </li>
-                  </ul>
-                </nav>
-              </div>
+    <Theme>
+      <>
+        <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50">
+          <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
+        </div>
+        {
+          mExists && <>
+            <Map/>
+            <div className="dark:bg-zinc-800 bg-zinc-50 top-0 fixed left-[260px] h-[40px] flex items-center rounded-b-lg py-1 px-4 border-2 border-purple-700 border-t-0 z-50">
+              <Breadcrumb aria-label="Default breadcrumb example">
+                {breadcrumbMapNameList.map((el, index) => (
+                  <Breadcrumb.Item
+                    href="/"
+                    onClick={e => {e.preventDefault(); frameId !== '' ? console.log('prevent') : dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))}}
+                    key={index}
+                  >
+                    {el.name}
+                  </Breadcrumb.Item>
+                ))}
+              </Breadcrumb>
             </div>
-          }
-          {formatterVisible && <Formatter/>}
-          <FrameCarousel/>
-          <ContextMenu/>
-          <Window/>
-          <div className="dark:bg-zinc-800 bg-zinc-50 border-2 dark:border-neutral-700 fixed top-0 right-[120px] w-[96px] flex justify-around h-[40px] py-1 border-t-0 rounded-b-lg z-50">
-            <IconButton colorMode={colorMode} disabled={undoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'undo', payload: null}))}}><UndoIcon/></IconButton>
-            <IconButton colorMode={colorMode} disabled={redoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}><RedoIcon/></IconButton>
-          </div>
-          <div className="dark:bg-zinc-800 bg-zinc-50 border-2 dark:border-neutral-700 fixed top-0 right-0 w-[96px] h-[40px] flex flex-row flex-center border-t-0 border-r-0 py-1 px-2 rounded-bl-lg z-50">
-            <IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_SETTINGS))}}><SettingsIcon/></IconButton>
-            <IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_PROFILE))}}><UserIcon/></IconButton>
-          </div>
-        </>
-      }
-      {pageState === PageState.WS_PROFILE && <Profile/>}
-      {pageState === PageState.WS_SETTINGS && <Settings/>}
-      {pageState === PageState.WS_SHARES && <SharesModal/>}
-      {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <EditContentEquationModal/>}
-      {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <EditContentMermaidModal/>}
-      {pageState === PageState.WS_CREATE_TABLE && <CreateTableModal/>}
-      {pageState === PageState.WS_CREATE_MAP_IN_MAP && <CreateMapInMapModal/>}
-      {pageState === PageState.WS_SHARE_THIS_MAP && <ShareThisMapModal/>}
-      {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
-      {pageState === PageState.WS_RENAME_MAP && <RenameMapModal/>}
-    </>
+            {!tabShrink &&
+              <div className="fixed z-50 w-[224px] top-[80px] dark:bg-zinc-800 bg-zinc-50 border-l-0 border-2 dark:border-neutral-700 pt-4 rounded-r-lg">
+                <h4 id="sidebar-label" className="sr-only">Browse docs</h4>
+                <div id="navWrapper" className="overflow-y-auto z-50 h-full bg-white scrolling-touch max-w-2xs lg:h-[calc(100vh-3rem)] lg:block lg:sticky top:24 lg:top-28 dark:bg-zinc-800 lg:mr-0">
+                  <nav id="nav" className="ml-4 pt-16 px-1 pl-3 lg:pl-0 lg:pt-2 font-normal text-base lg:text-sm pb-10 lg:pb-20 sticky?lg:h-(screen-18)" aria-label="Docs navigation">
+                    <ul className="mb-0 list-unstyled">
+                      <li>
+                        <h5 className="mb-2 text-sm font-semibold tracking-wide text-gray-900 uppercase lg:text-xs dark:text-white">Maps</h5>
+                        <ul className="py-1 list-unstyled fw-normal small">
+                          {tabMapNameList.map((el: { name: string }, index) => (
+                            <li key={index}>
+                              <a
+                                style={{color: tabId === index ? '#ffffff': '', backgroundColor: tabId === index ? '#666666': ''}}
+                                data-sidebar-item=""
+                                className="rounded hover:bg-purple-700 cursor-pointer py-1 px-1 transition-colors relative flex items-center flex-wrap font-medium hover:text-gray-900 text-gray-500 dark:text-gray-400 dark:hover:text-white"
+                                onClick={() => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[index], frameId: ''}))}}
+                              >{el.name}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                      <li className="mt-8">
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            }
+            {formatterVisible && <Formatter/>}
+            <FrameCarousel/>
+            <ContextMenu/>
+            <Window/>
+            <div className="dark:bg-zinc-800 bg-zinc-50 border-2 dark:border-neutral-700 fixed top-0 right-[120px] w-[96px] flex justify-around h-[40px] py-1 border-t-0 rounded-b-lg z-50">
+              <IconButton colorMode={colorMode} disabled={undoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'undo', payload: null}))}}><UndoIcon/></IconButton>
+              <IconButton colorMode={colorMode} disabled={redoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}><RedoIcon/></IconButton>
+            </div>
+            <div className="dark:bg-zinc-800 bg-zinc-50 border-2 dark:border-neutral-700 fixed top-0 right-0 w-[96px] h-[40px] flex flex-row flex-center border-t-0 border-r-0 py-1 px-2 rounded-bl-lg z-50">
+              <IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_SETTINGS))}}><SettingsIcon/></IconButton>
+              <IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_PROFILE))}}><UserIcon/></IconButton>
+            </div>
+          </>
+        }
+        {pageState === PageState.WS_PROFILE && <Profile/>}
+        {pageState === PageState.WS_SETTINGS && <Settings/>}
+        {pageState === PageState.WS_SHARES && <SharesModal/>}
+        {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <EditContentEquationModal/>}
+        {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <EditContentMermaidModal/>}
+        {pageState === PageState.WS_CREATE_TABLE && <CreateTableModal/>}
+        {pageState === PageState.WS_CREATE_MAP_IN_MAP && <CreateMapInMapModal/>}
+        {pageState === PageState.WS_SHARE_THIS_MAP && <ShareThisMapModal/>}
+        {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
+        {pageState === PageState.WS_RENAME_MAP && <RenameMapModal/>}
+      </>
+    </Theme>
   )
 }
