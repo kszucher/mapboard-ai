@@ -1,5 +1,4 @@
 import {BookmarkIcon, CaretDownIcon} from "@radix-ui/react-icons";
-import {Button, DropdownMenu, IconButton, Theme} from "@radix-ui/themes"
 import {Breadcrumb} from "flowbite-react"
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
@@ -25,6 +24,7 @@ import {setColors} from "../misc/Colors"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog} from "@radix-ui/themes"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -79,48 +79,67 @@ export const Editor: FC = () => {
                   ))}
                 </Breadcrumb>
                 {/*<div className="dark:bg-zinc-800 bg-zinc-50 border-2 dark:border-neutral-700 fixed top-0 right-[260px] w-[96px] flex justify-around h-[40px] py-1 border-t-0 rounded-b-lg z-50">*/}
-                  {/*<IconButton colorMode={colorMode} disabled={undoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'undo', payload: null}))}}><UndoIcon/></IconButton>*/}
-                  {/*<IconButton colorMode={colorMode} disabled={redoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}><RedoIcon/></IconButton>*/}
+                {/*<IconButton colorMode={colorMode} disabled={undoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'undo', payload: null}))}}><UndoIcon/></IconButton>*/}
+                {/*<IconButton colorMode={colorMode} disabled={redoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}><RedoIcon/></IconButton>*/}
                 {/*</div>*/}
                 <div className="fixed right-[4px] top-[4px]">
                   {/*<IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_SETTINGS))}}><SettingsIcon/></IconButton>*/}
                   {/*<IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_PROFILE))}}><UserIcon/></IconButton>*/}
 
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger>
-                      <IconButton variant="solid"  color="gray">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-12-hours" viewBox="0 0 24 24">
-                          <path stroke="none" d="M0 0h24v24H0z"></path>
-                          <path d="M20 11A8.1 8.1 0 004.5 9M4 5v4h4M4 13c.468 3.6 3.384 6.546 7 7M18 15h2a1 1 0 011 1v1a1 1 0 01-1 1h-1a1 1 0 00-1 1v1a1 1 0 001 1h2M15 21v-6"></path>
-                        </svg>
-                      </IconButton>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content>
-                      <DropdownMenu.Item shortcut="⌘ E">Edit</DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="⌘ D">Duplicate</DropdownMenu.Item>
-                      <DropdownMenu.Separator />
-                      <DropdownMenu.Item shortcut="⌘ N">Archive</DropdownMenu.Item>
+                  <AlertDialog.Root>
 
-                      <DropdownMenu.Sub>
-                        <DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>
-                        <DropdownMenu.SubContent>
-                          <DropdownMenu.Item>Move to project…</DropdownMenu.Item>
-                          <DropdownMenu.Item>Move to folder…</DropdownMenu.Item>
-
-                          <DropdownMenu.Separator />
-                          <DropdownMenu.Item>Advanced options…</DropdownMenu.Item>
-                        </DropdownMenu.SubContent>
-                      </DropdownMenu.Sub>
-
-                      <DropdownMenu.Separator />
-                      <DropdownMenu.Item>Share</DropdownMenu.Item>
-                      <DropdownMenu.Item>Add to favorites</DropdownMenu.Item>
-                      <DropdownMenu.Separator />
-                      <DropdownMenu.Item shortcut="⌘ ⌫" color="red">
-                        Delete
-                      </DropdownMenu.Item>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger>
+                        <IconButton variant="solid"  color="gray">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-12-hours" viewBox="0 0 24 24">
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
+                            <path d="M20 11A8.1 8.1 0 004.5 9M4 5v4h4M4 13c.468 3.6 3.384 6.546 7 7M18 15h2a1 1 0 011 1v1a1 1 0 01-1 1h-1a1 1 0 00-1 1v1a1 1 0 001 1h2M15 21v-6"></path>
+                          </svg>
+                        </IconButton>
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content>
+                        <DropdownMenu.Item shortcut="⌘ E">Edit</DropdownMenu.Item>
+                        <DropdownMenu.Item shortcut="⌘ D">Duplicate</DropdownMenu.Item>
+                        <DropdownMenu.Separator />
+                        <DropdownMenu.Item shortcut="⌘ N">Archive</DropdownMenu.Item>
+                        <DropdownMenu.Sub>
+                          <DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>
+                          <DropdownMenu.SubContent>
+                            <DropdownMenu.Item>Move to project…</DropdownMenu.Item>
+                            <DropdownMenu.Item>Move to folder…</DropdownMenu.Item>
+                            <DropdownMenu.Separator />
+                            <DropdownMenu.Item>Advanced options…</DropdownMenu.Item>
+                          </DropdownMenu.SubContent>
+                        </DropdownMenu.Sub>
+                        <DropdownMenu.Separator />
+                        <DropdownMenu.Item>Share</DropdownMenu.Item>
+                        <DropdownMenu.Item>Add to favorites</DropdownMenu.Item>
+                        <DropdownMenu.Separator />
+                        <AlertDialog.Trigger>
+                          <DropdownMenu.Item color="red">Delete Account</DropdownMenu.Item>
+                        </AlertDialog.Trigger>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                    <AlertDialog.Content style={{ maxWidth: 450 }}>
+                      <AlertDialog.Title>Revoke access</AlertDialog.Title>
+                      <AlertDialog.Description size="2">
+                        Are you sure? This application will no longer be accessible and any
+                        existing sessions will be expired.
+                      </AlertDialog.Description>
+                      <Flex gap="3" mt="4" justify="end">
+                        <AlertDialog.Cancel>
+                          <Button variant="soft" color="gray">
+                            Cancel
+                          </Button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action>
+                          <Button variant="solid" color="red">
+                            Revoke access
+                          </Button>
+                        </AlertDialog.Action>
+                      </Flex>
+                    </AlertDialog.Content>
+                  </AlertDialog.Root>
 
                 </div>
               </div>

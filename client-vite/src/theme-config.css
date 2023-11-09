@@ -9,3 +9,14 @@ textarea:focus, input:focus{
 *:focus {
     outline: none !important
 }
+
+
+/*.rt-AlertDialogOverlay {*/
+/*    opacity: 25%;*/
+/*    !*z-index: 1;*!*/
+/*}*/
+
+
+/*.rt-AlertDialogContent {*/
+/*    opacity: 100%*/
+/*}*/
