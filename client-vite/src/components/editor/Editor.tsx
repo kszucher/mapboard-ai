@@ -26,6 +26,30 @@ import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog} from "@radix-ui/themes"
 
+const Content: FC = () => {
+  return (
+    <>
+      <AlertDialog.Title>Revoke access</AlertDialog.Title>
+      <AlertDialog.Description size="2">
+        Are you sure? This application will no longer be accessible and any
+        existing sessions will be expired.
+      </AlertDialog.Description>
+      <Flex gap="3" mt="4" justify="end">
+        <AlertDialog.Cancel>
+          <Button variant="soft" color="gray">
+            Cancel
+          </Button>
+        </AlertDialog.Cancel>
+        <AlertDialog.Action>
+          <Button variant="solid" color="red">
+            Revoke access
+          </Button>
+        </AlertDialog.Action>
+      </Flex>
+    </>
+  )}
+
+
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
@@ -127,23 +151,7 @@ export const Editor: FC = () => {
                       </DropdownMenu.Content>
                     </DropdownMenu.Root>
                     <AlertDialog.Content style={{ maxWidth: 450 }}>
-                      <AlertDialog.Title>Revoke access</AlertDialog.Title>
-                      <AlertDialog.Description size="2">
-                        Are you sure? This application will no longer be accessible and any
-                        existing sessions will be expired.
-                      </AlertDialog.Description>
-                      <Flex gap="3" mt="4" justify="end">
-                        <AlertDialog.Cancel>
-                          <Button variant="soft" color="gray">
-                            Cancel
-                          </Button>
-                        </AlertDialog.Cancel>
-                        <AlertDialog.Action>
-                          <Button variant="solid" color="red">
-                            Revoke access
-                          </Button>
-                        </AlertDialog.Action>
-                      </Flex>
+                      <Content/>
                     </AlertDialog.Content>
                   </AlertDialog.Root>
 
