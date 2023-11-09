@@ -1,6 +1,6 @@
 /* theme-config.css */
 .radix-themes {
-    background-color: #404040;
+    /*background-color: #404040;*/
 }
 
 textarea:focus, input:focus{
@@ -20,3 +20,14 @@ textarea:focus, input:focus{
 /*.rt-AlertDialogContent {*/
 /*    opacity: 100%*/
 /*}*/
+
+body {
+    /*background: var(--page-background-color) !important;*/
+    /*back*/
+}
+
+
+.rt-DropdownMenuViewport {
+    background: var(--page-background-color) !important;
+
+}

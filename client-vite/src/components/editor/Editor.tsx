@@ -56,7 +56,13 @@ export const Editor: FC = () => {
   }, [colorMode])
 
   return (
-    <Theme>
+    <Theme
+      accentColor="green"
+      // grayColor="zinc"
+      panelBackground="solid"
+      scaling="100%"
+      radius="full"
+    >
       <>
 
         {
@@ -97,7 +103,7 @@ export const Editor: FC = () => {
                           </svg>
                         </IconButton>
                       </DropdownMenu.Trigger>
-                      <DropdownMenu.Content>
+                      <DropdownMenu.Content className="bg-red-300">
                         <DropdownMenu.Item shortcut="⌘ E">Edit</DropdownMenu.Item>
                         <DropdownMenu.Item shortcut="⌘ D">Duplicate</DropdownMenu.Item>
                         <DropdownMenu.Separator />

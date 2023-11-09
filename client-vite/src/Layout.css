@@ -43,6 +43,7 @@ img {
 }
 
 body {
-    background: var(--page-background-color);
+    background: var(--page-background-color) !important;
+    /*back*/
 }
 
