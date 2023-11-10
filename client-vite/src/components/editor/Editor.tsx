@@ -15,7 +15,6 @@ import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {RenameMapModal} from "../modal/RenameMapModal"
-import {Settings} from './Settings'
 import {SharesModal} from "../modal/SharesModal"
 import {ShareThisMapModal} from "../modal/ShareThisMapModal"
 import {CreateMapInMapModal} from '../modal/CreateMapInMapModal'
@@ -24,7 +23,7 @@ import {setColors} from "../misc/Colors"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog} from "@radix-ui/themes"
+import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog, Separator} from "@radix-ui/themes"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -57,7 +56,7 @@ export const Editor: FC = () => {
   }, [colorMode])
 
   return (
-    <Theme accentColor="green" panelBackground="solid" scaling="100%" radius="full">
+    <Theme accentColor="violet" panelBackground="solid" scaling="100%" radius="full">
       <>
         {
           mExists &&
@@ -83,11 +82,39 @@ export const Editor: FC = () => {
                 {/*<IconButton colorMode={colorMode} disabled={undoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'undo', payload: null}))}}><UndoIcon/></IconButton>*/}
                 {/*<IconButton colorMode={colorMode} disabled={redoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}><RedoIcon/></IconButton>*/}
                 {/*</div>*/}
-                <div className="fixed right-[4px] top-[4px]">
+                <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                   {/*<IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_SETTINGS))}}><SettingsIcon/></IconButton>*/}
                   {/*<IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_PROFILE))}}><UserIcon/></IconButton>*/}
 
                   <AlertDialog.Root>
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger>
+                        <IconButton variant="solid"  color="gray">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-settings" viewBox="0 0 24 24">
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
+                            <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37 1 .608 2.296.07 2.572-1.065z"></path>
+                            <path d="M9 12a3 3 0 106 0 3 3 0 00-6 0"></path>
+                          </svg>
+                        </IconButton>
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content className="bg-red-300">
+                        <DropdownMenu.Item onClick={()=>{
+                          dispatch(nodeApi.endpoints.toggleColorMode.initiate())
+                        }}>{'Toggle Color Mode'}</DropdownMenu.Item>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                    <AlertDialog.Content style={{ maxWidth: 450 }}>
+                      <DeleteAccountDialogContent/>
+                    </AlertDialog.Content>
+
+
+
+
+                    <div className={"w-[4px]"}/>
+
+
+
+
 
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger>
@@ -160,7 +187,6 @@ export const Editor: FC = () => {
 
           </>
         }
-        {pageState === PageState.WS_SETTINGS && <Settings/>}
         {pageState === PageState.WS_SHARES && <SharesModal/>}
         {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <EditContentEquationModal/>}
         {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <EditContentMermaidModal/>}
