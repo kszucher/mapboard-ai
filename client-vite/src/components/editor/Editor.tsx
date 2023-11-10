@@ -1,3 +1,4 @@
+import {useAuth0} from "@auth0/auth0-react";
 import {BookmarkIcon, CaretDownIcon} from "@radix-ui/react-icons";
 import {Breadcrumb} from "flowbite-react"
 import React, {FC, useEffect} from 'react'
@@ -14,7 +15,6 @@ import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {RenameMapModal} from "../modal/RenameMapModal"
-import {Profile} from './Profile'
 import {Settings} from './Settings'
 import {SharesModal} from "../modal/SharesModal"
 import {ShareThisMapModal} from "../modal/ShareThisMapModal"
@@ -59,11 +59,12 @@ export const Editor: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const { data } = useOpenWorkspaceQuery()
-  const { colorMode, access, frameId, breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
+  const { colorMode, access, frameId, breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList, tabId, name } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access)
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
   const dispatch = useDispatch<AppDispatch>()
+  const { logout } = useAuth0()
 
   useEffect(()=> {
     getTextDim('Test', 12)
@@ -80,17 +81,11 @@ export const Editor: FC = () => {
   }, [colorMode])
 
   return (
-    <Theme
-      accentColor="green"
-      // grayColor="zinc"
-      panelBackground="solid"
-      scaling="100%"
-      radius="full"
-    >
+    <Theme accentColor="green" panelBackground="solid" scaling="100%" radius="full">
       <>
-
         {
-          mExists && <>
+          mExists &&
+          <>
             <Map/>
             <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
               <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50">
@@ -121,29 +116,24 @@ export const Editor: FC = () => {
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger>
                         <IconButton variant="solid"  color="gray">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-12-hours" viewBox="0 0 24 24">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
                             <path stroke="none" d="M0 0h24v24H0z"></path>
-                            <path d="M20 11A8.1 8.1 0 004.5 9M4 5v4h4M4 13c.468 3.6 3.384 6.546 7 7M18 15h2a1 1 0 011 1v1a1 1 0 01-1 1h-1a1 1 0 00-1 1v1a1 1 0 001 1h2M15 21v-6"></path>
+                            <path d="M8 7a4 4 0 108 0 4 4 0 00-8 0M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"></path>
                           </svg>
                         </IconButton>
                       </DropdownMenu.Trigger>
                       <DropdownMenu.Content className="bg-red-300">
-                        <DropdownMenu.Item shortcut="⌘ E">Edit</DropdownMenu.Item>
-                        <DropdownMenu.Item shortcut="⌘ D">Duplicate</DropdownMenu.Item>
-                        <DropdownMenu.Separator />
-                        <DropdownMenu.Item shortcut="⌘ N">Archive</DropdownMenu.Item>
-                        <DropdownMenu.Sub>
-                          <DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>
-                          <DropdownMenu.SubContent>
-                            <DropdownMenu.Item>Move to project…</DropdownMenu.Item>
-                            <DropdownMenu.Item>Move to folder…</DropdownMenu.Item>
-                            <DropdownMenu.Separator />
-                            <DropdownMenu.Item>Advanced options…</DropdownMenu.Item>
-                          </DropdownMenu.SubContent>
-                        </DropdownMenu.Sub>
-                        <DropdownMenu.Separator />
-                        <DropdownMenu.Item>Share</DropdownMenu.Item>
-                        <DropdownMenu.Item>Add to favorites</DropdownMenu.Item>
+                        <DropdownMenu.Item onClick={()=>{
+                          logout({ logoutParams: { returnTo: window.location.origin }})
+                          dispatch(actions.resetState())
+                          dispatch(nodeApi.util.resetApiState())
+                        }}>{'Sign Out'}</DropdownMenu.Item>
+                        <DropdownMenu.Item onClick={()=>{
+                          logout({ logoutParams: { returnTo: window.location.origin }})
+                          dispatch(nodeApi.endpoints.signOutEverywhere.initiate())
+                          dispatch(actions.resetState())
+                          dispatch(nodeApi.util.resetApiState())
+                        }}>{'Sign Out All Devices'}</DropdownMenu.Item>
                         <DropdownMenu.Separator />
                         <AlertDialog.Trigger>
                           <DropdownMenu.Item color="red">Delete Account</DropdownMenu.Item>
@@ -194,7 +184,6 @@ export const Editor: FC = () => {
 
           </>
         }
-        {pageState === PageState.WS_PROFILE && <Profile/>}
         {pageState === PageState.WS_SETTINGS && <Settings/>}
         {pageState === PageState.WS_SHARES && <SharesModal/>}
         {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <EditContentEquationModal/>}
