@@ -1,5 +1,5 @@
 import {FC, useEffect} from "react"
-import {setColors} from "../page/Colors";
+import {setColors} from "../assets/Colors";
 
 // https://transform.tools/html-to-jsx
 

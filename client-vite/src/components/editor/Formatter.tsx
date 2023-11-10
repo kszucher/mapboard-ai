@@ -5,8 +5,8 @@ import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {mSelector} from "../../state/EditorState"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {IconButton} from "../page/IconButton";
-import {FBorderIcon, FFillIcon, SBorderIcon, SFillIcon, TextIcon, VectorSplineIcon} from "../page/IconButtonSvg"
+import {IconButton} from "../assets/IconButton";
+import {FBorderIcon, FFillIcon, SBorderIcon, SFillIcon, TextIcon, VectorSplineIcon} from "../assets/IconButtonSvg"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../../state/Enums"
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, getX, isXR, isXS} from "../../selectors/MapSelector"
