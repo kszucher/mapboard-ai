@@ -19,7 +19,7 @@ import {SharesModal} from "../modal/SharesModal"
 import {ShareThisMapModal} from "../modal/ShareThisMapModal"
 import {CreateMapInMapModal} from '../modal/CreateMapInMapModal'
 import {Window} from "./Window"
-import {setColors} from "../misc/Colors"
+import {setColors} from "../page/Colors"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"

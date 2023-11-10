@@ -9,7 +9,7 @@ import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../sta
 import {getMap, mSelector} from "../../state/EditorState"
 import {mapDeInit} from "../../reducers/MapDeInit"
 import {N} from "../../state/MapStateTypes"
-import {shortcutColors} from "../misc/Colors"
+import {shortcutColors} from "../page/Colors"
 
 export let timeoutId: NodeJS.Timeout
 let mapAreaListener: AbortController
