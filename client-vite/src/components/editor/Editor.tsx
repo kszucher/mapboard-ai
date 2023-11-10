@@ -9,7 +9,7 @@ import {ContextMenu} from "../menu/ContextMenu"
 import {EditContentEquationModal} from "../modal/EditContentEquationModal"
 import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
-import {ChevronRightIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../page/Icons"
+import {ChevronRightIcon, HomeIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../page/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -90,12 +90,17 @@ export const Editor: FC = () => {
                 {/*  ))}*/}
                 {/*</Breadcrumb>*/}
 
+                <IconButton variant="solid" color="gray" onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}>
+                  <HomeIcon/>
+                </IconButton>
+                <div className={"w-[4px]"}/>
                 <Select.Root defaultValue={tabMapIdList[tabId]} onValueChange={(value) => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: value, frameId: ''}))}}>
                   <Select.Trigger variant="soft"/>
                   <Select.Content position="popper">
                     {tabMapIdList.map((el: string, index) => (<Select.Item value={el} key={index}>{tabMapNameList[index]?.name}</Select.Item>))}
                   </Select.Content>
                 </Select.Root>
+
                 <ChevronRightIcon/>
               </div>
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
