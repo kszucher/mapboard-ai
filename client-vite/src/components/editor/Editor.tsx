@@ -23,7 +23,7 @@ import {setColors} from "../page/Colors"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog, Separator} from "@radix-ui/themes"
+import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog, Separator, Select} from "@radix-ui/themes"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -84,17 +84,40 @@ export const Editor: FC = () => {
                 </IconButton>
               </div>
               <div className="fixed left-[360px] h-[40px] flex flex-row items-center">
-                <Breadcrumb aria-label="Default breadcrumb example">
-                  {breadcrumbMapNameList.map((el, index) => (
-                    <Breadcrumb.Item
-                      href="/"
-                      onClick={e => {e.preventDefault(); frameId !== '' ? console.log('prevent') : dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))}}
-                      key={index}
-                    >
-                      {el.name}
-                    </Breadcrumb.Item>
-                  ))}
-                </Breadcrumb>
+                {/*<Breadcrumb aria-label="Default breadcrumb example">*/}
+                {/*  {breadcrumbMapNameList.map((el, index) => (*/}
+                {/*    <Breadcrumb.Item*/}
+                {/*      href="/"*/}
+                {/*      onClick={e => {e.preventDefault(); frameId !== '' ? console.log('prevent') : dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))}}*/}
+                {/*      key={index}*/}
+                {/*    >*/}
+                {/*      {el.name}*/}
+                {/*    </Breadcrumb.Item>*/}
+                {/*  ))}*/}
+                {/*</Breadcrumb>*/}
+
+                <Select.Root defaultValue="apple">
+                  <Select.Trigger />
+                  <Select.Content>
+                    <Select.Group>
+                      <Select.Label>Fruits</Select.Label>
+                      <Select.Item value="orange">Orange</Select.Item>
+                      <Select.Item value="apple">Apple</Select.Item>
+                      <Select.Item value="grape" disabled>
+                        Grape
+                      </Select.Item>
+                    </Select.Group>
+                    <Select.Separator />
+                    <Select.Group>
+                      <Select.Label>Vegetables</Select.Label>
+                      <Select.Item value="carrot">Carrot</Select.Item>
+                      <Select.Item value="potato">Potato</Select.Item>
+                    </Select.Group>
+                  </Select.Content>
+                </Select.Root>
+
+
+
               </div>
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                 <AlertDialog.Root>

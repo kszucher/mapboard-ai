@@ -14,6 +14,9 @@ import {shortcutColors} from "../page/Colors"
 export let timeoutId: NodeJS.Timeout
 let mapAreaListener: AbortController
 
+window.document.body.style.overflowY = 'hidden'
+window.document.body.style.overflowX = 'hidden'
+
 export const Window: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
@@ -188,11 +191,6 @@ export const Window: FC = () => {
     dispatch(actions.resetConnectionStart())
   }
 
-  const wheel = (e: WheelEvent) => {
-    e.preventDefault()
-    dispatch(actions.closeContextMenu())
-  }
-
   const contextmenu = (e: MouseEvent) => {
     e.preventDefault()
   }
@@ -211,13 +209,11 @@ export const Window: FC = () => {
           const {signal} = mapAreaListener
           window.addEventListener("keydown", keydown, {signal})
           window.addEventListener("paste", paste, {signal})
-          window.addEventListener("wheel", wheel, {signal, passive: false})
           window.addEventListener("mouseup", mouseup, {signal})
           window.addEventListener("contextmenu", contextmenu, {signal})
         } else if (access === AccessTypes.VIEW) {
           mapAreaListener = new AbortController()
           const {signal} = mapAreaListener
-          window.addEventListener("wheel", wheel, {signal, passive: false})
         }
       }
     }
