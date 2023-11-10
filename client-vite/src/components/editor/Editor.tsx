@@ -9,6 +9,7 @@ import {ContextMenu} from "../menu/ContextMenu"
 import {EditContentEquationModal} from "../modal/EditContentEquationModal"
 import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
+import {ChevronRightIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../page/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -67,19 +68,11 @@ export const Editor: FC = () => {
               </div>
               <div className="fixed w-[68px] left-[260px] top-[4px] flex flex-row">
                 <IconButton variant="solid"  color="gray" disabled={undoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'undo', payload: null}))}}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-arrow-back-up" viewBox="0 0 24 24">
-                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                    <path d="M9 14l-4-4 4-4"></path>
-                    <path d="M5 10h11a4 4 0 110 8h-1"></path>
-                  </svg>
+                  <UndoIcon/>
                 </IconButton>
                 <div className={"w-[4px]"}/>
                 <IconButton variant="solid"  color="gray" disabled={redoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-arrow-forward-up" viewBox="0 0 24 24">
-                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                    <path d="M15 14l4-4-4-4"></path>
-                    <path d="M19 10H8a4 4 0 100 8h1"></path>
-                  </svg>
+                  <RedoIcon/>
                 </IconButton>
               </div>
               <div className="fixed left-[360px] h-[40px] flex flex-row items-center">
@@ -103,20 +96,14 @@ export const Editor: FC = () => {
                     {tabMapIdList.map((el: string, index) => (<Select.Item value={el} key={index}>{tabMapNameList[index]?.name}</Select.Item>))}
                   </Select.Content>
                 </Select.Root>
-
-                {/* TODO: chevron - item, chevron - item*/}
-
+                <ChevronRightIcon/>
               </div>
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                 <AlertDialog.Root>
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <IconButton variant="solid"  color="gray">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-settings-2" viewBox="0 0 24 24">
-                          <path stroke="none" d="M0 0h24v24H0z"></path>
-                          <path d="M19.875 6.27A2.225 2.225 0 0121 8.218v7.284c0 .809-.443 1.555-1.158 1.948l-6.75 4.27a2.269 2.269 0 01-2.184 0l-6.75-4.27A2.225 2.225 0 013 15.502V8.217c0-.809.443-1.554 1.158-1.947l6.75-3.98a2.33 2.33 0 012.25 0l6.75 3.98h-.033z"></path>
-                          <path d="M9 12a3 3 0 106 0 3 3 0 10-6 0"></path>
-                        </svg>
+                        <SettingsIcon/>
                       </IconButton>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content className="bg-red-300">
@@ -132,10 +119,7 @@ export const Editor: FC = () => {
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <IconButton variant="solid"  color="gray">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
-                          <path stroke="none" d="M0 0h24v24H0z"></path>
-                          <path d="M8 7a4 4 0 108 0 4 4 0 00-8 0M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"></path>
-                        </svg>
+                        <UserIcon/>
                       </IconButton>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content className="bg-red-300">
