@@ -109,9 +109,6 @@ export const Editor: FC = () => {
                       }}>{'Toggle Color Mode'}</DropdownMenu.Item>
                     </DropdownMenu.Content>
                   </DropdownMenu.Root>
-                  <AlertDialog.Content style={{ maxWidth: 450 }}>
-                    <DeleteAccountDialogContent/>
-                  </AlertDialog.Content>
                   <div className={"w-[4px]"}/>
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
