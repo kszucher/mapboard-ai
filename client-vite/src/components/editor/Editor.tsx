@@ -1,5 +1,4 @@
 import {useAuth0} from "@auth0/auth0-react";
-import {BookmarkIcon, CaretDownIcon} from "@radix-ui/react-icons";
 import {Breadcrumb} from "flowbite-react"
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
@@ -10,6 +9,7 @@ import {ContextMenu} from "../menu/ContextMenu"
 import {EditContentEquationModal} from "../modal/EditContentEquationModal"
 import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
+import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent";
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
@@ -25,30 +25,6 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog} from "@radix-ui/themes"
-
-const Content: FC = () => {
-  return (
-    <>
-      <AlertDialog.Title>Revoke access</AlertDialog.Title>
-      <AlertDialog.Description size="2">
-        Are you sure? This application will no longer be accessible and any
-        existing sessions will be expired.
-      </AlertDialog.Description>
-      <Flex gap="3" mt="4" justify="end">
-        <AlertDialog.Cancel>
-          <Button variant="soft" color="gray">
-            Cancel
-          </Button>
-        </AlertDialog.Cancel>
-        <AlertDialog.Action>
-          <Button variant="solid" color="red">
-            Revoke access
-          </Button>
-        </AlertDialog.Action>
-      </Flex>
-    </>
-  )}
-
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -141,7 +117,7 @@ export const Editor: FC = () => {
                       </DropdownMenu.Content>
                     </DropdownMenu.Root>
                     <AlertDialog.Content style={{ maxWidth: 450 }}>
-                      <Content/>
+                      <DeleteAccountDialogContent/>
                     </AlertDialog.Content>
                   </AlertDialog.Root>
 
