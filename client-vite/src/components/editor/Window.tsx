@@ -14,8 +14,8 @@ import {shortcutColors} from "../page/Colors"
 export let timeoutId: NodeJS.Timeout
 let mapAreaListener: AbortController
 
-window.document.body.style.overflowY = 'hidden'
-window.document.body.style.overflowX = 'hidden'
+document.body.style.overflowY = 'hidden'
+document.body.style.overflowX = 'hidden'
 
 export const Window: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)

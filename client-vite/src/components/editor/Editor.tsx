@@ -62,7 +62,7 @@ export const Editor: FC = () => {
           <>
             <Map/>
             <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
-              <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 ">
+              <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
               </div>
               <div className="fixed w-[68px] left-[260px] top-[4px] flex flex-row">
@@ -97,18 +97,10 @@ export const Editor: FC = () => {
                 {/*  ))}*/}
                 {/*</Breadcrumb>*/}
 
-
-                <Select.Root defaultValue={tabMapNameList[tabId]?.name || ''}>
+                <Select.Root defaultValue={tabMapIdList[tabId]} onValueChange={(value) => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: value, frameId: ''}))}}>
                   <Select.Trigger variant="soft"/>
-                  <Select.Content>
-                    {
-                      tabMapNameList.map((el: { name: string }, index) => (
-                        <Select.Item value={el.name} key={index} onClick={() => {
-                          dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[index], frameId: ''}))
-                        }}>{el.name}
-                        </Select.Item>
-                      ))
-                    }
+                  <Select.Content position="popper">
+                    {tabMapIdList.map((el: string, index) => (<Select.Item value={el} key={index}>{tabMapNameList[index]?.name}</Select.Item>))}
                   </Select.Content>
                 </Select.Root>
 
