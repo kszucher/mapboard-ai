@@ -18,7 +18,7 @@ import {RenameMapModal} from "../modal/RenameMapModal"
 import {SharesModal} from "../modal/SharesModal"
 import {ShareThisMapModal} from "../modal/ShareThisMapModal"
 import {CreateMapInMapModal} from '../modal/CreateMapInMapModal'
-import {Window} from "../misc/Window"
+import {Window} from "./Window"
 import {setColors} from "../misc/Colors"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
@@ -83,9 +83,6 @@ export const Editor: FC = () => {
                 {/*<IconButton colorMode={colorMode} disabled={redoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}><RedoIcon/></IconButton>*/}
                 {/*</div>*/}
                 <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
-                  {/*<IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_SETTINGS))}}><SettingsIcon/></IconButton>*/}
-                  {/*<IconButton colorMode={colorMode} disabled={false} onClick={() => {dispatch(actions.setPageState(PageState.WS_PROFILE))}}><UserIcon/></IconButton>*/}
-
                   <AlertDialog.Root>
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger>
@@ -106,16 +103,7 @@ export const Editor: FC = () => {
                     <AlertDialog.Content style={{ maxWidth: 450 }}>
                       <DeleteAccountDialogContent/>
                     </AlertDialog.Content>
-
-
-
-
                     <div className={"w-[4px]"}/>
-
-
-
-
-
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger>
                         <IconButton variant="solid"  color="gray">
@@ -147,7 +135,6 @@ export const Editor: FC = () => {
                       <DeleteAccountDialogContent/>
                     </AlertDialog.Content>
                   </AlertDialog.Root>
-
                 </div>
               </div>
             </div>
