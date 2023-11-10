@@ -9,7 +9,7 @@ import {ContextMenu} from "../menu/ContextMenu"
 import {EditContentEquationModal} from "../modal/EditContentEquationModal"
 import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
-import {ChevronRightIcon, HomeIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../page/Icons"
+import {ChevronRightIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../page/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -25,6 +25,7 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog, Separator, Select} from "@radix-ui/themes"
+import { HomeIcon } from "@radix-ui/react-icons"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -90,8 +91,8 @@ export const Editor: FC = () => {
                 {/*  ))}*/}
                 {/*</Breadcrumb>*/}
 
-                <IconButton variant="solid" color="gray" onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}>
-                  <HomeIcon/>
+                <IconButton variant="soft" color="gray" onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}>
+                  <HomeIcon onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[tabId], frameId: ''}))}/>
                 </IconButton>
                 <div className={"w-[4px]"}/>
                 <Select.Root defaultValue={tabMapIdList[tabId]} onValueChange={(value) => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: value, frameId: ''}))}}>
@@ -101,7 +102,17 @@ export const Editor: FC = () => {
                   </Select.Content>
                 </Select.Root>
 
-                <ChevronRightIcon/>
+
+                {
+                  breadcrumbMapNameList.slice(1).map((el, index) => (
+                    <React.Fragment key={index}>
+                      <ChevronRightIcon/>
+                      <Button variant="soft">{el.name}</Button>
+
+                    </React.Fragment>
+                  ))
+                }
+
               </div>
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                 <AlertDialog.Root>
