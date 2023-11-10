@@ -1,5 +1,4 @@
 import {useAuth0} from "@auth0/auth0-react"
-import {Breadcrumb} from "flowbite-react"
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {Backdrop, CircularProgress} from '@mui/material'
@@ -68,51 +67,31 @@ export const Editor: FC = () => {
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
               </div>
               <div className="fixed w-[68px] left-[260px] top-[4px] flex flex-row">
-                <IconButton variant="solid"  color="gray" disabled={undoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'undo', payload: null}))}}>
+                <IconButton variant="solid"  color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
                   <UndoIcon/>
                 </IconButton>
                 <div className={"w-[4px]"}/>
-                <IconButton variant="solid"  color="gray" disabled={redoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}>
+                <IconButton variant="solid"  color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
                   <RedoIcon/>
                 </IconButton>
               </div>
               <div className="fixed left-[360px] h-[40px] flex flex-row items-center">
-                {/*<Breadcrumb aria-label="Default breadcrumb example">*/}
-                {/*  {breadcrumbMapNameList.map((el, index) => (*/}
-                {/*    <Breadcrumb.Item*/}
-                {/*      href="/"*/}
-                {/*      onClick={e => {*/}
-                {/*        e.preventDefault(); */}
-                {/*        frameId !== '' ? console.log('prevent') : dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))}}*/}
-                {/*      key={index}*/}
-                {/*    >*/}
-                {/*      {el.name}*/}
-                {/*    </Breadcrumb.Item>*/}
-                {/*  ))}*/}
-                {/*</Breadcrumb>*/}
-
-                <IconButton variant="soft" color="gray" onClick={() => {dispatch(actions.mapAction({type: 'redo', payload: null}))}}>
-                  <HomeIcon onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[tabId], frameId: ''}))}/>
+                <IconButton variant="soft" color="gray" onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[tabId], frameId: ''}))}>
+                  <HomeIcon/>
                 </IconButton>
                 <div className={"w-[4px]"}/>
-                <Select.Root defaultValue={tabMapIdList[tabId]} onValueChange={(value) => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: value, frameId: ''}))}}>
+                <Select.Root defaultValue={tabMapIdList[tabId]} onValueChange={(value) => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: value, frameId: ''}))}>
                   <Select.Trigger variant="soft"/>
                   <Select.Content position="popper">
                     {tabMapIdList.map((el: string, index) => (<Select.Item value={el} key={index}>{tabMapNameList[index]?.name}</Select.Item>))}
                   </Select.Content>
                 </Select.Root>
-
-
-                {
-                  breadcrumbMapNameList.slice(1).map((el, index) => (
-                    <React.Fragment key={index}>
-                      <ChevronRightIcon/>
-                      <Button variant="soft">{el.name}</Button>
-
-                    </React.Fragment>
-                  ))
-                }
-
+                {breadcrumbMapNameList.slice(1).map((el, index) => (
+                  <React.Fragment key={index}>
+                    <ChevronRightIcon/>
+                    <Button variant="soft" onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>{el.name}</Button>
+                  </React.Fragment>
+                ))}
               </div>
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                 <AlertDialog.Root>
@@ -166,7 +145,6 @@ export const Editor: FC = () => {
             <FrameCarousel/>
             <ContextMenu/>
             <Window/>
-
           </>
         }
         {pageState === PageState.WS_SHARES && <SharesModal/>}
