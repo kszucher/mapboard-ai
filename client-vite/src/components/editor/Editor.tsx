@@ -66,7 +66,7 @@ export const Editor: FC = () => {
               <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 ">
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
               </div>
-              <div className="fixed w-[68px] left-[240px] top-[4px] flex flex-row">
+              <div className="fixed w-[68px] left-[260px] top-[4px] flex flex-row">
                 <IconButton variant="solid"  color="gray" disabled={undoDisabled} onClick={() => {dispatch(actions.mapAction({type: 'undo', payload: null}))}}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-arrow-back-up" viewBox="0 0 24 24">
                     <path stroke="none" d="M0 0h24v24H0z"></path>
@@ -83,7 +83,7 @@ export const Editor: FC = () => {
                   </svg>
                 </IconButton>
               </div>
-              <div className="fixed left-[280px] flex flex-row">
+              <div className="fixed left-[360px] h-[40px] flex flex-row items-center">
                 <Breadcrumb aria-label="Default breadcrumb example">
                   {breadcrumbMapNameList.map((el, index) => (
                     <Breadcrumb.Item
