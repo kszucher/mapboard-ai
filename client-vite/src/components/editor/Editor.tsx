@@ -83,7 +83,9 @@ export const Editor: FC = () => {
                 <Select.Root defaultValue={tabMapIdList[tabId]} onValueChange={(value) => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: value, frameId: ''}))}>
                   <Select.Trigger variant="soft"/>
                   <Select.Content position="popper">
-                    {tabMapIdList.map((el: string, index) => (<Select.Item value={el} key={index}>{tabMapNameList[index]?.name}</Select.Item>))}
+                    {tabMapIdList.map((el: string, index) => (
+                      <Select.Item value={el} key={index}>{tabMapNameList[index]?.name}</Select.Item>
+                    ))}
                   </Select.Content>
                 </Select.Root>
                 {breadcrumbMapNameList.slice(1).map((el, index) => (
