@@ -6,7 +6,6 @@ export const editorState: EditorState = {
   token: '',
   pageState: PageState.AUTH,
   formatMode: FormatMode.sFill,
-  tabShrink: false,
   mapList: [],
   mapListIndex: 0,
   editedNodeId: '',

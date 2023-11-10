@@ -23,7 +23,6 @@ export const editorSlice = createSlice({
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     openFormatter(state) { state.formatterVisible = true},
     closeFormatter(state) { state.formatterVisible = false},
-    toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
     openFrameMenu(state, action: PayloadAction<boolean>) { state.frameMenu = action.payload },

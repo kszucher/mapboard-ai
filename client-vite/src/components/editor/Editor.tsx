@@ -1,4 +1,4 @@
-import {useAuth0} from "@auth0/auth0-react";
+import {useAuth0} from "@auth0/auth0-react"
 import {Breadcrumb} from "flowbite-react"
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
@@ -9,7 +9,7 @@ import {ContextMenu} from "../menu/ContextMenu"
 import {EditContentEquationModal} from "../modal/EditContentEquationModal"
 import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
-import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent";
+import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
@@ -30,7 +30,6 @@ export const Editor: FC = () => {
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
-  const tabShrink = useSelector((state: RootState) => state.editor.tabShrink)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const { data } = useOpenWorkspaceQuery()
@@ -88,7 +87,9 @@ export const Editor: FC = () => {
                 {/*  {breadcrumbMapNameList.map((el, index) => (*/}
                 {/*    <Breadcrumb.Item*/}
                 {/*      href="/"*/}
-                {/*      onClick={e => {e.preventDefault(); frameId !== '' ? console.log('prevent') : dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))}}*/}
+                {/*      onClick={e => {*/}
+                {/*        e.preventDefault(); */}
+                {/*        frameId !== '' ? console.log('prevent') : dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))}}*/}
                 {/*      key={index}*/}
                 {/*    >*/}
                 {/*      {el.name}*/}
@@ -96,27 +97,22 @@ export const Editor: FC = () => {
                 {/*  ))}*/}
                 {/*</Breadcrumb>*/}
 
-                <Select.Root defaultValue="apple">
-                  <Select.Trigger />
+
+                <Select.Root defaultValue={tabMapNameList[tabId]?.name || ''}>
+                  <Select.Trigger variant="soft"/>
                   <Select.Content>
-                    <Select.Group>
-                      <Select.Label>Fruits</Select.Label>
-                      <Select.Item value="orange">Orange</Select.Item>
-                      <Select.Item value="apple">Apple</Select.Item>
-                      <Select.Item value="grape" disabled>
-                        Grape
-                      </Select.Item>
-                    </Select.Group>
-                    <Select.Separator />
-                    <Select.Group>
-                      <Select.Label>Vegetables</Select.Label>
-                      <Select.Item value="carrot">Carrot</Select.Item>
-                      <Select.Item value="potato">Potato</Select.Item>
-                    </Select.Group>
+                    {
+                      tabMapNameList.map((el: { name: string }, index) => (
+                        <Select.Item value={el.name} key={index} onClick={() => {
+                          dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[index], frameId: ''}))
+                        }}>{el.name}
+                        </Select.Item>
+                      ))
+                    }
                   </Select.Content>
                 </Select.Root>
 
-
+                {/* TODO: chevron - item, chevron - item*/}
 
               </div>
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
@@ -174,35 +170,6 @@ export const Editor: FC = () => {
                 </AlertDialog.Root>
               </div>
             </div>
-            {!tabShrink &&
-              <div className="fixed z-50 w-[224px] top-[80px] dark:bg-zinc-800 bg-zinc-50 border-l-0 border-2 dark:border-neutral-700 pt-4 rounded-r-lg">
-                <h4 id="sidebar-label" className="sr-only">Browse docs</h4>
-                <div id="navWrapper" className="overflow-y-auto z-50 h-full bg-white scrolling-touch max-w-2xs lg:h-[calc(100vh-3rem)] lg:block lg:sticky top:24 lg:top-28 dark:bg-zinc-800 lg:mr-0">
-                  <nav id="nav" className="ml-4 pt-16 px-1 pl-3 lg:pl-0 lg:pt-2 font-normal text-base lg:text-sm pb-10 lg:pb-20 sticky?lg:h-(screen-18)" aria-label="Docs navigation">
-                    <ul className="mb-0 list-unstyled">
-                      <li>
-                        <h5 className="mb-2 text-sm font-semibold tracking-wide text-gray-900 uppercase lg:text-xs dark:text-white">Maps</h5>
-                        <ul className="py-1 list-unstyled fw-normal small">
-                          {tabMapNameList.map((el: { name: string }, index) => (
-                            <li key={index}>
-                              <a
-                                style={{color: tabId === index ? '#ffffff': '', backgroundColor: tabId === index ? '#666666': ''}}
-                                data-sidebar-item=""
-                                className="rounded hover:bg-purple-700 cursor-pointer py-1 px-1 transition-colors relative flex items-center flex-wrap font-medium hover:text-gray-900 text-gray-500 dark:text-gray-400 dark:hover:text-white"
-                                onClick={() => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[index], frameId: ''}))}}
-                              >{el.name}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </li>
-                      <li className="mt-8">
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            }
             {formatterVisible && <Formatter/>}
             <FrameCarousel/>
             <ContextMenu/>
