@@ -75,16 +75,6 @@ export const ContextMenu: FC = () => {
 
 
 
-          <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Move')}>
-            {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveSU', payload: null}))}}>{'Node Up'}</Dropdown.Item>}
-            {isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveSD', payload: null}))}}>{'Node Down'}</Dropdown.Item>}
-            {isXS(m) && isDirR(m) && isXASVN(m) && getCountXASU(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveSO', payload: null}))}}>{'Node Out'}</Dropdown.Item>}
-            {isXS(m) && isDirL(m) && isXASVN(m) && getCountXASU(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveSO', payload: null}))}}>{'Node Out'}</Dropdown.Item>}
-            {isXS(m) && isDirL(m) && isXASVN(m) && !isXDS(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveSI', payload: null}))}}>{'Node In'}</Dropdown.Item>}
-            {isXS(m) && isDirR(m) && isXASVN(m) && !isXDS(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveSI', payload: null}))}}>{'Node In'}</Dropdown.Item>}
-            {(isXR(m) && getCountXSO2(m) > 0) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveS2TOR', payload: null}))}}>{'Sub Nodes To Table'}</Dropdown.Item>}
-            {(isXS(m) && getCountXSO1(m) > 0) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveS2TO', payload: null}))}}>{'Sub Nodes To Table'}</Dropdown.Item>}
-          </Dropdown>
           <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Generate')}>
             {isXD(m) && getX(m).selection === 'f' && getR0(m).note !== '' && <Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesS(m)))}}>{'Structure Extension'}</Dropdown.Item>}
             {getCountXCO1(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.getGptSuggestions.initiate(gptGenNodesT(m)))}}>{'Table Fill'}</Dropdown.Item>}

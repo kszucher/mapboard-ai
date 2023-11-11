@@ -11,7 +11,6 @@ import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
 import {ChevronDownIcon, ChevronRightIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../assets/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
-import {EditorNode0SelectDropdown} from "./EditorNode0SelectDropdown";
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
@@ -26,8 +25,10 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {Button, DropdownMenu, IconButton, Theme, Flex, AlertDialog} from "@radix-ui/themes"
+import { EditorNode0SelectDropdown } from "./EditorNode0SelectDropdown"
 import { EditorNode1InsertDropdown } from "./EditorNode1InsertDropdown"
 import { EditorNode2EditDropdown } from "./EditorNode2EditDropdown"
+import { EditorNode3MoveDropdown } from "./EditorNode3MoveDropdown"
 
 export const Editor: FC = () => {
   const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
@@ -110,10 +111,7 @@ export const Editor: FC = () => {
                   <EditorNode0SelectDropdown/>
                   <EditorNode1InsertDropdown/>
                   <EditorNode2EditDropdown/>
-
-                  <Button size="2" variant="solid" color="gray" radius="small">
-                    {'Move'}
-                  </Button>
+                  <EditorNode3MoveDropdown/>
                 </Flex>
               </div>
 
