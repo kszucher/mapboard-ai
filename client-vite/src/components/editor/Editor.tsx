@@ -8,7 +8,7 @@ import {ContextMenu} from "../menu/ContextMenu"
 import {EditContentEquationModal} from "../modal/EditContentEquationModal"
 import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
-import {ChevronRightIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../assets/Icons"
+import {ChevronDownIcon, ChevronRightIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../assets/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -66,18 +66,10 @@ export const Editor: FC = () => {
               <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
               </div>
-              <div className="fixed w-[68px] left-[260px] top-[4px] flex flex-row">
-                <IconButton variant="solid"  color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
-                  <UndoIcon/>
-                </IconButton>
-                <div className={"w-[4px]"}/>
-                <IconButton variant="solid"  color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
-                  <RedoIcon/>
-                </IconButton>
-              </div>
+
               <div className="fixed left-[360px] h-[40px] flex flex-row items-center">
                 <IconButton variant="soft" color="gray" onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[tabId], frameId: ''}))}>
-                  <HomeIcon/>
+                  <ChevronDownIcon/>
                 </IconButton>
                 <div className={"w-[4px]"}/>
                 <Select.Root defaultValue={tabMapIdList[tabId]} onValueChange={(value) => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: value, frameId: ''}))}>
@@ -98,7 +90,8 @@ export const Editor: FC = () => {
                   </React.Fragment>
                 ))}
               </div>
-              <div className="fixed right-[140px] top-[4px] flex flex-row items-center">
+
+              <div className="fixed right-[200px] top-[4px] flex flex-row items-center">
                 <Flex gap="1" align="center">
                   <Button size="2" variant="solid" color="gray" radius="small">
                     {'Select'}
@@ -113,6 +106,16 @@ export const Editor: FC = () => {
                     {'Move'}
                   </Button>
                 </Flex>
+              </div>
+
+              <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
+                <IconButton variant="solid"  color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
+                  <UndoIcon/>
+                </IconButton>
+                <div className={"w-[4px]"}/>
+                <IconButton variant="solid"  color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
+                  <RedoIcon/>
+                </IconButton>
               </div>
 
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
