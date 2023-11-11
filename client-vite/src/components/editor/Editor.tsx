@@ -1,4 +1,3 @@
-import {useAuth0} from "@auth0/auth0-react"
 import mermaid from "mermaid"
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
@@ -69,11 +68,9 @@ export const Editor: FC = () => {
           <>
             <Map/>
             <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
-
               <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
               </div>
-
               <div className="fixed left-[220px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
                   <DropdownMenu.Root>
@@ -105,7 +102,6 @@ export const Editor: FC = () => {
                   ))}
                 </Flex>
               </div>
-
               <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
                   <EditorNode0SelectDropdown/>
@@ -114,32 +110,27 @@ export const Editor: FC = () => {
                   <EditorNode3MoveDropdown/>
                 </Flex>
               </div>
-
               <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
                 <Flex gap="1">
                 <IconButton variant="solid" color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
                   <UndoIcon/>
                 </IconButton>
-
                 <IconButton variant="solid" color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
                   <RedoIcon/>
                 </IconButton>
                 </Flex>
               </div>
-
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                 <AlertDialog.Root>
                   <Flex gap="1">
                     <EditorSettingsDropdown/>
                     <EditorProfileDropdown/>
                   </Flex>
-
                   <AlertDialog.Content style={{ maxWidth: 450 }}>
                     <DeleteAccountDialogContent/>
                   </AlertDialog.Content>
                 </AlertDialog.Root>
               </div>
-
             </div>
             {formatterVisible && <Formatter/>}
             <FrameCarousel/>
