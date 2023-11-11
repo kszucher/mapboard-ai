@@ -9,9 +9,9 @@ export interface DefaultUseOpenWorkspaceQueryState {
   mapId: string
   frameId: string
   mapDataList: M[]
-  breadcrumbMapIdList: []
+  breadcrumbMapIdList: string[]
   breadcrumbMapNameList: {name: string}[]
-  tabMapIdList: []
+  tabMapIdList: string[]
   tabMapNameList: {name: string}[]
   frameIdList: string[]
 }

@@ -24,7 +24,6 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog, Separator, Select} from "@radix-ui/themes"
-import { HomeIcon } from "@radix-ui/react-icons"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -63,15 +62,19 @@ export const Editor: FC = () => {
           <>
             <Map/>
             <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
+
               <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
               </div>
 
-              <div className="fixed left-[360px] h-[40px] flex flex-row items-center">
+              <div className="fixed left-[260px] h-[40px] flex flex-row items-center">
+
                 <IconButton variant="soft" color="gray" onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[tabId], frameId: ''}))}>
                   <ChevronDownIcon/>
                 </IconButton>
+
                 <div className={"w-[4px]"}/>
+
                 <Select.Root defaultValue={tabMapIdList[tabId]} onValueChange={(value) => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: value, frameId: ''}))}>
                   <Select.Trigger variant="soft"/>
                   <Select.Content position="popper">
@@ -80,6 +83,11 @@ export const Editor: FC = () => {
                     ))}
                   </Select.Content>
                 </Select.Root>
+
+                <Button
+                  variant={breadcrumbMapIdList.length === 1 ? "solid" : 'soft'}
+                  onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>{breadcrumbMapNameList[0].name}
+                </Button>
                 {breadcrumbMapNameList.slice(1).map((el, index) => (
                   <React.Fragment key={index}>
                     <ChevronRightIcon/>
@@ -162,6 +170,7 @@ export const Editor: FC = () => {
                   </AlertDialog.Content>
                 </AlertDialog.Root>
               </div>
+
             </div>
             {formatterVisible && <Formatter/>}
             <FrameCarousel/>
