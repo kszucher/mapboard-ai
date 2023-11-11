@@ -8,7 +8,7 @@ import {ContextMenu} from "../menu/ContextMenu"
 import {EditContentEquationModal} from "../modal/EditContentEquationModal"
 import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
-import {ChevronDownIcon, ChevronRightIcon, DotsIcon, KeyframesIcon, RedoIcon, ShareIcon, UndoIcon} from "../assets/Icons"
+import {ChevronDownIcon, ChevronRightIcon, KeyframesIcon, RedoIcon, ShareIcon, UndoIcon} from "../assets/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
 import {EditorMapRenameDialog} from "./EditorMapRenameDialog"
 import {Formatter} from "./Formatter"
@@ -69,69 +69,69 @@ export const Editor: FC = () => {
           <>
             <Map/>
             <Dialog.Root>
-              <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
-                <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
-                  <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
-                </div>
-                <div className="fixed left-[220px] h-[40px] flex flex-row items-center">
-                  <Flex gap="1" align="center">
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger>
-                        <IconButton variant="soft" color="gray">
-                          <ChevronDownIcon/>
-                        </IconButton>
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Content>
-                        {tabMapIdList.map((el: string, index) => (
-                          <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}>
-                            {tabMapNameList[index]?.name}
-                          </DropdownMenu.Item>
-                        ))}
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
-                    <Button
-                      variant={breadcrumbMapIdList.length === 1 ? "solid" : 'soft'}
-                      onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>{breadcrumbMapNameList[0].name}
-                    </Button>
-                    {breadcrumbMapNameList.slice(1).map((el, index) => (
-                      <React.Fragment key={index}>
-                        <ChevronRightIcon/>
-                        <Button
-                          variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'soft'}
-                          onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>{el.name}
-                        </Button>
-                      </React.Fragment>
-                    ))}
-                    <EditorMapDropdown/>
-                    {pageState === PageState.WS_RENAME_MAP && <EditorMapRenameDialog/>}
-                    <IconButton variant="soft" color="gray">
-                      <KeyframesIcon/>
-                    </IconButton>
-                    <IconButton variant="soft" color="gray">
-                      <ShareIcon/>
-                    </IconButton>
-                  </Flex>
-                </div>
-                <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
-                  <Flex gap="1" align="center">
-                    <EditorNode0SelectDropdown/>
-                    <EditorNode1InsertDropdown/>
-                    <EditorNode2EditDropdown/>
-                    <EditorNode3MoveDropdown/>
-                  </Flex>
-                </div>
-                <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
-                  <Flex gap="1">
-                    <IconButton variant="solid" color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
-                      <UndoIcon/>
-                    </IconButton>
-                    <IconButton variant="solid" color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
-                      <RedoIcon/>
-                    </IconButton>
-                  </Flex>
-                </div>
-                <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
-                  <AlertDialog.Root>
+              <AlertDialog.Root>
+                <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
+                  <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
+                    <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
+                  </div>
+                  <div className="fixed left-[220px] h-[40px] flex flex-row items-center">
+                    <Flex gap="1" align="center">
+                      <DropdownMenu.Root>
+                        <DropdownMenu.Trigger>
+                          <IconButton variant="soft" color="gray">
+                            <ChevronDownIcon/>
+                          </IconButton>
+                        </DropdownMenu.Trigger>
+                        <DropdownMenu.Content>
+                          {tabMapIdList.map((el: string, index) => (
+                            <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}>
+                              {tabMapNameList[index]?.name}
+                            </DropdownMenu.Item>
+                          ))}
+                        </DropdownMenu.Content>
+                      </DropdownMenu.Root>
+                      <Button
+                        variant={breadcrumbMapIdList.length === 1 ? "solid" : 'soft'}
+                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>{breadcrumbMapNameList[0].name}
+                      </Button>
+                      {breadcrumbMapNameList.slice(1).map((el, index) => (
+                        <React.Fragment key={index}>
+                          <ChevronRightIcon/>
+                          <Button
+                            variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'soft'}
+                            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>{el.name}
+                          </Button>
+                        </React.Fragment>
+                      ))}
+                      <EditorMapDropdown/>
+                      {pageState === PageState.WS_RENAME_MAP && <EditorMapRenameDialog/>}
+                      <IconButton variant="soft" color="gray">
+                        <KeyframesIcon/>
+                      </IconButton>
+                      <IconButton variant="soft" color="gray">
+                        <ShareIcon/>
+                      </IconButton>
+                    </Flex>
+                  </div>
+                  <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
+                    <Flex gap="1" align="center">
+                      <EditorNode0SelectDropdown/>
+                      <EditorNode1InsertDropdown/>
+                      <EditorNode2EditDropdown/>
+                      <EditorNode3MoveDropdown/>
+                    </Flex>
+                  </div>
+                  <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
+                    <Flex gap="1">
+                      <IconButton variant="solid" color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
+                        <UndoIcon/>
+                      </IconButton>
+                      <IconButton variant="solid" color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
+                        <RedoIcon/>
+                      </IconButton>
+                    </Flex>
+                  </div>
+                  <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                     <Flex gap="1">
                       <EditorSettingsDropdown/>
                       <EditorProfileDropdown/>
@@ -139,13 +139,13 @@ export const Editor: FC = () => {
                     <AlertDialog.Content style={{ maxWidth: 450 }}>
                       <DeleteAccountDialogContent/>
                     </AlertDialog.Content>
-                  </AlertDialog.Root>
+                  </div>
                 </div>
-              </div>
-              {formatterVisible && <Formatter/>}
-              <FrameCarousel/>
-              <ContextMenu/>
-              <Window/>
+                {formatterVisible && <Formatter/>}
+                <FrameCarousel/>
+                <ContextMenu/>
+                <Window/>
+              </AlertDialog.Root>
             </Dialog.Root>
           </>
         }
