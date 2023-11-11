@@ -8,7 +8,7 @@ import {ContextMenu} from "../menu/ContextMenu"
 import {EditContentEquationModal} from "../modal/EditContentEquationModal"
 import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
-import {ChevronDownIcon, ChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
+import {ChevronDownIcon, ChevronRightIcon, DotsIcon, KeyframesIcon, RedoIcon, ShareIcon, UndoIcon} from "../assets/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -100,6 +100,15 @@ export const Editor: FC = () => {
                       </Button>
                     </React.Fragment>
                   ))}
+                  <IconButton variant="soft" color="gray">
+                    <DotsIcon/>
+                  </IconButton>
+                  <IconButton variant="soft" color="gray">
+                    <KeyframesIcon/>
+                  </IconButton>
+                  <IconButton variant="soft" color="gray">
+                    <ShareIcon/>
+                  </IconButton>
                 </Flex>
               </div>
               <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
