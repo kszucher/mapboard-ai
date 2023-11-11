@@ -68,15 +68,11 @@ export const ContextMenu: FC = () => {
       </div>
       <div hidden={contextMenu.type !== 'node'}>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="">
-          <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Select')}>
-            {isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))}}>{'Node Family'}</Dropdown.Item>}
-            {isXR(m) && getCountXRD0SO1(m) > 0 && !getXRD0(m).selected && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD0', payload: null}))}}>{'Node Family Right'}</Dropdown.Item>}
-            {isXR(m) && getCountXRD1SO1(m) > 0 && !getXRD1(m).selected && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'selectFamilyXRD1', payload: null}))}}>{'Node Family Left'}</Dropdown.Item>}
-            {isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'selectSelfX', payload: null}))}}>{'Node'}</Dropdown.Item>}
-            {isXD(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'selectXR', payload: null}))}}>{'Node'}</Dropdown.Item>}
-            {isXS(m) && getCountXCO1(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getX(m).path}}))}}>{'First Cell'}</Dropdown.Item>}
-            {<Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'selectRA', payload: null}))}}>{'All Root'}</Dropdown.Item>}
-          </Dropdown>
+
+
+          
+
+
           <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Insert')}>
             {<Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertR', payload: null}))}}>{'Root'}</Dropdown.Item>}
             {isXS(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSU', payload: null}))}}>{'Node Above'}</Dropdown.Item>}
