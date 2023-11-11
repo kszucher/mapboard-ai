@@ -9,7 +9,7 @@ import {ContextMenu} from "../menu/ContextMenu"
 import {EditContentEquationModal} from "../modal/EditContentEquationModal"
 import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
-import {ChevronDownIcon, ChevronRightIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../assets/Icons"
+import {ChevronDownIcon, ChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -30,6 +30,7 @@ import { EditorNode1InsertDropdown } from "./EditorNode1InsertDropdown"
 import { EditorNode2EditDropdown } from "./EditorNode2EditDropdown"
 import { EditorNode3MoveDropdown } from "./EditorNode3MoveDropdown"
 import { EditorSettingsDropdown } from "./EditorSettingsDropdown"
+import { EditorProfileDropdown } from "./EditorProfileDropdown"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -44,7 +45,6 @@ export const Editor: FC = () => {
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
   const dispatch = useDispatch<AppDispatch>()
-  const { logout } = useAuth0()
 
   useEffect(()=> {
     getTextDim('Test', 12)
@@ -130,37 +130,8 @@ export const Editor: FC = () => {
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                 <AlertDialog.Root>
                   <Flex gap="1">
-
-
                     <EditorSettingsDropdown/>
-
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger>
-                        <IconButton variant="solid" color="gray">
-                          <UserIcon/>
-                        </IconButton>
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Content className="bg-red-300">
-                        <DropdownMenu.Item onClick={()=>{
-                          logout({ logoutParams: { returnTo: window.location.origin }})
-                          dispatch(actions.resetState())
-                          dispatch(nodeApi.util.resetApiState())
-                        }}>{'Sign Out'}
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item onClick={()=>{
-                          logout({ logoutParams: { returnTo: window.location.origin }})
-                          dispatch(nodeApi.endpoints.signOutEverywhere.initiate())
-                          dispatch(actions.resetState())
-                          dispatch(nodeApi.util.resetApiState())
-                        }}>{'Sign Out All Devices'}
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Separator />
-                        <AlertDialog.Trigger>
-                          <DropdownMenu.Item color="red">Delete Account</DropdownMenu.Item>
-                        </AlertDialog.Trigger>
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
-
+                    <EditorProfileDropdown/>
                   </Flex>
 
                   <AlertDialog.Content style={{ maxWidth: 450 }}>
