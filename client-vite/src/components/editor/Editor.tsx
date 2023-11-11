@@ -117,56 +117,63 @@ export const Editor: FC = () => {
               </div>
 
               <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
+                <Flex gap="1">
                 <IconButton variant="solid" color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
                   <UndoIcon/>
                 </IconButton>
-                <div className={"w-[4px]"}/>
+
                 <IconButton variant="solid" color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
                   <RedoIcon/>
                 </IconButton>
+                </Flex>
               </div>
 
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                 <AlertDialog.Root>
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger>
-                      <IconButton variant="solid" color="gray">
-                        <SettingsIcon/>
-                      </IconButton>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content className="bg-red-300">
-                      <DropdownMenu.Item onClick={()=>{
-                        dispatch(nodeApi.endpoints.toggleColorMode.initiate())
-                      }}>{'Toggle Color Mode'}</DropdownMenu.Item>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
-                  <div className={"w-[4px]"}/>
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger>
-                      <IconButton variant="solid" color="gray">
-                        <UserIcon/>
-                      </IconButton>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content className="bg-red-300">
-                      <DropdownMenu.Item onClick={()=>{
-                        logout({ logoutParams: { returnTo: window.location.origin }})
-                        dispatch(actions.resetState())
-                        dispatch(nodeApi.util.resetApiState())
-                      }}>{'Sign Out'}
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item onClick={()=>{
-                        logout({ logoutParams: { returnTo: window.location.origin }})
-                        dispatch(nodeApi.endpoints.signOutEverywhere.initiate())
-                        dispatch(actions.resetState())
-                        dispatch(nodeApi.util.resetApiState())
-                      }}>{'Sign Out All Devices'}
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Separator />
-                      <AlertDialog.Trigger>
-                        <DropdownMenu.Item color="red">Delete Account</DropdownMenu.Item>
-                      </AlertDialog.Trigger>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
+                  <Flex gap="1">
+
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger>
+                        <IconButton variant="solid" color="gray">
+                          <SettingsIcon/>
+                        </IconButton>
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content className="bg-red-300">
+                        <DropdownMenu.Item onClick={()=>{
+                          dispatch(nodeApi.endpoints.toggleColorMode.initiate())
+                        }}>{'Toggle Color Mode'}</DropdownMenu.Item>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger>
+                        <IconButton variant="solid" color="gray">
+                          <UserIcon/>
+                        </IconButton>
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content className="bg-red-300">
+                        <DropdownMenu.Item onClick={()=>{
+                          logout({ logoutParams: { returnTo: window.location.origin }})
+                          dispatch(actions.resetState())
+                          dispatch(nodeApi.util.resetApiState())
+                        }}>{'Sign Out'}
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Item onClick={()=>{
+                          logout({ logoutParams: { returnTo: window.location.origin }})
+                          dispatch(nodeApi.endpoints.signOutEverywhere.initiate())
+                          dispatch(actions.resetState())
+                          dispatch(nodeApi.util.resetApiState())
+                        }}>{'Sign Out All Devices'}
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Separator />
+                        <AlertDialog.Trigger>
+                          <DropdownMenu.Item color="red">Delete Account</DropdownMenu.Item>
+                        </AlertDialog.Trigger>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+
+                  </Flex>
+
                   <AlertDialog.Content style={{ maxWidth: 450 }}>
                     <DeleteAccountDialogContent/>
                   </AlertDialog.Content>
