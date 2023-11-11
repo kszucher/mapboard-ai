@@ -45,14 +45,7 @@ export const ContextMenu: FC = () => {
             {!connectionHelpersVisible && <Dropdown.Item onClick={()=>{dispatch(actions.showConnectionHelpers())}}>{'Show Helpers'}</Dropdown.Item>}
             {connectionHelpersVisible && <Dropdown.Item onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Helpers'}</Dropdown.Item>}
           </Dropdown>
-          <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Tabs')}>
-            {<Dropdown.Item onClick={()=>{dispatch(actions.setPageState(PageState.WS_RENAME_MAP))}}>{'Rename'}</Dropdown.Item>}
-            {<Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.createMapInTab.initiate())}}>{'Create'}</Dropdown.Item>}
-            {<Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.createMapInTabDuplicate.initiate({mapId: getMapId()}))}}>{'Duplicate'}</Dropdown.Item>}
-            {<Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}}>{'Move Up'}</Dropdown.Item>}
-            {<Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}}>{'Move Down'}</Dropdown.Item>}
-            {<Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.deleteMap.initiate({mapId: getMapId()}))}}>{'Remove'}</Dropdown.Item>}
-          </Dropdown>
+
           <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Frames')}>
             {frameId === '' && frameIdList.length > 0 && <Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))}}>{'Open'}</Dropdown.Item>}
             {<Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))}}>{'Import'}</Dropdown.Item>}
