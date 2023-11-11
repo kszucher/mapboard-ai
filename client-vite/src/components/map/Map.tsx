@@ -10,6 +10,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {getG} from "../../selectors/MapSelector"
 
 export const Map: FC = () => {
+  const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
@@ -81,7 +82,9 @@ export const Map: FC = () => {
         }
       }}
       onWheel={(e) => {
-        dispatch(actions.mapAction({type: 'saveView', payload: {e}}))
+        if (scrollOverride) {
+          dispatch(actions.mapAction({type: 'saveView', payload: {e}}))
+        }
       }}
     >
       <div/>

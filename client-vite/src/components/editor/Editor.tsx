@@ -26,6 +26,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {Button, DropdownMenu, IconButton, Theme, Flex, AlertDialog} from "@radix-ui/themes"
 
 export const Editor: FC = () => {
+  const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
@@ -138,10 +139,10 @@ export const Editor: FC = () => {
                           <SettingsIcon/>
                         </IconButton>
                       </DropdownMenu.Trigger>
-                      <DropdownMenu.Content className="bg-red-300">
-                        <DropdownMenu.Item onClick={()=>{
-                          dispatch(nodeApi.endpoints.toggleColorMode.initiate())
-                        }}>{'Toggle Color Mode'}</DropdownMenu.Item>
+                      <DropdownMenu.Content>
+                        <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.toggleColorMode.initiate())}>{'Toggle Color Mode'}</DropdownMenu.Item>
+                        {!scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.setScrollOverride())}>{'Set Scroll Zoom'}</DropdownMenu.Item>}
+                        {scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.clearScrollOverride())}>{'Clear Scroll Zoom'}</DropdownMenu.Item>}
                       </DropdownMenu.Content>
                     </DropdownMenu.Root>
 

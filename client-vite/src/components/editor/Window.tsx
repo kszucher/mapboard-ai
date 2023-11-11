@@ -6,7 +6,7 @@ import {AccessTypes, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
-import {getMap, mSelector} from "../../state/EditorState"
+import {getMap, getScrollOverride, mSelector} from "../../state/EditorState"
 import {mapDeInit} from "../../reducers/MapDeInit"
 import {N} from "../../state/MapStateTypes"
 import {shortcutColors} from "../assets/Colors"
@@ -185,11 +185,13 @@ export const Window: FC = () => {
   }
 
   const mouseup = (e: MouseEvent) => {
-    dispatch(actions.resetConnectionStart())
+    dispatch(actions.clearConnectionStart())
   }
 
   const wheel = (e: WheelEvent) => {
-    e.preventDefault()
+    if (getScrollOverride()) {
+      e.preventDefault()
+    }
     // dispatch(actions.closeContextMenu())
   }
 

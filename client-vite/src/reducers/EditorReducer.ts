@@ -19,6 +19,8 @@ export const editorSlice = createSlice({
   reducers: {
     setToken(state, action: PayloadAction<string>) { state.token = action.payload },
     resetState() {return JSON.parse(editorStateDefault)},
+    setScrollOverride(state) { state.scrollOverride = true },
+    clearScrollOverride(state) { state.scrollOverride = false },
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     openFormatter(state) { state.formatterVisible = true},
@@ -35,7 +37,7 @@ export const editorSlice = createSlice({
     showConnectionHelpers(state) { state.connectionHelpersVisible = true },
     hideConnectionHelpers(state) { state.connectionHelpersVisible = false },
     setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload},
-    resetConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Sides.R}},
+    clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Sides.R}},
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
@@ -221,7 +223,7 @@ listenerMiddleware.startListening({
       action.type.startsWith('editor') &&
       action.type !== 'editor/closeContextMenu' &&
       action.type !== 'editor/openContextMenu' &&
-      action.type !== 'editor/resetConnectionStart' &&
+      action.type !== 'editor/clearConnectionStart' &&
       (currentState as RootState).editor.contextMenu !== null
     )
   },

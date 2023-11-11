@@ -3,6 +3,7 @@ import {M, T} from "./MapStateTypes"
 
 export interface EditorState {
   token: string
+  scrollOverride: boolean
   pageState: PageState
   formatMode: FormatMode
   mapList: M[]

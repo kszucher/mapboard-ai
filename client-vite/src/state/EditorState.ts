@@ -4,6 +4,7 @@ import {RootState, store} from "../reducers/EditorReducer"
 
 export const editorState: EditorState = {
   token: '',
+  scrollOverride: false,
   pageState: PageState.AUTH,
   formatMode: FormatMode.sFill,
   mapList: [],
@@ -40,6 +41,7 @@ export const editorState: EditorState = {
   }
 }
 
-export const getMap = () => (store.getState().editor.mapList[store.getState().editor.mapListIndex])
+export const getScrollOverride = () => store.getState().editor.scrollOverride
+export const getMap = () => store.getState().editor.mapList[store.getState().editor.mapListIndex]
 export const mSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex]
 export const pmSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex > 0 ? state.editor.mapListIndex - 1 : 0]
