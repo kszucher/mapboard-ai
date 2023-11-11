@@ -28,6 +28,6 @@ body {
 
 
 .rt-DropdownMenuViewport {
-    background: var(--page-background-color) !important;
+    /*background: var(--page-background-color) !important;*/
 
 }

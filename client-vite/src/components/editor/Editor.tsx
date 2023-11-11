@@ -63,43 +63,43 @@ export const Editor: FC = () => {
             <Map/>
             <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
 
-              <div className="fixed top-0 w-[220px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
+              <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
               </div>
 
-              <div className="fixed left-[260px] h-[40px] flex flex-row items-center">
-
-                <IconButton variant="soft" color="gray" onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: tabMapIdList[tabId], frameId: ''}))}>
-                  <ChevronDownIcon/>
-                </IconButton>
-
-                <div className={"w-[4px]"}/>
-
-                <Select.Root defaultValue={tabMapIdList[tabId]} onValueChange={(value) => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: value, frameId: ''}))}>
-                  <Select.Trigger variant="soft"/>
-                  <Select.Content position="popper">
-                    {tabMapIdList.map((el: string, index) => (
-                      <Select.Item value={el} key={index}>{tabMapNameList[index]?.name}</Select.Item>
-                    ))}
-                  </Select.Content>
-                </Select.Root>
-
-                <Button
-                  variant={breadcrumbMapIdList.length === 1 ? "solid" : 'soft'}
-                  onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>{breadcrumbMapNameList[0].name}
-                </Button>
-                {breadcrumbMapNameList.slice(1).map((el, index) => (
-                  <React.Fragment key={index}>
-                    <ChevronRightIcon/>
-                    <Button
-                      variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'soft'}
-                      onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>{el.name}
-                    </Button>
-                  </React.Fragment>
-                ))}
+              <div className="fixed left-[220px] h-[40px] flex flex-row items-center">
+                <Flex gap="1" align="center">
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger>
+                      <IconButton variant="soft" color="gray">
+                        <ChevronDownIcon/>
+                      </IconButton>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content>
+                      {tabMapIdList.map((el: string, index) => (
+                        <DropdownMenu.Item key={index} onClick={() => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}}>
+                          {tabMapNameList[index]?.name}
+                        </DropdownMenu.Item>
+                      ))}
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Root>
+                  <Button
+                    variant={breadcrumbMapIdList.length === 1 ? "solid" : 'soft'}
+                    onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>{breadcrumbMapNameList[0].name}
+                  </Button>
+                  {breadcrumbMapNameList.slice(1).map((el, index) => (
+                    <React.Fragment key={index}>
+                      <ChevronRightIcon/>
+                      <Button
+                        variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'soft'}
+                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>{el.name}
+                      </Button>
+                    </React.Fragment>
+                  ))}
+                </Flex>
               </div>
 
-              <div className="fixed right-[200px] top-[4px] flex flex-row items-center">
+              <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
                   <Button size="2" variant="solid" color="gray" radius="small">
                     {'Select'}
