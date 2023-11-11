@@ -29,9 +29,9 @@ import { EditorNode0SelectDropdown } from "./EditorNode0SelectDropdown"
 import { EditorNode1InsertDropdown } from "./EditorNode1InsertDropdown"
 import { EditorNode2EditDropdown } from "./EditorNode2EditDropdown"
 import { EditorNode3MoveDropdown } from "./EditorNode3MoveDropdown"
+import { EditorSettingsDropdown } from "./EditorSettingsDropdown"
 
 export const Editor: FC = () => {
-  const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
@@ -131,18 +131,8 @@ export const Editor: FC = () => {
                 <AlertDialog.Root>
                   <Flex gap="1">
 
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger>
-                        <IconButton variant="solid" color="gray">
-                          <SettingsIcon/>
-                        </IconButton>
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Content>
-                        <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.toggleColorMode.initiate())}>{'Toggle Color Mode'}</DropdownMenu.Item>
-                        {!scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.setScrollOverride())}>{'Set Scroll Zoom'}</DropdownMenu.Item>}
-                        {scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.clearScrollOverride())}>{'Clear Scroll Zoom'}</DropdownMenu.Item>}
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
+
+                    <EditorSettingsDropdown/>
 
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger>

@@ -1,0 +1,25 @@
+import {DropdownMenu, IconButton} from "@radix-ui/themes"
+import React from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {nodeApi} from "../../apis/NodeApi"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {SettingsIcon} from "../assets/Icons"
+
+export const EditorSettingsDropdown = () => {
+  const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
+  const dispatch = useDispatch<AppDispatch>()
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <IconButton variant="solid" color="gray">
+          <SettingsIcon/>
+        </IconButton>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.toggleColorMode.initiate())}>{'Toggle Color Mode'}</DropdownMenu.Item>
+        {!scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.setScrollOverride())}>{'Set Scroll Zoom'}</DropdownMenu.Item>}
+        {scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.clearScrollOverride())}>{'Clear Scroll Zoom'}</DropdownMenu.Item>}
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  )
+}
