@@ -91,10 +91,30 @@ export const Editor: FC = () => {
                 {breadcrumbMapNameList.slice(1).map((el, index) => (
                   <React.Fragment key={index}>
                     <ChevronRightIcon/>
-                    <Button variant="soft" onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>{el.name}</Button>
+                    <Button
+                      variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'soft'}
+                      onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>{el.name}
+                    </Button>
                   </React.Fragment>
                 ))}
               </div>
+              <div className="fixed right-[140px] top-[4px] flex flex-row items-center">
+                <Flex gap="1" align="center">
+                  <Button size="2" variant="solid" color="gray" radius="small">
+                    {'Select'}
+                  </Button>
+                  <Button size="2" variant="solid" color="gray" radius="small">
+                    {'Insert'}
+                  </Button>
+                  <Button size="2" variant="solid" color="gray" radius="small">
+                    {'Edit'}
+                  </Button>
+                  <Button size="2" variant="solid" color="gray" radius="small">
+                    {'Move'}
+                  </Button>
+                </Flex>
+              </div>
+
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                 <AlertDialog.Root>
                   <DropdownMenu.Root>
