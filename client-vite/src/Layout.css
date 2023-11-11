@@ -38,12 +38,12 @@ img {
 
 :root {
     --main-color: #000;
-    --page-background-color: #000;
+    --app-background-color: #000;
     --button-color: #000;
 }
 
 body {
-    background: var(--page-background-color) !important;
+    background: var(--app-background-color) !important;
     /*back*/
 }
 

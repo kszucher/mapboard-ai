@@ -69,7 +69,7 @@ export const getColors = (colorMode: string) => (colorMode === 'light' ? COLOR_L
 export const setColors = (colorMode: string) => {
   const root = document.querySelector(':root') as HTMLElement
   root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
-  root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
+  root.style.setProperty('--app-background-color', getColors(colorMode).PAGE_BACKGROUND)
   root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
 }
 

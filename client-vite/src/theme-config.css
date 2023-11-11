@@ -22,12 +22,12 @@ textarea:focus, input:focus{
 /*}*/
 
 body {
-    /*background: var(--page-background-color) !important;*/
+    /*background: var(--app-background-color) !important;*/
     /*back*/
 }
 
 
 .rt-DropdownMenuViewport {
-    /*background: var(--page-background-color) !important;*/
+    /*background: var(--app-background-color) !important;*/
 
 }

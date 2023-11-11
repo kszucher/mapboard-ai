@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import {Provider} from "react-redux"
 import {store} from "./reducers/EditorReducer"
-import {Page} from "./components/page/Page"
+import {App} from "./components/app/App"
 import './Layout.css'
 import './RotatingText.css'
 import './input.css'
@@ -20,7 +20,7 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Page />}/>
+        <Route path="/" element={<App />}/>
         <Route path="docs" element={<Docs />}/>
       </Routes>
     </BrowserRouter>

@@ -6,7 +6,7 @@ import {Landing} from "../landing/Landing"
 import {PageState} from "../../state/Enums"
 import {Editor} from "../editor/Editor"
 
-export const Page: FC = () => {
+export const App: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   return (
     <Auth0Provider
