@@ -1,4 +1,5 @@
 import {useAuth0} from "@auth0/auth0-react"
+import mermaid from "mermaid"
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {Backdrop, CircularProgress} from '@mui/material'
@@ -44,6 +45,7 @@ export const Editor: FC = () => {
   useEffect(()=> {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
+    mermaid.initialize({startOnLoad: false, theme: "dark", flowchart: {useMaxWidth: false}})
   }, [])
 
   useEffect(() => {
