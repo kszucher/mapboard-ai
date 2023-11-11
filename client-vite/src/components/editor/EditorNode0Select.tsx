@@ -5,7 +5,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getX, getXRD0, getXRD1, isXD, isXR, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
 
-export const EditorNode0SelectDropdown = () => {
+export const EditorNode0Select = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (

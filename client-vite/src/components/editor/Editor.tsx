@@ -9,8 +9,8 @@ import {EditContentEquationModal} from "../_deletion/EditContentEquationModal"
 import {EditContentMermaidModal} from "../_deletion/EditContentMermaidModal"
 import {CreateTableModal} from '../_deletion/CreateTableModal'
 import {ChevronDownIcon, ChevronRightIcon, KeyframesIcon, RedoIcon, ShareIcon, UndoIcon} from "../assets/Icons"
-import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
-import {EditorMapRenameDialog} from "./EditorMapRenameDialog"
+import {EditorProfileDeleteAccount} from "./EditorProfileDeleteAccount"
+import {EditorMapRename} from "./EditorMapRename"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
@@ -24,13 +24,13 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {Button, DropdownMenu, IconButton, Theme, Flex, AlertDialog, Dialog, TextField, Text} from "@radix-ui/themes"
-import { EditorNode0SelectDropdown } from "./EditorNode0SelectDropdown"
-import { EditorNode1InsertDropdown } from "./EditorNode1InsertDropdown"
-import { EditorNode2EditDropdown } from "./EditorNode2EditDropdown"
-import { EditorNode3MoveDropdown } from "./EditorNode3MoveDropdown"
-import { EditorSettingsDropdown } from "./EditorSettingsDropdown"
-import { EditorProfileDropdown } from "./EditorProfileDropdown"
-import { EditorMapDropdown } from "./EditorMapDropdown"
+import { EditorNode0Select } from "./EditorNode0Select"
+import { EditorNode1Insert } from "./EditorNode1Insert"
+import { EditorNode2Edit } from "./EditorNode2Edit"
+import { EditorNode3Move } from "./EditorNode3Move"
+import { EditorSettings } from "./EditorSettings"
+import { EditorProfile } from "./EditorProfile"
+import { EditorMap } from "./EditorMap"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -103,8 +103,8 @@ export const Editor: FC = () => {
                           </Button>
                         </React.Fragment>
                       ))}
-                      <EditorMapDropdown/>
-                      {pageState === PageState.WS_RENAME_MAP && <EditorMapRenameDialog/>}
+                      <EditorMap/>
+                      {pageState === PageState.WS_RENAME_MAP && <EditorMapRename/>}
                       <IconButton variant="soft" color="gray">
                         <KeyframesIcon/>
                       </IconButton>
@@ -115,10 +115,10 @@ export const Editor: FC = () => {
                   </div>
                   <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
                     <Flex gap="1" align="center">
-                      <EditorNode0SelectDropdown/>
-                      <EditorNode1InsertDropdown/>
-                      <EditorNode2EditDropdown/>
-                      <EditorNode3MoveDropdown/>
+                      <EditorNode0Select/>
+                      <EditorNode1Insert/>
+                      <EditorNode2Edit/>
+                      <EditorNode3Move/>
                     </Flex>
                   </div>
                   <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
@@ -133,11 +133,11 @@ export const Editor: FC = () => {
                   </div>
                   <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                     <Flex gap="1">
-                      <EditorSettingsDropdown/>
-                      <EditorProfileDropdown/>
+                      <EditorSettings/>
+                      <EditorProfile/>
                     </Flex>
                     <AlertDialog.Content style={{ maxWidth: 450 }}>
-                      <DeleteAccountDialogContent/>
+                      <EditorProfileDeleteAccount/>
                     </AlertDialog.Content>
                   </div>
                 </div>

@@ -6,7 +6,7 @@ import {getCountXCO1, getX, getXAEO, isXR, isXS} from "../../selectors/MapSelect
 import {mSelector} from "../../state/EditorState"
 import {ControlTypes, PageState} from "../../state/Enums"
 
-export const EditorNode2EditDropdown = () => {
+export const EditorNode2Edit = () => {
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()

@@ -5,7 +5,7 @@ import {nodeApi} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {SettingsIcon} from "../assets/Icons"
 
-export const EditorSettingsDropdown = () => {
+export const EditorSettings = () => {
   const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
   const dispatch = useDispatch<AppDispatch>()
   return (

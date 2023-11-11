@@ -5,7 +5,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getCountXASD, getCountXASU, getCountXSO1, getCountXSO2, isDirL, isDirR, isXASVN, isXDS, isXR, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
 
-export const EditorNode3MoveDropdown = () => {
+export const EditorNode3Move = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (

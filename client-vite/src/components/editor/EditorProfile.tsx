@@ -6,7 +6,7 @@ import {nodeApi} from "../../apis/NodeApi"
 import {actions, AppDispatch} from "../../reducers/EditorReducer"
 import {UserIcon} from "../assets/Icons"
 
-export const EditorProfileDropdown = () => {
+export const EditorProfile = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { logout } = useAuth0()
   return (
