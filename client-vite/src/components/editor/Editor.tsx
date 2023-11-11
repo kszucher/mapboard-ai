@@ -27,6 +27,7 @@ import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {Button, DropdownMenu, IconButton, Theme, Flex, AlertDialog} from "@radix-ui/themes"
 import { EditorNode1InsertDropdown } from "./EditorNode1InsertDropdown"
+import { EditorNode2EditDropdown } from "./EditorNode2EditDropdown"
 
 export const Editor: FC = () => {
   const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
@@ -108,10 +109,8 @@ export const Editor: FC = () => {
                 <Flex gap="1" align="center">
                   <EditorNode0SelectDropdown/>
                   <EditorNode1InsertDropdown/>
+                  <EditorNode2EditDropdown/>
 
-                  <Button size="2" variant="solid" color="gray" radius="small">
-                    {'Edit'}
-                  </Button>
                   <Button size="2" variant="solid" color="gray" radius="small">
                     {'Move'}
                   </Button>

@@ -70,33 +70,11 @@ export const ContextMenu: FC = () => {
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="">
 
 
-          
 
 
-          <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Insert')}>
-            {<Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertR', payload: null}))}}>{'Root'}</Dropdown.Item>}
-            {isXS(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSU', payload: null}))}}>{'Node Above'}</Dropdown.Item>}
-            {isXR(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSOR', payload: null}))}}>{'Node Right'}</Dropdown.Item>}
-            {isXS(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSO', payload: null}))}}>{'Node Out'}</Dropdown.Item>}
-            {isXS(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSD', payload: null}))}}>{'Node Below'}</Dropdown.Item>}
-            {(isXR(m) || isXS(m))  && <Dropdown.Item onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}}>{'Table Out'}</Dropdown.Item>}
-            {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))}}>{'Table Row Above'}</Dropdown.Item>}
-            {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSCRD', payload: null}))}}>{'Table Row Below'}</Dropdown.Item>}
-            {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSCCL', payload: null}))}}>{'Table Column Left'}</Dropdown.Item>}
-            {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSCCR', payload: null}))}}>{'Table Column Right'}</Dropdown.Item>}
-          </Dropdown>
-          <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Edit')}>
-            {!formatterVisible && <Dropdown.Item onClick={()=>{dispatch(actions.openFormatter())}}>{'Open Formatter'}</Dropdown.Item>}
-            {formatterVisible && <Dropdown.Item onClick={()=>{dispatch(actions.closeFormatter())}}>{'Close Formatter'}</Dropdown.Item>}
-            {isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <Dropdown.Item onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}}>{'Turn Into Submap'}</Dropdown.Item>}
-            {isXS(m) && getCountXCO1(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'transpose', payload: null}))}}>{'Transpose'}</Dropdown.Item>}
-            {getXAEO(m).map(ti => ti.taskStatus).includes(0) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOn', payload: null}))}}>{'Task Mode On'}</Dropdown.Item>}
-            {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOff', payload: null}))}}>{'Task Mode Off'}</Dropdown.Item>}
-            {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeReset', payload: null}))}}>{'Task Mode Reset'}</Dropdown.Item>}
-            {isXR(m) && getX(m).controlType !== ControlTypes.NONE && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}}>{'Control Type None'}</Dropdown.Item>}
-            {isXR(m) && getX(m).controlType !== ControlTypes.INGESTION && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeIngestion', payload: null}))}}>{'Control Type Ingestion'}</Dropdown.Item>}
-            {isXR(m) && getX(m).controlType !== ControlTypes.EXTRACTION && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeExtraction', payload: null}))}}>{'Control Type Extraction'}</Dropdown.Item>}
-          </Dropdown>
+
+
+
           <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Move')}>
             {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveSU', payload: null}))}}>{'Node Up'}</Dropdown.Item>}
             {isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'moveSD', payload: null}))}}>{'Node Down'}</Dropdown.Item>}
