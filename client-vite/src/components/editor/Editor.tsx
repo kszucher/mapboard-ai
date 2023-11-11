@@ -4,10 +4,10 @@ import {useDispatch, useSelector} from "react-redux"
 import {Backdrop, CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
-import {ContextMenu} from "../menu/ContextMenu"
-import {EditContentEquationModal} from "../modal/EditContentEquationModal"
-import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
-import {CreateTableModal} from '../modal/CreateTableModal'
+import {ContextMenu} from "../_deletion/ContextMenu"
+import {EditContentEquationModal} from "../_deletion/EditContentEquationModal"
+import {EditContentMermaidModal} from "../_deletion/EditContentMermaidModal"
+import {CreateTableModal} from '../_deletion/CreateTableModal'
 import {ChevronDownIcon, ChevronRightIcon, KeyframesIcon, RedoIcon, ShareIcon, UndoIcon} from "../assets/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
 import {EditorMapRenameDialog} from "./EditorMapRenameDialog"
@@ -15,9 +15,9 @@ import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
-import {SharesModal} from "../modal/SharesModal"
-import {ShareThisMapModal} from "../modal/ShareThisMapModal"
-import {CreateMapInMapModal} from '../modal/CreateMapInMapModal'
+import {SharesModal} from "../_deletion/SharesModal"
+import {ShareThisMapModal} from "../_deletion/ShareThisMapModal"
+import {CreateMapInMapModal} from '../_deletion/CreateMapInMapModal'
 import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"

@@ -16,7 +16,7 @@ describe('empty spec', () => {
         cy.get('#enter-confirmation-code').click()
         cy.get('#sign-in').click()
         cy.get('#profile-button').click()
-        cy.get('#profile-menu').contains('Sign Out').click()
+        cy.get('#profile-_deletion').contains('Sign Out').click()
 
 
         cy.get('#sign-up-instead').click()
