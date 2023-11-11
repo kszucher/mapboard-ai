@@ -11,6 +11,7 @@ import {EditContentMermaidModal} from "../modal/EditContentMermaidModal"
 import {CreateTableModal} from '../modal/CreateTableModal'
 import {ChevronDownIcon, ChevronRightIcon, RedoIcon, SettingsIcon, UndoIcon, UserIcon} from "../assets/Icons"
 import {DeleteAccountDialogContent} from "./DeleteAccountDialogContent"
+import {EditorSelectDropdown} from "./EditorSelectDropdown";
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
@@ -104,9 +105,7 @@ export const Editor: FC = () => {
 
               <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
-                  <Button size="2" variant="solid" color="gray" radius="small">
-                    {'Select'}
-                  </Button>
+                  <EditorSelectDropdown/>
                   <Button size="2" variant="solid" color="gray" radius="small">
                     {'Insert'}
                   </Button>
