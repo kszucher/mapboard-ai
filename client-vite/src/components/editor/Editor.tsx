@@ -23,7 +23,7 @@ import {setColors} from "../assets/Colors"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {Button, DropdownMenu, IconButton, Theme, Dialog, Flex, TextField, Text, AlertDialog, Separator, Select} from "@radix-ui/themes"
+import {Button, DropdownMenu, IconButton, Theme, Flex, AlertDialog} from "@radix-ui/themes"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -77,7 +77,7 @@ export const Editor: FC = () => {
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content>
                       {tabMapIdList.map((el: string, index) => (
-                        <DropdownMenu.Item key={index} onClick={() => {dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}}>
+                        <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}>
                           {tabMapNameList[index]?.name}
                         </DropdownMenu.Item>
                       ))}
@@ -117,11 +117,11 @@ export const Editor: FC = () => {
               </div>
 
               <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
-                <IconButton variant="solid"  color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
+                <IconButton variant="solid" color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
                   <UndoIcon/>
                 </IconButton>
                 <div className={"w-[4px]"}/>
-                <IconButton variant="solid"  color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
+                <IconButton variant="solid" color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
                   <RedoIcon/>
                 </IconButton>
               </div>
@@ -130,7 +130,7 @@ export const Editor: FC = () => {
                 <AlertDialog.Root>
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
-                      <IconButton variant="solid"  color="gray">
+                      <IconButton variant="solid" color="gray">
                         <SettingsIcon/>
                       </IconButton>
                     </DropdownMenu.Trigger>
@@ -143,7 +143,7 @@ export const Editor: FC = () => {
                   <div className={"w-[4px]"}/>
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
-                      <IconButton variant="solid"  color="gray">
+                      <IconButton variant="solid" color="gray">
                         <UserIcon/>
                       </IconButton>
                     </DropdownMenu.Trigger>
@@ -152,13 +152,15 @@ export const Editor: FC = () => {
                         logout({ logoutParams: { returnTo: window.location.origin }})
                         dispatch(actions.resetState())
                         dispatch(nodeApi.util.resetApiState())
-                      }}>{'Sign Out'}</DropdownMenu.Item>
+                      }}>{'Sign Out'}
+                      </DropdownMenu.Item>
                       <DropdownMenu.Item onClick={()=>{
                         logout({ logoutParams: { returnTo: window.location.origin }})
                         dispatch(nodeApi.endpoints.signOutEverywhere.initiate())
                         dispatch(actions.resetState())
                         dispatch(nodeApi.util.resetApiState())
-                      }}>{'Sign Out All Devices'}</DropdownMenu.Item>
+                      }}>{'Sign Out All Devices'}
+                      </DropdownMenu.Item>
                       <DropdownMenu.Separator />
                       <AlertDialog.Trigger>
                         <DropdownMenu.Item color="red">Delete Account</DropdownMenu.Item>
