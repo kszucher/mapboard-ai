@@ -8,9 +8,9 @@ import {ContextMenu} from "../_deletion/ContextMenu"
 import {EditContentEquationModal} from "../_deletion/EditContentEquationModal"
 import {EditContentMermaidModal} from "../_deletion/EditContentMermaidModal"
 import {CreateTableModal} from '../_deletion/CreateTableModal'
-import {ChevronDownIcon, ChevronRightIcon, KeyframesIcon, RedoIcon, ShareIcon, UndoIcon} from "../assets/Icons"
+import {RedoIcon, UndoIcon} from "../assets/Icons"
+import {EditorMap} from "./EditorMap";
 import {EditorProfileDeleteAccount} from "./EditorProfileDeleteAccount"
-import {EditorMapActionsRename} from "./EditorMapActionsRename"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
@@ -20,17 +20,16 @@ import {ShareThisMapModal} from "../_deletion/ShareThisMapModal"
 import {CreateMapInMapModal} from '../_deletion/CreateMapInMapModal'
 import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {Button, DropdownMenu, IconButton, Theme, Flex, AlertDialog, Dialog, TextField, Text} from "@radix-ui/themes"
+import {IconButton, Theme, Flex, AlertDialog, Dialog} from "@radix-ui/themes"
 import { EditorNodeSelect } from "./EditorNodeSelect"
 import { EditorNodeInsert } from "./EditorNodeInsert"
 import { EditorNodeEdit } from "./EditorNodeEdit"
 import { EditorNodeMove } from "./EditorNodeMove"
 import { EditorSettings } from "./EditorSettings"
 import { EditorProfile } from "./EditorProfile"
-import { EditorMapActions } from "./EditorMapActions"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -40,7 +39,7 @@ export const Editor: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const { data } = useOpenWorkspaceQuery()
-  const { colorMode, access, frameId, breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList, tabId, name } = data || defaultUseOpenWorkspaceQueryState
+  const { colorMode, access } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access)
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
@@ -75,43 +74,7 @@ export const Editor: FC = () => {
                     <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
                   </div>
                   <div className="fixed left-[220px] h-[40px] flex flex-row items-center">
-                    <Flex gap="1" align="center">
-                      <DropdownMenu.Root>
-                        <DropdownMenu.Trigger>
-                          <IconButton variant="soft" color="gray">
-                            <ChevronDownIcon/>
-                          </IconButton>
-                        </DropdownMenu.Trigger>
-                        <DropdownMenu.Content>
-                          {tabMapIdList.map((el: string, index) => (
-                            <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}>
-                              {tabMapNameList[index]?.name}
-                            </DropdownMenu.Item>
-                          ))}
-                        </DropdownMenu.Content>
-                      </DropdownMenu.Root>
-                      <Button
-                        variant={breadcrumbMapIdList.length === 1 ? "solid" : 'soft'}
-                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>{breadcrumbMapNameList[0].name}
-                      </Button>
-                      {breadcrumbMapNameList.slice(1).map((el, index) => (
-                        <React.Fragment key={index}>
-                          <ChevronRightIcon/>
-                          <Button
-                            variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'soft'}
-                            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>{el.name}
-                          </Button>
-                        </React.Fragment>
-                      ))}
-                      <EditorMapActions/>
-                      {pageState === PageState.WS_RENAME_MAP && <EditorMapActionsRename/>}
-                      <IconButton variant="soft" color="gray">
-                        <KeyframesIcon/>
-                      </IconButton>
-                      <IconButton variant="soft" color="gray">
-                        <ShareIcon/>
-                      </IconButton>
-                    </Flex>
+                    <EditorMap/>
                   </div>
                   <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
                     <Flex gap="1" align="center">
