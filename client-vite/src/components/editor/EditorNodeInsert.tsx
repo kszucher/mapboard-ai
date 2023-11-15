@@ -6,7 +6,7 @@ import {getCountXCO1, getX, isXR, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
 import {PageState} from "../../state/Enums"
 
-export const EditorNode1Insert = () => {
+export const EditorNodeInsert = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (

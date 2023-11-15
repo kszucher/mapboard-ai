@@ -1,7 +1,7 @@
 import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
 import React from "react"
 
-export const EditorMapOpsRename = () => {
+export const EditorMapActionsRename = () => {
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Rename Map'}</Dialog.Title>
