@@ -32,14 +32,16 @@ export const EditorMap = () => {
       </DropdownMenu.Root>
       <Button
         variant={breadcrumbMapIdList.length === 1 ? "solid" : 'soft'}
-        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>{breadcrumbMapNameList[0].name}
+        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>
+        {breadcrumbMapNameList[0].name}
       </Button>
       {breadcrumbMapNameList.slice(1).map((el, index) => (
         <React.Fragment key={index}>
           <ChevronRightIcon/>
           <Button
             variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'soft'}
-            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>{el.name}
+            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
+            {el.name}
           </Button>
         </React.Fragment>
       ))}
