@@ -73,8 +73,8 @@ export const ContextMenu: FC = () => {
             {<Dropdown.Item onClick={()=>{console.log(getX(m).nodeId)}}>{'show node/nodeId'}</Dropdown.Item>}
             {<Dropdown.Item onClick={()=>{console.log({processId: getMapId(), subProcesses: getSubProcessList(m, getX(m).nodeId)})}}>{'show PROCESS'}</Dropdown.Item>}
             {isXR(m) && <Dropdown.Item onClick={()=>{console.log([getX(m).llmDataType, getX(m).llmDataId])}}>{'show llmData'}</Dropdown.Item>}
-            {isXR(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}}>{'set llm data example'}</Dropdown.Item>}
-            {isXR(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}}>{'reset llm data'}</Dropdown.Item>}
+            {isXR(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}}>{'set llm data'}</Dropdown.Item>}
+            {isXR(m) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}}>{'clear llm data'}</Dropdown.Item>}
             {(isXR(m) || isXS(m)) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setBlur', payload: null}))}}>{'set blur'}</Dropdown.Item>}
             {(isXR(m) || isXS(m)) && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'clearBlur', payload: null}))}}>{'clear blur'}</Dropdown.Item>}
           </Dropdown>
