@@ -25,7 +25,6 @@ const DropdownHelper = (label: string) => {
 
 export const ContextMenu: FC = () => {
   const contextMenu = useSelector((state: RootState) => state.editor.contextMenu)
-  const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()
@@ -35,12 +34,7 @@ export const ContextMenu: FC = () => {
     <div id="dropdown" className="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" hidden={!contextMenu.isActive} style={{left: contextMenu.position.x + 1, top: contextMenu.position.y -20}}>
       <div hidden={contextMenu.type !== 'map'}>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="">
-          <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('View')}>
-            {getG(m).density === 'small' && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}}>{'Set Cozy'}</Dropdown.Item>}
-            {getG(m).density === 'large' && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}}>{'Set Compact'}</Dropdown.Item>}
-            {getG(m).alignment === 'adaptive' && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}}>{'Set Centered'}</Dropdown.Item>}
-            {getG(m).alignment === 'centered' && <Dropdown.Item onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}}>{'Set Adaptive'}</Dropdown.Item>}
-          </Dropdown>
+
           <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Connections')}>
             {!connectionHelpersVisible && <Dropdown.Item onClick={()=>{dispatch(actions.showConnectionHelpers())}}>{'Show Helpers'}</Dropdown.Item>}
             {connectionHelpersVisible && <Dropdown.Item onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Helpers'}</Dropdown.Item>}
