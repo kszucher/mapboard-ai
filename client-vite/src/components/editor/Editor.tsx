@@ -10,7 +10,7 @@ import {EditContentMermaidModal} from "../_deletion/EditContentMermaidModal"
 import {CreateTableModal} from '../_deletion/CreateTableModal'
 import {ChevronDownIcon, ChevronRightIcon, KeyframesIcon, RedoIcon, ShareIcon, UndoIcon} from "../assets/Icons"
 import {EditorProfileDeleteAccount} from "./EditorProfileDeleteAccount"
-import {EditorMapRename} from "./EditorMapRename"
+import {EditorMapOpsRename} from "./EditorMapOpsRename"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
@@ -30,7 +30,7 @@ import { EditorNode2Edit } from "./EditorNode2Edit"
 import { EditorNode3Move } from "./EditorNode3Move"
 import { EditorSettings } from "./EditorSettings"
 import { EditorProfile } from "./EditorProfile"
-import { EditorMap } from "./EditorMap"
+import { EditorMapOps } from "./EditorMapOps"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -103,8 +103,8 @@ export const Editor: FC = () => {
                           </Button>
                         </React.Fragment>
                       ))}
-                      <EditorMap/>
-                      {pageState === PageState.WS_RENAME_MAP && <EditorMapRename/>}
+                      <EditorMapOps/>
+                      {pageState === PageState.WS_RENAME_MAP && <EditorMapOpsRename/>}
                       <IconButton variant="soft" color="gray">
                         <KeyframesIcon/>
                       </IconButton>

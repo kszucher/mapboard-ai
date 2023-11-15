@@ -7,7 +7,7 @@ import {PageState} from "../../state/Enums"
 import {getMapId} from "../../state/NodeApiState"
 import {DotsIcon} from "../assets/Icons"
 
-export const EditorMap = () => {
+export const EditorMapOps = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <DropdownMenu.Root>
