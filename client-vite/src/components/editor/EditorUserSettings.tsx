@@ -20,8 +20,8 @@ export const EditorUserSettings = () => {
         <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.toggleColorMode.initiate())}>{'Toggle Color Mode'}</DropdownMenu.Item>
         {!scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.setScrollOverride())}>{'Set Scroll Zoom'}</DropdownMenu.Item>}
         {scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.clearScrollOverride())}>{'Clear Scroll Zoom'}</DropdownMenu.Item>}
-        {!connectionHelpersVisible && <DropdownMenu.Item onClick={()=>{dispatch(actions.showConnectionHelpers())}}>{'Show Helpers'}</DropdownMenu.Item>}
-        {connectionHelpersVisible && <DropdownMenu.Item onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Helpers'}</DropdownMenu.Item>}
+        {!connectionHelpersVisible && <DropdownMenu.Item onClick={() => dispatch(actions.showConnectionHelpers())}>{'Show Helpers'}</DropdownMenu.Item>}
+        {connectionHelpersVisible && <DropdownMenu.Item onClick={() => dispatch(actions.hideConnectionHelpers())}>{'Hide Helpers'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

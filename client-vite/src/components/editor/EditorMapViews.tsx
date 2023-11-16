@@ -17,10 +17,10 @@ export const EditorMapViews = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        {getG(m).density === 'small' && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}}>{'Set Cozy'}</DropdownMenu.Item>}
-        {getG(m).density === 'large' && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}}>{'Set Compact'}</DropdownMenu.Item>}
-        {getG(m).alignment === 'adaptive' && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}}>{'Set Centered'}</DropdownMenu.Item>}
-        {getG(m).alignment === 'centered' && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}}>{'Set Adaptive'}</DropdownMenu.Item>}
+        {getG(m).density === 'small' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}>{'Set Cozy'}</DropdownMenu.Item>}
+        {getG(m).density === 'large' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}>{'Set Compact'}</DropdownMenu.Item>}
+        {getG(m).alignment === 'adaptive' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setAlignmentCentered', payload: null}))}>{'Set Centered'}</DropdownMenu.Item>}
+        {getG(m).alignment === 'centered' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setAlignmentAdaptive', payload: null}))}>{'Set Adaptive'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

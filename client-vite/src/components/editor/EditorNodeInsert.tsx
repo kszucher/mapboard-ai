@@ -17,7 +17,7 @@ export const EditorNodeInsert = () => {
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        {<DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertR', payload: null}))}}>{'Root'}</DropdownMenu.Item>}
+        {<DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertR', payload: null}))}>{'Root'}</DropdownMenu.Item>}
         {isXS(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertSU', payload: null}))}>{'Node Above'}</DropdownMenu.Item>}
         {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertSOR', payload: null}))}>{'Node Right'}</DropdownMenu.Item>}
         {isXS(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertSO', payload: null}))}>{'Node Out'}</DropdownMenu.Item>}
