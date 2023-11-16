@@ -13,7 +13,6 @@ import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
-import {CreateMapInMapModal} from '../_deletion/CreateMapInMapModal'
 import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
@@ -102,7 +101,6 @@ export const Editor: FC = () => {
         }
         {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <EditContentEquationModal/>}
         {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <EditContentMermaidModal/>}
-        {pageState === PageState.WS_CREATE_MAP_IN_MAP && <CreateMapInMapModal/>}
         {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
       </>
     </Theme>

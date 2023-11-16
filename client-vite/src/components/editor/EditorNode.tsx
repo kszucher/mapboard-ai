@@ -4,6 +4,7 @@ import {useSelector} from "react-redux"
 import {RootState} from "../../reducers/EditorReducer"
 import {PageState} from "../../state/Enums"
 import {EditorNodeEdit} from "./EditorNodeEdit"
+import {EditorNodeEditCreateSubMap} from "./EditorNodeEditCreateSubMap"
 import {EditorNodeInsert} from "./EditorNodeInsert"
 import {EditorNodeInsertTable} from "./EditorNodeInsertTable"
 import {EditorNodeMove} from "./EditorNodeMove"
@@ -17,6 +18,7 @@ export const EditorNode = () => {
       <EditorNodeInsert/>
       {pageState === PageState.WS_CREATE_TABLE && <EditorNodeInsertTable/>}
       <EditorNodeEdit/>
+      {pageState === PageState.WS_CREATE_MAP_IN_MAP && <EditorNodeEditCreateSubMap/>}
       <EditorNodeMove/>
     </Flex>
   )

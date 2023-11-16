@@ -1,5 +1,4 @@
-import {Button, DropdownMenu} from "@radix-ui/themes"
-import {Dropdown} from "flowbite-react";
+import {Button, Dialog, DropdownMenu} from "@radix-ui/themes"
 import React from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -19,20 +18,22 @@ export const EditorNodeEdit = () => {
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        {!formatterVisible && <DropdownMenu.Item onClick={()=>{dispatch(actions.openFormatter())}}>{'Open Formatter'}</DropdownMenu.Item>}
-        {formatterVisible && <DropdownMenu.Item onClick={()=>{dispatch(actions.closeFormatter())}}>{'Close Formatter'}</DropdownMenu.Item>}
-        {isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <DropdownMenu.Item onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}}>{'Turn Into Submap'}</DropdownMenu.Item>}
-        {isXS(m) && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'transpose', payload: null}))}}>{'Transpose'}</DropdownMenu.Item>}
-        {getXAEO(m).map(ti => ti.taskStatus).includes(0) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOn', payload: null}))}}>{'Task Mode On'}</DropdownMenu.Item>}
-        {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeOff', payload: null}))}}>{'Task Mode Off'}</DropdownMenu.Item>}
-        {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setTaskModeReset', payload: null}))}}>{'Task Mode Reset'}</DropdownMenu.Item>}
-        {isXR(m) && getX(m).controlType !== ControlTypes.NONE && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}}>{'Control Type None'}</DropdownMenu.Item>}
-        {isXR(m) && getX(m).controlType !== ControlTypes.INGESTION && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeIngestion', payload: null}))}}>{'Control Type Ingestion'}</DropdownMenu.Item>}
-        {isXR(m) && getX(m).controlType !== ControlTypes.EXTRACTION && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeExtraction', payload: null}))}}>{'Control Type Extraction'}</DropdownMenu.Item>}
-        {isXR(m) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}}>{'set llm data'}</DropdownMenu.Item>}
-        {isXR(m) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}}>{'clear llm data'}</DropdownMenu.Item>}
-        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setBlur', payload: null}))}}>{'set blur'}</DropdownMenu.Item>}
-        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'clearBlur', payload: null}))}}>{'clear blur'}</DropdownMenu.Item>}
+        {!formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.openFormatter())}>{'Open Formatter'}</DropdownMenu.Item>}
+        {formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.closeFormatter())}>{'Close Formatter'}</DropdownMenu.Item>}
+        <Dialog.Trigger>
+          {isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}>{'Create Sub Map'}</DropdownMenu.Item>}
+        </Dialog.Trigger>
+        {isXS(m) && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'transpose', payload: null}))}>{'Transpose'}</DropdownMenu.Item>}
+        {getXAEO(m).map(ti => ti.taskStatus).includes(0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setTaskModeOn', payload: null}))}>{'Task Mode On'}</DropdownMenu.Item>}
+        {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setTaskModeOff', payload: null}))}>{'Task Mode Off'}</DropdownMenu.Item>}
+        {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setTaskModeReset', payload: null}))}>{'Task Mode Reset'}</DropdownMenu.Item>}
+        {isXR(m) && getX(m).controlType !== ControlTypes.NONE && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}>{'Control Type None'}</DropdownMenu.Item>}
+        {isXR(m) && getX(m).controlType !== ControlTypes.INGESTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeIngestion', payload: null}))}>{'Control Type Ingestion'}</DropdownMenu.Item>}
+        {isXR(m) && getX(m).controlType !== ControlTypes.EXTRACTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeExtraction', payload: null}))}>{'Control Type Extraction'}</DropdownMenu.Item>}
+        {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}>{'set llm data'}</DropdownMenu.Item>}
+        {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}>{'clear llm data'}</DropdownMenu.Item>}
+        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setBlur', payload: null}))}>{'set blur'}</DropdownMenu.Item>}
+        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'clearBlur', payload: null}))}>{'clear blur'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

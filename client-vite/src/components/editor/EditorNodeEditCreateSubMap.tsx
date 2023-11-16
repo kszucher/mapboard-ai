@@ -1,0 +1,47 @@
+import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
+import React from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {nodeApi} from "../../apis/NodeApi"
+import {AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {getX} from "../../selectors/MapSelector"
+import {mSelector} from "../../state/EditorState"
+import {getMapId} from "../../state/NodeApiState"
+
+export const EditorNodeEditCreateSubMap = () => {
+  const m = useSelector((state:RootState) => mSelector(state))
+  const dispatch = useDispatch<AppDispatch>()
+  return (
+    <Dialog.Content style={{ maxWidth: 450 }}>
+      <Dialog.Title>{'Create Sub Map'}</Dialog.Title>
+      <Dialog.Description size="2" mb="4">
+        {'Create Sub Map'}
+      </Dialog.Description>
+      <Flex direction="column" gap="3">
+        <label>
+          <Text as="div" size="2" mb="1" weight="bold">
+            {'New Map Name'}
+          </Text>
+          <TextField.Input
+            disabled={true}
+            radius="large"
+            value={getX(m).content}
+            placeholder="Map name"
+            onChange={(e) => console.log(e.target.value)}
+          />
+        </label>
+      </Flex>
+      <Flex gap="3" mt="4" justify="end">
+        <Dialog.Close>
+          <Button variant="soft" color="gray">
+            {'Cancel'}
+          </Button>
+        </Dialog.Close>
+        <Dialog.Close>
+          <Button onClick={() => dispatch(nodeApi.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getX(m).nodeId, content: getX(m).content}))}>
+            {'OK'}
+          </Button>
+        </Dialog.Close>
+      </Flex>
+    </Dialog.Content>
+  )
+}
