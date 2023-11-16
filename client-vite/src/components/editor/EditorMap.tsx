@@ -1,22 +1,16 @@
 import {Button, DropdownMenu, Flex, IconButton} from "@radix-ui/themes"
 import React from "react"
-import {useDispatch, useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {PageState} from "../../state/Enums"
+import {AppDispatch} from "../../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {ChevronDownIcon, ChevronRightIcon} from "../assets/Icons"
 import {EditorMapActions} from "./EditorMapActions"
-import {EditorMapActionsRename} from "./EditorMapActionsRename"
 import {EditorMapFrames} from "./EditorMapFrames"
 import {EditorMapShares} from "./EditorMapShares"
-import {EditorMapSharedWithMe} from "./EditorMapSharedWithMe"
-import {EditorMapSharesThis} from "./EditorMapSharesThis"
 import {EditorMapViews} from "./EditorMapViews"
-import { EditorMapSharedByMe } from "./EditorMapSharedByMe"
 
 export const EditorMap = () => {
-  const pageState = useSelector((state: RootState) => state.editor.pageState)
   const { data } = useOpenWorkspaceQuery()
   const { breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
@@ -52,13 +46,9 @@ export const EditorMap = () => {
         </React.Fragment>
       ))}
       <EditorMapActions/>
-      {pageState === PageState.WS_RENAME_MAP && <EditorMapActionsRename/>}
       <EditorMapViews/>
       <EditorMapFrames/>
       <EditorMapShares/>
-      {pageState === PageState.WS_SHARE_THIS_MAP && <EditorMapSharesThis/>}
-      {pageState === PageState.WS_SHARED_BY_ME && <EditorMapSharedByMe/>}
-      {pageState === PageState.WS_SHARED_WITH_ME && <EditorMapSharedWithMe/>}
     </Flex>
   )
 }
