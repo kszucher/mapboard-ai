@@ -6,7 +6,7 @@ import {PageState} from "../../state/Enums"
 import {ShareIcon} from "../assets/Icons"
 import {EditorMapSharesSharedByMe} from "./EditorMapSharesSharedByMe"
 import {EditorMapSharesSharedWithMe} from "./EditorMapSharesSharedWithMe"
-import {EditorMapSharesThis} from "./EditorMapSharesThis"
+import {EditorMapSharesShare} from "./EditorMapSharesShare"
 
 export const EditorMapShares = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -31,7 +31,7 @@ export const EditorMapShares = () => {
           </Dialog.Trigger>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      {pageState === PageState.WS_SHARE_THIS_MAP && <EditorMapSharesThis/>}
+      {pageState === PageState.WS_SHARE_THIS_MAP && <EditorMapSharesShare/>}
       {pageState === PageState.WS_SHARED_BY_ME && <EditorMapSharesSharedByMe/>}
       {pageState === PageState.WS_SHARED_WITH_ME && <EditorMapSharesSharedWithMe/>}
     </>

@@ -5,7 +5,7 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AppDispatch} from "../../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 
-export const EditorMapSharesThis = () => {
+export const EditorMapSharesShare = () => {
   const { data } = useOpenWorkspaceQuery()
   const { tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
   const [mapName, setMapName] = useState(tabMapNameList[tabId].name)
