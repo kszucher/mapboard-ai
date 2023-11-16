@@ -69,5 +69,3 @@ module.exports = {
     preflight: false, // https://tailwindcss.com/docs/preflight
   },
 }
-
-// simply merge... easy as dat
