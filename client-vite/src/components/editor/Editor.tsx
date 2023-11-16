@@ -59,7 +59,7 @@ export const Editor: FC = () => {
           <>
             <Map/>
             <Dialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setPageState(PageState.WS))}>
-              <AlertDialog.Root>
+              <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setPageState(PageState.WS))}>
                 <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
                   <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                     <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
