@@ -30,16 +30,16 @@ export const EditorNodeEdit = () => {
         {isXR(m) && getX(m).controlType !== ControlTypes.NONE && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}>{'Control Type None'}</DropdownMenu.Item>}
         {isXR(m) && getX(m).controlType !== ControlTypes.INGESTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeIngestion', payload: null}))}>{'Control Type Ingestion'}</DropdownMenu.Item>}
         {isXR(m) && getX(m).controlType !== ControlTypes.EXTRACTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeExtraction', payload: null}))}>{'Control Type Extraction'}</DropdownMenu.Item>}
-        {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}>{'set llm data'}</DropdownMenu.Item>}
-        {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}>{'clear llm data'}</DropdownMenu.Item>}
-        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setBlur', payload: null}))}>{'set blur'}</DropdownMenu.Item>}
-        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'clearBlur', payload: null}))}>{'clear blur'}</DropdownMenu.Item>}
         <Dialog.Trigger>
           {(isXR(m) || isXS(m)) && getX(m).contentType === 'equation' && getCountXCO1(m) === 0 && <DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</DropdownMenu.Item>}
         </Dialog.Trigger>
         <Dialog.Trigger>
           {(isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountXCO1(m) === 0 && <DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID))}>{'Edit Mermaid'}</DropdownMenu.Item>}
         </Dialog.Trigger>
+        {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}>{'set llm data'}</DropdownMenu.Item>}
+        {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}>{'clear llm data'}</DropdownMenu.Item>}
+        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setBlur', payload: null}))}>{'set blur'}</DropdownMenu.Item>}
+        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'clearBlur', payload: null}))}>{'clear blur'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

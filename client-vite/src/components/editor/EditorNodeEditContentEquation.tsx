@@ -1,4 +1,4 @@
-import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
+import {Button, Dialog, Flex, Text, TextArea} from "@radix-ui/themes"
 import React, {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -16,16 +16,10 @@ export const EditorNodeEditContentEquation = () => {
         {'Edit Equation'}
       </Dialog.Description>
       <Flex direction="column" gap="3">
-        <label>
-          <Text as="div" size="2" mb="1" weight="bold">
-            {'Equation'}
-          </Text>
-          <TextField.Input
-            radius="large"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </label>
+        <TextArea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
       </Flex>
       <Flex gap="3" mt="4" justify="end">
         <Dialog.Close>
