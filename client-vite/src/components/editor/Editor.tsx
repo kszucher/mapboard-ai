@@ -4,8 +4,6 @@ import {useDispatch, useSelector} from "react-redux"
 import {Backdrop, CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
-import {EditContentEquationModal} from "../_deletion/EditContentEquationModal"
-import {EditContentMermaidModal} from "../_deletion/EditContentMermaidModal"
 import {RedoIcon, UndoIcon} from "../assets/Icons"
 import {EditorMap} from "./EditorMap";
 import {EditorUserAccountDeleteAccount} from "./EditorUserAccountDeleteAccount"
@@ -99,8 +97,6 @@ export const Editor: FC = () => {
             </Dialog.Root>
           </>
         }
-        {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <EditContentEquationModal/>}
-        {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <EditContentMermaidModal/>}
         {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
       </>
     </Theme>

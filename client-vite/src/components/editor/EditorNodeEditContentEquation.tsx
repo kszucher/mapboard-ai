@@ -1,5 +1,5 @@
 import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
-import React from "react"
+import React, {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getX} from "../../selectors/MapSelector"
@@ -7,6 +7,7 @@ import {mSelector} from "../../state/EditorState"
 
 export const EditorNodeEditContentEquation = () => {
   const m = useSelector((state:RootState) => mSelector(state))
+  const [content, setContent] = useState(getX(m).content)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
@@ -21,8 +22,8 @@ export const EditorNodeEditContentEquation = () => {
           </Text>
           <TextField.Input
             radius="large"
-            value={getX(m).content}
-            onChange={(e) => dispatch(actions.mapAction({type: 'setContentEquation', payload: {content: e.target.value}}))}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
           />
         </label>
       </Flex>
@@ -33,7 +34,7 @@ export const EditorNodeEditContentEquation = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button>
+          <Button onClick={() => dispatch(actions.mapAction({type: 'setContentEquation', payload: {content: content}}))}>
             {'OK'}
           </Button>
         </Dialog.Close>
