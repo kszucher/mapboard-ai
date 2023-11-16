@@ -24,7 +24,7 @@ export const EditorMap = () => {
     <Flex gap="1" align="center">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <IconButton variant="soft" color="gray">
+          <IconButton variant="ghost" color="gray">
             <ChevronDownIcon/>
           </IconButton>
         </DropdownMenu.Trigger>
@@ -37,7 +37,7 @@ export const EditorMap = () => {
         </DropdownMenu.Content>
       </DropdownMenu.Root>
       <Button
-        variant={breadcrumbMapIdList.length === 1 ? "solid" : 'soft'}
+        variant={breadcrumbMapIdList.length === 1 ? "solid" : 'solid'}
         onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>
         {breadcrumbMapNameList[0].name}
       </Button>
@@ -45,7 +45,7 @@ export const EditorMap = () => {
         <React.Fragment key={index}>
           <ChevronRightIcon/>
           <Button
-            variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'soft'}
+            variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'solid'}
             onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
             {el.name}
           </Button>
