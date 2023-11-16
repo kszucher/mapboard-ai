@@ -2,8 +2,6 @@ import {FC} from "react"
 import {useDispatch} from 'react-redux'
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import { Button, MobileStepper } from '@mui/material'
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import {AppDispatch} from "../../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 
@@ -34,7 +32,7 @@ export const FrameCarousel: FC = () => {
               disabled={frameIdPosition === 0 || isFetching}
               onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: prevFrameId}))}
             >
-              <KeyboardArrowLeftIcon />
+              {'<'}
             </Button>
           }
           nextButton={
@@ -44,7 +42,7 @@ export const FrameCarousel: FC = () => {
               disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
               onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: nextFrameId}))}
             >
-              <KeyboardArrowRightIcon />
+              {'>'}
             </Button>
           }
         />
