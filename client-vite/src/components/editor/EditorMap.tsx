@@ -24,7 +24,7 @@ export const EditorMap = () => {
     <Flex gap="1" align="center">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <IconButton variant="ghost" color="gray">
+          <IconButton variant="soft" color="gray">
             <ChevronDownIcon/>
           </IconButton>
         </DropdownMenu.Trigger>
