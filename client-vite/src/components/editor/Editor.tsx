@@ -14,7 +14,6 @@ import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
-import {SharesModal} from "../_deletion/SharesModal"
 import {ShareThisMapModal} from "../_deletion/ShareThisMapModal"
 import {CreateMapInMapModal} from '../_deletion/CreateMapInMapModal'
 import {Window} from "./Window"
