@@ -1,9 +1,6 @@
 export enum PageState {
   AUTH,
-  DEMO,
   WS,
-  WS_PROFILE,
-  WS_SETTINGS,
   WS_SHARED_BY_ME,
   WS_SHARED_WITH_ME,
   WS_EDIT_CONTENT_EQUATION,

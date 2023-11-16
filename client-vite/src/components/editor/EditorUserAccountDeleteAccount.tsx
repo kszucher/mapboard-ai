@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux"
 import {nodeApi} from "../../apis/NodeApi"
 import {AppDispatch} from "../../reducers/EditorReducer"
 
-export const EditorUserProfileDeleteAccount: FC = () => {
+export const EditorUserAccountDeleteAccount: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <>

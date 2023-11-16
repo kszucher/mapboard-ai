@@ -8,7 +8,7 @@ import {EditContentEquationModal} from "../_deletion/EditContentEquationModal"
 import {EditContentMermaidModal} from "../_deletion/EditContentMermaidModal"
 import {RedoIcon, UndoIcon} from "../assets/Icons"
 import {EditorMap} from "./EditorMap";
-import {EditorUserProfileDeleteAccount} from "./EditorUserProfileDeleteAccount"
+import {EditorUserAccountDeleteAccount} from "./EditorUserAccountDeleteAccount"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
@@ -21,7 +21,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {IconButton, Theme, Flex, AlertDialog, Dialog} from "@radix-ui/themes"
 
 import { EditorUserSettings } from "./EditorUserSettings"
-import { EditorUserProfile } from "./EditorUserProfile"
+import { EditorUserAccount } from "./EditorUserAccount"
 import { EditorNode } from "./EditorNode"
 
 export const Editor: FC = () => {
@@ -85,10 +85,10 @@ export const Editor: FC = () => {
                   <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                     <Flex gap="1">
                       <EditorUserSettings/>
-                      <EditorUserProfile/>
+                      <EditorUserAccount/>
                     </Flex>
                     <AlertDialog.Content style={{ maxWidth: 450 }}>
-                      <EditorUserProfileDeleteAccount/>
+                      <EditorUserAccountDeleteAccount/>
                     </AlertDialog.Content>
                   </div>
                 </div>
