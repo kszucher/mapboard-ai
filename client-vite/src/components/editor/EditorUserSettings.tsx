@@ -5,8 +5,9 @@ import {nodeApi} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {SettingsIcon} from "../assets/Icons"
 
-export const EditorSettings = () => {
+export const EditorUserSettings = () => {
   const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
+  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <DropdownMenu.Root>
@@ -19,6 +20,8 @@ export const EditorSettings = () => {
         <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.toggleColorMode.initiate())}>{'Toggle Color Mode'}</DropdownMenu.Item>
         {!scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.setScrollOverride())}>{'Set Scroll Zoom'}</DropdownMenu.Item>}
         {scrollOverride && <DropdownMenu.Item onClick={() => dispatch(actions.clearScrollOverride())}>{'Clear Scroll Zoom'}</DropdownMenu.Item>}
+        {!connectionHelpersVisible && <DropdownMenu.Item onClick={()=>{dispatch(actions.showConnectionHelpers())}}>{'Show Helpers'}</DropdownMenu.Item>}
+        {connectionHelpersVisible && <DropdownMenu.Item onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Helpers'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

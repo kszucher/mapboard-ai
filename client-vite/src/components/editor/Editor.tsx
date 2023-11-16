@@ -4,13 +4,12 @@ import {useDispatch, useSelector} from "react-redux"
 import {Backdrop, CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
-import {ContextMenu} from "../_deletion/ContextMenu"
 import {EditContentEquationModal} from "../_deletion/EditContentEquationModal"
 import {EditContentMermaidModal} from "../_deletion/EditContentMermaidModal"
 import {CreateTableModal} from '../_deletion/CreateTableModal'
 import {RedoIcon, UndoIcon} from "../assets/Icons"
 import {EditorMap} from "./EditorMap";
-import {EditorProfileDeleteAccount} from "./EditorProfileDeleteAccount"
+import {EditorUserProfileDeleteAccount} from "./EditorUserProfileDeleteAccount"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
@@ -28,8 +27,8 @@ import { EditorNodeSelect } from "./EditorNodeSelect"
 import { EditorNodeInsert } from "./EditorNodeInsert"
 import { EditorNodeEdit } from "./EditorNodeEdit"
 import { EditorNodeMove } from "./EditorNodeMove"
-import { EditorSettings } from "./EditorSettings"
-import { EditorProfile } from "./EditorProfile"
+import { EditorUserSettings } from "./EditorUserSettings"
+import { EditorUserProfile } from "./EditorUserProfile"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -96,17 +95,16 @@ export const Editor: FC = () => {
                   </div>
                   <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                     <Flex gap="1">
-                      <EditorSettings/>
-                      <EditorProfile/>
+                      <EditorUserSettings/>
+                      <EditorUserProfile/>
                     </Flex>
                     <AlertDialog.Content style={{ maxWidth: 450 }}>
-                      <EditorProfileDeleteAccount/>
+                      <EditorUserProfileDeleteAccount/>
                     </AlertDialog.Content>
                   </div>
                 </div>
                 {formatterVisible && <Formatter/>}
                 <FrameCarousel/>
-                <ContextMenu/>
                 <Window/>
               </AlertDialog.Root>
             </Dialog.Root>

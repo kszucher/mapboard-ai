@@ -1,13 +1,14 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {mTR} from "../../selectors/MapSelector"
+import {getSubProcessList} from "../../selectors/MapProcess";
+import {getX, mTR} from "../../selectors/MapSelector"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {ControlTypes} from "../../state/Enums"
 import {T} from "../../state/MapStateTypes"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 
 export const MapSvgLayer9DecorationIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -52,6 +53,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
               <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
+                console.log({processId: getMapId(), subProcesses: getSubProcessList(m, getX(m).nodeId)})
               }}/>
             </g>}
         </g>

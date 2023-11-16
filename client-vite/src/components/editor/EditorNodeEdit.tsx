@@ -1,4 +1,5 @@
 import {Button, DropdownMenu} from "@radix-ui/themes"
+import {Dropdown} from "flowbite-react";
 import React from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -28,6 +29,10 @@ export const EditorNodeEdit = () => {
         {isXR(m) && getX(m).controlType !== ControlTypes.NONE && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}}>{'Control Type None'}</DropdownMenu.Item>}
         {isXR(m) && getX(m).controlType !== ControlTypes.INGESTION && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeIngestion', payload: null}))}}>{'Control Type Ingestion'}</DropdownMenu.Item>}
         {isXR(m) && getX(m).controlType !== ControlTypes.EXTRACTION && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setControlTypeExtraction', payload: null}))}}>{'Control Type Extraction'}</DropdownMenu.Item>}
+        {isXR(m) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setLlmData', payload: null}))}}>{'set llm data'}</DropdownMenu.Item>}
+        {isXR(m) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}}>{'clear llm data'}</DropdownMenu.Item>}
+        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'setBlur', payload: null}))}}>{'set blur'}</DropdownMenu.Item>}
+        {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'clearBlur', payload: null}))}}>{'clear blur'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

@@ -1,7 +1,7 @@
 import {AlertDialog, Button, Flex} from "@radix-ui/themes"
 import React, {FC} from "react";
 
-export const EditorProfileDeleteAccount: FC = () => {
+export const EditorUserProfileDeleteAccount: FC = () => {
   return (
     <>
       <AlertDialog.Title>Revoke access</AlertDialog.Title>
