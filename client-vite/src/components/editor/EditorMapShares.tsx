@@ -16,10 +16,13 @@ export const EditorMapShares = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         <Dialog.Trigger>
-          {<DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_SHARES))}>{'Shares'}</DropdownMenu.Item>}
+          {<DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}>{'Share'}</DropdownMenu.Item>}
         </Dialog.Trigger>
         <Dialog.Trigger>
-          {<DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}>{'Share This'}</DropdownMenu.Item>}
+          {<DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_SHARED_BY_ME))}>{'Shared By Me'}</DropdownMenu.Item>}
+        </Dialog.Trigger>
+        <Dialog.Trigger>
+          {<DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_SHARED_WITH_ME))}>{'Shared With Me'}</DropdownMenu.Item>}
         </Dialog.Trigger>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

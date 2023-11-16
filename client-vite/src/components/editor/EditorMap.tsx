@@ -13,6 +13,7 @@ import {EditorMapShares} from "./EditorMapShares"
 import {EditorMapSharedWithMe} from "./EditorMapSharedWithMe"
 import {EditorMapSharesThis} from "./EditorMapSharesThis"
 import {EditorMapViews} from "./EditorMapViews"
+import { EditorMapSharedByMe } from "./EditorMapSharedByMe"
 
 export const EditorMap = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -55,8 +56,9 @@ export const EditorMap = () => {
       <EditorMapViews/>
       <EditorMapFrames/>
       <EditorMapShares/>
-      {pageState === PageState.WS_SHARES && <EditorMapSharedWithMe/>}
       {pageState === PageState.WS_SHARE_THIS_MAP && <EditorMapSharesThis/>}
+      {pageState === PageState.WS_SHARED_BY_ME && <EditorMapSharedByMe/>}
+      {pageState === PageState.WS_SHARED_WITH_ME && <EditorMapSharedWithMe/>}
     </Flex>
   )
 }
