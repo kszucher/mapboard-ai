@@ -34,6 +34,12 @@ export const EditorNodeEdit = () => {
         {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'clearLlmData', payload: null}))}>{'clear llm data'}</DropdownMenu.Item>}
         {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setBlur', payload: null}))}>{'set blur'}</DropdownMenu.Item>}
         {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'clearBlur', payload: null}))}>{'clear blur'}</DropdownMenu.Item>}
+        <Dialog.Trigger>
+          {(isXR(m) || isXS(m)) && getX(m).contentType === 'equation' && getCountXCO1(m) === 0 && <DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</DropdownMenu.Item>}
+        </Dialog.Trigger>
+        <Dialog.Trigger>
+          {(isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountXCO1(m) === 0 && <DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID))}>{'Edit Mermaid'}</DropdownMenu.Item>}
+        </Dialog.Trigger>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

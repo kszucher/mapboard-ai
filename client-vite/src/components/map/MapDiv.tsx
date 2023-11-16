@@ -131,10 +131,10 @@ export const MapDiv: FC = () => {
                 }
               }}
               onDoubleClick={(e) => {
-                e.stopPropagation();
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}));
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'equation' && getCountTCO1(m, ti) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_EQUATION));
-                (isXR(m) || isXS(m)) && getX(m).contentType === 'mermaid' && getCountTCO1(m, ti) === 0 && dispatch(actions.setPageState(PageState.WS_EDIT_CONTENT_MERMAID));
+                e.stopPropagation()
+                if ((isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0) {
+                  dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
+                }
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
