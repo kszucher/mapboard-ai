@@ -1,10 +1,10 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import React from "react"
-import {useDispatch, useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AppDispatch} from "../../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
-import {EyeIcon, KeyframesIcon} from "../assets/Icons"
+import {KeyframesIcon} from "../assets/Icons"
 
 export const EditorMapFrames = () => {
   const { data } = useOpenWorkspaceQuery()

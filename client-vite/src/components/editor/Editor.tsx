@@ -117,7 +117,6 @@ export const Editor: FC = () => {
         {pageState === PageState.WS_CREATE_MAP_IN_MAP && <CreateMapInMapModal/>}
         {pageState === PageState.WS_SHARE_THIS_MAP && <ShareThisMapModal/>}
         {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
-        {/*{pageState === PageState.WS_RENAME_MAP && <RenameMapModal/>}*/}
       </>
     </Theme>
   )

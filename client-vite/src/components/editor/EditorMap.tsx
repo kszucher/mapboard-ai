@@ -5,10 +5,13 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {ChevronDownIcon, ChevronRightIcon, ShareIcon} from "../assets/Icons"
+import {ChevronDownIcon, ChevronRightIcon} from "../assets/Icons"
 import {EditorMapActions} from "./EditorMapActions"
 import {EditorMapActionsRename} from "./EditorMapActionsRename"
 import {EditorMapFrames} from "./EditorMapFrames"
+import {EditorMapShares} from "./EditorMapShares"
+import {EditorMapSharesAll} from "./EditorMapSharesAll"
+import {EditorMapSharesThis} from "./EditorMapSharesThis"
 import {EditorMapViews} from "./EditorMapViews"
 
 export const EditorMap = () => {
@@ -51,9 +54,9 @@ export const EditorMap = () => {
       {pageState === PageState.WS_RENAME_MAP && <EditorMapActionsRename/>}
       <EditorMapViews/>
       <EditorMapFrames/>
-      <IconButton variant="soft" color="gray">
-        <ShareIcon/>
-      </IconButton>
+      <EditorMapShares/>
+      {pageState === PageState.WS_SHARES && <EditorMapSharesAll/>}
+      {pageState === PageState.WS_SHARE_THIS_MAP && <EditorMapSharesThis/>}
     </Flex>
   )
 }
