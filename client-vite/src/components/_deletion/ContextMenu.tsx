@@ -40,13 +40,7 @@ export const ContextMenu: FC = () => {
             {connectionHelpersVisible && <Dropdown.Item onClick={()=>{dispatch(actions.hideConnectionHelpers())}}>{'Hide Helpers'}</Dropdown.Item>}
           </Dropdown>
 
-          <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Frames')}>
-            {frameId === '' && frameIdList.length > 0 && <Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))}}>{'Open'}</Dropdown.Item>}
-            {<Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))}}>{'Import'}</Dropdown.Item>}
-            {frameId !== '' && frameIdList.length > 0 && <Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.createMapFrameDuplicate.initiate({mapId: getMapId(), frameId: getFrameId()}))}}>{'Duplicate'}</Dropdown.Item>}
-            {frameId !== '' && frameIdList.length > 0 && <Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.deleteMapFrame.initiate({mapId: getMapId(), frameId: getFrameId()}))}}>{'Delete'}</Dropdown.Item>}
-            {frameId !== '' && <Dropdown.Item onClick={()=>{dispatch(nodeApi.endpoints.selectMap.initiate({mapId: getMapId(), frameId: ''}))}}>{'Close'}</Dropdown.Item>}
-          </Dropdown>
+
           <Dropdown label="Dropdown" placement="right-start" renderTrigger={() => DropdownHelper('Shares')}>
             {<Dropdown.Item onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARES))}}>{'Shares'}</Dropdown.Item>}
             {<Dropdown.Item onClick={()=>{dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}}>{'Share This Map'}</Dropdown.Item>}

@@ -5,9 +5,10 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {ChevronDownIcon, ChevronRightIcon, KeyframesIcon, ShareIcon} from "../assets/Icons"
+import {ChevronDownIcon, ChevronRightIcon, ShareIcon} from "../assets/Icons"
 import {EditorMapActions} from "./EditorMapActions"
 import {EditorMapActionsRename} from "./EditorMapActionsRename"
+import {EditorMapFrames} from "./EditorMapFrames"
 import {EditorMapViews} from "./EditorMapViews"
 
 export const EditorMap = () => {
@@ -47,12 +48,9 @@ export const EditorMap = () => {
         </React.Fragment>
       ))}
       <EditorMapActions/>
-      <EditorMapViews/>
-
       {pageState === PageState.WS_RENAME_MAP && <EditorMapActionsRename/>}
-      <IconButton variant="soft" color="gray">
-        <KeyframesIcon/>
-      </IconButton>
+      <EditorMapViews/>
+      <EditorMapFrames/>
       <IconButton variant="soft" color="gray">
         <ShareIcon/>
       </IconButton>
