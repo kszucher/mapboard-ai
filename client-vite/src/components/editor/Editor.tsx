@@ -9,6 +9,8 @@ import {EditContentMermaidModal} from "../_deletion/EditContentMermaidModal"
 import {CreateTableModal} from '../_deletion/CreateTableModal'
 import {RedoIcon, UndoIcon} from "../assets/Icons"
 import {EditorMap} from "./EditorMap";
+import {EditorMapSharedWithMe} from "./EditorMapSharedWithMe";
+import {EditorNodeInsertTable} from "./EditorNodeInsertTable";
 import {EditorUserProfileDeleteAccount} from "./EditorUserProfileDeleteAccount"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -78,6 +80,7 @@ export const Editor: FC = () => {
                     <Flex gap="1" align="center">
                       <EditorNodeSelect/>
                       <EditorNodeInsert/>
+                      {pageState === PageState.WS_CREATE_TABLE && <EditorNodeInsertTable/>}
                       <EditorNodeEdit/>
                       <EditorNodeMove/>
                     </Flex>
@@ -111,7 +114,6 @@ export const Editor: FC = () => {
         }
         {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <EditContentEquationModal/>}
         {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <EditContentMermaidModal/>}
-        {pageState === PageState.WS_CREATE_TABLE && <CreateTableModal/>}
         {pageState === PageState.WS_CREATE_MAP_IN_MAP && <CreateMapInMapModal/>}
         {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
       </>
