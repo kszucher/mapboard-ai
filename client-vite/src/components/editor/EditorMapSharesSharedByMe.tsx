@@ -4,40 +4,38 @@ import {useDispatch} from "react-redux"
 import {nodeApi, useGetSharesQuery} from "../../apis/NodeApi"
 import {AppDispatch} from "../../reducers/EditorReducer"
 
-export const EditorMapSharedWithMe = () => {
+export const EditorMapSharesSharedByMe = () => {
   const { data } = useGetSharesQuery()
-  let { shareDataImport } = data || { shareDataImport: [] }
+  let { shareDataExport } = data || { shareDataExport: []}
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
-      <Dialog.Title>{'Maps Shared With Me'}</Dialog.Title>
+      <Dialog.Title>{'Maps Shared By Me'}</Dialog.Title>
       <Dialog.Description size="2" mb="4">
-        {'Maps Shared With Me'}
+        {'Maps Shared By Me'}
       </Dialog.Description>
       <Table.Root>
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeaderCell>{'Map Name'}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{'Shared With'}</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>{'Shared By'}</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>{'Access'}</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>{'Status'}</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>{'Action'}</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <TableBody>
-          {shareDataImport.map((el: { _id: string, sharedMapName: string, ownerUserEmail: string, access: string, status: string  }) =>
+          {shareDataExport.map((el: { _id: string, sharedMapName: string, shareUserEmail: string, access: string, status: string  }) =>
             <Table.Row key={el._id}>
               <Table.RowHeaderCell>{el.sharedMapName}</Table.RowHeaderCell>
-              <Table.Cell>{el.ownerUserEmail}</Table.Cell>
+              <Table.Cell>{el.shareUserEmail}</Table.Cell>
               <Table.Cell>{el.access}</Table.Cell>
               <Table.Cell>{el.status}</Table.Cell>
-              {el.status === 'waiting' &&
-                <Table.Cell>
-                  <Button size="1" variant="solid" onClick={() => dispatch(nodeApi.endpoints.acceptShare.initiate({shareId: el._id}))}>
-                    {'Accept'}
-                  </Button>
-                </Table.Cell>}
-              {el.status === 'accepted' && <Table.Cell>{''}</Table.Cell>}
+              <Table.Cell>
+                <Button size="1" variant="solid" onClick={() => window.alert('TODO: implement')/*dispatch(nodeApi.endpoints.withdrawShare.initiate({shareId: el._id}))*/}>
+                  {'Withdraw'}
+                </Button>
+              </Table.Cell>
             </Table.Row>
           )}
         </TableBody>
