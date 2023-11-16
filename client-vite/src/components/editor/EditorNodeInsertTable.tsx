@@ -18,7 +18,7 @@ export const EditorNodeInsertTable = () => {
         {'Insert Table'}
       </Dialog.Description>
       <Grid columns="2" gap="3" width="auto" align="center">
-        <Text as="div" size="2" weight="bold" style={{}}>{'Brand'}</Text>
+        <Text as="div" size="2" weight="bold" style={{}}>{'Rows'}</Text>
         <Select.Root value={row.toString()} onValueChange={(value) => setRow(parseInt(value))}>
           <Select.Trigger />
           <Select.Content>
@@ -27,7 +27,7 @@ export const EditorNodeInsertTable = () => {
             ))}
           </Select.Content>
         </Select.Root>
-        <Text as="div" size="2" weight="bold" style={{}}>{'Brand'}</Text>
+        <Text as="div" size="2" weight="bold" style={{}}>{'Columns'}</Text>
         <Select.Root value={col.toString()} onValueChange={(value) => setCol(parseInt(value))}>
           <Select.Trigger />
           <Select.Content>

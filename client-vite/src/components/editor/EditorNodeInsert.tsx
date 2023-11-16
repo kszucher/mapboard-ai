@@ -1,4 +1,4 @@
-import {Button, DropdownMenu} from "@radix-ui/themes"
+import {Button, Dialog, DropdownMenu} from "@radix-ui/themes"
 import React from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -22,7 +22,9 @@ export const EditorNodeInsert = () => {
         {isXR(m) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSOR', payload: null}))}}>{'Node Right'}</DropdownMenu.Item>}
         {isXS(m) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSO', payload: null}))}}>{'Node Out'}</DropdownMenu.Item>}
         {isXS(m) && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSD', payload: null}))}}>{'Node Below'}</DropdownMenu.Item>}
-        {(isXR(m) || isXS(m))  && <DropdownMenu.Item onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}}>{'Table Out'}</DropdownMenu.Item>}
+        <Dialog.Trigger>
+          {(isXR(m) || isXS(m))  && <DropdownMenu.Item onClick={()=>{dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}}>{'Table Out'}</DropdownMenu.Item>}
+        </Dialog.Trigger>
         {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))}}>{'Table Row Above'}</DropdownMenu.Item>}
         {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSCRD', payload: null}))}}>{'Table Row Below'}</DropdownMenu.Item>}
         {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={()=>{dispatch(actions.mapAction({type: 'insertSCCL', payload: null}))}}>{'Table Column Left'}</DropdownMenu.Item>}
