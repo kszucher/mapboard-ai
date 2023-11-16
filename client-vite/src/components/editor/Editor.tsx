@@ -110,12 +110,10 @@ export const Editor: FC = () => {
             </Dialog.Root>
           </>
         }
-        {pageState === PageState.WS_SHARES && <SharesModal/>}
         {pageState === PageState.WS_EDIT_CONTENT_EQUATION && <EditContentEquationModal/>}
         {pageState === PageState.WS_EDIT_CONTENT_MERMAID && <EditContentMermaidModal/>}
         {pageState === PageState.WS_CREATE_TABLE && <CreateTableModal/>}
         {pageState === PageState.WS_CREATE_MAP_IN_MAP && <CreateMapInMapModal/>}
-        {pageState === PageState.WS_SHARE_THIS_MAP && <ShareThisMapModal/>}
         {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
       </>
     </Theme>

@@ -10,7 +10,7 @@ import {EditorMapActions} from "./EditorMapActions"
 import {EditorMapActionsRename} from "./EditorMapActionsRename"
 import {EditorMapFrames} from "./EditorMapFrames"
 import {EditorMapShares} from "./EditorMapShares"
-import {EditorMapSharesAll} from "./EditorMapSharesAll"
+import {EditorMapSharedWithMe} from "./EditorMapSharedWithMe"
 import {EditorMapSharesThis} from "./EditorMapSharesThis"
 import {EditorMapViews} from "./EditorMapViews"
 
@@ -55,7 +55,7 @@ export const EditorMap = () => {
       <EditorMapViews/>
       <EditorMapFrames/>
       <EditorMapShares/>
-      {pageState === PageState.WS_SHARES && <EditorMapSharesAll/>}
+      {pageState === PageState.WS_SHARES && <EditorMapSharedWithMe/>}
       {pageState === PageState.WS_SHARE_THIS_MAP && <EditorMapSharesThis/>}
     </Flex>
   )
