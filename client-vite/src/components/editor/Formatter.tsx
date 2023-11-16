@@ -1,15 +1,75 @@
-import React, {FC} from "react"
+import React, {FC, ReactNode} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, ButtonGroup} from '@mui/material'
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {mSelector} from "../../state/EditorState"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {IconButton} from "../_deletion/IconButton";
-import {FBorderIcon, FFillIcon, SBorderIcon, SFillIcon, TextIcon, VectorSplineIcon} from "../_deletion/IconButtonSvg"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../../state/Enums"
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, getX, isXR, isXS} from "../../selectors/MapSelector"
+
+const TextIcon = () => (
+  <g>
+    <path stroke="none" fill="none" d="M0 0h24v24H0z"></path>
+    <path d="M6 4h12M12 4v16"></path>
+  </g>
+)
+
+const VectorSplineIcon = () => (
+  <g>
+    <path stroke="none" fill="none" d="M0 0h24v24H0z"></path>
+    <path fill="none" d="M17 4a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1zM3 18a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1zM17 5C10.373 5 5 10.373 5 17"></path>
+  </g>
+)
+
+const SFillIcon = () => (
+  <g>
+    <path fill="currentColor" d="M6 7.2h12c2.4 0 3.6 1.2 3.6 3.6v2.4c0 2.4-1.2 3.6-3.6 3.6H6c-2.4 0-3.6-1.2-3.6-3.6v-2.4c0-2.4 1.2-3.6 3.6-3.6z"></path>
+  </g>
+)
+
+const SBorderIcon = () => (
+  <g>
+    <path fill="none" d="M6 7.2h12c2.4 0 3.6 1.2 3.6 3.6v2.4c0 2.4-1.2 3.6-3.6 3.6H6c-2.4 0-3.6-1.2-3.6-3.6v-2.4c0-2.4 1.2-3.6 3.6-3.6z"></path>
+  </g>
+)
+
+const FFillIcon = () => (
+  <g>
+    <path fill="currentColor" d="M15.6 3.6H18c2.4 0 3.6 1.2 3.6 3.6v9.6c0 2.4-1.2 3.6-3.6 3.6h-2.4c-2.4 0-9.6-4.8-12-4.8-2.4 0-2.4-7.2 0-7.2s9.6-4.8 12-4.8z"></path>
+  </g>
+)
+
+const FBorderIcon = () => (
+  <g>
+    <path fill="none" d="M15.6 3.6H18c2.4 0 3.6 1.2 3.6 3.6v9.6c0 2.4-1.2 3.6-3.6 3.6h-2.4c-2.4 0-9.6-4.8-12-4.8-2.4 0-2.4-7.2 0-7.2s9.6-4.8 12-4.8z"></path>
+  </g>
+)
+
+const IconButton = ({colorMode, disabled, selected = false, onClick, children} : {colorMode: string, disabled: boolean, selected?:boolean, onClick: Function, children: ReactNode}) => (
+  <button
+    type="button"
+    className="text-white focus:outline-none font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:hover:bg-gray-700"
+    disabled={disabled}
+    onClick={() => onClick()}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      stroke={colorMode === 'dark' ? (selected? colors.purple[600] : "#ffffff") : '#000000'}
+      color={colorMode === 'dark' ? (selected? colors.purple[600] : "#ffffff") : '#000000'}
+      fill={'none'}
+      opacity={disabled ? '25%' : '100%'}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24">
+      ({children})
+    </svg>
+    <span className="sr-only">Icon description</span>
+  </button>
+)
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 
