@@ -105,9 +105,11 @@ export const Editor: FC = () => {
                     </Flex>
                   </div>
                   <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
-                    <EditorMapViews/>
-                    <EditorMapFrames/>
-                    <EditorMapShares/>
+                    <Flex gap="1" align="center">
+                      <EditorMapViews/>
+                      <EditorMapFrames/>
+                      <EditorMapShares/>
+                    </Flex>
                   </div>
                   <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
                     <Flex gap="1" align="center">
