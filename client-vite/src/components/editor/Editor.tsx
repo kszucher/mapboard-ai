@@ -5,7 +5,10 @@ import {Backdrop, CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
 import {RedoIcon, UndoIcon} from "../assets/Icons"
-import {EditorMap} from "./EditorMap";
+import {EditorMap} from "./EditorMap"
+import {EditorMapFrames} from "./EditorMapFrames"
+import {EditorMapShares} from "./EditorMapShares"
+import {EditorMapViews} from "./EditorMapViews"
 import {EditorUserAccountDeleteAccount} from "./EditorUserAccountDeleteAccount"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -64,8 +67,13 @@ export const Editor: FC = () => {
                   <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                     <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
                   </div>
-                  <div className="fixed left-[220px] h-[40px] flex flex-row items-center">
+                  <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center">
                     <EditorMap/>
+                  </div>
+                  <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
+                    <EditorMapViews/>
+                    <EditorMapFrames/>
+                    <EditorMapShares/>
                   </div>
                   <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
                     <EditorNode/>

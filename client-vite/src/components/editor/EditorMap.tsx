@@ -6,9 +6,6 @@ import {AppDispatch} from "../../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {ChevronDownIcon, ChevronRightIcon} from "../assets/Icons"
 import {EditorMapActions} from "./EditorMapActions"
-import {EditorMapFrames} from "./EditorMapFrames"
-import {EditorMapShares} from "./EditorMapShares"
-import {EditorMapViews} from "./EditorMapViews"
 
 export const EditorMap = () => {
   const { data } = useOpenWorkspaceQuery()
@@ -46,9 +43,6 @@ export const EditorMap = () => {
         </React.Fragment>
       ))}
       <EditorMapActions/>
-      <EditorMapViews/>
-      <EditorMapFrames/>
-      <EditorMapShares/>
     </Flex>
   )
 }
