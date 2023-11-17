@@ -35,7 +35,7 @@ export const Editor: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const { data } = useOpenWorkspaceQuery()
-  const { colorMode, access, breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList } = data || defaultUseOpenWorkspaceQueryState
+  const { colorMode, access, breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList, frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access)
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
@@ -85,30 +85,26 @@ export const Editor: FC = () => {
                           ))}
                         </DropdownMenu.Content>
                       </DropdownMenu.Root>
-                      <Button
-                        variant={breadcrumbMapIdList.length === 1 ? "solid" : 'solid'}
-                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>
+                      <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>
                         {breadcrumbMapNameList[0].name}
                       </Button>
                       {breadcrumbMapNameList.slice(1).map((el, index) => (
                         <React.Fragment key={index}>
                           <ChevronRightIcon/>
-                          <Button
-                            variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'solid'}
-                            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
+                          <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
                             {el.name}
                           </Button>
                         </React.Fragment>
                       ))}
-                      <EditorMapActions/>
-
-                      {
-
+                      {frameId !== '' &&
+                        <React.Fragment>
+                          <ChevronRightIcon/>
+                          <Button variant='solid' onClick={() => {}}>
+                            {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
+                          </Button>
+                        </React.Fragment>
                       }
-
-
-
-
+                      <EditorMapActions/>
                     </Flex>
                   </div>
                   <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
