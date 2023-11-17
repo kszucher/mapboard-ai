@@ -1,15 +1,15 @@
-import {IconButton} from "@radix-ui/themes";
-import React, {FC, ReactNode} from "react"
-import {useDispatch, useSelector} from "react-redux"
 import {Button, ButtonGroup} from '@mui/material'
+import {IconButton} from "@radix-ui/themes";
+import React, {FC} from "react"
+import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {mSelector} from "../../state/EditorState"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
-import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../../state/Enums"
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, getX, isXR, isXS} from "../../selectors/MapSelector"
-import {FBorderIcon, FFillIcon, LetterTIcon, SBorderIcon, SFillIcon, VectorSplineIcon} from "../assets/Icons"
+import {mSelector} from "../../state/EditorState"
+import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../../state/Enums"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {FBorderIcon, FFillIcon, LetterTIcon, SFillIcon, SBorderIcon, VectorSplineIcon} from "../assets/Icons"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 
@@ -30,24 +30,24 @@ export const Formatter: FC = () => {
   return (
     <div className="dark:bg-zinc-800 bg-zinc-50 border-r-0 border-2 dark:border-neutral-700 fixed w-[224px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
       <div className="flex justify-center">
-        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.sFill))}>
+        <IconButton variant={formatMode === FormatMode.sFill ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.sFill))}>
           <SFillIcon/>
         </IconButton>
-        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.fFill))}>
+        <IconButton variant={formatMode === FormatMode.fFill ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.fFill))}>
           <FFillIcon/>
         </IconButton>
-        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.text))}>
+        <IconButton variant={formatMode === FormatMode.text ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.text))}>
           <LetterTIcon/>
         </IconButton>
       </div>
       <div className="flex justify-center">
-        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.sBorder))}>
+        <IconButton variant={formatMode === FormatMode.sBorder ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.sBorder))}>
           <SBorderIcon/>
         </IconButton>
-        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.fBorder))}>
+        <IconButton variant={formatMode === FormatMode.fBorder ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.fBorder))}>
           <FBorderIcon/>
         </IconButton>
-        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.line))}>
+        <IconButton variant={formatMode === FormatMode.line ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.line))}>
           <VectorSplineIcon/>
         </IconButton>
       </div>
