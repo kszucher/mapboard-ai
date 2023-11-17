@@ -2,9 +2,9 @@ import {Box, Button, Flex, IconButton, Select} from "@radix-ui/themes"
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
-import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, getX, isXR, isXS} from "../../selectors/MapSelector"
+import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXR, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
@@ -170,14 +170,16 @@ export const Formatter: FC = () => {
         }
       </div>
       <div className="flex flex-row justify-center">
-        <Button variant="outline" onClick={() => {
-          formatMode === FormatMode.text && dispatch(actions.mapAction({type: 'clearText', payload: null}))
-          formatMode === FormatMode.sBorder && dispatch(actions.mapAction({type: 'clearSBorder', payload: null}))
-          formatMode === FormatMode.fBorder && dispatch(actions.mapAction({type: 'clearFBorder', payload: null}))
-          formatMode === FormatMode.sFill && dispatch(actions.mapAction({type: 'clearSFill', payload: null}))
-          formatMode === FormatMode.fFill && dispatch(actions.mapAction({type: 'clearFFill', payload: null}))
-          formatMode === FormatMode.line && dispatch(actions.mapAction({type: 'clearLine', payload: null}))
-        }}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            formatMode === FormatMode.text && dispatch(actions.mapAction({type: 'clearText', payload: null}))
+            formatMode === FormatMode.sBorder && dispatch(actions.mapAction({type: 'clearSBorder', payload: null}))
+            formatMode === FormatMode.fBorder && dispatch(actions.mapAction({type: 'clearFBorder', payload: null}))
+            formatMode === FormatMode.sFill && dispatch(actions.mapAction({type: 'clearSFill', payload: null}))
+            formatMode === FormatMode.fFill && dispatch(actions.mapAction({type: 'clearFFill', payload: null}))
+            formatMode === FormatMode.line && dispatch(actions.mapAction({type: 'clearLine', payload: null}))
+          }}>
           {'RESET'}
         </Button>
       </div>
