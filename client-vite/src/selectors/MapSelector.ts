@@ -194,11 +194,11 @@ export const getLineWidth = (m: M): TSaveOptional['lineWidth'] => isArrayOfEqual
 export const getLineType = (m: M): TSaveOptional['lineType'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineType)) ? getX(m).lineType : tSaveOptional.lineType
 export const getLineColor = (m: M): TSaveOptional['lineColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineColor)) ? getX(m).lineColor : tSaveOptional.lineColor
 export const getSBorderWidth = (m: M): TSaveOptional['sBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderWidth)) ? getX(m).sBorderWidth : tSaveOptional.sBorderWidth
-export const getFBorderWidth = (m: M): TSaveOptional['fBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderWidth)) ? getX(m).fBorderWidth : tSaveOptional.fBorderWidth
+export const getFBorderWidth = (m: M): TSaveOptional['fBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderWidth)) ? (isXR(m) ? getXRD0(m).fBorderWidth : getX(m).fBorderWidth) : tSaveOptional.fBorderWidth
 export const getSBorderColor = (m: M): TSaveOptional['sBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderColor)) ? getX(m).sBorderColor : tSaveOptional.sBorderColor
-export const getFBorderColor = (m: M): TSaveOptional['fBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderColor)) ? getX(m).fBorderColor : tSaveOptional.fBorderColor
+export const getFBorderColor = (m: M): TSaveOptional['fBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderColor)) ? (isXR(m) ? getXRD0(m).fBorderColor : getX(m).fBorderColor) : tSaveOptional.fBorderColor
 export const getSFillColor = (m: M): TSaveOptional['sFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sFillColor)) ? getX(m).sFillColor : tSaveOptional.sFillColor
-export const getFFillColor = (m: M): TSaveOptional['fFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fFillColor)) ? getX(m).fFillColor : tSaveOptional.fFillColor
+export const getFFillColor = (m: M): TSaveOptional['fFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fFillColor)) ? (isXR(m) ? getXRD0(m).fFillColor : getX(m).fFillColor) : tSaveOptional.fFillColor
 export const getTextFontSize = (m: M): TSaveOptional['textFontSize'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textFontSize)) ? getX(m).textFontSize : tSaveOptional.textFontSize
 export const getTextColor = (m: M): TSaveOptional['textColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textColor)) ? getX(m).textColor : tSaveOptional.textColor
 

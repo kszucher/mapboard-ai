@@ -36,6 +36,7 @@ export enum TextTypes {
 }
 
 export enum WidthTypes {
+  w0 = 0,
   w1 = 1,
   w2,
   w3

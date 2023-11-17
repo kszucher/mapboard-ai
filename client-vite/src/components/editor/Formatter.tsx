@@ -1,5 +1,5 @@
 import {Button, ButtonGroup} from '@mui/material'
-import {Box, Flex, Grid, IconButton} from "@radix-ui/themes"
+import {Box, Flex, IconButton, Select} from "@radix-ui/themes"
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
@@ -105,53 +105,69 @@ export const Formatter: FC = () => {
       </div>
       <div className="flex flex-col items-center">
         {formatMode === FormatMode.text &&
-          <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
-            {getKeys(TextTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === TextTypes[getTextFontSize(m)] ? 'var(--button-color)' : ''}} onClick={() => {
-                dispatch(actions.mapAction({type: 'setTextFontSize', payload: TextTypes[name as keyof typeof TextTypes]}))
-              }}>{name}
-              </Button>
-            )}
-          </ButtonGroup>
+          <Select.Root
+            disabled={disabled}
+            value={TextTypes[getTextFontSize(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setTextFontSize', payload: TextTypes[value as keyof typeof TextTypes]}))}>
+            <Select.Trigger />
+            <Select.Content>
+              {getKeys(TextTypes).map((el, index) => (
+                <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
+              ))}
+            </Select.Content>
+          </Select.Root>
         }
         {formatMode === FormatMode.sBorder &&
-          <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
-            {getKeys(WidthTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === WidthTypes[getX(m).selection === 's' ? getSBorderWidth(m) : getFBorderWidth(m)] ? 'var(--button-color)' : ''}} onClick={() => {
-                dispatch(actions.mapAction({type: 'setSBorderWidth', payload: WidthTypes[name as keyof typeof WidthTypes]}))
-              }}>{name}
-              </Button>
-            )}
-          </ButtonGroup>
+          <Select.Root
+            disabled={disabled}
+            value={WidthTypes[getSBorderWidth(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setSBorderWidth', payload: WidthTypes[value as keyof typeof WidthTypes]}))}>
+            <Select.Trigger />
+            <Select.Content>
+              {getKeys(WidthTypes).map((el, index) => (
+                <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
+              ))}
+            </Select.Content>
+          </Select.Root>
         }
         {formatMode === FormatMode.fBorder &&
-          <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
-            {getKeys(WidthTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === WidthTypes[getX(m).selection === 's' ? getSBorderWidth(m) : getFBorderWidth(m)] ? 'var(--button-color)' : ''}} onClick={() => {
-                dispatch(actions.mapAction({type: 'setFBorderWidth', payload: WidthTypes[name as keyof typeof WidthTypes]}))
-              }}>{name}
-              </Button>
-            )}
-          </ButtonGroup>
+          <Select.Root
+            disabled={disabled}
+            value={WidthTypes[getFBorderWidth(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setFBorderWidth', payload: WidthTypes[value as keyof typeof WidthTypes]}))}>
+            <Select.Trigger />
+            <Select.Content>
+              {getKeys(WidthTypes).map((el, index) => (
+                <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
+              ))}
+            </Select.Content>
+          </Select.Root>
         }
-        {formatMode === FormatMode.line && <>
-          <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
-            {getKeys(WidthTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === WidthTypes[getLineWidth(m)] ? 'var(--button-color)' : ''}} onClick={() => {
-                dispatch(actions.mapAction({type: 'setLineWidth', payload: WidthTypes[name as keyof typeof WidthTypes]}))
-              }}>{name}
-              </Button>
-            )}
-          </ButtonGroup>
-          <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
-            {getKeys(LineTypes).map((name, idx) =>
-              <Button key={idx} style={{backgroundColor: name === LineTypes[getLineType(m)] ? 'var(--button-color)' : ''}} onClick={() => {
-                dispatch(actions.mapAction({type: 'setLineType', payload: LineTypes[name as keyof typeof LineTypes]}))
-              }}>{name}
-              </Button>
-            )}
-          </ButtonGroup>
-        </>
+        {formatMode === FormatMode.line &&
+          <Select.Root
+            disabled={disabled}
+            value={WidthTypes[getLineWidth(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setLineWidth', payload: WidthTypes[value as keyof typeof WidthTypes]}))}>
+            <Select.Trigger />
+            <Select.Content>
+              {getKeys(WidthTypes).map((el, index) => (
+                <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
+              ))}
+            </Select.Content>
+          </Select.Root>
+        }
+        {formatMode === FormatMode.line &&
+          <Select.Root
+            disabled={disabled}
+            value={LineTypes[getLineType(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setLineType', payload: LineTypes[value as keyof typeof LineTypes]}))}>
+            <Select.Trigger />
+            <Select.Content>
+              {getKeys(LineTypes).map((el, index) => (
+                <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
+              ))}
+            </Select.Content>
+          </Select.Root>
         }
       </div>
       <div className="flex flex-row justify-center">
