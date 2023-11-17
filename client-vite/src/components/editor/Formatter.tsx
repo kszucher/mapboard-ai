@@ -1,9 +1,8 @@
-import {Button, ButtonGroup} from '@mui/material'
-import {Box, Flex, IconButton, Select} from "@radix-ui/themes"
+import {Box, Button, Flex, IconButton, Select} from "@radix-ui/themes"
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, getX, isXR, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
@@ -171,7 +170,7 @@ export const Formatter: FC = () => {
         }
       </div>
       <div className="flex flex-row justify-center">
-        <Button color="primary" variant='outlined' onClick={() => {
+        <Button variant="outline" onClick={() => {
           formatMode === FormatMode.text && dispatch(actions.mapAction({type: 'clearText', payload: null}))
           formatMode === FormatMode.sBorder && dispatch(actions.mapAction({type: 'clearSBorder', payload: null}))
           formatMode === FormatMode.fBorder && dispatch(actions.mapAction({type: 'clearFBorder', payload: null}))
@@ -183,7 +182,7 @@ export const Formatter: FC = () => {
         </Button>
       </div>
       <div className="flex flex-row justify-center">
-        <Button color="primary" variant='outlined' onClick={() => dispatch(actions.closeFormatter())}>{'CLOSE'}</Button>
+        <Button variant="solid" color="gray" onClick={() => dispatch(actions.closeFormatter())}>{'CLOSE'}</Button>
       </div>
     </div>
   )
