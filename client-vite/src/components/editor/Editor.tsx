@@ -104,6 +104,7 @@ export const Editor: FC = () => {
                           </Button>
                         </React.Fragment>
                       }
+                      {/*TODO: left-right chevron, and then make FrameCarouslel obsolete*/}
                       <EditorMapActions/>
                     </Flex>
                   </div>
