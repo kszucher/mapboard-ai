@@ -6,7 +6,6 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
 import {ChevronDownIcon, ChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
 import {EditorMapActions} from "./EditorMapActions"
-import {EditorMapFrames} from "./EditorMapFrames"
 import {EditorMapShares} from "./EditorMapShares"
 import {EditorMapViews} from "./EditorMapViews"
 import {EditorNodeEdit} from "./EditorNodeEdit"
@@ -102,12 +101,19 @@ export const Editor: FC = () => {
                         </React.Fragment>
                       ))}
                       <EditorMapActions/>
+
+                      {
+
+                      }
+
+
+
+
                     </Flex>
                   </div>
                   <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
                     <Flex gap="1" align="center">
                       <EditorMapViews/>
-                      <EditorMapFrames/>
                       <EditorMapShares/>
                     </Flex>
                   </div>
