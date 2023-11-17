@@ -1,3 +1,4 @@
+import {IconButton} from "@radix-ui/themes";
 import React, {FC, ReactNode} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Button, ButtonGroup} from '@mui/material'
@@ -8,68 +9,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
 import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../../state/Enums"
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, getX, isXR, isXS} from "../../selectors/MapSelector"
-
-const TextIcon = () => (
-  <g>
-    <path stroke="none" fill="none" d="M0 0h24v24H0z"></path>
-    <path d="M6 4h12M12 4v16"></path>
-  </g>
-)
-
-const VectorSplineIcon = () => (
-  <g>
-    <path stroke="none" fill="none" d="M0 0h24v24H0z"></path>
-    <path fill="none" d="M17 4a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1zM3 18a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1zM17 5C10.373 5 5 10.373 5 17"></path>
-  </g>
-)
-
-const SFillIcon = () => (
-  <g>
-    <path fill="currentColor" d="M6 7.2h12c2.4 0 3.6 1.2 3.6 3.6v2.4c0 2.4-1.2 3.6-3.6 3.6H6c-2.4 0-3.6-1.2-3.6-3.6v-2.4c0-2.4 1.2-3.6 3.6-3.6z"></path>
-  </g>
-)
-
-const SBorderIcon = () => (
-  <g>
-    <path fill="none" d="M6 7.2h12c2.4 0 3.6 1.2 3.6 3.6v2.4c0 2.4-1.2 3.6-3.6 3.6H6c-2.4 0-3.6-1.2-3.6-3.6v-2.4c0-2.4 1.2-3.6 3.6-3.6z"></path>
-  </g>
-)
-
-const FFillIcon = () => (
-  <g>
-    <path fill="currentColor" d="M15.6 3.6H18c2.4 0 3.6 1.2 3.6 3.6v9.6c0 2.4-1.2 3.6-3.6 3.6h-2.4c-2.4 0-9.6-4.8-12-4.8-2.4 0-2.4-7.2 0-7.2s9.6-4.8 12-4.8z"></path>
-  </g>
-)
-
-const FBorderIcon = () => (
-  <g>
-    <path fill="none" d="M15.6 3.6H18c2.4 0 3.6 1.2 3.6 3.6v9.6c0 2.4-1.2 3.6-3.6 3.6h-2.4c-2.4 0-9.6-4.8-12-4.8-2.4 0-2.4-7.2 0-7.2s9.6-4.8 12-4.8z"></path>
-  </g>
-)
-
-const IconButton = ({colorMode, disabled, selected = false, onClick, children} : {colorMode: string, disabled: boolean, selected?:boolean, onClick: Function, children: ReactNode}) => (
-  <button
-    type="button"
-    className="text-white focus:outline-none font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:hover:bg-gray-700"
-    disabled={disabled}
-    onClick={() => onClick()}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      stroke={colorMode === 'dark' ? (selected? colors.purple[600] : "#ffffff") : '#000000'}
-      color={colorMode === 'dark' ? (selected? colors.purple[600] : "#ffffff") : '#000000'}
-      fill={'none'}
-      opacity={disabled ? '25%' : '100%'}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24">
-      ({children})
-    </svg>
-    <span className="sr-only">Icon description</span>
-  </button>
-)
+import {FBorderIcon, FFillIcon, LetterTIcon, SBorderIcon, SFillIcon, VectorSplineIcon} from "../assets/Icons"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 
@@ -90,14 +30,26 @@ export const Formatter: FC = () => {
   return (
     <div className="dark:bg-zinc-800 bg-zinc-50 border-r-0 border-2 dark:border-neutral-700 fixed w-[224px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
       <div className="flex justify-center">
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.sFill} onClick={() => {dispatch(actions.setFormatMode(FormatMode.sFill))}}><SFillIcon/></IconButton>
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.fFill} onClick={() => {dispatch(actions.setFormatMode(FormatMode.fFill))}}><FFillIcon/></IconButton>
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.text} onClick={() => {dispatch(actions.setFormatMode(FormatMode.text))}}><TextIcon/></IconButton>
+        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.sFill))}>
+          <SFillIcon/>
+        </IconButton>
+        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.fFill))}>
+          <FFillIcon/>
+        </IconButton>
+        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.text))}>
+          <LetterTIcon/>
+        </IconButton>
       </div>
       <div className="flex justify-center">
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.sBorder} onClick={() => {dispatch(actions.setFormatMode(FormatMode.sBorder))}}><SBorderIcon/></IconButton>
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.fBorder} onClick={() => {dispatch(actions.setFormatMode(FormatMode.fBorder))}}><FBorderIcon/></IconButton>
-        <IconButton colorMode={colorMode} disabled={disabled} selected={formatMode == FormatMode.line} onClick={() => {dispatch(actions.setFormatMode(FormatMode.line))}}><VectorSplineIcon/></IconButton>
+        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.sBorder))}>
+          <SBorderIcon/>
+        </IconButton>
+        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.fBorder))}>
+          <FBorderIcon/>
+        </IconButton>
+        <IconButton variant="ghost" color="gray" onClick={() => dispatch(actions.setFormatMode(FormatMode.line))}>
+          <VectorSplineIcon/>
+        </IconButton>
       </div>
       <div className="flex justify-center">
         <div style={{ width, height }}>

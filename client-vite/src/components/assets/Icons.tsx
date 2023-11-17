@@ -74,3 +74,41 @@ export const UserIcon = () => (
     <path d="M8 7a4 4 0 108 0 4 4 0 00-8 0M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"></path>
   </svg>
 )
+
+export const SFillIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
+    <path stroke="none" fill="currentColor" d="M6 7.2h12c2.4 0 3.6 1.2 3.6 3.6v2.4c0 2.4-1.2 3.6-3.6 3.6H6c-2.4 0-3.6-1.2-3.6-3.6v-2.4c0-2.4 1.2-3.6 3.6-3.6z"></path>
+  </svg>
+)
+
+export const FFillIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
+    <path stroke="none" fill="currentColor" d="M15.6 3.6H18c2.4 0 3.6 1.2 3.6 3.6v9.6c0 2.4-1.2 3.6-3.6 3.6h-2.4c-2.4 0-9.6-4.8-12-4.8-2.4 0-2.4-7.2 0-7.2s9.6-4.8 12-4.8z"></path>
+  </svg>
+)
+
+export const SBorderIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
+    <path fill="none" d="M6 7.2h12c2.4 0 3.6 1.2 3.6 3.6v2.4c0 2.4-1.2 3.6-3.6 3.6H6c-2.4 0-3.6-1.2-3.6-3.6v-2.4c0-2.4 1.2-3.6 3.6-3.6z"></path>
+  </svg>
+)
+
+export const FBorderIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
+    <path fill="none" d="M15.6 3.6H18c2.4 0 3.6 1.2 3.6 3.6v9.6c0 2.4-1.2 3.6-3.6 3.6h-2.4c-2.4 0-9.6-4.8-12-4.8-2.4 0-2.4-7.2 0-7.2s9.6-4.8 12-4.8z"></path>
+  </svg>
+)
+
+export const LetterTIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-letter-t" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M6 4h12M12 4v16"></path>
+  </svg>
+)
+
+export const VectorSplineIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-vector-spline" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M17 4a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1zM3 18a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1zM17 5C10.373 5 5 10.373 5 17"></path>
+  </svg>
+)
