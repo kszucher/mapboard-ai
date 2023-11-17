@@ -4,11 +4,15 @@ import {useDispatch, useSelector} from "react-redux"
 import {Backdrop, CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
-import {RedoIcon, UndoIcon} from "../assets/Icons"
-import {EditorMap} from "./EditorMap"
+import {ChevronDownIcon, ChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
+import {EditorMapActions} from "./EditorMapActions"
 import {EditorMapFrames} from "./EditorMapFrames"
 import {EditorMapShares} from "./EditorMapShares"
 import {EditorMapViews} from "./EditorMapViews"
+import {EditorNodeEdit} from "./EditorNodeEdit"
+import {EditorNodeInsert} from "./EditorNodeInsert"
+import {EditorNodeMove} from "./EditorNodeMove"
+import {EditorNodeSelect} from "./EditorNodeSelect"
 import {EditorUserAccountDeleteAccount} from "./EditorUserAccountDeleteAccount"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -16,14 +20,13 @@ import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {IconButton, Theme, Flex, AlertDialog, Dialog} from "@radix-ui/themes"
+import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
 
 import { EditorUserSettings } from "./EditorUserSettings"
 import { EditorUserAccount } from "./EditorUserAccount"
-import { EditorNode } from "./EditorNode"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -33,7 +36,7 @@ export const Editor: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const { data } = useOpenWorkspaceQuery()
-  const { colorMode, access } = data || defaultUseOpenWorkspaceQueryState
+  const { colorMode, access, breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access)
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
@@ -68,7 +71,38 @@ export const Editor: FC = () => {
                     <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
                   </div>
                   <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center">
-                    <EditorMap/>
+                    <Flex gap="1" align="center">
+                      <DropdownMenu.Root>
+                        <DropdownMenu.Trigger>
+                          <IconButton variant="soft" color="gray">
+                            <ChevronDownIcon/>
+                          </IconButton>
+                        </DropdownMenu.Trigger>
+                        <DropdownMenu.Content>
+                          {tabMapIdList.map((el: string, index) => (
+                            <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}>
+                              {tabMapNameList[index]?.name}
+                            </DropdownMenu.Item>
+                          ))}
+                        </DropdownMenu.Content>
+                      </DropdownMenu.Root>
+                      <Button
+                        variant={breadcrumbMapIdList.length === 1 ? "solid" : 'solid'}
+                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>
+                        {breadcrumbMapNameList[0].name}
+                      </Button>
+                      {breadcrumbMapNameList.slice(1).map((el, index) => (
+                        <React.Fragment key={index}>
+                          <ChevronRightIcon/>
+                          <Button
+                            variant={index === breadcrumbMapIdList.length - 2 ? "solid" : 'solid'}
+                            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
+                            {el.name}
+                          </Button>
+                        </React.Fragment>
+                      ))}
+                      <EditorMapActions/>
+                    </Flex>
                   </div>
                   <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
                     <EditorMapViews/>
@@ -76,7 +110,12 @@ export const Editor: FC = () => {
                     <EditorMapShares/>
                   </div>
                   <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
-                    <EditorNode/>
+                    <Flex gap="1" align="center">
+                      <EditorNodeSelect/>
+                      <EditorNodeInsert/>
+                      <EditorNodeEdit/>
+                      <EditorNodeMove/>
+                    </Flex>
                   </div>
                   <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
                     <Flex gap="1">
