@@ -1,5 +1,5 @@
 import {Button, ButtonGroup} from '@mui/material'
-import {IconButton} from "@radix-ui/themes";
+import {Box, Flex, Grid, IconButton} from "@radix-ui/themes"
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
@@ -28,29 +28,41 @@ export const Formatter: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <div className="dark:bg-zinc-800 bg-zinc-50 border-r-0 border-2 dark:border-neutral-700 fixed w-[224px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
-      <div className="flex justify-center">
-        <IconButton variant={formatMode === FormatMode.sFill ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.sFill))}>
-          <SFillIcon/>
-        </IconButton>
-        <IconButton variant={formatMode === FormatMode.fFill ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.fFill))}>
-          <FFillIcon/>
-        </IconButton>
-        <IconButton variant={formatMode === FormatMode.text ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.text))}>
-          <LetterTIcon/>
-        </IconButton>
-      </div>
-      <div className="flex justify-center">
-        <IconButton variant={formatMode === FormatMode.sBorder ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.sBorder))}>
-          <SBorderIcon/>
-        </IconButton>
-        <IconButton variant={formatMode === FormatMode.fBorder ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.fBorder))}>
-          <FBorderIcon/>
-        </IconButton>
-        <IconButton variant={formatMode === FormatMode.line ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.line))}>
-          <VectorSplineIcon/>
-        </IconButton>
-      </div>
+    <div className="dark:bg-zinc-800 bg-zinc-50 border-r-0 border-2 dark:border-neutral-700 fixed w-[240px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
+      <Flex gap="3" align="center" justify="center">
+        <Box p={formatMode === FormatMode.sFill ? "0" : "1"}>
+          <IconButton variant={formatMode === FormatMode.sFill ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.sFill))}>
+            <SFillIcon/>
+          </IconButton>
+        </Box>
+        <Box p={formatMode === FormatMode.fFill ? "0" : "1"}>
+          <IconButton variant={formatMode === FormatMode.fFill ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.fFill))}>
+            <FFillIcon/>
+          </IconButton>
+        </Box>
+        <Box p={formatMode === FormatMode.text ? "0" : "1"}>
+          <IconButton variant={formatMode === FormatMode.text ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.text))}>
+            <LetterTIcon/>
+          </IconButton>
+        </Box>
+      </Flex>
+      <Flex gap="3" align="center" justify="center">
+        <Box p={formatMode === FormatMode.sBorder ? "0" : "1"}>
+          <IconButton variant={formatMode === FormatMode.sBorder ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.sBorder))}>
+            <SBorderIcon/>
+          </IconButton>
+        </Box>
+        <Box p={formatMode === FormatMode.fBorder ? "0" : "1"}>
+          <IconButton variant={formatMode === FormatMode.fBorder ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.fBorder))}>
+            <FBorderIcon/>
+          </IconButton>
+        </Box>
+        <Box p={formatMode === FormatMode.line ? "0" : "1"}>
+          <IconButton variant={formatMode === FormatMode.line ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.line))}>
+            <VectorSplineIcon/>
+          </IconButton>
+        </Box>
+      </Flex>
       <div className="flex justify-center">
         <div style={{ width, height }}>
           <svg viewBox={`0 0 ${width} ${height}`}>{
