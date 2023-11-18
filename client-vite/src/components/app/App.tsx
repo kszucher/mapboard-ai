@@ -19,7 +19,7 @@ export const App: FC = () => {
       }}
     >
       {pageState === PageState.AUTH && <Landing/>}
-      {pageState!== PageState.AUTH && <Editor/>}
+      {pageState === PageState.WS && <Editor/>}
     </Auth0Provider>
   )
 }

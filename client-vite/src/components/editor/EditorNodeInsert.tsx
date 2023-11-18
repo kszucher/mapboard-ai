@@ -4,11 +4,11 @@ import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getCountXCO1, getX, isXR, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
-import {PageState} from "../../state/Enums"
+import {DialogState} from "../../state/Enums"
 import {EditorNodeInsertTable} from "./EditorNodeInsertTable"
 
 export const EditorNodeInsert = () => {
-  const pageState = useSelector((state: RootState) => state.editor.pageState)
+  const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (
@@ -26,7 +26,7 @@ export const EditorNodeInsert = () => {
           {isXS(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertSO', payload: null}))}>{'Node Out'}</DropdownMenu.Item>}
           {isXS(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertSD', payload: null}))}>{'Node Below'}</DropdownMenu.Item>}
           <Dialog.Trigger>
-            {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}>{'Table Out'}</DropdownMenu.Item>}
+            {(isXR(m) || isXS(m)) && <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE))}>{'Table Out'}</DropdownMenu.Item>}
           </Dialog.Trigger>
           {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertSCRU', payload: null}))}>{'Table Row Above'}</DropdownMenu.Item>}
           {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertSCRD', payload: null}))}>{'Table Row Below'}</DropdownMenu.Item>}
@@ -34,7 +34,7 @@ export const EditorNodeInsert = () => {
           {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertSCCR', payload: null}))}>{'Table Column Right'}</DropdownMenu.Item>}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      {pageState === PageState.WS_CREATE_TABLE && <EditorNodeInsertTable/>}
+      {dialogState === DialogState.CREATE_TABLE && <EditorNodeInsertTable/>}
     </>
   )
 }

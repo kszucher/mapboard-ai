@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import mermaid from "mermaid"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {AccessTypes, PageState} from "../../state/Enums"
+import {AccessTypes, DialogState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
@@ -64,8 +64,8 @@ export const Editor: FC = () => {
           mExists &&
           <>
             <Map/>
-            <Dialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setPageState(PageState.WS))}>
-              <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setPageState(PageState.WS))}>
+            <Dialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setDialogState(DialogState.NONE))}>
+              <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setDialogState(DialogState.NONE))}>
                 <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
                   <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                     <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>

@@ -2,7 +2,7 @@ import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXRD0SO1, getCountXRD1SO1, getCountXSO1, getX, getRiL, isDirL, isDirR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXDS, isXR, isXS, sortPath, getXRD0, getXRD1, isXAR} from "../../selectors/MapSelector"
 import {isUrl} from "../../utils/Utils";
-import {AccessTypes, PageState} from "../../state/Enums"
+import {AccessTypes, DialogState, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
@@ -16,6 +16,7 @@ let mapAreaListener: AbortController
 
 export const Window: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
+  const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const m = (useSelector((state:RootState) => mSelector(state)))
   const mExists = m && m.length
@@ -192,7 +193,6 @@ export const Window: FC = () => {
     if (getScrollOverride()) {
       e.preventDefault()
     }
-    // dispatch(actions.closeContextMenu())
   }
 
   const contextmenu = (e: MouseEvent) => {
@@ -206,7 +206,7 @@ export const Window: FC = () => {
         mapAreaListener.abort()
       }
     } else {
-      if (pageState === PageState.WS) {
+      if (pageState === PageState.WS && dialogState === DialogState.NONE) {
         if (access === AccessTypes.EDIT) {
           console.log('ADDED')
           mapAreaListener = new AbortController()
@@ -228,7 +228,7 @@ export const Window: FC = () => {
         mapAreaListener.abort()
       }
     }
-  }, [pageState, access, editedNodeId])
+  }, [pageState, dialogState, access, editedNodeId])
 
   const timeoutFun = () => {
     dispatch(nodeApi.endpoints.saveMap.initiate({

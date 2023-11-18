@@ -3,13 +3,13 @@ import React from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {PageState} from "../../state/Enums"
+import {DialogState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
 import {DotsIcon} from "../assets/Icons"
 import {EditorMapActionsRename} from "./EditorMapActionsRename"
 
 export const EditorMapActions = () => {
-  const pageState = useSelector((state: RootState) => state.editor.pageState)
+  const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const { data } = useOpenWorkspaceQuery()
   const { frameId, frameIdList, breadcrumbMapIdList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
@@ -24,7 +24,7 @@ export const EditorMapActions = () => {
         <DropdownMenu.Content>
           {frameId === '' &&
             <Dialog.Trigger>
-              {<DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_RENAME_MAP))}>{'Rename'}</DropdownMenu.Item>}
+              {<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.RENAME_MAP))}>{'Rename'}</DropdownMenu.Item>}
             </Dialog.Trigger>
           }
           {frameId === '' && breadcrumbMapIdList.length === 1 &&
@@ -50,7 +50,7 @@ export const EditorMapActions = () => {
           }
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      {pageState === PageState.WS_RENAME_MAP && <EditorMapActionsRename/>}
+      {dialogState === DialogState.RENAME_MAP && <EditorMapActionsRename/>}
     </>
   )
 }

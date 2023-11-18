@@ -3,7 +3,7 @@ import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../components/map/MapDivUtils"
 import {mapFindIntersecting} from "../selectors/MapFindIntersecting"
 import {editorState} from "../state/EditorState"
-import {FormatMode, PageState, Sides} from "../state/Enums"
+import {DialogState, FormatMode, PageState, Sides} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
 import {nodeApi} from "../apis/NodeApi"
 import {mapFindNearest} from "../selectors/MapFindNearest"
@@ -22,6 +22,7 @@ export const editorSlice = createSlice({
     setScrollOverride(state) { state.scrollOverride = true },
     clearScrollOverride(state) { state.scrollOverride = false },
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
+    setDialogState(state, action: PayloadAction<DialogState>) { state.dialogState = action.payload },
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     openFormatter(state) { state.formatterVisible = true},
     closeFormatter(state) { state.formatterVisible = false},
@@ -163,7 +164,9 @@ export const editorSlice = createSlice({
     )
     builder.addMatcher(
       nodeApi.endpoints.signIn.matchFulfilled,
-      (state) => {state.pageState = PageState.WS}
+      (state) => {
+        state.pageState = PageState.WS
+      }
     )
     builder.addMatcher(
       nodeApi.endpoints.openWorkspace.matchFulfilled,
@@ -173,7 +176,6 @@ export const editorSlice = createSlice({
         state.mapList = mapDataList.map((el: M) => mapReducer(filterEmpty(el), 'LOAD', {}))
         state.mapListIndex = 0
         state.editedNodeId = ''
-        state.pageState = PageState.WS
       }
     )
     builder.addMatcher(
@@ -181,7 +183,6 @@ export const editorSlice = createSlice({
       (state, { payload }) => {
         const { promptId, promptJson, prompt, maxToken, gptSuggestions } = payload
         console.log(payload)
-        state.pageState = PageState.WS
         if (gptSuggestions) {
           const pm = current(state.mapList[state.mapListIndex])
           let mapAction = {type: '', payload: {}}

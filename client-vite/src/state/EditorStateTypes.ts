@@ -1,10 +1,11 @@
-import {FormatMode, PageState, Sides} from "./Enums"
+import {DialogState, FormatMode, PageState, Sides} from "./Enums"
 import {M, T} from "./MapStateTypes"
 
 export interface EditorState {
   token: string
   scrollOverride: boolean
   pageState: PageState
+  dialogState: DialogState
   formatMode: FormatMode
   mapList: M[]
   mapListIndex: number
