@@ -1,7 +1,6 @@
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import mermaid from "mermaid"
-import {Backdrop, CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
@@ -9,6 +8,7 @@ import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiSt
 import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
 import {ChevronDownIcon, ChevronRightIcon, CircleChevronLeftIcon, CircleChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
+import {Spinner} from "../assets/Spinner"
 import {EditorMapActions} from "./EditorMapActions"
 import {EditorMapShares} from "./EditorMapShares"
 import {EditorMapViews} from "./EditorMapViews"
@@ -164,9 +164,10 @@ export const Editor: FC = () => {
           </>
         }
         {pageState === PageState.WS_LOADING &&
-          <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
-            <CircularProgress color="inherit" />
-          </Backdrop>}
+          <div className="fixed top-0 left-0 w-screen h-screen bg-zinc-900 opacity-50 flex items-center justify-center z-50">
+            <Spinner/>
+          </div>
+        }
       </>
     </Theme>
   )
