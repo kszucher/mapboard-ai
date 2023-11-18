@@ -26,7 +26,6 @@ import {EditorUserSettings} from "./EditorUserSettings"
 import {EditorUserAccount} from "./EditorUserAccount"
 
 export const Editor: FC = () => {
-  const pageState = useSelector((state: RootState) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
@@ -163,7 +162,7 @@ export const Editor: FC = () => {
             </Dialog.Root>
           </>
         }
-        {pageState === PageState.WS_LOADING &&
+        {isFetching &&
           <div className="fixed top-0 left-0 w-screen h-screen bg-zinc-900 opacity-50 flex items-center justify-center z-50">
             <Spinner/>
           </div>

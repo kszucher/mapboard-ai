@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {isXR, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
-import {PageState} from "../../state/Enums"
 
 export const EditorNodeInsertTable = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -18,7 +17,7 @@ export const EditorNodeInsertTable = () => {
         {'Insert Table'}
       </Dialog.Description>
       <Grid columns="2" gap="3" width="auto" align="center">
-        <Text as="div" size="2" weight="bold" style={{}}>{'Rows'}</Text>
+        <Text as="div" size="2" weight="bold">{'Rows'}</Text>
         <Select.Root value={row.toString()} onValueChange={(value) => setRow(parseInt(value))}>
           <Select.Trigger />
           <Select.Content>
@@ -27,7 +26,7 @@ export const EditorNodeInsertTable = () => {
             ))}
           </Select.Content>
         </Select.Root>
-        <Text as="div" size="2" weight="bold" style={{}}>{'Columns'}</Text>
+        <Text as="div" size="2" weight="bold">{'Columns'}</Text>
         <Select.Root value={col.toString()} onValueChange={(value) => setCol(parseInt(value))}>
           <Select.Trigger />
           <Select.Content>
@@ -44,13 +43,13 @@ export const EditorNodeInsertTable = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={
-            () => {
-              isXR(m) && dispatch(actions.mapAction({type: 'insertSORTable', payload: {rowLen: row, colLen: col}}))
-              isXS(m) && dispatch(actions.mapAction({type: 'insertSOTable', payload: {rowLen: row, colLen: col}}))
-              dispatch(actions.setPageState(PageState.WS))
-            }
-          }>
+          <Button
+            onClick={
+              () => {
+                isXR(m) && dispatch(actions.mapAction({type: 'insertSORTable', payload: {rowLen: row, colLen: col}}))
+                isXS(m) && dispatch(actions.mapAction({type: 'insertSOTable', payload: {rowLen: row, colLen: col}}))
+              }
+            }>
             {'OK'}
           </Button>
         </Dialog.Close>

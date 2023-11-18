@@ -1,14 +1,9 @@
 import {FC, useEffect} from "react"
-import {setColors} from "../assets/Colors";
-
-// https://transform.tools/html-to-jsx
 
 export const Docs: FC = () => {
-
   useEffect(() => {
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.add('dark')
   }, [])
-
   return (
     <>
       <main className="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900">

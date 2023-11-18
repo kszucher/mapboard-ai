@@ -3,7 +3,6 @@ import {timeoutId} from "../components/editor/Window"
 import {getFrameId, getMapId} from "../state/NodeApiState"
 import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/NodeApiStateTypes"
 import {getMap} from "../state/EditorState"
-import {PageState} from "../state/Enums"
 import {N} from "../state/MapStateTypes"
 import {actions, RootState} from "../reducers/EditorReducer"
 import {mapDeInit} from "../reducers/MapDeInit"
@@ -51,57 +50,46 @@ export const nodeApi = createApi({
     }),
     selectMap: builder.mutation<void, { mapId: string, frameId: string }>({
       query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'selectMap', payload: { mapId, frameId } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     renameMap: builder.mutation<void, { mapId: string, name: string }>({
       query: ({ mapId, name }) => ({ url: 'beta-private', method: 'POST', body: { type: 'renameMap', payload: { mapId, name } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({
       query: ({ mapId, nodeId, content }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInMap', payload: { mapId, nodeId, content} } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     createMapInTab: builder.mutation<void, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInTab' } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     createMapInTabDuplicate: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInTabDuplicate', payload: { mapId } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     createMapFrameImport: builder.mutation<void, { mapId: string, frameId: string }>({
       query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameImport', payload: { mapId, frameId } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     createMapFrameDuplicate: builder.mutation<void, { mapId: string, frameId: string }>({
       query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameDuplicate', payload: { mapId, frameId } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     moveUpMapInTab: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'moveUpMapInTab', payload: { mapId } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     moveDownMapInTab: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'moveDownMapInTab', payload: { mapId } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     deleteMap: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMap', payload: { mapId } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace', 'Shares']
     }),
     deleteMapFrame: builder.mutation<void, { mapId: string, frameId: string }>({
       query: ({ mapId, frameId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMapFrame', payload: { mapId, frameId } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     saveMap: builder.mutation<void, { mapId: string, frameId: string, mapData: any }>({
@@ -118,18 +106,15 @@ export const nodeApi = createApi({
     }),
     acceptShare: builder.mutation<void, { shareId: string }>({
       query: ({ shareId }) => ({ url: 'beta-private', method: 'POST', body: { type: 'acceptShare', payload: { shareId } } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace', 'Shares']
     }),
     toggleColorMode: builder.mutation<void, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'toggleColorMode' } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
       invalidatesTags: ['Workspace']
     }),
     deleteAccount: builder.mutation<void, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'deleteAccount' } }),
       async onQueryStarted(arg, { dispatch }) {
-        dispatch(actions.setPageState(PageState.WS_LOADING))
         dispatch(actions.resetState())
         dispatch(nodeApi.util.resetApiState()
         )},
@@ -137,7 +122,6 @@ export const nodeApi = createApi({
     }),
     getGptSuggestions: builder.query<any, GptData>({
       query: (payload) => ({ url: 'beta-private', method: 'POST', body: { type: 'getGptSuggestions', payload } }),
-      async onQueryStarted(arg, { dispatch }) {dispatch(actions.setPageState(PageState.WS_LOADING))},
     }),
   })
 })

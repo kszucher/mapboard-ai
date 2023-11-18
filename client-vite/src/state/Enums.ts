@@ -8,7 +8,6 @@ export enum PageState {
   WS_CREATE_TABLE,
   WS_CREATE_MAP_IN_MAP,
   WS_SHARE_THIS_MAP,
-  WS_LOADING,
   WS_RENAME_MAP
 }
 
