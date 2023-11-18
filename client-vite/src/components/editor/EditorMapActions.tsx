@@ -11,7 +11,7 @@ import {EditorMapActionsRename} from "./EditorMapActionsRename"
 export const EditorMapActions = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const { data } = useOpenWorkspaceQuery()
-  const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
+  const { frameId, frameIdList, breadcrumbMapIdList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <>
@@ -23,10 +23,12 @@ export const EditorMapActions = () => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           {frameId === '' &&
+            <Dialog.Trigger>
+              {<DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_RENAME_MAP))}>{'Rename'}</DropdownMenu.Item>}
+            </Dialog.Trigger>
+          }
+          {frameId === '' && breadcrumbMapIdList.length === 1 &&
             <>
-              <Dialog.Trigger>
-                {<DropdownMenu.Item onClick={() => dispatch(actions.setPageState(PageState.WS_RENAME_MAP))}>{'Rename'}</DropdownMenu.Item>}
-              </Dialog.Trigger>
               <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.createMapInTab.initiate())}>{'Create'}</DropdownMenu.Item>
               <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.createMapInTabDuplicate.initiate({mapId: getMapId()}))}>{'Duplicate'}</DropdownMenu.Item>
               <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}>{'Move Up'}</DropdownMenu.Item>
