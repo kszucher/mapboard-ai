@@ -15,7 +15,7 @@ export const EditorNodeInsert = () => {
     <>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <Button size="2" variant="solid" color="gray" radius="small">
+          <Button size="2" variant="solid" color="gray">
             {'Insert'}
           </Button>
         </DropdownMenu.Trigger>

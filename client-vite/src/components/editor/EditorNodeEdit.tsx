@@ -18,7 +18,7 @@ export const EditorNodeEdit = () => {
     <>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <Button size="2" variant="solid" color="gray" radius="small">
+          <Button size="2" variant="solid" color="gray">
             {'Edit'}
           </Button>
         </DropdownMenu.Trigger>

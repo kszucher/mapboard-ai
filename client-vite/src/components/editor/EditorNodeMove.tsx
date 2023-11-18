@@ -11,7 +11,7 @@ export const EditorNodeMove = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button size="2" variant="solid" color="gray" radius="small">
+        <Button size="2" variant="solid" color="gray">
           {'Move'}
         </Button>
       </DropdownMenu.Trigger>
