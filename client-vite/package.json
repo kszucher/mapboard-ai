@@ -11,10 +11,6 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.0.1",
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
-    "@mui/material": "^5.11.16",
-    "@mui/system": "^5.11.16",
     "@radix-ui/themes": "^2.0.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/user-event": "^14.4.3",
