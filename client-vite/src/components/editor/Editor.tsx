@@ -14,7 +14,6 @@ import {EditorNodeMove} from "./EditorNodeMove"
 import {EditorNodeSelect} from "./EditorNodeSelect"
 import {EditorUserAccountDeleteAccount} from "./EditorUserAccountDeleteAccount"
 import {Formatter} from "./Formatter"
-import {FrameCarousel} from "./FrameCarousel"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
@@ -160,7 +159,6 @@ export const Editor: FC = () => {
                   </div>
                 </div>
                 {formatterVisible && <Formatter/>}
-                <FrameCarousel/>
                 <Window/>
               </AlertDialog.Root>
             </Dialog.Root>
