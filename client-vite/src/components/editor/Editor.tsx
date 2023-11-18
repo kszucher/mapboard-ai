@@ -164,7 +164,10 @@ export const Editor: FC = () => {
             </Dialog.Root>
           </>
         }
-        {pageState === PageState.WS_LOADING && <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}><CircularProgress color="inherit" /></Backdrop>}
+        {pageState === PageState.WS_LOADING &&
+          <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
+            <CircularProgress color="inherit" />
+          </Backdrop>}
       </>
     </Theme>
   )

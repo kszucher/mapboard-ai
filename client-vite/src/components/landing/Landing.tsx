@@ -1,11 +1,11 @@
 import {useDispatch, useSelector} from "react-redux"
-import {CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import React, {FC, useEffect, useState} from "react"
 import {useAuth0} from "@auth0/auth0-react"
 import {nodeApi} from "../../apis/NodeApi"
 import {authAudienceUrl} from "../../apis/Urls"
 import {setColors} from "../assets/Colors"
+import {Spinner} from "../assets/Spinner"
 
 export const Landing: FC = () => {
   const colorMode = 'dark'
@@ -16,7 +16,7 @@ export const Landing: FC = () => {
 
   useEffect(() => {
     setColors(colorMode)
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.add('dark')
   }, [])
 
   useEffect(() => {
@@ -45,8 +45,9 @@ export const Landing: FC = () => {
 
   return (
     <>
-      {isWaiting ?<CircularProgress />:
-        <section className="bg-white dark:bg-gray-900">
+      {isWaiting
+        ? <Spinner />
+        : <section className="bg-white dark:bg-gray-900">
           <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
             {/*<a href="#"*/}
             {/*   className="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"*/}
