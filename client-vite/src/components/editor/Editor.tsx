@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {Backdrop, CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
-import {ChevronDownIcon, ChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
+import {ChevronDownIcon, ChevronRightIcon, CircleChevronLeftIcon, CircleChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
 import {EditorMapActions} from "./EditorMapActions"
 import {EditorMapShares} from "./EditorMapShares"
 import {EditorMapViews} from "./EditorMapViews"
@@ -21,11 +21,11 @@ import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessTypes, PageState} from "../../state/Enums"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
 
-import { EditorUserSettings } from "./EditorUserSettings"
-import { EditorUserAccount } from "./EditorUserAccount"
+import {EditorUserSettings} from "./EditorUserSettings"
+import {EditorUserAccount} from "./EditorUserAccount"
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
@@ -34,13 +34,17 @@ export const Editor: FC = () => {
   const mExists = m && m.length
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
-  const { data } = useOpenWorkspaceQuery()
+  const { data, isFetching } = useOpenWorkspaceQuery()
   const { colorMode, access, breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList, frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
+  const frameIdPosition = frameIdList.indexOf(frameId)
+  const prevFrameIdPosition = frameIdPosition > 0 ? frameIdPosition - 1 : 0
+  const nextFrameIdPosition = frameIdPosition < frameIdList.length - 1 ? frameIdPosition + 1 : frameIdList.length - 1
+  const prevFrameId = frameIdList[prevFrameIdPosition]
+  const nextFrameId = frameIdList[nextFrameIdPosition]
   const disabled = [AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access)
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
   const dispatch = useDispatch<AppDispatch>()
-
   useEffect(()=> {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
@@ -97,14 +101,27 @@ export const Editor: FC = () => {
                         </React.Fragment>
                       ))}
                       {frameId !== '' &&
-                        <React.Fragment>
+                        <>
                           <ChevronRightIcon/>
                           <Button variant='solid' onClick={() => {}}>
                             {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
                           </Button>
-                        </React.Fragment>
+                          <IconButton
+                            variant="soft"
+                            color="gray"
+                            disabled={frameIdPosition === 0 || isFetching}
+                            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: prevFrameId}))}>
+                            <CircleChevronLeftIcon/>
+                          </IconButton>
+                          <IconButton
+                            variant="soft"
+                            color="gray"
+                            disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
+                            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: nextFrameId}))}>
+                            <CircleChevronRightIcon/>
+                          </IconButton>
+                        </>
                       }
-                      {/*TODO: left-right chevron, and then make FrameCarouslel obsolete*/}
                       <EditorMapActions/>
                     </Flex>
                   </div>

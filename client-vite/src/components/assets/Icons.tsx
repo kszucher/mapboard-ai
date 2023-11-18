@@ -21,19 +21,27 @@ export const DotsIcon = () => (
   </svg>
 )
 
+export const CircleChevronLeftIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-circle-chevron-left" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M13 15l-3-3 3-3"></path>
+    <path d="M21 12a9 9 0 10-18 0 9 9 0 0018 0z"></path>
+  </svg>
+)
+
+export const CircleChevronRightIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-circle-chevron-right" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M11 9l3 3-3 3"></path>
+    <path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z"></path>
+  </svg>
+)
+
 export const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-eye" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
     <path d="M10 12a2 2 0 104 0 2 2 0 00-4 0"></path>
     <path d="M21 12c-2.4 4-5.4 6-9 6-3.6 0-6.6-2-9-6 2.4-4 5.4-6 9-6 3.6 0 6.6 2 9 6"></path>
-  </svg>
-)
-
-export const KeyframesIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-keyframes" viewBox="0 0 24 24">
-    <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M9.225 18.412A1.595 1.595 0 018 19c-.468 0-.914-.214-1.225-.588l-4.361-5.248a1.844 1.844 0 010-2.328l4.361-5.248A1.595 1.595 0 018 5c.468 0 .914.214 1.225.588l4.361 5.248a1.844 1.844 0 010 2.328l-4.361 5.248zM17 5l4.586 5.836a1.844 1.844 0 010 2.328L17 19"></path>
-    <path d="M13 5l4.586 5.836a1.844 1.844 0 010 2.328L13 19"></path>
   </svg>
 )
 
