@@ -94,7 +94,6 @@ export const MapDiv: FC = () => {
               }}
               onMouseDown={(e) => {
                 e.stopPropagation()
-                dispatch(actions.closeContextMenu())
                 let didMove = false
                 if (e.button === 0) {
                   if (ti.linkType === 'internal') {
@@ -126,7 +125,6 @@ export const MapDiv: FC = () => {
                   if((isTS(ti) && !ti.selected || isTR(ti) && !getTRD0(m, ti).selected && !getTRD1(m, ti).selected)) {
                     dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
                   }
-                  dispatch(actions.openContextMenu({type: 'node', position: {x: e.clientX, y: e.clientY}}))
                 }
               }}
               onDoubleClick={(e) => {

@@ -64,9 +64,9 @@ export const Map: FC = () => {
       onMouseDown={(e) => {
         e.preventDefault()
         if (e.button === 0) {
-          dispatch(actions.closeContextMenu())
+
         } else if (e.button === 2) {
-          dispatch(actions.openContextMenu({type: 'map', position: {x: e.clientX, y: e.clientY}}))
+
         }
       }}
       onMouseMove={(e) => {

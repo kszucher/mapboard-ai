@@ -1,4 +1,4 @@
-import {combineReducers, configureStore, createListenerMiddleware, createSlice, current, isAction, PayloadAction} from "@reduxjs/toolkit"
+import {combineReducers, configureStore, createSlice, current, isAction, PayloadAction} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../components/map/MapDivUtils"
 import {mapFindIntersecting} from "../selectors/MapFindIntersecting"
@@ -30,10 +30,6 @@ export const editorSlice = createSlice({
     closeMoreMenu(state) { state.moreMenu = false },
     openFrameMenu(state, action: PayloadAction<boolean>) { state.frameMenu = action.payload },
     closeFrameMenu(state) { state.frameMenu = false },
-    openContextMenu(state, action: PayloadAction<{ type: 'map' | 'node', position: { x: number, y: number }}>) {
-      state.contextMenu = {isActive: true, type: action.payload.type, position: action.payload.position }
-    },
-    closeContextMenu(state) { state.contextMenu.isActive = false },
     setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload},
     showConnectionHelpers(state) { state.connectionHelpersVisible = true },
     hideConnectionHelpers(state) { state.connectionHelpersVisible = false },
@@ -216,28 +212,9 @@ export const editorSlice = createSlice({
 
 export const { actions } = editorSlice
 
-const listenerMiddleware = createListenerMiddleware()
-
-listenerMiddleware.startListening({
-  predicate: (action, currentState) => {
-    return (
-      action.type.startsWith('editor') &&
-      action.type !== 'editor/closeContextMenu' &&
-      action.type !== 'editor/openContextMenu' &&
-      action.type !== 'editor/clearConnectionStart' &&
-      (currentState as RootState).editor.contextMenu !== null
-    )
-  },
-  effect: async (action, listenerApi) => {
-    listenerApi.dispatch(actions.closeContextMenu())
-  },
-})
-
 export const store = configureStore({
   reducer: combineReducers({api: nodeApi.reducer, editor: editorSlice.reducer}),
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
-    .prepend(listenerMiddleware.middleware)
-    .concat(nodeApi.middleware)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(nodeApi.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>
