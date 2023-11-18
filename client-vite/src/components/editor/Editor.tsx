@@ -1,8 +1,12 @@
-import mermaid from "mermaid"
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
+import mermaid from "mermaid"
 import {Backdrop, CircularProgress} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {AccessTypes, PageState} from "../../state/Enums"
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
+import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
 import {ChevronDownIcon, ChevronRightIcon, CircleChevronLeftIcon, CircleChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
 import {EditorMapActions} from "./EditorMapActions"
@@ -18,11 +22,6 @@ import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {AccessTypes, PageState} from "../../state/Enums"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
-import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
-
 import {EditorUserSettings} from "./EditorUserSettings"
 import {EditorUserAccount} from "./EditorUserAccount"
 
