@@ -3,8 +3,6 @@ import {tSaveOptional} from "../state/MapState"
 import {M, T, PT, L, PL, PTR} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {deleteCC, deleteCR, deleteLR, deleteS} from "./MapDelete"
-import {mapInit} from "./MapInit"
-import {mapMeasure} from "./MapMeasure"
 import {mapDeInit} from "./MapDeInit"
 import {insertTable} from "./MapInsert"
 import {selectT, selectTL, unselectNodes} from "./MapSelect"
@@ -38,16 +36,13 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
   }))
-  const preLoadCbR = [{nodeId: 'node' + genHash(8), path: ['g']}, ...structuredClone(cbR)] as M
-  mapInit(preLoadCbR)
-  mapMeasure(preLoadCbR, preLoadCbR)
   cbR.forEach((ti, i) => Object.assign(ti, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
     linkType: tSaveOptional.linkType,
     link: tSaveOptional.link,
-    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) - getG(preLoadCbR).mapStartX + getG(m).mapWidth : ti.offsetW,
-    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) - getG(preLoadCbR).mapStartY + getG(m).mapHeight : ti.offsetH,
+    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) + getG(m).mapWidth : ti.offsetW,
+    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) + getG(m).mapHeight : ti.offsetH,
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)

@@ -1,7 +1,5 @@
 import {tSaveOptional} from "../state/MapState"
 import {N, LPartial, M, T, PT} from "../state/MapStateTypes"
-import {mapInit} from "./MapInit"
-import {mapMeasure} from "./MapMeasure"
 import {unselectNodes} from "./MapSelect"
 import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLiL, mT, getRiL, getG} from "../selectors/MapSelector"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
@@ -17,12 +15,9 @@ export const insertR = (m: M) => {
     {nodeId: IS_TESTING ? 'u' : 'node' + genHash(8), path: ['r', getRiL(m) + 1, 'd', 0]},
     {nodeId: IS_TESTING ? 'v' : 'node' + genHash(8), path: ['r', getRiL(m) + 1, 'd', 1]},
   ] as T[]
-  const preLoadNewRoot = [{nodeId: 'node' + genHash(8), path: ['g']}, ...structuredClone(newRoot)] as M
-  mapInit(preLoadNewRoot)
-  mapMeasure(preLoadNewRoot, preLoadNewRoot)
   newRoot.forEach(ti => Object.assign(ti, {
-    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) - getG(preLoadNewRoot).mapStartX + getG(m).mapWidth : ti.offsetW,
-    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) - getG(preLoadNewRoot).mapStartY + getG(m).mapHeight : ti.offsetH,
+    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) + getG(m).mapWidth : ti.offsetW,
+    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) + getG(m).mapHeight : ti.offsetH,
   }))
   unselectNodes(m)
   m.push(...newRoot)

@@ -205,13 +205,8 @@ export const getTextColor = (m: M): TSaveOptional['textColor'] => isArrayOfEqual
 export const hasTaskRight = (m: M, t: T): number => +getTRD0SO(m, t).some(ti => ti.taskStatus !== 0)
 export const hasTaskLeft = (m: M, t: T): number => +getTRD1SO(m, t).some(ti => ti.taskStatus !== 0)
 
-// export const getRootStartX = (m: M, t: T): number => t.nodeStartX - getTRD1(m, t).familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, t) - MARGIN_X
-// export const getRootStartY = (m: M, t: T): number => t.nodeY - Math.max(...[getTRD0(m, t).familyH, getTRD1(m, t).familyH]) / 2 - MARGIN_Y
-// export const getRootW = (m: M, t: T): number => getTRD0(m, t).familyW + getTRD1(m, t).familyW + t.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, t) + hasTaskRight(m, t)) + 2 * MARGIN_X
-// export const getRootH = (m: M, t: T): number => Math.max(...[getTRD0(m, t).familyH, getTRD1(m, t).familyH]) + 2 * MARGIN_Y
-
-export const getRootStartX = (m: M, t: T): number => /*getG(m).mapStartX +*/ t.offsetW
-export const getRootStartY = (m: M, t: T): number => /*getG(m).mapStartY +*/ t.offsetH
+export const getRootStartX = (m: M, t: T): number => t.offsetW
+export const getRootStartY = (m: M, t: T): number => t.offsetH
 export const getRootW = (m: M, t: T): number => getTRD0(m, t).familyW + getTRD1(m, t).familyW + t.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, t) + hasTaskRight(m, t)) + 2 * MARGIN_X
 export const getRootH = (m: M, t: T): number => Math.max(...[t.selfH, getTRD0(m, t).familyH, getTRD1(m, t).familyH]) + 2 * MARGIN_Y
 

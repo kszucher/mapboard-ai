@@ -20,8 +20,6 @@ export interface GSaveOptional {
 }
 
 export interface GSaveNever {
-  mapStartX: number
-  mapStartY: number
   mapWidth: number
   mapHeight: number
   sLineDeltaXDefault: number
