@@ -1,8 +1,8 @@
-import React, {FC, Fragment,} from "react"
+import {FC, Fragment,} from "react"
 import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {adjust} from "../../utils/Utils";
+import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP} from "../../state/Consts"
 import {getColors} from "../assets/Colors"
 import {getTSI1, getTSI2, getCountTCO1, getCountTSO1, getG, getNodeById, getPathDir, getPathPattern, isD, isR, isS, mT} from "../../selectors/MapSelector"
@@ -95,7 +95,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
                 />
               }
               {
-                [...Array(4)].map((el, i) => (
+                [...Array(4)].map((_, i) => (
                   <circle
                     key={`${ti.nodeId}_svg_taskCircle${i + 1}`}
                     id={'taskCircle'}

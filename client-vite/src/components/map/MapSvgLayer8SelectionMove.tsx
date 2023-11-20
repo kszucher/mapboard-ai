@@ -1,15 +1,13 @@
-import React, {FC, Fragment,} from "react"
+import {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {getColors} from "../assets/Colors"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getBezierLinePath, getBezierLinePoints} from "./MapSvgUtils"
 
 export const MapSvgLayer8SelectionMove: FC = () => {
-  const m = useSelector((state:RootState) => mSelector(state))
   const moveCoords = useSelector((state: RootState) => state.editor.moveCoords)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

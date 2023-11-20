@@ -1,6 +1,6 @@
 import {Button, Dialog, Flex, Grid, Select, Text, TextField} from "@radix-ui/themes"
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes"
-import React, {useState} from "react"
+import {useState} from "react"
 import {useCreateShareMutation} from "../../apis/NodeApi"
 import {AccessTypes} from "../../state/Enums"
 import {getMapId} from "../../state/NodeApiState"

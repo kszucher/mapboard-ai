@@ -50,7 +50,7 @@ export const isXD = (m: M): boolean => isD(getX(m).path)
 export const isTS = (t: T): boolean => isS(t.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
-export const getRDSCIPL = (p: PT): PT[] => p.map((pi, i) => p.slice(0, i)).filter(pi => (['r', 'd', 's'].includes(pi.at(-2)) || pi.at(-3) === 'c' )).map(el => el as PT)
+export const getRDSCIPL = (p: PT): PT[] => p.map((_, i) => p.slice(0, i)).filter(pi => (['r', 'd', 's'].includes(pi.at(-2)) || pi.at(-3) === 'c' )).map(el => el as PT)
 export const getRSIPL = (p: PT): PT[] => getRDSCIPL(p).filter(pi => !isD(pi) && !isC(pi))
 const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string')) as PT
 const getSI2 = (p: PT) => getSI1(getSI1(p))
@@ -65,7 +65,6 @@ const isSI1 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, ge
 const isSI2 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI2(p))
 const isSI1U = (p: PT, pt: PT): boolean => isSU(getSI1(p), pt)
 export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
-const isSO = (p: PT, pt: PT): boolean => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
 const isSO2 = (p: PT, pt: PT): boolean => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
 const isCO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
@@ -76,7 +75,6 @@ const isCU1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt
 const isCR1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) + 1
 const isCL1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) - 1
 const isSCO = (p: PT, pt: PT): boolean => pt.length >= p.length + 3 && isEqual(pt.slice(0, p.length), p) && pt.at(p.length) === 'c'
-const isSCXX = (p: PT, pt: PT): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p)
 const isSCYY = (p: PT, pt: PT): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) > 0 && pt.at(-1) > 0
 const isSCR0 = (p: PT, pt: PT): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-2) === 0
 const isSCC0 = (p: PT, pt: PT): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-1) === 0
@@ -205,14 +203,14 @@ export const getTextColor = (m: M): TSaveOptional['textColor'] => isArrayOfEqual
 export const hasTaskRight = (m: M, t: T): number => +getTRD0SO(m, t).some(ti => ti.taskStatus !== 0)
 export const hasTaskLeft = (m: M, t: T): number => +getTRD1SO(m, t).some(ti => ti.taskStatus !== 0)
 
-export const getRootStartX = (m: M, t: T): number => t.offsetW
-export const getRootStartY = (m: M, t: T): number => t.offsetH
+export const getRootStartX = (t: T): number => t.offsetW
+export const getRootStartY = (t: T): number => t.offsetH
 export const getRootW = (m: M, t: T): number => getTRD0(m, t).familyW + getTRD1(m, t).familyW + t.selfW  + getTaskWidth(getG(m)) * (hasTaskLeft(m, t) + hasTaskRight(m, t)) + 2 * MARGIN_X
 export const getRootH = (m: M, t: T): number => Math.max(...[t.selfH, getTRD0(m, t).familyH, getTRD1(m, t).familyH]) + 2 * MARGIN_Y
 
-export const getRootMidX = (m: M, t: T): number => getRootStartX(m, t) + getRootW(m, t) / 2
-export const getRootMidY = (m: M, t: T): number => getRootStartY(m, t) + getRootH(m, t) / 2
-export const getRootEndX = (m: M, t: T): number => getRootStartX(m, t) + getRootW(m, t)
-export const getRootEndY = (m: M, t: T): number => getRootStartY(m, t) + getRootH(m, t)
+export const getRootMidX = (m: M, t: T): number => getRootStartX(t) + getRootW(m, t) / 2
+export const getRootMidY = (m: M, t: T): number => getRootStartY(t) + getRootH(m, t) / 2
+export const getRootEndX = (m: M, t: T): number => getRootStartX(t) + getRootW(m, t)
+export const getRootEndY = (m: M, t: T): number => getRootStartY(t) + getRootH(m, t)
 
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li => l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId)

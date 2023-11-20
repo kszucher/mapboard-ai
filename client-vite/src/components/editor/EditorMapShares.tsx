@@ -1,5 +1,4 @@
 import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
-import React from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {DialogState} from "../../state/Enums"

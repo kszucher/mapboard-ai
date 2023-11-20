@@ -1,7 +1,6 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
-import React from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {nodeApi} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {SettingsIcon} from "../assets/Icons"
 

@@ -156,7 +156,7 @@ export const editorSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(
-      isAction, (state, action) => {}
+      isAction, () => {}
     )
     builder.addMatcher(
       nodeApi.endpoints.signIn.matchFulfilled,
@@ -177,7 +177,7 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       nodeApi.endpoints.getGptSuggestions.matchFulfilled,
       (state, { payload }) => {
-        const { promptId, promptJson, prompt, maxToken, gptSuggestions } = payload
+        const { promptId, gptSuggestions } = payload
         console.log(payload)
         if (gptSuggestions) {
           const pm = current(state.mapList[state.mapListIndex])
@@ -203,7 +203,7 @@ export const editorSlice = createSlice({
     )
     builder.addMatcher(
       nodeApi.endpoints.saveMap.matchFulfilled,
-      (state) => {
+      () => {
         console.log('save completed')
       }
     )

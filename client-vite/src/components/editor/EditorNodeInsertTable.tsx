@@ -1,5 +1,5 @@
 import {Button, Dialog, Flex, Grid, Select, Text} from "@radix-ui/themes"
-import React, {useState} from "react"
+import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {isXR, isXS} from "../../selectors/MapSelector"

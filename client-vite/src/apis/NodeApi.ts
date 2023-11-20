@@ -34,7 +34,7 @@ export const nodeApi = createApi({
     }),
     openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'openWorkspace' } }),
-      async onQueryStarted(arg, { dispatch, getState }) {
+      async onQueryStarted(_, { dispatch, getState }) {
         const editor = (getState() as RootState).editor
         if (editor.mapList.length > 1) {
           console.log('save by listener')
@@ -114,7 +114,7 @@ export const nodeApi = createApi({
     }),
     deleteAccount: builder.mutation<void, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'deleteAccount' } }),
-      async onQueryStarted(arg, { dispatch }) {
+      async onQueryStarted(_, { dispatch }) {
         dispatch(actions.resetState())
         dispatch(nodeApi.util.resetApiState()
         )},

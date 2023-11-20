@@ -1,7 +1,6 @@
 import {useAuth0} from "@auth0/auth0-react"
 import {AlertDialog, DropdownMenu, IconButton} from "@radix-ui/themes"
-import React from "react"
-import {useDispatch, useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
 import {nodeApi} from "../../apis/NodeApi"
 import {actions, AppDispatch} from "../../reducers/EditorReducer"
 import {UserIcon} from "../assets/Icons"

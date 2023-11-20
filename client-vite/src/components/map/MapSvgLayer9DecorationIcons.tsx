@@ -1,20 +1,16 @@
-import React, {FC} from "react"
-import {useDispatch, useSelector} from "react-redux"
-import {AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {FC} from "react"
+import {useSelector} from "react-redux"
+import {RootState} from "../../reducers/EditorReducer"
 import {getSubProcessList} from "../../selectors/MapProcess"
 import {mTR} from "../../selectors/MapSelector"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {ControlTypes} from "../../state/Enums"
 import {T} from "../../state/MapStateTypes"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
+import {getMapId} from "../../state/NodeApiState"
 
 export const MapSvgLayer9DecorationIcons: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
-  const { data } = useOpenWorkspaceQuery()
-  const { colorMode } = data || defaultUseOpenWorkspaceQueryState
-  const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
       {mTR(m).map((t: T) => (
@@ -32,14 +28,14 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
                 e.stopPropagation()
                 let input = document.createElement('input')
                 input.type = 'file'
-                input.onchange = (e) => {
+                input.onchange = () => {
                   let files = Array.from(input.files!)
                   const formData = new FormData()
                   formData.append('username', 'Sandra Rodgers')
                   formData.append('files', files[0])
                   fetch('http://localhost:8080/upload_files', {method: 'post', body: formData})
                     .then((res) => console.log(res))
-                    .catch((err) => {})
+                    .catch(() => {})
                 }
                 input.click()
               }}/>

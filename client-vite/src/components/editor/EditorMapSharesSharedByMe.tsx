@@ -1,13 +1,9 @@
-import {Button, Dialog, Flex, Link, Table, TableBody} from "@radix-ui/themes"
-import React from "react"
-import {useDispatch} from "react-redux"
-import {nodeApi, useGetSharesQuery} from "../../apis/NodeApi"
-import {AppDispatch} from "../../reducers/EditorReducer"
+import {Button, Dialog, Flex, Table, TableBody} from "@radix-ui/themes"
+import {useGetSharesQuery} from "../../apis/NodeApi"
 
 export const EditorMapSharesSharedByMe = () => {
   const { data } = useGetSharesQuery()
   let { shareDataExport } = data || { shareDataExport: []}
-  const dispatch = useDispatch<AppDispatch>()
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
       <Dialog.Title>{'Maps Shared By Me'}</Dialog.Title>

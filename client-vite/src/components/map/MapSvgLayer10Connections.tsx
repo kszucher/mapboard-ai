@@ -1,10 +1,8 @@
-import React, {FC} from "react"
+import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import { mTR, isExistingLink, mL} from "../../selectors/MapSelector"
 import {adjustIcon} from "../../utils/Utils"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {Sides} from "../../state/Enums"
 import {L, T} from "../../state/MapStateTypes"
@@ -15,8 +13,6 @@ export const MapSvgLayer10Connections: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)
-  const { data } = useOpenWorkspaceQuery()
-  const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>

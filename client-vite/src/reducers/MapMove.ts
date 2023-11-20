@@ -141,7 +141,7 @@ export const moveCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) 
   const cbCr = structuredClone(crToCb(m))
   deleteCR(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 'c', insertTargetRowIndex, 0] as PT
-  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as PT)
+  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as PT)
   cbCr.forEach(ti => Object.assign(ti, {
     path: [...ip.slice(0, -3), 'c', ti.path.at(1) + ip.at(-2), ti.path.at(2), ...ti.path.slice(3)]
   }))
@@ -155,7 +155,7 @@ export const moveCC = (m: M, insertParentNode: T, insertTargetColumnIndex: numbe
   const cbCc = structuredClone(ccToCb(m))
   deleteCC(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 'c', 0, insertTargetColumnIndex] as PT
-  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as PT)
+  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as PT)
   cbCc.forEach(ti => Object.assign(ti, {
     path: [...ip.slice(0, -3), 'c', ti.path.at(1), ti.path.at(2) + ip.at(-1), ...ti.path.slice(3)]
   }))

@@ -1,5 +1,5 @@
-import {Button, Dialog, Flex, Text, TextArea} from "@radix-ui/themes"
-import React, {useState} from "react"
+import {Button, Dialog, Flex, TextArea} from "@radix-ui/themes"
+import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getX} from "../../selectors/MapSelector"

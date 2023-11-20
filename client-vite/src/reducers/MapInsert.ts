@@ -33,14 +33,14 @@ export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, at
 }
 
 export const insertCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) => {
-  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as PT)
+  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as PT)
   makeSpaceFromCr(m, ipList, 1)
   m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8), path: p}  as N)))
   m.sort(sortPath)
 }
 
 export const insertCC = (m: M, insertParentNode: T, insertTargetColumnIndex: number) => {
-  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((el, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as PT)
+  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as PT)
   makeSpaceFromCc(m, ipList, 1)
   m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8), path: p} as N)))
   m.sort(sortPath)

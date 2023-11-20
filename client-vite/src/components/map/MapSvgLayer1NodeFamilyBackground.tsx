@@ -1,4 +1,4 @@
-import React, {FC, Fragment} from "react"
+import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {mT} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"

@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import React, {FC, useEffect, useState} from "react"
+import {FC, useEffect, useState} from "react"
 import {useAuth0} from "@auth0/auth0-react"
 import {nodeApi} from "../../apis/NodeApi"
 import {authAudienceUrl} from "../../apis/Urls"
@@ -11,7 +11,7 @@ export const Landing: FC = () => {
   const colorMode = 'dark'
   const token = useSelector((state: RootState) => state.editor.token)
   const [isWaiting, setIsWaiting] = useState(false)
-  const { loginWithRedirect, getAccessTokenSilently, isAuthenticated } = useAuth0()
+  const { loginWithRedirect, getAccessTokenSilently } = useAuth0()
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {

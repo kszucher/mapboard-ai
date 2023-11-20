@@ -59,15 +59,15 @@ export const getLinePathBetweenRoots = (m: M, l: L) => {
   let sx = 0, sy = 0, c1x = 0, c1y = 0
   switch (fromNodeSide) {
     case Sides.R: sx = getRootEndX(m, fromNode); sy = getRootMidY(m, fromNode); c1x = sx + 100; c1y = sy; break
-    case Sides.L: sx = getRootStartX(m, fromNode); sy = getRootMidY(m, fromNode); c1x = sx - 100; c1y = sy; break
-    case Sides.T: sx = getRootMidX(m, fromNode); sy = getRootStartY(m, fromNode); c1x = sx; c1y = sy - 100; break
+    case Sides.L: sx = getRootStartX(fromNode); sy = getRootMidY(m, fromNode); c1x = sx - 100; c1y = sy; break
+    case Sides.T: sx = getRootMidX(m, fromNode); sy = getRootStartY(fromNode); c1x = sx; c1y = sy - 100; break
     case Sides.B: sx = getRootMidX(m, fromNode); sy = getRootEndY(m, fromNode); c1x = sx; c1y = sy + 100; break
   }
   let ex = 0, ey = 0, c2x = 0, c2y = 0
   switch (toNodeSide) {
     case Sides.R: ex = getRootEndX(m, toNode); ey = getRootMidY(m, toNode); c2x = ex + 100; c2y = ey; break
-    case Sides.L: ex = getRootStartX(m, toNode); ey = getRootMidY(m, toNode); c2x = ex - 100; c2y = ey; break
-    case Sides.T: ex = getRootMidX(m, toNode); ey = getRootStartY(m, toNode); c2x = ex; c2y = ey - 100; break
+    case Sides.L: ex = getRootStartX(toNode); ey = getRootMidY(m, toNode); c2x = ex - 100; c2y = ey; break
+    case Sides.T: ex = getRootMidX(m, toNode); ey = getRootStartY(toNode); c2x = ex; c2y = ey - 100; break
     case Sides.B: ex = getRootMidX(m, toNode); ey = getRootEndY(m, toNode); c2x = ex; c2y = ey + 100;  break
   }
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
@@ -204,7 +204,7 @@ export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 export const getTaskStartPoint = (m: M, g: G, t: T) => {
   switch (true) {
     case getPathDir(t.path) === 1 && !isCON(t.path): return getRootEndX(m, getTR(m, t)) - getTaskWidth(g)
-    case getPathDir(t.path) === -1 && !isCON(t.path): return getRootStartX(m, getTR(m, t)) + getTaskWidth(g)
+    case getPathDir(t.path) === -1 && !isCON(t.path): return getRootStartX(getTR(m, t)) + getTaskWidth(g)
     case getPathDir(t.path) === 1 && isCON(t.path): return getTSIC(m, t).nodeEndX - 120
     case getPathDir(t.path) === -1 && isCON(t.path): return getTSIC(m, t).nodeStartX + 120
     default: return 0
@@ -213,7 +213,7 @@ export const getTaskStartPoint = (m: M, g: G, t: T) => {
 
 export const getRootSideX = (m: M, t: T, side: string) => {
   switch (true) {
-    case (side === 'L'): return getRootStartX(m, t)
+    case (side === 'L'): return getRootStartX(t)
     case (side === 'R'): return getRootEndX(m, t) - 24
     case (side === 'T'): return getRootMidX(m, t) - 12
     case (side === 'B'): return getRootMidX(m, t) - 12
@@ -225,19 +225,19 @@ export const getRootSideY = (m: M, t: T, side: string) => {
   switch (true) {
     case (side === 'L'): return getRootMidY(m, t) - 12
     case (side === 'R'): return getRootMidY(m, t) - 12
-    case (side === 'T'): return getRootStartY(m, t)
+    case (side === 'T'): return getRootStartY(t)
     case (side === 'B'): return getRootEndY(m, t) - 24
     default: return 0
   }
 }
 
 export const calculateMiddlePoint = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[]) => {
-  const t = 0.5; // t = 0.5 for calculating the middle point
-  const mt = 1 - t;
-  const bx = mt * mt * mt * sx + 3 * mt * mt * t * c1x + 3 * mt * t * t * c2x + t * t * t * ex;
-  const by = mt * mt * mt * sy + 3 * mt * mt * t * c1y + 3 * mt * t * t * c2y + t * t * t * ey;
+  const t = 0.5 // t = 0.5 for calculating the middle point
+  const mt = 1 - t
+  const bx = mt * mt * mt * sx + 3 * mt * mt * t * c1x + 3 * mt * t * t * c2x + t * t * t * ex
+  const by = mt * mt * mt * sy + 3 * mt * mt * t * c1y + 3 * mt * t * t * c2y + t * t * t * ey
   return {
     x: bx,
     y: by
-  };
-};
+  }
+}

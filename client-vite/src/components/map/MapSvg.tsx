@@ -1,4 +1,4 @@
-import React, {FC} from "react"
+import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getCountTCO1, getG, getR0, isXACC, isXACR, isXC} from "../../selectors/MapSelector"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"

@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react'
+import {FC, Fragment, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import mermaid from "mermaid"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -90,12 +90,12 @@ export const Editor: FC = () => {
                         {breadcrumbMapNameList[0].name}
                       </Button>
                       {breadcrumbMapNameList.slice(1).map((el, index) => (
-                        <React.Fragment key={index}>
+                        <Fragment key={index}>
                           <ChevronRightIcon/>
                           <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
                             {el.name}
                           </Button>
-                        </React.Fragment>
+                        </Fragment>
                       ))}
                       {frameId !== '' &&
                         <>

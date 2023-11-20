@@ -1,5 +1,5 @@
 import {AlertDialog, Button, Flex} from "@radix-ui/themes"
-import React, {FC} from "react"
+import {FC} from "react"
 import {useDispatch} from "react-redux"
 import {nodeApi} from "../../apis/NodeApi"
 import {AppDispatch} from "../../reducers/EditorReducer"

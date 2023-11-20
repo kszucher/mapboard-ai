@@ -1,5 +1,4 @@
-import {Button, Dialog, Flex, Link, Table, TableBody} from "@radix-ui/themes"
-import React from "react"
+import {Button, Dialog, Flex, Table, TableBody} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import {nodeApi, useGetSharesQuery} from "../../apis/NodeApi"
 import {AppDispatch} from "../../reducers/EditorReducer"

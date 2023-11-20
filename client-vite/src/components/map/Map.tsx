@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef} from "react"
+import {FC, useEffect, useRef} from "react"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
 import {MapSvg} from "./MapSvg"
@@ -14,7 +14,7 @@ export const Map: FC = () => {
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
-  const { density, alignment } = g
+  const { density } = g
   const { data } = useOpenWorkspaceQuery()
   const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState
 
@@ -33,7 +33,7 @@ export const Map: FC = () => {
   useEffect(() => {
     const abortController = new AbortController()
     const { signal } = abortController
-    window.addEventListener('resize', (e) => {
+    window.addEventListener('resize', () => {
       setScrollLeft((window.innerWidth + g.mapWidth) / 2)
     }, { signal })
     return () => abortController.abort()

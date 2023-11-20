@@ -1,5 +1,4 @@
 import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
-import React from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {nodeApi} from "../../apis/NodeApi"
 import {AppDispatch, RootState} from "../../reducers/EditorReducer"

@@ -185,7 +185,7 @@ export const Window: FC = () => {
     })
   }
 
-  const mouseup = (e: MouseEvent) => {
+  const mouseup = () => {
     dispatch(actions.clearConnectionStart())
   }
 

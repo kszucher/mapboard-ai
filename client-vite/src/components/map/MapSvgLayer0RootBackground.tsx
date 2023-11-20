@@ -1,9 +1,8 @@
-import React, {FC, Fragment,} from "react"
+import {FC, Fragment,} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {N, T} from "../../state/MapStateTypes"
+import {T} from "../../state/MapStateTypes"
 import colors from "tailwindcss/colors"
-import {getColors} from "../assets/Colors"
 import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR, mT} from "../../selectors/MapSelector"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
@@ -15,7 +14,6 @@ export const MapSvgLayer0RootBackground: FC = () => {
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
-  const C = getColors(colorMode)
   return (
     <>
       <g>
@@ -43,8 +41,8 @@ export const MapSvgLayer0RootBackground: FC = () => {
               isR(t.path) &&
               <rect
                 key={`${g.nodeId}_svg_root_background`}
-                x={getRootStartX(m, t)}
-                y={getRootStartY(m, t)}
+                x={getRootStartX(t)}
+                y={getRootStartY(t)}
                 width={getRootW(m, t)}
                 height={getRootH(m, t)}
                 rx={32}

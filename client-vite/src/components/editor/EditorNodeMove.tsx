@@ -1,5 +1,4 @@
 import {Button, DropdownMenu} from "@radix-ui/themes"
-import React from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getCountXASD, getCountXASU, getCountXSO1, getCountXSO2, isDirL, isDirR, isXASVN, isXDS, isXR, isXS} from "../../selectors/MapSelector"

@@ -1,5 +1,5 @@
 import {Auth0Provider} from "@auth0/auth0-react"
-import React, {FC} from 'react'
+import {FC} from 'react'
 import {useSelector} from "react-redux"
 import {RootState} from "../../reducers/EditorReducer"
 import {Landing} from "../landing/Landing"
