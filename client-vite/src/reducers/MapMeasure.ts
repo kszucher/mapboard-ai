@@ -43,8 +43,10 @@ export const mapMeasure = (pm: M, m: M) => {
       }
     }
   })
-  mTR(m).map(el => el.offsetW -= Math.min(...mTR(m).map(ri => ri.offsetW)))
-  mTR(m).map(el => el.offsetH -= Math.min(...mTR(m).map(ri => ri.offsetH)))
+  const minOffsetW = Math.min(...mTR(m).map(ri => ri.offsetW))
+  const minOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
+  mTR(m).map(el => el.offsetW -= minOffsetW)
+  mTR(m).map(el => el.offsetH -= minOffsetH)
   const mapWidth = Math.max(...mTR(m).map(ri =>
     ri.offsetW +
     getTaskWidth(getG(m)) * hasTaskRight(m, ri) +
