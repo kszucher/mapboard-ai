@@ -12,12 +12,10 @@ export const gSaveOptional = {
 } as GSaveOptional
 
 export const gSaveNever = {
+  mapStartX: 0,
+  mapStartY: 0,
   mapWidth: 0,
   mapHeight: 0,
-  minX: 0,
-  maxX: 0,
-  minY: 0,
-  maxY: 0,
   sLineDeltaXDefault: 0,
 } as GSaveNever
 

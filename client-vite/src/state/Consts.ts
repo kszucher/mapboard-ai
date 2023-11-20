@@ -1,7 +1,7 @@
 export const TASK_CIRCLES_GAP = 4
 export const TASK_CIRCLES_NUM = 4
 export const MARGIN_X = 60
-export const MARGIN_Y = 80
+export const MARGIN_Y = 60
 export const MIN_NODE_W = 20
 export const MIN_NODE_H = 20
 export const NODE_MARGIN_X_LARGE = 16

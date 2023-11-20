@@ -46,8 +46,8 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
     linkType: tSaveOptional.linkType,
     link: tSaveOptional.link,
-    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) - getG(preLoadCbR).minX + getG(m).mapWidth : ti.offsetW,
-    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) - getG(preLoadCbR).minY + getG(m).mapHeight : ti.offsetH,
+    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) - getG(preLoadCbR).mapStartX + getG(m).mapWidth : ti.offsetW,
+    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) - getG(preLoadCbR).mapStartY + getG(m).mapHeight : ti.offsetH,
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)

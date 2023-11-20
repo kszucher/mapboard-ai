@@ -21,8 +21,8 @@ export const insertR = (m: M) => {
   mapInit(preLoadNewRoot)
   mapMeasure(preLoadNewRoot, preLoadNewRoot)
   newRoot.forEach(ti => Object.assign(ti, {
-    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) - getG(preLoadNewRoot).minX + getG(m).mapWidth : ti.offsetW,
-    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) - getG(preLoadNewRoot).minY + getG(m).mapHeight : ti.offsetH,
+    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) - getG(preLoadNewRoot).mapStartX + getG(m).mapWidth : ti.offsetW,
+    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) - getG(preLoadNewRoot).mapStartY + getG(m).mapHeight : ti.offsetH,
   }))
   unselectNodes(m)
   m.push(...newRoot)

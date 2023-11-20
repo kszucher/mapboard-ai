@@ -43,23 +43,58 @@ export const mapMeasure = (pm: M, m: M) => {
       }
     }
   })
-  let minX = Infinity
-  let maxX = -Infinity
-  let minY = Infinity
-  let maxY = -Infinity
-  mTR(m).forEach(ri => {
-    const trd0 = getTRD0(m, ri)
-    const trd1 = getTRD1(m, ri)
-    const wr = ri.offsetW + ri.selfW + trd0.familyW + getTaskWidth(getG(m)) * hasTaskRight(m, ri)
-    const wl = ri.offsetW - trd1.familyW - getTaskWidth(getG(m)) * hasTaskLeft(m, ri)
-    if (wl < minX) {minX = wl}
-    if (wr > maxX) {maxX = wr}
-    if ((ri.offsetH - trd0.familyH / 2) < minY) {minY = ri.offsetH - trd0.familyH / 2}
-    if ((ri.offsetH - trd1.familyH / 2) < minY) {minY = ri.offsetH - trd1.familyH / 2}
-    if ((ri.offsetH + trd0.familyH / 2) > maxY) {maxY = ri.offsetH + trd0.familyH / 2}
-    if ((ri.offsetH + trd1.familyH / 2) > maxY) {maxY = ri.offsetH + trd1.familyH / 2}
-  })
-  let mapWidth = maxX - minX + 2 * MARGIN_X
-  let mapHeight = maxY - minY + 2 * MARGIN_Y
-  Object.assign(getG(m), {maxX, minX, maxY, minY, mapWidth, mapHeight})
+
+  // let minX = Infinity
+  // let maxX = -Infinity
+  // let minY = Infinity
+  // let maxY = -Infinity
+  // mTR(m).forEach(ri => {
+  //   const trd0 = getTRD0(m, ri)
+  //   const trd1 = getTRD1(m, ri)
+  //   const wl = ri.offsetW
+  //   const wr = ri.offsetW + getTaskWidth(getG(m)) * hasTaskLeft(m, ri) + trd1.familyW + ri.selfW + trd0.familyW + getTaskWidth(getG(m)) * hasTaskRight(m, ri)
+  //   if (wl < minX) {minX = wl}
+  //   if (wr > maxX) {maxX = wr}
+  //   if ((ri.offsetH - trd0.familyH / 2) < minY) {minY = ri.offsetH - trd0.familyH / 2}
+  //   if ((ri.offsetH - trd1.familyH / 2) < minY) {minY = ri.offsetH - trd1.familyH / 2}
+  //   if ((ri.offsetH + trd0.familyH / 2) > maxY) {maxY = ri.offsetH + trd0.familyH / 2}
+  //   if ((ri.offsetH + trd1.familyH / 2) > maxY) {maxY = ri.offsetH + trd1.familyH / 2}
+  // })
+  // let mapWidth = maxX - minX + 2 * MARGIN_X
+  // let mapHeight = maxY - minY + 2 * MARGIN_Y
+
+  const minOffsetW = Math.min(...mTR(m).map(ri => ri.offsetW))
+  const minOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
+
+  mTR(m).map(el => el.offsetW -= minOffsetW)
+  mTR(m).map(el => el.offsetH -= minOffsetH)
+
+
+  const mapStartX = Math.min(...mTR(m).map(ri =>
+    ri.offsetW
+  ))
+  const mapEndX = Math.max(...mTR(m).map(ri =>
+    ri.offsetW +
+    getTaskWidth(getG(m)) * hasTaskRight(m, ri) +
+    getTaskWidth(getG(m)) * hasTaskLeft(m, ri) +
+    getTRD0(m, ri).familyW +
+    getTRD1(m, ri).familyW +
+    MARGIN_X * 2 +
+    ri.selfW
+  ))
+  const mapStartY = Math.min(...mTR(m).map(ri =>
+    ri.offsetH
+  ))
+
+  console.log(mapStartX, mapStartY)
+
+  const mapEndY = Math.max(...mTR(m).map(ri =>
+    ri.offsetH +
+    Math.max(...[ri.selfH, getTRD0(m, ri).familyH, getTRD1(m, ri).familyH]) +
+    MARGIN_Y * 2
+  ))
+  const mapWidth = mapEndX - mapStartX
+  const mapHeight = mapEndY - mapStartY
+
+  Object.assign(getG(m), {mapStartX, mapStartY, mapWidth, mapHeight})
 }
