@@ -1,4 +1,4 @@
-import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getG, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
+import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getG, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, mTR, rToCb, sortPath, sToCb} from "../selectors/MapSelector"
 import {tSaveOptional} from "../state/MapState"
 import {M, T, PT, L, PL, PTR} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
@@ -41,8 +41,12 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
     linkType: tSaveOptional.linkType,
     link: tSaveOptional.link,
-    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) + getG(m).mapWidth : ti.offsetW,
-    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) + getG(m).mapHeight : ti.offsetH,
+  }))
+  const nonSelectedMinOffsetW = Math.min(...mTR(cbR).map(ri => ri.offsetW))
+  const nonSelectedMinOffsetH = Math.min(...mTR(cbR).map(ri => ri.offsetH))
+  mTR(cbR).map(ri => Object.assign(ri, {
+    offsetW:  (ri.offsetW ? ri.offsetW : tSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).mapWidth,
+    offsetH:  (ri.offsetH ? ri.offsetH : tSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).mapHeight
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)
