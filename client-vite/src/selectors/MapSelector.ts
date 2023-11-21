@@ -213,4 +213,6 @@ export const getRootMidY = (m: M, t: T): number => getRootStartY(t) + getRootH(m
 export const getRootEndX = (m: M, t: T): number => getRootStartX(t) + getRootW(m, t)
 export const getRootEndY = (m: M, t: T): number => getRootStartY(t) + getRootH(m, t)
 
-export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li => l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId)
+export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li =>
+  l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId && l.fromNodeSide  === li.fromNodeSide && l.toNodeSide === li.toNodeSide
+)
