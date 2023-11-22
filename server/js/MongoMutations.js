@@ -624,8 +624,8 @@ async function deleteUnusedMaps(users, maps) {
         $match: {
           $expr: {
             $or: [
-              { $and: [ { $eq: [ { $size: '$path' }, 1 ] }, { $setIsSubset: [ '$path', allTabMap ] } ] },
-              { $gt: [ { $size: '$path' }, 1 ] }
+              { $and: [ { $eq: [ { $size: '$path' }, 0 ] }, { $setIsSubset: [ ['$_id'], allTabMap ] } ] },
+              { $gt: [ { $size: '$path' }, 0 ] }
             ]
           }
         }

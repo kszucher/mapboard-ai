@@ -269,23 +269,23 @@ describe("MongoMutationsTests", async() => {
         {_id: 'user2', tabMapIdList: ['map30'] }
       ],
       maps:  [
-        { _id: 'map10', path: ['map10'] },
-        { _id: 'map11', path: ['map10', 'map11'] },
-        { _id: 'map12', path: ['map10', 'map11', 'map12'] },
-        { _id: 'map20', path: ['map20'] },
-        { _id: 'map22', path: ['map20', 'map21', 'map22'] },
-        { _id: 'map30', path: ['map30'] },
-        { _id: 'map40', path: ['map40'] },
-        { _id: 'map41', path: ['map40', 'map41'] },
+        { _id: 'map10', path: [] },
+        { _id: 'map11', path: ['map10'] },
+        { _id: 'map12', path: ['map10', 'map11'] },
+        { _id: 'map20', path: [] },
+        { _id: 'map22', path: ['map20', 'map21'] },
+        { _id: 'map30', path: [] },
+        { _id: 'map40', path: [] },
+        { _id: 'map41', path: ['map40'] },
       ]
     }
     const modified = await resolveMutation(database, 'deleteUnusedMaps', [users, maps])
     const expected = [
-      { _id: 'map10', path: ['map10'] },
-      { _id: 'map11', path: ['map10', 'map11'] },
-      { _id: 'map12', path: ['map10', 'map11', 'map12'] },
-      { _id: 'map20', path: ['map20'] },
-      { _id: 'map30', path: ['map30'] },
+      { _id: 'map10', path: [] },
+      { _id: 'map11', path: ['map10'] },
+      { _id: 'map12', path: ['map10', 'map11'] },
+      { _id: 'map20', path: [] },
+      { _id: 'map30', path: [] },
     ]
     expect(modified.maps).toEqual(expected)
   })
