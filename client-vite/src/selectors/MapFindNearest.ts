@@ -27,7 +27,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
         } else {
           vCondition = Math.abs(toY - ti.nodeY) <= ti.maxH / 2 + overlap
         }
-        let hCondition = toX < ti.nodeStartX
+        let hCondition = toX > ti.nodeEndX
         if (vCondition && hCondition ) {
           moveInsertParentNode = ti
         }
@@ -35,7 +35,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
     })
     if (moveInsertParentNode.nodeId.length) {
       const moveInsertParentNodeNSO1 = getCountTSO1(m, moveInsertParentNode)
-      const fromX = moveInsertParentNode.path[3] ? moveInsertParentNode.nodeStartX : moveInsertParentNode.nodeEndX
+      const fromX = moveInsertParentNode.nodeEndX
       const fromY = moveInsertParentNode.nodeY
       moveCoords = [fromX, fromY, toX, toY]
       if (moveInsertParentNodeNSO1) {
