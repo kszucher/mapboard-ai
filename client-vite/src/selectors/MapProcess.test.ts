@@ -7,11 +7,10 @@ describe("Process_tests", () => {
   test('getReadableTree', () => expect(getReadableTree(mapInit([
       {nodeId: 'a', path: ['g']},
       {nodeId: 'b', path: ['r', 0], selected: 1, content: 'contentR0'},
-      {nodeId: 'c', path: ['r', 0, 'd', 0]},
-      {nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0], content: 'contentR0D0S0'},
-      {nodeId: 'e', path: ['r', 0, 'd', 0, 's', 1], content: 'contentR0D0S1'},
-      {nodeId: 'f', path: ['r', 0, 'd', 0, 's', 2], content: 'contentR0D0S2'},
-      {nodeId: 'g', path: ['r', 0, 'd', 0, 's', 2, 's', 0], content: 'contentR0D0S2S0'},
+      {nodeId: 'd', path: ['r', 0, 's', 0], content: 'contentR0D0S0'},
+      {nodeId: 'e', path: ['r', 0, 's', 1], content: 'contentR0D0S1'},
+      {nodeId: 'f', path: ['r', 0, 's', 2], content: 'contentR0D0S2'},
+      {nodeId: 'g', path: ['r', 0, 's', 2, 's', 0], content: 'contentR0D0S2S0'},
     ] as MPartial) as M, {nodeId: 'b', path: ['r', 0], selected: 1, content: 'contentR0'} as T)).toEqual([
       {nodeId: 'b', contentList: ['contentR0']},
       {nodeId: 'd', contentList: ['contentR0', 'contentR0D0S0']},

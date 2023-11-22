@@ -10,7 +10,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteLR, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectT, selectTL, selectTToo} from "./MapSelect"
-import {mT, sortNode, sortPath, isCH, isCV, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getXA, getXAEO, getCountXRD0SO1, getCountXRD1SO1, getXSO1, getXSO2, getTRD0, isR, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXFSU1, getXSI2, getXRD1, getXRD0, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getLastSOR, getLastSOL, getXR, getXSIC, getXSCO, mTR} from "../selectors/MapSelector"
+import {mT, sortNode, sortPath, isCH, isCV, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getXA, getXAEO, getXSO1, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXFSU1, getXSI2, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getXR, getXSIC, getXSCO, mTR} from "../selectors/MapSelector"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -25,13 +25,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectXR': selectT(m, getXR(m), 's'); break
     case 'selectSelfX': selectT(m, getX(m), 's'); break
     case 'selectFamilyX': selectT(m, getX(m), 'f'); break
-    case 'selectFamilyXRD0': selectT(m, getXRD0(m), 'f'); break
-    case 'selectFamilyXRD1': selectT(m, getXRD1(m), 'f'); break
     case 'selectSD': selectT(m, getQuasiSD(m), 's'); break
     case 'selectSU': selectT(m, getQuasiSU(m), 's'); break
     case 'selectSO': selectT(m, getLastSO(m), 's'); break
-    case 'selectSOR': selectT(m, getLastSOR(m), 's'); break
-    case 'selectSOL': selectT(m, getLastSOL(m), 's'); break
     case 'selectSI': selectT(m, getXSI1(m), 's'); break
     case 'selectSF': selectT(m, getNodeByPath(m, [...getX(m).path, 's', 0]), 's'); break
     case 'selectCFfirstRow': selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -2 ? 0 : pi) as PT) as T, 's'); break
@@ -55,13 +51,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertR': insertR(m); break
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
     case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1), payload); break
-    case 'insertSOR': insertS(m, getXRD0(m), getCountXRD0SO1(m), payload); break
     case 'insertSO': insertS(m, getX(m), getCountXSO1(m), payload); break
-    case 'insertSORText': insertS(m, getXRD0(m), getCountXRD0SO1(m), {contentType: 'text', content: payload}); break
     case 'insertSOText': insertS(m, getX(m), getCountXSO1(m), {contentType: 'text', content: payload}); break
-    case 'insertSORLink': insertS(m, getXRD0(m), getCountXRD0SO1(m), {contentType: 'text', content: payload, linkType: 'external', link: payload}); break
     case 'insertSOLink': insertS(m, getX(m), getCountXSO1(m), {contentType: 'text', content: payload, linkType: 'external', link: payload}); break
-    case 'insertSORImage': insertS(m, getXRD0(m), getCountXRD0SO1(m), {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insertSOImage': insertS(m, getX(m), getCountXSO1(m), {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insertCRD': insertCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'insertCRU': insertCR(m, getXSI1(m), getCountXCU(m)); break
@@ -71,7 +63,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertCCL': insertCC(m, getXSI1(m), getCountXCL(m)); break
     case 'insertSCCR': insertCC(m, getX(m), getCountXSCH(m)); break
     case 'insertSCCL': insertCC(m, getX(m), 0); break
-    case 'insertSORTable': insertTable(m, getXRD0(m), getCountXRD0SO1(m), payload); break
     case 'insertSOTable': insertTable(m, getX(m), getCountXSO1(m), payload); break
 
     case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
@@ -89,7 +80,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'copyLR': copyLR(m); break
     case 'copyS': copyS(m); break
     case 'pasteLR': pasteLR(m, payload); break
-    case 'pasteSOR': pasteS(m, getXRD0(m), getCountXRD0SO1(m), payload); break
     case 'pasteSO': pasteS(m, getX(m), getCountXSO1(m), payload); break
     case 'duplicateR': duplicateR(m); break;
     case 'duplicateS': duplicateS(m); break;
@@ -99,14 +89,11 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveSB': moveS(m, getXSI1(m), getCountXASD(m)); break
     case 'moveSO': moveS(m, getXFSU1(m), getCountXASU1O1(m)); break
     case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
-    case 'moveSIR': moveS(m, getXRD1(m), getCountXRD1SO1(m)); break
-    case 'moveSIL': moveS(m, getXRD0(m), getCountXRD0SO1(m)); break
     case 'moveByDrag': moveS(m, getNodeById(m, payload.moveInsertParentNodeId), payload.moveTargetIndex); break
     case 'moveCRD': moveCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
     case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
     case 'moveCCL': moveCC(m, getXSI1(m), getCountXCL(m) - 1); break
-    case 'moveS2TOR': moveS2T(m, getXRD0(m), getXSO2(m)); break
     case 'moveS2TO': moveS2T(m, getX(m), getXSO1(m)); break
     case 'transpose': getXSCO(m).forEach(ti => ti.path = [...ti.path.slice(0, getX(m).path.length + 1), ti.path.at(getX(m).path.length + 2), ti.path.at(getX(m).path.length + 1), ...ti.path.slice(getX(m).path.length + 3)] as PT); break
 
@@ -126,11 +113,11 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setLineType': getXA(m).forEach(ti => Object.assign(ti, {lineType: payload})); break
     case 'setLineColor': getXA(m).forEach(ti => Object.assign(ti, {lineColor: payload})); break
     case 'setSBorderWidth': getXA(m).forEach(ti => Object.assign(ti, {sBorderWidth: payload})); break
-    case 'setFBorderWidth': getXA(m).forEach(ti => Object.assign(isR(ti.path) ? getTRD0(m, ti) : ti, {fBorderWidth: payload})); break
+    case 'setFBorderWidth': getXA(m).forEach(ti => Object.assign(ti, {fBorderWidth: payload})); break
     case 'setSBorderColor': getXA(m).forEach(ti => Object.assign(ti, {sBorderColor: payload})); break
-    case 'setFBorderColor': getXA(m).forEach(ti => Object.assign(isR(ti.path) ? getTRD0(m, ti) : ti, {fBorderColor: payload})); break
+    case 'setFBorderColor': getXA(m).forEach(ti => Object.assign(ti, {fBorderColor: payload})); break
     case 'setSFillColor': getXA(m).forEach(ti => Object.assign(ti, {sFillColor: payload})); break
-    case 'setFFillColor': getXA(m).forEach(ti => Object.assign(isR(ti.path) ? getTRD0(m, ti) : ti, {fFillColor: payload})); break
+    case 'setFFillColor': getXA(m).forEach(ti => Object.assign(ti, {fFillColor: payload})); break
     case 'setTextFontSize': getXA(m).forEach(ti => Object.assign(ti, {textFontSize: payload})); break
     case 'setTextColor': getXA(m).forEach(ti => Object.assign(ti, {textColor: payload})); break
     case 'setBlur': getXA(m).forEach(ti => Object.assign(ti, {blur: 1})); break
@@ -142,9 +129,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'clearLlmData': Object.assign(getX(m), {llmDataType: tSaveOptional.llmDataType, llmDataId: tSaveOptional.llmDataId}); break
     case 'clearLine': getXA(m).forEach(ti => Object.assign(ti, {lineWidth: tSaveOptional.lineWidth, lineType: tSaveOptional.lineType, lineColor: tSaveOptional.lineColor})); break
     case 'clearSBorder': getXA(m).forEach(ti => Object.assign(ti, {sBorderWidth: tSaveOptional.sBorderWidth, sBorderColor: tSaveOptional.sBorderColor})); break
-    case 'clearFBorder': getXA(m).forEach(ti => Object.assign(isR(ti.path) ? getTRD0(m, ti) : ti, {fBorderWidth: tSaveOptional.fBorderWidth, fBorderColor: tSaveOptional.fBorderColor})); break
+    case 'clearFBorder': getXA(m).forEach(ti => Object.assign(ti, {fBorderWidth: tSaveOptional.fBorderWidth, fBorderColor: tSaveOptional.fBorderColor})); break
     case 'clearSFill': getXA(m).forEach(ti => Object.assign(ti, {sFillColor: tSaveOptional.sFillColor})); break
-    case 'clearFFill': getXA(m).forEach(ti => Object.assign(isR(ti.path) ? getTRD0(m, ti) : ti, {fFillColor: tSaveOptional.fFillColor})); break
+    case 'clearFFill': getXA(m).forEach(ti => Object.assign(ti, {fFillColor: tSaveOptional.fFillColor})); break
     case 'clearText': getXA(m).forEach(ti => Object.assign(ti, {textColor: tSaveOptional.textColor, textFontSize: tSaveOptional.textFontSize})); break
     case 'clearBlur': getXA(m).forEach(ti => Object.assign(ti, {blur: tSaveOptional.blur})); break
   }

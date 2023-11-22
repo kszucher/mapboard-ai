@@ -12,8 +12,6 @@ export const insertL = (m: M, lPartial: LPartial) => {
 export const insertR = (m: M) => {
   const newRoot = [
     {nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['r', getRiL(m) + 1], selected: 1, content: 'New Root'},
-    {nodeId: IS_TESTING ? 'u' : 'node' + genHash(8), path: ['r', getRiL(m) + 1, 'd', 0]},
-    {nodeId: IS_TESTING ? 'v' : 'node' + genHash(8), path: ['r', getRiL(m) + 1, 'd', 1]},
   ] as T[]
   newRoot.forEach(ti => Object.assign(ti, {
     offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) + getG(m).mapWidth : ti.offsetW,

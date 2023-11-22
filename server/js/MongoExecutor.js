@@ -17,6 +17,7 @@ async function mongoExecutorCommands (users, maps, shares) {
   // await MongoMutations.removeNodeProp(maps, 'nodeId')
   // await MongoMutations.createNodeProp(maps, 'nodeId', genNodeId())
   // await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'taskStatus', -1, 0)
+  // await MongoMutations.deleteUnusedMaps(users, maps)
 
   // await maps.updateMany({}, [
   //   {

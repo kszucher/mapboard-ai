@@ -1,6 +1,6 @@
 import {M, T} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
-import {getCountTSO1, getNodeByPath, sortPath, mT, isSEO, getTR, getRDSCIPL, getTRD0SO, getTRD1SO, getTRD0, getTRD1} from "./MapSelector"
+import {getCountTSO1, getNodeByPath, sortPath, mT, isSEO, getTR, getRDSCIPL} from "./MapSelector"
 
 export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
@@ -17,8 +17,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
     const aboveRoot = toY >= nr.nodeY
     const belowRoot = toY < nr.nodeY
     const overlap = 6
-    const stuff = [getTRD0(mT(m), moveNode), ...getTRD0SO(mT(m), moveNode), getTRD1(mT(m), moveNode), ...getTRD1SO(mT(m), moveNode)]
-    stuff.forEach(ti => {
+    mT(m).filter(ti => ti.path.at(1) === nr.path.at(1) /*&& ti.path.length > 2*/).forEach(ti => {
       if (!isSEO(moveNode.path, ti.path)) {
         let vCondition
         if (ti.isTop && belowRoot) {
@@ -28,7 +27,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
         } else {
           vCondition = Math.abs(toY - ti.nodeY) <= ti.maxH / 2 + overlap
         }
-        let hCondition = (ti.path[3] === 0 && toX > ti.nodeEndX) || (ti.path[3] === 1 && toX < ti.nodeStartX)
+        let hCondition = toX < ti.nodeStartX
         if (vCondition && hCondition ) {
           moveInsertParentNode = ti
         }

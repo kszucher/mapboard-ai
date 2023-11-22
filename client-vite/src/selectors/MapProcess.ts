@@ -1,6 +1,6 @@
 import {Sides} from "../state/Enums"
 import {M, T} from "../state/MapStateTypes"
-import {getNodeByPath, getRSIPL, getTRD0SOL, mL, mTR} from "./MapSelector"
+import {getCountTSO1, getNodeByPath, getRSIPL, mL, mT, mTR} from "./MapSelector"
 
 export type ReadableTree = {
   nodeId: string,
@@ -25,7 +25,7 @@ export type SubProcess = {
 }
 
 export const getReadableTree = (m: M, t: T): ReadableTree => [
-  {nodeId: t.nodeId, contentList: [t.content]}, ...getTRD0SOL(m, t).map(ti => ({
+  {nodeId: t.nodeId, contentList: [t.content]}, ...mT(m).filter(ti => ti.path.at(1) === t.path.at(1) && ti.path.length > 2).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ({
     nodeId: ti.nodeId,
     contentList: [...getRSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)
   }))

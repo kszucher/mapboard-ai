@@ -1,23 +1,14 @@
-import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {isR, isD, isS, isC, isSU, getPathPattern, getCountTSO1, getCountTSO2, getCountTCO2, getG, getPathDir, getTSI1, getTSI2, mT, getTR, hasTaskLeft, getTRD1, getTRD0} from "../selectors/MapSelector"
+import {isR, isS, isC, isSU, getPathPattern, getCountTSO1, getCountTSO2, getCountTCO2, getG, getTSI1, getTSI2, mT} from "../selectors/MapSelector"
 import {M, T} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {
   mT(m).forEach(ti => {
     switch (true) {
       case isR(ti.path): {
-        const g = getG(m)
-        ti.nodeStartX = ti.offsetW + MARGIN_X + getTaskWidth(g) * hasTaskLeft(m, ti) + getTRD1(m, ti).familyW
+        ti.nodeStartX = ti.offsetW + MARGIN_X
         ti.nodeEndX = ti.nodeStartX + ti.selfW
-        ti.nodeY = ti.offsetH + MARGIN_Y + Math.max(...[ti.selfH, getTRD0(m, ti).familyH, getTRD1(m, ti).familyH]) / 2
-        break
-      }
-      case isD(ti.path): {
-        const nr = getTR(m, ti)
-        ti.nodeStartX = nr.nodeStartX
-        ti.nodeEndX = nr.nodeEndX
-        ti.nodeY = nr.nodeY
+        ti.nodeY = ti.offsetH + MARGIN_Y + Math.max(...[ti.selfH, ti.familyH]) / 2
         ti.isTop = 1
         ti.isBottom = 1
         break
@@ -28,12 +19,12 @@ export const mapPlace = (m: M) => {
         const i = ti.path.at(-1)
         const sumUpperSiblingMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * + Boolean(getCountTSO2(m, p1) || getCountTCO2(m, p1))
-        if (getPathPattern(ti.path).endsWith('ds') || getPathPattern(ti.path).endsWith('ss')) {
-          ti.nodeStartX = getPathDir(ti.path) === 1 ? p1.nodeEndX + g.sLineDeltaXDefault : p1.nodeStartX - g.sLineDeltaXDefault - ti.selfW
-          ti.nodeEndX = getPathDir(ti.path) === 1 ? p1.nodeEndX + g.sLineDeltaXDefault + ti.selfW : p1.nodeStartX - g.sLineDeltaXDefault
+        if (getPathPattern(ti.path).endsWith('rs') || getPathPattern(ti.path).endsWith('ss')) {
+          ti.nodeStartX = p1.nodeEndX + g.sLineDeltaXDefault
+          ti.nodeEndX = p1.nodeEndX + g.sLineDeltaXDefault + ti.selfW
         } else if (getPathPattern(ti.path).endsWith('cs')) {
-          ti.nodeStartX = getPathDir(ti.path) === 1 ? p1.nodeStartX + 2 : p1.nodeEndX - ti.selfW
-          ti.nodeEndX = getPathDir(ti.path) === 1 ? p1.nodeStartX + 2 + ti.selfW : p1.nodeEndX
+          ti.nodeStartX = p1.nodeStartX + 2
+          ti.nodeEndX = p1.nodeStartX + 2 + ti.selfW
         }
         ti.nodeY = p1.nodeY - p1.familyH / 2 + ti.maxH / 2 + sumElapsedY
         ti.isTop = i === 0 && p1.isTop ? 1 : 0
@@ -46,24 +37,20 @@ export const mapPlace = (m: M) => {
         const p2 = getTSI2(m, ti) as T
         const i = ti.path.at(-2)
         const j = ti.path.at(-1)
-        if (getPathPattern(ti.path).endsWith('dsc') || getPathPattern(ti.path).endsWith('ssc')) {
-          ti.nodeStartX = getPathDir(ti.path) === 1
-            ? p2.nodeEndX + g.sLineDeltaXDefault + p1.sumMaxColWidth[j]
-            : p2.nodeStartX - g.sLineDeltaXDefault - p1.sumMaxColWidth[j] - p1.maxColWidth[j]
-          ti.nodeEndX = getPathDir(ti.path) === 1
-            ? p2.nodeEndX + g.sLineDeltaXDefault + p1.sumMaxColWidth[j] + p1.maxColWidth[j]
-            : p2.nodeStartX - g.sLineDeltaXDefault - p1.sumMaxColWidth[j]
+        if (getPathPattern(ti.path).endsWith('rsc') || getPathPattern(ti.path).endsWith('ssc')) {
+          ti.nodeStartX = p2.nodeEndX + g.sLineDeltaXDefault + p1.sumMaxColWidth[j]
+          ti.nodeEndX = p2.nodeEndX + g.sLineDeltaXDefault + p1.sumMaxColWidth[j] + p1.maxColWidth[j]
         } else if (getPathPattern(ti.path).endsWith('csc')) {
-          ti.nodeStartX = getPathDir(ti.path) === 1 ? p2.nodeStartX + 2 : p2.nodeEndX - ti.selfW
-          ti.nodeEndX = getPathDir(ti.path) === 1 ? p2.nodeStartX + 2 + ti.selfW : p2.nodeEndX
+          ti.nodeStartX = p2.nodeStartX + 2
+          ti.nodeEndX = p2.nodeStartX + 2 + ti.selfW
         }
         ti.nodeY = p1.nodeY + p1.sumMaxRowHeight[i] + p1.maxRowHeight[i]/2 - p1.selfH/2
         break
       }
     }
     if (Number.isInteger(ti.nodeStartX)) {
-      ti.nodeStartX += getPathDir(ti.path) === 1 ?  0.5 : - 0.5
-      ti.nodeEndX += getPathDir(ti.path) === 1 ?  0.5 : - 0.5
+      ti.nodeStartX += 0.5
+      ti.nodeEndX += 0.5
     }
     if (Number.isInteger(ti.nodeY)) {
       ti.nodeY += 0.5

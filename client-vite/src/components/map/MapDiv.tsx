@@ -4,7 +4,7 @@ import mermaid from "mermaid"
 import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../assets/Colors"
-import {getG, getNodeById, isR, isS, isXR, isXS, getX, getCountTCO1, getTRD0, getTRD1, isTS, isTR, mT} from "../../selectors/MapSelector"
+import {getG, getNodeById, isR, isS, isXR, isXS, getX, getCountTCO1, isTS, isTR, mT} from "../../selectors/MapSelector"
 import {adjust, getLatexString} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -122,7 +122,7 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  if((isTS(ti) && !ti.selected || isTR(ti) && !getTRD0(m, ti).selected && !getTRD1(m, ti).selected)) {
+                  if((isTR(ti) || isTS(ti)) && !ti.selected) {
                     dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
                   }
                 }
@@ -139,8 +139,7 @@ export const MapDiv: FC = () => {
                   dispatch(actions.mapAction({type: 'removeMapListEntriesOfEdit', payload: null}))
                 }
                 if (['Insert','Tab'].includes(e.key)) {
-                  isXR(m) && dispatch(actions.mapAction({type: 'insertSOR', payload: null}))
-                  isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
+                  (isXR(m) || isXS(m)) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
                 }
               }}
               onInput={(e) => {

@@ -1,4 +1,4 @@
-import {getTSIC, getG, getNodeById, getTR, getPathDir, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isD, isXACC, isXACR, getXA, sortPath} from "../../selectors/MapSelector"
+import {getTSIC, getG, getNodeById, getTR, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isXACC, isXACR, getXA, sortPath} from "../../selectors/MapSelector"
 import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineTypes, Sides} from "../../state/Enums"
@@ -27,25 +27,24 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
 }
 
 export const getLinePathBetweenNodes = (na: T, nb: T) => {
-  const dir = getPathDir(nb.path)
   const { lineType } = nb
-  const sx = (dir === -1 ? na.nodeStartX : na.nodeEndX)
-  const sy = (na.nodeY)
-  const ex = (dir === -1 ? nb.nodeEndX : nb.nodeStartX)
-  const ey = (nb.nodeY)
-  const dx = (dir === -1 ? (na.nodeStartX - nb.nodeEndX) : (nb.nodeStartX - na.nodeEndX))
-  const dy = (nb.nodeY - na.nodeY)
+  const sx = na.nodeEndX
+  const sy = na.nodeY
+  const ex = nb.nodeStartX
+  const ey = nb.nodeY
+  const dx = nb.nodeStartX - na.nodeEndX
+  const dy = nb.nodeY - na.nodeY
   let path
   if (lineType === LineTypes.bezier) {
-    const c1x = (sx + dir * dx / 4)
+    const c1x = (sx + dx / 4)
     const c1y = (sy)
-    const c2x = (sx + dir * dx / 4)
+    const c2x = (sx + dx / 4)
     const c2y = (sy + dy)
     path = getBezierLinePath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
   } else if (lineType === LineTypes.edge) {
-    const m1x = (sx + dir * dx / 2)
+    const m1x = (sx + dx / 2)
     const m1y = (sy)
-    const m2x = (sx + dir * dx / 2)
+    const m2x = (sx + dx / 2)
     const m2y = (sy + dy)
     path = getEdgeLinePath('M', [sx, sy, m1x, m1y, m2x, m2y, ex, ey])
   }
@@ -76,26 +75,23 @@ export const getLinePathBetweenRoots = (m: M, l: L) => {
 export const getPolygonS = (m: M, t: T, selection: string): PolygonPoints => {
   const R = 8
   const g = getG(m)
-  const dir = getPathDir(t.path)
-  const selfH = (isD(t.path) ? getTR(m, t).selfH : t.selfH)
-  const w = isD(t.path) ? getTR(m, t).selfW + t.familyW : t.maxW
   let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
   if (selection === 's') {
     ax = t.nodeStartX
-    bx = dir === -1 ? t.nodeStartX + R: t.nodeEndX - R
+    bx = t.nodeEndX - R
     cx = t.nodeEndX
-    ayu = byu = cyu = t.nodeY - selfH / 2
-    ayd = byd = cyd = t.nodeY + selfH / 2
+    ayu = byu = cyu = t.nodeY - t.selfH / 2
+    ayd = byd = cyd = t.nodeY + t.selfH / 2
   } else {
-    ax = dir === -1 ? t.nodeEndX - w : t.nodeStartX
-    bx = dir === -1 ? t.nodeStartX - g.sLineDeltaXDefault: t.nodeEndX + g.sLineDeltaXDefault
-    cx = dir === -1 ? t.nodeEndX : t.nodeStartX + w
-    ayu = t.nodeY + (dir === -1 ? - t.maxH / 2 : - selfH / 2)
-    ayd = t.nodeY + (dir === -1 ? + t.maxH / 2 : + selfH / 2)
+    ax = t.nodeStartX
+    bx = t.nodeEndX + g.sLineDeltaXDefault
+    cx = t.nodeStartX + t.maxW
+    ayu = t.nodeY - t.selfH / 2
+    ayd = t.nodeY + t.selfH / 2
     byu = t.nodeY - t.maxH / 2
     byd = t.nodeY + t.maxH / 2
-    cyu = t.nodeY + (dir === -1 ? - selfH / 2 : - t.maxH / 2)
-    cyd = t.nodeY + (dir === -1 ? + selfH / 2 : + t.maxH / 2)
+    cyu = t.nodeY - t.maxH / 2
+    cyd = t.nodeY + t.maxH / 2
   }
   return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
@@ -121,11 +117,10 @@ export const getPolygonC = (m: M): PolygonPoints => {
   return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
 
-export const getPolygonPath = (t: T, polygonPoints: PolygonPoints, selection: string, margin: number) => {
-  const dir = getPathDir(t.path)
+export const getPolygonPath = (_: T, polygonPoints: PolygonPoints, selection: string, margin: number) => {
   let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
   ax = adjust(ax - margin)
-  bx = adjust(bx - dir * margin)
+  bx = adjust(bx - margin)
   cx = adjust(cx + margin)
   ayu = adjust(ayu - margin)
   ayd = adjust(ayd + margin)
@@ -143,10 +138,10 @@ export const getPolygonPath = (t: T, polygonPoints: PolygonPoints, selection: st
     const [c1x, c1y] = currPoint
     const [c2x, c2y] = currPoint
     const [ex, ey] = getCoordsInLine(currPoint, nextPoint, 12)
-    if (selection === 's' && i === (dir === - 1 ? 4 : 1)) {
-      path += getBezierLinePath('L', [sx, sy, sx, sy, sx, sy, ex - dir * 24, ey])
-    } else if (selection === 's' && i === (dir === - 1 ? 1 : 4)) {
-      path += getBezierLinePath('L', [sx - dir * 24, sy, ex, ey, ex, ey, ex, ey])
+    if (selection === 's' && i === 1) {
+      path += getBezierLinePath('L', [sx, sy, sx, sy, sx, sy, ex - 24, ey])
+    } else if (selection === 's' && i === 4) {
+      path += getBezierLinePath('L', [sx - 24, sy, ex, ey, ex, ey, ex, ey])
     } else {
       path += getBezierLinePath(i === 0 ? 'M' : 'L', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
     }
@@ -156,31 +151,24 @@ export const getPolygonPath = (t: T, polygonPoints: PolygonPoints, selection: st
 
 export const getArcPath = (t: T, margin: number, closed: boolean) => {
   const R = 8
-  const dir = getPathDir(t.path)
-  const xi = dir === -1 ? t.nodeEndX : t.nodeStartX
+  const xi = t.nodeStartX
   const yu = t.nodeY - t.selfH / 2
-  let x1 = adjust(xi - margin * dir)
+  let x1 = adjust(xi - margin)
   let y1 = adjust(yu + R - margin)
   let dx = t.selfW - 2 * R + 2 * margin
   let dy = t.selfH - 2 * R + 2 * margin
-  return dir === -1
-    ? `M${x1},${y1}
-      a${+R},${+R} 0 0 0 ${-R},${-R} h${-dx} 
-      a${+R},${+R} 0 0 0 ${-R},${+R} v${+dy} 
-      a${+R},${+R} 0 0 0 ${+R},${+R} h${+dx} 
-      a${+R},${+R} 0 0 0 ${+R},${-R}
-      ${closed ? 'Z' : ''}`
-    : `M${x1},${y1} 
-      a${+R},${+R} 0 0 1 ${+R},${-R} h${+dx}
-      a${+R},${+R} 0 0 1 ${+R},${+R} v${+dy}
-      a${+R},${+R} 0 0 1 ${-R},${+R} h${-dx}
-      a${+R},${+R} 0 0 1 ${-R},${-R}
-      ${closed ? 'Z' : ''}`
+  return (
+    `M${x1},${y1} 
+    a${+R},${+R} 0 0 1 ${+R},${-R} h${+dx}
+    a${+R},${+R} 0 0 1 ${+R},${+R} v${+dy}
+    a${+R},${+R} 0 0 1 ${-R},${+R} h${-dx}
+    a${+R},${+R} 0 0 1 ${-R},${-R}
+    ${closed ? 'Z' : ''}`
+  )
 }
 
 export const getGridPath = (t: T) => {
-  const dir = getPathDir(t.path)
-  const xi = dir === -1 ? t.nodeEndX : t.nodeStartX
+  const xi = t.nodeStartX
   const yu = t.nodeY - t.selfH / 2
   const yd = t.nodeY + t.selfH / 2
   let path = ''
@@ -191,7 +179,7 @@ export const getGridPath = (t: T) => {
     path += `M${x1},${y} L${x2},${y}`
   }
   for (let j = 1; j < t.sumMaxColWidth.length - 1; j++) {
-    const x = adjust(xi + dir*t.sumMaxColWidth[j])
+    const x = adjust(xi + t.sumMaxColWidth[j])
     path += `M${x},${yu} L${x},${yd}`
   }
   return path
@@ -203,10 +191,8 @@ export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
 export const getTaskStartPoint = (m: M, g: G, t: T) => {
   switch (true) {
-    case getPathDir(t.path) === 1 && !isCON(t.path): return getRootEndX(m, getTR(m, t)) - getTaskWidth(g)
-    case getPathDir(t.path) === -1 && !isCON(t.path): return getRootStartX(getTR(m, t)) + getTaskWidth(g)
-    case getPathDir(t.path) === 1 && isCON(t.path): return getTSIC(m, t).nodeEndX - 120
-    case getPathDir(t.path) === -1 && isCON(t.path): return getTSIC(m, t).nodeStartX + 120
+    case !isCON(t.path): return getRootEndX(m, getTR(m, t)) - getTaskWidth(g)
+    case isCON(t.path): return getTSIC(m, t).nodeEndX - 120
     default: return 0
   }
 }

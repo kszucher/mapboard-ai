@@ -2,25 +2,13 @@ import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {M} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
-import {getCountTCO1, getNodeById, isC, isD, isR, isS, getCountTSO1, mT, getG, mTR, getTRD0, getTRD1, hasTaskRight, hasTaskLeft} from "../selectors/MapSelector"
+import {getCountTCO1, getNodeById, isC, isR, isS, getCountTSO1, mT, getG, mTR, hasTask} from "../selectors/MapSelector"
 
 export const mapMeasure = (pm: M, m: M) => {
   mT(m).slice().reverse().forEach(ti => {
     const pt = getNodeById(pm, ti.nodeId)
     switch (true) {
-      case isR(ti.path): {
-        measureText(m, pt, ti)
-        break
-      }
-      case isD(ti.path): {
-        if (getCountTSO1(m, ti)) {
-          measureFamily(m, ti)
-        }
-        ti.maxW = ti.familyW
-        ti.maxH = ti.familyH
-        break
-      }
-      case isS(ti.path): {
+      case isR(ti.path) || isS(ti.path): {
         if (getCountTCO1(m, ti)) {
           measureTable(m, ti)
         } else {
@@ -49,16 +37,14 @@ export const mapMeasure = (pm: M, m: M) => {
   mTR(m).map(el => el.offsetH -= minOffsetH)
   const mapWidth = Math.max(...mTR(m).map(ri =>
     ri.offsetW +
-    getTaskWidth(getG(m)) * hasTaskRight(m, ri) +
-    getTaskWidth(getG(m)) * hasTaskLeft(m, ri) +
-    getTRD0(m, ri).familyW +
-    getTRD1(m, ri).familyW +
+    getTaskWidth(getG(m)) * hasTask(m, ri) +
+    ri.familyW +
     MARGIN_X * 2 +
     ri.selfW
   ))
   const mapHeight = Math.max(...mTR(m).map(ri =>
     ri.offsetH +
-    Math.max(...[ri.selfH, getTRD0(m, ri).familyH, getTRD1(m, ri).familyH]) +
+    Math.max(...[ri.selfH, ri.familyH]) +
     MARGIN_Y * 2
   ))
   Object.assign(getG(m), {mapWidth, mapHeight})

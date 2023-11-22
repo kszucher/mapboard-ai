@@ -46,8 +46,7 @@ export const EditorNodeInsertTable = () => {
           <Button
             onClick={
               () => {
-                isXR(m) && dispatch(actions.mapAction({type: 'insertSORTable', payload: {rowLen: row, colLen: col}}))
-                isXS(m) && dispatch(actions.mapAction({type: 'insertSOTable', payload: {rowLen: row, colLen: col}}))
+                (isXR(m) || isXS(m)) && dispatch(actions.mapAction({type: 'insertSOTable', payload: {rowLen: row, colLen: col}}))
               }
             }>
             {'OK'}
