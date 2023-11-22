@@ -17,7 +17,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
     const aboveRoot = toY >= nr.nodeY
     const belowRoot = toY < nr.nodeY
     const overlap = 6
-    mT(m).filter(ti => ti.path.at(1) === nr.path.at(1) /*&& ti.path.length > 2*/).forEach(ti => {
+    mT(m).filter(ti => ti.path.at(1) === nr.path.at(1)).forEach(ti => {
       if (!isSEO(moveNode.path, ti.path)) {
         let vCondition
         if (ti.isTop && belowRoot) {
