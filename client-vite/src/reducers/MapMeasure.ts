@@ -35,17 +35,7 @@ export const mapMeasure = (pm: M, m: M) => {
   const minOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
   mTR(m).map(el => el.offsetW -= minOffsetW)
   mTR(m).map(el => el.offsetH -= minOffsetH)
-  const mapWidth = Math.max(...mTR(m).map(ri =>
-    ri.offsetW +
-    getTaskWidth(getG(m)) * hasTask(m, ri) +
-    ri.familyW +
-    MARGIN_X * 2 +
-    ri.selfW
-  ))
-  const mapHeight = Math.max(...mTR(m).map(ri =>
-    ri.offsetH +
-    Math.max(...[ri.selfH, ri.familyH]) +
-    MARGIN_Y * 2
-  ))
+  const mapWidth = Math.max(...mTR(m).map(ri => ri.offsetW + getTaskWidth(getG(m)) * hasTask(m, ri) + ri.familyW + MARGIN_X * 2 + ri.selfW))
+  const mapHeight = Math.max(...mTR(m).map(ri => ri.offsetH + Math.max(...[ri.selfH, ri.familyH]) + MARGIN_Y * 2))
   Object.assign(getG(m), {mapWidth, mapHeight})
 }
