@@ -82,10 +82,6 @@ export const measureTable = (m: M, t: T) => {
       if (cellWidth >= maxColWidth) {
         maxColWidth = cellWidth
       }
-      const cn = getNodeByPath(m, [...t.path, 'c', i, j, 's', 0]) as T
-      if (cn && cn.taskStatus !== 0) {
-        maxColWidth += 120
-      }
     }
     t.maxColWidth.push(maxColWidth)
     t.sumMaxColWidth.push(maxColWidth + t.sumMaxColWidth.slice(-1)[0])

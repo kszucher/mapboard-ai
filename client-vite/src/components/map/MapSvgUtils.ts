@@ -1,4 +1,4 @@
-import {getTSIC, getG, getNodeById, getTR, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isCON, isXACC, isXACR, getXA, sortPath} from "../../selectors/MapSelector"
+import {getG, getNodeById, getTR, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isXACC, isXACR, getXA, sortPath} from "../../selectors/MapSelector"
 import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineTypes, Sides} from "../../state/Enums"
@@ -189,13 +189,7 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
-export const getTaskStartPoint = (m: M, g: G, t: T) => {
-  switch (true) {
-    case !isCON(t.path): return getRootEndX(m, getTR(m, t)) - getTaskWidth(g)
-    case isCON(t.path): return getTSIC(m, t).nodeEndX - 120
-    default: return 0
-  }
-}
+export const getTaskStartPoint = (m: M, g: G, t: T) => getRootEndX(m, getTR(m, t)) - getTaskWidth(g)
 
 export const getRootSideX = (m: M, t: T, side: string) => {
   switch (true) {

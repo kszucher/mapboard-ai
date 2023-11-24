@@ -121,7 +121,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setTextFontSize': getXA(m).forEach(ti => Object.assign(ti, {textFontSize: payload})); break
     case 'setTextColor': getXA(m).forEach(ti => Object.assign(ti, {textColor: payload})); break
     case 'setBlur': getXA(m).forEach(ti => Object.assign(ti, {blur: 1})); break
-    case 'setTaskModeOn': getXAEO(m).forEach(ti => Object.assign(ti, {taskStatus: ti.taskStatus === 0 ? 1 : ti.taskStatus})); break
+    case 'setTaskModeOn': getXAEO(m).forEach(ti => !ti.path.includes('c') && Object.assign(ti, {taskStatus: ti.taskStatus === 0 ? 1 : ti.taskStatus})); break
     case 'setTaskModeOff': getXAEO(m).forEach(ti => Object.assign(ti, {taskStatus: 0 })); break
     case 'setTaskModeReset': getXAEO(m).forEach(ti => Object.assign(ti, {taskStatus: ti.taskStatus > 0 ? 1 : ti.taskStatus})); break
 
