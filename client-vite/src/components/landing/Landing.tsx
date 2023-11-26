@@ -98,7 +98,7 @@ export const Landing: FC = () => {
                   className="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[16px] rounded-t-xl h-[344px] max-w-[602px] md:h-[588px] md:max-w-[1024px]">
                   <div className="rounded-lg overflow-hidden h-[312px] md:h-[556px] bg-white dark:bg-gray-800">
                     <img
-                      src="https://lh3.googleusercontent.com/u/0/drive-viewer/AK7aPaD1NNvv4U6OG2qYQYn768IotkTerk7VQcysXfVxKinu7Zwfhbko-GXNs6YwdXAtdMvc8W7JaaWYUXjZaXsFakK_HYDv=w2560-h1323"
+                      src="https://lh3.googleusercontent.com/u/0/drive-viewer/AK7aPaCLN55p8JPEfPPVWcSPSGbCIhLbvZUpPXLKAhaiN9HM80sJXLpPpcILisESdsI066Ht9l46ozSBuOQeKzgVYaWo_-3C=w2560-h1323"
                       className="hidden dark:block h-[312px] md:h-[556px] w-full rounded-lg" alt=""/>
                   </div>
                 </div>
