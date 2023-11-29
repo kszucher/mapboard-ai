@@ -38,7 +38,7 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Enter' && isXC(m) && dispatch(actions.mapAction({type: 'selectCD', payload: null}))
     ckm === '-s-' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: 'insertSU', payload: null}))
     ckm === '--a' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: 'cellify', payload: null}))
-    ckm === '---' && ['Insert','Tab'].includes(e.key) && isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
+    ckm === '---' && ['Insert','Tab'].includes(e.key) && (isXS(m) || isXR(m)) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
     ckm === '---' && ['Insert','Tab'].includes(e.key) && isXC(m) && dispatch(actions.mapAction({type: 'selectCO', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXS(m) && dispatch(actions.mapAction({type: 'deleteS', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXR(m) && getRiL(m) > 0 && dispatch(actions.mapAction({type: 'deleteLR', payload: null}))
