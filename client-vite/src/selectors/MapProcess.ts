@@ -25,7 +25,8 @@ export type SubProcess = {
 }
 
 export const getReadableTree = (m: M, t: T): ReadableTree => [
-  {nodeId: t.nodeId, contentList: [t.content]}, ...mT(m).filter(ti => ti.path.at(1) === t.path.at(1) && ti.path.length > 2).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ({
+  // {nodeId: t.nodeId, contentList: [t.content]},
+  ...mT(m).filter(ti => ti.path.at(1) === t.path.at(1) && ti.path.length > 2).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ({
     nodeId: ti.nodeId,
     contentList: [...getRSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)
   }))
