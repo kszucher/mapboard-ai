@@ -1,6 +1,6 @@
 import {Sides} from "../state/Enums"
 import {M, T} from "../state/MapStateTypes"
-import {ReadableTree, SubProcess} from "./MapProcessTypes.ts";
+import {ReadableTree, SubProcess} from "./MapProcessTypes.ts"
 import {getCountTSO1, getNodeByPath, getRSIPL, mL, mT, mTR} from "./MapSelector"
 
 export const getReadableTree = (m: M, t: T): ReadableTree => [

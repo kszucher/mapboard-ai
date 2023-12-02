@@ -25,7 +25,7 @@ import './input.css'
 import { Docs } from './components/docs/Docs'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import '@radix-ui/themes/styles.css'
-import './theme-config.css';
+import './theme-config.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
