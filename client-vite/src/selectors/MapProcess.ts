@@ -1,28 +1,7 @@
 import {Sides} from "../state/Enums"
 import {M, T} from "../state/MapStateTypes"
+import {ReadableTree, SubProcess} from "./MapProcessTypes.ts";
 import {getCountTSO1, getNodeByPath, getRSIPL, mL, mT, mTR} from "./MapSelector"
-
-export type ReadableTree = {
-  nodeId: string,
-  contentList: string[]
-}[]
-
-export enum SubProcessTypes {
-  INGESTION = 'ingestion',
-  EXTRACTION = 'extraction',
-  NONE = ''
-}
-
-export type SubProcess = {
-  subProcessId: string
-  subProcessType: 'ingestion' | 'extraction'
-  subProcessMindMapData: ReadableTree,
-  inputSubProcesses: string[]
-  inputSubProcessesAll: string[]
-  subProcessInputLink: string
-  shouldQueryAndStoreResultAsMindMapToo: boolean
-  subProcessPromptOverride: string
-}
 
 export const getReadableTree = (m: M, t: T): ReadableTree => [
   ...mT(m).filter(ti => ti.path.at(1) === t.path.at(1)).filter(ti => getCountTSO1(m, ti) === 0).map(ti => ({

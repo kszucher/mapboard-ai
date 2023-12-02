@@ -62,3 +62,9 @@ export enum ControlTypes {
   INGESTION = 'ingestion',
   EXTRACTION = 'extraction',
 }
+
+export enum SubProcessTypes {
+  NONE = '',
+  INGESTION = 'ingestion',
+  EXTRACTION = 'extraction'
+}

@@ -1,7 +1,8 @@
 import {mapInit} from "../reducers/MapInit"
-import {ControlTypes, Sides} from "../state/Enums"
+import {ControlTypes, Sides, SubProcessTypes} from "../state/Enums"
 import {M, MPartial, T} from "../state/MapStateTypes"
-import {getReadableTree, getSubProcessList, ReadableTree, SubProcess, SubProcessTypes} from "./MapProcess"
+import {getReadableTree, getSubProcessList} from "./MapProcess"
+import {ReadableTree, SubProcess} from "./MapProcessTypes.ts";
 
 describe("Process_tests", () => {
   test('getReadableTree', () => expect(getReadableTree(mapInit([
