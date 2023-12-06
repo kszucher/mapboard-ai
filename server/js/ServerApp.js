@@ -6,7 +6,6 @@ const { auth } = require('express-oauth2-jwt-bearer')
 const axios = require("axios").default
 const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
-const nodemailer = require("nodemailer")
 const MongoQueries = require("./MongoQueries")
 const MongoMutations = require("./MongoMutations")
 const { baseUri } = require('./MongoSecret')
@@ -18,24 +17,6 @@ const checkJwt = auth({
   audience: authAudienceUrl,
   issuerBaseURL: `https://mapboard.eu.auth0.com/`,
 })
-
-const transporter = nodemailer.createTransport({
-  host: 'mail.privateemail.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: 'info@mapboard.io',
-    pass: 'r9yVsEzEf7y8KA*'
-  }
-})
-
-const systemMaps = [
-  ObjectId('5f3fd7ba7a84a4205428c96a'), // features
-  ObjectId('5ee5e343b1945921ec26c781'), // controls
-  ObjectId('5f467ee216bcf436da264a69'), // proposals
-]
-
-const adminUser = ObjectId('5d88c99f1935c83e84ca263d')
 
 const capitalize = (str) => `${str[0].toUpperCase()}${str.slice(1)}`
 
@@ -71,15 +52,6 @@ const getDefaultMap = (mapName, ownerUser, path) => ({
   frames: [],
   framesInfo: [],
 })
-
-// const emailText = `
-//   <p>Hello ${name}!</p>
-//   <p>Welcome to MapBoard!<br>You can complete your registration using the following code:</p>
-//   <p>${confirmationCode}</p>
-//   <p>You can also join the conversation, propose features and get product news here:<br>
-//   <a href="MapBoard Slack">https://join.slack.com/t/mapboardinc/shared_invite/zt-18h31ogqv-~MoUZJ_06XCV7st8tfKIBg</a></p>
-//   <p>Cheers,<br>Krisztian from MapBoard</p>
-// `
 
 app.use(cors())
 app.use(express.json())
@@ -176,7 +148,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const newMap = getDefaultMap(`${map.name} - copy`, userId, [])
         const nodeIdMapping = map.versions.at(-1).map(ti => ({
           oldNodeId: ti.nodeId,
-          newNodeId: 'node' + genHash(8)
+          newNodeId: 'node' + genHash()
         }))
         newMap.versions = [map.versions.at(-1)]
         newMap.versions.at(-1).forEach((ti, i) => {

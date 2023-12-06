@@ -1,10 +1,3 @@
-const getRandomNodeId = () => {
-  const alphanumeric = '0123456789abcdefghijklmnopqrstuvwxyz'
-  const randomAlphanumeric = { $substr: [ alphanumeric, { $toInt: { $multiply: [ { $rand: {} }, alphanumeric.length -  1 ] } }, 1 ] }
-  const randomAlphanumeric8digit = new Array(8).fill(randomAlphanumeric)
-  return { $concat: ['node', ...randomAlphanumeric8digit] }
-}
-
 const getLastElemField = ( field, array ) => ({
   $getField: { field, input: { $last: array } }
 })
@@ -51,7 +44,6 @@ const setSession = (sessionId, mapId, frameId) => ({
 })
 
 module.exports = {
-  getRandomNodeId,
   getLastElemField,
   getIndexOfFrameId,
   getFrameIdOfIndex,

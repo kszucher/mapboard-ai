@@ -1,5 +1,5 @@
 import { describe, expect, test,  beforeEach, afterEach } from 'vitest'
-import { getElemById, getMultiMapMultiSource, mongoConnect, mongoDisconnect, resolveMutation } from './MongoTestUtils'
+import { getElemById, mongoConnect, mongoDisconnect, resolveMutation } from './MongoTestUtils'
 const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestData')
 
 let users, maps, shares
@@ -231,36 +231,6 @@ describe("MongoMutationsTests", async() => {
     }
     const modified = await resolveMutation(database, 'saveMapFrame', [maps, 'map1', 'f2id', 'nmf'])
     expect(getElemById(modified.maps, 'map1').frames).toEqual([ 'mf1', 'nmf', 'mf2' ])
-  })
-  test('createNodeProp', async() => {
-    const database = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' } ] ])
-    const modified = await resolveMutation(database, 'createNodeProp', [maps, 'npc', 'nvc'])
-    const expected = getMultiMapMultiSource([ [ { a: 'o', npc: 'nvc' } ], [ { a: 'o', npc: 'nvc' }, { b: 'o', npc: 'nvc' } ] ])
-    expect(modified).toEqual(expected)
-  })
-  test('createNodePropIfMissing', async() => {
-    const database = getMultiMapMultiSource([ [ { } ], [ { }, { a: 'o' } ] ])
-    const modified = await resolveMutation(database, 'createNodePropIfMissing', [maps, 'b', 'x'])
-    const expected = getMultiMapMultiSource([ [ { b: 'x' } ], [ { b: 'x' }, { a: 'o', b: 'x' } ] ])
-    expect(modified).toEqual(expected)
-  })
-  test('updateNodePropKey', async() => {
-    const database = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' } ] ])
-    const modified = await resolveMutation(database, 'updateNodePropKey', [maps, 'a', 'aNew'])
-    const expected = getMultiMapMultiSource([ [ { aNew: 'o' } ], [ { aNew: 'o' }, { b: 'o' } ] ])
-    expect(modified).toEqual(expected)
-  })
-  test('updateNodePropValueBasedOnPreviousValue', async() => {
-    const database = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' } ] ])
-    const modified = await resolveMutation(database, 'updateNodePropValueBasedOnPreviousValue', [maps, 'a', 'o', 'x'])
-    const expected = getMultiMapMultiSource([ [ { a: 'x' } ], [ { a: 'x' }, { b: 'o' } ] ])
-    expect(modified).toEqual(expected)
-  })
-  test('removeNodeProp', async() => {
-    const database = getMultiMapMultiSource([ [ { a: 'o', npr: 'nvr' } ], [ { a: 'o', npr: 'nvr' }, { b: 'o', npr: 'nvr' } ] ])
-    const modified = await resolveMutation(database, 'removeNodeProp', [maps, 'npr'])
-    const expected = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' } ] ])
-    expect(modified).toEqual(expected)
   })
   test('deleteUnusedMaps', async() => {
     const database = {

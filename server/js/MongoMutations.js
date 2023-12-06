@@ -516,106 +516,6 @@ async function saveMapFrame (maps, mapId, frameId, mapData) {
   ).toArray()
 }
 
-async function nodeMapFun (maps, fun) {
-  await maps.aggregate(
-    [
-      { $set: { frames: { $map: { input: '$frames', as: "map", in: { $map: { input: "$$map", as: "node", in: fun } } } } } },
-      { $set: { versions: { $map: { input: '$versions', as: "map", in: { $map: { input: "$$map", as: "node", in: fun } } } } } },
-      { $merge: 'maps' }
-    ]
-  ).toArray()
-}
-
-async function createNodeProp (maps, nodePropKey, nodePropValue) {
-  return await nodeMapFun(maps,
-    {
-      $setField: {
-        field: nodePropKey,
-        input: '$$node',
-        value: nodePropValue
-      }
-    }
-  )
-}
-
-async function createNodePropIfMissing (maps, nodePropKey, nodePropValue) {
-  return await nodeMapFun(maps,
-    {
-      $cond: {
-        if: { $eq: [{ $type: `$$node.${nodePropKey}` }, 'missing'] },
-        then: {
-          $setField: {
-            field: nodePropKey,
-            input: '$$node',
-            value: nodePropValue
-          }
-        },
-        else: "$$node"
-      }
-    }
-  )
-}
-
-async function updateNodePropKey (maps, nodePropKeyFrom, nodePropKeyTo) {
-  return await nodeMapFun(maps,
-    {
-      $arrayToObject: {
-        $map: {
-          input: {
-            $objectToArray: "$$node"
-          },
-          as: "nodeProp",
-          in: {
-            $cond: {
-              if: {
-                $eq: [ "$$nodeProp.k", nodePropKeyFrom ]
-              },
-              then: {
-                $setField: {
-                  field: "k",
-                  input: '$$nodeProp',
-                  value: nodePropKeyTo,
-                }
-              },
-              else: "$$nodeProp"
-            }
-          }
-        }
-      }
-    }
-  )
-}
-
-async function updateNodePropValueBasedOnPreviousValue (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) {
-  return await nodeMapFun(maps,
-    {
-      $cond: {
-        if: { $eq: [ `$$node.${nodePropKey}`, nodePropValueFrom ] },
-        then: {
-          $setField: {
-            field: nodePropKey,
-            input: '$$node',
-            value: nodePropValueTo
-          }
-        },
-        else: "$$node"
-      }
-    }
-  )
-}
-
-async function removeNodeProp (maps, nodePropKey) {
-  return await nodeMapFun(maps,
-    {
-      $setField: {
-        field: nodePropKey,
-        input: '$$node',
-        value: '$$REMOVE'
-      }
-    }
-  )
-}
-
 async function deleteUnusedMaps(users, maps) {
   const allTabMap = await users.distinct('tabMapIdList')
   await maps.aggregate(
@@ -656,10 +556,5 @@ module.exports = {
   deleteMapFrame,
   saveMap,
   saveMapFrame,
-  createNodeProp,
-  createNodePropIfMissing,
-  updateNodePropKey,
-  updateNodePropValueBasedOnPreviousValue,
-  removeNodeProp,
   deleteUnusedMaps
 }
