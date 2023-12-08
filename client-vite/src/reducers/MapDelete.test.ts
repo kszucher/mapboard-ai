@@ -7,30 +7,30 @@ import {mapReducerAtomic} from "./MapReducer"
 describe("Delete_tests", () => {
   test('deleteLR', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
-      {nodeId: 'b', path: ['l', 0], fromNodeId: 'e', toNodeId: 'i'},
-      {nodeId: 'c', path: ['l', 1], fromNodeId: 'e', toNodeId: 'm'},
-      {nodeId: 'd', path: ['l', 2], fromNodeId: 'i', toNodeId: 'm'},
-      {nodeId: 'e', path: ['r', 0], offsetW: 120, offsetH: 230},
-      {nodeId: 'g', path: ['r', 0, 's', 0]},
-      {nodeId: 'i', path: ['r', 1], offsetW: 340, offsetH: 450, selected: 1},
-      {nodeId: 'k', path: ['r', 1, 's', 0]},
-      {nodeId: 'm', path: ['r', 2], offsetW: 560, offsetH: 780},
-      {nodeId: 'o', path: ['r', 2, 's', 0]},
+      {nodeId: 'ga', path: ['g']},
+      {nodeId: 'la', path: ['l', 0], fromNodeId: 'ta', toNodeId: 'tc'},
+      {nodeId: 'lb', path: ['l', 1], fromNodeId: 'ta', toNodeId: 'te'},
+      {nodeId: 'lc', path: ['l', 2], fromNodeId: 'tc', toNodeId: 'te'},
+      {nodeId: 'ta', path: ['r', 0], offsetW: 120, offsetH: 230},
+      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'tc', path: ['r', 1], offsetW: 340, offsetH: 450, selected: 1},
+      {nodeId: 'td', path: ['r', 1, 's', 0]},
+      {nodeId: 'te', path: ['r', 2], offsetW: 560, offsetH: 780},
+      {nodeId: 'tf', path: ['r', 2, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
-      {nodeId: 'c', path: ['l', 0], fromNodeId: 'e', toNodeId: 'm'},
-      {nodeId: 'e', path: ['r', 0], selected: 1},
-      {nodeId: 'g', path: ['r', 0, 's', 0]},
-      {nodeId: 'm', path: ['r', 1], offsetW: 440, offsetH: 550},
-      {nodeId: 'o', path: ['r', 1, 's', 0]},
+      {nodeId: 'ga', path: ['g']},
+      {nodeId: 'lb', path: ['l', 0], fromNodeId: 'ta', toNodeId: 'te'},
+      {nodeId: 'ta', path: ['r', 0], selected: 1},
+      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'te', path: ['r', 1], offsetW: 440, offsetH: 550},
+      {nodeId: 'tf', path: ['r', 1, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'deleteLR', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
   test('deleteS', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0], selected: 1},
@@ -47,7 +47,7 @@ describe("Delete_tests", () => {
       {nodeId: 'p', path: ['r', 0, 's', 0, 's', 2, 's', 2]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0], lastSelectedChild: 0},
       {nodeId: 'd', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'm', path: ['r', 0, 's', 0, 's', 0]},
@@ -57,7 +57,7 @@ describe("Delete_tests", () => {
   })
   test('deleteCR', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
@@ -70,7 +70,7 @@ describe("Delete_tests", () => {
       {nodeId: 'l', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'i', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
@@ -82,7 +82,7 @@ describe("Delete_tests", () => {
   })
   test('deleteCC', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
@@ -95,7 +95,7 @@ describe("Delete_tests", () => {
       {nodeId: 'l', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'g', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
