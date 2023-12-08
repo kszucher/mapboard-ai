@@ -78,7 +78,7 @@ describe("Move_tests", () => {
   })
   test('moveSD', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -92,7 +92,7 @@ describe("Move_tests", () => {
       {nodeId: 'm', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -109,7 +109,7 @@ describe("Move_tests", () => {
   })
   test('moveST', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -123,7 +123,7 @@ describe("Move_tests", () => {
       {nodeId: 'm', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'j', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'k', path: ['r', 0, 's', 0, 's', 0]},
@@ -140,7 +140,7 @@ describe("Move_tests", () => {
   })
   test('moveSU', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -154,7 +154,7 @@ describe("Move_tests", () => {
       {nodeId: 'm', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -171,7 +171,7 @@ describe("Move_tests", () => {
   })
   test('moveSB', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -185,7 +185,7 @@ describe("Move_tests", () => {
       {nodeId: 'm', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'h', path: ['r', 0, 's', 0]},
       {nodeId: 'i', path: ['r', 0, 's', 0, 's', 0]},
@@ -202,7 +202,7 @@ describe("Move_tests", () => {
   })
   test('moveSO', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -215,7 +215,7 @@ describe("Move_tests", () => {
       {nodeId: 'l', path: ['r', 0, 's', 2, 's', 1]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -231,7 +231,7 @@ describe("Move_tests", () => {
   })
   test('moveSI', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -244,7 +244,7 @@ describe("Move_tests", () => {
       {nodeId: 'l', path: ['r', 0, 's', 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -260,7 +260,7 @@ describe("Move_tests", () => {
   })
   test('moveCRD', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
@@ -273,7 +273,7 @@ describe("Move_tests", () => {
       {nodeId: 'l', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'i', path: ['r', 0, 's', 0, 'c', 0, 0]},
@@ -289,7 +289,7 @@ describe("Move_tests", () => {
   })
   test('moveCRU', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 'c', 0, 0]},
@@ -302,7 +302,7 @@ describe("Move_tests", () => {
       {nodeId: 'l', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'i', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
@@ -318,7 +318,7 @@ describe("Move_tests", () => {
   })
   test('moveCCR', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
@@ -331,7 +331,7 @@ describe("Move_tests", () => {
       {nodeId: 'l', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'g', path: ['r', 0, 's', 0, 'c', 0, 0]},
@@ -347,7 +347,7 @@ describe("Move_tests", () => {
   })
   test('moveCCL', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'e', path: ['r', 0, 's', 0, 'c', 0, 0]},
@@ -360,7 +360,7 @@ describe("Move_tests", () => {
       {nodeId: 'l', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 'g', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
@@ -376,7 +376,7 @@ describe("Move_tests", () => {
   })
   test('moveS2TO', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0], selected: 1, selection: 'f'},
       {nodeId: 'e', path: ['r', 0, 's', 0, 's', 0]},
@@ -384,7 +384,7 @@ describe("Move_tests", () => {
       {nodeId: 'g', path: ['r', 0, 's', 0, 's', 2]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0]},
       {nodeId: 't', path: ['r', 0, 's', 0, 's', 0], selected: 1},
@@ -399,7 +399,7 @@ describe("Move_tests", () => {
   })
   test('transpose', () => {
     const test = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'e', path: ['r', 0, 's', 0, 'c', 0, 0]},
@@ -416,7 +416,7 @@ describe("Move_tests", () => {
       {nodeId: 'p', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'a', path: ['g']},
+      {nodeId: 'ga', path: ['g']},
       {nodeId: 'b', path: ['r', 0]},
       {nodeId: 'd', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'e', path: ['r', 0, 's', 0, 'c', 0, 0]},
