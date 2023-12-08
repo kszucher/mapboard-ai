@@ -19,92 +19,92 @@ describe("Process_tests", () => {
     ] as ReadableTree)
   )
   test('getSubProcessList', () =>
-    //      [h]
+    //      [ta]
     //         \
-    //          [i]
+    //          [tb]
     //             \
-    //      [k]     [j]
+    //      [td]     [tc]
     //         \   /
-    //          [l]
+    //          [te]
     //         /
-    //      [n]
+    //      [tg]
     //     /
-    //  [m]
+    //  [tf]
     expect(getSubProcessList(mapInit([
-      {nodeId: 'a', path: ['g']},
-      {nodeId: 'b', path: ['l', 0], fromNodeId: 'h', fromNodeSide: Sides.R, toNodeId: 'i', toNodeSide: Sides.L},
-      {nodeId: 'c', path: ['l', 1], fromNodeId: 'i', fromNodeSide: Sides.R, toNodeId: 'j', toNodeSide: Sides.L},
-      {nodeId: 'd', path: ['l', 2], fromNodeId: 'k', fromNodeSide: Sides.R, toNodeId: 'l', toNodeSide: Sides.L},
-      {nodeId: 'e', path: ['l', 3], fromNodeId: 'l', fromNodeSide: Sides.R, toNodeId: 'j', toNodeSide: Sides.L},
-      {nodeId: 'f', path: ['l', 4], fromNodeId: 'm', fromNodeSide: Sides.R, toNodeId: 'n', toNodeSide: Sides.L},
-      {nodeId: 'g', path: ['l', 5], fromNodeId: 'n', fromNodeSide: Sides.R, toNodeId: 'l', toNodeSide: Sides.L},
-      {nodeId: 'h', path: ['r', 0], content: 'ch', controlType: ControlTypes.INGESTION, llmDataType: 'text', llmDataId: 'hTextUrl', selected: 1},
-      {nodeId: 'i', path: ['r', 1], content: 'ci', controlType: ControlTypes.EXTRACTION},
-      {nodeId: 'j', path: ['r', 2], content: 'cj', controlType: ControlTypes.EXTRACTION},
-      {nodeId: 'k', path: ['r', 3], content: 'ck', controlType: ControlTypes.INGESTION, llmDataType: 'audio', llmDataId: 'kAudioUrl'},
-      {nodeId: 'l', path: ['r', 4], content: 'cl', controlType: ControlTypes.EXTRACTION},
-      {nodeId: 'm', path: ['r', 5], content: 'cm', controlType: ControlTypes.INGESTION, llmDataType: 'text', llmDataId: 'mTextUrl'},
-      {nodeId: 'n', path: ['r', 6], content: 'cn', controlType: ControlTypes.EXTRACTION},
-    ] as MPartial) as M, 'j')).toEqual([{
-      subProcessId: 'm',
+      {nodeId: 'ga', path: ['g']},
+      {nodeId: 'la', path: ['l', 0], fromNodeId: 'ta', fromNodeSide: Sides.R, toNodeId: 'tb', toNodeSide: Sides.L},
+      {nodeId: 'lb', path: ['l', 1], fromNodeId: 'tb', fromNodeSide: Sides.R, toNodeId: 'tc', toNodeSide: Sides.L},
+      {nodeId: 'lc', path: ['l', 2], fromNodeId: 'td', fromNodeSide: Sides.R, toNodeId: 'te', toNodeSide: Sides.L},
+      {nodeId: 'ld', path: ['l', 3], fromNodeId: 'te', fromNodeSide: Sides.R, toNodeId: 'tc', toNodeSide: Sides.L},
+      {nodeId: 'le', path: ['l', 4], fromNodeId: 'tf', fromNodeSide: Sides.R, toNodeId: 'tg', toNodeSide: Sides.L},
+      {nodeId: 'lf', path: ['l', 5], fromNodeId: 'tg', fromNodeSide: Sides.R, toNodeId: 'te', toNodeSide: Sides.L},
+      {nodeId: 'ta', path: ['r', 0], content: 'cta', controlType: ControlTypes.INGESTION, llmDataType: 'text', llmDataId: 'hTextUrl', selected: 1},
+      {nodeId: 'tb', path: ['r', 1], content: 'ctb', controlType: ControlTypes.EXTRACTION},
+      {nodeId: 'tc', path: ['r', 2], content: 'ctc', controlType: ControlTypes.EXTRACTION},
+      {nodeId: 'td', path: ['r', 3], content: 'ctd', controlType: ControlTypes.INGESTION, llmDataType: 'audio', llmDataId: 'kAudioUrl'},
+      {nodeId: 'te', path: ['r', 4], content: 'cte', controlType: ControlTypes.EXTRACTION},
+      {nodeId: 'tf', path: ['r', 5], content: 'ctf', controlType: ControlTypes.INGESTION, llmDataType: 'text', llmDataId: 'mTextUrl'},
+      {nodeId: 'tg', path: ['r', 6], content: 'ctg', controlType: ControlTypes.EXTRACTION},
+    ] as MPartial) as M, 'tc')).toEqual([{
+      subProcessId: 'tf',
       subProcessType: SubProcessTypes.INGESTION,
-      subProcessMindMapData: [{nodeId: 'm', contentList: ['cm']}] as ReadableTree,
+      subProcessMindMapData: [{nodeId: 'tf', contentList: ['ctf']}] as ReadableTree,
       inputSubProcesses: [],
       inputSubProcessesAll: [],
       subProcessInputLink: 'mTextUrl',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
-      subProcessId: 'n',
+      subProcessId: 'tg',
       subProcessType: SubProcessTypes.EXTRACTION,
-      subProcessMindMapData: [{nodeId: 'n', contentList: ['cn']}] as ReadableTree,
-      inputSubProcesses: ['m'],
-      inputSubProcessesAll: ['m'],
+      subProcessMindMapData: [{nodeId: 'tg', contentList: ['ctg']}] as ReadableTree,
+      inputSubProcesses: ['tf'],
+      inputSubProcessesAll: ['tf'],
       subProcessInputLink: '',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
-      subProcessId: 'k',
+      subProcessId: 'td',
       subProcessType: SubProcessTypes.INGESTION,
-      subProcessMindMapData: [{nodeId: 'k', contentList: ['ck']}] as ReadableTree,
+      subProcessMindMapData: [{nodeId: 'td', contentList: ['ctd']}] as ReadableTree,
       inputSubProcesses: [],
       inputSubProcessesAll: [],
       subProcessInputLink: 'kAudioUrl',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
-      subProcessId: 'l',
+      subProcessId: 'te',
       subProcessType: SubProcessTypes.EXTRACTION,
-      subProcessMindMapData: [{nodeId: 'l', contentList: ['cl']}] as ReadableTree,
-      inputSubProcesses: ['k', 'n'],
-      inputSubProcessesAll: ['k', 'n', 'm'],
+      subProcessMindMapData: [{nodeId: 'te', contentList: ['cte']}] as ReadableTree,
+      inputSubProcesses: ['td', 'tg'],
+      inputSubProcessesAll: ['td', 'tg', 'tf'],
       subProcessInputLink: '',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
-      subProcessId: 'h',
+      subProcessId: 'ta',
       subProcessType: SubProcessTypes.INGESTION,
-      subProcessMindMapData: [{nodeId: 'h', contentList: ['ch']}] as ReadableTree,
+      subProcessMindMapData: [{nodeId: 'ta', contentList: ['cta']}] as ReadableTree,
       inputSubProcesses: [],
       inputSubProcessesAll: [],
       subProcessInputLink: 'hTextUrl',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
-      subProcessId: 'i',
+      subProcessId: 'tb',
       subProcessType: SubProcessTypes.EXTRACTION,
-      subProcessMindMapData: [{nodeId: 'i', contentList: ['ci']}] as ReadableTree,
-      inputSubProcesses: ['h'],
-      inputSubProcessesAll: ['h'],
+      subProcessMindMapData: [{nodeId: 'tb', contentList: ['ctb']}] as ReadableTree,
+      inputSubProcesses: ['ta'],
+      inputSubProcessesAll: ['ta'],
       subProcessInputLink: '',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
-      subProcessId: 'j',
+      subProcessId: 'tc',
       subProcessType: SubProcessTypes.EXTRACTION,
-      subProcessMindMapData: [{nodeId: 'j', contentList: ['cj']}] as ReadableTree,
-      inputSubProcesses: ['i', 'l'],
-      inputSubProcessesAll: ['i', 'l', 'h', 'k', 'n', 'm'],
+      subProcessMindMapData: [{nodeId: 'tc', contentList: ['ctc']}] as ReadableTree,
+      inputSubProcesses: ['tb', 'te'],
+      inputSubProcessesAll: ['tb', 'te', 'ta', 'td', 'tg', 'tf'],
       subProcessInputLink: '',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
