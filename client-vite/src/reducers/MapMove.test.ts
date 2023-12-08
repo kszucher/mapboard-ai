@@ -387,12 +387,12 @@ describe("Move_tests", () => {
       {nodeId: 'ga', path: ['g']},
       {nodeId: 'ta', path: ['r', 0]},
       {nodeId: 'tb', path: ['r', 0, 's', 0]},
-      {nodeId: 't', path: ['r', 0, 's', 0, 's', 0], selected: 1},
-      {nodeId: 'u', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0]},
+      {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 0], selected: 1},
+      {nodeId: 'xta', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0, 's', 0]},
-      {nodeId: 'v', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'xtb', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'w', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0]},
+      {nodeId: 'xtc', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'moveS2TO', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))

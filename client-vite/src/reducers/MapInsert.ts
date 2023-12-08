@@ -26,21 +26,21 @@ export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, at
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PT
   makeSpaceFromS(m, ip, 1)
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip, taskStatus: getX(m).taskStatus, ...attributes} as N)
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip, taskStatus: getX(m).taskStatus, ...attributes} as N)
   m.sort(sortPath)
 }
 
 export const insertCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) => {
   const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as PT)
   makeSpaceFromCr(m, ipList, 1)
-  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8), path: p}  as N)))
+  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8), path: p}  as N)))
   m.sort(sortPath)
 }
 
 export const insertCC = (m: M, insertParentNode: T, insertTargetColumnIndex: number) => {
   const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as PT)
   makeSpaceFromCc(m, ipList, 1)
-  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8), path: p} as N)))
+  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8), path: p} as N)))
   m.sort(sortPath)
 }
 
@@ -49,7 +49,7 @@ export const insertTable = (m: M, insertParentNode: T, insertTargetIndex: number
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
   mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + 1))
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ip} as N)
-  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8), path: [...ip, 'c', ...el]} as N)))
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip} as N)
+  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8), path: [...ip, 'c', ...el]} as N)))
   m.sort(sortPath)
 }

@@ -22,7 +22,7 @@ describe("InsertTests", () => {
       {nodeId: 'ta', path: ['r', 0]},
       {nodeId: 'tb', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
-      {nodeId: 't', path: ['r', 0, 's', 0, 's', 1], selected: 1},
+      {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 1], selected: 1},
       {nodeId: 'td', path: ['r', 0, 's', 0, 's', 2]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 's', 3]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 's', 4]},
@@ -46,7 +46,7 @@ describe("InsertTests", () => {
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 's', 1]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 's', 2]},
-      {nodeId: 't', path: ['r', 0, 's', 0, 's', 3], selected: 1},
+      {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 3], selected: 1},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 's', 4]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'insertSU', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
@@ -63,7 +63,7 @@ describe("InsertTests", () => {
       {nodeId: 'ta', path: ['r', 0]},
       {nodeId: 'tb', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
-      {nodeId: 't', path: ['r', 0, 's', 0, 's', 1], selected: 1},
+      {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 1], selected: 1},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'insertSO', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
@@ -89,8 +89,8 @@ describe("InsertTests", () => {
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 1},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
-      {nodeId: 'u', path: ['r', 0, 's', 0, 'c', 1, 0]},
-      {nodeId: 'v', path: ['r', 0, 's', 0, 'c', 1, 1]},
+      {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 2, 0, 's', 0]},
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 2, 1]},
@@ -120,8 +120,8 @@ describe("InsertTests", () => {
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
-      {nodeId: 'u', path: ['r', 0, 's', 0, 'c', 1, 0]},
-      {nodeId: 'v', path: ['r', 0, 's', 0, 'c', 1, 1]},
+      {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 2, 0], selected: 1},
       {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 2, 0, 's', 0]},
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 2, 1], selected: 1},
@@ -149,12 +149,12 @@ describe("InsertTests", () => {
       {nodeId: 'tb', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
-      {nodeId: 'u', path: ['r', 0, 's', 0, 'c', 0, 1]},
+      {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 2]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 0, 2, 's', 0]},
       {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 1},
       {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'v', path: ['r', 0, 's', 0, 'c', 1, 1]},
+      {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 2]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
@@ -180,12 +180,12 @@ describe("InsertTests", () => {
       {nodeId: 'tb', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
-      {nodeId: 'u', path: ['r', 0, 's', 0, 'c', 0, 1]},
+      {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 2], selected: 1},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 0, 2, 's', 0]},
       {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'v', path: ['r', 0, 's', 0, 'c', 1, 1]},
+      {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 2], selected: 1},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
@@ -209,8 +209,8 @@ describe("InsertTests", () => {
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 1, 1]},
-      {nodeId: 'u', path: ['r', 0, 's', 0, 'c', 2, 0]},
-      {nodeId: 'v', path: ['r', 0, 's', 0, 'c', 2, 1]},
+      {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 2, 0]},
+      {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 2, 1]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'insertSCRD', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
@@ -228,8 +228,8 @@ describe("InsertTests", () => {
       {nodeId: 'ga', path: ['g']},
       {nodeId: 'ta', path: ['r', 0]},
       {nodeId: 'tb', path: ['r', 0, 's', 0], selected: 1},
-      {nodeId: 'u', path: ['r', 0, 's', 0, 'c', 0, 0]},
-      {nodeId: 'v', path: ['r', 0, 's', 0, 'c', 0, 1]},
+      {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 0, 0]},
+      {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 2, 0]},
@@ -253,10 +253,10 @@ describe("InsertTests", () => {
       {nodeId: 'tb', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 1]},
-      {nodeId: 'u', path: ['r', 0, 's', 0, 'c', 0, 2]},
+      {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 0, 2]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 1, 1]},
-      {nodeId: 'v', path: ['r', 0, 's', 0, 'c', 1, 2]},
+      {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 2]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, 'insertSCCR', {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
@@ -274,10 +274,10 @@ describe("InsertTests", () => {
       {nodeId: 'ga', path: ['g']},
       {nodeId: 'ta', path: ['r', 0]},
       {nodeId: 'tb', path: ['r', 0, 's', 0], selected: 1},
-      {nodeId: 'u', path: ['r', 0, 's', 0, 'c', 0, 0]},
+      {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 2]},
-      {nodeId: 'v', path: ['r', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 1, 2]},
     ] as MPartial
