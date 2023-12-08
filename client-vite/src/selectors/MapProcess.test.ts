@@ -6,16 +6,16 @@ import {ReadableTree, SubProcess} from "./MapProcessTypes.ts"
 
 describe("Process_tests", () => {
   test('getReadableTree', () => expect(getReadableTree(mapInit([
-      {nodeId: 'a', path: ['g']},
-      {nodeId: 'b', path: ['r', 0], selected: 1, content: 'contentR0'},
-      {nodeId: 'd', path: ['r', 0, 's', 0], content: 'contentR0D0S0'},
-      {nodeId: 'e', path: ['r', 0, 's', 1], content: 'contentR0D0S1'},
-      {nodeId: 'f', path: ['r', 0, 's', 2], content: 'contentR0D0S2'},
-      {nodeId: 'g', path: ['r', 0, 's', 2, 's', 0], content: 'contentR0D0S2S0'},
-    ] as MPartial) as M, {nodeId: 'b', path: ['r', 0], selected: 1, content: 'contentR0'} as T)).toEqual([
-      {nodeId: 'd', contentList: ['contentR0', 'contentR0D0S0']},
-      {nodeId: 'e', contentList: ['contentR0', 'contentR0D0S1']},
-      {nodeId: 'g', contentList: ['contentR0', 'contentR0D0S2', 'contentR0D0S2S0']},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'ta', path: ['r', 0], selected: 1, content: 'contentR0'},
+      {nodeId: 'tb', path: ['r', 0, 's', 0], content: 'contentR0D0S0'},
+      {nodeId: 'tc', path: ['r', 0, 's', 1], content: 'contentR0D0S1'},
+      {nodeId: 'td', path: ['r', 0, 's', 2], content: 'contentR0D0S2'},
+      {nodeId: 'te', path: ['r', 0, 's', 2, 's', 0], content: 'contentR0D0S2S0'},
+    ] as MPartial) as M, {nodeId: 'ta', path: ['r', 0], selected: 1, content: 'contentR0'} as T)).toEqual([
+      {nodeId: 'tb', contentList: ['contentR0', 'contentR0D0S0']},
+      {nodeId: 'tc', contentList: ['contentR0', 'contentR0D0S1']},
+      {nodeId: 'te', contentList: ['contentR0', 'contentR0D0S2', 'contentR0D0S2S0']},
     ] as ReadableTree)
   )
   test('getSubProcessList', () =>
