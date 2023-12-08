@@ -28,10 +28,10 @@ const cbSave = (cb: any) => {
 const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   const nodeIdMappingR = cbR.map((ti, i) => ({
     oldNodeId: ti.nodeId,
-    newNodeId: IS_TESTING ? 't' + generateCharacterFrom('p', i) : 'node' + genHash(8)
+    newNodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8)
   }))
   cbL.forEach((li, i) => Object.assign(li, {
-    nodeId: IS_TESTING ? 'l' + generateCharacterFrom('e', i) : 'node' + genHash(8),
+    nodeId: IS_TESTING ? 'xl' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
@@ -55,7 +55,7 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
 
 const cbToS = (m: M, cbS: M, ip: PT) => {
   cbS.forEach((ti, i) => Object.assign(ti, {
-    nodeId: IS_TESTING ? generateCharacterFrom('u', i) : 'node' + genHash(8),
+    nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)],
     linkType: tSaveOptional.linkType,
     link: tSaveOptional.link
