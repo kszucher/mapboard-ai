@@ -28,7 +28,7 @@ const cbSave = (cb: any) => {
 const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   const nodeIdMappingR = cbR.map((ti, i) => ({
     oldNodeId: ti.nodeId,
-    newNodeId: IS_TESTING ? 'r' + generateCharacterFrom('p', i) : 'node' + genHash(8)
+    newNodeId: IS_TESTING ? 't' + generateCharacterFrom('p', i) : 'node' + genHash(8)
   }))
   cbL.forEach((li, i) => Object.assign(li, {
     nodeId: IS_TESTING ? 'l' + generateCharacterFrom('e', i) : 'node' + genHash(8),
