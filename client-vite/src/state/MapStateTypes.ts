@@ -43,7 +43,14 @@ export interface LSaveNever {
 }
 
 export interface TSaveOptional {
+  // r
   controlType: ControlTypes
+  offsetW: number
+  offsetH: number
+  llmDataType: string
+  llmDataId: string
+  note: string
+  // r || s
   contentType: string
   content: string
   linkType: string
@@ -52,8 +59,6 @@ export interface TSaveOptional {
   imageH: number
   dimW: number
   dimH: number
-  offsetW: number
-  offsetH: number
   selected: number
   selection: string
   lastSelectedChild: number
@@ -69,9 +74,6 @@ export interface TSaveOptional {
   textFontSize: number
   textColor: string
   taskStatus: number
-  note: string
-  llmDataType: string
-  llmDataId: string
   blur: number
 }
 

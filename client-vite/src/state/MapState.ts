@@ -41,7 +41,14 @@ export const tSaveAlways = {
 } as TSaveAlways
 
 export const tSaveOptional = {
+  // r
   controlType: ControlTypes.NONE,
+  offsetW: 0,
+  offsetH: 0,
+  llmDataType: 'text',
+  llmDataId: '',
+  note: '',
+  // r || s
   contentType: 'text',
   content: '',
   linkType: '',
@@ -50,8 +57,6 @@ export const tSaveOptional = {
   imageH: 0,
   dimW: 0,
   dimH: 0,
-  offsetW: 0,
-  offsetH: 0,
   selected: 0,
   selection: 's',
   lastSelectedChild: -1,
@@ -67,9 +72,6 @@ export const tSaveOptional = {
   textFontSize: 14,
   textColor: 'default',
   taskStatus: 0,
-  note: '',
-  llmDataType: 'text',
-  llmDataId: '',
   blur: 0,
 } as TSaveOptional
 
