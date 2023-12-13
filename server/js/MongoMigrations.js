@@ -34,6 +34,7 @@ maps.forEach(map => Object.assign(
         'offsetH',
         'llmDataType',
         'llmDataId',
+        'note',
       ])),
     ...map.versions[0]
       .filter(node => node.path.length === 2)
@@ -64,7 +65,6 @@ maps.forEach(map => Object.assign(
         'textFontSize',
         'textColor',
         'taskStatus',
-        'note',
         'blur',
       ])),
     ...map.versions[0]
