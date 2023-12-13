@@ -129,7 +129,7 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                if ((isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0) {
+                if (isXS(m) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0) {
                   dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
                 }
               }}
@@ -139,7 +139,7 @@ export const MapDiv: FC = () => {
                   dispatch(actions.mapAction({type: 'removeMapListEntriesOfEdit', payload: null}))
                 }
                 if (['Insert','Tab'].includes(e.key)) {
-                  (isXR(m) || isXS(m)) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
+                  isXS(m) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
                 }
               }}
               onInput={(e) => {

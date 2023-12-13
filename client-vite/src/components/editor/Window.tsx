@@ -31,7 +31,7 @@ export const Window: FC = () => {
     const ckm = [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('')
 
     ckm === '---' && e.key === 'F1' && dispatch(actions.mapAction({type: '', payload: null}))
-    ckm === '---' && e.key === 'F2' && (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
+    ckm === '---' && e.key === 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
     ckm === '---' && e.key === 'F3' && dispatch(actions.mapAction({type: '', payload: null}))
     ckm === '---' && e.key === 'F5' && dispatch(actions.mapAction({type: '', payload: null}))
     ckm === '---' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: 'insertSD', payload: null}))
@@ -83,13 +83,13 @@ export const Window: FC = () => {
     ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && dispatch(actions.mapAction({type: 'selectCCSAME', payload: null}))
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && dispatch(actions.mapAction({type: 'insertCRU', payload: null}))
 
-    ckm === '---' && e.code === 'ArrowRight' && (isXR(m) || isXS(m)) && getCountXSO1(m) > 0 && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
+    ckm === '---' && e.code === 'ArrowRight' && isXS(m) && getCountXSO1(m) > 0 && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
     ckm === '---' && e.code === 'ArrowRight' && isXC(m) && !isXCR(m) && dispatch(actions.mapAction({type: 'selectCR', payload: null}))
     ckm === '---' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && dispatch(actions.mapAction({type: 'selectCR', payload: null}))
     ckm === 'c--' && e.code === 'ArrowRight' && isXR(m) && dispatch(actions.mapAction({type: 'offsetR', payload: null}))
     ckm === 'c--' && e.code === 'ArrowRight' && isXASVN(m) && getCountXASU(m) > 0 && dispatch(actions.mapAction({type: 'moveSO', payload: null}))
     ckm === 'c--' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && dispatch(actions.mapAction({type: 'moveCCR', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowRight' && (isXR(m) || isXS(m)) && getCountXSO1(m) > 0 && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))
+    ckm === '-s-' && e.code === 'ArrowRight' && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))
     ckm === '-s-' && e.code === 'ArrowRight' && isXC(m) && dispatch(actions.mapAction({type: 'selectCRSAME', payload: null}))
     ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCR', payload: null}))
 
@@ -104,8 +104,8 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowLeft' && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCL', payload: null}))
 
     ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXS(m) && dispatch(actions.mapAction({type: 'setTextColor', payload: shortcutColors[e.which - 96]}))
-    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
-    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && (isXR(m) || isXS(m)) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
+    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
+    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
   }
 
   const paste = (e: Event) => {
@@ -130,15 +130,15 @@ export const Window: FC = () => {
                     const isPastedLR = mapJson.at(-1).path.at(0) === 'r'
                     const isPastedS = mapJson.at(-1).path.at(0) === 's'
                     isPastedLR && dispatch(actions.mapAction({type: 'pasteLR', payload: text}))
-                    isPastedS && (isXR(m) || isXS(m)) && dispatch(actions.mapAction({type: 'pasteSO', payload: text}))
+                    isPastedS && isXS(m) && dispatch(actions.mapAction({type: 'pasteSO', payload: text}))
                   } else {
                     window.alert('invalid map')
                   }
                 } else {
                   if (isUrl(text)) {
-                    isUrl(text) && (isXR(m) || isXS(m)) && dispatch(actions.mapAction({type: 'insertSOLink', payload: text}))
+                    isXS(m) && dispatch(actions.mapAction({type: 'insertSOLink', payload: text}))
                   } else {
-                    (isXR(m) || isXS(m)) && dispatch(actions.mapAction({type: 'insertSOText', payload: text}))
+                    isXS(m) && dispatch(actions.mapAction({type: 'insertSOText', payload: text}))
                   }
                 }
               })
@@ -151,7 +151,7 @@ export const Window: FC = () => {
                 : 'https://mapboard-server.herokuapp.com/feta'
               fetch(address, {method: 'post', body: formData})
                 .then(response => response.json().then(response => {
-                  (isXR(m) || isXS(m)) && dispatch(actions.mapAction({type: 'insertSOImage', payload: response}))
+                  isXS(m) && dispatch(actions.mapAction({type: 'insertSOImage', payload: response}))
                 }))
             })
           }

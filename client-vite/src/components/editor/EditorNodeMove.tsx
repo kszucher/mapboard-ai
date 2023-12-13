@@ -1,7 +1,7 @@
 import {Button, DropdownMenu} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {getCountXASD, getCountXASU, getCountXSO1, isXASVN, isXR, isXS} from "../../selectors/MapSelector"
+import {getCountXASD, getCountXASU, getCountXSO1, isXASVN, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
 
 export const EditorNodeMove = () => {
@@ -19,7 +19,7 @@ export const EditorNodeMove = () => {
         {isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'moveSD', payload: null}))}>{'Node Down'}</DropdownMenu.Item>}
         {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'moveSO', payload: null}))}>{'Node Out'}</DropdownMenu.Item>}
         {isXS(m) && isXASVN(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'moveSI', payload: null}))}>{'Node In'}</DropdownMenu.Item>}
-        {((isXR(m) || isXS(m)) && getCountXSO1(m) > 0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'moveS2TO', payload: null}))}>{'Sub Nodes To Table'}</DropdownMenu.Item>}
+        {isXS(m) && getCountXSO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'moveS2TO', payload: null}))}>{'Sub Nodes To Table'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

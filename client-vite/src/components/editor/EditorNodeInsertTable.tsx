@@ -2,7 +2,7 @@ import {Button, Dialog, Flex, Grid, Select, Text} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {isXR, isXS} from "../../selectors/MapSelector"
+import {isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
 
 export const EditorNodeInsertTable = () => {
@@ -43,12 +43,7 @@ export const EditorNodeInsertTable = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button
-            onClick={
-              () => {
-                (isXR(m) || isXS(m)) && dispatch(actions.mapAction({type: 'insertSOTable', payload: {rowLen: row, colLen: col}}))
-              }
-            }>
+          <Button onClick={() => isXS(m) && dispatch(actions.mapAction({type: 'insertSOTable', payload: {rowLen: row, colLen: col}}))}>
             {'OK'}
           </Button>
         </Dialog.Close>
