@@ -35,6 +35,8 @@ export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
 export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]
 export const mT = (m: M): T[] => m.filter(n => isT(n.path)) as T[]
 export const mTR = (m: M): T[] => m.filter(n => isT(n.path) && isR(n.path as PT)) as T[]
+export const mTS = (m: M): T[] => m.filter(n => isT(n.path) && isS(n.path as PT)) as T[]
+export const mTC = (m: M): T[] => m.filter(n => isT(n.path) && isC(n.path as PT)) as T[]
 
 export const getG = (m: M): G => mG(m).at(0) as G
 

@@ -8,7 +8,15 @@ export const mapMeasure = (pm: M, m: M) => {
   mT(m).slice().reverse().forEach(ti => {
     const pt = getNodeById(pm, ti.nodeId)
     switch (true) {
-      case isR(ti.path) || isS(ti.path): {
+      case isR(ti.path): {
+        if (getCountTSO1(m, ti)) {
+          measureFamily(m, ti)
+        }
+        ti.maxW = ti.selfW + ti.familyW
+        ti.maxH = Math.max(...[ti.selfH, ti.familyH])
+        break
+      }
+      case isS(ti.path): {
         if (getCountTCO1(m, ti)) {
           measureTable(m, ti)
         } else {

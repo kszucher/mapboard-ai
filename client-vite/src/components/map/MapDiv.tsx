@@ -4,7 +4,7 @@ import mermaid from "mermaid"
 import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../assets/Colors"
-import {getG, getNodeById, isR, isS, isXR, isXS, getX, getCountTCO1, isTS, isTR, mT} from "../../selectors/MapSelector"
+import {getG, getNodeById, isS, isXR, isXS, getX, getCountTCO1, isTS, isTR, mT} from "../../selectors/MapSelector"
 import {adjust, getLatexString} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -50,7 +50,7 @@ export const MapDiv: FC = () => {
       {mT(m).map(ti => (
         <Fragment key={ti.nodeId}>
           {
-            (isR(ti.path) || isS(ti.path)) &&
+            isS(ti.path) &&
             <div
               id={ti.nodeId}
               ref={ref => ref && ref.focus()}
