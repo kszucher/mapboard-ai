@@ -25,7 +25,9 @@ maps.forEach(map => Object.assign(
     ...map.versions[0]
       .filter(node => node.path.length === 1),
     ...map.versions[0]
-      .filter(node => node.path.length === 2)
+      .filter(node => node.path.length === 2 && node.path.at(0) === 'l'),
+    ...map.versions[0]
+      .filter(node => node.path.length === 2 && node.path.at(0) === 'r')
       .map(el => filteredObject(el, [
         'path',
         'nodeId',
@@ -37,7 +39,7 @@ maps.forEach(map => Object.assign(
         'note',
       ])),
     ...map.versions[0]
-      .filter(node => node.path.length === 2)
+      .filter(node => node.path.length === 2 && node.path.at(0) === 'r')
       .map(node => ({...node, path: [...node.path.slice(0, 2), 's', 0], nodeId: 'node' + genHash(8)}))
       .map(el => filteredObject(el, [
         'path',
