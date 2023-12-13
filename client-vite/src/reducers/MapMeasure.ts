@@ -14,6 +14,8 @@ export const mapMeasure = (pm: M, m: M) => {
         }
         ti.maxW = ti.selfW + ti.familyW
         ti.maxH = Math.max(...[ti.selfH, ti.familyH])
+        ti.selfW = ti.maxW + 2 * MARGIN_X
+        ti.selfH = ti.maxH + 2 * MARGIN_Y
         break
       }
       case isS(ti.path): {
@@ -43,7 +45,7 @@ export const mapMeasure = (pm: M, m: M) => {
   const minOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
   mTR(m).map(el => el.offsetW -= minOffsetW)
   mTR(m).map(el => el.offsetH -= minOffsetH)
-  const mapWidth = Math.max(...mTR(m).map(ri => ri.offsetW + getTaskWidth(getG(m)) * hasTask(m, ri) + ri.familyW + MARGIN_X * 2 + ri.selfW))
-  const mapHeight = Math.max(...mTR(m).map(ri => ri.offsetH + Math.max(...[ri.selfH, ri.familyH]) + MARGIN_Y * 2))
+  const mapWidth = Math.max(...mTR(m).map(ri => ri.offsetW + getTaskWidth(getG(m)) * hasTask(m, ri) + ri.selfW))
+  const mapHeight = Math.max(...mTR(m).map(ri => ri.offsetH + Math.max(...[ri.selfH, ri.familyH])))
   Object.assign(getG(m), {mapWidth, mapHeight})
 }

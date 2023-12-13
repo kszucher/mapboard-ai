@@ -1,6 +1,5 @@
 import isEqual from "react-fast-compare"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {tSaveOptional} from "../state/MapState"
 import {G, L, M, N, P, PT, PTC, T, TSaveOptional} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
@@ -172,8 +171,8 @@ export const hasTask = (m: M, t: T): number => +mT(m).filter(ti => ti.path.at(1)
 
 export const getRootStartX = (t: T): number => t.offsetW
 export const getRootStartY = (t: T): number => t.offsetH
-export const getRootW = (m: M, t: T): number => t.familyW + t.selfW  + getTaskWidth(getG(m)) * (hasTask(m, t)) + 2 * MARGIN_X
-export const getRootH = (_: M, t: T): number => Math.max(...[t.selfH, t.familyH]) + 2 * MARGIN_Y
+export const getRootW = (m: M, t: T): number => t.selfW + getTaskWidth(getG(m)) * (hasTask(m, t))
+export const getRootH = (_: M, t: T): number => Math.max(...[t.selfH, t.familyH])
 
 export const getRootMidX = (m: M, t: T): number => getRootStartX(t) + getRootW(m, t) / 2
 export const getRootMidY = (m: M, t: T): number => getRootStartY(t) + getRootH(m, t) / 2

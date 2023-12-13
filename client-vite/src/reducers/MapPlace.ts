@@ -1,16 +1,14 @@
-import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {isR, isS, isC, isSU, getPathPattern, getCountTSO1, getCountTSO2, getCountTCO2, getG, getTSI1, getTSI2, mT} from "../selectors/MapSelector"
+import {isR, isS, isC, isSU, getPathPattern, getCountTSO1, getCountTSO2, getCountTCO2, getG, getTSI1, getTSI2, mT, getRootStartX, getRootEndX, getRootMidY} from "../selectors/MapSelector"
+import {MARGIN_X} from "../state/Consts.ts"
 import {M, T} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {
   mT(m).forEach(ti => {
     switch (true) {
       case isR(ti.path): {
-        ti.nodeStartX = ti.offsetW + MARGIN_X
-        ti.nodeEndX = ti.nodeStartX + ti.selfW
-        ti.nodeY = ti.offsetH + MARGIN_Y + Math.max(...[ti.selfH, ti.familyH]) / 2
-        ti.isTop = 1
-        ti.isBottom = 1
+        ti.nodeStartX = getRootStartX(ti)
+        ti.nodeEndX = getRootEndX(m, ti)
+        ti.nodeY = getRootMidY(m, ti)
         break
       }
       case isS(ti.path): {
@@ -19,7 +17,10 @@ export const mapPlace = (m: M) => {
         const i = ti.path.at(-1)
         const sumUpperSiblingMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * + Boolean(getCountTSO2(m, p1) || getCountTCO2(m, p1))
-        if (getPathPattern(ti.path).endsWith('rs') || getPathPattern(ti.path).endsWith('cs')) {
+        if (getPathPattern(ti.path).endsWith('rs')) {
+          ti.nodeStartX = p1.nodeStartX + MARGIN_X
+          ti.nodeEndX = p1.nodeStartX + MARGIN_X + ti.selfW
+        } else if (getPathPattern(ti.path).endsWith('cs')) {
           ti.nodeStartX = p1.nodeStartX + 2
           ti.nodeEndX = p1.nodeStartX + 2 + ti.selfW
         } else {
