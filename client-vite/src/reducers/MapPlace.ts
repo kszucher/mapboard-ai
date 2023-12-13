@@ -41,10 +41,13 @@ export const mapPlace = (m: M) => {
         const p2 = getTSI2(m, ti) as T
         const i = ti.path.at(-2)
         const j = ti.path.at(-1)
-        if (getPathPattern(ti.path).endsWith('rsc') || getPathPattern(ti.path).endsWith('csc')) {
+        if (getPathPattern(ti.path).endsWith('rsc')) {
+          ti.nodeStartX = p2.nodeStartX + MARGIN_X
+          ti.nodeEndX = p2.nodeStartX + MARGIN_X + ti.selfW
+        } else if (getPathPattern(ti.path).endsWith('csc'))  {
           ti.nodeStartX = p2.nodeStartX + 2
           ti.nodeEndX = p2.nodeStartX + 2 + ti.selfW
-        } else {
+        } else if (getPathPattern(ti.path).endsWith('ssc')) {
           ti.nodeStartX = p2.nodeEndX + g.sLineDeltaXDefault + p1.sumMaxColWidth[j]
           ti.nodeEndX = p2.nodeEndX + g.sLineDeltaXDefault + p1.sumMaxColWidth[j] + p1.maxColWidth[j]
         }
