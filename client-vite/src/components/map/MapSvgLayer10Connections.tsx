@@ -62,7 +62,7 @@ export const MapSvgLayer10Connections: FC = () => {
                   rx={4}
                   ry={4}
                   fill={'#666666'}
-                  transform={`translate(${adjustIcon(getRootSideX(m, t, side))}, ${adjustIcon(getRootSideY(m, t, side))})`}
+                  transform={`translate(${adjustIcon(getRootSideX(t, side))}, ${adjustIcon(getRootSideY(t, side))})`}
                   {...{vectorEffect: 'non-scaling-stroke'}}
                   style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
                   onMouseDown={(e) => {

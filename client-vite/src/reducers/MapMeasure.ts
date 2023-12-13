@@ -12,10 +12,8 @@ export const mapMeasure = (pm: M, m: M) => {
         if (getCountTSO1(m, ti)) {
           measureFamily(m, ti)
         }
-        ti.maxW = ti.selfW + ti.familyW
-        ti.maxH = Math.max(...[ti.selfH, ti.familyH])
-        ti.selfW = ti.maxW + 2 * MARGIN_X
-        ti.selfH = ti.maxH + 2 * MARGIN_Y
+        ti.selfW = ti.familyW + 2 * MARGIN_X
+        ti.selfH = ti.familyH + 2 * MARGIN_Y
         break
       }
       case isS(ti.path): {

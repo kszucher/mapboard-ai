@@ -8,6 +8,6 @@ export const rectanglesIntersect = (input: number[]) => {
 export const mapFindIntersecting = (m: M, fromX: number, fromY: number, toX: number, toY: number ) => (
   mT(m).filter(ti =>
     isS(ti.path) && getCountTCO1(m, ti) === 0 && ti.content !== '' &&
-    +rectanglesIntersect([Math.min(fromX, toX), Math.min(fromY, toY), Math.max(fromX, toX), Math.max(fromY, toY), ti.nodeStartX, ti.nodeY, ti.nodeEndX, ti.nodeY])
+    +rectanglesIntersect([Math.min(fromX, toX), Math.min(fromY, toY), Math.max(fromX, toX), Math.max(fromY, toY), ti.nodeStartX, ti.nodeStartY, ti.nodeEndX, ti.nodeEndY])
   )
 )

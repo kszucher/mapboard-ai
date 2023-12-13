@@ -3,7 +3,7 @@ import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {T} from "../../state/MapStateTypes"
 import colors from "tailwindcss/colors"
-import {getG, getRootStartY, getRootH, getRootStartX, getRootW, isR, mT} from "../../selectors/MapSelector"
+import {getG, isR, mT} from "../../selectors/MapSelector"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -41,10 +41,10 @@ export const MapSvgLayer0RootBackground: FC = () => {
               isR(t.path) &&
               <rect
                 key={`${g.nodeId}_svg_root_background`}
-                x={getRootStartX(t)}
-                y={getRootStartY(t)}
-                width={getRootW(m, t)}
-                height={getRootH(m, t)}
+                x={t.nodeStartX}
+                y={t.nodeStartY}
+                width={t.nodeEndX - t.nodeStartX}
+                height={t.nodeEndY - t.nodeStartY}
                 rx={32}
                 ry={32}
                 fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}

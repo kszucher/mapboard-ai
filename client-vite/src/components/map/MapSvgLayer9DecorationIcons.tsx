@@ -16,7 +16,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
       {mTR(m).map((t: T) => (
         <g key={t.nodeId}>
           {t.controlType === ControlTypes.INGESTION &&
-            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(t.nodeStartX + 24)}, ${adjustIcon(t.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
+            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(t.nodeStartX + 24)}, ${adjustIcon(t.nodeStartY + t.selfH / 2 - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
               <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
               <g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
                 <path stroke="none" d="M0 0h24v24H0z"></path>
@@ -41,7 +41,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
               }}/>
             </g>}
           {t.controlType === ControlTypes.EXTRACTION &&
-            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(t.nodeStartX + 24)}, ${adjustIcon(t.nodeY - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
+            <g width="24" height="24" viewBox="0 0 24 24" transform={`translate(${adjustIcon(t.nodeStartX + 24)}, ${adjustIcon(t.nodeStartY + t.selfH / 2 - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}} style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
               <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
               <g xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M16 18a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zm0-12a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zM9 18a6 6 0 016-6 6 6 0 01-6-6 6 6 0 01-6 6 6 6 0 016 6z"></path>

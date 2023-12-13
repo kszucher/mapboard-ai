@@ -93,7 +93,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               d={getLinearLinePath({
                 x1: adjust(ti.nodeEndX),
                 x2: adjust(getTaskStartPoint(m, g, ti)),
-                y: adjust(ti.nodeY)})
+                y: adjust(ti.nodeStartY + ti.selfH / 2)})
               }
               stroke={C.TASK_LINE}
               strokeWidth={1}
@@ -106,7 +106,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               key={`${ti.nodeId}_svg_taskCircle${i + 1}`}
               id={'taskCircle'}
               cx={getTaskStartPoint(m, g, ti) + getTaskRadius(g) / 2 + i * (getTaskRadius(g) + TASK_CIRCLES_GAP)}
-              cy={ti.nodeY}
+              cy={ti.nodeStartY + ti.selfH / 2}
               r={getTaskRadius(g) / 2}
               fill={ti.taskStatus === i + 1
                 ? [C.TASK_CIRCLE_0_ON, C.TASK_CIRCLE_1_ON, C.TASK_CIRCLE_2_ON, C.TASK_CIRCLE_3_ON].at(i)

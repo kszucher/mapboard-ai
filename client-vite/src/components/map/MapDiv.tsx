@@ -57,7 +57,7 @@ export const MapDiv: FC = () => {
               className={ti.contentType === 'mermaid' ? 'mermaidNode' : ''}
               style={{
                 left: adjust(ti.nodeStartX),
-                top: adjust( ti.nodeY - ti.selfH / 2),
+                top: adjust( ti.nodeStartY),
                 minWidth: ti.contentType === 'mermaid' ? 'inherit' : ti.selfW + (g.density === 'large'? -10 : -8),
                 minHeight: ti.contentType === 'mermaid' ? 'inherit' : ti.selfH + (g.density === 'large'? -10 : 0),
                 paddingLeft: g.density === 'large'? 8 : 8,

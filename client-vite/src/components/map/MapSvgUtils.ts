@@ -1,8 +1,15 @@
-import {getG, getNodeById, getTR, getRootEndX, getRootEndY, getRootMidX, getRootMidY, getRootStartX, getRootStartY, getX, isXACC, isXACR, getXA, sortPath} from "../../selectors/MapSelector"
+import {getG, getNodeById, getTR, getX, isXACC, isXACR, getXA, sortPath} from "../../selectors/MapSelector"
 import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineTypes, Sides} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
+
+const getRootStartX = (t: T): number => t.nodeStartX
+const getRootStartY = (t: T): number => t.nodeStartY
+const getRootMidX = (t: T): number => (t.nodeEndX - t.nodeStartX) / 2
+const getRootMidY = (t: T): number => (t.nodeEndY - t.nodeStartY) / 2
+const getRootEndX = (t: T): number => t.nodeEndX
+const getRootEndY = (t: T): number => t.nodeEndY
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -29,11 +36,11 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
 export const getLinePathBetweenNodes = (na: T, nb: T) => {
   const { lineType } = nb
   const sx = na.nodeEndX
-  const sy = na.nodeY
+  const sy = na.nodeStartY + na.selfH / 2
   const ex = nb.nodeStartX
-  const ey = nb.nodeY
+  const ey = nb.nodeStartY + nb.selfH / 2
   const dx = nb.nodeStartX - na.nodeEndX
-  const dy = nb.nodeY - na.nodeY
+  const dy = nb.nodeStartY + nb.selfH / 2 - na.nodeStartY - na.selfH / 2
   let path
   if (lineType === LineTypes.bezier) {
     const c1x = (sx + dx / 4)
@@ -57,17 +64,17 @@ export const getLinePathBetweenRoots = (m: M, l: L) => {
   const toNode = getNodeById(m, toNodeId)
   let sx = 0, sy = 0, c1x = 0, c1y = 0
   switch (fromNodeSide) {
-    case Sides.R: sx = getRootEndX(m, fromNode); sy = getRootMidY(m, fromNode); c1x = sx + 100; c1y = sy; break
-    case Sides.L: sx = getRootStartX(fromNode); sy = getRootMidY(m, fromNode); c1x = sx - 100; c1y = sy; break
-    case Sides.T: sx = getRootMidX(m, fromNode); sy = getRootStartY(fromNode); c1x = sx; c1y = sy - 100; break
-    case Sides.B: sx = getRootMidX(m, fromNode); sy = getRootEndY(m, fromNode); c1x = sx; c1y = sy + 100; break
+    case Sides.R: sx = getRootEndX(fromNode); sy = getRootMidY(fromNode); c1x = sx + 100; c1y = sy; break
+    case Sides.L: sx = getRootStartX(fromNode); sy = getRootMidY(fromNode); c1x = sx - 100; c1y = sy; break
+    case Sides.T: sx = getRootMidX(fromNode); sy = getRootStartY(fromNode); c1x = sx; c1y = sy - 100; break
+    case Sides.B: sx = getRootMidX(fromNode); sy = getRootEndY(fromNode); c1x = sx; c1y = sy + 100; break
   }
   let ex = 0, ey = 0, c2x = 0, c2y = 0
   switch (toNodeSide) {
-    case Sides.R: ex = getRootEndX(m, toNode); ey = getRootMidY(m, toNode); c2x = ex + 100; c2y = ey; break
-    case Sides.L: ex = getRootStartX(toNode); ey = getRootMidY(m, toNode); c2x = ex - 100; c2y = ey; break
-    case Sides.T: ex = getRootMidX(m, toNode); ey = getRootStartY(toNode); c2x = ex; c2y = ey - 100; break
-    case Sides.B: ex = getRootMidX(m, toNode); ey = getRootEndY(m, toNode); c2x = ex; c2y = ey + 100;  break
+    case Sides.R: ex = getRootEndX(toNode); ey = getRootMidY(toNode); c2x = ex + 100; c2y = ey; break
+    case Sides.L: ex = getRootStartX(toNode); ey = getRootMidY(toNode); c2x = ex - 100; c2y = ey; break
+    case Sides.T: ex = getRootMidX(toNode); ey = getRootStartY(toNode); c2x = ex; c2y = ey - 100; break
+    case Sides.B: ex = getRootMidX(toNode); ey = getRootEndY(toNode); c2x = ex; c2y = ey + 100;  break
   }
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
@@ -80,18 +87,18 @@ export const getPolygonS = (m: M, t: T, selection: string): PolygonPoints => {
     ax = t.nodeStartX
     bx = t.nodeEndX - R
     cx = t.nodeEndX
-    ayu = byu = cyu = t.nodeY - t.selfH / 2
-    ayd = byd = cyd = t.nodeY + t.selfH / 2
+    ayu = byu = cyu = t.nodeStartY
+    ayd = byd = cyd = t.nodeEndY
   } else {
     ax = t.nodeStartX
     bx = t.nodeEndX + g.sLineDeltaXDefault
     cx = t.nodeStartX + t.maxW
-    ayu = t.nodeY - t.selfH / 2
-    ayd = t.nodeY + t.selfH / 2
-    byu = t.nodeY - t.maxH / 2
-    byd = t.nodeY + t.maxH / 2
-    cyu = t.nodeY - t.maxH / 2
-    cyd = t.nodeY + t.maxH / 2
+    ayu = t.nodeStartY
+    ayd = t.nodeEndY
+    byu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+    byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+    cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+    cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
   }
   return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
@@ -101,18 +108,18 @@ export const getPolygonC = (m: M): PolygonPoints => {
   if (isXACR(m)) {
     ax = getXA(m).slice().sort(sortPath).at(0)!.nodeStartX
     bx = cx = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndX
-    ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeY - getXA(m).slice().sort(sortPath).at(0)!.selfH / 2
-    ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(0)!.nodeY + getXA(m).slice().sort(sortPath).at(0)!.selfH / 2
+    ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeStartY
+    ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(0)!.nodeEndY
   } else if (isXACC(m)) {
     ax = getXA(m).at(0)!.nodeStartX
     bx = cx = getXA(m).at(0)!.nodeEndX
-    ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeY - getXA(m).slice().sort(sortPath).at(0)!.selfH / 2
-    ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(-1)!.nodeY + getXA(m).slice().sort(sortPath).at(-1)!.selfH / 2
+    ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeStartY
+    ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndY
   } else {
     ax = getX(m).nodeStartX
     bx = cx = getX(m).nodeEndX
-    ayu = byu = cyu = getX(m).nodeY - getX(m).selfH / 2
-    ayd = byd = cyd = getX(m).nodeY + getX(m).selfH / 2
+    ayu = byu = cyu = getX(m).nodeStartY
+    ayd = byd = cyd = getX(m).nodeEndY
   }
   return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
 }
@@ -152,7 +159,7 @@ export const getPolygonPath = (_: T, polygonPoints: PolygonPoints, selection: st
 export const getArcPath = (t: T, margin: number, closed: boolean) => {
   const R = 8
   const xi = t.nodeStartX
-  const yu = t.nodeY - t.selfH / 2
+  const yu = t.nodeStartY
   let x1 = adjust(xi - margin)
   let y1 = adjust(yu + R - margin)
   let dx = t.selfW - 2 * R + 2 * margin
@@ -169,8 +176,8 @@ export const getArcPath = (t: T, margin: number, closed: boolean) => {
 
 export const getGridPath = (t: T) => {
   const xi = t.nodeStartX
-  const yu = t.nodeY - t.selfH / 2
-  const yd = t.nodeY + t.selfH / 2
+  const yu = t.nodeStartY
+  const yd = t.nodeEndY
   let path = ''
   for (let i = 1; i < t.sumMaxRowHeight.length - 1; i++) {
     const x1 = adjust(t.nodeStartX)
@@ -189,24 +196,24 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
-export const getTaskStartPoint = (m: M, g: G, t: T) => getRootEndX(m, getTR(m, t)) - getTaskWidth(g)
+export const getTaskStartPoint = (m: M, g: G, t: T) => getRootEndX(getTR(m, t)) - getTaskWidth(g)
 
-export const getRootSideX = (m: M, t: T, side: string) => {
+export const getRootSideX = (t: T, side: string) => {
   switch (true) {
     case (side === 'L'): return getRootStartX(t)
-    case (side === 'R'): return getRootEndX(m, t) - 24
-    case (side === 'T'): return getRootMidX(m, t) - 12
-    case (side === 'B'): return getRootMidX(m, t) - 12
+    case (side === 'R'): return getRootEndX(t) - 24
+    case (side === 'T'): return getRootMidX(t) - 12
+    case (side === 'B'): return getRootMidX(t) - 12
     default: return 0
   }
 }
 
-export const getRootSideY = (m: M, t: T, side: string) => {
+export const getRootSideY = (t: T, side: string) => {
   switch (true) {
-    case (side === 'L'): return getRootMidY(m, t) - 12
-    case (side === 'R'): return getRootMidY(m, t) - 12
+    case (side === 'L'): return getRootMidY(t) - 12
+    case (side === 'R'): return getRootMidY(t) - 12
     case (side === 'T'): return getRootStartY(t)
-    case (side === 'B'): return getRootEndY(m, t) - 24
+    case (side === 'B'): return getRootEndY(t) - 24
     default: return 0
   }
 }

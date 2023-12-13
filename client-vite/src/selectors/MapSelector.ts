@@ -1,5 +1,4 @@
 import isEqual from "react-fast-compare"
-import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {tSaveOptional} from "../state/MapState"
 import {G, L, M, N, P, PT, PTC, T, TSaveOptional} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
@@ -168,16 +167,6 @@ export const getTextFontSize = (m: M): TSaveOptional['textFontSize'] => isArrayO
 export const getTextColor = (m: M): TSaveOptional['textColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textColor)) ? getX(m).textColor : tSaveOptional.textColor
 
 export const hasTask = (m: M, t: T): number => +mT(m).filter(ti => ti.path.at(1) === t.path.at(1) && ti.path.length > 2).some(ti => ti.taskStatus !== 0)
-
-export const getRootStartX = (t: T): number => t.offsetW
-export const getRootStartY = (t: T): number => t.offsetH
-export const getRootW = (m: M, t: T): number => t.selfW + getTaskWidth(getG(m)) * (hasTask(m, t))
-export const getRootH = (_: M, t: T): number => Math.max(...[t.selfH, t.familyH])
-
-export const getRootMidX = (m: M, t: T): number => getRootStartX(t) + getRootW(m, t) / 2
-export const getRootMidY = (m: M, t: T): number => getRootStartY(t) + getRootH(m, t) / 2
-export const getRootEndX = (m: M, t: T): number => getRootStartX(t) + getRootW(m, t)
-export const getRootEndY = (m: M, t: T): number => getRootStartY(t) + getRootH(m, t)
 
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li =>
   l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId && l.fromNodeSide  === li.fromNodeSide && l.toNodeSide === li.toNodeSide
