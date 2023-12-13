@@ -6,8 +6,8 @@ import {G, L, M, T} from "../../state/MapStateTypes"
 
 const getRootStartX = (t: T): number => t.nodeStartX
 const getRootStartY = (t: T): number => t.nodeStartY
-const getRootMidX = (t: T): number => (t.nodeEndX - t.nodeStartX) / 2
-const getRootMidY = (t: T): number => (t.nodeEndY - t.nodeStartY) / 2
+const getRootMidX = (t: T): number => t.nodeStartX + t.selfW / 2
+const getRootMidY = (t: T): number => t.nodeStartY + t.selfH / 2
 const getRootEndX = (t: T): number => t.nodeEndX
 const getRootEndY = (t: T): number => t.nodeEndY
 
