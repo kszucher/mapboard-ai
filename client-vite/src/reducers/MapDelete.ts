@@ -1,6 +1,6 @@
 import {L, M, PL, PT} from "../state/MapStateTypes"
 import {selectT, selectTL} from "./MapSelect"
-import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getRDSCIPL, isSD, isSDO, mG, mL, mT, isSEO, mTR, isR} from "../selectors/MapSelector"
+import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getRSCIPL, isSD, isSDO, mG, mL, mT, isSEO, mTR, isR} from "../selectors/MapSelector"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[
@@ -41,7 +41,7 @@ export const deleteS = (m: M) => {
         .filter(ti => xa.every(xti => !isSEO(xti.path, ti.path)))
         .map(ti => xa.some(xti => isSDO(xti.path, ti.path))
           ? {...ti, path:
-              [...getRDSCIPL(ti.path), ti.path]
+              [...getRSCIPL(ti.path), ti.path]
                 .map(sip => [...sip.slice(0, -1), sip.at(-1) - xa.map(xti => +isSD(xti.path, sip)).reduce((a, b) => a + b, 0)])
                 .reduce((a, b) => a.concat(b.slice(a.length)), []) as PT
           }
