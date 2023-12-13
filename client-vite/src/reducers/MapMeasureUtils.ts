@@ -1,7 +1,7 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils"
 import {MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL} from "../state/Consts"
 import {M, T} from "../state/MapStateTypes"
-import {getCountTCO2, getCountTSCH, getCountTSCV, getCountTSO1, getCountTSO2, getG, getNodeByPath} from "../selectors/MapSelector"
+import {getCountTCO2, getCountTSCH, getCountTSCV, getCountTSO1, getCountTSO2, getG, getNodeByPath, getPathPattern} from "../selectors/MapSelector"
 import {createArray} from "../utils/Utils"
 
 export const measureText = (m: M, pt: T, t: T) => {
@@ -111,5 +111,8 @@ export const measureFamily = (m: M, t: T) => {
   if (getCountTSO2(m, t) || getCountTCO2(m, t)) {
     t.familyH += (countSS - 1) * t.spacing
   }
-  t.familyW = sMaxW + g.sLineDeltaXDefault
+  t.familyW = sMaxW
+  if (getPathPattern(t.path) !== 'r') {
+    t.familyW += g.sLineDeltaXDefault
+  }
 }
