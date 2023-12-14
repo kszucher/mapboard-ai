@@ -26,6 +26,7 @@ const isL = (p: P): boolean => p.at(0) === 'l'
 const isT = (p: P): boolean => p.at(0) === 'r' || p.at(0) === 's' || p.at(0) === 'c'
 
 export const isR = (p: PT): boolean => getPathPattern(p).endsWith('r')
+export const isRS = (p: PT): boolean => getPathPattern(p).endsWith('rs')
 export const isS = (p: PT): boolean => getPathPattern(p).endsWith('s')
 export const isC = (p: PT): boolean => getPathPattern(p).endsWith('c')
 
@@ -40,6 +41,7 @@ export const getG = (m: M): G => mG(m).at(0) as G
 
 export const isTR = (t: T): boolean => isR(t.path)
 export const isXR = (m: M): boolean => isR(getX(m).path)
+export const isXRS = (m: M): boolean => isRS(getX(m).path)
 export const isTS = (t: T): boolean => isS(t.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
@@ -86,6 +88,7 @@ export const getXFSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path a
 export const getXSIC = (m: M): T => getNodeByPath(m, getSIC(getX(m).path) as PT)
 export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)
 export const getXR = (m: M): T => getNodeByPath(m, getX(m).path.slice(0, 2) as PT)
+export const getXRS = (m: M): T => getNodeByPath(m, [...getX(m).path.slice(0, 2), 's', getX(m).lastSelectedChild] as PT)
 export const getQuasiSU = (m: M): T => m.findLast(ti => sortablePath(ti.path) < sortablePath(getX(m).path) && getPathPattern(ti.path) === getPathPattern(getX(m).path))! as T
 export const getQuasiSD = (m: M): T => m.find(ti => sortablePath(ti.path) > sortablePath(getX(m).path) && getPathPattern(ti.path) === getPathPattern(getX(m).path))! as T
 
