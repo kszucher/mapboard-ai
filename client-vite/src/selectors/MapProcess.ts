@@ -1,7 +1,7 @@
 import {Sides} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
 import {SubProcess} from "./MapProcessTypes.ts"
-import {getCountTSO1, getNodeByPath, getSIPL, mL, mT, mTR} from "./MapSelector"
+import {getCountTSO1, getNodeByPath, getSIPL, mL, mTS, mTR} from "./MapSelector"
 
 const getAllDependencies = (subProcessId: string, subProcessList: SubProcess[]): string[] => {
   const process = subProcessList.find(el => el.subProcessId === subProcessId)
@@ -13,16 +13,21 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
   const subProcesses = mTR(m).map(ri => ({
       subProcessId: ri.nodeId,
       subProcessType: ri.controlType,
-      subProcessMindMapData: mT(m)
-        .filter(ti => ti.path.at(1) === ri.path.at(1) &&getCountTSO1(m, ti) === 0)
-        .map(ti => ({
-          nodeId: ti.nodeId,
-          contentList: [...getSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)
-        }))
+      subProcessMindMapData:
+        mTS(m)
+          .filter(ti => ti.path.at(1) === ri.path.at(1) &&getCountTSO1(m, ti) === 0)
+          .map(ti => ({
+            nodeId: ti.nodeId,
+            contentList: [...getSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)
+          }))
       ,
       inputSubProcesses: [
-        ...mL(m).filter(li => li.fromNodeId === ri.nodeId && li.fromNodeSide === Sides.L).map(li => li.toNodeId),
-        ...mL(m).filter(li => li.toNodeId === ri.nodeId && li.toNodeSide === Sides.L).map(li => li.fromNodeId)
+        ...mL(m)
+          .filter(li => li.fromNodeId === ri.nodeId && li.fromNodeSide === Sides.L)
+          .map(li => li.toNodeId),
+        ...mL(m)
+          .filter(li => li.toNodeId === ri.nodeId && li.toNodeSide === Sides.L)
+          .map(li => li.fromNodeId)
       ],
       inputSubProcessesAll: [],
       subProcessInputLink: ri.llmDataId,
