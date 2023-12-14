@@ -41,14 +41,12 @@ export const tSaveAlways = {
 } as TSaveAlways
 
 export const tSaveOptional = {
-  // r
   controlType: ControlTypes.NONE,
   offsetW: 0,
   offsetH: 0,
   llmDataType: 'text',
   llmDataId: '',
   note: '',
-  // r || s
   contentType: 'text',
   content: '',
   linkType: '',

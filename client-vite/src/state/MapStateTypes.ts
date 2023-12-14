@@ -43,38 +43,36 @@ export interface LSaveNever {
 }
 
 export interface TSaveOptional {
-  // r
-  controlType: ControlTypes
-  offsetW: number
-  offsetH: number
-  llmDataType: string
-  llmDataId: string
-  note: string
-  // r || s
-  contentType: string
-  content: string
-  linkType: string
-  link: string
-  imageW: number
-  imageH: number
-  dimW: number
-  dimH: number
-  selected: number
-  selection: string
-  lastSelectedChild: number
-  lineWidth: number
-  lineType: LineTypes
-  lineColor: string
-  sBorderWidth: number
-  fBorderWidth: number
-  sBorderColor: string
-  fBorderColor: string
-  sFillColor: string
-  fFillColor: string
-  textFontSize: number
-  textColor: string
-  taskStatus: number
-  blur: number
+  controlType: ControlTypes // r
+  offsetW: number // r
+  offsetH: number // r
+  llmDataType: string // r
+  llmDataId: string // r
+  note: string // r
+  contentType: string // s
+  content: string // s
+  linkType: string // s
+  link: string // s
+  imageW: number // s
+  imageH: number // s
+  dimW: number // s || c
+  dimH: number // s || c
+  selected: number // r || s || c
+  selection: string // s
+  lastSelectedChild: number // r || s || c
+  lineWidth: number // s || c
+  lineType: LineTypes // s || c
+  lineColor: string // s || c
+  sBorderWidth: number // s
+  fBorderWidth: number // s
+  sBorderColor: string // s
+  fBorderColor: string // s
+  sFillColor: string // s
+  fFillColor: string // s
+  textFontSize: number // s
+  textColor: string // s
+  taskStatus: number // s
+  blur: number // s
 }
 
 export interface TSaveNever {
