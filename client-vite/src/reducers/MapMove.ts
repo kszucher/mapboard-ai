@@ -40,8 +40,8 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
   }))
-  const nonSelectedMinOffsetW = Math.min(...mTR(cbR).map(ri => ri.offsetW))
-  const nonSelectedMinOffsetH = Math.min(...mTR(cbR).map(ri => ri.offsetH))
+  const nonSelectedMinOffsetW = Math.min(...mTR(cbR).map(ri => ri.offsetW || tSaveOptional.offsetW))
+  const nonSelectedMinOffsetH = Math.min(...mTR(cbR).map(ri => ri.offsetH || tSaveOptional.offsetH))
   mTR(cbR).map(ri => Object.assign(ri, {
     offsetW:  (ri.offsetW ? ri.offsetW : tSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).mapWidth,
     offsetH:  (ri.offsetH ? ri.offsetH : tSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).mapHeight
