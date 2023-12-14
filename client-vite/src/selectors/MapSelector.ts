@@ -44,7 +44,7 @@ export const isTS = (t: T): boolean => isS(t.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
 export const getRSCIPL = (p: PT): PT[] => p.map((_, i) => p.slice(0, i)).filter(pi => (['r', 's'].includes(pi.at(-2)) || pi.at(-3) === 'c' )).map(el => el as PT)
-export const getRSIPL = (p: PT): PT[] => getRSCIPL(p).filter(pi => !isC(pi))
+export const getSIPL = (p: PT): PT[] => getRSCIPL(p).filter(pi => !isR(pi) && !isC(pi))
 const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string')) as PT
 const getSI2 = (p: PT) => getSI1(getSI1(p))
 const getSIC = (p: PT) => getRSCIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
