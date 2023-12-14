@@ -40,7 +40,8 @@ const getDefaultMap = (mapName, ownerUser, path) => ({
   versions: [
     [
       { nodeId: 'node' + genHash(), path: ['g'], version: 1 },
-      { nodeId: 'node' + genHash(), path: ['r', 0], content: mapName, selected: 1 }
+      { nodeId: 'node' + genHash(), path: ['r', 0] },
+      { nodeId: 'node' + genHash(), path: ['r', 0, 's', 0], content: mapName, selected: 1 }
     ]
   ],
   versionsInfo: [{
