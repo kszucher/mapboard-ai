@@ -209,18 +209,18 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'saveMap': {
-        // const mapId = ObjectId(req.body.payload.mapId)
-        // const { frameId, mapData } = req.body.payload
-        // const map = await maps.findOne({ _id: mapId })
-        // const { ownerUser } = map
-        // const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
-        // if (isEqual(userId, ownerUser) || shareToEdit !== null) {
-        //   if (frameId === '') {
-        //     await MongoMutations.saveMap(maps, mapId, sessionId, 'map', mapData)
-        //   } else {
-        //     await MongoMutations.saveMapFrame(maps, mapId, frameId, mapData)
-        //   }
-        // }
+        const mapId = ObjectId(req.body.payload.mapId)
+        const { frameId, mapData } = req.body.payload
+        const map = await maps.findOne({ _id: mapId })
+        const { ownerUser } = map
+        const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
+        if (isEqual(userId, ownerUser) || shareToEdit !== null) {
+          if (frameId === '') {
+            await MongoMutations.saveMap(maps, mapId, sessionId, 'map', mapData)
+          } else {
+            await MongoMutations.saveMapFrame(maps, mapId, frameId, mapData)
+          }
+        }
         return res.json({})
       }
       case 'getShares': {
