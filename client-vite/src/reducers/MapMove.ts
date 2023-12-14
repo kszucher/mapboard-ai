@@ -39,8 +39,6 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   cbR.forEach((ti, i) => Object.assign(ti, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
-    linkType: tSaveOptional.linkType,
-    link: tSaveOptional.link,
   }))
   const nonSelectedMinOffsetW = Math.min(...mTR(cbR).map(ri => ri.offsetW))
   const nonSelectedMinOffsetH = Math.min(...mTR(cbR).map(ri => ri.offsetH))
