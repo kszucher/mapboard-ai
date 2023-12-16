@@ -193,4 +193,13 @@ export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
 export const getTaskStartPoint = (m: M, g: G, t: T) => getTR(m, t).nodeEndX - getTaskWidth(g)
 
-export const calculateMiddlePoint = ([sx, sy, , , , , ex, ey]: number[]) => ({x: sx + (ex - sx) / 2, y: sy + (ey - sy) / 2})
+export const calculateMiddlePoint = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[]) => {
+  const t = 0.5 // t = 0.5 for calculating the middle point
+  const mt = 1 - t
+  const bx = mt * mt * mt * sx + 3 * mt * mt * t * c1x + 3 * mt * t * t * c2x + t * t * t * ex
+  const by = mt * mt * mt * sy + 3 * mt * mt * t * c1y + 3 * mt * t * t * c2y + t * t * t * ey
+  return {
+    x: bx,
+    y: by
+  }
+}
