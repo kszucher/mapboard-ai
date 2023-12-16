@@ -1,9 +1,9 @@
 import {Button, Dialog, Flex, Table, TableBody} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
-import {nodeApi, useGetSharesQuery} from "../../apis/NodeApi"
-import {AppDispatch} from "../../reducers/EditorReducer"
+import {nodeApi, useGetSharesQuery} from "../../apis/NodeApi.ts"
+import {AppDispatch} from "../../reducers/EditorReducer.ts"
 
-export const EditorMapSharesSharedWithMe = () => {
+export const MapSharesSharedWithMe = () => {
   const { data } = useGetSharesQuery()
   let { shareDataImport } = data || { shareDataImport: [] }
   const dispatch = useDispatch<AppDispatch>()

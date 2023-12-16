@@ -15,6 +15,11 @@ export enum DialogState {
   RENAME_MAP
 }
 
+export enum AlertDialogState {
+  NONE,
+  DELETE_ACCOUNT
+}
+
 export enum AccessTypes {
   UNAUTHORIZED = 'unauthorized',
   VIEW = 'view',

@@ -1,4 +1,4 @@
-import {getTaskWidth} from "../components/map/MapSvgUtils.ts";
+import {getTaskWidth} from "../components/map/MapSvgUtils.ts"
 import {isR, isS, isC, isSU, getPathPattern, getCountTSO1, getCountTSO2, getCountTCO2, getG, getTSI1, getTSI2, mT, hasTask} from "../selectors/MapSelector"
 import {MARGIN_X} from "../state/Consts.ts"
 import {M, T} from "../state/MapStateTypes"

@@ -1,14 +1,12 @@
 import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
-import {useDispatch, useSelector} from "react-redux"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {DialogState} from "../../state/Enums"
-import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
-import {DotsIcon} from "../assets/Icons"
-import {EditorMapActionsRename} from "./EditorMapActionsRename"
+import {useDispatch} from "react-redux"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
+import {actions, AppDispatch} from "../../reducers/EditorReducer.ts"
+import {DialogState} from "../../state/Enums.ts"
+import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState.ts"
+import {DotsIcon} from "../assets/Icons.tsx"
 
 export const EditorMapActions = () => {
-  const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const { data } = useOpenWorkspaceQuery()
   const { frameId, frameIdList, breadcrumbMapIdList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
@@ -49,7 +47,6 @@ export const EditorMapActions = () => {
           }
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      {dialogState === DialogState.RENAME_MAP && <EditorMapActionsRename/>}
     </>
   )
 }

@@ -1,11 +1,11 @@
 import {Button, Dialog, Flex, TextArea} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {getX} from "../../selectors/MapSelector"
-import {mSelector} from "../../state/EditorState"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
+import {getX} from "../../selectors/MapSelector.ts"
+import {mSelector} from "../../state/EditorState.ts"
 
-export const EditorNodeEditContentEquation = () => {
+export const NodeEditContentEquation = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const [content, setContent] = useState(getX(m).content)
   const dispatch = useDispatch<AppDispatch>()

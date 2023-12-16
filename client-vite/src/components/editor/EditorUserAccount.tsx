@@ -3,6 +3,7 @@ import {AlertDialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import {nodeApi} from "../../apis/NodeApi"
 import {actions, AppDispatch} from "../../reducers/EditorReducer"
+import {AlertDialogState} from "../../state/Enums.ts"
 import {UserIcon} from "../assets/Icons"
 
 export const EditorUserAccount = () => {
@@ -31,7 +32,7 @@ export const EditorUserAccount = () => {
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <AlertDialog.Trigger>
-          <DropdownMenu.Item color="red">Delete Account</DropdownMenu.Item>
+          <DropdownMenu.Item color="red" onClick={() => dispatch(actions.setAlertDialogState(AlertDialogState.DELETE_ACCOUNT))}>Delete Account</DropdownMenu.Item>
         </AlertDialog.Trigger>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

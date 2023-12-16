@@ -1,7 +1,7 @@
 import {Button, Dialog, Flex, Table, TableBody} from "@radix-ui/themes"
-import {useGetSharesQuery} from "../../apis/NodeApi"
+import {useGetSharesQuery} from "../../apis/NodeApi.ts"
 
-export const EditorMapSharesSharedByMe = () => {
+export const MapSharesSharedByMe = () => {
   const { data } = useGetSharesQuery()
   let { shareDataExport } = data || { shareDataExport: []}
   return (

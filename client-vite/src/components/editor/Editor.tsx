@@ -3,20 +3,28 @@ import {useDispatch, useSelector} from "react-redux"
 import mermaid from "mermaid"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {AccessTypes, DialogState} from "../../state/Enums"
+import {AccessTypes, DialogState, AlertDialogState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
 import {ChevronDownIcon, ChevronRightIcon, CircleChevronLeftIcon, CircleChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
 import {Spinner} from "../assets/Spinner"
-import {EditorMapActions} from "./EditorMapActions"
+import {EditorMapActions} from "./EditorMapActions.tsx"
+import {MapActionsRename} from "../dialog/MapActionsRename.tsx"
 import {EditorMapShares} from "./EditorMapShares"
+import {MapSharesShare} from "../dialog/MapSharesShare.tsx"
+import {MapSharesSharedByMe} from "../dialog/MapSharesSharedByMe.tsx"
+import {MapSharesSharedWithMe} from "../dialog/MapSharesSharedWithMe.tsx"
 import {EditorMapViews} from "./EditorMapViews"
 import {EditorNodeEdit} from "./EditorNodeEdit"
+import {NodeEditContentEquation} from "../dialog/NodeEditContentEquation.tsx"
+import {NodeEditContentMermaid} from "../dialog/NodeEditContentMermaid.tsx"
+import {NodeEditCreateSubMap} from "../dialog/NodeEditCreateSubMap.tsx"
 import {EditorNodeInsert} from "./EditorNodeInsert"
+import {NodeInsertTable} from "../dialog/NodeInsertTable.tsx"
 import {EditorNodeMove} from "./EditorNodeMove"
 import {EditorNodeSelect} from "./EditorNodeSelect"
-import {EditorUserAccountDeleteAccount} from "./EditorUserAccountDeleteAccount"
+import {UserDeleteAccount} from "../dialog/UserDeleteAccount.tsx"
 import {Formatter} from "./Formatter"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
@@ -41,6 +49,8 @@ export const Editor: FC = () => {
   const disabled = [AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access)
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
+  const dialogState = useSelector((state: RootState) => state.editor.dialogState)
+  const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
   const dispatch = useDispatch<AppDispatch>()
   useEffect(()=> {
     getTextDim('Test', 12)
@@ -65,7 +75,7 @@ export const Editor: FC = () => {
           <>
             <Map/>
             <Dialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setDialogState(DialogState.NONE))}>
-              <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setDialogState(DialogState.NONE))}>
+              <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setAlertDialogState(AlertDialogState.NONE))}>
                 <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
                   <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                     <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
@@ -151,15 +161,23 @@ export const Editor: FC = () => {
                       <EditorUserSettings/>
                       <EditorUserAccount/>
                     </Flex>
-                    <AlertDialog.Content style={{ maxWidth: 450 }}>
-                      <EditorUserAccountDeleteAccount/>
-                    </AlertDialog.Content>
+                    <UserDeleteAccount/>
                   </div>
                 </div>
                 {formatterVisible && <Formatter/>}
                 <Window/>
+                {dialogState === DialogState.RENAME_MAP && <MapActionsRename/>}
+                {dialogState === DialogState.SHARE_THIS_MAP && <MapSharesShare/>}
+                {dialogState === DialogState.SHARED_BY_ME && <MapSharesSharedByMe/>}
+                {dialogState === DialogState.SHARED_WITH_ME && <MapSharesSharedWithMe/>}
+                {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeEditCreateSubMap/>}
+                {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeEditContentEquation/>}
+                {dialogState === DialogState.EDIT_CONTENT_MERMAID && <NodeEditContentMermaid/>}
+                {dialogState === DialogState.CREATE_TABLE && <NodeInsertTable/>}
+                {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <NodeInsertTable/>}
               </AlertDialog.Root>
             </Dialog.Root>
+
           </>
         }
         {isFetching &&

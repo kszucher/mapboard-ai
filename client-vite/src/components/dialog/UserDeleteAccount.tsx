@@ -1,13 +1,13 @@
 import {AlertDialog, Button, Flex} from "@radix-ui/themes"
 import {FC} from "react"
 import {useDispatch} from "react-redux"
-import {nodeApi} from "../../apis/NodeApi"
-import {AppDispatch} from "../../reducers/EditorReducer"
+import {nodeApi} from "../../apis/NodeApi.ts"
+import {AppDispatch} from "../../reducers/EditorReducer.ts"
 
-export const EditorUserAccountDeleteAccount: FC = () => {
+export const UserDeleteAccount: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <>
+    <AlertDialog.Content style={{ maxWidth: 450 }}>
       <AlertDialog.Title>{'Delete Account'}</AlertDialog.Title>
       <AlertDialog.Description size="2">
         Are you sure? This application will no longer be accessible and any
@@ -25,6 +25,6 @@ export const EditorUserAccountDeleteAccount: FC = () => {
           </Button>
         </AlertDialog.Action>
       </Flex>
-    </>
+    </AlertDialog.Content>
   )
 }

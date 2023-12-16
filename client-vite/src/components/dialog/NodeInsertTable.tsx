@@ -1,11 +1,11 @@
 import {Button, Dialog, Flex, Grid, Select, Text} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {isXS} from "../../selectors/MapSelector"
-import {mSelector} from "../../state/EditorState"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
+import {isXS} from "../../selectors/MapSelector.ts"
+import {mSelector} from "../../state/EditorState.ts"
 
-export const EditorNodeInsertTable = () => {
+export const NodeInsertTable = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const [row, setRow] = useState<number>(1)
   const [col, setCol] = useState<number>(1)

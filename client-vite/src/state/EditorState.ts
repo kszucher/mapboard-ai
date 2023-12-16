@@ -1,4 +1,4 @@
-import {DialogState, FormatMode, PageState, Sides} from "./Enums"
+import {DialogState, AlertDialogState, FormatMode, PageState, Sides} from "./Enums"
 import {EditorState} from "./EditorStateTypes"
 import {RootState, store} from "../reducers/EditorReducer"
 
@@ -7,6 +7,7 @@ export const editorState: EditorState = {
   scrollOverride: false,
   pageState: PageState.AUTH,
   dialogState: DialogState.NONE,
+  alertDialogState: AlertDialogState.NONE,
   formatMode: FormatMode.sFill,
   mapList: [],
   mapListIndex: 0,

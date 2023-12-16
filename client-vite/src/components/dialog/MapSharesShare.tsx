@@ -1,12 +1,12 @@
 import {Button, Dialog, Flex, Grid, Select, Text, TextField} from "@radix-ui/themes"
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes"
 import {useState} from "react"
-import {useCreateShareMutation} from "../../apis/NodeApi"
-import {AccessTypes} from "../../state/Enums"
-import {getMapId} from "../../state/NodeApiState"
-import {Spinner} from "../assets/Spinner"
+import {useCreateShareMutation} from "../../apis/NodeApi.ts"
+import {AccessTypes} from "../../state/Enums.ts"
+import {getMapId} from "../../state/NodeApiState.ts"
+import {Spinner} from "../assets/Spinner.tsx"
 
-export const EditorMapSharesShare = () => {
+export const MapSharesShare = () => {
   const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()
   const errorMessage = (error as BaseQueryError<any>)?.data?.message
   const [shareEmail, setShareEmail] = useState('')

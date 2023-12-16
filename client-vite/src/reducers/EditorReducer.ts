@@ -3,7 +3,7 @@ import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../components/map/MapDivUtils"
 import {mapFindIntersecting} from "../selectors/MapFindIntersecting"
 import {editorState} from "../state/EditorState"
-import {DialogState, FormatMode, PageState, Sides} from "../state/Enums"
+import {DialogState, AlertDialogState, FormatMode, PageState, Sides} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
 import {nodeApi} from "../apis/NodeApi"
 import {mapFindNearest} from "../selectors/MapFindNearest"
@@ -23,6 +23,7 @@ export const editorSlice = createSlice({
     clearScrollOverride(state) { state.scrollOverride = false },
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
     setDialogState(state, action: PayloadAction<DialogState>) { state.dialogState = action.payload },
+    setAlertDialogState(state, action: PayloadAction<AlertDialogState>) { state.alertDialogState = action.payload },
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     openFormatter(state) { state.formatterVisible = true},
     closeFormatter(state) { state.formatterVisible = false},
