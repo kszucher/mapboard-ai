@@ -7,7 +7,7 @@ import {mSelector} from "../../state/EditorState"
 import {Sides} from "../../state/Enums"
 import {L, T} from "../../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
-import {calculateMiddlePoint, getBezierLinePath, getLinePathBetweenRoots, getRootSideX, getRootSideY} from "./MapSvgUtils"
+import {calculateMiddlePoint, getBezierLinePath, getLinePathBetweenRoots} from "./MapSvgUtils"
 
 export const MapSvgLayer10Connections: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -53,38 +53,44 @@ export const MapSvgLayer10Connections: FC = () => {
         connectionHelpersVisible &&
         mTR(m).map((t: T) => (
           <g key={`${t.nodeId}`}>
-            {['L', 'R', 'T', 'B'].map(side => (
-                <rect
-                  key={`${t.nodeId}_plus_${side}`}
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  rx={4}
-                  ry={4}
-                  fill={'#666666'}
-                  transform={`translate(${adjustIcon(getRootSideX(t, side))}, ${adjustIcon(getRootSideY(t, side))})`}
-                  {...{vectorEffect: 'non-scaling-stroke'}}
-                  style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
-                  onMouseDown={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    dispatch(actions.setConnectionStart({fromNodeId: t.nodeId, fromNodeSide: Sides[side as keyof typeof Sides]}))
-                  }}
-                  onMouseUp={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    const newLink = {...connectionStart, toNodeId: t.nodeId, toNodeSide: Sides[side as keyof typeof Sides]} as L
-                    if (
-                      connectionStart.fromNodeId !== '' &&
-                      connectionStart.fromNodeId !== t.nodeId &&
-                      !isExistingLink(m, newLink)
-                    ) {
-                      dispatch(actions.mapAction({type: 'insertL', payload: newLink}))
-                    }
-                  }}
-                />
-              )
-            )}
+            {
+              [
+                {side: 'L', x: t.nodeStartX, y: t.nodeStartY + t.selfH / 2 - 12},
+                {side: 'R', x: t.nodeEndX - 24, y: t.nodeStartY + t.selfH / 2 - 12},
+                {side: 'T', x: t.nodeStartX + t.selfW / 2 - 12, y: t.nodeStartY},
+                {side: 'B', x: t.nodeStartX + t.selfW / 2 - 12, y: t.nodeEndY - 24}
+              ].map(el => (
+                  <rect
+                    key={`${t.nodeId}_plus_${el.side}`}
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    rx={4}
+                    ry={4}
+                    fill={'#666666'}
+                    transform={`translate(${adjustIcon(el.x)}, ${adjustIcon(el.y)})`}
+                    {...{vectorEffect: 'non-scaling-stroke'}}
+                    style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      dispatch(actions.setConnectionStart({fromNodeId: t.nodeId, fromNodeSide: Sides[el.side as keyof typeof Sides]}))
+                    }}
+                    onMouseUp={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      const newLink = {...connectionStart, toNodeId: t.nodeId, toNodeSide: Sides[el.side as keyof typeof Sides]} as L
+                      if (
+                        connectionStart.fromNodeId !== '' &&
+                        connectionStart.fromNodeId !== t.nodeId &&
+                        !isExistingLink(m, newLink)
+                      ) {
+                        dispatch(actions.mapAction({type: 'insertL', payload: newLink}))
+                      }
+                    }}
+                  />
+                )
+              )}
           </g>
         ))
       }

@@ -198,26 +198,6 @@ export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
 export const getTaskStartPoint = (m: M, g: G, t: T) => getRootEndX(getTR(m, t)) - getTaskWidth(g)
 
-export const getRootSideX = (t: T, side: string) => {
-  switch (true) {
-    case (side === 'L'): return getRootStartX(t)
-    case (side === 'R'): return getRootEndX(t) - 24
-    case (side === 'T'): return getRootMidX(t) - 12
-    case (side === 'B'): return getRootMidX(t) - 12
-    default: return 0
-  }
-}
-
-export const getRootSideY = (t: T, side: string) => {
-  switch (true) {
-    case (side === 'L'): return getRootMidY(t) - 12
-    case (side === 'R'): return getRootMidY(t) - 12
-    case (side === 'T'): return getRootStartY(t)
-    case (side === 'B'): return getRootEndY(t) - 24
-    default: return 0
-  }
-}
-
 export const calculateMiddlePoint = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[]) => {
   const t = 0.5 // t = 0.5 for calculating the middle point
   const mt = 1 - t
