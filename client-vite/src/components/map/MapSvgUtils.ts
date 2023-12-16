@@ -66,7 +66,7 @@ export const getLinePathBetweenRoots = (m: M, l: L) => {
   }
   let ex = 0, ey = 0, c2x = 0, c2y = 0
   switch (toNodeSide) {
-    case Sides.R: ex = toNode.nodeEndY; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex + 100; c2y = ey; break
+    case Sides.R: ex = toNode.nodeEndX; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex + 100; c2y = ey; break
     case Sides.L: ex = toNode.nodeStartX; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex - 100; c2y = ey; break
     case Sides.T: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeStartY; c2x = ex; c2y = ey - 100; break
     case Sides.B: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeEndY; c2x = ex; c2y = ey + 100;  break

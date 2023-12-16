@@ -1,4 +1,4 @@
-import {LineTypes, ControlTypes} from "./Enums"
+import {LineTypes, ControlTypes, Sides} from "./Enums"
 
 export type PG = ['g']
 export type PL = ['l', number]
@@ -28,9 +28,9 @@ export interface LSaveAlways {
   path: PL
   nodeId: string
   fromNodeId: string
-  fromNodeSide: string
+  fromNodeSide: Sides
   toNodeId: string
-  toNodeSide: string
+  toNodeSide: Sides
 }
 
 export interface LSaveOptional {
