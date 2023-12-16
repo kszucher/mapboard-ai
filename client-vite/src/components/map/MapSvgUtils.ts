@@ -4,13 +4,6 @@ import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineTypes, Sides} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
 
-const getRootStartX = (t: T): number => t.nodeStartX
-const getRootStartY = (t: T): number => t.nodeStartY
-const getRootMidX = (t: T): number => t.nodeStartX + t.selfW / 2
-const getRootMidY = (t: T): number => t.nodeStartY + t.selfH / 2
-const getRootEndX = (t: T): number => t.nodeEndX
-const getRootEndY = (t: T): number => t.nodeEndY
-
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
 const getCoordsInLine = (a: any[], b: any[], dt: number) => {
@@ -64,17 +57,17 @@ export const getLinePathBetweenRoots = (m: M, l: L) => {
   const toNode = getNodeById(m, toNodeId)
   let sx = 0, sy = 0, c1x = 0, c1y = 0
   switch (fromNodeSide) {
-    case Sides.R: sx = getRootEndX(fromNode); sy = getRootMidY(fromNode); c1x = sx + 100; c1y = sy; break
-    case Sides.L: sx = getRootStartX(fromNode); sy = getRootMidY(fromNode); c1x = sx - 100; c1y = sy; break
-    case Sides.T: sx = getRootMidX(fromNode); sy = getRootStartY(fromNode); c1x = sx; c1y = sy - 100; break
-    case Sides.B: sx = getRootMidX(fromNode); sy = getRootEndY(fromNode); c1x = sx; c1y = sy + 100; break
+    case Sides.R: sx = fromNode.nodeEndX; sy = fromNode.nodeStartY + fromNode.selfH / 2; c1x = sx + 100; c1y = sy; break
+    case Sides.L: sx = fromNode.nodeStartX; sy = fromNode.nodeStartY + fromNode.selfH / 2; c1x = sx - 100; c1y = sy; break
+    case Sides.T: sx = fromNode.nodeStartX + fromNode.selfW / 2; sy = fromNode.nodeStartY; c1x = sx; c1y = sy - 100; break
+    case Sides.B: sx = fromNode.nodeStartX + fromNode.selfW / 2; sy = fromNode.nodeEndY; c1x = sx; c1y = sy + 100; break
   }
   let ex = 0, ey = 0, c2x = 0, c2y = 0
   switch (toNodeSide) {
-    case Sides.R: ex = getRootEndX(toNode); ey = getRootMidY(toNode); c2x = ex + 100; c2y = ey; break
-    case Sides.L: ex = getRootStartX(toNode); ey = getRootMidY(toNode); c2x = ex - 100; c2y = ey; break
-    case Sides.T: ex = getRootMidX(toNode); ey = getRootStartY(toNode); c2x = ex; c2y = ey - 100; break
-    case Sides.B: ex = getRootMidX(toNode); ey = getRootEndY(toNode); c2x = ex; c2y = ey + 100;  break
+    case Sides.R: ex = toNode.nodeEndY; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex + 100; c2y = ey; break
+    case Sides.L: ex = toNode.nodeStartX; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex - 100; c2y = ey; break
+    case Sides.T: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeStartY; c2x = ex; c2y = ey - 100; break
+    case Sides.B: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeEndY; c2x = ex; c2y = ey + 100;  break
   }
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
@@ -196,7 +189,7 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
-export const getTaskStartPoint = (m: M, g: G, t: T) => getRootEndX(getTR(m, t)) - getTaskWidth(g)
+export const getTaskStartPoint = (m: M, g: G, t: T) => getTR(m, t).nodeEndX - getTaskWidth(g)
 
 export const calculateMiddlePoint = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[]) => {
   const t = 0.5 // t = 0.5 for calculating the middle point
