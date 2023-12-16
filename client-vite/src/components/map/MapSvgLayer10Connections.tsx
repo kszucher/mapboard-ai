@@ -18,7 +18,7 @@ export const MapSvgLayer10Connections: FC = () => {
     <g>
       {
         mL(m).map((l: L) => (
-          <g key={`${l.nodeId}`}>
+          <g key={`${l.nodeId}_inter_root_bezier`}>
             <path
               d={getBezierLinePath('M', getLinePathBetweenRoots(m, l))}
               strokeWidth={1}
@@ -26,8 +26,14 @@ export const MapSvgLayer10Connections: FC = () => {
               fill={'none'}
               {...pathCommonProps}
             />
+          </g>
+        ))
+      }
+      {
+        connectionHelpersVisible &&
+        mL(m).map((l: L) => (
+          <g key={`${l.nodeId}_inter_root_bezier_trash`}>
             {
-              connectionHelpersVisible &&
               <g
                 width="24" height="24" viewBox="0 0 24 24"
                 transform={`translate(
@@ -52,7 +58,7 @@ export const MapSvgLayer10Connections: FC = () => {
       {
         connectionHelpersVisible &&
         mTR(m).map((t: T) => (
-          <g key={`${t.nodeId}`}>
+          <g key={`${t.nodeId}_root_connector`}>
             {
               [
                 {side: 'L', x: t.nodeStartX, y: t.nodeStartY + t.selfH / 2 - 12},
