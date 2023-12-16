@@ -29,6 +29,7 @@ const getInnerHtml = (t: T) => {
 export const MapDiv: FC = () => {
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const editType = useSelector((state: RootState) => state.editor.editType)
+  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
@@ -78,7 +79,7 @@ export const MapDiv: FC = () => {
                 border: 0,
                 margin: 0,
                 textShadow: ti.blur? '#FFF 0 0 8px' : '',
-                // pointerEvents: ti.selected && getCountNCO1(m, ti) > 0 ? 'none' : 'auto'
+                pointerEvents: connectionHelpersVisible ? 'none' : 'auto'
               }}
               spellCheck={false}
               dangerouslySetInnerHTML={ti.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(ti) }}
