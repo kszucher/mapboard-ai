@@ -69,123 +69,119 @@ export const Editor: FC = () => {
 
   return (
     <Theme accentColor="violet" panelBackground="solid" scaling="100%" radius="full">
-      <>
-        {
-          mExists &&
-          <>
-            <Map/>
-            <Dialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setDialogState(DialogState.NONE))}>
-              <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setAlertDialogState(AlertDialogState.NONE))}>
-                <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
-                  <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
-                    <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
-                  </div>
-                  <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center">
-                    <Flex gap="1" align="center">
-                      <DropdownMenu.Root>
-                        <DropdownMenu.Trigger>
-                          <IconButton variant="soft" color="gray">
-                            <ChevronDownIcon/>
-                          </IconButton>
-                        </DropdownMenu.Trigger>
-                        <DropdownMenu.Content>
-                          {tabMapIdList.map((el: string, index) => (
-                            <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}>
-                              {tabMapNameList[index]?.name}
-                            </DropdownMenu.Item>
-                          ))}
-                        </DropdownMenu.Content>
-                      </DropdownMenu.Root>
-                      <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>
-                        {breadcrumbMapNameList[0].name}
-                      </Button>
-                      {breadcrumbMapNameList.slice(1).map((el, index) => (
-                        <Fragment key={index}>
-                          <ChevronRightIcon/>
-                          <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
-                            {el.name}
-                          </Button>
-                        </Fragment>
-                      ))}
-                      {frameId !== '' &&
-                        <>
-                          <ChevronRightIcon/>
-                          <Button variant='solid' onClick={() => {}}>
-                            {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
-                          </Button>
-                          <IconButton
-                            variant="soft"
-                            color="gray"
-                            disabled={frameIdPosition === 0 || isFetching}
-                            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: prevFrameId}))}>
-                            <CircleChevronLeftIcon/>
-                          </IconButton>
-                          <IconButton
-                            variant="soft"
-                            color="gray"
-                            disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
-                            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: nextFrameId}))}>
-                            <CircleChevronRightIcon/>
-                          </IconButton>
-                        </>
-                      }
-                      <EditorMapActions/>
-                    </Flex>
-                  </div>
-                  <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
-                    <Flex gap="1" align="center">
-                      <EditorMapViews/>
-                      <EditorMapShares/>
-                    </Flex>
-                  </div>
-                  <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
-                    <Flex gap="1" align="center">
-                      <EditorNodeSelect/>
-                      <EditorNodeInsert/>
-                      <EditorNodeEdit/>
-                      <EditorNodeMove/>
-                    </Flex>
-                  </div>
-                  <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
-                    <Flex gap="1">
-                      <IconButton variant="solid" color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
-                        <UndoIcon/>
-                      </IconButton>
-                      <IconButton variant="solid" color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
-                        <RedoIcon/>
-                      </IconButton>
-                    </Flex>
-                  </div>
-                  <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
-                    <Flex gap="1">
-                      <EditorUserSettings/>
-                      <EditorUserAccount/>
-                    </Flex>
-                    <UserDeleteAccount/>
-                  </div>
+      {mExists &&
+        <>
+          <Map/>
+          <Dialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setDialogState(DialogState.NONE))}>
+            <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setAlertDialogState(AlertDialogState.NONE))}>
+              <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
+                <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
+                  <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
                 </div>
-                {formatterVisible && <Formatter/>}
-                <Window/>
-                {dialogState === DialogState.RENAME_MAP && <MapActionsRename/>}
-                {dialogState === DialogState.SHARE_THIS_MAP && <MapSharesShare/>}
-                {dialogState === DialogState.SHARED_BY_ME && <MapSharesSharedByMe/>}
-                {dialogState === DialogState.SHARED_WITH_ME && <MapSharesSharedWithMe/>}
-                {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeEditCreateSubMap/>}
-                {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeEditContentEquation/>}
-                {dialogState === DialogState.EDIT_CONTENT_MERMAID && <NodeEditContentMermaid/>}
-                {dialogState === DialogState.CREATE_TABLE && <NodeInsertTable/>}
-                {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <NodeInsertTable/>}
-              </AlertDialog.Root>
-            </Dialog.Root>
-
-          </>
-        }
-        {isFetching &&
-          <div className="fixed top-0 left-0 w-screen h-screen bg-zinc-900 opacity-50 flex items-center justify-center z-50">
-            <Spinner/>
-          </div>
-        }
-      </>
+                <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center">
+                  <Flex gap="1" align="center">
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger>
+                        <IconButton variant="soft" color="gray">
+                          <ChevronDownIcon/>
+                        </IconButton>
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content>
+                        {tabMapIdList.map((el: string, index) => (
+                          <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}>
+                            {tabMapNameList[index]?.name}
+                          </DropdownMenu.Item>
+                        ))}
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                    <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>
+                      {breadcrumbMapNameList[0].name}
+                    </Button>
+                    {breadcrumbMapNameList.slice(1).map((el, index) => (
+                      <Fragment key={index}>
+                        <ChevronRightIcon/>
+                        <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
+                          {el.name}
+                        </Button>
+                      </Fragment>
+                    ))}
+                    {frameId !== '' &&
+                      <>
+                        <ChevronRightIcon/>
+                        <Button variant='solid' onClick={() => {}}>
+                          {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
+                        </Button>
+                        <IconButton
+                          variant="soft"
+                          color="gray"
+                          disabled={frameIdPosition === 0 || isFetching}
+                          onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: prevFrameId}))}>
+                          <CircleChevronLeftIcon/>
+                        </IconButton>
+                        <IconButton
+                          variant="soft"
+                          color="gray"
+                          disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
+                          onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: nextFrameId}))}>
+                          <CircleChevronRightIcon/>
+                        </IconButton>
+                      </>
+                    }
+                    <EditorMapActions/>
+                  </Flex>
+                </div>
+                <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
+                  <Flex gap="1" align="center">
+                    <EditorMapViews/>
+                    <EditorMapShares/>
+                  </Flex>
+                </div>
+                <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
+                  <Flex gap="1" align="center">
+                    <EditorNodeSelect/>
+                    <EditorNodeInsert/>
+                    <EditorNodeEdit/>
+                    <EditorNodeMove/>
+                  </Flex>
+                </div>
+                <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
+                  <Flex gap="1">
+                    <IconButton variant="solid" color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
+                      <UndoIcon/>
+                    </IconButton>
+                    <IconButton variant="solid" color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
+                      <RedoIcon/>
+                    </IconButton>
+                  </Flex>
+                </div>
+                <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
+                  <Flex gap="1">
+                    <EditorUserSettings/>
+                    <EditorUserAccount/>
+                  </Flex>
+                  <UserDeleteAccount/>
+                </div>
+              </div>
+              {formatterVisible && <Formatter/>}
+              <Window/>
+              {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <NodeInsertTable/>}
+            </AlertDialog.Root>
+            {dialogState === DialogState.RENAME_MAP && <MapActionsRename/>}
+            {dialogState === DialogState.SHARE_THIS_MAP && <MapSharesShare/>}
+            {dialogState === DialogState.SHARED_BY_ME && <MapSharesSharedByMe/>}
+            {dialogState === DialogState.SHARED_WITH_ME && <MapSharesSharedWithMe/>}
+            {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeEditCreateSubMap/>}
+            {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeEditContentEquation/>}
+            {dialogState === DialogState.EDIT_CONTENT_MERMAID && <NodeEditContentMermaid/>}
+            {dialogState === DialogState.CREATE_TABLE && <NodeInsertTable/>}
+          </Dialog.Root>
+        </>
+      }
+      {isFetching &&
+        <div className="fixed top-0 left-0 w-screen h-screen bg-zinc-900 opacity-50 flex items-center justify-center z-50">
+          <Spinner/>
+        </div>
+      }
     </Theme>
   )
 }
