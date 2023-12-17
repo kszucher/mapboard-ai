@@ -50,10 +50,16 @@ export const mapPlace = (m: M) => {
         const j = ti.path.at(-1)
 
         if (g.placeType === PlaceTypes.EXPLODED) {
-          isRSC(ti.path) && Object.assign(ti, {nodeStartX: MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]})
-          isSSC(ti.path) && Object.assign(ti, {nodeStartX: si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]})
-          isCSC(ti.path) && Object.assign(ti, {nodeStartX: si2.nodeStartX + 2})
-          Object.assign(ti, {nodeStartY: si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2})
+          if (isRSC(ti.path)) {
+            ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
+          } else if (isSSC(ti.path)) {
+            ti.nodeStartX = si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
+          } else if (isCSC(ti.path)) {
+            ti.nodeStartX = si2.nodeStartX + 2
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
+          }
         } else if (g.placeType === PlaceTypes.INDENTED) {
 
         }
