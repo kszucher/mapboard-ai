@@ -1,5 +1,5 @@
-import {ControlTypes} from "../state/Enums"
-import {gptParseNodesS, gptParseNodesT, gptParseNodeMermaid} from "./MapParseGpt"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSO1, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXR, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, isCH, isCV, mT, mTR, sortNode, sortPath} from "../selectors/MapSelector"
+import {ControlTypes, PlaceTypes} from "../state/Enums"
 import {tSaveOptional} from "../state/MapState"
 import {M, PT, T} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
@@ -8,9 +8,9 @@ import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertL, insertR, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteLR, pasteS} from "./MapMove"
+import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {mapPlace} from "./MapPlace"
 import {selectT, selectTL, selectTToo} from "./MapSelect"
-import {mT, sortNode, sortPath, isCH, isCV, getG, getX, getNodeById, getCountXASU, getCountXSO1, getCountXASD, getCountXASU1O1, getCountXSI1U, getCountXCU, getCountXCL, getCountXSCV, getCountXSCH, getXA, getXAEO, getXSO1, getXACD1, getXACU1, getXACR1, getXACL1, getXSI1, getXFSU1, getXSI2, getNodeByPath, getQuasiSU, getQuasiSD, getLastSO, getXR, getXSIC, getXSCO, mTR} from "../selectors/MapSelector"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -18,6 +18,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
 
     case 'setDensitySmall': getG(m).density = 'small'; break
     case 'setDensityLarge': getG(m).density = 'large'; break
+    case 'setPlaceTypeExploded': getG(m).placeType = PlaceTypes.EXPLODED; break
+    case 'setPlaceTypeIndented': getG(m).placeType = PlaceTypes.INDENTED; break
 
     case 'selectT': selectT(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectXR': selectT(m, getXR(m), 's'); break
