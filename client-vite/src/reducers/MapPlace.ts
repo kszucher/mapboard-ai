@@ -36,7 +36,7 @@ export const mapPlace = (m: M) => {
             ti.nodeStartX = MARGIN_X + si1.nodeStartX
             ti.nodeStartY = si1.nodeStartY + MARGIN_Y
           } else if (isSS(ti.path)) {
-            ti.nodeStartX = si1.nodeStartX + 20
+            ti.nodeStartX = si1.nodeStartX + 40
             ti.nodeStartY = si1.nodeEndY + sumElapsedY
           } else if (isCS(ti.path)) {
             ti.nodeStartX = si1.nodeStartX + 2

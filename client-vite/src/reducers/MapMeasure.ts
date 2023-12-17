@@ -1,10 +1,12 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils"
+import {getCountTCO1, getCountTSO1, getG, getNodeById, hasTask, isC, isR, isS, mT, mTR} from "../selectors/MapSelector"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
+import {PlaceTypes} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
-import {getCountTCO1, getNodeById, isC, isR, isS, getCountTSO1, mT, getG, mTR, hasTask} from "../selectors/MapSelector"
 
 export const mapMeasure = (pm: M, m: M) => {
+  const g = getG(m)
   mT(m).slice().reverse().forEach(ti => {
     const pt = getNodeById(pm, ti.nodeId)
     switch (true) {
@@ -26,7 +28,11 @@ export const mapMeasure = (pm: M, m: M) => {
           measureFamily(m, ti)
         }
         ti.maxW = ti.selfW + ti.familyW
-        ti.maxH = Math.max(...[ti.selfH, ti.familyH])
+        if (g.placeType === PlaceTypes.EXPLODED) {
+          ti.maxH = Math.max(...[ti.selfH, ti.familyH])
+        } else if (g.placeType === PlaceTypes.INDENTED) {
+          ti.maxH = ti.selfH + ti.familyH
+        }
         break
       }
       case isC(ti.path): {
