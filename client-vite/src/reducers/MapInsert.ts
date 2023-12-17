@@ -1,17 +1,17 @@
 import {tSaveOptional} from "../state/MapState"
 import {N, LPartial, M, T, PT} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLiL, mT, getRiL, getG} from "../selectors/MapSelector"
+import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG} from "../selectors/MapSelector"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
 
 export const insertL = (m: M, lPartial: LPartial) => {
-  m.push({...lPartial, nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['l', getLiL(m) + 1]} as N)
+  m.push({...lPartial, nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['l', getLastIndexL(m) + 1]} as N)
 }
 
 export const insertR = (m: M) => {
   const newRoot = [
-    {nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['r', getRiL(m) + 1], selected: 1, content: 'New Root'},
+    {nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['r', getLastIndexR(m) + 1], selected: 1, content: 'New Root'},
   ] as T[]
   newRoot.forEach(ti => Object.assign(ti, {
     offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) + getG(m).mapWidth : ti.offsetW,

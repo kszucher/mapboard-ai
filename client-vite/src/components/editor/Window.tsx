@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getX, getRiL, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, sortPath, isXAR} from "../../selectors/MapSelector"
+import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getX, getLastIndexR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, sortPath, isXAR} from "../../selectors/MapSelector"
 import {isUrl} from "../../utils/Utils"
 import {AccessTypes, DialogState, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -41,7 +41,7 @@ export const Window: FC = () => {
     ckm === '---' && ['Insert','Tab'].includes(e.key) && (isXS(m) || isXR(m)) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
     ckm === '---' && ['Insert','Tab'].includes(e.key) && isXC(m) && dispatch(actions.mapAction({type: 'selectCO', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXS(m) && dispatch(actions.mapAction({type: 'deleteS', payload: null}))
-    ckm === '---' && e.key === 'Delete' && isXR(m) && getRiL(m) > 0 && dispatch(actions.mapAction({type: 'deleteLR', payload: null}))
+    ckm === '---' && e.key === 'Delete' && isXR(m) && getLastIndexR(m) > 0 && dispatch(actions.mapAction({type: 'deleteLR', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXACR(m) && dispatch(actions.mapAction({type: 'deleteCR', payload: null}))
     ckm === '---' && e.key === 'Delete' && isXACC(m) && dispatch(actions.mapAction({type: 'deleteCC', payload: null}))
     ckm === '---' && e.code === 'Space' && isXR(m) && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
@@ -58,7 +58,7 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyM' && dispatch(actions.mapAction({type: 'createMapInMapDialog', payload: null}))
     ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && dispatch(actions.mapAction({type: 'copyLR', payload: null}))
     ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && dispatch(actions.mapAction({type: 'copyS', payload: null}))
-    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getRiL(m) > 0 && dispatch(actions.mapAction({type: 'cutLR', payload: null}))
+    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getLastIndexR(m) > 0 && dispatch(actions.mapAction({type: 'cutLR', payload: null}))
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && dispatch(actions.mapAction({type: 'cutS', payload: null}))
     ckm === 'c--' && e.code === 'KeyZ' && dispatch(actions.mapAction({type: 'redo', payload: null}))
     ckm === 'c--' && e.code === 'KeyY' && dispatch(actions.mapAction({type: 'undo', payload: null}))
