@@ -1,6 +1,6 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils.ts"
 import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, hasTask, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../selectors/MapSelector"
-import {MARGIN_X} from "../state/Consts.ts"
+import {MARGIN_X, MARGIN_Y} from "../state/Consts.ts"
 import {PlaceTypes} from "../state/Enums.ts"
 import {M, T} from "../state/MapStateTypes"
 
@@ -20,7 +20,6 @@ export const mapPlace = (m: M) => {
         const i = ti.path.at(-1)
         const sumUpperSiblingMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * si1.spacing * + Boolean(getCountTSO2(m, si1) || getCountTCO2(m, si1))
-
         if (g.placeType === PlaceTypes.EXPLODED) {
           if (isRS(ti.path)) {
             ti.nodeStartX = MARGIN_X + si1.nodeStartX
@@ -33,9 +32,17 @@ export const mapPlace = (m: M) => {
             ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
           }
         } else if (g.placeType === PlaceTypes.INDENTED) {
-
+          if (isRS(ti.path)) {
+            ti.nodeStartX = MARGIN_X + si1.nodeStartX
+            ti.nodeStartY = si1.nodeStartY + MARGIN_Y
+          } else if (isSS(ti.path)) {
+            ti.nodeStartX = si1.nodeStartX + 20
+            ti.nodeStartY = si1.nodeEndY + sumElapsedY
+          } else if (isCS(ti.path)) {
+            ti.nodeStartX = si1.nodeStartX + 2
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
+          }
         }
-
         ti.nodeEndX = ti.nodeStartX + ti.selfW
         ti.nodeEndY = ti.nodeStartY + ti.selfH
         ti.isTop = i === 0 && si1.isTop ? 1 : 0
@@ -48,22 +55,16 @@ export const mapPlace = (m: M) => {
         const si2 = getTSI2(m, ti) as T
         const i = ti.path.at(-2)
         const j = ti.path.at(-1)
-
-        if (g.placeType === PlaceTypes.EXPLODED) {
-          if (isRSC(ti.path)) {
-            ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
-            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
-          } else if (isSSC(ti.path)) {
-            ti.nodeStartX = si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]
-            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
-          } else if (isCSC(ti.path)) {
-            ti.nodeStartX = si2.nodeStartX + 2
-            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
-          }
-        } else if (g.placeType === PlaceTypes.INDENTED) {
-
+        if (isRSC(ti.path)) {
+          ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
+          ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
+        } else if (isSSC(ti.path)) {
+          ti.nodeStartX = si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]
+          ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
+        } else if (isCSC(ti.path)) {
+          ti.nodeStartX = si2.nodeStartX + 2
+          ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
         }
-
         ti.nodeEndX = ti.nodeStartX + ti.selfW
         ti.nodeEndY = ti.nodeStartY + ti.selfH
         break
