@@ -21,10 +21,14 @@ export const mapPlace = (m: M) => {
         const sumUpperSiblingMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * si1.spacing * + Boolean(getCountTSO2(m, si1) || getCountTCO2(m, si1))
 
-        g.placeType === PlaceTypes.EXPLODED && isRS(ti.path) && Object.assign(ti, {nodeStartX: MARGIN_X + si1.nodeStartX})
-        g.placeType === PlaceTypes.EXPLODED && isSS(ti.path) && Object.assign(ti, {nodeStartX: si1.nodeEndX + g.sLineDeltaXDefault})
-        g.placeType === PlaceTypes.EXPLODED && isCS(ti.path) && Object.assign(ti, {nodeStartX: si1.nodeStartX + 2})
-        g.placeType === PlaceTypes.EXPLODED && Object.assign(ti, {nodeStartY: si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY})
+        if (g.placeType === PlaceTypes.EXPLODED) {
+          isRS(ti.path) && Object.assign(ti, {nodeStartX: MARGIN_X + si1.nodeStartX})
+          isSS(ti.path) && Object.assign(ti, {nodeStartX: si1.nodeEndX + g.sLineDeltaXDefault})
+          isCS(ti.path) && Object.assign(ti, {nodeStartX: si1.nodeStartX + 2})
+          Object.assign(ti, {nodeStartY: si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY})
+        } else if (g.placeType === PlaceTypes.INDENTED) {
+
+        }
 
         ti.nodeEndX = ti.nodeStartX + ti.selfW
         ti.nodeEndY = ti.nodeStartY + ti.selfH
@@ -39,11 +43,15 @@ export const mapPlace = (m: M) => {
         const i = ti.path.at(-2)
         const j = ti.path.at(-1)
 
-        g.placeType === PlaceTypes.EXPLODED && isRSC(ti.path) && Object.assign(ti, {nodeStartX: MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]})
-        g.placeType === PlaceTypes.EXPLODED && isSSC(ti.path) && Object.assign(ti, {nodeStartX: si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]})
-        g.placeType === PlaceTypes.EXPLODED && isCSC(ti.path) && Object.assign(ti, {nodeStartX: si2.nodeStartX + 2})
-        g.placeType === PlaceTypes.EXPLODED && Object.assign(ti, {nodeStartY: si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2})
-        
+        if (g.placeType === PlaceTypes.EXPLODED) {
+          isRSC(ti.path) && Object.assign(ti, {nodeStartX: MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]})
+          isSSC(ti.path) && Object.assign(ti, {nodeStartX: si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]})
+          isCSC(ti.path) && Object.assign(ti, {nodeStartX: si2.nodeStartX + 2})
+          Object.assign(ti, {nodeStartY: si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2})
+        } else if (g.placeType === PlaceTypes.INDENTED) {
+
+        }
+
         ti.nodeEndX = ti.nodeStartX + ti.selfW
         ti.nodeEndY = ti.nodeStartY + ti.selfH
         break
