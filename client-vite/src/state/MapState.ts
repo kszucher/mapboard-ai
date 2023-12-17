@@ -7,7 +7,6 @@ export const gSaveAlways = {
 } as GSaveAlways
 
 export const gSaveOptional = {
-  alignment: 'adaptive',
   density: 'large',
 } as GSaveOptional
 

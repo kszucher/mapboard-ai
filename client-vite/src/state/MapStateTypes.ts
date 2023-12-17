@@ -14,7 +14,6 @@ export interface GSaveAlways {
 }
 
 export interface GSaveOptional {
-  alignment: string
   density: string
 }
 

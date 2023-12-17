@@ -18,8 +18,6 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
 
     case 'setDensitySmall': getG(m).density = 'small'; break
     case 'setDensityLarge': getG(m).density = 'large'; break
-    case 'setAlignmentCentered': getG(m).alignment = 'centered'; break
-    case 'setAlignmentAdaptive': getG(m).alignment = 'adaptive'; break
 
     case 'selectT': selectT(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectXR': selectT(m, getXR(m), 's'); break
