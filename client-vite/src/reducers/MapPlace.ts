@@ -22,10 +22,16 @@ export const mapPlace = (m: M) => {
         const sumElapsedY = sumUpperSiblingMaxH + i * si1.spacing * + Boolean(getCountTSO2(m, si1) || getCountTCO2(m, si1))
 
         if (g.placeType === PlaceTypes.EXPLODED) {
-          isRS(ti.path) && Object.assign(ti, {nodeStartX: MARGIN_X + si1.nodeStartX})
-          isSS(ti.path) && Object.assign(ti, {nodeStartX: si1.nodeEndX + g.sLineDeltaXDefault})
-          isCS(ti.path) && Object.assign(ti, {nodeStartX: si1.nodeStartX + 2})
-          Object.assign(ti, {nodeStartY: si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY})
+          if (isRS(ti.path)) {
+            ti.nodeStartX = MARGIN_X + si1.nodeStartX
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
+          } else if (isSS(ti.path)) {
+            ti.nodeStartX = si1.nodeEndX + g.sLineDeltaXDefault
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
+          } else if (isCS(ti.path)) {
+            ti.nodeStartX = si1.nodeStartX + 2
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
+          }
         } else if (g.placeType === PlaceTypes.INDENTED) {
 
         }
