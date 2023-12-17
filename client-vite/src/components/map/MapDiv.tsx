@@ -4,7 +4,7 @@ import mermaid from "mermaid"
 import {FC, Fragment, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../assets/Colors"
-import {getG, getNodeById, isS, isXR, isXS, getX, getCountTCO1, isR, isTS, isTR, mT} from "../../selectors/MapSelector"
+import {getG, getNodeById, isXR, isXS, getX, getCountTCO1, isS, isR, mT} from "../../selectors/MapSelector"
 import {adjust, getLatexString} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {setEndOfContentEditable} from "./MapDivUtils"
@@ -123,7 +123,7 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  if((isTR(ti) || isTS(ti)) && !ti.selected) {
+                  if((isR(ti.path) || isS(ti.path)) && !ti.selected) {
                     dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
                   }
                 }

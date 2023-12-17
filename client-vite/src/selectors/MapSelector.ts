@@ -44,10 +44,8 @@ export const mTC = (m: M): T[] => m.filter(n => isT(n.path) && isC(n.path as PT)
 
 export const getG = (m: M): G => mG(m).at(0) as G
 
-export const isTR = (t: T): boolean => isR(t.path)
 export const isXR = (m: M): boolean => isR(getX(m).path)
 export const isXRS = (m: M): boolean => isRS(getX(m).path)
-export const isTS = (t: T): boolean => isS(t.path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
 
 export const getRSCIPL = (p: PT): PT[] => p.map((_, i) => p.slice(0, i)).filter(pi => (['r', 's'].includes(pi.at(-2)) || pi.at(-3) === 'c' )).map(el => el as PT)
