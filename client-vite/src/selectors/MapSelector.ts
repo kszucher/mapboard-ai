@@ -11,7 +11,7 @@ export const sortNode = (a: N, b: N) => a.nodeId > b.nodeId ? 1 : -1
 export const getNodeByPath = (m: M, p: PT) => m.find(ti => isEqual(ti.path, p)) as T
 export const getNodeById = (m: M, nodeId: string) => m.find(ti => ti.nodeId === nodeId) as T
 
-export const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
+const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 
 export const getXF = (m: M): T => mT(m).find(ti => ti.selected)! as T
 export const getXL = (m: M): T => mT(m).findLast(ti => ti.selected)!
@@ -27,8 +27,13 @@ const isT = (p: P): boolean => p.at(0) === 'r' || p.at(0) === 's' || p.at(0) ===
 
 export const isR = (p: PT): boolean => getPathPattern(p).endsWith('r')
 export const isRS = (p: PT): boolean => getPathPattern(p).endsWith('rs')
+export const isRSC = (p: PT): boolean => getPathPattern(p).endsWith('rsc')
 export const isS = (p: PT): boolean => getPathPattern(p).endsWith('s')
+export const isSS = (p: PT): boolean => getPathPattern(p).endsWith('ss')
+export const isSSC = (p: PT): boolean => getPathPattern(p).endsWith('ssc')
 export const isC = (p: PT): boolean => getPathPattern(p).endsWith('c')
+export const isCS = (p: PT): boolean => getPathPattern(p).endsWith('cs')
+export const isCSC = (p: PT): boolean => getPathPattern(p).endsWith('csc')
 
 export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
 export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]

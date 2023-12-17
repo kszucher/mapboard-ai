@@ -1,5 +1,5 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils.ts"
-import {isR, isS, isC, isSU, getPathPattern, getCountTSO1, getCountTSO2, getCountTCO2, getG, getTSI1, getTSI2, mT, hasTask} from "../selectors/MapSelector"
+import {isR, isRS, isRSC, isS, isSS, isSSC, isC, isCS, isCSC, isSU, getCountTSO1, getCountTSO2, getCountTCO2, getG, getTSI1, getTSI2, mT, hasTask} from "../selectors/MapSelector"
 import {MARGIN_X} from "../state/Consts.ts"
 import {M, T} from "../state/MapStateTypes"
 
@@ -19,11 +19,11 @@ export const mapPlace = (m: M) => {
         const i = ti.path.at(-1)
         const sumUpperSiblingMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * si1.spacing * + Boolean(getCountTSO2(m, si1) || getCountTCO2(m, si1))
-        if (getPathPattern(ti.path).endsWith('rs')) {
+        if (isRS(ti.path)) {
           ti.nodeStartX = MARGIN_X + si1.nodeStartX
-        } else if (getPathPattern(ti.path).endsWith('cs')) {
+        } else if (isCS(ti.path)) {
           ti.nodeStartX = si1.nodeStartX + 2
-        } else if (getPathPattern(ti.path).endsWith('ss')) {
+        } else if (isSS(ti.path)) {
           ti.nodeStartX = si1.nodeEndX + g.sLineDeltaXDefault
         }
         ti.nodeEndX = ti.nodeStartX + ti.selfW
@@ -39,11 +39,11 @@ export const mapPlace = (m: M) => {
         const si2 = getTSI2(m, ti) as T
         const i = ti.path.at(-2)
         const j = ti.path.at(-1)
-        if (getPathPattern(ti.path).endsWith('rsc')) {
+        if (isRSC(ti.path)) {
           ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
-        } else if (getPathPattern(ti.path).endsWith('csc'))  {
+        } else if (isCSC(ti.path))  {
           ti.nodeStartX = si2.nodeStartX + 2
-        } else if (getPathPattern(ti.path).endsWith('ssc')) {
+        } else if (isSSC(ti.path)) {
           ti.nodeStartX = si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]
         }
         ti.nodeEndX = ti.nodeStartX + ti.selfW

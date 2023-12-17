@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP} from "../../state/Consts"
 import {getColors} from "../assets/Colors"
-import {getTSI1, getTSI2, getCountTCO1, getCountTSO1, getG, getNodeById, mTS, mTC, getPathPattern} from "../../selectors/MapSelector"
+import {isRS, isRSC, isCS, isCSC, getTSI1, getTSI2, getCountTCO1, getCountTSO1, getG, getNodeById, mTS, mTC} from "../../selectors/MapSelector"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -43,7 +43,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               {...pathCommonProps}
             />
           }
-          {!getPathPattern(ti.path).endsWith('rs') && !getPathPattern(ti.path).endsWith('cs') && getCountTCO1(m, ti) === 0 &&
+          {!isRS(ti.path) && !isCS(ti.path) && getCountTCO1(m, ti) === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI1(pm, ti)
                 ? getLinePathBetweenNodes(getTSI1(pm, ti), ti)
@@ -124,7 +124,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
       ))}
       {mTC(m).map(ti => (
         <g key={ti.nodeId}>
-          {!getPathPattern(ti.path).endsWith('rsc') && !getPathPattern(ti.path).endsWith('csc') && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
+          {!isRSC(ti.path) && !isCSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti)
                 ? getLinePathBetweenNodes(getTSI2(pm, ti), ti)
