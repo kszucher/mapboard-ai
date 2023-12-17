@@ -8,8 +8,8 @@ export const mapPlace = (m: M) => {
     switch (true) {
       case isR(ti.path): {
         ti.nodeStartX = ti.offsetW
-        ti.nodeEndX = ti.offsetW + ti.selfW + getTaskWidth(getG(m)) * hasTask(m, ti)
         ti.nodeStartY = ti.offsetH
+        ti.nodeEndX = ti.offsetW + ti.selfW + getTaskWidth(getG(m)) * hasTask(m, ti)
         ti.nodeEndY = ti.offsetH + ti.selfH
         break
       }
@@ -19,6 +19,7 @@ export const mapPlace = (m: M) => {
         const i = ti.path.at(-1)
         const sumUpperSiblingMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * si1.spacing * + Boolean(getCountTSO2(m, si1) || getCountTCO2(m, si1))
+
         if (isRS(ti.path)) {
           ti.nodeStartX = MARGIN_X + si1.nodeStartX
         } else if (isCS(ti.path)) {
@@ -26,8 +27,9 @@ export const mapPlace = (m: M) => {
         } else if (isSS(ti.path)) {
           ti.nodeStartX = si1.nodeEndX + g.sLineDeltaXDefault
         }
-        ti.nodeEndX = ti.nodeStartX + ti.selfW
         ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
+
+        ti.nodeEndX = ti.nodeStartX + ti.selfW
         ti.nodeEndY = ti.nodeStartY + ti.selfH
         ti.isTop = i === 0 && si1.isTop ? 1 : 0
         ti.isBottom = i === getCountTSO1(m, si1) - 1 && si1.isBottom === 1 ? 1 : 0
@@ -39,6 +41,7 @@ export const mapPlace = (m: M) => {
         const si2 = getTSI2(m, ti) as T
         const i = ti.path.at(-2)
         const j = ti.path.at(-1)
+
         if (isRSC(ti.path)) {
           ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
         } else if (isCSC(ti.path))  {
@@ -46,8 +49,9 @@ export const mapPlace = (m: M) => {
         } else if (isSSC(ti.path)) {
           ti.nodeStartX = si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]
         }
-        ti.nodeEndX = ti.nodeStartX + ti.selfW
         ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i]/2 - si1.selfH / 2
+
+        ti.nodeEndX = ti.nodeStartX + ti.selfW
         ti.nodeEndY = ti.nodeStartY + ti.selfH
         break
       }
