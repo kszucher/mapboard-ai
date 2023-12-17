@@ -46,8 +46,8 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           {!isRS(ti.path) && !isCS(ti.path) && getCountTCO1(m, ti) === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI1(pm, ti)
-                ? getLinePathBetweenNodes(getTSI1(pm, ti), ti)
-                : getLinePathBetweenNodes(getTSI1(m, ti), ti)
+                ? getLinePathBetweenNodes(m, getTSI1(pm, ti), ti)
+                : getLinePathBetweenNodes(m, getTSI1(m, ti), ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.taskStatus > 1
@@ -61,8 +61,8 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
                 !getNodeById(pm, ti.nodeId) && getTSI1(pm, ti) &&
                 <animate
                   attributeName='d'
-                  from={getLinePathBetweenNodes(getTSI1(pm, ti), ti)}
-                  to={getLinePathBetweenNodes(getTSI1(m, ti), ti)}
+                  from={getLinePathBetweenNodes(m, getTSI1(pm, ti), ti)}
+                  to={getLinePathBetweenNodes(m, getTSI1(m, ti), ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
@@ -127,8 +127,8 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           {!isRSC(ti.path) && !isCSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti)
-                ? getLinePathBetweenNodes(getTSI2(pm, ti), ti)
-                : getLinePathBetweenNodes(getTSI2(m, ti), ti)
+                ? getLinePathBetweenNodes(m, getTSI2(pm, ti), ti)
+                : getLinePathBetweenNodes(m, getTSI2(m, ti), ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.lineColor}
@@ -138,8 +138,8 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               {!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti) &&
                 <animate
                   attributeName='d'
-                  from={getLinePathBetweenNodes(getTSI2(pm, ti), ti)}
-                  to={getLinePathBetweenNodes(getTSI2(m, ti), ti)}
+                  from={getLinePathBetweenNodes(m, getTSI2(pm, ti), ti)}
+                  to={getLinePathBetweenNodes(m, getTSI2(m, ti), ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}

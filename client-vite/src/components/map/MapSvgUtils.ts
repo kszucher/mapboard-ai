@@ -1,8 +1,8 @@
-import {getG, getNodeById, getTR, getX, isXACC, isXACR, getXA, sortPath} from "../../selectors/MapSelector"
-import {adjust} from "../../utils/Utils"
+import {getG, getNodeById, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../selectors/MapSelector"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
-import {LineTypes, Sides} from "../../state/Enums"
+import {LineTypes, PlaceTypes, Sides} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
+import {adjust} from "../../utils/Utils"
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -28,14 +28,20 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
   return [ax, ay, ax + dx / 4, ay, ax + dx / 4, ay + dy, bx, by]
 }
 
-export const getLinePathBetweenNodes = (na: T, nb: T) => {
+export const getLinePathBetweenNodes = (m: M, na: T, nb: T) => {
+  const g = getG(m)
   const { lineType } = nb
-  const sx = na.nodeEndX
-  const sy = na.nodeStartY + na.selfH / 2
-  const ex = nb.nodeStartX
-  const ey = nb.nodeStartY + nb.selfH / 2
-  const dx = nb.nodeStartX - na.nodeEndX
-  const dy = nb.nodeStartY + nb.selfH / 2 - na.nodeStartY - na.selfH / 2
+  let sx = 0, sy = 0, ex = 0, ey = 0, dx = 0, dy = 0
+  if (g.placeType === PlaceTypes.EXPLODED) {
+    sx = na.nodeEndX
+    sy = na.nodeStartY + na.selfH / 2
+    ex = nb.nodeStartX
+    ey = nb.nodeStartY + nb.selfH / 2
+    dx = nb.nodeStartX - na.nodeEndX
+    dy = nb.nodeStartY + nb.selfH / 2 - na.nodeStartY - na.selfH / 2
+  } else if (g.placeType === PlaceTypes.INDENTED) {
+
+  }
   let path
   if (lineType === LineTypes.bezier) {
     const c1x = (sx + dx / 4)
