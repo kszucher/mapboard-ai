@@ -1,5 +1,5 @@
+import {ControlTypes, LineTypes, PlaceTypes, Sides} from "./Enums"
 import {GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, PL, PT, TSaveAlways, TSaveNever, TSaveOptional} from "./MapStateTypes"
-import {ControlTypes, LineTypes, Sides} from "./Enums"
 
 export const gSaveAlways = {
   path: ['g'],
@@ -8,6 +8,7 @@ export const gSaveAlways = {
 
 export const gSaveOptional = {
   density: 'large',
+  placeType: PlaceTypes.EXPLODED
 } as GSaveOptional
 
 export const gSaveNever = {

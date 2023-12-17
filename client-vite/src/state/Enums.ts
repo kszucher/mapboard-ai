@@ -73,3 +73,8 @@ export enum SubProcessTypes {
   INGESTION = 'ingestion',
   EXTRACTION = 'extraction'
 }
+
+export enum PlaceTypes {
+  EXPLODED = 'exploded',
+  INDENTED = 'indented'
+}

@@ -1,4 +1,4 @@
-import {LineTypes, ControlTypes, Sides} from "./Enums"
+import {LineTypes, ControlTypes, Sides, PlaceTypes} from "./Enums"
 
 export type PG = ['g']
 export type PL = ['l', number]
@@ -15,6 +15,7 @@ export interface GSaveAlways {
 
 export interface GSaveOptional {
   density: string
+  placeType: PlaceTypes
 }
 
 export interface GSaveNever {
