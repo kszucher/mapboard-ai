@@ -136,4 +136,3 @@ export const PlayIcon = () => (
     <path d="M7 4v16l13-8z"></path>
   </svg>
 )
-

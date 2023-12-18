@@ -22,7 +22,8 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
-                transform={`translate(${adjustIcon(t.nodeEndX - 68)}, ${adjustIcon(t.nodeStartY + 8)})`}{...{vectorEffect: 'non-scaling-stroke'}}
+                transform={`translate(${adjustIcon(t.nodeEndX - 68)}, ${adjustIcon(t.nodeStartY + 8)})`}
+                {...{vectorEffect: 'non-scaling-stroke'}}
                 style={{
                   transition: 'all 0.3s',
                   transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
@@ -44,7 +45,8 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
-                transform={`translate(${adjustIcon(t.nodeEndX - 36)}, ${adjustIcon(t.nodeStartY + 8)})`}{...{vectorEffect: 'non-scaling-stroke'}}
+                transform={`translate(${adjustIcon(t.nodeEndX - 36)}, ${adjustIcon(t.nodeStartY + 8)})`}
+                {...{vectorEffect: 'non-scaling-stroke'}}
                 style={{
                   transition: 'all 0.3s',
                   transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
@@ -70,7 +72,8 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
-                transform={`translate(${adjustIcon(t.nodeEndX - 68)}, ${adjustIcon(t.nodeStartY + 8)})`}{...{vectorEffect: 'non-scaling-stroke'}}
+                transform={`translate(${adjustIcon(t.nodeEndX - 68)}, ${adjustIcon(t.nodeStartY + 8)})`}
+                {...{vectorEffect: 'non-scaling-stroke'}}
                 style={{
                   transition: 'all 0.3s',
                   transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
@@ -92,7 +95,8 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
-                transform={`translate(${adjustIcon(t.nodeEndX - 36)}, ${adjustIcon(t.nodeStartY + 8)})`}{...{vectorEffect: 'non-scaling-stroke'}}
+                transform={`translate(${adjustIcon(t.nodeEndX - 36)}, ${adjustIcon(t.nodeStartY + 8)})`}
+                {...{vectorEffect: 'non-scaling-stroke'}}
                 style={{
                   transition: 'all 0.3s',
                   transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
