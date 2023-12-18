@@ -118,3 +118,19 @@ export const VectorSplineIcon = () => (
     <path d="M17 4a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1h-2a1 1 0 01-1-1zM3 18a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1zM17 5C10.373 5 5 10.373 5 17"></path>
   </svg>
 )
+
+export const FilterIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-filter" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M4 4h16v2.172a2 2 0 01-.586 1.414L15 12v7l-6 2v-8.5L4.52 7.572A2 2 0 014 6.227V4z"></path>
+  </svg>
+)
+
+export const ArrowsShuffle2Icon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-arrows-shuffle-2" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M18 4l3 3-3 3M18 20l3-3-3-3"></path>
+    <path d="M3 7h3a5 5 0 015 5 5 5 0 005 5h5"></path>
+    <path d="M3 17h3a5 5 0 005-5 5 5 0 015-5h5"></path>
+  </svg>
+)
