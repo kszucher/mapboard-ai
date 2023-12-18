@@ -1,12 +1,16 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {T} from "../../state/MapStateTypes"
 import colors from "tailwindcss/colors"
-import {getG, mTR} from "../../selectors/MapSelector"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {mSelector} from "../../state/EditorState"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {getG, mTR} from "../../selectors/MapSelector"
+import {mSelector} from "../../state/EditorState"
+import {ControlTypes} from "../../state/Enums.ts"
+import {T} from "../../state/MapStateTypes"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {adjust} from "../../utils/Utils.ts"
+import {pathCommonProps} from "./MapSvg.tsx"
+import {getLinearLinePath} from "./MapSvgUtils.ts"
 
 export const MapSvgLayer0RootBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -39,8 +43,8 @@ export const MapSvgLayer0RootBackground: FC = () => {
           y={ti.nodeStartY}
           width={ti.nodeEndX - ti.nodeStartX}
           height={ti.nodeEndY - ti.nodeStartY}
-          rx={32}
-          ry={32}
+          rx={16}
+          ry={16}
           fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
           style={{transition: '0.3s ease-out'}}
           onMouseDown={(e) => {
@@ -51,6 +55,18 @@ export const MapSvgLayer0RootBackground: FC = () => {
               }
             }
           }}
+        />
+      ))}
+      {mTR(m).filter(ti => ti.controlType !== ControlTypes.NONE).map((ti: T) => (
+        <path
+          key={`${ti.nodeId}_separator`}
+          d={getLinearLinePath({
+            x1: adjust(ti.nodeStartX),
+            x2: adjust(ti.nodeEndX),
+            y: adjust(ti.nodeStartY + 40)})
+          }
+          stroke={'#666'}
+          {...pathCommonProps}
         />
       ))}
     </g>

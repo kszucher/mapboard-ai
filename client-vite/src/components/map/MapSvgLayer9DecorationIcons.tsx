@@ -21,7 +21,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
               width="24"
               height="24"
               viewBox="0 0 24 24"
-              transform={`translate(${adjustIcon(t.nodeStartX + 24)}, ${adjustIcon(t.nodeStartY + t.selfH / 2 - 12)})`}{...{vectorEffect: 'non-scaling-stroke'}}
+              transform={`translate(${adjustIcon(t.nodeEndX - 48)}, ${adjustIcon(t.nodeStartY + 12)})`}{...{vectorEffect: 'non-scaling-stroke'}}
               style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}
             >
               <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
