@@ -29,7 +29,6 @@ const getInnerHtml = (t: T) => {
 export const MapDiv: FC = () => {
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const editType = useSelector((state: RootState) => state.editor.editType)
-  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
@@ -51,7 +50,7 @@ export const MapDiv: FC = () => {
       {mT(m).map(ti => (
         <Fragment key={ti.nodeId}>
           {
-            (isR(ti.path) || isS(ti.path)) &&
+            isS(ti.path) &&
             <div
               id={ti.nodeId}
               ref={ref => ref && ref.focus()}
@@ -78,8 +77,7 @@ export const MapDiv: FC = () => {
                 zIndex: ti.path.length,
                 border: 0,
                 margin: 0,
-                textShadow: ti.blur? '#FFF 0 0 8px' : '',
-                pointerEvents: connectionHelpersVisible ? 'none' : 'auto'
+                textShadow: ti.blur? '#FFF 0 0 8px' : ''
               }}
               spellCheck={false}
               dangerouslySetInnerHTML={ti.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(ti) }}
