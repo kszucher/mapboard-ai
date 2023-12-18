@@ -67,23 +67,26 @@ export const RedoIcon = () => (
 )
 
 export const SettingsIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-settings-2" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-settings" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M19.875 6.27A2.225 2.225 0 0121 8.218v7.284c0 .809-.443 1.555-1.158 1.948l-6.75 4.27a2.269 2.269 0 01-2.184 0l-6.75-4.27A2.225 2.225 0 013 15.502V8.217c0-.809.443-1.554 1.158-1.947l6.75-3.98a2.33 2.33 0 012.25 0l6.75 3.98h-.033z"></path>
-    <path d="M9 12a3 3 0 106 0 3 3 0 10-6 0"></path>
+    <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37 1 .608 2.296.07 2.572-1.065z"></path>
+    <path d="M9 12a3 3 0 106 0 3 3 0 00-6 0"></path>
   </svg>
 )
 
 export const UserIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round"
+       strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
     <path d="M8 7a4 4 0 108 0 4 4 0 00-8 0M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"></path>
   </svg>
 )
 
 export const SFillIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
-    <path stroke="none" fill="currentColor" d="M6 7.2h12c2.4 0 3.6 1.2 3.6 3.6v2.4c0 2.4-1.2 3.6-3.6 3.6H6c-2.4 0-3.6-1.2-3.6-3.6v-2.4c0-2.4 1.2-3.6 3.6-3.6z"></path>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round"
+       strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24">
+    <path stroke="none" fill="currentColor"
+          d="M6 7.2h12c2.4 0 3.6 1.2 3.6 3.6v2.4c0 2.4-1.2 3.6-3.6 3.6H6c-2.4 0-3.6-1.2-3.6-3.6v-2.4c0-2.4 1.2-3.6 3.6-3.6z"></path>
   </svg>
 )
 
@@ -119,17 +122,18 @@ export const VectorSplineIcon = () => (
   </svg>
 )
 
-export const IngestionIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-triangle-square-circle" viewBox="0 0 24 24">
+export const UploadIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-arrow-narrow-up" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M12 3l-4 7h8zM14 17a3 3 0 106 0 3 3 0 10-6 0M4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1z"></path>
+    <path d="M12 5v14M16 9l-4-4M8 9l4-4"></path>
   </svg>
 )
 
-export const ExtractionIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-status-change" viewBox="0 0 24 24">
+export const PlayIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round"
+       strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-player-play" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M4 18a2 2 0 104 0 2 2 0 10-4 0M16 18a2 2 0 104 0 2 2 0 10-4 0M6 12v-2a6 6 0 1112 0v2"></path>
-    <path d="M15 9l3 3 3-3"></path>
+    <path d="M7 4v16l13-8z"></path>
   </svg>
 )
+
