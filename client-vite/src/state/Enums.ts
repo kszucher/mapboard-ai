@@ -12,7 +12,9 @@ export enum DialogState {
   CREATE_TABLE,
   CREATE_MAP_IN_MAP,
   SHARE_THIS_MAP,
-  RENAME_MAP
+  RENAME_MAP,
+  ROOT_INGESTION,
+  ROOT_EXTRACTION
 }
 
 export enum AlertDialogState {
