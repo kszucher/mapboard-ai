@@ -40,7 +40,12 @@ export const getLinePathBetweenNodes = (m: M, na: T, nb: T) => {
     dx = nb.nodeStartX - na.nodeEndX
     dy = nb.nodeStartY + nb.selfH / 2 - na.nodeStartY - na.selfH / 2
   } else if (g.placeType === PlaceTypes.INDENTED) {
-
+    // sx =
+    // sy =
+    // ex =
+    // ey =
+    // dx =
+    // dy =
   }
   let path
   if (lineType === LineTypes.bezier) {

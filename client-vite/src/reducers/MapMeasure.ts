@@ -27,10 +27,11 @@ export const mapMeasure = (pm: M, m: M) => {
         if (getCountTSO1(m, ti)) {
           measureFamily(m, ti)
         }
-        ti.maxW = ti.selfW + ti.familyW
         if (g.placeType === PlaceTypes.EXPLODED) {
+          ti.maxW = ti.selfW + ti.familyW
           ti.maxH = Math.max(...[ti.selfH, ti.familyH])
         } else if (g.placeType === PlaceTypes.INDENTED) {
+          ti.maxW = ti.selfW + ti.familyW
           ti.maxH = ti.selfH + ti.familyH
         }
         break
