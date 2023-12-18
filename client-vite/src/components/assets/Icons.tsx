@@ -119,18 +119,18 @@ export const VectorSplineIcon = () => (
   </svg>
 )
 
-export const FilterIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-filter" viewBox="0 0 24 24">
+export const IngestionIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-triangle-square-circle" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M4 4h16v2.172a2 2 0 01-.586 1.414L15 12v7l-6 2v-8.5L4.52 7.572A2 2 0 014 6.227V4z"></path>
+    <path d="M12 3l-4 7h8zM14 17a3 3 0 106 0 3 3 0 10-6 0M4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1z"></path>
   </svg>
 )
 
-export const ArrowsShuffle2Icon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-arrows-shuffle-2" viewBox="0 0 24 24">
+export const ExtractionIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round"
+       strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-sparkles" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M18 4l3 3-3 3M18 20l3-3-3-3"></path>
-    <path d="M3 7h3a5 5 0 015 5 5 5 0 005 5h5"></path>
-    <path d="M3 17h3a5 5 0 005-5 5 5 0 015-5h5"></path>
+    <path
+      d="M16 18a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zm0-12a2 2 0 012 2 2 2 0 012-2 2 2 0 01-2-2 2 2 0 01-2 2zM9 18a6 6 0 016-6 6 6 0 01-6-6 6 6 0 01-6 6 6 6 0 016 6z"></path>
   </svg>
 )
