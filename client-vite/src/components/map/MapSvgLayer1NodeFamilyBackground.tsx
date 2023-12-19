@@ -1,4 +1,4 @@
-import {FC, Fragment} from "react"
+import {FC} from "react"
 import {useSelector} from "react-redux"
 import {mT} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
@@ -12,17 +12,11 @@ export const MapSvgLayer1NodeFamilyBackground: FC = () => {
   return (
     <g>
       {mT(m).map((t: T) => (
-        <Fragment key={t.nodeId}>
-          {
-            t.fFillColor &&
-            <path
-              d={getPolygonPath(m, t, 'sFamily', 0)}
-              fill={t.fFillColor}
-              {...pathCommonProps}
-            >
-            </path>
+        <g key={t.nodeId}>
+          {t.fFillColor &&
+            <path fill={t.fFillColor}{...pathCommonProps} d={getPolygonPath(m, t, 'sFamily', 0)}/>
           }
-        </Fragment>
+        </g>
       ))}
     </g>
   )
