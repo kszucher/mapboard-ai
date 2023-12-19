@@ -2,7 +2,7 @@ import {FC} from "react"
 import {useSelector} from "react-redux"
 import { useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {getColors} from "../assets/Colors"
-import {getCountTCO1, getG, getX, isXACC, isXACR, isXC, isXS} from "../../selectors/MapSelector"
+import {getCountTCO1, getG, getX, isXACC, isXACR, isXC, isXR, isXS} from "../../selectors/MapSelector"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -19,6 +19,9 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
   const C = getColors(colorMode)
   return (
     <g>
+      {!selectionRectCoords.length && isXR(m) &&
+        <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(x, getPolygonSelf(x), 's', -2)}/>
+      }
       {!selectionRectCoords.length && isXS(m) && x.selection === 's' && (x.sBorderColor || x.sFillColor || x.taskStatus > 1 || getCountTCO1(m, x)) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(x, getPolygonSelf(x), 's', 4)}/>
       }

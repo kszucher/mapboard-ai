@@ -1,6 +1,6 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getCountTCO1, getG, getR0, isXACC, isXACR, isXC} from "../../selectors/MapSelector"
+import {getG, getR0} from "../../selectors/MapSelector"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
 import {MapSvgLayer0RootBackground} from "./MapSvgLayer0RootBackground"
@@ -14,7 +14,6 @@ import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
 import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
 import {MapSvgLayer9DecorationIcons} from "./MapSvgLayer9DecorationIcons"
 import {MapSvgLayer10Connections} from "./MapSvgLayer10Connections"
-import {M, T} from "../../state/MapStateTypes"
 
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -24,18 +23,6 @@ export const pathCommonProps = {
     transitionProperty: 'd, fill, stroke-width'
   }
 }
-
-export const getSelectionMargin = (m: M, t: T) => (
-  (
-    isXC(m) ||
-    isXACR(m) ||
-    isXACC(m) ||
-    (t.selection === 's' && (t.sBorderColor  || t.sFillColor)) ||
-    (t.selection === 'f') ||
-    t.taskStatus > 1 ||
-    getCountTCO1(m, t)
-  ) ? 4 : -2
-)
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
