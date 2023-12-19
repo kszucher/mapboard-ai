@@ -62,12 +62,29 @@ export const Map: FC = () => {
       ref={mainMapDiv}
       id={'mainMapDiv'}
       onMouseDown={(e) => {
-        e.preventDefault()
-        if (e.button === 0) {
-
-        } else if (e.button === 2) {
-
+        if (e.button === 1) {
+          e.preventDefault()
         }
+        dispatch(actions.mapAction({type: 'saveFromCoordinates', payload: {e}}))
+        let didMove = false
+        const abortController = new AbortController()
+        const { signal } = abortController
+        window.addEventListener('mousemove', (e) => {
+          e.preventDefault()
+          didMove = true
+          if (e.buttons === 1) {
+            dispatch(actions.mapAction({type: 'selectByRectanglePreview', payload: {e}}))
+          }
+        }, { signal })
+        window.addEventListener('mouseup', (e) => {
+          e.preventDefault()
+          abortController.abort()
+          if (didMove) {
+            if (e.button === 0) {
+              dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e}}))
+            }
+          }
+        }, { signal })
       }}
       onMouseMove={(e) => {
         e.preventDefault()

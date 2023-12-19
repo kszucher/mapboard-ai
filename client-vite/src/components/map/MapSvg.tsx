@@ -1,6 +1,6 @@
 import {FC} from "react"
-import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {useSelector} from "react-redux"
+import {RootState} from "../../reducers/EditorReducer"
 import {getG} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
 import {MapSvgLayer0RootBackground} from "./MapSvgLayer0RootBackground"
@@ -18,38 +18,12 @@ import {MapSvgLayer9DecorationIcons} from "./MapSvgLayer9DecorationIcons"
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
-  const dispatch = useDispatch<AppDispatch>()
   return (
     <svg
       key={g.nodeId}
       width={g.mapWidth}
       height={g.mapHeight}
       style={{transition: '0.3s ease-out'}}
-      onMouseDown={(e) => {
-        if (e.button === 1) {
-          e.preventDefault()
-        }
-        dispatch(actions.mapAction({type: 'saveFromCoordinates', payload: {e}}))
-        let didMove = false
-        const abortController = new AbortController()
-        const { signal } = abortController
-        window.addEventListener('mousemove', (e) => {
-          e.preventDefault()
-          didMove = true
-          if (e.buttons === 1) {
-            dispatch(actions.mapAction({type: 'selectByRectanglePreview', payload: {e}}))
-          }
-        }, { signal })
-        window.addEventListener('mouseup', (e) => {
-          e.preventDefault()
-          abortController.abort()
-          if (didMove) {
-            if (e.button === 0) {
-              dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e}}))
-            }
-          }
-        }, { signal })
-      }}
     >
       <MapSvgLayer0RootBackground/>
       <MapSvgLayer1NodeFamilyBackground/>
