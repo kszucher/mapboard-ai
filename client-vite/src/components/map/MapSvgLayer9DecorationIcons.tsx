@@ -47,52 +47,12 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
         <g key={t.nodeId}>
           {t.controlType === ControlTypes.INGESTION &&
             <g>
-              <g
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                transform={`translate(${adjustIcon(t.nodeEndX - 68)}, ${adjustIcon(t.nodeStartY + 8)})`}
-                {...{vectorEffect: 'non-scaling-stroke'}}
-                style={{
-                  transition: 'all 0.3s',
-                  transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-                  transitionProperty: 'all'
-                }}
-              >
-                <rect width="24" height="24" rx={32} ry={32} fill={'#666666'}/>
+              <DecorationIcon x={t.nodeEndX - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
                 <UploadIcon/>
-                <Dialog.Trigger>
-                  <rect
-                    width="24"
-                    height="24"
-                    style={{opacity: 0}}
-                    onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}
-                  />
-                </Dialog.Trigger>
-              </g>
-              <g
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                transform={`translate(${adjustIcon(t.nodeEndX - 36)}, ${adjustIcon(t.nodeStartY + 8)})`}
-                {...{vectorEffect: 'non-scaling-stroke'}}
-                style={{
-                  transition: 'all 0.3s',
-                  transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-                  transitionProperty: 'all'
-                }}
-              >
-                <rect width="24" height="24" rx={32} ry={32} fill={'#666666'}/>
+              </DecorationIcon>
+              <DecorationIcon x={t.nodeEndX - 36} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
                 <SettingsIcon/>
-                <Dialog.Trigger>
-                  <rect
-                    width="24"
-                    height="24"
-                    style={{opacity: 0}}
-                    onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}
-                  />
-                </Dialog.Trigger>
-              </g>
+              </DecorationIcon>
             </g>
           }
           {t.controlType === ControlTypes.EXTRACTION &&
@@ -100,29 +60,9 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
               <DecorationIcon x={t.nodeEndX - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
                 <PlayIcon/>
               </DecorationIcon>
-              <g
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                transform={`translate(${adjustIcon(t.nodeEndX - 36)}, ${adjustIcon(t.nodeStartY + 8)})`}
-                {...{vectorEffect: 'non-scaling-stroke'}}
-                style={{
-                  transition: 'all 0.3s',
-                  transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-                  transitionProperty: 'all'
-                }}
-              >
-                <rect width="24" height="24" rx={32} ry={32} fill={'#666666'}/>
+              <DecorationIcon x={t.nodeEndX - 36} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
                 <SettingsIcon/>
-                <Dialog.Trigger>
-                  <rect
-                    width="24"
-                    height="24"
-                    style={{opacity: 0}}
-                    onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}
-                  />
-                </Dialog.Trigger>
-              </g>
+              </DecorationIcon>
             </g>
           }
         </g>
