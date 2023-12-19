@@ -5,7 +5,7 @@ import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {T} from "../../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
-import {getPolygonPath, getPolygonSelf} from "./MapSvgUtils"
+import {getPolygonPath} from "./MapSvgUtils"
 
 export const MapSvgLayer6SelectionPreview: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -15,10 +15,10 @@ export const MapSvgLayer6SelectionPreview: FC = () => {
       {intersectingNodes.map((t: T) => (
         <g key={t.nodeId}>
           {(t.sBorderColor || t.sFillColor || t.taskStatus > 1 || getCountTCO1(m, t)) &&
-            <path stroke={'#555555'} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(t, getPolygonSelf(t), 's', 4)}/>
+            <path stroke={'#555555'} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', 4)}/>
           }
           {!(t.sBorderColor || t.sFillColor || t.taskStatus > 1 || getCountTCO1(m, t)) &&
-            <path stroke={'#555555'} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(t, getPolygonSelf(t), 's', -2)}/>
+            <path stroke={'#555555'} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', -2)}/>
           }
         </g>
       ))}

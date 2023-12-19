@@ -5,7 +5,7 @@ import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {T} from "../../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
-import { getPolygonPath, getPolygonFamily } from "./MapSvgUtils"
+import { getPolygonPath } from "./MapSvgUtils"
 
 export const MapSvgLayer1NodeFamilyBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -16,7 +16,7 @@ export const MapSvgLayer1NodeFamilyBackground: FC = () => {
           {
             t.fFillColor &&
             <path
-              d={getPolygonPath(t, getPolygonFamily(m, t), 'f', 0)}
+              d={getPolygonPath(m, t, 'sFamily', 0)}
               fill={t.fFillColor}
               {...pathCommonProps}
             >

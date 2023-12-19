@@ -4,8 +4,6 @@ import {LineTypes, PlaceTypes, Sides} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
 
-type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
-
 const getCoordsInLine = (a: any[], b: any[], dt: number) => {
   const [x0, y0] = a
   const [x1, y1] = b
@@ -85,55 +83,51 @@ export const getLinePathBetweenRoots = (m: M, l: L) => {
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
 
-export const getPolygonSelf = (t: T): PolygonPoints => {
-  const R = 8
-  let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
-  ax = t.nodeStartX
-  bx = t.nodeEndX - R
-  cx = t.nodeEndX
-  ayu = byu = cyu = t.nodeStartY
-  ayd = byd = cyd = t.nodeEndY
-  return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
-}
-
-export const getPolygonFamily = (m: M, t: T): PolygonPoints => {
-  const g = getG(m)
-  let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
-  ax = t.nodeStartX
-  bx = t.nodeEndX + g.sLineDeltaXDefault
-  cx = t.nodeStartX + t.maxW
-  ayu = t.nodeStartY
-  ayd = t.nodeEndY
-  byu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
-  byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
-  cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
-  cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
-  return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
-}
-
-export const getPolygonC = (m: M): PolygonPoints => {
-  let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
-  if (isXACR(m)) {
-    ax = getXA(m).slice().sort(sortPath).at(0)!.nodeStartX
-    bx = cx = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndX
-    ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeStartY
-    ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(0)!.nodeEndY
-  } else if (isXACC(m)) {
-    ax = getXA(m).at(0)!.nodeStartX
-    bx = cx = getXA(m).at(0)!.nodeEndX
-    ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeStartY
-    ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndY
-  } else {
-    ax = getX(m).nodeStartX
-    bx = cx = getX(m).nodeEndX
-    ayu = byu = cyu = getX(m).nodeStartY
-    ayd = byd = cyd = getX(m).nodeEndY
+export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
+  let ax = 0, bx = 0, cx = 0, ayu = 0, ayd = 0, byu = 0, byd = 0, cyu = 0, cyd = 0
+  switch (mode) {
+    case 'sSelf': {
+      const R = 8
+      ax = t.nodeStartX
+      bx = t.nodeEndX - R
+      cx = t.nodeEndX
+      ayu = byu = cyu = t.nodeStartY
+      ayd = byd = cyd = t.nodeEndY
+      break
+    }
+    case 'sFamily': {
+      const g = getG(m)
+      ax = t.nodeStartX
+      bx = t.nodeEndX + g.sLineDeltaXDefault
+      cx = t.nodeStartX + t.maxW
+      ayu = t.nodeStartY
+      ayd = t.nodeEndY
+      byu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+      byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+      cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+      cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+      break
+    }
+    case 'c': {
+      if (isXACR(m)) {
+        ax = getXA(m).slice().sort(sortPath).at(0)!.nodeStartX
+        bx = cx = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndX
+        ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeStartY
+        ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(0)!.nodeEndY
+      } else if (isXACC(m)) {
+        ax = getXA(m).at(0)!.nodeStartX
+        bx = cx = getXA(m).at(0)!.nodeEndX
+        ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeStartY
+        ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndY
+      } else {
+        ax = getX(m).nodeStartX
+        bx = cx = getX(m).nodeEndX
+        ayu = byu = cyu = getX(m).nodeStartY
+        ayd = byd = cyd = getX(m).nodeEndY
+      }
+      break
+    }
   }
-  return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
-}
-
-export const getPolygonPath = (_: T, polygonPoints: PolygonPoints, selection: string, margin: number) => {
-  let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
   ax = adjust(ax - margin)
   bx = adjust(bx - margin)
   cx = adjust(cx + margin)
@@ -153,9 +147,9 @@ export const getPolygonPath = (_: T, polygonPoints: PolygonPoints, selection: st
     const [c1x, c1y] = currPoint
     const [c2x, c2y] = currPoint
     const [ex, ey] = getCoordsInLine(currPoint, nextPoint, 12)
-    if (selection === 's' && i === 1) {
+    if (['sSelf', 'c'].includes(mode) && i === 1) {
       path += getBezierLinePath('L', [sx, sy, sx, sy, sx, sy, ex - 24, ey])
-    } else if (selection === 's' && i === 4) {
+    } else if (['sSelf', 'c'].includes(mode) && i === 4) {
       path += getBezierLinePath('L', [sx - 24, sy, ex, ey, ex, ey, ex, ey])
     } else {
       path += getBezierLinePath(i === 0 ? 'M' : 'L', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])

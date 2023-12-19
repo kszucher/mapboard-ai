@@ -10,7 +10,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {pathCommonProps} from "./MapSvg"
-import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getPolygonFamily, getTaskRadius, getTaskStartPoint} from "./MapSvgUtils"
+import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getTaskRadius, getTaskStartPoint} from "./MapSvgUtils"
 
 export const MapSvgLayer3NodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -27,7 +27,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
         <g key={ti.nodeId}>
           {ti.fBorderColor &&
             <path
-              d={getPolygonPath(ti, getPolygonFamily(m, ti), 'f', 0)}
+              d={getPolygonPath(m, ti, 'sFamily', 0)}
               stroke={ti.fBorderColor}
               strokeWidth={ti.fBorderWidth}
               fill={'none'}
