@@ -7,7 +7,7 @@ import {mSelector} from "../../state/EditorState"
 import {Sides} from "../../state/Enums"
 import {L, T} from "../../state/MapStateTypes"
 import {pathCommonProps} from "./MapSvg"
-import {calculateMiddlePoint, getBezierLinePath, getLinePathBetweenRoots} from "./MapSvgUtils"
+import {getCoordsMidBezier, getBezierLinePath, getRootLinePath} from "./MapSvgUtils"
 
 export const MapSvgLayer10Connections: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -20,7 +20,7 @@ export const MapSvgLayer10Connections: FC = () => {
         mL(m).map((l: L) => (
           <g key={`${l.nodeId}_inter_root_bezier`}>
             <path
-              d={getBezierLinePath('M', getLinePathBetweenRoots(m, l))}
+              d={getBezierLinePath('M', getRootLinePath(m, l))}
               strokeWidth={1}
               stroke={'#ffffff'}
               fill={'none'}
@@ -37,8 +37,8 @@ export const MapSvgLayer10Connections: FC = () => {
               <g
                 width="24" height="24" viewBox="0 0 24 24"
                 transform={`translate(
-                    ${adjustIcon(calculateMiddlePoint(getLinePathBetweenRoots(m, l)).x) - 12},
-                    ${adjustIcon(calculateMiddlePoint(getLinePathBetweenRoots(m, l)).y) - 12})`}
+                    ${adjustIcon(getCoordsMidBezier(getRootLinePath(m, l)).x) - 12},
+                    ${adjustIcon(getCoordsMidBezier(getRootLinePath(m, l)).y) - 12})`}
                 {...{vectorEffect: 'non-scaling-stroke'}}
                 style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
                 <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>

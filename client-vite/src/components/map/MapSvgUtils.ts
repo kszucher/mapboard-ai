@@ -14,6 +14,14 @@ const getCoordsInLine = (a: any[], b: any[], dt: number) => {
   return [xt, yt]
 }
 
+export const getCoordsMidBezier = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[]) => {
+  const t = 0.5
+  const mt = 1 - t
+  const x = mt * mt * mt * sx + 3 * mt * mt * t * c1x + 3 * mt * t * t * c2x + t * t * t * ex
+  const y = mt * mt * mt * sy + 3 * mt * mt * t * c1y + 3 * mt * t * t * c2y + t * t * t * ey
+  return {x, y}
+}
+
 export const getLinearLinePath = ({x1, x2, y} : {x1: number, x2: number, y: number}) => `M${x1},${y} L${x2},${y}`
 
 export const getEdgeLinePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) => `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
@@ -26,7 +34,7 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
   return [ax, ay, ax + dx / 4, ay, ax + dx / 4, ay + dy, bx, by]
 }
 
-export const getLinePathBetweenNodes = (m: M, na: T, nb: T) => {
+export const getNodeLinePath = (m: M, na: T, nb: T) => {
   const g = getG(m)
   const { lineType } = nb
   let sx = 0, sy = 0, ex = 0, ey = 0, dx = 0, dy = 0
@@ -62,7 +70,7 @@ export const getLinePathBetweenNodes = (m: M, na: T, nb: T) => {
   return path
 }
 
-export const getLinePathBetweenRoots = (m: M, l: L) => {
+export const getRootLinePath = (m: M, l: L) => {
   const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l
   const fromNode = getNodeById(m, fromNodeId)
   const toNode = getNodeById(m, toNodeId)
@@ -199,14 +207,3 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
 export const getTaskStartPoint = (m: M, g: G, t: T) => getTR(m, t).nodeEndX - getTaskWidth(g)
-
-export const calculateMiddlePoint = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[]) => {
-  const t = 0.5 // t = 0.5 for calculating the middle point
-  const mt = 1 - t
-  const bx = mt * mt * mt * sx + 3 * mt * mt * t * c1x + 3 * mt * t * t * c2x + t * t * t * ex
-  const by = mt * mt * mt * sy + 3 * mt * mt * t * c1y + 3 * mt * t * t * c2y + t * t * t * ey
-  return {
-    x: bx,
-    y: by
-  }
-}

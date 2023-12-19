@@ -1,4 +1,4 @@
-import {FC, Fragment,} from "react"
+import {FC} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {mT} from "../../selectors/MapSelector"
@@ -18,7 +18,7 @@ export const MapSvgLayer2NodeBackground: FC = () => {
   return (
     <g>
       {mT(m).map((t: T) => (
-        <Fragment key={t.nodeId}>
+        <g key={t.nodeId}>
           {
             (t.sFillColor || t.taskStatus > 1) &&
             <path
@@ -28,7 +28,7 @@ export const MapSvgLayer2NodeBackground: FC = () => {
             >
             </path>
           }
-        </Fragment>
+        </g>
       ))}
     </g>
   )

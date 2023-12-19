@@ -10,7 +10,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {pathCommonProps} from "./MapSvg"
-import {getArcPath, getGridPath, getLinearLinePath, getLinePathBetweenNodes, getPolygonPath, getTaskRadius, getTaskStartPoint} from "./MapSvgUtils"
+import {getArcPath, getGridPath, getLinearLinePath, getNodeLinePath, getPolygonPath, getTaskRadius, getTaskStartPoint} from "./MapSvgUtils"
 
 export const MapSvgLayer3NodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -46,8 +46,8 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           {!isRS(ti.path) && !isCS(ti.path) && getCountTCO1(m, ti) === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI1(pm, ti)
-                ? getLinePathBetweenNodes(m, getTSI1(pm, ti), ti)
-                : getLinePathBetweenNodes(m, getTSI1(m, ti), ti)
+                ? getNodeLinePath(m, getTSI1(pm, ti), ti)
+                : getNodeLinePath(m, getTSI1(m, ti), ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.taskStatus > 1
@@ -61,8 +61,8 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
                 !getNodeById(pm, ti.nodeId) && getTSI1(pm, ti) &&
                 <animate
                   attributeName='d'
-                  from={getLinePathBetweenNodes(m, getTSI1(pm, ti), ti)}
-                  to={getLinePathBetweenNodes(m, getTSI1(m, ti), ti)}
+                  from={getNodeLinePath(m, getTSI1(pm, ti), ti)}
+                  to={getNodeLinePath(m, getTSI1(m, ti), ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
@@ -127,8 +127,8 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           {!isRSC(ti.path) && !isCSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti)
-                ? getLinePathBetweenNodes(m, getTSI2(pm, ti), ti)
-                : getLinePathBetweenNodes(m, getTSI2(m, ti), ti)
+                ? getNodeLinePath(m, getTSI2(pm, ti), ti)
+                : getNodeLinePath(m, getTSI2(m, ti), ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.lineColor}
@@ -138,8 +138,8 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
               {!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti) &&
                 <animate
                   attributeName='d'
-                  from={getLinePathBetweenNodes(m, getTSI2(pm, ti), ti)}
-                  to={getLinePathBetweenNodes(m, getTSI2(m, ti), ti)}
+                  from={getNodeLinePath(m, getTSI2(pm, ti), ti)}
+                  to={getNodeLinePath(m, getTSI2(m, ti), ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
