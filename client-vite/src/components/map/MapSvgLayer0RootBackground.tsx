@@ -5,13 +5,14 @@ import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getG, mTR} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
-import {ControlType} from "../../state/Enums.ts"
+import {ControlType, LeftMouseMode} from "../../state/Enums.ts"
 import {T} from "../../state/MapStateTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {adjust} from "../../utils/Utils.ts"
 import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
 
 export const MapSvgLayer0RootBackground: FC = () => {
+  const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
@@ -48,10 +49,8 @@ export const MapSvgLayer0RootBackground: FC = () => {
           style={{transition: '0.3s ease-out'}}
           onMouseDown={(e) => {
             e.stopPropagation()
-            if (e.button === 0) {
-              if(!ti.selected) {
-                dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
-              }
+            if (e.button === 0 && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+              dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
             }
           }}
         />

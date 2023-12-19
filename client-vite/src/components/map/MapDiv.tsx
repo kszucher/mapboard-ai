@@ -3,15 +3,16 @@ import katex from "katex/dist/katex.mjs"
 import mermaid from "mermaid"
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getColors} from "../assets/Colors"
-import {getG, getNodeById, isXR, isXS, getX, getCountTCO1, isS, isR, mTS} from "../../selectors/MapSelector"
-import {adjust, getLatexString} from "../../utils/Utils"
-import {mSelector} from "../../state/EditorState"
-import {setEndOfContentEditable} from "./MapDivUtils"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {getCountTCO1, getG, getNodeById, getX, isR, isS, isXR, isXS, mTS} from "../../selectors/MapSelector"
+import {mSelector} from "../../state/EditorState"
+import {LeftMouseMode} from "../../state/Enums.ts";
 import {T} from "../../state/MapStateTypes"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {adjust, getLatexString} from "../../utils/Utils"
+import {getColors} from "../assets/Colors"
+import {setEndOfContentEditable} from "./MapDivUtils"
 
 const getInnerHtml = (t: T) => {
   if (t.contentType === 'text') {
@@ -27,6 +28,7 @@ const getInnerHtml = (t: T) => {
 }
 
 export const MapDiv: FC = () => {
+  const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const editType = useSelector((state: RootState) => state.editor.editType)
   const m = useSelector((state:RootState) => mSelector(state))
@@ -75,7 +77,8 @@ export const MapDiv: FC = () => {
             zIndex: ti.path.length,
             border: 0,
             margin: 0,
-            textShadow: ti.blur? '#FFF 0 0 8px' : ''
+            textShadow: ti.blur? '#FFF 0 0 8px' : '',
+            pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE ? 'auto' : 'none'
           }}
           spellCheck={false}
           dangerouslySetInnerHTML={ti.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(ti) }}
@@ -99,8 +102,10 @@ export const MapDiv: FC = () => {
                 window.open(ti.link, '_blank')
                 window.focus()
               } else {
-                !e.ctrlKey && dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
-                e.ctrlKey && dispatch(actions.mapAction({type: 'selectTtoo', payload: {path: ti.path}}))
+                if (leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+                  !e.ctrlKey && dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
+                  e.ctrlKey && dispatch(actions.mapAction({type: 'selectTtoo', payload: {path: ti.path}}))
+                }
                 const abortController = new AbortController()
                 const { signal } = abortController
                 window.addEventListener('mousemove', (e) => {
@@ -119,14 +124,14 @@ export const MapDiv: FC = () => {
             } else if (e.button === 1) {
               e.preventDefault()
             } else if (e.button === 2) {
-              if((isR(ti.path) || isS(ti.path)) && !ti.selected) {
+              if ((isR(ti.path) || isS(ti.path)) && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
                 dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
               }
             }
           }}
           onDoubleClick={(e) => {
             e.stopPropagation()
-            if (isXS(m) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0) {
+            if (isXS(m) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
               dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
             }
           }}

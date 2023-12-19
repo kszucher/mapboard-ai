@@ -1,15 +1,17 @@
 import {FC, useEffect, useRef} from "react"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {mSelector} from "../../state/EditorState"
-import {MapSvg} from "./MapSvg"
-import {MapDiv} from "./MapDiv"
 import {useDispatch, useSelector} from "react-redux"
-import {setScrollLeftAnimated} from "./MapDivUtils"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getG} from "../../selectors/MapSelector"
+import {mSelector} from "../../state/EditorState"
+import {LeftMouseMode} from "../../state/Enums.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {MapDiv} from "./MapDiv"
+import {setScrollLeftAnimated} from "./MapDivUtils"
+import {MapSvg} from "./MapSvg"
 
 export const Map: FC = () => {
+  const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
@@ -48,7 +50,7 @@ export const Map: FC = () => {
   useEffect(() => {
     if (mainMapDiv.current) {
       setScrollLeftAnimated((window.innerWidth + g.mapWidth) / 2, 500)
-    }}, [density] // TODO figure out how to react to the end of moveTarget
+    }}, [density]
   )
 
   return (
@@ -72,26 +74,20 @@ export const Map: FC = () => {
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
           didMove = true
-          if (e.buttons === 1) {
+          if (e.button === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
             dispatch(actions.mapAction({type: 'selectByRectanglePreview', payload: {e}}))
+          } else if (e.button === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+            setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
+            setScrollTop(document.documentElement.scrollTop - e.movementY)
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          if (didMove) {
-            if (e.button === 0) {
-              dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e}}))
-            }
+          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
+            dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e}}))
           }
         }, { signal })
-      }}
-      onMouseMove={(e) => {
-        e.preventDefault()
-        if (e.buttons === 4) {
-          setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
-          setScrollTop(document.documentElement.scrollTop - e.movementY)
-        }
       }}
       onDoubleClick={() => {
         if (mainMapDiv.current) {
