@@ -3,7 +3,7 @@ import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../components/map/MapDivUtils"
 import {mapFindIntersecting} from "../selectors/MapFindIntersecting"
 import {editorState} from "../state/EditorState"
-import {DialogState, AlertDialogState, FormatMode, PageState, Sides} from "../state/Enums"
+import {DialogState, AlertDialogState, FormatMode, PageState, Sides, LeftMouseTypes} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
 import {nodeApi} from "../apis/NodeApi"
 import {mapFindNearest} from "../selectors/MapFindNearest"
@@ -19,6 +19,7 @@ export const editorSlice = createSlice({
   reducers: {
     setToken(state, action: PayloadAction<string>) { state.token = action.payload },
     resetState() {return JSON.parse(editorStateDefault)},
+    setLeftMouseMode(state, action: PayloadAction<LeftMouseTypes>) { state. leftMouseMode = action.payload},
     setScrollOverride(state) { state.scrollOverride = true },
     clearScrollOverride(state) { state.scrollOverride = false },
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
@@ -27,10 +28,6 @@ export const editorSlice = createSlice({
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     openFormatter(state) { state.formatterVisible = true},
     closeFormatter(state) { state.formatterVisible = false},
-    openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
-    closeMoreMenu(state) { state.moreMenu = false },
-    openFrameMenu(state, action: PayloadAction<boolean>) { state.frameMenu = action.payload },
-    closeFrameMenu(state) { state.frameMenu = false },
     setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload},
     showConnectionHelpers(state) { state.connectionHelpersVisible = true },
     hideConnectionHelpers(state) { state.connectionHelpersVisible = false },

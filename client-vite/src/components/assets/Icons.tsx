@@ -43,6 +43,13 @@ export const EyeIcon = () => (
   </svg>
 )
 
+export const MouseIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-mouse" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M6 7a4 4 0 014-4h4a4 4 0 014 4v10a4 4 0 01-4 4h-4a4 4 0 01-4-4zM12 7v4"></path>
+  </svg>
+)
+
 export const ShareIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-share" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>

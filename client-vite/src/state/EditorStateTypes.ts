@@ -1,8 +1,9 @@
-import {AlertDialogState, DialogState, FormatMode, PageState, Sides} from "./Enums"
+import {AlertDialogState, DialogState, FormatMode, LeftMouseTypes, PageState, Sides} from "./Enums"
 import {M, T} from "./MapStateTypes"
 
 export interface EditorState {
   token: string
+  leftMouseMode: LeftMouseTypes
   scrollOverride: boolean
   pageState: PageState
   dialogState: DialogState
@@ -14,8 +15,6 @@ export interface EditorState {
   editType: '' | 'append' | 'replace'
   editStartMapListIndex: number
   formatterVisible: boolean
-  moreMenu: boolean
-  frameMenu: boolean
   moveCoords: number[]
   selectionRectCoords: number[]
   intersectingNodes: T[]

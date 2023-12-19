@@ -17,6 +17,7 @@ import {EditorMapShares} from "./EditorMapShares"
 import {MapSharesShare} from "../dialog/MapSharesShare.tsx"
 import {MapSharesSharedByMe} from "../dialog/MapSharesSharedByMe.tsx"
 import {MapSharesSharedWithMe} from "../dialog/MapSharesSharedWithMe.tsx"
+import {EditorMapControls} from "./EditorMapControls"
 import {EditorMapViews} from "./EditorMapViews"
 import {EditorNodeEdit} from "./EditorNodeEdit"
 import {NodeEditContentEquation} from "../dialog/NodeEditContentEquation.tsx"
@@ -133,6 +134,7 @@ export const Editor: FC = () => {
               </div>
               <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
+                  <EditorMapControls/>
                   <EditorMapViews/>
                   <EditorMapShares/>
                 </Flex>

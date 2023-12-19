@@ -1,9 +1,10 @@
-import {DialogState, AlertDialogState, FormatMode, PageState, Sides} from "./Enums"
-import {EditorState} from "./EditorStateTypes"
 import {RootState, store} from "../reducers/EditorReducer"
+import {EditorState} from "./EditorStateTypes"
+import {AlertDialogState, DialogState, FormatMode, LeftMouseTypes, PageState, Sides} from "./Enums"
 
 export const editorState: EditorState = {
   token: '',
+  leftMouseMode: LeftMouseTypes.SELECT_BY_CLICK_OR_MOVE,
   scrollOverride: false,
   pageState: PageState.AUTH,
   dialogState: DialogState.NONE,
@@ -15,8 +16,6 @@ export const editorState: EditorState = {
   editType: '',
   editStartMapListIndex: Infinity,
   formatterVisible: false,
-  moreMenu: false,
-  frameMenu: false,
   moveCoords: [],
   selectionRectCoords: [],
   intersectingNodes: [],

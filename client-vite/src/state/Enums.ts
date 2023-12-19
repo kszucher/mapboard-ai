@@ -22,6 +22,11 @@ export enum AlertDialogState {
   DELETE_ACCOUNT
 }
 
+export enum LeftMouseTypes {
+  SELECT_BY_RECTANGLE,
+  SELECT_BY_CLICK_OR_MOVE
+}
+
 export enum AccessTypes {
   UNAUTHORIZED = 'unauthorized',
   VIEW = 'view',
@@ -71,7 +76,6 @@ export enum ControlTypes {
 }
 
 export enum SubProcessTypes {
-  NONE = '',
   INGESTION = 'ingestion',
   EXTRACTION = 'extraction'
 }
