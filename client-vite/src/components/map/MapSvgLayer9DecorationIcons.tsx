@@ -23,14 +23,7 @@ const DecorationIcon = ({x, y, children, onClick} : {x: number, y: number, child
     }}
   >
     <Dialog.Trigger>
-      <rect
-        width="24"
-        height="24"
-        rx={32}
-        ry={32}
-        className={"fill-gray-500 hover:fill-teal-700"}
-        onClick={() => onClick()}
-      />
+      <circle cx={12} cy={12} r={12} className={"fill-gray-500 hover:fill-teal-700"} onClick={() => onClick()}/>
     </Dialog.Trigger>
     <g className={"pointer-events-none"}>
       {children}
