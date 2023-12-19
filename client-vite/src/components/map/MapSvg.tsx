@@ -1,6 +1,6 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getG, getR0} from "../../selectors/MapSelector"
+import {getG} from "../../selectors/MapSelector"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mSelector} from "../../state/EditorState"
 import {MapSvgLayer0RootBackground} from "./MapSvgLayer0RootBackground"
@@ -26,12 +26,11 @@ export const pathCommonProps = {
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
-  const r0 = getR0(m)
   const g = getG(m)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <svg
-      key={r0.nodeId}
+      key={g.nodeId}
       width={g.mapWidth}
       height={g.mapHeight}
       style={{transition: '0.3s ease-out'}}

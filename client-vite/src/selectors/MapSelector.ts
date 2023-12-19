@@ -81,7 +81,6 @@ export const isCD = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual
 export const isCER = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) >= p.at(-1)
 export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) > p.at(-1)
 
-export const getR0 = (m: M): T => getNodeByPath(m, ['r', 0])
 export const getTSI1 = (m: M, t: T): T => m.find(ti => isSI1(t.path, ti.path as PT))! as T
 export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T
 export const getTSI2 = (m: M, t: T): T => m.find(ti => isSI2(t.path, ti.path as PT))! as T
