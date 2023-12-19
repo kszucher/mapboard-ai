@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getG, mTR} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
-import {ControlTypes} from "../../state/Enums.ts"
+import {ControlType} from "../../state/Enums.ts"
 import {T} from "../../state/MapStateTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {adjust} from "../../utils/Utils.ts"
@@ -56,7 +56,7 @@ export const MapSvgLayer0RootBackground: FC = () => {
           }}
         />
       ))}
-      {mTR(m).filter(ti => ti.controlType !== ControlTypes.NONE).map((ti: T) => (
+      {mTR(m).filter(ti => ti.controlType !== ControlType.NONE).map((ti: T) => (
         <path
           key={`${ti.nodeId}_separator`}
           d={getLinearLinePath({

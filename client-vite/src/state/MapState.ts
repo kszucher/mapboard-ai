@@ -1,4 +1,4 @@
-import {ControlTypes, LineTypes, PlaceTypes, Sides} from "./Enums"
+import {ControlType, LineType, PlaceType, Side} from "./Enums"
 import {GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, PL, PT, TSaveAlways, TSaveNever, TSaveOptional} from "./MapStateTypes"
 
 export const gSaveAlways = {
@@ -8,7 +8,7 @@ export const gSaveAlways = {
 
 export const gSaveOptional = {
   density: 'large',
-  placeType: PlaceTypes.EXPLODED
+  placeType: PlaceType.EXPLODED
 } as GSaveOptional
 
 export const gSaveNever = {
@@ -21,8 +21,8 @@ export const lSaveAlways = {
   path: [] as unknown as PL,
   nodeId: '',
   fromNodeId: '',
-  fromNodeSide: Sides.L,
-  toNodeSide: Sides.R,
+  fromNodeSide: Side.L,
+  toNodeSide: Side.R,
   toNodeId: '',
 } as LSaveAlways
 
@@ -41,7 +41,7 @@ export const tSaveAlways = {
 } as TSaveAlways
 
 export const tSaveOptional = {
-  controlType: ControlTypes.NONE,
+  controlType: ControlType.NONE,
   offsetW: 0,
   offsetH: 0,
   llmDataType: 'text',
@@ -59,7 +59,7 @@ export const tSaveOptional = {
   selection: 's',
   lastSelectedChild: -1,
   lineWidth: 1,
-  lineType: LineTypes.bezier,
+  lineType: LineType.bezier,
   lineColor: '#bbbbbb',
   sBorderWidth: 0,
   fBorderWidth: 0,

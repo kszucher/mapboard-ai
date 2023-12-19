@@ -4,7 +4,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import { mTR, isExistingLink, mL} from "../../selectors/MapSelector"
 import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
-import {Sides} from "../../state/Enums"
+import {Side} from "../../state/Enums"
 import {L, T} from "../../state/MapStateTypes"
 import {getCoordsMidBezier, getBezierLinePath, getRootLinePath, pathCommonProps} from "./MapSvgUtils"
 
@@ -79,12 +79,12 @@ export const MapSvgLayer10Connections: FC = () => {
                     onMouseDown={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
-                      dispatch(actions.setConnectionStart({fromNodeId: t.nodeId, fromNodeSide: Sides[el.side as keyof typeof Sides]}))
+                      dispatch(actions.setConnectionStart({fromNodeId: t.nodeId, fromNodeSide: Side[el.side as keyof typeof Side]}))
                     }}
                     onMouseUp={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
-                      const newLink = {...connectionStart, toNodeId: t.nodeId, toNodeSide: Sides[el.side as keyof typeof Sides]} as L
+                      const newLink = {...connectionStart, toNodeId: t.nodeId, toNodeSide: Side[el.side as keyof typeof Side]} as L
                       if (
                         connectionStart.fromNodeId !== '' &&
                         connectionStart.fromNodeId !== t.nodeId &&

@@ -22,12 +22,12 @@ export enum AlertDialogState {
   DELETE_ACCOUNT
 }
 
-export enum LeftMouseTypes {
+export enum LeftMouseMode {
   SELECT_BY_RECTANGLE,
   SELECT_BY_CLICK_OR_MOVE
 }
 
-export enum AccessTypes {
+export enum AccessType {
   UNAUTHORIZED = 'unauthorized',
   VIEW = 'view',
   EDIT = 'edit'
@@ -42,7 +42,7 @@ export enum FormatMode {
   line
 }
 
-export enum TextTypes {
+export enum TextType {
   h1 = 36,
   h2 = 24,
   h3 = 18,
@@ -50,37 +50,37 @@ export enum TextTypes {
   t = 14
 }
 
-export enum WidthTypes {
+export enum WidthType {
   w0 = 0,
   w1 = 1,
   w2,
   w3
 }
 
-export enum LineTypes {
+export enum LineType {
   bezier,
   edge
 }
 
-export enum Sides {
+export enum Side {
   L = 'left',
   R = 'right',
   T = 'top',
   B = 'bottom',
 }
 
-export enum ControlTypes {
+export enum ControlType {
   NONE = '',
   INGESTION = 'ingestion',
   EXTRACTION = 'extraction',
 }
 
-export enum SubProcessTypes {
+export enum SubProcessType {
   INGESTION = 'ingestion',
   EXTRACTION = 'extraction'
 }
 
-export enum PlaceTypes {
+export enum PlaceType {
   EXPLODED = 'exploded',
   INDENTED = 'indented'
 }

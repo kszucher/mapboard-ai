@@ -1,7 +1,7 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {getCountTCO1, getCountTSO1, getG, getNodeById, hasTask, isC, isR, isS, mT, mTR} from "../selectors/MapSelector"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
-import {PlaceTypes} from "../state/Enums.ts"
+import {PlaceType} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
 
@@ -27,10 +27,10 @@ export const mapMeasure = (pm: M, m: M) => {
         if (getCountTSO1(m, ti)) {
           measureFamily(m, ti)
         }
-        if (g.placeType === PlaceTypes.EXPLODED) {
+        if (g.placeType === PlaceType.EXPLODED) {
           ti.maxW = ti.selfW + ti.familyW
           ti.maxH = Math.max(...[ti.selfH, ti.familyH])
-        } else if (g.placeType === PlaceTypes.INDENTED) {
+        } else if (g.placeType === PlaceType.INDENTED) {
           ti.maxW = ti.selfW + ti.familyW
           ti.maxH = ti.selfH + ti.familyH
         }

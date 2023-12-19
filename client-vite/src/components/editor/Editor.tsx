@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import mermaid from "mermaid"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {AccessTypes, DialogState, AlertDialogState} from "../../state/Enums"
+import {AccessType, DialogState, AlertDialogState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
@@ -49,7 +49,7 @@ export const Editor: FC = () => {
   const nextFrameIdPosition = frameIdPosition < frameIdList.length - 1 ? frameIdPosition + 1 : frameIdList.length - 1
   const prevFrameId = frameIdList[prevFrameIdPosition]
   const nextFrameId = frameIdList[nextFrameIdPosition]
-  const disabled = [AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access)
+  const disabled = [AccessType.VIEW, AccessType.UNAUTHORIZED].includes(access)
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)

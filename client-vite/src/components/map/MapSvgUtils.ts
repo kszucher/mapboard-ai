@@ -1,6 +1,6 @@
 import {getG, getNodeById, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../selectors/MapSelector"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
-import {LineTypes, PlaceTypes, Sides} from "../../state/Enums"
+import {LineType, PlaceType, Side} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
 
@@ -47,14 +47,14 @@ export const getNodeLinePath = (m: M, na: T, nb: T) => {
   const g = getG(m)
   const { lineType } = nb
   let sx = 0, sy = 0, ex = 0, ey = 0, dx = 0, dy = 0
-  if (g.placeType === PlaceTypes.EXPLODED) {
+  if (g.placeType === PlaceType.EXPLODED) {
     sx = na.nodeEndX
     sy = na.nodeStartY + na.selfH / 2
     ex = nb.nodeStartX
     ey = nb.nodeStartY + nb.selfH / 2
     dx = nb.nodeStartX - na.nodeEndX
     dy = nb.nodeStartY + nb.selfH / 2 - na.nodeStartY - na.selfH / 2
-  } else if (g.placeType === PlaceTypes.INDENTED) {
+  } else if (g.placeType === PlaceType.INDENTED) {
     // sx =
     // sy =
     // ex =
@@ -63,13 +63,13 @@ export const getNodeLinePath = (m: M, na: T, nb: T) => {
     // dy =
   }
   let path
-  if (lineType === LineTypes.bezier) {
+  if (lineType === LineType.bezier) {
     const c1x = (sx + dx / 4)
     const c1y = (sy)
     const c2x = (sx + dx / 4)
     const c2y = (sy + dy)
     path = getBezierLinePath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
-  } else if (lineType === LineTypes.edge) {
+  } else if (lineType === LineType.edge) {
     const m1x = (sx + dx / 2)
     const m1y = (sy)
     const m2x = (sx + dx / 2)
@@ -85,17 +85,17 @@ export const getRootLinePath = (m: M, l: L) => {
   const toNode = getNodeById(m, toNodeId)
   let sx = 0, sy = 0, c1x = 0, c1y = 0
   switch (fromNodeSide) {
-    case Sides.R: sx = fromNode.nodeEndX; sy = fromNode.nodeStartY + fromNode.selfH / 2; c1x = sx + 100; c1y = sy; break
-    case Sides.L: sx = fromNode.nodeStartX; sy = fromNode.nodeStartY + fromNode.selfH / 2; c1x = sx - 100; c1y = sy; break
-    case Sides.T: sx = fromNode.nodeStartX + fromNode.selfW / 2; sy = fromNode.nodeStartY; c1x = sx; c1y = sy - 100; break
-    case Sides.B: sx = fromNode.nodeStartX + fromNode.selfW / 2; sy = fromNode.nodeEndY; c1x = sx; c1y = sy + 100; break
+    case Side.R: sx = fromNode.nodeEndX; sy = fromNode.nodeStartY + fromNode.selfH / 2; c1x = sx + 100; c1y = sy; break
+    case Side.L: sx = fromNode.nodeStartX; sy = fromNode.nodeStartY + fromNode.selfH / 2; c1x = sx - 100; c1y = sy; break
+    case Side.T: sx = fromNode.nodeStartX + fromNode.selfW / 2; sy = fromNode.nodeStartY; c1x = sx; c1y = sy - 100; break
+    case Side.B: sx = fromNode.nodeStartX + fromNode.selfW / 2; sy = fromNode.nodeEndY; c1x = sx; c1y = sy + 100; break
   }
   let ex = 0, ey = 0, c2x = 0, c2y = 0
   switch (toNodeSide) {
-    case Sides.R: ex = toNode.nodeEndX; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex + 100; c2y = ey; break
-    case Sides.L: ex = toNode.nodeStartX; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex - 100; c2y = ey; break
-    case Sides.T: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeStartY; c2x = ex; c2y = ey - 100; break
-    case Sides.B: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeEndY; c2x = ex; c2y = ey + 100;  break
+    case Side.R: ex = toNode.nodeEndX; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex + 100; c2y = ey; break
+    case Side.L: ex = toNode.nodeStartX; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex - 100; c2y = ey; break
+    case Side.T: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeStartY; c2x = ex; c2y = ey - 100; break
+    case Side.B: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeEndY; c2x = ex; c2y = ey + 100;  break
   }
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }

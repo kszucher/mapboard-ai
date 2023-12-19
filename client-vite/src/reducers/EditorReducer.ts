@@ -3,7 +3,7 @@ import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../components/map/MapDivUtils"
 import {mapFindIntersecting} from "../selectors/MapFindIntersecting"
 import {editorState} from "../state/EditorState"
-import {DialogState, AlertDialogState, FormatMode, PageState, Sides, LeftMouseTypes} from "../state/Enums"
+import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
 import {nodeApi} from "../apis/NodeApi"
 import {mapFindNearest} from "../selectors/MapFindNearest"
@@ -19,7 +19,7 @@ export const editorSlice = createSlice({
   reducers: {
     setToken(state, action: PayloadAction<string>) { state.token = action.payload },
     resetState() {return JSON.parse(editorStateDefault)},
-    setLeftMouseMode(state, action: PayloadAction<LeftMouseTypes>) { state. leftMouseMode = action.payload},
+    setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) { state. leftMouseMode = action.payload},
     setScrollOverride(state) { state.scrollOverride = true },
     clearScrollOverride(state) { state.scrollOverride = false },
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
@@ -32,7 +32,7 @@ export const editorSlice = createSlice({
     showConnectionHelpers(state) { state.connectionHelpersVisible = true },
     hideConnectionHelpers(state) { state.connectionHelpersVisible = false },
     setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload},
-    clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Sides.R}},
+    clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R}},
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {

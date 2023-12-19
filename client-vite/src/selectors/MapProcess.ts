@@ -1,4 +1,4 @@
-import {Sides} from "../state/Enums"
+import {Side} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
 import {SubProcess} from "./MapProcessTypes.ts"
 import {getCountTSO1, getNodeByPath, getSIPL, mL, mTS, mTR} from "./MapSelector"
@@ -23,10 +23,10 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
       ,
       inputSubProcesses: [
         ...mL(m)
-          .filter(li => li.fromNodeId === ri.nodeId && li.fromNodeSide === Sides.L)
+          .filter(li => li.fromNodeId === ri.nodeId && li.fromNodeSide === Side.L)
           .map(li => li.toNodeId),
         ...mL(m)
-          .filter(li => li.toNodeId === ri.nodeId && li.toNodeSide === Sides.L)
+          .filter(li => li.toNodeId === ri.nodeId && li.toNodeSide === Side.L)
           .map(li => li.fromNodeId)
       ],
       inputSubProcessesAll: [],

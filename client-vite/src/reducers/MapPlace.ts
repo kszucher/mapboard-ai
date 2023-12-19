@@ -1,7 +1,7 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils.ts"
 import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, hasTask, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../selectors/MapSelector"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts.ts"
-import {PlaceTypes} from "../state/Enums.ts"
+import {PlaceType} from "../state/Enums.ts"
 import {M, T} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {
@@ -20,7 +20,7 @@ export const mapPlace = (m: M) => {
         const i = ti.path.at(-1)
         const sumUpperSiblingMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * si1.spacing * + Boolean(getCountTSO2(m, si1) || getCountTCO2(m, si1))
-        if (g.placeType === PlaceTypes.EXPLODED) {
+        if (g.placeType === PlaceType.EXPLODED) {
           if (isRS(ti.path)) {
             ti.nodeStartX = MARGIN_X + si1.nodeStartX
             ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
@@ -31,7 +31,7 @@ export const mapPlace = (m: M) => {
             ti.nodeStartX = si1.nodeStartX + 2
             ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
           }
-        } else if (g.placeType === PlaceTypes.INDENTED) {
+        } else if (g.placeType === PlaceType.INDENTED) {
           if (isRS(ti.path)) {
             ti.nodeStartX = MARGIN_X + si1.nodeStartX
             ti.nodeStartY = si1.nodeStartY + MARGIN_Y

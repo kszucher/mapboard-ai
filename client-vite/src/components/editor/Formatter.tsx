@@ -5,7 +5,7 @@ import colors from "tailwindcss/colors"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXR, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
-import {AccessTypes, FormatMode, LineTypes, TextTypes, WidthTypes} from "../../state/Enums"
+import {AccessType, FormatMode, LineType, TextType, WidthType} from "../../state/Enums"
 import {FBorderIcon, FFillIcon, LetterTIcon, SFillIcon, SBorderIcon, VectorSplineIcon} from "../assets/Icons"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
@@ -20,7 +20,7 @@ export const Formatter: FC = () => {
   const formatMode = useSelector((state: RootState) => state.editor.formatMode)
   const m = useSelector((state:RootState) => mSelector(state))
   const access = useSelector((state: RootState) => state.editor.access)
-  const disabled = [AccessTypes.UNAUTHORIZED, AccessTypes.VIEW].includes(access)
+  const disabled = [AccessType.UNAUTHORIZED, AccessType.VIEW].includes(access)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <div className="dark:bg-zinc-800 bg-zinc-50 border-r-0 border-2 dark:border-neutral-700 fixed w-[240px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
@@ -102,11 +102,11 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.text &&
           <Select.Root
             disabled={disabled}
-            value={TextTypes[getTextFontSize(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setTextFontSize', payload: TextTypes[value as keyof typeof TextTypes]}))}>
+            value={TextType[getTextFontSize(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setTextFontSize', payload: TextType[value as keyof typeof TextType]}))}>
             <Select.Trigger />
             <Select.Content>
-              {getKeys(TextTypes).map((el, index) => (
+              {getKeys(TextType).map((el, index) => (
                 <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
               ))}
             </Select.Content>
@@ -115,11 +115,11 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.sBorder &&
           <Select.Root
             disabled={disabled}
-            value={WidthTypes[getSBorderWidth(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setSBorderWidth', payload: WidthTypes[value as keyof typeof WidthTypes]}))}>
+            value={WidthType[getSBorderWidth(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setSBorderWidth', payload: WidthType[value as keyof typeof WidthType]}))}>
             <Select.Trigger />
             <Select.Content>
-              {getKeys(WidthTypes).map((el, index) => (
+              {getKeys(WidthType).map((el, index) => (
                 <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
               ))}
             </Select.Content>
@@ -128,11 +128,11 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.fBorder &&
           <Select.Root
             disabled={disabled}
-            value={WidthTypes[getFBorderWidth(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setFBorderWidth', payload: WidthTypes[value as keyof typeof WidthTypes]}))}>
+            value={WidthType[getFBorderWidth(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setFBorderWidth', payload: WidthType[value as keyof typeof WidthType]}))}>
             <Select.Trigger />
             <Select.Content>
-              {getKeys(WidthTypes).map((el, index) => (
+              {getKeys(WidthType).map((el, index) => (
                 <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
               ))}
             </Select.Content>
@@ -141,11 +141,11 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.line &&
           <Select.Root
             disabled={disabled}
-            value={WidthTypes[getLineWidth(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setLineWidth', payload: WidthTypes[value as keyof typeof WidthTypes]}))}>
+            value={WidthType[getLineWidth(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setLineWidth', payload: WidthType[value as keyof typeof WidthType]}))}>
             <Select.Trigger />
             <Select.Content>
-              {getKeys(WidthTypes).map((el, index) => (
+              {getKeys(WidthType).map((el, index) => (
                 <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
               ))}
             </Select.Content>
@@ -154,11 +154,11 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.line &&
           <Select.Root
             disabled={disabled}
-            value={LineTypes[getLineType(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setLineType', payload: LineTypes[value as keyof typeof LineTypes]}))}>
+            value={LineType[getLineType(m)]}
+            onValueChange={(value) => dispatch(actions.mapAction({type: 'setLineType', payload: LineType[value as keyof typeof LineType]}))}>
             <Select.Trigger />
             <Select.Content>
-              {getKeys(LineTypes).map((el, index) => (
+              {getKeys(LineType).map((el, index) => (
                 <Select.Item key={index} value={el.toString()}>{el}</Select.Item>
               ))}
             </Select.Content>

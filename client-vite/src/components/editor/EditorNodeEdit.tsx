@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getCountXCO1, getX, getXAEO, isXR, isXS} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
-import {ControlTypes, DialogState} from "../../state/Enums"
+import {ControlType, DialogState} from "../../state/Enums"
 
 export const EditorNodeEdit = () => {
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
@@ -26,9 +26,9 @@ export const EditorNodeEdit = () => {
         {getXAEO(m).map(ti => ti.taskStatus).includes(0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setTaskModeOn', payload: null}))}>{'Task Mode On'}</DropdownMenu.Item>}
         {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setTaskModeOff', payload: null}))}>{'Task Mode Off'}</DropdownMenu.Item>}
         {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setTaskModeReset', payload: null}))}>{'Task Mode Reset'}</DropdownMenu.Item>}
-        {isXR(m) && getX(m).controlType !== ControlTypes.NONE && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}>{'Control Type None'}</DropdownMenu.Item>}
-        {isXR(m) && getX(m).controlType !== ControlTypes.INGESTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeIngestion', payload: null}))}>{'Control Type Ingestion'}</DropdownMenu.Item>}
-        {isXR(m) && getX(m).controlType !== ControlTypes.EXTRACTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeExtraction', payload: null}))}>{'Control Type Extraction'}</DropdownMenu.Item>}
+        {isXR(m) && getX(m).controlType !== ControlType.NONE && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeNone', payload: null}))}>{'Control Type None'}</DropdownMenu.Item>}
+        {isXR(m) && getX(m).controlType !== ControlType.INGESTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeIngestion', payload: null}))}>{'Control Type Ingestion'}</DropdownMenu.Item>}
+        {isXR(m) && getX(m).controlType !== ControlType.EXTRACTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setControlTypeExtraction', payload: null}))}>{'Control Type Extraction'}</DropdownMenu.Item>}
         <Dialog.Trigger>
           {isXS(m) && getX(m).contentType === 'equation' && getCountXCO1(m) === 0 && <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</DropdownMenu.Item>}
         </Dialog.Trigger>

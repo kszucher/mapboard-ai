@@ -1,9 +1,9 @@
-import {AlertDialogState, DialogState, FormatMode, LeftMouseTypes, PageState, Sides} from "./Enums"
+import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, PageState, Side} from "./Enums"
 import {M, T} from "./MapStateTypes"
 
 export interface EditorState {
   token: string
-  leftMouseMode: LeftMouseTypes
+  leftMouseMode: LeftMouseMode
   scrollOverride: boolean
   pageState: PageState
   dialogState: DialogState
@@ -32,6 +32,6 @@ export interface EditorState {
   connectionHelpersVisible: boolean
   connectionStart: {
     fromNodeId: string,
-    fromNodeSide: Sides
+    fromNodeSide: Side
   }
 }

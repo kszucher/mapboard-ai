@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getG} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
-import {PlaceTypes} from "../../state/Enums.ts"
+import {PlaceType} from "../../state/Enums.ts"
 import {EyeIcon} from "../assets/Icons"
 
 export const EditorMapViews = () => {
@@ -19,8 +19,8 @@ export const EditorMapViews = () => {
       <DropdownMenu.Content>
         {getG(m).density === 'small' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setDensityLarge', payload: null}))}>{'Set Density - Cozy'}</DropdownMenu.Item>}
         {getG(m).density === 'large' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setDensitySmall', payload: null}))}>{'Set Density - Compact'}</DropdownMenu.Item>}
-        {getG(m).placeType === PlaceTypes.EXPLODED && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setPlaceTypeIndented', payload: null}))}>{'Set PlaceType - Indented'}</DropdownMenu.Item>}
-        {getG(m).placeType === PlaceTypes.INDENTED && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setPlaceTypeExploded', payload: null}))}>{'Set PlaceType - Exploded'}</DropdownMenu.Item>}
+        {getG(m).placeType === PlaceType.EXPLODED && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setPlaceTypeIndented', payload: null}))}>{'Set PlaceType - Indented'}</DropdownMenu.Item>}
+        {getG(m).placeType === PlaceType.INDENTED && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'setPlaceTypeExploded', payload: null}))}>{'Set PlaceType - Exploded'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

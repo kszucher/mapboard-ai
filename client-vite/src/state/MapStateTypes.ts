@@ -1,4 +1,4 @@
-import {LineTypes, ControlTypes, Sides, PlaceTypes} from "./Enums"
+import {LineType, ControlType, Side, PlaceType} from "./Enums"
 
 export type PG = ['g']
 export type PL = ['l', number]
@@ -15,7 +15,7 @@ export interface GSaveAlways {
 
 export interface GSaveOptional {
   density: string
-  placeType: PlaceTypes
+  placeType: PlaceType
 }
 
 export interface GSaveNever {
@@ -28,9 +28,9 @@ export interface LSaveAlways {
   path: PL
   nodeId: string
   fromNodeId: string
-  fromNodeSide: Sides
+  fromNodeSide: Side
   toNodeId: string
-  toNodeSide: Sides
+  toNodeSide: Side
 }
 
 export interface LSaveOptional {
@@ -43,7 +43,7 @@ export interface LSaveNever {
 }
 
 export interface TSaveOptional {
-  controlType: ControlTypes // r
+  controlType: ControlType // r
   offsetW: number // r
   offsetH: number // r
   llmDataType: string // r
@@ -61,7 +61,7 @@ export interface TSaveOptional {
   selection: string // s
   lastSelectedChild: number // r || s || c
   lineWidth: number // s || c
-  lineType: LineTypes // s || c
+  lineType: LineType // s || c
   lineColor: string // s || c
   sBorderWidth: number // s
   fBorderWidth: number // s

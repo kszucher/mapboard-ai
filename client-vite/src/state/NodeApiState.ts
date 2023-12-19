@@ -1,4 +1,4 @@
-import {AccessTypes} from "./Enums"
+import {AccessType} from "./Enums"
 import {DefaultUseOpenWorkspaceQueryState} from "./NodeApiStateTypes"
 import {nodeApi} from "../apis/NodeApi"
 import {store} from "../reducers/EditorReducer"
@@ -6,7 +6,7 @@ import {store} from "../reducers/EditorReducer"
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   name: '',
   colorMode: 'dark',
-  access: AccessTypes.UNAUTHORIZED,
+  access: AccessType.UNAUTHORIZED,
   tabId: 0,
   mapId: '',
   frameId: '',

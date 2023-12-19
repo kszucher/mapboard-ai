@@ -1,5 +1,5 @@
 import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSO1, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXR, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, isCH, isCV, mT, mTR, sortNode, sortPath} from "../selectors/MapSelector"
-import {ControlTypes, PlaceTypes} from "../state/Enums"
+import {ControlType, PlaceType} from "../state/Enums"
 import {tSaveOptional} from "../state/MapState"
 import {M, PT, T} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
@@ -18,8 +18,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
 
     case 'setDensitySmall': getG(m).density = 'small'; break
     case 'setDensityLarge': getG(m).density = 'large'; break
-    case 'setPlaceTypeExploded': getG(m).placeType = PlaceTypes.EXPLODED; break
-    case 'setPlaceTypeIndented': getG(m).placeType = PlaceTypes.INDENTED; break
+    case 'setPlaceTypeExploded': getG(m).placeType = PlaceType.EXPLODED; break
+    case 'setPlaceTypeIndented': getG(m).placeType = PlaceType.INDENTED; break
 
     case 'selectT': selectT(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectXR': selectT(m, getXR(m), 's'); break
@@ -101,9 +101,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'setContentText': Object.assign(getX(m), {contentType: 'text', content: payload.content}); break
     case 'setContentEquation': Object.assign(getX(m), {contentType: 'equation', content: payload.content}); break
     case 'setContentMermaid': Object.assign(getX(m), {contentType: 'mermaid', content: payload.content}); break
-    case 'setControlTypeNone': Object.assign(getX(m), { controlType: ControlTypes.NONE }); break
-    case 'setControlTypeIngestion': Object.assign(getX(m), { controlType: ControlTypes.INGESTION }); break
-    case 'setControlTypeExtraction': Object.assign(getX(m), { controlType: ControlTypes.EXTRACTION }); break
+    case 'setControlTypeNone': Object.assign(getX(m), { controlType: ControlType.NONE }); break
+    case 'setControlTypeIngestion': Object.assign(getX(m), { controlType: ControlType.INGESTION }); break
+    case 'setControlTypeExtraction': Object.assign(getX(m), { controlType: ControlType.EXTRACTION }); break
     case 'offsetD': Object.assign(getX(m), { offsetH: getX(m).offsetH += 20 }); break
     case 'offsetU': Object.assign(getX(m), { offsetH: getX(m).offsetH -= 20 }); break
     case 'offsetR': Object.assign(getX(m), { offsetW: getX(m).offsetW += 20 }); break

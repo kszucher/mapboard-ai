@@ -1,10 +1,10 @@
-import {AccessTypes} from "./Enums"
+import {AccessType} from "./Enums"
 import {M} from "./MapStateTypes"
 
 export interface DefaultUseOpenWorkspaceQueryState {
   name: string
   colorMode: string
-  access: AccessTypes
+  access: AccessType
   tabId: number
   mapId: string
   frameId: string

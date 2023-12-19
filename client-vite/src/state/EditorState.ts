@@ -1,10 +1,10 @@
 import {RootState, store} from "../reducers/EditorReducer"
 import {EditorState} from "./EditorStateTypes"
-import {AlertDialogState, DialogState, FormatMode, LeftMouseTypes, PageState, Sides} from "./Enums"
+import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, PageState, Side} from "./Enums"
 
 export const editorState: EditorState = {
   token: '',
-  leftMouseMode: LeftMouseTypes.SELECT_BY_CLICK_OR_MOVE,
+  leftMouseMode: LeftMouseMode.SELECT_BY_CLICK_OR_MOVE,
   scrollOverride: false,
   pageState: PageState.AUTH,
   dialogState: DialogState.NONE,
@@ -33,7 +33,7 @@ export const editorState: EditorState = {
   connectionHelpersVisible: false,
   connectionStart: {
     fromNodeId: '',
-    fromNodeSide: Sides.R
+    fromNodeSide: Side.R
   }
 }
 

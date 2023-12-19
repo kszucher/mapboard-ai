@@ -5,7 +5,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mTR} from "../../selectors/MapSelector"
 import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
-import {ControlTypes, DialogState} from "../../state/Enums"
+import {ControlType, DialogState} from "../../state/Enums"
 import {T} from "../../state/MapStateTypes"
 import {PlayIcon, SettingsIcon, UploadIcon} from "../assets/Icons.tsx"
 
@@ -38,7 +38,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
     <g>
       {mTR(m).map((t: T) => (
         <g key={t.nodeId}>
-          {t.controlType === ControlTypes.INGESTION &&
+          {t.controlType === ControlType.INGESTION &&
             <g>
               <DecorationIcon x={t.nodeEndX - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
                 <UploadIcon/>
@@ -48,7 +48,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
               </DecorationIcon>
             </g>
           }
-          {t.controlType === ControlTypes.EXTRACTION &&
+          {t.controlType === ControlType.EXTRACTION &&
             <g>
               <DecorationIcon x={t.nodeEndX - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
                 <PlayIcon/>

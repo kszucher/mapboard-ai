@@ -2,7 +2,7 @@ import {Button, Dialog, Flex, Grid, Select, Text, TextField} from "@radix-ui/the
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes"
 import {useState} from "react"
 import {useCreateShareMutation} from "../../apis/NodeApi.ts"
-import {AccessTypes} from "../../state/Enums.ts"
+import {AccessType} from "../../state/Enums.ts"
 import {getMapId} from "../../state/NodeApiState.ts"
 import {Spinner} from "../assets/Spinner.tsx"
 
@@ -10,7 +10,7 @@ export const MapSharesShare = () => {
   const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()
   const errorMessage = (error as BaseQueryError<any>)?.data?.message
   const [shareEmail, setShareEmail] = useState('')
-  const [shareAccess, setShareAccess] = useState<AccessTypes>(AccessTypes.VIEW)
+  const [shareAccess, setShareAccess] = useState<AccessType>(AccessType.VIEW)
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Share This Map'}</Dialog.Title>
@@ -22,10 +22,10 @@ export const MapSharesShare = () => {
         <Select.Root
           disabled={isLoading || isSuccess}
           value={shareAccess}
-          onValueChange={(value) => {reset(); setShareAccess(value as AccessTypes)}}>
+          onValueChange={(value) => {reset(); setShareAccess(value as AccessType)}}>
           <Select.Trigger radius="large"/>
           <Select.Content>
-            {[AccessTypes.VIEW, AccessTypes.EDIT].map((el, index) => (
+            {[AccessType.VIEW, AccessType.EDIT].map((el, index) => (
               <Select.Item key={index} value={el}>{el}</Select.Item>
             ))}
           </Select.Content>

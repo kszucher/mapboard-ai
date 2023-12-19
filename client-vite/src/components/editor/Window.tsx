@@ -2,7 +2,7 @@ import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getX, getLastIndexR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, sortPath, isXAR} from "../../selectors/MapSelector"
 import {isUrl} from "../../utils/Utils"
-import {AccessTypes, DialogState, PageState} from "../../state/Enums"
+import {AccessType, DialogState, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
@@ -184,7 +184,7 @@ export const Window: FC = () => {
       }
     } else {
       if (pageState === PageState.WS && dialogState === DialogState.NONE) {
-        if (access === AccessTypes.EDIT) {
+        if (access === AccessType.EDIT) {
           console.log('ADDED')
           mapAreaListener = new AbortController()
           const {signal} = mapAreaListener
@@ -193,7 +193,7 @@ export const Window: FC = () => {
           window.addEventListener("wheel", wheel, {signal, passive: false})
           window.addEventListener("mouseup", mouseup, {signal})
           window.addEventListener("contextmenu", contextmenu, {signal})
-        } else if (access === AccessTypes.VIEW) {
+        } else if (access === AccessType.VIEW) {
           mapAreaListener = new AbortController()
           const {signal} = mapAreaListener
           window.addEventListener("wheel", wheel, {signal, passive: false})
