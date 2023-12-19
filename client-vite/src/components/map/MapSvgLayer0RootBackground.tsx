@@ -50,7 +50,8 @@ export const MapSvgLayer0RootBackground: FC = () => {
           onMouseDown={(e) => {
             e.stopPropagation()
             if (e.button === 0 && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-              dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
+              !e.ctrlKey && dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
+              e.ctrlKey && dispatch(actions.mapAction({type: 'selectTtoo', payload: {path: ti.path}}))
             }
           }}
         />
