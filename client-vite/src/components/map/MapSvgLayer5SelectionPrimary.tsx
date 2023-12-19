@@ -7,21 +7,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {pathCommonProps} from "./MapSvg"
-import {getPolygonC, getPolygonPath, getPolygonS} from "./MapSvgUtils"
-
-
-// const getSelectionMargin = (m: M, t: T) => (
-//   (
-//     isXC(m) ||
-//     isXACR(m) ||
-//     isXACC(m) ||
-//     (t.selection === 's' && (t.sBorderColor  || t.sFillColor)) ||
-//     (t.selection === 'f') ||
-//     t.taskStatus > 1 ||
-//     getCountTCO1(m, t)
-//   ) ? 4 : -2
-// )
-
+import {getPolygonC, getPolygonPath, getPolygonSelf, getPolygonFamily} from "./MapSvgUtils"
 
 export const MapSvgLayer5SelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -33,54 +19,17 @@ export const MapSvgLayer5SelectionPrimary: FC = () => {
   const C = getColors(colorMode)
   return (
     <g>
-      {
-        !selectionRectCoords.length &&
-        isXS(m) && (
-          (x.selection === 's' && (x.sBorderColor  || x.sFillColor)) ||
-          (x.selection === 'f') ||
-          x.taskStatus > 1 ||
-          getCountTCO1(m, x)
-        ) &&
-        <path
-          key={`${g.nodeId}_svg_selectionBorderPrimary`}
-          d={getPolygonPath(x, getPolygonS(m, x, x.selection), x.selection, 4)}
-          stroke={C.SELECTION_COLOR}
-          strokeWidth={1}
-          fill={'none'}
-          {...pathCommonProps}
-        >
-        </path>
+      {!selectionRectCoords.length && isXS(m) && x.selection === 's' && (x.sBorderColor || x.sFillColor || x.taskStatus > 1 || getCountTCO1(m, x)) &&
+        <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(x, getPolygonSelf(x), 's', 4)}/>
       }
-      {
-        !selectionRectCoords.length &&
-        isXS(m) &&
-        !(
-          (x.selection === 's' && (x.sBorderColor  || x.sFillColor)) ||
-          (x.selection === 'f') ||
-          x.taskStatus > 1 ||
-          getCountTCO1(m, x)
-        ) &&
-        <path
-          key={`${g.nodeId}_svg_selectionBorderPrimary`}
-          d={getPolygonPath(x, getPolygonS(m, x, x.selection), x.selection, -2)}
-          stroke={C.SELECTION_COLOR}
-          strokeWidth={1}
-          fill={'none'}
-          {...pathCommonProps}
-        >
-        </path>
+      {!selectionRectCoords.length && isXS(m) && x.selection === 's' && !((x.sBorderColor  || x.sFillColor) || x.taskStatus > 1 || getCountTCO1(m, x)) &&
+        <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(x, getPolygonSelf(x), 's', -2)}/>
       }
-      {
-        !selectionRectCoords.length && (isXC(m) || isXACR(m) || isXACC(m)) &&
-        <path
-          key={`${g.nodeId}_svg_selectionBorderPrimary`}
-          d={getPolygonPath(x, getPolygonC(m), x.selection, 4)}
-          stroke={C.SELECTION_COLOR}
-          strokeWidth={1}
-          fill={'none'}
-          {...pathCommonProps}
-        >
-        </path>
+      {!selectionRectCoords.length && isXS(m) && x.selection === 'f' &&
+        <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(x, getPolygonFamily(m, x), 'f', 4)}/>
+      }
+      {!selectionRectCoords.length && (isXC(m) || isXACR(m) || isXACC(m)) &&
+        <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(x, getPolygonC(m), 's', 4)}/>
       }
     </g>
   )

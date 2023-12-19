@@ -85,6 +85,32 @@ export const getLinePathBetweenRoots = (m: M, l: L) => {
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
 
+export const getPolygonSelf = (t: T): PolygonPoints => {
+  const R = 8
+  let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
+  ax = t.nodeStartX
+  bx = t.nodeEndX - R
+  cx = t.nodeEndX
+  ayu = byu = cyu = t.nodeStartY
+  ayd = byd = cyd = t.nodeEndY
+  return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
+}
+
+export const getPolygonFamily = (m: M, t: T): PolygonPoints => {
+  const g = getG(m)
+  let ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd
+  ax = t.nodeStartX
+  bx = t.nodeEndX + g.sLineDeltaXDefault
+  cx = t.nodeStartX + t.maxW
+  ayu = t.nodeStartY
+  ayd = t.nodeEndY
+  byu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+  byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+  cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+  cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+  return {ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd}
+}
+
 export const getPolygonS = (m: M, t: T, selection: string): PolygonPoints => {
   const R = 8
   const g = getG(m)
