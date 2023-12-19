@@ -1,4 +1,4 @@
-import {FC, Fragment,} from "react"
+import {FC} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {getColors} from "../assets/Colors"
@@ -19,7 +19,7 @@ export const MapSvgLayer4SelectionSecondary: FC = () => {
   return (
     <g>
       {mT(m).map((t: T) => (
-        <Fragment key={t.nodeId}>
+        <g key={t.nodeId}>
           {
             !selectionRectCoords.length && t.selected && t.selected !== getX(m).selected && !isXACR(m) && !isXACC(m) &&
             <path
@@ -31,7 +31,7 @@ export const MapSvgLayer4SelectionSecondary: FC = () => {
             >
             </path>
           }
-        </Fragment>
+        </g>
       ))}
     </g>
   )
