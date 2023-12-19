@@ -4,6 +4,15 @@ import {LineTypes, PlaceTypes, Sides} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
 
+export const pathCommonProps = {
+  vectorEffect: 'non-scaling-stroke',
+  style: {
+    transition: 'all 0.3s',
+    transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
+    transitionProperty: 'd, fill, stroke-width'
+  }
+}
+
 const getCoordsInLine = (a: any[], b: any[], dt: number) => {
   const [x0, y0] = a
   const [x1, y1] = b

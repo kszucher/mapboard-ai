@@ -4,8 +4,7 @@ import {getCountTCO1} from "../../selectors/MapSelector.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {T} from "../../state/MapStateTypes"
-import {pathCommonProps} from "./MapSvg"
-import {getPolygonPath} from "./MapSvgUtils"
+import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgLayer6SelectionPreview: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

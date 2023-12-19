@@ -1,9 +1,10 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {getG} from "../../selectors/MapSelector"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {getG} from "../../selectors/MapSelector"
 import {mSelector} from "../../state/EditorState"
 import {MapSvgLayer0RootBackground} from "./MapSvgLayer0RootBackground"
+import {MapSvgLayer10Connections} from "./MapSvgLayer10Connections"
 import {MapSvgLayer1NodeFamilyBackground} from "./MapSvgLayer1NodeFamilyBackground"
 import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
 import {MapSvgLayer3NodeAttributes} from "./MapSvgLayer3NodeAttributes"
@@ -13,16 +14,6 @@ import {MapSvgLayer6SelectionPreview} from "./MapSvgLayer6SelectionPreview"
 import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
 import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
 import {MapSvgLayer9DecorationIcons} from "./MapSvgLayer9DecorationIcons"
-import {MapSvgLayer10Connections} from "./MapSvgLayer10Connections"
-
-export const pathCommonProps = {
-  vectorEffect: 'non-scaling-stroke',
-  style: {
-    transition: 'all 0.3s',
-    transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-    transitionProperty: 'd, fill, stroke-width'
-  }
-}
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

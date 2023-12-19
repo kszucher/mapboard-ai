@@ -9,8 +9,7 @@ import {ControlTypes} from "../../state/Enums.ts"
 import {T} from "../../state/MapStateTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {adjust} from "../../utils/Utils.ts"
-import {pathCommonProps} from "./MapSvg.tsx"
-import {getLinearLinePath} from "./MapSvgUtils.ts"
+import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
 
 export const MapSvgLayer0RootBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

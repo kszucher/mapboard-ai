@@ -7,8 +7,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {T} from "../../state/MapStateTypes"
-import {pathCommonProps} from "./MapSvg"
-import {getPolygonPath} from "./MapSvgUtils"
+import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgLayer4SelectionSecondary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

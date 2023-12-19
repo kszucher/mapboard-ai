@@ -6,8 +6,7 @@ import {getCountTCO1, getG, getX, isXACC, isXACR, isXC, isXR, isXS} from "../../
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
-import {pathCommonProps} from "./MapSvg"
-import {getPolygonPath} from "./MapSvgUtils"
+import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgLayer5SelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

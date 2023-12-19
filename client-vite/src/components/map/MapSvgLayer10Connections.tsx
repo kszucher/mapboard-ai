@@ -6,8 +6,7 @@ import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {Sides} from "../../state/Enums"
 import {L, T} from "../../state/MapStateTypes"
-import {pathCommonProps} from "./MapSvg"
-import {getCoordsMidBezier, getBezierLinePath, getRootLinePath} from "./MapSvgUtils"
+import {getCoordsMidBezier, getBezierLinePath, getRootLinePath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgLayer10Connections: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

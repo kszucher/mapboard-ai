@@ -9,8 +9,7 @@ import {isRS, isRSC, isCS, isCSC, getTSI1, getTSI2, getCountTCO1, getCountTSO1, 
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {pathCommonProps} from "./MapSvg"
-import {getArcPath, getGridPath, getLinearLinePath, getNodeLinePath, getPolygonPath, getTaskRadius, getTaskStartPoint} from "./MapSvgUtils"
+import {getArcPath, getGridPath, getLinearLinePath, getNodeLinePath, getPolygonPath, getTaskRadius, getTaskStartPoint, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgLayer3NodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
