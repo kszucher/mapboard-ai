@@ -1,34 +1,47 @@
-import {DropdownMenu, IconButton} from "@radix-ui/themes"
+import {Flex, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {LeftMouseMode} from "../../state/Enums.ts"
-import {MouseIcon} from "../assets/Icons"
+import {ClickIcon, MoveIcon, SelectIcon, ZoomIcon} from "../assets/Icons"
 
 export const EditorMapControls = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
-        <IconButton variant="soft" color="gray">
-          <MouseIcon/>
+    <Flex gap="5">
+      <Flex gap="1">
+        <IconButton
+          variant="solid"
+          color={leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE ? "violet" : "gray"}
+          onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_CLICK_OR_MOVE))}
+        >
+          <ClickIcon/>
         </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        {leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE &&
-          <DropdownMenu.Item onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_CLICK_OR_MOVE))}>{'Left Mouse - Set Select By Click Or Move'}</DropdownMenu.Item>
-        }
-        {leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE &&
-          <DropdownMenu.Item onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_RECTANGLE))}>{'Left Mouse - Set Select By Rectangle'}</DropdownMenu.Item>
-        }
-        {!scrollOverride &&
-          <DropdownMenu.Item onClick={() => dispatch(actions.setScrollOverride())}>{'Mid Mouse - Set Zoom'}</DropdownMenu.Item>
-        }
-        {scrollOverride &&
-          <DropdownMenu.Item onClick={() => dispatch(actions.clearScrollOverride())}>{'Mid Mouse - Set Scroll'}</DropdownMenu.Item>
-        }
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+        <IconButton
+          variant="solid"
+          color={leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE ? "violet" : "gray"}
+          onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_RECTANGLE))}
+        >
+          <SelectIcon/>
+        </IconButton>
+      </Flex>
+      <Flex gap="1">
+        <IconButton
+          variant="solid"
+          color={!scrollOverride ? "violet" : "gray"}
+          onClick={() => dispatch(actions.clearScrollOverride())}
+        >
+          <MoveIcon/>
+        </IconButton>
+        <IconButton
+          variant="solid"
+          color={scrollOverride ? "violet" : "gray"}
+          onClick={() => dispatch(actions.setScrollOverride())}
+        >
+          <ZoomIcon/>
+        </IconButton>
+      </Flex>
+    </Flex>
   )
 }

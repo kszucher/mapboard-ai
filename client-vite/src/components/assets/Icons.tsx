@@ -1,12 +1,47 @@
+export const SelectIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-select-all" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path
+      d="M8 9a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H9a1 1 0 01-1-1zM12 20v.01M16 20v.01M8 20v.01M4 20v.01M4 16v.01M4 12v.01M4 8v.01M4 4v.01M8 4v.01M12 4v.01M16 4v.01M20 4v.01M20 8v.01M20 12v.01M20 16v.01M20 20v.01"></path>
+  </svg>
+)
+
+export const ClickIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-click" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M3 12h3M12 3v3M7.8 7.8L5.6 5.6M16.2 7.8l2.2-2.2M7.8 16.2l-2.2 2.2M12 12l9 3-4 2-2 4-3-9"></path>
+  </svg>
+)
+
+export const MoveIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-arrows-move" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path d="M18 9l3 3-3 3M15 12h6M6 9l-3 3 3 3M3 12h6M9 18l3 3 3-3M12 15v6M15 6l-3-3-3 3M12 3v6"></path>
+  </svg>
+)
+
+export const ZoomIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-zoom-filled" viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z"></path>
+    <path
+      fill="currentColor"
+      stroke="none"
+      d="M14 3.072a8 8 0 012.617 11.424l4.944 4.943a1.5 1.5 0 01-2.008 2.225l-.114-.103-4.943-4.944a8 8 0 01-12.49-6.332L2 10l.005-.285A8 8 0 0114 3.072z"
+    ></path>
+  </svg>
+)
+
 export const ChevronDownIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-chevron-down" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round"
+       strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-chevron-down" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
     <path d="M6 9l6 6 6-6"></path>
   </svg>
 )
 
 export const ChevronRightIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-chevron-right" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round"
+       strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-chevron-right" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
     <path d="M9 6l6 6-6 6"></path>
   </svg>
@@ -40,13 +75,6 @@ export const EyeIcon = () => (
     <path stroke="none" d="M0 0h24v24H0z"></path>
     <path d="M10 12a2 2 0 104 0 2 2 0 00-4 0"></path>
     <path d="M21 12c-2.4 4-5.4 6-9 6-3.6 0-6.6-2-9-6 2.4-4 5.4-6 9-6 3.6 0 6.6 2 9 6"></path>
-  </svg>
-)
-
-export const MouseIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-mouse" viewBox="0 0 24 24">
-    <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M6 7a4 4 0 014-4h4a4 4 0 014 4v10a4 4 0 01-4 4h-4a4 4 0 01-4-4zM12 7v4"></path>
   </svg>
 )
 

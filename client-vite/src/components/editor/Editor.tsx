@@ -13,11 +13,11 @@ import {RootExtraction} from "../dialog/RootExtraction.tsx"
 import {RootIngestion} from "../dialog/RootIngestion.tsx"
 import {EditorMapActions} from "./EditorMapActions.tsx"
 import {MapActionsRename} from "../dialog/MapActionsRename.tsx"
+import {EditorMapControls} from "./EditorMapControls.tsx"
 import {EditorMapShares} from "./EditorMapShares"
 import {MapSharesShare} from "../dialog/MapSharesShare.tsx"
 import {MapSharesSharedByMe} from "../dialog/MapSharesSharedByMe.tsx"
 import {MapSharesSharedWithMe} from "../dialog/MapSharesSharedWithMe.tsx"
-import {EditorMapControls} from "./EditorMapControls"
 import {EditorMapViews} from "./EditorMapViews"
 import {EditorNodeEdit} from "./EditorNodeEdit"
 import {NodeEditContentEquation} from "../dialog/NodeEditContentEquation.tsx"
@@ -76,9 +76,14 @@ export const Editor: FC = () => {
         <Dialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setDialogState(DialogState.NONE))}>
           <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setAlertDialogState(AlertDialogState.NONE))}>
             <Map/>
-            <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
-              <div className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
+            <div
+              className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
+              <div
+                className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
+              </div>
+              <div className="fixed w-[68px] left-[240px] top-[4px] flex flex-row">
+                <EditorMapControls/>
               </div>
               <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
@@ -90,19 +95,28 @@ export const Editor: FC = () => {
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content>
                       {tabMapIdList.map((el: string, index) => (
-                        <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}>
+                        <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                          mapId: el,
+                          frameId: ''
+                        }))}>
                           {tabMapNameList[index]?.name}
                         </DropdownMenu.Item>
                       ))}
                     </DropdownMenu.Content>
                   </DropdownMenu.Root>
-                  <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>
+                  <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                    mapId: breadcrumbMapIdList[0],
+                    frameId: ''
+                  }))}>
                     {breadcrumbMapNameList[0].name}
                   </Button>
                   {breadcrumbMapNameList.slice(1).map((el, index) => (
                     <Fragment key={index}>
                       <ChevronRightIcon/>
-                      <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
+                      <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                        mapId: breadcrumbMapIdList[index + 1],
+                        frameId: ''
+                      }))}>
                         {el.name}
                       </Button>
                     </Fragment>
@@ -117,14 +131,20 @@ export const Editor: FC = () => {
                         variant="soft"
                         color="gray"
                         disabled={frameIdPosition === 0 || isFetching}
-                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: prevFrameId}))}>
+                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                          mapId: getMapId(),
+                          frameId: prevFrameId
+                        }))}>
                         <CircleChevronLeftIcon/>
                       </IconButton>
                       <IconButton
                         variant="soft"
                         color="gray"
                         disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
-                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: nextFrameId}))}>
+                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                          mapId: getMapId(),
+                          frameId: nextFrameId
+                        }))}>
                         <CircleChevronRightIcon/>
                       </IconButton>
                     </>
@@ -134,7 +154,6 @@ export const Editor: FC = () => {
               </div>
               <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
-                  <EditorMapControls/>
                   <EditorMapViews/>
                   <EditorMapShares/>
                 </Flex>
@@ -149,10 +168,18 @@ export const Editor: FC = () => {
               </div>
               <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
                 <Flex gap="1">
-                  <IconButton variant="solid" color="gray" disabled={undoDisabled} onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
+                  <IconButton
+                    variant="solid"
+                    color="gray"
+                    disabled={undoDisabled}
+                    onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
                     <UndoIcon/>
                   </IconButton>
-                  <IconButton variant="solid" color="gray" disabled={redoDisabled} onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
+                  <IconButton
+                    variant="solid"
+                    color="gray"
+                    disabled={redoDisabled}
+                    onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
                     <RedoIcon/>
                   </IconButton>
                 </Flex>
