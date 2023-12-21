@@ -13,15 +13,16 @@ export const ClickIcon = () => (
   </svg>
 )
 
-export const MoveIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-arrows-move" viewBox="0 0 24 24">
+export const UpDownIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-arrows-up-down" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
-    <path d="M18 9l3 3-3 3M15 12h6M6 9l-3 3 3 3M3 12h6M9 18l3 3 3-3M12 15v6M15 6l-3-3-3 3M12 3v6"></path>
+    <path d="M7 3v18M10 6L7 3 4 6M20 18l-3 3-3-3M17 21V3"></path>
   </svg>
 )
 
 export const ZoomIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-zoom-filled" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeLinecap="round"
+       strokeLinejoin="round" strokeWidth="2" className="icon icon-tabler icon-tabler-zoom-filled" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"></path>
     <path
       fill="currentColor"

@@ -53,6 +53,9 @@ export const MapSvgLayer0RootBackground: FC = () => {
               !e.ctrlKey && dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
               e.ctrlKey && dispatch(actions.mapAction({type: 'selectTtoo', payload: {path: ti.path}}))
             }
+            if (e.button === 1) {
+              e.preventDefault()
+            }
           }}
         />
       ))}

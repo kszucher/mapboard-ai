@@ -2,7 +2,7 @@ import {Flex, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {LeftMouseMode} from "../../state/Enums.ts"
-import {ClickIcon, MoveIcon, SelectIcon, ZoomIcon} from "../assets/Icons"
+import {ClickIcon, UpDownIcon, SelectIcon, ZoomIcon} from "../assets/Icons"
 
 export const EditorMapControls = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
@@ -32,7 +32,7 @@ export const EditorMapControls = () => {
           color={!scrollOverride ? "violet" : "gray"}
           onClick={() => dispatch(actions.clearScrollOverride())}
         >
-          <MoveIcon/>
+          <UpDownIcon/>
         </IconButton>
         <IconButton
           variant="solid"
