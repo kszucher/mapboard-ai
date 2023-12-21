@@ -38,6 +38,7 @@ export const MapSvgLayer0RootBackground: FC = () => {
       }
       {mTR(m).map((ti: T) => (
         <rect
+          {...{className: ti.selected ? "hover:cursor-default" : "hover:cursor-default"}}
           key={`${ti.nodeId}_svg_root_background`}
           x={ti.nodeStartX}
           y={ti.nodeStartY}
@@ -46,14 +47,17 @@ export const MapSvgLayer0RootBackground: FC = () => {
           rx={16}
           ry={16}
           fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
-          style={{transition: '0.3s ease-out'}}
+          style={{
+            transition: '0.3s ease-out',
+            pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE ? 'none' : 'auto'
+        }}
           onMouseDown={(e) => {
             e.stopPropagation()
-            if (e.button === 0 && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+            if (e.buttons === 1 && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
               !e.ctrlKey && dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
               e.ctrlKey && dispatch(actions.mapAction({type: 'selectTtoo', payload: {path: ti.path}}))
             }
-            if (e.button === 1) {
+            if (e.buttons === 4) {
               e.preventDefault()
             }
           }}

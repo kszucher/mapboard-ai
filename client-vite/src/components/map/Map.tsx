@@ -55,6 +55,7 @@ export const Map: FC = () => {
 
   return (
     <div
+      {...{className: leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE ? "hover:cursor-crosshair" : ""}}
       style={{
         overflow: 'auto',
         display: 'grid',
@@ -64,19 +65,21 @@ export const Map: FC = () => {
       ref={mainMapDiv}
       id={'mainMapDiv'}
       onMouseDown={(e) => {
-        if (e.button === 1) {
+        if (e.button === 1 && e.buttons === 4) {
           e.preventDefault()
         }
-        dispatch(actions.mapAction({type: 'saveFromCoordinates', payload: {e}}))
+        if (e.button  === 0 && e.buttons === 1) {
+          dispatch(actions.mapAction({type: 'saveFromCoordinates', payload: {e}}))
+        }
         let didMove = false
         const abortController = new AbortController()
         const { signal } = abortController
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
           didMove = true
-          if (e.button === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
+          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
             dispatch(actions.mapAction({type: 'selectByRectanglePreview', payload: {e}}))
-          } else if (e.button === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+          } else if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
             setScrollTop(document.documentElement.scrollTop - e.movementY)
           }
@@ -84,8 +87,9 @@ export const Map: FC = () => {
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
+          if (didMove && e.button === 0 && e.buttons === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
             dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e}}))
+            dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_CLICK_OR_MOVE))
           }
         }, { signal })
       }}

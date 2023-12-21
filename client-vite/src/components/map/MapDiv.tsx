@@ -95,7 +95,7 @@ export const MapDiv: FC = () => {
           onMouseDown={(e) => {
             e.stopPropagation()
             let didMove = false
-            if (e.button === 0) {
+            if (e.buttons === 1) {
               if (ti.linkType === 'internal') {
                 dispatch(nodeApi.endpoints.selectMap.initiate({mapId: ti.link, frameId: ''}))
               } else if (ti.linkType === 'external') {
@@ -121,9 +121,9 @@ export const MapDiv: FC = () => {
                   }
                 }, { signal })
               }
-            } else if (e.button === 1) {
+            } else if (e.buttons === 4) {
               e.preventDefault()
-            } else if (e.button === 2) {
+            } else if (e.buttons === 2) {
               if ((isR(ti.path) || isS(ti.path)) && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
                 dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
               }
