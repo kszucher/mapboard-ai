@@ -89,7 +89,6 @@ export const Map: FC = () => {
           abortController.abort()
           if (didMove && e.button === 0 && e.buttons === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
             dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e}}))
-            dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_CLICK_OR_MOVE))
           }
         }, { signal })
       }}
