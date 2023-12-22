@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import { mTR, isExistingLink, mL} from "../../selectors/MapSelector"
+import { mTR, isExistingLink, mL} from "../../selectors/MapQueries.ts"
 import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {Side} from "../../state/Enums"

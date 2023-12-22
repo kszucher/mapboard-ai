@@ -1,7 +1,7 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {getG} from "../../selectors/MapSelector"
+import {getG} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {PlaceType} from "../../state/Enums.ts"
 import {EyeIcon} from "../assets/Icons"

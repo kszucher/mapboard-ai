@@ -1,10 +1,10 @@
-import {sortNode} from "../selectors/MapSelector"
+import {sortNode} from "../selectors/MapQueries.ts"
 import {M, MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
 import {mapReducerAtomic} from "./MapReducer"
 
-describe("Delete_tests", () => {
+describe("MapDeleteTests", () => {
   test('deleteLR', () => {
     const test = [
       {nodeId: 'ga', path: ['g']},

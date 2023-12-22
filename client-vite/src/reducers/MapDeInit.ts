@@ -1,7 +1,7 @@
 import isEqual from "react-fast-compare"
 import {M, GSaveNever, GSaveOptional, TSaveNever, TSaveOptional, LSaveOptional, LSaveNever} from "../state/MapStateTypes"
 import {gSaveAlways, gSaveOptional, lSaveAlways, lSaveOptional, tSaveAlways, tSaveOptional} from "../state/MapState"
-import {mG, mL, mT, sortPath} from "../selectors/MapSelector"
+import {mG, mL, mT, sortPath} from "../selectors/MapQueries.ts"
 
 export const mapDeInit = (m: M) => {
   const mlRemoved = structuredClone(m).sort(sortPath)

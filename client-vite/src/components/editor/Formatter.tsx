@@ -3,7 +3,7 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
-import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXR, isXS} from "../../selectors/MapSelector"
+import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXR, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {AccessType, FormatMode, LineType, TextType, WidthType} from "../../state/Enums"
 import {FBorderIcon, FFillIcon, LetterTIcon, SFillIcon, SBorderIcon, VectorSplineIcon} from "../assets/Icons"

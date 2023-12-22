@@ -1,11 +1,11 @@
-import {sortNode} from "../selectors/MapSelector"
+import {sortNode} from "../selectors/MapQueries.ts"
 import {setIsTesting} from "../utils/Utils"
 import {M, MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
 import {mapReducerAtomic} from "./MapReducer"
 
-describe("InsertTests", () => {
+describe("MapInsertTests", () => {
   beforeEach(() => setIsTesting() as any)
   test('insertSD', () => {
     const test = [

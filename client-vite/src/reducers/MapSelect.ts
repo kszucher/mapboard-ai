@@ -1,5 +1,5 @@
 import {M, T} from "../state/MapStateTypes"
-import {getTSI1, getX, isR, mT} from "../selectors/MapSelector"
+import {getTSI1, getX, isR, mT} from "../selectors/MapQueries.ts"
 
 export const unselectNodes = (m: M) => mT(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
 

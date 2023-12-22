@@ -1,4 +1,4 @@
-import {isCED, isCER, isSEODO, mT} from "../selectors/MapSelector"
+import {isCED, isCER, isSEODO, mT} from "../selectors/MapQueries.ts"
 import {M, PT} from "../state/MapStateTypes"
 
 export const makeSpaceFromS = (m: M, ip: PT, length: number) => mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + length))

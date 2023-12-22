@@ -1,7 +1,7 @@
 import {Button, DropdownMenu} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {getCountXASD, getCountXASU, getCountXSO1, isXASVN, isXS} from "../../selectors/MapSelector"
+import {getCountXASD, getCountXASU, getCountXSO1, isXASVN, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 
 export const EditorNodeMove = () => {

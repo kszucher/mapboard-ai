@@ -1,7 +1,7 @@
 import {Button, Dialog, DropdownMenu} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {getCountXCO1, getX, isXS} from "../../selectors/MapSelector"
+import {getCountXCO1, getX, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {DialogState} from "../../state/Enums"
 

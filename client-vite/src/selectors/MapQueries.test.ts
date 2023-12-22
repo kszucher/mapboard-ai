@@ -1,9 +1,9 @@
 import {mapDeInit} from "../reducers/MapDeInit"
 import {mapInit} from "../reducers/MapInit"
 import {M} from "../state/MapStateTypes"
-import {lToCb, rToCb, sortNode} from "./MapSelector"
+import {lToCb, rToCb, sortNode} from "./MapQueries.ts"
 
-describe("Selector_tests", () => {
+describe("MapQueriesTests", () => {
   test('lToCb', () => expect(mapDeInit(lToCb(mapInit([
       {nodeId: 'ga', path: ['g']},
       {nodeId: 'la', path: ['l', 0], fromNodeId: 'ta', toNodeId: 'tb'},

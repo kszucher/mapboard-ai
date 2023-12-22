@@ -1,4 +1,4 @@
-import {getG, getNodeById, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../selectors/MapSelector"
+import {getG, getNodeById, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../selectors/MapQueries.ts"
 import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, PlaceType, Side} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"

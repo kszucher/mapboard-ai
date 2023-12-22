@@ -1,11 +1,11 @@
-import {sortNode} from "../selectors/MapSelector"
+import {sortNode} from "../selectors/MapQueries.ts"
 import {setIsTesting} from "../utils/Utils"
 import {M, MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
 import {mapReducerAtomic} from "./MapReducer"
 
-describe("Move_tests", () => {
+describe("MapMoveTests", () => {
   beforeEach(() => setIsTesting() as any)
   test('duplicateR', () => {
     const test = [

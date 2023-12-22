@@ -5,7 +5,7 @@ import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {getCountTCO1, getG, getNodeById, getX, isR, isS, isXR, isXS, mTS} from "../../selectors/MapSelector"
+import {getCountTCO1, getG, getNodeById, getX, isR, isS, isXR, isXS, mTS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode} from "../../state/Enums.ts";
 import {T} from "../../state/MapStateTypes"

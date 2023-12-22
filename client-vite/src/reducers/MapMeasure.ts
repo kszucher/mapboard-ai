@@ -1,5 +1,5 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getCountTCO1, getCountTSO1, getG, getNodeById, hasTask, isC, isR, isS, mT, mTR} from "../selectors/MapSelector"
+import {getCountTCO1, getCountTSO1, getG, getNodeById, hasTask, isC, isR, isS, mT, mTR} from "../selectors/MapQueries.ts"
 import {MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {PlaceType} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"

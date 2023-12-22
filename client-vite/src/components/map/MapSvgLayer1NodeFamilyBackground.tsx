@@ -1,6 +1,6 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {mT} from "../../selectors/MapSelector"
+import {mT} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {T} from "../../state/MapStateTypes"

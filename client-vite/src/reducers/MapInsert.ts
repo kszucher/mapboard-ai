@@ -1,7 +1,7 @@
 import {tSaveOptional} from "../state/MapState"
 import {N, LPartial, M, T, PT} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG} from "../selectors/MapSelector"
+import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG} from "../selectors/MapQueries.ts"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
 

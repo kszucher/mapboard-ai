@@ -4,7 +4,7 @@ import {M, MPartial} from "../state/MapStateTypes"
 import {getSubProcessList} from "./MapProcess"
 import {ReadableTree, SubProcess} from "./MapProcessTypes.ts"
 
-describe("Process_tests", () => {
+describe("MapProcessTests", () => {
   test('getSubProcessList', () =>
     //      [ta]
     //         \

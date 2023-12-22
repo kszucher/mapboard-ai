@@ -1,5 +1,5 @@
 import {M} from "../state/MapStateTypes"
-import {getCountTCO1, isS, mT} from "./MapSelector"
+import {getCountTCO1, isS, mT} from "./MapQueries.ts"
 
 export const rectanglesIntersect = (input: number[]) => {
   const [minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy] = input
