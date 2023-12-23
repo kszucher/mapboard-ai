@@ -8,3 +8,4 @@ export const NODE_MARGIN_X_LARGE = 16
 export const NODE_MARGIN_X_SMALL = 18
 export const NODE_MARGIN_Y_LARGE = 8
 export const NODE_MARGIN_Y_SMALL = 4
+export const INDENT = 40
