@@ -128,15 +128,28 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
     }
     case 'sFamily': {
       const g = getG(m)
-      ax = t.nodeStartX
-      bx = t.nodeEndX + g.sLineDeltaXDefault
-      cx = t.nodeStartX + t.maxW
-      ayu = t.nodeStartY
-      ayd = t.nodeEndY
-      byu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
-      byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
-      cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
-      cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+      if (g.placeType === PlaceType.EXPLODED) {
+        const g = getG(m)
+        ax = t.nodeStartX
+        bx = t.nodeEndX + g.sLineDeltaXDefault
+        cx = t.nodeStartX + t.maxW
+        ayu = t.nodeStartY
+        ayd = t.nodeEndY
+        byu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+        byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+        cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+        cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+      } else if (g.placeType === PlaceType.INDENTED) {
+        ax = t.nodeStartX
+        bx = t.nodeEndX
+        cx = t.nodeStartX + t.maxW
+        ayu = t.nodeStartY
+        ayd = t.nodeEndY
+        byu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+        byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+        cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
+        cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+      }
       break
     }
     case 'c': {
