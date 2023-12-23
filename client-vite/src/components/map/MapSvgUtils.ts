@@ -1,5 +1,5 @@
 import {getG, getNodeById, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../selectors/MapQueries.ts"
-import {TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
+import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, PlaceType, Side} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
@@ -46,34 +46,48 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
 export const getNodeLinePath = (m: M, na: T, nb: T) => {
   const g = getG(m)
   const { lineType } = nb
-  let sx = 0, sy = 0, ex = 0, ey = 0, dx = 0, dy = 0
+  let sx = 0, sy = 0, ex = 0, ey = 0
   if (g.placeType === PlaceType.EXPLODED) {
     sx = na.nodeEndX
     sy = na.nodeStartY + na.selfH / 2
     ex = nb.nodeStartX
     ey = nb.nodeStartY + nb.selfH / 2
-    dx = nb.nodeStartX - na.nodeEndX
-    dy = nb.nodeStartY + nb.selfH / 2 - na.nodeStartY - na.selfH / 2
   } else if (g.placeType === PlaceType.INDENTED) {
-    // sx =
-    // sy =
-    // ex =
-    // ey =
-    // dx =
-    // dy =
+    sx = na.nodeStartX + INDENT / 2
+    sy = na.nodeEndY
+    ex = nb.nodeStartX
+    ey = nb.nodeStartY + nb.selfH / 2
   }
+  const dx = ex - sx
+  const dy = ey - sy
   let path
   if (lineType === LineType.bezier) {
-    const c1x = (sx + dx / 4)
-    const c1y = (sy)
-    const c2x = (sx + dx / 4)
-    const c2y = (sy + dy)
+    let c1x = 0, c1y = 0, c2x = 0, c2y = 0
+    if (g.placeType === PlaceType.EXPLODED) {
+      c1x = sx + dx / 4
+      c1y = sy
+      c2x = sx + dx / 4
+      c2y = sy + dy
+    } else if (g.placeType === PlaceType.INDENTED) {
+      c1x = sx
+      c1y = ey
+      c2x = sx
+      c2y = ey
+    }
     path = getBezierLinePath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
   } else if (lineType === LineType.edge) {
-    const m1x = (sx + dx / 2)
-    const m1y = (sy)
-    const m2x = (sx + dx / 2)
-    const m2y = (sy + dy)
+    let m1x = 0, m1y = 0, m2x = 0, m2y = 0
+    if (g.placeType === PlaceType.EXPLODED) {
+      m1x = sx + dx / 2
+      m1y = sy
+      m2x = sx + dx / 2
+      m2y = sy + dy
+    } else if (g.placeType === PlaceType.INDENTED) {
+      m1x = sx
+      m1y = ey
+      m2x = sx
+      m2y = ey
+    }
     path = getEdgeLinePath('M', [sx, sy, m1x, m1y, m2x, m2y, ex, ey])
   }
   return path
