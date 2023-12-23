@@ -31,7 +31,7 @@ export const mapMeasure = (pm: M, m: M) => {
           ti.maxW = ti.selfW + ti.familyW
           ti.maxH = Math.max(...[ti.selfH, ti.familyH])
         } else if (g.placeType === PlaceType.INDENTED) {
-          ti.maxW = ti.selfW + ti.familyW
+          ti.maxW = Math.max(...[ti.selfW, ti.familyW])
           ti.maxH = ti.selfH + ti.familyH
         }
         break
