@@ -141,14 +141,14 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
         cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
       } else if (g.placeType === PlaceType.INDENTED) {
         ax = t.nodeStartX
-        bx = t.nodeEndX
+        bx = t.nodeStartX + INDENT
         cx = t.nodeStartX + t.maxW
         ayu = t.nodeStartY
-        ayd = t.nodeEndY
-        byu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
-        byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
-        cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
-        cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
+        ayd = t.nodeStartY + t.maxH
+        byu = t.nodeStartY
+        byd = t.nodeStartY + t.maxH
+        cyu = t.nodeStartY
+        cyd = t.nodeStartY + t.maxH
       }
       break
     }
