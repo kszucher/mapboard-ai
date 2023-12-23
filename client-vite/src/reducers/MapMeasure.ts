@@ -1,6 +1,6 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {getCountTCO1, getCountTSO1, getG, getNodeById, hasTask, isC, isR, isS, mT, mTR} from "../selectors/MapQueries.ts"
-import {MARGIN_X, MARGIN_Y} from "../state/Consts"
+import {INDENT, MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {PlaceType} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"
 import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
@@ -14,8 +14,13 @@ export const mapMeasure = (pm: M, m: M) => {
         if (getCountTSO1(m, ti)) {
           measureFamily(m, ti)
         }
-        ti.selfW = ti.familyW + 2 * MARGIN_X
-        ti.selfH = ti.familyH + 2 * MARGIN_Y
+        if (g.placeType === PlaceType.EXPLODED) {
+          ti.selfW = ti.familyW  + 2 * MARGIN_X
+          ti.selfH = ti.familyH + 2 * MARGIN_Y
+        } else if (g.placeType === PlaceType.INDENTED) {
+          ti.selfW = ti.familyW - INDENT + 2 * MARGIN_X
+          ti.selfH = ti.familyH + 2 * MARGIN_Y
+        }
         break
       }
       case isS(ti.path): {
