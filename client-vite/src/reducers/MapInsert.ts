@@ -25,8 +25,9 @@ export const insertR = (m: M) => {
 export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, attributes: object) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PT
   makeSpaceFromS(m, ip, 1)
+  const parentTaskStatus = getX(m).taskStatus
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip, taskStatus: getX(m).taskStatus, ...attributes} as N)
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip, taskStatus: parentTaskStatus, ...attributes} as N)
   m.sort(sortPath)
 }
 
