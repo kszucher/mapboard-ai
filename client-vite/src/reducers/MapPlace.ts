@@ -18,18 +18,18 @@ export const mapPlace = (m: M) => {
         const g = getG(m)
         const si1 = getTSI1(m, ti)
         const i = ti.path.at(-1)
-        const sumUpperSiblingMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
-        const sumElapsedY = sumUpperSiblingMaxH + i * si1.spacing * + Boolean(getCountTSO2(m, si1) || getCountTCO2(m, si1))
+        const sumMaxH = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
+        const sumSpacing = i * si1.spacing * + Boolean(getCountTSO2(m, si1) || getCountTCO2(m, si1))
         if (g.placeType === PlaceType.EXPLODED) {
           if (isRS(ti.path)) {
             ti.nodeStartX = MARGIN_X + si1.nodeStartX
-            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumMaxH + sumSpacing
           } else if (isSS(ti.path)) {
             ti.nodeStartX = si1.nodeEndX + g.sLineDeltaXDefault
-            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumMaxH + sumSpacing
           } else if (isCS(ti.path)) {
             ti.nodeStartX = si1.nodeStartX + 2
-            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumElapsedY
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + sumMaxH + sumSpacing
           }
         } else if (g.placeType === PlaceType.INDENTED) {
           if (isRS(ti.path)) {
@@ -37,10 +37,10 @@ export const mapPlace = (m: M) => {
             ti.nodeStartY = si1.nodeStartY + MARGIN_Y
           } else if (isSS(ti.path)) {
             ti.nodeStartX = si1.nodeStartX + INDENT
-            ti.nodeStartY = si1.nodeEndY + sumElapsedY
+            ti.nodeStartY = si1.nodeEndY + sumMaxH + sumSpacing
           } else if (isCS(ti.path)) {
             ti.nodeStartX = si1.nodeStartX + 2
-            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2  + sumElapsedY
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2  + sumMaxH + sumSpacing
           }
         }
         ti.nodeEndX = ti.nodeStartX + ti.selfW
