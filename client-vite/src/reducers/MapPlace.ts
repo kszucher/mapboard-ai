@@ -71,7 +71,7 @@ export const mapPlace = (m: M) => {
             ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
             ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
           } else if (isSSC(ti.path)) {
-            ti.nodeStartX = si2.nodeEndX + g.sLineDeltaXDefault - INDENT + 2 + si1.sumMaxColWidth[j]
+            ti.nodeStartX = si2.nodeStartX + INDENT + 2 + si1.sumMaxColWidth[j]
             ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
           } else if (isCSC(ti.path)) {
             ti.nodeStartX = si2.nodeStartX + 2
