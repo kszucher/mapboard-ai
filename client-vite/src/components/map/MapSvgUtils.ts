@@ -1,4 +1,4 @@
-import {getG, getNodeById, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../selectors/MapQueries.ts"
+import {getCountTSCH, getCountTSCV, getG, getNodeById, getNodeByPath, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../selectors/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, PlaceType, Side} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
@@ -220,19 +220,23 @@ export const getArcPath = (t: T, margin: number, closed: boolean) => {
   )
 }
 
-export const getGridPath = (t: T) => {
+export const getGridPath = (m: M, t: T) => {
+  const countSCR = getCountTSCV(m, t)
+  const countSCC = getCountTSCH(m, t)
   const xi = t.nodeStartX
   const yu = t.nodeStartY
   const yd = t.nodeEndY
   let path = ''
-  for (let i = 1; i < t.sumMaxRowHeight.length - 1; i++) {
+  for (let i = 1; i < countSCR; i++) {
+    const ti = getNodeByPath(m, [...t.path, 'c', i, 0])
     const x1 = adjust(t.nodeStartX)
     const x2 = adjust(t.nodeEndX)
-    const y = adjust(yu + t.sumMaxRowHeight[i])
+    const y = adjust(yu + ti.calcOffsetY)
     path += `M${x1},${y} L${x2},${y}`
   }
-  for (let j = 1; j < t.sumMaxColWidth.length - 1; j++) {
-    const x = adjust(xi + t.sumMaxColWidth[j])
+  for (let j = 1; j < countSCC; j++) {
+    const ti = getNodeByPath(m, [...t.path, 'c', 0, j])
+    const x = adjust(xi + ti.calcOffsetX)
     path += `M${x},${yu} L${x},${yd}`
   }
   return path

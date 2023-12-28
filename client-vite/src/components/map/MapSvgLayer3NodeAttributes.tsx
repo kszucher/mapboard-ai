@@ -80,7 +80,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           }
           {getCountTCO1(m, ti) > 0 &&
             <path
-              d={getGridPath(ti)}
+              d={getGridPath(m, ti)}
               stroke={C.TABLE_GRID}
               strokeWidth={1}
               fill={'none'}
