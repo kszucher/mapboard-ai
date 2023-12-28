@@ -87,6 +87,8 @@ export interface TSaveNever {
   maxRowHeight: number[]
   sumMaxColWidth: number[]
   sumMaxRowHeight: number[]
+  calcOffsetX: number
+  calcOffsetY: number
   spacing: number
   // mapPlace
   nodeStartX: number

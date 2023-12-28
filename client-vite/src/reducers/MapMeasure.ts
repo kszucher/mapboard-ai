@@ -84,6 +84,9 @@ export const mapMeasure = (pm: M, m: M) => {
               cn.selfH = ti.maxRowHeight[i]
               cn.maxW = ti.selfW
               cn.maxH = ti.selfH
+              // trick here for now, forward settings
+              cn.calcOffsetX = ti.sumMaxColWidth[j] //+ ti.maxColWidth[j]
+              cn.calcOffsetY = ti.sumMaxRowHeight[i] //+ ti.maxRowHeight[i]
             }
           }
         } else {

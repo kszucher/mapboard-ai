@@ -85,6 +85,8 @@ export const tSaveNever = {
   maxRowHeight: [],
   sumMaxColWidth: [0],
   sumMaxRowHeight: [0],
+  calcOffsetX: 0,
+  calcOffsetY: 0,
   spacing: 10,
   // mapPlace
   nodeStartX: 0,

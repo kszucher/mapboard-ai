@@ -55,26 +55,26 @@ export const mapPlace = (m: M) => {
         if (isRSC(ti.path)) {
           if (g.placeType === PlaceType.EXPLODED) {
             ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
-            ti.nodeStartY = si1.nodeStartY - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2
+            ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           } else if (g.placeType === PlaceType.INDENTED) {
             ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
-            ti.nodeStartY = si1.nodeStartY - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2
+            ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           }
         } else if (isSSC(ti.path)) {
           if (g.placeType === PlaceType.EXPLODED) {
             ti.nodeStartX = si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]
-            ti.nodeStartY = si1.nodeStartY - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2
+            ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           } else if (g.placeType === PlaceType.INDENTED) {
             ti.nodeStartX = si2.nodeStartX + INDENT + 2 + si1.sumMaxColWidth[j]
-            ti.nodeStartY = si1.nodeStartY - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2
+            ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           }
         } else if (isCSC(ti.path)) {
           if (g.placeType === PlaceType.EXPLODED) {
             ti.nodeStartX = si2.nodeStartX + 2
-            ti.nodeStartY = si1.nodeStartY - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2
+            ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           } else if (g.placeType === PlaceType.INDENTED) {
             ti.nodeStartX = si2.nodeStartX + 2
-            ti.nodeStartY = si1.nodeStartY - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2
+            ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           }
         }
         break
