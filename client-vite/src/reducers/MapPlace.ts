@@ -1,6 +1,6 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils.ts"
 import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, hasTask, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../selectors/MapQueries.ts"
-import {INDENT, MARGIN_X, MARGIN_Y} from "../state/Consts.ts"
+import {INDENT, MARGIN_X} from "../state/Consts.ts"
 import {PlaceType} from "../state/Enums.ts"
 import {M, T} from "../state/MapStateTypes"
 
@@ -34,7 +34,7 @@ export const mapPlace = (m: M) => {
         } else if (g.placeType === PlaceType.INDENTED) {
           if (isRS(ti.path)) {
             ti.nodeStartX = MARGIN_X + si1.nodeStartX
-            ti.nodeStartY = si1.nodeStartY + MARGIN_Y
+            ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2  + sumMaxH + sumSpacing
           } else if (isSS(ti.path)) {
             ti.nodeStartX = si1.nodeStartX + INDENT
             ti.nodeStartY = si1.nodeEndY + sumMaxH + sumSpacing
