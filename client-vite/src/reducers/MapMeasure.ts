@@ -33,8 +33,12 @@ export const mapMeasure = (pm: M, m: M) => {
         if (getCountTCO1(m, ti)) {
           const countSCR = getCountTSCV(m, ti)
           const countSCC = getCountTSCH(m, ti)
-          let maxCellHeightMat = createArray(countSCR, countSCC)
-          let maxCellWidthMat = createArray(countSCR, countSCC)
+          const maxCellHeightMat = createArray(countSCR, countSCC)
+          const maxCellWidthMat = createArray(countSCR, countSCC)
+          const maxRowHeight = []
+          const maxColWidth = []
+          const sumMaxRowHeight = [0]
+          const sumMaxColWidth = [0]
           let isCellSpacingActivated = 0
           for (let i = 0; i < countSCR; i++) {
             for (let j = 0; j < countSCC; j++) {
@@ -54,39 +58,38 @@ export const mapMeasure = (pm: M, m: M) => {
             }
           }
           for (let i = 0; i < countSCR; i++) {
-            let maxRowHeight = 0
+            let currMaxRowHeight = 0
             for (let j = 0; j < countSCC; j++) {
               let cellHeight = maxCellHeightMat[i][j]
-              if (cellHeight >= maxRowHeight) {
-                maxRowHeight = cellHeight
+              if (cellHeight >= currMaxRowHeight) {
+                currMaxRowHeight = cellHeight
               }
             }
-            ti.maxRowHeight.push(maxRowHeight)
-            ti.sumMaxRowHeight.push(maxRowHeight + ti.sumMaxRowHeight.slice(-1)[0])
-            ti.selfH += maxRowHeight
+            maxRowHeight.push(currMaxRowHeight)
+            sumMaxRowHeight.push(currMaxRowHeight + sumMaxRowHeight.slice(-1)[0])
+            ti.selfH += currMaxRowHeight
           }
           for (let j = 0; j < countSCC; j++) {
-            let maxColWidth = 0
+            let currMaxColWidth = 0
             for (let i = 0; i < countSCR; i++) {
               let cellWidth = maxCellWidthMat[i][j]
-              if (cellWidth >= maxColWidth) {
-                maxColWidth = cellWidth
+              if (cellWidth >= currMaxColWidth) {
+                currMaxColWidth = cellWidth
               }
             }
-            ti.maxColWidth.push(maxColWidth)
-            ti.sumMaxColWidth.push(maxColWidth + ti.sumMaxColWidth.slice(-1)[0])
-            ti.selfW += maxColWidth
+            maxColWidth.push(currMaxColWidth)
+            sumMaxColWidth.push(currMaxColWidth + sumMaxColWidth.slice(-1)[0])
+            ti.selfW += currMaxColWidth
           }
           for (let j = 0; j < countSCC; j++) {
             for (let i = 0; i < countSCR; i++) {
               const cn = getNodeByPath(m, [...ti.path, 'c', i, j]) as T
-              cn.selfW = ti.maxColWidth[j]
-              cn.selfH = ti.maxRowHeight[i]
+              cn.selfW = maxColWidth[j]
+              cn.selfH = maxRowHeight[i]
               cn.maxW = ti.selfW
               cn.maxH = ti.selfH
-              // trick here for now, forward settings
-              cn.calcOffsetX = ti.sumMaxColWidth[j] //+ ti.maxColWidth[j]
-              cn.calcOffsetY = ti.sumMaxRowHeight[i] //+ ti.maxRowHeight[i]
+              cn.calcOffsetX = sumMaxColWidth[j]
+              cn.calcOffsetY = sumMaxRowHeight[i]
             }
           }
         } else {

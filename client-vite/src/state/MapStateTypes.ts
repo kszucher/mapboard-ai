@@ -83,10 +83,6 @@ export interface TSaveNever {
   familyH: number
   maxW: number
   maxH: number
-  maxColWidth: number[]
-  maxRowHeight: number[]
-  sumMaxColWidth: number[]
-  sumMaxRowHeight: number[]
   calcOffsetX: number
   calcOffsetY: number
   spacing: number
