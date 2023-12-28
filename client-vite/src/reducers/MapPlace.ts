@@ -78,13 +78,5 @@ export const mapPlace = (m: M) => {
     }
     ti.nodeEndX = ti.nodeStartX + ti.selfW
     ti.nodeEndY = ti.nodeStartY + ti.selfH
-    if (Number.isInteger(ti.nodeStartX)) {
-      ti.nodeStartX += 0.5
-      ti.nodeEndX += 0.5
-    }
-    if (Number.isInteger(ti.nodeStartY)) {
-      ti.nodeStartY += 0.5
-      ti.nodeEndY += 0.5
-    }
   })
 }
