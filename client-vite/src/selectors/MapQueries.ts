@@ -84,6 +84,7 @@ export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual
 
 export const getTSI1 = (m: M, t: T): T => m.find(ti => isSI1(t.path, ti.path as PT))! as T
 export const getTSI2 = (m: M, t: T): T => m.find(ti => isSI2(t.path, ti.path as PT))! as T
+export const getTSO1 = (m: M, t: T): T[] => m.filter(ti => isSO1(t.path, ti.path as PT))! as T[]
 export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)
 
 export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T

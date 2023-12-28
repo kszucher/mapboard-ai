@@ -1,5 +1,5 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, getNodeByPath, hasTask, isG, isR, isS, isC, mGT, mTR} from "../selectors/MapQueries.ts"
+import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, getNodeByPath, hasTask, isG, isR, isS, isC, mGT, mTR, getTSO1} from "../selectors/MapQueries.ts"
 import {INDENT, MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {PlaceType} from "../state/Enums.ts"
 import {M, T} from "../state/MapStateTypes"
@@ -22,13 +22,7 @@ export const mapMeasure = (pm: M, m: M) => {
       case isR(ti.path): {
         if (getCountTSO1(m, ti)) {
           const countSS = getCountTSO1(m, ti)
-          ti.familyW = 0
-          for (let i = 0; i < countSS; i++) {
-            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
-            if (cn.maxW >= ti.familyW) {
-              ti.familyW = cn.maxW
-            }
-          }
+          ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW))
           for (let i = 0; i < countSS; i++) {
             const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
             ti.familyH += cn.maxH
@@ -52,13 +46,7 @@ export const mapMeasure = (pm: M, m: M) => {
         if (getCountTSO1(m, ti)) {
           const g = getG(m)
           const countSS = getCountTSO1(m, ti)
-          ti.familyW = 0
-          for (let i = 0; i < countSS; i++) {
-            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
-            if (cn.maxW >= ti.familyW) {
-              ti.familyW = cn.maxW
-            }
-          }
+          ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW))
           if ( PlaceType.EXPLODED) {
             ti.familyW += g.sLineDeltaXDefault
           } else if (g.placeType === PlaceType.INDENTED) {
@@ -85,13 +73,7 @@ export const mapMeasure = (pm: M, m: M) => {
         if (getCountTSO1(m, ti)) {
           const g = getG(m)
           const countSS = getCountTSO1(m, ti)
-          ti.familyW = 0
-          for (let i = 0; i < countSS; i++) {
-            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
-            if (cn.maxW >= ti.familyW) {
-              ti.familyW = cn.maxW
-            }
-          }
+          ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW))
           if ( PlaceType.EXPLODED) {
             ti.familyW += g.sLineDeltaXDefault
           } else if (g.placeType === PlaceType.INDENTED) {
