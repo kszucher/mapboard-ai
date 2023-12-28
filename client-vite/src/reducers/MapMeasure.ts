@@ -8,17 +8,17 @@ import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
 export const mapMeasure = (pm: M, m: M) => {
   const g = getG(m)
   mT(m).slice().reverse().forEach(ti => {
-    const pt = getNodeById(pm, ti.nodeId)
+    const pti = getNodeById(pm, ti.nodeId)
     switch (true) {
       case isR(ti.path): {
         if (getCountTSO1(m, ti)) {
           measureFamily(m, ti)
         }
         if (g.placeType === PlaceType.EXPLODED) {
-          ti.selfW = ti.familyW  + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
+          ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
           ti.selfH = ti.familyH + 2 * MARGIN_Y
         } else if (g.placeType === PlaceType.INDENTED) {
-          ti.selfW = ti.familyW - INDENT + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
+          ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti) - INDENT
           ti.selfH = ti.familyH + 2 * MARGIN_Y
         }
         break
@@ -27,7 +27,7 @@ export const mapMeasure = (pm: M, m: M) => {
         if (getCountTCO1(m, ti)) {
           measureTable(m, ti)
         } else {
-          measureText(m, pt, ti)
+          measureText(m, pti, ti)
         }
         if (getCountTSO1(m, ti)) {
           measureFamily(m, ti)
