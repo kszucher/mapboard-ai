@@ -19,6 +19,7 @@ export const editorSlice = createSlice({
   reducers: {
     setToken(state, action: PayloadAction<string>) { state.token = action.payload },
     resetState() {return JSON.parse(editorStateDefault)},
+    setIsLoading(state, action: PayloadAction<boolean>) { state.isLoading = action.payload},
     setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) { state. leftMouseMode = action.payload},
     setScrollOverride(state) { state.scrollOverride = true },
     clearScrollOverride(state) { state.scrollOverride = false },
@@ -170,6 +171,7 @@ export const editorSlice = createSlice({
         state.mapList = mapDataList.map((el: M) => mapReducer(filterEmpty(el), 'LOAD', {}))
         state.mapListIndex = 0
         state.editedNodeId = ''
+        state.isLoading = false
       }
     )
     builder.addMatcher(

@@ -4,6 +4,7 @@ import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, PageState, Sid
 
 export const editorState: EditorState = {
   token: '',
+  isLoading: false,
   leftMouseMode: LeftMouseMode.SELECT_BY_CLICK_OR_MOVE,
   scrollOverride: false,
   pageState: PageState.AUTH,

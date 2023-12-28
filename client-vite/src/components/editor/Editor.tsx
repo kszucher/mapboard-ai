@@ -37,6 +37,7 @@ import {EditorUserSettings} from "./EditorUserSettings"
 import {EditorUserAccount} from "./EditorUserAccount"
 
 export const Editor: FC = () => {
+  const isLoading = useSelector((state: RootState) => state.editor.isLoading)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
@@ -55,6 +56,7 @@ export const Editor: FC = () => {
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
   const dispatch = useDispatch<AppDispatch>()
+
   useEffect(()=> {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
@@ -209,11 +211,20 @@ export const Editor: FC = () => {
         </Dialog.Root>
 
       }
-      {isFetching &&
-        <div className="fixed top-0 left-0 w-screen h-screen bg-zinc-900 opacity-50 flex items-center justify-center z-50">
-          <Spinner/>
-        </div>
-      }
+      <div
+        style={ isLoading ? {
+          opacity: 0.5,
+          transition: 'opacity 0.3s ease-out',
+          pointerEvents: 'auto'
+        } : {
+          opacity: 0,
+          transition: 'opacity 0.3s ease-in',
+          pointerEvents: 'none'
+        }}
+        className="fixed top-0 left-0 w-screen h-screen bg-zinc-900  flex items-center justify-center z-50"
+      >
+        <Spinner/>
+      </div>
     </Theme>
   )
 }
