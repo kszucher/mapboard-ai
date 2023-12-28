@@ -1,7 +1,7 @@
 import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../selectors/MapQueries.ts"
 import {INDENT, MARGIN_X} from "../state/Consts.ts"
 import {PlaceType} from "../state/Enums.ts"
-import {M, T} from "../state/MapStateTypes"
+import {M} from "../state/MapStateTypes"
 
 export const mapPlace = (m: M) => {
   mT(m).forEach(ti => {
@@ -50,8 +50,6 @@ export const mapPlace = (m: M) => {
         const g = getG(m)
         const si1 = getTSI1(m, ti)
         const si2 = getTSI2(m, ti)
-        const i = ti.path.at(-2)
-        const j = ti.path.at(-1)
         if (isRSC(ti.path)) {
           if (g.placeType === PlaceType.EXPLODED) {
             ti.nodeStartX = MARGIN_X + si2.nodeStartX + ti.calcOffsetX
