@@ -1,5 +1,4 @@
-import {getTaskWidth} from "../components/map/MapSvgUtils.ts"
-import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, hasTask, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../selectors/MapQueries.ts"
+import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../selectors/MapQueries.ts"
 import {INDENT, MARGIN_X} from "../state/Consts.ts"
 import {PlaceType} from "../state/Enums.ts"
 import {M, T} from "../state/MapStateTypes"
@@ -10,8 +9,6 @@ export const mapPlace = (m: M) => {
       case isR(ti.path): {
         ti.nodeStartX = ti.offsetW
         ti.nodeStartY = ti.offsetH
-        ti.nodeEndX = ti.offsetW + ti.selfW + getTaskWidth(getG(m)) * hasTask(m, ti)
-        ti.nodeEndY = ti.offsetH + ti.selfH
         break
       }
       case isS(ti.path): {
@@ -43,8 +40,6 @@ export const mapPlace = (m: M) => {
             ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2  + sumMaxH + sumSpacing
           }
         }
-        ti.nodeEndX = ti.nodeStartX + ti.selfW
-        ti.nodeEndY = ti.nodeStartY + ti.selfH
         ti.isTop = i === 0 && si1.isTop ? 1 : 0
         ti.isBottom = i === getCountTSO1(m, si1) - 1 && si1.isBottom === 1 ? 1 : 0
         break
@@ -78,11 +73,11 @@ export const mapPlace = (m: M) => {
             ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - ti.selfH / 2 + si1.sumMaxRowHeight[i] + si1.maxRowHeight[i] / 2 - si1.selfH / 2
           }
         }
-        ti.nodeEndX = ti.nodeStartX + ti.selfW
-        ti.nodeEndY = ti.nodeStartY + ti.selfH
         break
       }
     }
+    ti.nodeEndX = ti.nodeStartX + ti.selfW
+    ti.nodeEndY = ti.nodeStartY + ti.selfH
     if (Number.isInteger(ti.nodeStartX)) {
       ti.nodeStartX += 0.5
       ti.nodeEndX += 0.5
