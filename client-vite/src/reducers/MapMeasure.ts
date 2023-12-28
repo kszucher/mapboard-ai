@@ -1,8 +1,8 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, getNodeByPath, hasTask, isG, isR, isS, isC, mGT, mTR, getTSO1} from "../selectors/MapQueries.ts"
+import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, hasTask, isG, isR, isS, isC, mGT, mTR, getTSO1} from "../selectors/MapQueries.ts"
 import {INDENT, MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {PlaceType} from "../state/Enums.ts"
-import {M, T} from "../state/MapStateTypes"
+import {M} from "../state/MapStateTypes"
 import {measureTable, measureText} from "./MapMeasureUtils"
 
 export const mapMeasure = (pm: M, m: M) => {
@@ -35,49 +35,28 @@ export const mapMeasure = (pm: M, m: M) => {
         } else {
           measureText(m, pti, ti)
         }
-        if (getCountTSO1(m, ti)) {
-          const g = getG(m)
-          const countTSO1 = getCountTSO1(m, ti)
-          ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW))
-          if ( PlaceType.EXPLODED) {
-            ti.familyW += g.sLineDeltaXDefault
-          } else if (g.placeType === PlaceType.INDENTED) {
-            ti.familyW += INDENT
-          }
-          for (let i = 0; i < countTSO1; i++) {
-            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
-            ti.familyH += cn.maxH
-          }
-          if (getCountTSO2(m, ti) || getCountTCO2(m, ti)) {
-            ti.familyH += (countTSO1 - 1) * ti.spacing
-          }
-        }
+        const countTSO1 = getCountTSO1(m, ti)
         if (g.placeType === PlaceType.EXPLODED) {
+          ti.familyW = countTSO1 && Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + g.sLineDeltaXDefault
+          ti.familyH = countTSO1 && getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ((getCountTSO2(m, ti) || getCountTCO2(m, ti)) ? (countTSO1 - 1) * ti.spacing : 0)
           ti.maxW = ti.selfW + ti.familyW
           ti.maxH = Math.max(...[ti.selfH, ti.familyH])
         } else if (g.placeType === PlaceType.INDENTED) {
+          ti.familyW = countTSO1 && Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + INDENT
+          ti.familyH = countTSO1 && getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ((getCountTSO2(m, ti) || getCountTCO2(m, ti)) ? (countTSO1 - 1) * ti.spacing : 0)
           ti.maxW = Math.max(...[ti.selfW, ti.familyW])
           ti.maxH = ti.selfH + ti.familyH
         }
         break
       }
       case isC(ti.path): {
-        if (getCountTSO1(m, ti)) {
-          const g = getG(m)
-          const countTSO1 = getCountTSO1(m, ti)
-          ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW))
-          if ( PlaceType.EXPLODED) {
-            ti.familyW += g.sLineDeltaXDefault
-          } else if (g.placeType === PlaceType.INDENTED) {
-            ti.familyW += INDENT
-          }
-          for (let i = 0; i < countTSO1; i++) {
-            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
-            ti.familyH += cn.maxH
-          }
-          if (getCountTSO2(m, ti) || getCountTCO2(m, ti)) {
-            ti.familyH += (countTSO1 - 1) * ti.spacing
-          }
+        const countTSO1 = getCountTSO1(m, ti)
+        if (g.placeType === PlaceType.EXPLODED) {
+          ti.familyW = countTSO1 && Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + g.sLineDeltaXDefault
+          ti.familyH = countTSO1 && getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ((getCountTSO2(m, ti) || getCountTCO2(m, ti)) ? (countTSO1 - 1) * ti.spacing : 0)
+        } else if (g.placeType === PlaceType.INDENTED) {
+          ti.familyW = countTSO1 && Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + INDENT
+          ti.familyH = countTSO1 && getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ((getCountTSO2(m, ti) || getCountTCO2(m, ti)) ? (countTSO1 - 1) * ti.spacing : 0)
         }
         ti.maxW = ti.familyW || 60
         ti.maxH = ti.familyH || 30
