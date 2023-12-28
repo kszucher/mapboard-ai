@@ -82,6 +82,8 @@ export const mapMeasure = (pm: M, m: M) => {
               const cn = getNodeByPath(m, [...ti.path, 'c', i, j]) as T
               cn.selfW = ti.maxColWidth[j]
               cn.selfH = ti.maxRowHeight[i]
+              cn.maxW = ti.selfW
+              cn.maxH = ti.selfH
             }
           }
         } else {
