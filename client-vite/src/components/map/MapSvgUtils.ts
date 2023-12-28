@@ -99,17 +99,17 @@ export const getRootLinePath = (m: M, l: L) => {
   const toNode = getNodeById(m, toNodeId)
   let sx = 0, sy = 0, c1x = 0, c1y = 0
   switch (fromNodeSide) {
-    case Side.R: sx = fromNode.nodeEndX; sy = fromNode.nodeStartY + fromNode.selfH / 2; c1x = sx + 100; c1y = sy; break
-    case Side.L: sx = fromNode.nodeStartX; sy = fromNode.nodeStartY + fromNode.selfH / 2; c1x = sx - 100; c1y = sy; break
-    case Side.T: sx = fromNode.nodeStartX + fromNode.selfW / 2; sy = fromNode.nodeStartY; c1x = sx; c1y = sy - 100; break
-    case Side.B: sx = fromNode.nodeStartX + fromNode.selfW / 2; sy = fromNode.nodeEndY; c1x = sx; c1y = sy + 100; break
+    case Side.R: sx = fromNode.nodeEndX; sy = fromNode.nodeStartY + fromNode.maxH / 2; c1x = sx + 100; c1y = sy; break
+    case Side.L: sx = fromNode.nodeStartX; sy = fromNode.nodeStartY + fromNode.maxH / 2; c1x = sx - 100; c1y = sy; break
+    case Side.T: sx = fromNode.nodeStartX + fromNode.maxW / 2; sy = fromNode.nodeStartY; c1x = sx; c1y = sy - 100; break
+    case Side.B: sx = fromNode.nodeStartX + fromNode.maxW / 2; sy = fromNode.nodeEndY; c1x = sx; c1y = sy + 100; break
   }
   let ex = 0, ey = 0, c2x = 0, c2y = 0
   switch (toNodeSide) {
-    case Side.R: ex = toNode.nodeEndX; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex + 100; c2y = ey; break
-    case Side.L: ex = toNode.nodeStartX; ey = toNode.nodeStartY + toNode.selfH / 2; c2x = ex - 100; c2y = ey; break
-    case Side.T: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeStartY; c2x = ex; c2y = ey - 100; break
-    case Side.B: ex = toNode.nodeStartX + toNode.selfW / 2; ey = toNode.nodeEndY; c2x = ex; c2y = ey + 100;  break
+    case Side.R: ex = toNode.nodeEndX; ey = toNode.nodeStartY + toNode.maxH / 2; c2x = ex + 100; c2y = ey; break
+    case Side.L: ex = toNode.nodeStartX; ey = toNode.nodeStartY + toNode.maxH / 2; c2x = ex - 100; c2y = ey; break
+    case Side.T: ex = toNode.nodeStartX + toNode.maxW / 2; ey = toNode.nodeStartY; c2x = ex; c2y = ey - 100; break
+    case Side.B: ex = toNode.nodeStartX + toNode.maxW / 2; ey = toNode.nodeEndY; c2x = ex; c2y = ey + 100;  break
   }
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }

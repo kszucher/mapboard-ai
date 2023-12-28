@@ -60,10 +60,10 @@ export const MapSvgLayer10Connections: FC = () => {
           <g key={`${t.nodeId}_root_connector`}>
             {
               [
-                {side: 'L', x: t.nodeStartX, y: t.nodeStartY + t.selfH / 2 - 12},
-                {side: 'R', x: t.nodeEndX - 24, y: t.nodeStartY + t.selfH / 2 - 12},
-                {side: 'T', x: t.nodeStartX + t.selfW / 2 - 12, y: t.nodeStartY},
-                {side: 'B', x: t.nodeStartX + t.selfW / 2 - 12, y: t.nodeEndY - 24}
+                {side: 'L', x: t.nodeStartX, y: t.nodeStartY + t.maxH / 2 - 12},
+                {side: 'R', x: t.nodeEndX - 24, y: t.nodeStartY + t.maxH / 2 - 12},
+                {side: 'T', x: t.nodeStartX + t.maxW / 2 - 12, y: t.nodeStartY},
+                {side: 'B', x: t.nodeStartX + t.maxW / 2 - 12, y: t.nodeEndY - 24}
               ].map(el => (
                   <rect
                     key={`${t.nodeId}_plus_${el.side}`}
