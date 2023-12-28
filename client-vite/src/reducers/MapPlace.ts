@@ -48,24 +48,24 @@ export const mapPlace = (m: M) => {
       }
       case isC(ti.path): {
         const g = getG(m)
-        const si1 = getTSI1(m, ti) as T
-        const si2 = getTSI2(m, ti) as T
+        const si1 = getTSI1(m, ti)
+        const si2 = getTSI2(m, ti)
         const i = ti.path.at(-2)
         const j = ti.path.at(-1)
         if (isRSC(ti.path)) {
           if (g.placeType === PlaceType.EXPLODED) {
-            ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
+            ti.nodeStartX = MARGIN_X + si2.nodeStartX + ti.calcOffsetX
             ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           } else if (g.placeType === PlaceType.INDENTED) {
-            ti.nodeStartX = MARGIN_X + si2.nodeStartX + si1.sumMaxColWidth[j]
+            ti.nodeStartX = MARGIN_X + si2.nodeStartX + ti.calcOffsetX
             ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           }
         } else if (isSSC(ti.path)) {
           if (g.placeType === PlaceType.EXPLODED) {
-            ti.nodeStartX = si2.nodeEndX + g.sLineDeltaXDefault + si1.sumMaxColWidth[j]
+            ti.nodeStartX = si2.nodeEndX + g.sLineDeltaXDefault + ti.calcOffsetX
             ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           } else if (g.placeType === PlaceType.INDENTED) {
-            ti.nodeStartX = si2.nodeStartX + INDENT + 2 + si1.sumMaxColWidth[j]
+            ti.nodeStartX = si2.nodeStartX + INDENT + 2 + ti.calcOffsetX
             ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
           }
         } else if (isCSC(ti.path)) {
