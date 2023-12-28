@@ -26,8 +26,8 @@ export const MapSvgLayer0RootBackground: FC = () => {
           key={`${g.nodeId}_svg_map_background`}
           x={0}
           y={0}
-          width={g.mapWidth}
-          height={g.mapHeight}
+          width={g.maxW}
+          height={g.maxH}
           rx={0}
           ry={0}
           fill={'none'}

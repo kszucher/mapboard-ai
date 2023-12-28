@@ -19,8 +19,8 @@ export interface GSaveOptional {
 }
 
 export interface GSaveNever {
-  mapWidth: number
-  mapHeight: number
+  maxW: number
+  maxH: number
   sLineDeltaXDefault: number
 }
 
@@ -81,12 +81,12 @@ export interface TSaveNever {
   selfH: number
   familyW: number
   familyH: number
+  maxW: number
+  maxH: number
   maxColWidth: number[]
   maxRowHeight: number[]
   sumMaxColWidth: number[]
   sumMaxRowHeight: number[]
-  maxW: number
-  maxH: number
   spacing: number
   // mapPlace
   nodeStartX: number

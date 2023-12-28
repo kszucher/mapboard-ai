@@ -1,7 +1,6 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils"
-import {getCountTCO2, getCountTSCH, getCountTSCV, getCountTSO1, getCountTSO2, getG, getNodeByPath, isR} from "../selectors/MapQueries.ts"
-import {INDENT, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL} from "../state/Consts"
-import {PlaceType} from "../state/Enums.ts";
+import {getCountTSCH, getCountTSCV, getG, getNodeByPath} from "../selectors/MapQueries.ts"
+import {MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL} from "../state/Consts"
 import {M, T} from "../state/MapStateTypes"
 import {createArray} from "../utils/Utils"
 
@@ -94,30 +93,5 @@ export const measureTable = (m: M, t: T) => {
       cn.selfW = t.maxColWidth[j]
       cn.selfH = t.maxRowHeight[i]
     }
-  }
-}
-
-export const measureFamily = (m: M, t: T) => {
-  const g = getG(m)
-  const countSS = getCountTSO1(m, t)
-  t.familyW = 0
-  for (let i = 0; i < countSS; i++) {
-    const cn = getNodeByPath(m, [...t.path, 's', i]) as T
-    if (cn.maxW >= t.familyW) {
-      t.familyW = cn.maxW
-    }
-  }
-  if (!isR(t.path) && g.placeType === PlaceType.EXPLODED) {
-    t.familyW += g.sLineDeltaXDefault
-  }
-  if (g.placeType === PlaceType.INDENTED) {
-    t.familyW += INDENT
-  }
-  for (let i = 0; i < countSS; i++) {
-    const cn = getNodeByPath(m, [...t.path, 's', i]) as T
-    t.familyH += cn.maxH
-  }
-  if (getCountTSO2(m, t) || getCountTCO2(m, t)) {
-    t.familyH += (countSS - 1) * t.spacing
   }
 }

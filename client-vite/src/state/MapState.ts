@@ -12,8 +12,8 @@ export const gSaveOptional = {
 } as GSaveOptional
 
 export const gSaveNever = {
-  mapWidth: 0,
-  mapHeight: 0,
+  maxW: 0,
+  maxH: 0,
   sLineDeltaXDefault: 0,
 } as GSaveNever
 
@@ -79,12 +79,12 @@ export const tSaveNever = {
   selfH: 0,
   familyW: 0,
   familyH: 0,
+  maxW: 0,
+  maxH: 0,
   maxColWidth: [],
   maxRowHeight: [],
   sumMaxColWidth: [0],
   sumMaxRowHeight: [0],
-  maxW: 0,
-  maxH: 0,
   spacing: 10,
   // mapPlace
   nodeStartX: 0,

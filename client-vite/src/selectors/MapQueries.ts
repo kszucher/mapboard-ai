@@ -21,7 +21,7 @@ export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected) as T[]
 export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) || -1
 export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) || 0
 
-const isG = (p: P): boolean => p.at(0) === 'g'
+export const isG = (p: P): boolean => p.at(0) === 'g'
 const isL = (p: P): boolean => p.at(0) === 'l'
 const isT = (p: P): boolean => p.at(0) === 'r' || p.at(0) === 's' || p.at(0) === 'c'
 
@@ -38,6 +38,7 @@ export const isCSC = (p: PT): boolean => getPathPattern(p).endsWith('csc')
 export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
 export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]
 export const mT = (m: M): T[] => m.filter(n => isT(n.path)) as T[]
+export const mGT = (m: M): T[] => m.filter(n => isG(n.path) || isT(n.path)) as T[]
 export const mTR = (m: M): T[] => m.filter(n => isT(n.path) && isR(n.path as PT)) as T[]
 export const mTS = (m: M): T[] => m.filter(n => isT(n.path) && isS(n.path as PT)) as T[]
 export const mTC = (m: M): T[] => m.filter(n => isT(n.path) && isC(n.path as PT)) as T[]

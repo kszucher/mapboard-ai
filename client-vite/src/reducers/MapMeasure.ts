@@ -1,26 +1,46 @@
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getCountTCO1, getCountTSO1, getG, getNodeById, hasTask, isC, isR, isS, mT, mTR} from "../selectors/MapQueries.ts"
+import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, getNodeByPath, hasTask, isG, isR, isS, isC, mGT, mTR} from "../selectors/MapQueries.ts"
 import {INDENT, MARGIN_X, MARGIN_Y} from "../state/Consts"
 import {PlaceType} from "../state/Enums.ts"
-import {M} from "../state/MapStateTypes"
-import {measureFamily, measureTable, measureText} from "./MapMeasureUtils"
+import {M, T} from "../state/MapStateTypes"
+import {measureTable, measureText} from "./MapMeasureUtils"
 
 export const mapMeasure = (pm: M, m: M) => {
   const g = getG(m)
-  mT(m).slice().reverse().forEach(ti => {
+  const minOffsetW = Math.min(...mTR(m).map(ri => ri.offsetW))
+  const minOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
+  mTR(m).map(el => el.offsetW -= minOffsetW)
+  mTR(m).map(el => el.offsetH -= minOffsetH)
+  mGT(m).slice().reverse().forEach(ti => {
     const pti = getNodeById(pm, ti.nodeId)
     switch (true) {
+      case isG(ti.path): {
+        ti.maxW = Math.max(...mTR(m).map(ri => ri.offsetW + ri.maxW))
+        ti.maxH = Math.max(...mTR(m).map(ri => ri.offsetH + ri.maxH))
+        break
+      }
       case isR(ti.path): {
         if (getCountTSO1(m, ti)) {
-          measureFamily(m, ti)
+          const countSS = getCountTSO1(m, ti)
+          ti.familyW = 0
+          for (let i = 0; i < countSS; i++) {
+            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
+            if (cn.maxW >= ti.familyW) {
+              ti.familyW = cn.maxW
+            }
+          }
+          for (let i = 0; i < countSS; i++) {
+            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
+            ti.familyH += cn.maxH
+          }
+          if (getCountTSO2(m, ti) || getCountTCO2(m, ti)) {
+            ti.familyH += (countSS - 1) * ti.spacing
+          }
         }
-        if (g.placeType === PlaceType.EXPLODED) {
-          ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
-          ti.selfH = ti.familyH + 2 * MARGIN_Y
-        } else if (g.placeType === PlaceType.INDENTED) {
-          ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti) - INDENT
-          ti.selfH = ti.familyH + 2 * MARGIN_Y
-        }
+        ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
+        ti.selfH = ti.familyH + 2 * MARGIN_Y
+        ti.maxW = ti.selfW
+        ti.maxH = ti.selfH
         break
       }
       case isS(ti.path): {
@@ -30,7 +50,27 @@ export const mapMeasure = (pm: M, m: M) => {
           measureText(m, pti, ti)
         }
         if (getCountTSO1(m, ti)) {
-          measureFamily(m, ti)
+          const g = getG(m)
+          const countSS = getCountTSO1(m, ti)
+          ti.familyW = 0
+          for (let i = 0; i < countSS; i++) {
+            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
+            if (cn.maxW >= ti.familyW) {
+              ti.familyW = cn.maxW
+            }
+          }
+          if ( PlaceType.EXPLODED) {
+            ti.familyW += g.sLineDeltaXDefault
+          } else if (g.placeType === PlaceType.INDENTED) {
+            ti.familyW += INDENT
+          }
+          for (let i = 0; i < countSS; i++) {
+            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
+            ti.familyH += cn.maxH
+          }
+          if (getCountTSO2(m, ti) || getCountTCO2(m, ti)) {
+            ti.familyH += (countSS - 1) * ti.spacing
+          }
         }
         if (g.placeType === PlaceType.EXPLODED) {
           ti.maxW = ti.selfW + ti.familyW
@@ -43,7 +83,27 @@ export const mapMeasure = (pm: M, m: M) => {
       }
       case isC(ti.path): {
         if (getCountTSO1(m, ti)) {
-          measureFamily(m, ti)
+          const g = getG(m)
+          const countSS = getCountTSO1(m, ti)
+          ti.familyW = 0
+          for (let i = 0; i < countSS; i++) {
+            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
+            if (cn.maxW >= ti.familyW) {
+              ti.familyW = cn.maxW
+            }
+          }
+          if ( PlaceType.EXPLODED) {
+            ti.familyW += g.sLineDeltaXDefault
+          } else if (g.placeType === PlaceType.INDENTED) {
+            ti.familyW += INDENT
+          }
+          for (let i = 0; i < countSS; i++) {
+            const cn = getNodeByPath(m, [...ti.path, 's', i]) as T
+            ti.familyH += cn.maxH
+          }
+          if (getCountTSO2(m, ti) || getCountTCO2(m, ti)) {
+            ti.familyH += (countSS - 1) * ti.spacing
+          }
         }
         ti.maxW = ti.familyW || 60
         ti.maxH = ti.familyH || 30
@@ -51,11 +111,4 @@ export const mapMeasure = (pm: M, m: M) => {
       }
     }
   })
-  const minOffsetW = Math.min(...mTR(m).map(ri => ri.offsetW))
-  const minOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
-  mTR(m).map(el => el.offsetW -= minOffsetW)
-  mTR(m).map(el => el.offsetH -= minOffsetH)
-  const mapWidth = Math.max(...mTR(m).map(ri => ri.offsetW + ri.selfW))
-  const mapHeight = Math.max(...mTR(m).map(ri => ri.offsetH + Math.max(...[ri.selfH, ri.familyH])))
-  Object.assign(getG(m), {mapWidth, mapHeight})
 }
