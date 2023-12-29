@@ -24,7 +24,7 @@ export const Map: FC = () => {
 
   const resetView = () => {
     dispatch(actions.setZoomInfo({scale: 1, prevMapX: 0, prevMapY: 0, translateX: 0, translateY: 0, originX: 0, originY: 0}))
-    setScrollLeft((window.innerWidth + g.maxW) / 2)
+    setScrollLeft((window.innerWidth + g.selfW) / 2)
     setScrollTop(window.innerHeight - 40 * 2)
   }
 
@@ -36,7 +36,7 @@ export const Map: FC = () => {
     const abortController = new AbortController()
     const { signal } = abortController
     window.addEventListener('resize', () => {
-      setScrollLeft((window.innerWidth + g.maxW) / 2)
+      setScrollLeft((window.innerWidth + g.selfW) / 2)
     }, { signal })
     return () => abortController.abort()
   }, [])
@@ -49,7 +49,7 @@ export const Map: FC = () => {
 
   useEffect(() => {
     if (mainMapDiv.current) {
-      setScrollLeftAnimated((window.innerWidth + g.maxW) / 2, 500)
+      setScrollLeftAnimated((window.innerWidth + g.selfW) / 2, 500)
     }}, [density]
   )
 
@@ -59,8 +59,8 @@ export const Map: FC = () => {
       style={{
         overflow: 'auto',
         display: 'grid',
-        gridTemplateRows: `100vh ${g.maxH}px 100vh`,
-        gridTemplateColumns: `100vw ${g.maxW}px 100vw`,
+        gridTemplateRows: `100vh ${g.selfH}px 100vh`,
+        gridTemplateColumns: `100vw ${g.selfW}px 100vw`,
       }}
       ref={mainMapDiv}
       id={'mainMapDiv'}

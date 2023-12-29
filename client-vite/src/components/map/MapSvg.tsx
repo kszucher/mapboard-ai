@@ -21,8 +21,8 @@ export const MapSvg: FC = () => {
   return (
     <svg
       key={g.nodeId}
-      width={g.maxW}
-      height={g.maxH}
+      width={g.selfW}
+      height={g.selfH}
       style={{transition: '0.3s ease-out'}}
     >
       <MapSvgLayer0RootBackground/>

@@ -12,8 +12,8 @@ export const gSaveOptional = {
 } as GSaveOptional
 
 export const gSaveNever = {
-  maxW: 0,
-  maxH: 0,
+  selfW: 0,
+  selfH: 0,
   sLineDeltaXDefault: 0,
 } as GSaveNever
 

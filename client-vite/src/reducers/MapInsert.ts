@@ -14,8 +14,8 @@ export const insertR = (m: M) => {
     {nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['r', getLastIndexR(m) + 1], selected: 1, content: 'New Root'},
   ] as T[]
   newRoot.forEach(ti => Object.assign(ti, {
-    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) + getG(m).maxW : ti.offsetW,
-    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) + getG(m).maxH : ti.offsetH,
+    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) + getG(m).selfW : ti.offsetW,
+    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) + getG(m).selfH : ti.offsetH,
   }))
   unselectNodes(m)
   m.push(...newRoot)

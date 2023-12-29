@@ -43,8 +43,8 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
   const nonSelectedMinOffsetW = Math.min(...mTR(cbR).map(ri => ri.offsetW || tSaveOptional.offsetW))
   const nonSelectedMinOffsetH = Math.min(...mTR(cbR).map(ri => ri.offsetH || tSaveOptional.offsetH))
   mTR(cbR).map(ri => Object.assign(ri, {
-    offsetW:  (ri.offsetW ? ri.offsetW : tSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).maxW,
-    offsetH:  (ri.offsetH ? ri.offsetH : tSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).maxH
+    offsetW:  (ri.offsetW ? ri.offsetW : tSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).selfW,
+    offsetH:  (ri.offsetH ? ri.offsetH : tSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)

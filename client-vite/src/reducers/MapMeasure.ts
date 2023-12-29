@@ -14,8 +14,8 @@ export const mapMeasure = (pm: M, m: M) => {
   mGT(m).slice().reverse().forEach(ti => {
     switch (true) {
       case isG(ti.path): {
-        ti.maxW = Math.max(...mTR(m).map(ri => ri.offsetW + ri.maxW))
-        ti.maxH = Math.max(...mTR(m).map(ri => ri.offsetH + ri.maxH))
+        ti.selfW = Math.max(...mTR(m).map(ri => ri.offsetW + ri.maxW))
+        ti.selfH = Math.max(...mTR(m).map(ri => ri.offsetH + ri.maxH))
         break
       }
       case isR(ti.path): {

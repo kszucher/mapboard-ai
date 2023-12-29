@@ -19,8 +19,8 @@ export interface GSaveOptional {
 }
 
 export interface GSaveNever {
-  maxW: number
-  maxH: number
+  selfW: number
+  selfH: number
   sLineDeltaXDefault: number
 }
 
