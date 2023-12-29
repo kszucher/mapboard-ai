@@ -1,7 +1,7 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, hasTask, isG, isR, isS, isC, mGT, mTR, getTSO1, getTCV, getTCH, getTCO1, getPrefixTCV, getPrefixTCH, getTCO1R0, getTCO1C0,} from "../selectors/MapQueries.ts"
-import {INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL} from "../state/Consts"
+import {CELL_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL} from "../state/Consts"
 import {PlaceType} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"
 
@@ -33,8 +33,8 @@ export const mapMeasure = (pm: M, m: M) => {
       case isS(ti.path): {
         if (getCountTCO1(m, ti)) {
           const tco1 = getTCO1(m, ti)
-          tco1.map(ti => Object.assign(ti, {selfW: Math.max(...getTCH(m, ti).map(ti => ti.familyW))}))
-          tco1.map(ti => Object.assign(ti, {selfH: Math.max(...getTCV(m, ti).map(ti => ti.familyH))}))
+          tco1.map(ti => Object.assign(ti, {selfW: Math.max(...getTCH(m, ti).map(ti => ti.familyW + CELL_SPACING))}))
+          tco1.map(ti => Object.assign(ti, {selfH: Math.max(...getTCV(m, ti).map(ti => ti.familyH + CELL_SPACING))}))
           tco1.map(ti => Object.assign(ti, {calcOffsetX: getPrefixTCV(m, ti).reduce((a, b) => a + b.selfW, 0)}))
           tco1.map(ti => Object.assign(ti, {calcOffsetY: getPrefixTCH(m, ti).reduce((a, b) => a + b.selfH, 0)}))
           ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
