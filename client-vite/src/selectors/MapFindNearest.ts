@@ -9,9 +9,9 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
   let moveTargetIndex = 0
   if (!(
     moveNode.nodeStartX < toX &&
-    toX < moveNode.nodeEndX &&
+    toX < (moveNode.nodeStartX + moveNode.selfW) &&
     moveNode.nodeStartY < toY &&
-    toY < moveNode.nodeEndY
+    toY < (moveNode.nodeStartY + moveNode.selfH)
   )) {
     const nr = getTR(m, moveNode)
     const aboveRoot = toY >= nr.nodeStartY + nr.selfH / 2
@@ -27,7 +27,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
         } else {
           vCondition = Math.abs(toY - ti.nodeStartY - ti.selfH / 2) <= ti.maxH / 2 + overlap
         }
-        let hCondition = toX > ti.nodeEndX
+        let hCondition = toX > (ti.nodeStartX + ti.selfW)
         if (vCondition && hCondition ) {
           moveInsertParentNode = ti
         }
@@ -35,7 +35,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
     })
     if (moveInsertParentNode.nodeId.length) {
       const moveInsertParentNodeNSO1 = getCountTSO1(m, moveInsertParentNode)
-      const fromX = moveInsertParentNode.nodeEndX
+      const fromX = moveInsertParentNode.nodeStartX + moveInsertParentNode.selfW
       const fromY = moveInsertParentNode.nodeStartY + moveInsertParentNode.selfH / 2
       moveCoords = [fromX, fromY, toX, toY]
       if (moveInsertParentNodeNSO1) {

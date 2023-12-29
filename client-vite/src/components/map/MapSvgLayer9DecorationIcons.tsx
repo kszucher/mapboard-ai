@@ -40,20 +40,20 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
         <g key={t.nodeId}>
           {t.controlType === ControlType.INGESTION &&
             <g>
-              <DecorationIcon x={t.nodeEndX - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
+              <DecorationIcon x={t.nodeStartX + t.selfW - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
                 <UploadIcon/>
               </DecorationIcon>
-              <DecorationIcon x={t.nodeEndX - 36} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
+              <DecorationIcon x={t.nodeStartX + t.selfW - 36} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
                 <SettingsIcon/>
               </DecorationIcon>
             </g>
           }
           {t.controlType === ControlType.EXTRACTION &&
             <g>
-              <DecorationIcon x={t.nodeEndX - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
+              <DecorationIcon x={t.nodeStartX + t.selfW - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
                 <PlayIcon/>
               </DecorationIcon>
-              <DecorationIcon x={t.nodeEndX - 36} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
+              <DecorationIcon x={t.nodeStartX + t.selfW - 36} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
                 <SettingsIcon/>
               </DecorationIcon>
             </g>

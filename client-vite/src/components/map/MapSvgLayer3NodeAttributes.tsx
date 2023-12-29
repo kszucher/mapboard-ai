@@ -90,7 +90,7 @@ export const MapSvgLayer3NodeAttributes: FC = () => {
           {ti.taskStatus > 0 && getCountTSO1(m, ti) === 0 && getCountTCO1(m, ti) === 0 && ti.contentType !== 'image' && !isEqual(ti.nodeId, editedNodeId) &&
             <path
               d={getLinearLinePath({
-                x1: adjust(ti.nodeEndX),
+                x1: adjust(ti.nodeStartX + ti.selfW),
                 x2: adjust(getTaskStartPoint(m, g, ti)),
                 y: adjust(ti.nodeStartY + ti.selfH / 2)})
               }

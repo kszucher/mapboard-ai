@@ -42,8 +42,8 @@ export const MapSvgLayer0RootBackground: FC = () => {
           key={`${ti.nodeId}_svg_root_background`}
           x={ti.nodeStartX}
           y={ti.nodeStartY}
-          width={ti.nodeEndX - ti.nodeStartX}
-          height={ti.nodeEndY - ti.nodeStartY}
+          width={ti.maxW}
+          height={ti.maxH}
           rx={16}
           ry={16}
           fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
@@ -68,7 +68,7 @@ export const MapSvgLayer0RootBackground: FC = () => {
           key={`${ti.nodeId}_separator`}
           d={getLinearLinePath({
             x1: adjust(ti.nodeStartX),
-            x2: adjust(ti.nodeEndX),
+            x2: adjust(ti.nodeStartX + ti.selfW),
             y: adjust(ti.nodeStartY + 40)})
           }
           stroke={'#666'}

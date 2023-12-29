@@ -48,13 +48,13 @@ export const getNodeLinePath = (m: M, na: T, nb: T) => {
   const { lineType } = nb
   let sx = 0, sy = 0, ex = 0, ey = 0
   if (g.placeType === PlaceType.EXPLODED) {
-    sx = na.nodeEndX
+    sx = na.nodeStartX + na.selfW
     sy = na.nodeStartY + na.selfH / 2
     ex = nb.nodeStartX
     ey = nb.nodeStartY + nb.selfH / 2
   } else if (g.placeType === PlaceType.INDENTED) {
     sx = na.nodeStartX + INDENT / 2
-    sy = na.nodeEndY
+    sy = na.nodeStartY + na.selfH
     ex = nb.nodeStartX
     ey = nb.nodeStartY + nb.selfH / 2
   }
@@ -99,17 +99,57 @@ export const getRootLinePath = (m: M, l: L) => {
   const toNode = getNodeById(m, toNodeId)
   let sx = 0, sy = 0, c1x = 0, c1y = 0
   switch (fromNodeSide) {
-    case Side.R: sx = fromNode.nodeEndX; sy = fromNode.nodeStartY + fromNode.maxH / 2; c1x = sx + 100; c1y = sy; break
-    case Side.L: sx = fromNode.nodeStartX; sy = fromNode.nodeStartY + fromNode.maxH / 2; c1x = sx - 100; c1y = sy; break
-    case Side.T: sx = fromNode.nodeStartX + fromNode.maxW / 2; sy = fromNode.nodeStartY; c1x = sx; c1y = sy - 100; break
-    case Side.B: sx = fromNode.nodeStartX + fromNode.maxW / 2; sy = fromNode.nodeEndY; c1x = sx; c1y = sy + 100; break
+    case Side.R:
+      sx = fromNode.nodeStartX + fromNode.selfW
+      sy = fromNode.nodeStartY + fromNode.maxH / 2
+      c1x = sx + 100
+      c1y = sy
+      break
+    case Side.L:
+      sx = fromNode.nodeStartX
+      sy = fromNode.nodeStartY + fromNode.maxH / 2
+      c1x = sx - 100
+      c1y = sy
+      break
+    case Side.T:
+      sx = fromNode.nodeStartX + fromNode.maxW / 2
+      sy = fromNode.nodeStartY
+      c1x = sx
+      c1y = sy - 100
+      break
+    case Side.B:
+      sx = fromNode.nodeStartX + fromNode.maxW / 2
+      sy = fromNode.nodeStartY + fromNode.selfH
+      c1x = sx
+      c1y = sy + 100
+      break
   }
   let ex = 0, ey = 0, c2x = 0, c2y = 0
   switch (toNodeSide) {
-    case Side.R: ex = toNode.nodeEndX; ey = toNode.nodeStartY + toNode.maxH / 2; c2x = ex + 100; c2y = ey; break
-    case Side.L: ex = toNode.nodeStartX; ey = toNode.nodeStartY + toNode.maxH / 2; c2x = ex - 100; c2y = ey; break
-    case Side.T: ex = toNode.nodeStartX + toNode.maxW / 2; ey = toNode.nodeStartY; c2x = ex; c2y = ey - 100; break
-    case Side.B: ex = toNode.nodeStartX + toNode.maxW / 2; ey = toNode.nodeEndY; c2x = ex; c2y = ey + 100;  break
+    case Side.R:
+      ex = toNode.nodeStartX + toNode.selfW
+      ey = toNode.nodeStartY + toNode.maxH / 2
+      c2x = ex + 100
+      c2y = ey
+      break
+    case Side.L:
+      ex = toNode.nodeStartX
+      ey = toNode.nodeStartY + toNode.maxH / 2
+      c2x = ex - 100
+      c2y = ey
+      break
+    case Side.T:
+      ex = toNode.nodeStartX + toNode.maxW / 2
+      ey = toNode.nodeStartY
+      c2x = ex
+      c2y = ey - 100
+      break
+    case Side.B:
+      ex = toNode.nodeStartX + toNode.maxW / 2
+      ey = toNode.nodeStartY + toNode.selfH
+      c2x = ex
+      c2y = ey + 100
+      break
   }
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
@@ -120,10 +160,10 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
     case 'sSelf': {
       const R = 8
       ax = t.nodeStartX
-      bx = t.nodeEndX - R
-      cx = t.nodeEndX
+      bx = t.nodeStartX + t.selfW - R
+      cx = t.nodeStartX + t.selfW
       ayu = byu = cyu = t.nodeStartY
-      ayd = byd = cyd = t.nodeEndY
+      ayd = byd = cyd = t.nodeStartY + t.selfH
       break
     }
     case 'sFamily': {
@@ -131,10 +171,10 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
       if (g.placeType === PlaceType.EXPLODED) {
         const g = getG(m)
         ax = t.nodeStartX
-        bx = t.nodeEndX + g.sLineDeltaXDefault
+        bx = t.nodeStartX + t.selfW + g.sLineDeltaXDefault
         cx = t.nodeStartX + t.maxW
         ayu = t.nodeStartY
-        ayd = t.nodeEndY
+        ayd = t.nodeStartY + t.selfH
         byu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
         byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
         cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
@@ -154,20 +194,23 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
     }
     case 'c': {
       if (isXACR(m)) {
-        ax = getXA(m).slice().sort(sortPath).at(0)!.nodeStartX
-        bx = cx = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndX
-        ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeStartY
-        ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(0)!.nodeEndY
+        const xa = getXA(m).slice().sort(sortPath)
+        ax = xa.at(0)!.nodeStartX
+        bx = cx = xa.at(-1)!.nodeStartX + xa.at(-1)!.selfW
+        ayu = byu = cyu = xa.at(0)!.nodeStartY
+        ayd = byd = cyd = xa.at(0)!.nodeStartY + xa.at(0)!.selfH
       } else if (isXACC(m)) {
-        ax = getXA(m).at(0)!.nodeStartX
-        bx = cx = getXA(m).at(0)!.nodeEndX
-        ayu = byu = cyu = getXA(m).slice().sort(sortPath).at(0)!.nodeStartY
-        ayd = byd = cyd = getXA(m).slice().sort(sortPath).at(-1)!.nodeEndY
+        const xa = getXA(m).slice().sort(sortPath)
+        ax = xa.at(0)!.nodeStartX
+        bx = cx = xa.at(0)!.nodeStartX + xa.at(0)!.selfW
+        ayu = byu = cyu = xa.at(0)!.nodeStartY
+        ayd = byd = cyd = xa.at(-1)!.nodeStartY + xa.at(-1)!.selfH
       } else {
-        ax = getX(m).nodeStartX
-        bx = cx = getX(m).nodeEndX
-        ayu = byu = cyu = getX(m).nodeStartY
-        ayd = byd = cyd = getX(m).nodeEndY
+        const x = getX(m)
+        ax = x.nodeStartX
+        bx = cx = x.nodeStartX + x.selfW
+        ayu = byu = cyu = x.nodeStartY
+        ayd = byd = cyd = x.nodeStartY + x.selfH
       }
       break
     }
@@ -225,12 +268,12 @@ export const getGridPath = (m: M, t: T) => {
   const countSCC = getCountTSCH(m, t)
   const xi = t.nodeStartX
   const yu = t.nodeStartY
-  const yd = t.nodeEndY
+  const yd = t.nodeStartY + t.selfH
   let path = ''
   for (let i = 1; i < countSCR; i++) {
     const ti = getNodeByPath(m, [...t.path, 'c', i, 0])
     const x1 = adjust(t.nodeStartX)
-    const x2 = adjust(t.nodeEndX)
+    const x2 = adjust(t.nodeStartX + t.selfW)
     const y = adjust(yu + ti.calcOffsetY)
     path += `M${x1},${y} L${x2},${y}`
   }
@@ -246,4 +289,4 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
-export const getTaskStartPoint = (m: M, g: G, t: T) => getTR(m, t).nodeEndX - getTaskWidth(g)
+export const getTaskStartPoint = (m: M, g: G, t: T) => getTR(m, t).nodeStartX + getTR(m, t).selfW - getTaskWidth(g)

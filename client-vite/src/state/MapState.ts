@@ -86,9 +86,7 @@ export const tSaveNever = {
   spacing: 10,
   // mapPlace
   nodeStartX: 0,
-  nodeEndX: 0,
   nodeStartY: 0,
-  nodeEndY: 0,
   isTop: 0,
   isBottom: 0,
 } as TSaveNever

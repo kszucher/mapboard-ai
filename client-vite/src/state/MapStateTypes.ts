@@ -88,9 +88,7 @@ export interface TSaveNever {
   spacing: number
   // mapPlace
   nodeStartX: number
-  nodeEndX: number
   nodeStartY: number
-  nodeEndY: number
   isTop: number
   isBottom: number
 }

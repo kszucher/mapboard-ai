@@ -79,12 +79,12 @@ export const mapMeasure = (pm: M, m: M) => {
         }
         const countTSO1 = getCountTSO1(m, ti)
         if (countTSO1) {
+          ti.familyW = Math.max(...getTSO1(m, ti).map(ti => ti.maxW))
+          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
           if (g.placeType === PlaceType.EXPLODED) {
-            ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + g.sLineDeltaXDefault
-            ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+            ti.familyW += g.sLineDeltaXDefault
           } else if (g.placeType === PlaceType.INDENTED) {
-            ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + INDENT
-            ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+            ti.familyW += INDENT
           }
         }
         if (g.placeType === PlaceType.EXPLODED) {
@@ -99,13 +99,16 @@ export const mapMeasure = (pm: M, m: M) => {
       case isC(ti.path): {
         const countTSO1 = getCountTSO1(m, ti)
         if (countTSO1) {
+          ti.familyW = Math.max(...getTSO1(m, ti).map(ti => ti.maxW))
+          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
           if (g.placeType === PlaceType.EXPLODED) {
-            ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + g.sLineDeltaXDefault || 60
-            ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti))) || 30
+            ti.familyW += g.sLineDeltaXDefault
           } else if (g.placeType === PlaceType.INDENTED) {
-            ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + INDENT || 60
-            ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti))) || 30
+            ti.familyW += INDENT
           }
+        } else {
+          ti.familyW = 60
+          ti.familyH = 30
         }
         break
       }
