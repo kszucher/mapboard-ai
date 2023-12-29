@@ -85,7 +85,6 @@ export interface TSaveNever {
   maxH: number
   calcOffsetX: number
   calcOffsetY: number
-  spacing: number
   // mapPlace
   nodeStartX: number
   nodeStartY: number
