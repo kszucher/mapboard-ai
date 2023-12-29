@@ -1,10 +1,9 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, hasTask, isG, isR, isS, isC, mGT, mTR, getTSO1, getCountTSCV, getCountTSCH, getNodeByPath} from "../selectors/MapQueries.ts"
+import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, hasTask, isG, isR, isS, isC, mGT, mTR, getTSO1, getTCV, getTCH, getTCO1, getPrefixTCV, getPrefixTCH, getTCO1R0, getTCO1C0,} from "../selectors/MapQueries.ts"
 import {INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL} from "../state/Consts"
 import {PlaceType} from "../state/Enums.ts"
-import {M, T} from "../state/MapStateTypes"
-import {createArray} from "../utils/Utils.ts"
+import {M} from "../state/MapStateTypes"
 
 export const mapMeasure = (pm: M, m: M) => {
   const g = getG(m)
@@ -21,8 +20,10 @@ export const mapMeasure = (pm: M, m: M) => {
       }
       case isR(ti.path): {
         const countTSO1 = getCountTSO1(m, ti)
-        ti.familyW = countTSO1 && Math.max(...getTSO1(m, ti).map(ti => ti.maxW))
-        ti.familyH = countTSO1 && getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * + Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+        if (countTSO1) {
+          ti.familyW = Math.max(...getTSO1(m, ti).map(ti => ti.maxW))
+          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+        }
         ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
         ti.selfH = ti.familyH + 2 * MARGIN_Y
         ti.maxW = ti.selfW
@@ -31,67 +32,15 @@ export const mapMeasure = (pm: M, m: M) => {
       }
       case isS(ti.path): {
         if (getCountTCO1(m, ti)) {
-          const countSCR = getCountTSCV(m, ti)
-          const countSCC = getCountTSCH(m, ti)
-          const maxCellHeightMat = createArray(countSCR, countSCC)
-          const maxCellWidthMat = createArray(countSCR, countSCC)
-          const maxRowHeight = []
-          const maxColWidth = []
-          const sumMaxRowHeight = [0]
-          const sumMaxColWidth = [0]
-          let isCellSpacingActivated = 0
-          for (let i = 0; i < countSCR; i++) {
-            for (let j = 0; j < countSCC; j++) {
-              const cn = getNodeByPath(m, [...ti.path, 'c', i, j]) as T
-              maxCellHeightMat[i][j] = cn.maxH
-              maxCellWidthMat[i][j] = cn.maxW
-              if (cn.maxH > 20) {
-                isCellSpacingActivated = 1
-              }
-            }
-          }
-          if (isCellSpacingActivated === 1) {
-            for (let i = 0; i < countSCR; i++) {
-              for (let j = 0; j < countSCC; j++) {
-                maxCellHeightMat[i][j] += ti.spacing
-              }
-            }
-          }
-          for (let i = 0; i < countSCR; i++) {
-            let currMaxRowHeight = 0
-            for (let j = 0; j < countSCC; j++) {
-              let cellHeight = maxCellHeightMat[i][j]
-              if (cellHeight >= currMaxRowHeight) {
-                currMaxRowHeight = cellHeight
-              }
-            }
-            maxRowHeight.push(currMaxRowHeight)
-            sumMaxRowHeight.push(currMaxRowHeight + sumMaxRowHeight.slice(-1)[0])
-            ti.selfH += currMaxRowHeight
-          }
-          for (let j = 0; j < countSCC; j++) {
-            let currMaxColWidth = 0
-            for (let i = 0; i < countSCR; i++) {
-              let cellWidth = maxCellWidthMat[i][j]
-              if (cellWidth >= currMaxColWidth) {
-                currMaxColWidth = cellWidth
-              }
-            }
-            maxColWidth.push(currMaxColWidth)
-            sumMaxColWidth.push(currMaxColWidth + sumMaxColWidth.slice(-1)[0])
-            ti.selfW += currMaxColWidth
-          }
-          for (let j = 0; j < countSCC; j++) {
-            for (let i = 0; i < countSCR; i++) {
-              const cn = getNodeByPath(m, [...ti.path, 'c', i, j]) as T
-              cn.selfW = maxColWidth[j]
-              cn.selfH = maxRowHeight[i]
-              cn.maxW = ti.selfW
-              cn.maxH = ti.selfH
-              cn.calcOffsetX = sumMaxColWidth[j]
-              cn.calcOffsetY = sumMaxRowHeight[i]
-            }
-          }
+          const tco1 = getTCO1(m, ti)
+          tco1.map(ti => Object.assign(ti, {maxW: Math.max(...getTCH(m, ti).map(ti => ti.familyW))}))
+          tco1.map(ti => Object.assign(ti, {maxH: Math.max(...getTCV(m, ti).map(ti => ti.familyH))}))
+          tco1.map(ti => Object.assign(ti, {selfW: ti.maxW}))
+          tco1.map(ti => Object.assign(ti, {selfH: ti.maxH}))
+          tco1.map(ti => Object.assign(ti, {calcOffsetX: getPrefixTCV(m, ti).reduce((a, b) => a + b.maxW, 0)}))
+          tco1.map(ti => Object.assign(ti, {calcOffsetY: getPrefixTCH(m, ti).reduce((a, b) => a + b.maxH, 0)}))
+          ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.maxW, 0)
+          ti.selfH = getTCO1C0(m, ti).reduce((a, b) => a + b.maxH, 0)
         } else {
           const g = getG(m)
           const pti = getNodeById(pm, ti.nodeId)
@@ -129,14 +78,19 @@ export const mapMeasure = (pm: M, m: M) => {
           ti.selfH = (ti.dimH / 17 > 1 ? ti.dimH : MIN_NODE_H) + (g.density === 'large' ? NODE_MARGIN_Y_LARGE : NODE_MARGIN_Y_SMALL)
         }
         const countTSO1 = getCountTSO1(m, ti)
+        if (countTSO1) {
+          if (g.placeType === PlaceType.EXPLODED) {
+            ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + g.sLineDeltaXDefault
+            ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+          } else if (g.placeType === PlaceType.INDENTED) {
+            ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + INDENT
+            ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+          }
+        }
         if (g.placeType === PlaceType.EXPLODED) {
-          ti.familyW = countTSO1 && Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + g.sLineDeltaXDefault
-          ti.familyH = countTSO1 && getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * + Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
           ti.maxW = ti.selfW + ti.familyW
           ti.maxH = Math.max(...[ti.selfH, ti.familyH])
         } else if (g.placeType === PlaceType.INDENTED) {
-          ti.familyW = countTSO1 && Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + INDENT
-          ti.familyH = countTSO1 && getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * + Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
           ti.maxW = Math.max(...[ti.selfW, ti.familyW])
           ti.maxH = ti.selfH + ti.familyH
         }
@@ -144,15 +98,15 @@ export const mapMeasure = (pm: M, m: M) => {
       }
       case isC(ti.path): {
         const countTSO1 = getCountTSO1(m, ti)
-        if (g.placeType === PlaceType.EXPLODED) {
-          ti.familyW = countTSO1 && Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + g.sLineDeltaXDefault
-          ti.familyH = countTSO1 && getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * + Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
-        } else if (g.placeType === PlaceType.INDENTED) {
-          ti.familyW = countTSO1 && Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + INDENT
-          ti.familyH = countTSO1 && getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * + Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+        if (countTSO1) {
+          if (g.placeType === PlaceType.EXPLODED) {
+            ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + g.sLineDeltaXDefault || 60
+            ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti))) || 30
+          } else if (g.placeType === PlaceType.INDENTED) {
+            ti.familyW = Math.max(...getTSO1(m, ti).map(ri => ri.maxW)) + INDENT || 60
+            ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti))) || 30
+          }
         }
-        ti.maxW = ti.familyW || 60
-        ti.maxH = ti.familyH || 30
         break
       }
     }

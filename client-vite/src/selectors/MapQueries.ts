@@ -66,6 +66,8 @@ const isSO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 2 && isEqual(
 const isSO2 = (p: PT, pt: PT): boolean => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
 const isCO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 const isCO2 = (p: PT, pt: PT): boolean => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
+const isCO1R0 = (p: PT, pt: PT): boolean => isCO1(p, pt) && pt.at(-2) === 0
+const isCO1C0 = (p: PT, pt: PT): boolean => isCO1(p, pt) && pt.at(-1) === 0
 const isCD1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) + 1 && pt.at(-1) === p.at(-1)
 const isCU1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) - 1 && pt.at(-1) === p.at(-1)
 const isCR1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) + 1
@@ -74,6 +76,8 @@ const isSCO = (p: PT, pt: PT): boolean => pt.length >= p.length + 3 && isEqual(p
 const isSV = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 export const isCV = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const isCH = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
+export const isPrefixCV = (p: PT, pt: PT): boolean => isCV(p, pt) && pt.at(-1) < p.at(-1)
+export const isPrefixCH = (p: PT, pt: PT): boolean => isCH(p, pt) && pt.at(-2) < p.at(-2)
 export const isRDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
 export const isSEODO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) >= p.at(-1)
 export const isSDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
@@ -85,6 +89,13 @@ export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual
 export const getTSI1 = (m: M, t: T): T => m.find(ti => isSI1(t.path, ti.path as PT))! as T
 export const getTSI2 = (m: M, t: T): T => m.find(ti => isSI2(t.path, ti.path as PT))! as T
 export const getTSO1 = (m: M, t: T): T[] => m.filter(ti => isSO1(t.path, ti.path as PT))! as T[]
+export const getTCO1 = (m: M, t: T): T[] => m.filter(ti => isCO1(t.path, ti.path as PT))! as T[]
+export const getTCO1R0 = (m: M, t: T): T[] => m.filter(ti => isCO1R0(t.path, ti.path as PT))! as T[]
+export const getTCO1C0 = (m: M, t: T): T[] => m.filter(ti => isCO1C0(t.path, ti.path as PT))! as T[]
+export const getTCV = (m: M, t: T): T[] => m.filter(ti => isCV(t.path, ti.path as PT))! as T[]
+export const getTCH = (m: M, t: T): T[] => m.filter(ti => isCH(t.path, ti.path as PT))! as T[]
+export const getPrefixTCV = (m: M, t: T): T[] => m.filter(ti => isPrefixCV(t.path, ti.path as PT))! as T[]
+export const getPrefixTCH = (m: M, t: T): T[] => m.filter(ti => isPrefixCH(t.path, ti.path as PT))! as T[]
 export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)
 
 export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T
