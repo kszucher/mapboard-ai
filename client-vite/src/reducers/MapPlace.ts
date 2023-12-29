@@ -1,5 +1,5 @@
 import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../selectors/MapQueries.ts"
-import {INDENT, MARGIN_X} from "../state/Consts.ts"
+import {INDENT, MARGIN_X, S_SPACING} from "../state/Consts.ts"
 import {PlaceType} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"
 
@@ -16,8 +16,8 @@ export const mapPlace = (m: M) => {
         const i = ti.path.at(-1)
         const si1 = getTSI1(m, ti)
         const elapsed =
-          i * si1.spacing * + Boolean(getCountTSO2(m, si1) || getCountTCO2(m, si1)) +
-          mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0)
+          mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0) +
+          i * S_SPACING * + Boolean(getCountTSO2(m, si1) && g.placeType === PlaceType.EXPLODED || getCountTCO2(m, si1))
         if (isRS(ti.path)) {
           if (g.placeType === PlaceType.EXPLODED) {
             ti.nodeStartX = MARGIN_X + si1.nodeStartX

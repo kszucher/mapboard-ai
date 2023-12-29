@@ -9,4 +9,5 @@ export const NODE_MARGIN_X_SMALL = 18
 export const NODE_MARGIN_Y_LARGE = 8
 export const NODE_MARGIN_Y_SMALL = 4
 export const INDENT = 40
-export const CELL_SPACING = 10
+export const S_SPACING  = 10
+export const C_SPACING = 10

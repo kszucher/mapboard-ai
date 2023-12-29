@@ -83,7 +83,6 @@ export const tSaveNever = {
   maxH: 0,
   calcOffsetX: 0,
   calcOffsetY: 0,
-  spacing: 10,
   // mapPlace
   nodeStartX: 0,
   nodeStartY: 0,

@@ -1,7 +1,7 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, hasTask, isG, isR, isS, isC, mGT, mTR, getTSO1, getTCV, getTCH, getTCO1, getPrefixTCV, getPrefixTCH, getTCO1R0, getTCO1C0,} from "../selectors/MapQueries.ts"
-import {CELL_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL} from "../state/Consts"
+import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, getPrefixTCH, getPrefixTCV, getTCH, getTCO1, getTCO1C0, getTCO1R0, getTCV, getTSO1, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../selectors/MapQueries.ts"
+import {INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING, C_SPACING} from "../state/Consts"
 import {PlaceType} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"
 
@@ -22,7 +22,7 @@ export const mapMeasure = (pm: M, m: M) => {
         const countTSO1 = getCountTSO1(m, ti)
         if (countTSO1) {
           ti.familyW = Math.max(...getTSO1(m, ti).map(ti => ti.maxW))
-          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + S_SPACING * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) && g.placeType === PlaceType.EXPLODED || getCountTCO2(m, ti)))
         }
         ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
         ti.selfH = ti.familyH + 2 * MARGIN_Y
@@ -31,8 +31,8 @@ export const mapMeasure = (pm: M, m: M) => {
       case isS(ti.path): {
         if (getCountTCO1(m, ti)) {
           const tco1 = getTCO1(m, ti)
-          tco1.map(ti => Object.assign(ti, { selfW: Math.max(...getTCH(m, ti).map(ti => ti.familyW + CELL_SPACING)) }))
-          tco1.map(ti => Object.assign(ti, { selfH: Math.max(...getTCV(m, ti).map(ti => ti.familyH + CELL_SPACING)) }))
+          tco1.map(ti => Object.assign(ti, { selfW: Math.max(...getTCH(m, ti).map(ti => ti.familyW + C_SPACING)) }))
+          tco1.map(ti => Object.assign(ti, { selfH: Math.max(...getTCV(m, ti).map(ti => ti.familyH + C_SPACING)) }))
           tco1.map(ti => Object.assign(ti, { calcOffsetX: getPrefixTCV(m, ti).reduce((a, b) => a + b.selfW, 0) }))
           tco1.map(ti => Object.assign(ti, { calcOffsetY: getPrefixTCH(m, ti).reduce((a, b) => a + b.selfH, 0) }))
           ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
@@ -76,7 +76,7 @@ export const mapMeasure = (pm: M, m: M) => {
         const countTSO1 = getCountTSO1(m, ti)
         if (countTSO1) {
           ti.familyW = Math.max(...getTSO1(m, ti).map(ti => ti.maxW)) + (g.placeType === PlaceType.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.placeType === PlaceType.INDENTED ? INDENT : 0)
-          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + S_SPACING * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) && g.placeType === PlaceType.EXPLODED || getCountTCO2(m, ti)))
         }
         if (g.placeType === PlaceType.EXPLODED) {
           ti.maxW = ti.selfW + ti.familyW
@@ -91,7 +91,7 @@ export const mapMeasure = (pm: M, m: M) => {
         const countTSO1 = getCountTSO1(m, ti)
         if (countTSO1) {
           ti.familyW = Math.max(...getTSO1(m, ti).map(ti => ti.maxW)) + (g.placeType === PlaceType.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.placeType === PlaceType.INDENTED ? INDENT : 0)
-          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + ti.spacing * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) || getCountTCO2(m, ti)))
+          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + S_SPACING * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) && g.placeType === PlaceType.EXPLODED || getCountTCO2(m, ti)))
         } else {
           ti.familyW = 60
           ti.familyH = 30
