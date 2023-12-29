@@ -14,8 +14,8 @@ export const mapMeasure = (pm: M, m: M) => {
   mGT(m).slice().reverse().forEach(ti => {
     switch (true) {
       case isG(ti.path): {
-        ti.selfW = Math.max(...mTR(m).map(ri => ri.offsetW + ri.maxW))
-        ti.selfH = Math.max(...mTR(m).map(ri => ri.offsetH + ri.maxH))
+        ti.selfW = Math.max(...mTR(m).map(ri => ri.offsetW + ri.selfW))
+        ti.selfH = Math.max(...mTR(m).map(ri => ri.offsetH + ri.selfH))
         break
       }
       case isR(ti.path): {
@@ -26,8 +26,6 @@ export const mapMeasure = (pm: M, m: M) => {
         }
         ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
         ti.selfH = ti.familyH + 2 * MARGIN_Y
-        ti.maxW = ti.selfW
-        ti.maxH = ti.selfH
         break
       }
       case isS(ti.path): {

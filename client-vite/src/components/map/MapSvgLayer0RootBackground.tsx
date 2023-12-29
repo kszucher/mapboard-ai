@@ -42,8 +42,8 @@ export const MapSvgLayer0RootBackground: FC = () => {
           key={`${ti.nodeId}_svg_root_background`}
           x={ti.nodeStartX}
           y={ti.nodeStartY}
-          width={ti.maxW}
-          height={ti.maxH}
+          width={ti.selfW}
+          height={ti.selfH}
           rx={16}
           ry={16}
           fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}

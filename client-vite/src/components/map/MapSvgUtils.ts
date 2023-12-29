@@ -101,24 +101,24 @@ export const getRootLinePath = (m: M, l: L) => {
   switch (fromNodeSide) {
     case Side.R:
       sx = fromNode.nodeStartX + fromNode.selfW
-      sy = fromNode.nodeStartY + fromNode.maxH / 2
+      sy = fromNode.nodeStartY + fromNode.selfH / 2
       c1x = sx + 100
       c1y = sy
       break
     case Side.L:
       sx = fromNode.nodeStartX
-      sy = fromNode.nodeStartY + fromNode.maxH / 2
+      sy = fromNode.nodeStartY + fromNode.selfH / 2
       c1x = sx - 100
       c1y = sy
       break
     case Side.T:
-      sx = fromNode.nodeStartX + fromNode.maxW / 2
+      sx = fromNode.nodeStartX + fromNode.selfW / 2
       sy = fromNode.nodeStartY
       c1x = sx
       c1y = sy - 100
       break
     case Side.B:
-      sx = fromNode.nodeStartX + fromNode.maxW / 2
+      sx = fromNode.nodeStartX + fromNode.selfW / 2
       sy = fromNode.nodeStartY + fromNode.selfH
       c1x = sx
       c1y = sy + 100
@@ -128,24 +128,24 @@ export const getRootLinePath = (m: M, l: L) => {
   switch (toNodeSide) {
     case Side.R:
       ex = toNode.nodeStartX + toNode.selfW
-      ey = toNode.nodeStartY + toNode.maxH / 2
+      ey = toNode.nodeStartY + toNode.selfH / 2
       c2x = ex + 100
       c2y = ey
       break
     case Side.L:
       ex = toNode.nodeStartX
-      ey = toNode.nodeStartY + toNode.maxH / 2
+      ey = toNode.nodeStartY + toNode.selfH / 2
       c2x = ex - 100
       c2y = ey
       break
     case Side.T:
-      ex = toNode.nodeStartX + toNode.maxW / 2
+      ex = toNode.nodeStartX + toNode.selfW / 2
       ey = toNode.nodeStartY
       c2x = ex
       c2y = ey - 100
       break
     case Side.B:
-      ex = toNode.nodeStartX + toNode.maxW / 2
+      ex = toNode.nodeStartX + toNode.selfW / 2
       ey = toNode.nodeStartY + toNode.selfH
       c2x = ex
       c2y = ey + 100
