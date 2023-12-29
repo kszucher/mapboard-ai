@@ -80,7 +80,7 @@ export enum SubProcessType {
   EXTRACTION = 'extraction'
 }
 
-export enum PlaceType {
+export enum Flow {
   EXPLODED = 'exploded',
   INDENTED = 'indented'
 }

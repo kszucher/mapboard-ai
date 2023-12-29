@@ -1,6 +1,6 @@
 import {getCountTSCH, getCountTSCV, getG, getNodeById, getNodeByPath, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../selectors/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
-import {LineType, PlaceType, Side} from "../../state/Enums"
+import {LineType, Flow, Side} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
 
@@ -47,12 +47,12 @@ export const getNodeLinePath = (m: M, na: T, nb: T) => {
   const g = getG(m)
   const { lineType } = nb
   let sx = 0, sy = 0, ex = 0, ey = 0
-  if (g.placeType === PlaceType.EXPLODED) {
+  if (g.flow === Flow.EXPLODED) {
     sx = na.nodeStartX + na.selfW
     sy = na.nodeStartY + na.selfH / 2
     ex = nb.nodeStartX
     ey = nb.nodeStartY + nb.selfH / 2
-  } else if (g.placeType === PlaceType.INDENTED) {
+  } else if (g.flow === Flow.INDENTED) {
     sx = na.nodeStartX + INDENT / 2
     sy = na.nodeStartY + na.selfH
     ex = nb.nodeStartX
@@ -63,12 +63,12 @@ export const getNodeLinePath = (m: M, na: T, nb: T) => {
   let path
   if (lineType === LineType.bezier) {
     let c1x = 0, c1y = 0, c2x = 0, c2y = 0
-    if (g.placeType === PlaceType.EXPLODED) {
+    if (g.flow === Flow.EXPLODED) {
       c1x = sx + dx / 4
       c1y = sy
       c2x = sx + dx / 4
       c2y = sy + dy
-    } else if (g.placeType === PlaceType.INDENTED) {
+    } else if (g.flow === Flow.INDENTED) {
       c1x = sx
       c1y = ey
       c2x = sx
@@ -77,12 +77,12 @@ export const getNodeLinePath = (m: M, na: T, nb: T) => {
     path = getBezierLinePath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
   } else if (lineType === LineType.edge) {
     let m1x = 0, m1y = 0, m2x = 0, m2y = 0
-    if (g.placeType === PlaceType.EXPLODED) {
+    if (g.flow === Flow.EXPLODED) {
       m1x = sx + dx / 2
       m1y = sy
       m2x = sx + dx / 2
       m2y = sy + dy
-    } else if (g.placeType === PlaceType.INDENTED) {
+    } else if (g.flow === Flow.INDENTED) {
       m1x = sx
       m1y = ey
       m2x = sx
@@ -168,7 +168,7 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
     }
     case 'sFamily': {
       const g = getG(m)
-      if (g.placeType === PlaceType.EXPLODED) {
+      if (g.flow === Flow.EXPLODED) {
         const g = getG(m)
         ax = t.nodeStartX
         bx = t.nodeStartX + t.selfW + g.sLineDeltaXDefault
@@ -179,7 +179,7 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
         byd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
         cyu = t.nodeStartY + t.selfH / 2 - t.maxH / 2
         cyd = t.nodeStartY + t.selfH / 2 + t.maxH / 2
-      } else if (g.placeType === PlaceType.INDENTED) {
+      } else if (g.flow === Flow.INDENTED) {
         ax = t.nodeStartX
         bx = t.nodeStartX + INDENT
         cx = t.nodeStartX + t.maxW
