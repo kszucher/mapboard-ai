@@ -6,7 +6,7 @@ import {DialogState} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState.ts"
 import {DotsIcon} from "../assets/Icons.tsx"
 
-export const EditorMapActions = () => {
+export const MapActions = () => {
   const { data } = useOpenWorkspaceQuery()
   const { frameId, frameIdList, breadcrumbMapIdList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()

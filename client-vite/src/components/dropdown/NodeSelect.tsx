@@ -1,10 +1,10 @@
 import {Button, DropdownMenu} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {getCountXCO1, getCountXSO1, getX, isXS} from "../../selectors/MapQueries.ts"
-import {mSelector} from "../../state/EditorState"
+import {mSelector} from "../../state/EditorState.ts"
 
-export const EditorNodeSelect = () => {
+export const NodeSelect = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (

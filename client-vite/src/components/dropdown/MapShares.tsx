@@ -1,10 +1,10 @@
 import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
-import {actions, AppDispatch} from "../../reducers/EditorReducer"
-import {DialogState} from "../../state/Enums"
-import {ShareIcon} from "../assets/Icons"
+import {actions, AppDispatch} from "../../reducers/EditorReducer.ts"
+import {DialogState} from "../../state/Enums.ts"
+import {ShareIcon} from "../assets/Icons.tsx"
 
-export const EditorMapShares = () => {
+export const MapShares = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <DropdownMenu.Root>

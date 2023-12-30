@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux"
 import {nodeApi} from "../../apis/NodeApi.ts"
 import {AppDispatch} from "../../reducers/EditorReducer.ts"
 
-export const UserDeleteAccount: FC = () => {
+export const UserAccountDelete: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <AlertDialog.Content style={{ maxWidth: 450 }}>

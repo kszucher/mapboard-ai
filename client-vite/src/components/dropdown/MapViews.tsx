@@ -1,12 +1,12 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {getG} from "../../selectors/MapQueries.ts"
-import {mSelector} from "../../state/EditorState"
+import {mSelector} from "../../state/EditorState.ts"
 import {Flow} from "../../state/Enums.ts"
-import {EyeIcon} from "../assets/Icons"
+import {EyeIcon} from "../assets/Icons.tsx"
 
-export const EditorMapViews = () => {
+export const MapViews = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (

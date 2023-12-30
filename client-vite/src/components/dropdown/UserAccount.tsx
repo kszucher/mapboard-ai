@@ -1,12 +1,12 @@
 import {useAuth0} from "@auth0/auth0-react"
 import {AlertDialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
-import {nodeApi} from "../../apis/NodeApi"
-import {actions, AppDispatch} from "../../reducers/EditorReducer"
+import {nodeApi} from "../../apis/NodeApi.ts"
+import {actions, AppDispatch} from "../../reducers/EditorReducer.ts"
 import {AlertDialogState} from "../../state/Enums.ts"
-import {UserIcon} from "../assets/Icons"
+import {UserIcon} from "../assets/Icons.tsx"
 
-export const EditorUserAccount = () => {
+export const UserAccount = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { logout } = useAuth0()
   return (

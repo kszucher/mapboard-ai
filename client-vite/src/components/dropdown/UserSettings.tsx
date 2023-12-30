@@ -1,11 +1,11 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState.ts"
-import {SettingsIcon} from "../assets/Icons"
+import {SettingsIcon} from "../assets/Icons.tsx"
 
-export const EditorUserSettings = () => {
+export const UserSettings = () => {
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

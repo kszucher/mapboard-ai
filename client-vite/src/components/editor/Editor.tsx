@@ -11,30 +11,30 @@ import {ChevronDownIcon, ChevronRightIcon, CircleChevronLeftIcon, CircleChevronR
 import {Spinner} from "../assets/Spinner"
 import {RootExtraction} from "../dialog/RootExtraction.tsx"
 import {RootIngestion} from "../dialog/RootIngestion.tsx"
-import {EditorMapActions} from "./EditorMapActions.tsx"
+import {MapActions} from "../dropdown/MapActions.tsx"
 import {MapActionsRename} from "../dialog/MapActionsRename.tsx"
 import {EditorMapControls} from "./EditorMapControls.tsx"
-import {EditorMapShares} from "./EditorMapShares"
+import {MapShares} from "../dropdown/MapShares.tsx"
 import {MapSharesShare} from "../dialog/MapSharesShare.tsx"
 import {MapSharesSharedByMe} from "../dialog/MapSharesSharedByMe.tsx"
 import {MapSharesSharedWithMe} from "../dialog/MapSharesSharedWithMe.tsx"
-import {EditorMapViews} from "./EditorMapViews"
-import {EditorNodeEdit} from "./EditorNodeEdit"
+import {MapViews} from "../dropdown/MapViews.tsx"
+import {NodeEdit} from "../dropdown/NodeEdit.tsx"
 import {NodeEditContentEquation} from "../dialog/NodeEditContentEquation.tsx"
 import {NodeEditContentMermaid} from "../dialog/NodeEditContentMermaid.tsx"
 import {NodeEditCreateSubMap} from "../dialog/NodeEditCreateSubMap.tsx"
-import {EditorNodeInsert} from "./EditorNodeInsert"
+import {NodeInsert} from "../dropdown/NodeInsert.tsx"
 import {NodeInsertTable} from "../dialog/NodeInsertTable.tsx"
-import {EditorNodeMove} from "./EditorNodeMove"
-import {EditorNodeSelect} from "./EditorNodeSelect"
-import {UserDeleteAccount} from "../dialog/UserDeleteAccount.tsx"
+import {NodeMove} from "../dropdown/NodeMove.tsx"
+import {NodeSelect} from "../dropdown/NodeSelect.tsx"
+import {UserAccountDelete} from "../dialog/UserAccountDelete.tsx"
 import {Formatter} from "./Formatter"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
-import {EditorUserSettings} from "./EditorUserSettings"
-import {EditorUserAccount} from "./EditorUserAccount"
+import {UserSettings} from "../dropdown/UserSettings.tsx"
+import {UserAccount} from "../dropdown/UserAccount.tsx"
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
@@ -151,21 +151,21 @@ export const Editor: FC = () => {
                       </IconButton>
                     </>
                   }
-                  <EditorMapActions/>
+                  <MapActions/>
                 </Flex>
               </div>
               <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
-                  <EditorMapViews/>
-                  <EditorMapShares/>
+                  <MapViews/>
+                  <MapShares/>
                 </Flex>
               </div>
               <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
-                  <EditorNodeSelect/>
-                  <EditorNodeInsert/>
-                  <EditorNodeEdit/>
-                  <EditorNodeMove/>
+                  <NodeSelect/>
+                  <NodeInsert/>
+                  <NodeEdit/>
+                  <NodeMove/>
                 </Flex>
               </div>
               <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
@@ -188,10 +188,10 @@ export const Editor: FC = () => {
               </div>
               <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
                 <Flex gap="1">
-                  <EditorUserSettings/>
-                  <EditorUserAccount/>
+                  <UserSettings/>
+                  <UserAccount/>
                 </Flex>
-                <UserDeleteAccount/>
+                <UserAccountDelete/>
               </div>
             </div>
             {formatterVisible && <Formatter/>}
