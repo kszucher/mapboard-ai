@@ -37,8 +37,8 @@ import ChevronDown from "../../assets/chevron-down.svg?react"
 import ChevronRight from "../../assets/chevron-right.svg?react"
 import CircleChevronLeft from "../../assets/circle-chevron-left.svg?react"
 import CircleChevronRight from "../../assets/circle-chevron-right.svg?react"
-import ArrowsUpDown from "../../assets/arrows-up-down.svg?react"
-import ZoomFilled from "../../assets/zoom-filled.svg?react"
+import ZoomCheck from "../../assets/zoom-check.svg?react"
+import ZoomCancel from "../../assets/zoom-cancel.svg?react"
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
@@ -161,17 +161,10 @@ export const Editor: FC = () => {
                 <div className="flex items-center gap-1">
                   <IconButton
                     variant="solid"
-                    color={!scrollOverride ? "violet" : "gray"}
-                    onClick={() => dispatch(actions.clearScrollOverride())}
+                    color="gray"
+                    onClick={() => scrollOverride ? dispatch(actions.clearScrollOverride()) : dispatch(actions.setScrollOverride())}
                   >
-                    <ArrowsUpDown/>
-                  </IconButton>
-                  <IconButton
-                    variant="solid"
-                    color={scrollOverride ? "violet" : "gray"}
-                    onClick={() => dispatch(actions.setScrollOverride())}
-                  >
-                    <ZoomFilled/>
+                    {scrollOverride ? <ZoomCheck/> : <ZoomCancel/>}
                   </IconButton>
                 </div>
                 <div className="flex flex-row items-center gap-1">
