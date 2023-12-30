@@ -3,6 +3,7 @@ import {useSelector} from "react-redux"
 import {RootState} from "../../reducers/EditorReducer"
 import {getG} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
+import {MapSvgNodeTasks} from "./MapSvgNodeTasks.tsx"
 import {MapSvgRootBackground} from "./MapSvgRootBackground.tsx"
 import {MapSvgRootConnectors} from "./MapSvgRootConnectors.tsx"
 import {MapSvgNodeFamilyBackground} from "./MapSvgNodeFamilyBackground.tsx"
@@ -29,6 +30,7 @@ export const MapSvg: FC = () => {
       <MapSvgNodeFamilyBackground/>
       <MapSvgNodeBackground/>
       <MapSvgNodeAttributes/>
+      <MapSvgNodeTasks/>
       <MapSvgSelectionSecondary/>
       <MapSvgSelectionPrimary/>
       <MapSvgSelectionPreview/>
