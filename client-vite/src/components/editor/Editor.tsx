@@ -89,9 +89,6 @@ export const Editor: FC = () => {
                 className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
               </div>
-              <div className="fixed w-[68px] left-[240px] top-[4px] flex flex-row">
-                <EditorMapControls/>
-              </div>
               <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
                   <DropdownMenu.Root>
@@ -131,7 +128,8 @@ export const Editor: FC = () => {
                   {frameId !== '' &&
                     <>
                       <ChevronRight/>
-                      <Button variant='solid' onClick={() => {}}>
+                      <Button variant='solid' onClick={() => {
+                      }}>
                         {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
                       </Button>
                       <IconButton
@@ -159,7 +157,10 @@ export const Editor: FC = () => {
                   <MapActions/>
                 </Flex>
               </div>
-              <div className="fixed right-[480px] h-[40px] flex flex-row items-center">
+              <div className="fixed w-[68px] right-[600px] top-[4px] flex flex-row">
+                <EditorMapControls/>
+              </div>
+              <div className="fixed right-[400px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
                   <MapViews/>
                   <MapShares/>
