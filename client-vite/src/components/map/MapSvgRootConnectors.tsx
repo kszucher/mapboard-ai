@@ -8,7 +8,7 @@ import {Side} from "../../state/Enums"
 import {L, T} from "../../state/MapStateTypes"
 import {getCoordsMidBezier, getBezierLinePath, getRootLinePath, pathCommonProps} from "./MapSvgUtils"
 
-export const MapSvgConnections: FC = () => {
+export const MapSvgRootConnectors: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)

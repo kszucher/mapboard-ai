@@ -4,7 +4,7 @@ import {RootState} from "../../reducers/EditorReducer"
 import {getG} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {MapSvgRootBackground} from "./MapSvgRootBackground.tsx"
-import {MapSvgConnections} from "./MapSvgConnections.tsx"
+import {MapSvgRootConnectors} from "./MapSvgRootConnectors.tsx"
 import {MapSvgNodeFamilyBackground} from "./MapSvgNodeFamilyBackground.tsx"
 import {MapSvgNodeBackground} from "./MapSvgNodeBackground.tsx"
 import {MapSvgNodeAttributes} from "./MapSvgNodeAttributes.tsx"
@@ -35,7 +35,7 @@ export const MapSvg: FC = () => {
       <MapSvgSelectionArea/>
       <MapSvgSelectionMove/>
       <MapSvgNodeIcons/>
-      <MapSvgConnections/>
+      <MapSvgRootConnectors/>
     </svg>
   )
 }
