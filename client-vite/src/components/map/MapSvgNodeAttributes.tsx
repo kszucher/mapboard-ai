@@ -6,7 +6,7 @@ import {isRS, isRSC, isCS, isCSC, getTSI1, getTSI2, getCountTCO1, getNodeById, m
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
-import {getArcPath, getGridPath, getNodeLinePath, pathCommonProps} from "./MapSvgUtils"
+import {getGridPath, getNodeLinePath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgNodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -44,15 +44,6 @@ export const MapSvgNodeAttributes: FC = () => {
                 />
               }
             </path>
-          }
-          {getCountTCO1(m, ti) > 0 &&
-            <path
-              d={getArcPath(ti, 0, false)}
-              stroke={ti.sBorderColor ? ti.sBorderColor : C.TABLE_FRAME_COLOR}
-              strokeWidth={ti.sBorderWidth}
-              fill={'none'}
-              {...pathCommonProps}
-            />
           }
           {getCountTCO1(m, ti) > 0 &&
             <path

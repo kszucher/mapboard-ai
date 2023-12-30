@@ -1,12 +1,18 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
 import {getCountTCO1, mTS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState.ts"
+import {getColors} from "../assets/Colors.ts"
 import {getArcPath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgNodeBorderSelf: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
+  const { data } = useOpenWorkspaceQuery()
+  const { colorMode } = data || defaultUseOpenWorkspaceQueryState
+  const C = getColors(colorMode)
   return (
     <g>
       {mTS(m).map(ti => (
@@ -16,6 +22,24 @@ export const MapSvgNodeBorderSelf: FC = () => {
               d={getArcPath(ti, -2, true)}
               stroke={ti.sBorderColor}
               strokeWidth={ti.sBorderWidth}
+              fill={'none'}
+              {...pathCommonProps}
+            />
+          }
+          {ti.sBorderColor && getCountTCO1(m, ti) > 0 &&
+            <path
+              d={getArcPath(ti, 0, false)}
+              stroke={ti.sBorderColor}
+              strokeWidth={ti.sBorderWidth}
+              fill={'none'}
+              {...pathCommonProps}
+            />
+          }
+          {!ti.sBorderColor && getCountTCO1(m, ti) > 0 &&
+            <path
+              d={getArcPath(ti, 0, false)}
+              stroke={C.TABLE_FRAME_COLOR}
+              strokeWidth={1}
               fill={'none'}
               {...pathCommonProps}
             />
