@@ -4,12 +4,12 @@ import {MRT} from "./MapReducerTypes.ts"
 
 export const mrCond = (m: M, action: MRT): boolean => {
   switch (action) {
+    case MRT.LOAD: return false
+
     case MRT.undo: return false
     case MRT.redo: return false
     case MRT.saveView: return false
     case MRT.saveFromCoordinates: return false
-
-    case MRT.LOAD: return false
 
     case MRT.setDensitySmall: return false
     case MRT.setDensityLarge: return false
