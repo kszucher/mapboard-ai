@@ -12,7 +12,6 @@ import {RootExtraction} from "../dialog/RootExtraction.tsx"
 import {RootIngestion} from "../dialog/RootIngestion.tsx"
 import {MapActions} from "../dropdown/MapActions.tsx"
 import {MapActionsRename} from "../dialog/MapActionsRename.tsx"
-import {EditorMapControls} from "./EditorMapControls.tsx"
 import {MapSharesShare} from "../dialog/MapSharesShare.tsx"
 import {MapSharesSharedByMe} from "../dialog/MapSharesSharedByMe.tsx"
 import {MapSharesSharedWithMe} from "../dialog/MapSharesSharedWithMe.tsx"
@@ -38,9 +37,12 @@ import ChevronDown from "../../assets/chevron-down.svg?react"
 import ChevronRight from "../../assets/chevron-right.svg?react"
 import CircleChevronLeft from "../../assets/circle-chevron-left.svg?react"
 import CircleChevronRight from "../../assets/circle-chevron-right.svg?react"
+import ArrowsUpDown from "../../assets/arrows-up-down.svg?react"
+import ZoomFilled from "../../assets/zoom-filled.svg?react"
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
+  const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
@@ -156,7 +158,24 @@ export const Editor: FC = () => {
                 </Flex>
               </div>
               <div className="fixed w-[68px] right-[600px] top-[4px] flex flex-row">
-                <EditorMapControls/>
+                <Flex gap="5">
+                  <Flex gap="1">
+                    <IconButton
+                      variant="solid"
+                      color={!scrollOverride ? "violet" : "gray"}
+                      onClick={() => dispatch(actions.clearScrollOverride())}
+                    >
+                      <ArrowsUpDown/>
+                    </IconButton>
+                    <IconButton
+                      variant="solid"
+                      color={scrollOverride ? "violet" : "gray"}
+                      onClick={() => dispatch(actions.setScrollOverride())}
+                    >
+                      <ZoomFilled/>
+                    </IconButton>
+                  </Flex>
+                </Flex>
               </div>
               <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
