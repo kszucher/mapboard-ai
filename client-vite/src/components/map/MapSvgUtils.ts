@@ -31,7 +31,7 @@ export const getCoordsMidBezier = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[
   return {x, y}
 }
 
-export const getLinearLinePath = ({x1, x2, y} : {x1: number, x2: number, y: number}) => `M${x1},${y} L${x2},${y}`
+export const getLinearLinePath = ({x1, x2, y1, y2} : {x1: number, x2: number, y1: number, y2: number}) => `M${x1},${y1} L${x2},${y2}`
 
 export const getEdgeLinePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) => `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
 

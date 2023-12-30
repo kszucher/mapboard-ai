@@ -7,7 +7,7 @@ import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {ControlType, DialogState} from "../../state/Enums"
 import {T} from "../../state/MapStateTypes"
-import {SettingsIcon, UploadIcon} from "../assets/Icons.tsx"
+import ArrowUp from "../../assets/arrow-up.svg?react"
 import PlayerPlayFilled from "../../assets/player-play-filled.svg?react"
 
 const DecorationIcon = ({x, y, children, onClick} : {x: number, y: number, children: ReactNode, onClick: Function}) => (
@@ -41,21 +41,15 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
         <g key={t.nodeId}>
           {t.controlType === ControlType.INGESTION &&
             <g>
-              <DecorationIcon x={t.nodeStartX + t.selfW - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
-                <UploadIcon/>
-              </DecorationIcon>
-              <DecorationIcon x={t.nodeStartX + t.selfW - 36} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
-                <SettingsIcon/>
+              <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 -12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
+                <ArrowUp/>
               </DecorationIcon>
             </g>
           }
           {t.controlType === ControlType.EXTRACTION &&
             <g>
-              <DecorationIcon x={t.nodeStartX + t.selfW - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
+              <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 - 12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
                 <PlayerPlayFilled/>
-              </DecorationIcon>
-              <DecorationIcon x={t.nodeStartX + t.selfW - 36} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
-                <SettingsIcon/>
               </DecorationIcon>
             </g>
           }

@@ -50,7 +50,7 @@ export const MapSvgLayer0RootBackground: FC = () => {
           style={{
             transition: '0.3s ease-out',
             pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE ? 'none' : 'auto'
-        }}
+          }}
           onMouseDown={(e) => {
             e.stopPropagation()
             if (e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
@@ -66,10 +66,13 @@ export const MapSvgLayer0RootBackground: FC = () => {
       {mTR(m).filter(ti => ti.controlType !== ControlType.NONE).map((ti: T) => (
         <path
           key={`${ti.nodeId}_separator`}
-          d={getLinearLinePath({
-            x1: adjust(ti.nodeStartX),
-            x2: adjust(ti.nodeStartX + ti.selfW),
-            y: adjust(ti.nodeStartY + 40)})
+          d={
+            getLinearLinePath({
+              x1: adjust(ti.nodeStartX + 50),
+              x2: adjust(ti.nodeStartX + 50),
+              y1: adjust(ti.nodeStartY),
+              y2: adjust(ti.nodeStartY + ti.selfH),
+            })
           }
           stroke={'#666'}
           {...pathCommonProps}
