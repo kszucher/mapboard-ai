@@ -64,19 +64,32 @@ export const MapSvgLayer0RootBackground: FC = () => {
         />
       ))}
       {mTR(m).filter(ti => ti.controlType !== ControlType.NONE).map((ti: T) => (
-        <path
-          key={`${ti.nodeId}_separator`}
-          d={
-            getLinearLinePath({
-              x1: adjust(ti.nodeStartX + 50),
-              x2: adjust(ti.nodeStartX + 50),
-              y1: adjust(ti.nodeStartY),
-              y2: adjust(ti.nodeStartY + ti.selfH),
-            })
-          }
-          stroke={'#666'}
-          {...pathCommonProps}
-        />
+        <g key={`${ti.nodeId}_separator`}>
+          <path
+            d={
+              getLinearLinePath({
+                x1: adjust(ti.nodeStartX),
+                x2: adjust(ti.nodeStartX + ti.selfW),
+                y1: adjust(ti.nodeStartY + 40),
+                y2: adjust(ti.nodeStartY + 40),
+              })
+            }
+            stroke={'#444'}
+            {...pathCommonProps}
+          />
+          <path
+            d={
+              getLinearLinePath({
+                x1: adjust(ti.nodeStartX),
+                x2: adjust(ti.nodeStartX + ti.selfW),
+                y1: adjust(ti.nodeStartY + ti.selfH - 40),
+                y2: adjust(ti.nodeStartY + ti.selfH - 40),
+              })
+            }
+            stroke={'#444'}
+            {...pathCommonProps}
+          />
+        </g>
       ))}
     </g>
   )
