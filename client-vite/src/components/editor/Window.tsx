@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {mrCond} from "../../reducers/MapReducerConditions.ts"
+import {mrc} from "../../reducers/MapReducerConditions.ts"
 import {MRT} from "../../reducers/MapReducerTypes.ts"
 import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getX, getLastIndexR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, sortPath, isXAR, mTR} from "../../selectors/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
@@ -48,7 +48,7 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: MRT.insertSD, payload: null}))
     ckm === '---' && e.key === 'Enter' && isXC(m) && dispatch(actions.mapAction({type: MRT.selectCD, payload: null}))
     ckm === '-s-' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: MRT.insertSU, payload: null}))
-    ckm === '---' && ['Insert','Tab'].includes(e.key) && mrCond(m, MRT.insertSO) && dispatch(actions.mapAction({type: MRT.insertSO, payload: null}))
+    ckm === '---' && ['Insert','Tab'].includes(e.key) && mrc(m, MRT.insertSO) && dispatch(actions.mapAction({type: MRT.insertSO, payload: null}))
     ckm === '---' && e.key === 'Delete' && isXS(m) && dispatch(actions.mapAction({type: MRT.deleteS, payload: null}))
     ckm === '---' && e.key === 'Delete' && isXR(m) && getLastIndexR(m) > 0 && mTR(m).some(ri => !ri.selected) && dispatch(actions.mapAction({type: MRT.deleteLR, payload: null}))
     ckm === '---' && e.key === 'Delete' && isXACR(m) && dispatch(actions.mapAction({type: MRT.deleteCR, payload: null}))

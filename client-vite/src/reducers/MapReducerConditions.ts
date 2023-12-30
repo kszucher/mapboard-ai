@@ -2,7 +2,7 @@ import {getCountXCO1, getX, isXACC, isXR, isXS} from "../selectors/MapQueries.ts
 import {M} from "../state/MapStateTypes.ts"
 import {MRT} from "./MapReducerTypes.ts"
 
-export const mrCond = (m: M, action: MRT): boolean => {
+export const mrc = (m: M, action: MRT): boolean => {
   switch (action) {
     case MRT.LOAD: return false
 
