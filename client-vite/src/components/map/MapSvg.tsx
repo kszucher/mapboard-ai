@@ -13,7 +13,7 @@ import {MapSvgSelectionPrimary} from "./MapSvgSelectionPrimary.tsx"
 import {MapSvgSelectionPreview} from "./MapSvgSelectionPreview.tsx"
 import {MapSvgSelectionArea} from "./MapSvgSelectionArea.tsx"
 import {MapSvgSelectionMove} from "./MapSvgSelectionMove.tsx"
-import {MapSvgDecorationIcons} from "./MapSvgDecorationIcons.tsx"
+import {MapSvgNodeIcons} from "./MapSvgNodeIcons.tsx"
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -34,7 +34,7 @@ export const MapSvg: FC = () => {
       <MapSvgSelectionPreview/>
       <MapSvgSelectionArea/>
       <MapSvgSelectionMove/>
-      <MapSvgDecorationIcons/>
+      <MapSvgNodeIcons/>
       <MapSvgConnections/>
     </svg>
   )
