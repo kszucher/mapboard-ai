@@ -12,6 +12,7 @@ import {MapSvgRootConnectors} from "./MapSvgRootConnectors.tsx"
 import {MapSvgNodeBackgroundFamily} from "./MapSvgNodeBackgroundFamily.tsx"
 import {MapSvgNodeBackgroundSelf} from "./MapSvgNodeBackgroundSelf.tsx"
 import {MapSvgNodeAttributes} from "./MapSvgNodeAttributes.tsx"
+import {MapSvgRootSeparators} from "./MapSvgRootSeparators.tsx"
 import {MapSvgSelectionSecondary} from "./MapSvgSelectionSecondary.tsx"
 import {MapSvgSelectionPrimary} from "./MapSvgSelectionPrimary.tsx"
 import {MapSvgSelectionPreview} from "./MapSvgSelectionPreview.tsx"
@@ -31,6 +32,7 @@ export const MapSvg: FC = () => {
     >
       <MapSvgMapBackground/>
       <MapSvgRootBackground/>
+      <MapSvgRootSeparators/>
       <MapSvgNodeBackgroundFamily/>
       <MapSvgNodeBackgroundSelf/>
       <MapSvgNodeBorderFamily/>
