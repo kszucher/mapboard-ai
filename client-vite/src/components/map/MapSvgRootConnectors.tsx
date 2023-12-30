@@ -1,6 +1,7 @@
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {MRT} from "../../reducers/MapReducerTypes.ts"
 import { mTR, isExistingLink, mL} from "../../selectors/MapQueries.ts"
 import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
@@ -46,7 +47,7 @@ export const MapSvgRootConnectors: FC = () => {
                 <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  dispatch(actions.mapAction({type: 'deleteL', payload: l}))
+                  dispatch(actions.mapAction({type: MRT.deleteL, payload: l}))
                 }}/>
               </g>
             }
@@ -88,7 +89,7 @@ export const MapSvgRootConnectors: FC = () => {
                         connectionStart.fromNodeId !== t.nodeId &&
                         !isExistingLink(m, newLink)
                       ) {
-                        dispatch(actions.mapAction({type: 'insertL', payload: newLink}))
+                        dispatch(actions.mapAction({type: MRT.insertL, payload: newLink}))
                       }
                     }}
                   />

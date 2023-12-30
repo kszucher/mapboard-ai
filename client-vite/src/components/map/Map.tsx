@@ -2,6 +2,7 @@ import {FC, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {MRT} from "../../reducers/MapReducerTypes.ts"
 import {getG} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode} from "../../state/Enums.ts"
@@ -69,7 +70,7 @@ export const Map: FC = () => {
           e.preventDefault()
         }
         if (e.button  === 0 && e.buttons === 1) {
-          dispatch(actions.mapAction({type: 'saveFromCoordinates', payload: {e}}))
+          dispatch(actions.mapAction({type: MRT.saveFromCoordinates, payload: {e}}))
         }
         let didMove = false
         const abortController = new AbortController()
@@ -78,7 +79,7 @@ export const Map: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
-            dispatch(actions.mapAction({type: 'selectByRectanglePreview', payload: {e}}))
+            dispatch(actions.mapAction({type: MRT.selectByRectanglePreview, payload: {e}}))
           } else if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
             setScrollTop(document.documentElement.scrollTop - e.movementY)
@@ -88,7 +89,7 @@ export const Map: FC = () => {
           e.preventDefault()
           abortController.abort()
           if (didMove && e.button === 0 && e.buttons === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
-            dispatch(actions.mapAction({type: 'selectByRectangle', payload: {e}}))
+            dispatch(actions.mapAction({type: MRT.selectByRectangle, payload: {e}}))
           }
         }, { signal })
       }}
@@ -99,7 +100,7 @@ export const Map: FC = () => {
       }}
       onWheel={(e) => {
         if (scrollOverride) {
-          dispatch(actions.mapAction({type: 'saveView', payload: {e}}))
+          dispatch(actions.mapAction({type: MRT.saveView, payload: {e}}))
         }
       }}
     >

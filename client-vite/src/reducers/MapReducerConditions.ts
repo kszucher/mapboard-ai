@@ -1,127 +1,134 @@
+import {getCountXCO1, getX, isXACC, isXR, isXS} from "../selectors/MapQueries.ts"
 import {M} from "../state/MapStateTypes.ts"
+import {MRT} from "./MapReducerTypes.ts"
 
-export const mapReducerConditions = (m: M, action: string): boolean => {
+export const mrCond = (m: M, action: MRT): boolean => {
   switch (action) {
-    case 'LOAD': return false
+    case MRT.undo: return false
+    case MRT.redo: return false
+    case MRT.saveView: return false
+    case MRT.saveFromCoordinates: return false
 
-    case 'setDensitySmall': return false
-    case 'setDensityLarge': return false
-    case 'setPlaceTypeExploded': return false
-    case 'setPlaceTypeIndented': return false
+    case MRT.LOAD: return false
 
-    case 'selectT': return false
-    case 'selectXR': return false
-    case 'selectSelfX': return false
-    case 'selectFamilyX': return false
-    case 'selectSD': return false
-    case 'selectSU': return false
-    case 'selectSO': return false
-    case 'selectSI': return false
-    case 'selectSF': return false
-    case 'selectCFfirstRow': return false
-    case 'selectCFfirstCol': return false
-    case 'selectCFF': return false
-    case 'selectXSIC': return false
-    case 'selectTtoo': return false
-    case 'selectSDtoo': return false
-    case 'selectSUtoo': return false
-    case 'selectRA': return false
-    case 'selectSA': return false
-    case 'selectCRSAME': return false
-    case 'selectCCSAME': return false
-    case 'selectCD': return false
-    case 'selectCU': return false
-    case 'selectCR': return false
-    case 'selectCL': return false
-    case 'selectByRectangle': return false
+    case MRT.setDensitySmall: return false
+    case MRT.setDensityLarge: return false
+    case MRT.setPlaceTypeExploded: return false
+    case MRT.setPlaceTypeIndented: return false
 
-    case 'insertL': return false
-    case 'insertR': return false
-    case 'insertSD': return false
-    case 'insertSU': return false
-    case 'insertSO': return false
-    case 'insertSOText': return false
-    case 'insertSOLink': return false
-    case 'insertSOImage': return false
-    case 'insertCRD': return false
-    case 'insertCRU': return false
-    case 'insertSCRD': return false
-    case 'insertSCRU': return false
-    case 'insertCCR': return false
-    case 'insertCCL': return false
-    case 'insertSCCR': return false
-    case 'insertSCCL': return false
-    case 'insertSOTable': return false
+    case MRT.selectT: return false
+    case MRT.selectXR: return false
+    case MRT.selectSelfX: return false
+    case MRT.selectFamilyX: return false
+    case MRT.selectSD: return false
+    case MRT.selectSU: return false
+    case MRT.selectSO: return false
+    case MRT.selectSI: return false
+    case MRT.selectSF: return false
+    case MRT.selectCFfirstRow: return isXACC(m)
+    case MRT.selectCFfirstCol: return false
+    case MRT.selectCFF: return false
+    case MRT.selectXSIC: return false
+    case MRT.selectTtoo: return false
+    case MRT.selectSDtoo: return false
+    case MRT.selectSUtoo: return false
+    case MRT.selectRA: return false
+    case MRT.selectSA: return false
+    case MRT.selectCRSAME: return false
+    case MRT.selectCCSAME: return false
+    case MRT.selectCD: return false
+    case MRT.selectCU: return false
+    case MRT.selectCR: return false
+    case MRT.selectCL: return false
+    case MRT.selectByRectangle: return false
 
-    case 'gptParseNodesS': return false
-    case 'gptParseNodesT': return false
-    case 'gptParseNodeMermaid': return false
+    case MRT.insertL: return false
+    case MRT.insertR: return false
+    case MRT.insertSD: return isXS(m)
+    case MRT.insertSU: return false
+    case MRT.insertSO: return isXS(m) || isXR(m)
+    case MRT.insertSOText: return false
+    case MRT.insertSOLink: return false
+    case MRT.insertSOImage: return false
+    case MRT.insertCRD: return false
+    case MRT.insertCRU: return false
+    case MRT.insertSCRD: return isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0
+    case MRT.insertSCRU: return isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0
+    case MRT.insertCCR: return false
+    case MRT.insertCCL: return false
+    case MRT.insertSCCR: return isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0
+    case MRT.insertSCCL: return isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0
+    case MRT.insertSOTable: return false
 
-    case 'deleteL': return false
-    case 'deleteLR': return false
-    case 'deleteS': return false
-    case 'deleteCR': return false
-    case 'deleteCC': return false
+    case MRT.gptParseNodesS: return false
+    case MRT.gptParseNodesT: return false
+    case MRT.gptParseNodeMermaid: return false
 
-    case 'cutLR': return false
-    case 'cutS': return false
-    case 'copyLR': return false
-    case 'copyS': return false
-    case 'pasteLR': return false
-    case 'pasteSO': return false
-    case 'duplicateR': return false
-    case 'duplicateS': return false
-    case 'moveSD': return false
-    case 'moveST': return false
-    case 'moveSU': return false
-    case 'moveSB': return false
-    case 'moveSO': return false
-    case 'moveSI': return false
-    case 'moveByDrag': return false
-    case 'moveCRD': return false
-    case 'moveCRU': return false
-    case 'moveCCR': return false
-    case 'moveCCL': return false
-    case 'moveS2TO': return false
-    case 'transpose': return false
+    case MRT.deleteL: return false
+    case MRT.deleteLR: return false
+    case MRT.deleteS: return false
+    case MRT.deleteCR: return false
+    case MRT.deleteCC: return false
 
-    case 'setTaskStatus': return false
-    case 'setContentText': return false
-    case 'setContentEquation': return false
-    case 'setContentMermaid': return false
-    case 'setControlTypeNone': return false
-    case 'setControlTypeIngestion': return false
-    case 'setControlTypeExtraction': return false
-    case 'offsetD': return false
-    case 'offsetU': return false
-    case 'offsetR': return false
-    case 'offsetL': return false
-    case 'setLlmData': return false
-    case 'setLineWidth': return false
-    case 'setLineType': return false
-    case 'setLineColor': return false
-    case 'setSBorderWidth': return false
-    case 'setFBorderWidth': return false
-    case 'setSBorderColor': return false
-    case 'setFBorderColor': return false
-    case 'setSFillColor': return false
-    case 'setFFillColor': return false
-    case 'setTextFontSize': return false
-    case 'setTextColor': return false
-    case 'setBlur': return false
-    case 'setTaskModeOn': return false
-    case 'setTaskModeOff': return false
-    case 'setTaskModeReset': return false
+    case MRT.cutLR: return false
+    case MRT.cutS: return false
+    case MRT.copyLR: return false
+    case MRT.copyS: return false
+    case MRT.pasteLR: return false
+    case MRT.pasteSO: return false
+    case MRT.duplicateR: return false
+    case MRT.duplicateS: return false
+    case MRT.moveSD: return false
+    case MRT.moveST: return false
+    case MRT.moveSU: return false
+    case MRT.moveSB: return false
+    case MRT.moveSO: return false
+    case MRT.moveSI: return false
+    case MRT.moveByDrag: return false
+    case MRT.moveCRD: return false
+    case MRT.moveCRU: return false
+    case MRT.moveCCR: return false
+    case MRT.moveCCL: return false
+    case MRT.moveS2TO: return false
+    case MRT.transpose: return false
 
-    case 'clearDimensions': return false
-    case 'clearLlmData': return false
-    case 'clearLine': return false
-    case 'clearSBorder': return false
-    case 'clearFBorder': return false
-    case 'clearSFill': return false
-    case 'clearFFill': return false
-    case 'clearText': return false
-    case 'clearBlur': return false
+    case MRT.setTaskStatus: return false
+    case MRT.setContentText: return false
+    case MRT.setContentEquation: return false
+    case MRT.setContentMermaid: return false
+    case MRT.setControlTypeNone: return false
+    case MRT.setControlTypeIngestion: return false
+    case MRT.setControlTypeExtraction: return false
+    case MRT.offsetD: return false
+    case MRT.offsetU: return false
+    case MRT.offsetR: return false
+    case MRT.offsetL: return false
+    case MRT.setLlmData: return false
+    case MRT.setLineWidth: return false
+    case MRT.setLineType: return false
+    case MRT.setLineColor: return false
+    case MRT.setSBorderWidth: return false
+    case MRT.setFBorderWidth: return false
+    case MRT.setSBorderColor: return false
+    case MRT.setFBorderColor: return false
+    case MRT.setSFillColor: return false
+    case MRT.setFFillColor: return false
+    case MRT.setTextFontSize: return false
+    case MRT.setTextColor: return false
+    case MRT.setBlur: return false
+    case MRT.setTaskModeOn: return false
+    case MRT.setTaskModeOff: return false
+    case MRT.setTaskModeReset: return false
+
+    case MRT.clearDimensions: return false
+    case MRT.clearLlmData: return false
+    case MRT.clearLine: return false
+    case MRT.clearSBorder: return false
+    case MRT.clearFBorder: return false
+    case MRT.clearSFill: return false
+    case MRT.clearFFill: return false
+    case MRT.clearText: return false
+    case MRT.clearBlur: return false
   }
   return false
 }

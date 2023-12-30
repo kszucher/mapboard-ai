@@ -10,6 +10,7 @@ import {mapFindNearest} from "../selectors/MapFindNearest"
 import {mapReducer} from "./MapReducer"
 import {getEditedNode, getX} from "../selectors/MapQueries.ts"
 import {filterEmpty} from "../utils/Utils"
+import {MRT} from "./MapReducerTypes.ts"
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -34,20 +35,20 @@ export const editorSlice = createSlice({
     hideConnectionHelpers(state) { state.connectionHelpersVisible = false },
     setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload},
     clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R}},
-    mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
+    mapAction(state, action: PayloadAction<{ type: MRT, payload: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
-        case 'undo': {
+        case MRT.undo: {
           state.editedNodeId = ''
           state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
           break
         }
-        case 'redo': {
+        case MRT.redo: {
           state.editedNodeId = ''
           state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
           break
         }
-        case 'saveView': {
+        case MRT.saveView: {
           const {e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const mapX = getMapX(e)
@@ -67,14 +68,14 @@ export const editorSlice = createSlice({
           state.zoomInfo.originY = y
           break
         }
-        case 'saveFromCoordinates': {
+        case MRT.saveFromCoordinates: {
           const {e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
           state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
           break
         }
-        case 'selectByRectanglePreview': {
+        case MRT.selectByRectanglePreview: {
           const {e} = action.payload.payload
           const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
@@ -83,13 +84,13 @@ export const editorSlice = createSlice({
           state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
           break
         }
-        case 'selectByRectangle': {
+        case MRT.selectByRectangle: {
           const {e} = action.payload.payload
           const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
           const nList = mapFindIntersecting(pm, fromX, fromY, toX, toY)
-          const m = mapReducer(pm, 'selectByRectangle', {pathList: nList.map(ti => ti.path)})
+          const m = mapReducer(pm, MRT.selectByRectangle, {pathList: nList.map(ti => ti.path)})
           if (!isEqual(pm, m)) {
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
             state.mapListIndex = state.mapListIndex + 1
@@ -98,7 +99,7 @@ export const editorSlice = createSlice({
           state.intersectingNodes = []
           break
         }
-        case 'moveByDragPreview': {
+        case MRT.moveByDragPreview: {
           const {t, e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
@@ -107,14 +108,14 @@ export const editorSlice = createSlice({
           state.moveCoords = moveCoords
           break
         }
-        case 'moveByDrag': {
+        case MRT.moveByDrag: {
           const {t, e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
           const {moveInsertParentNodeId, moveTargetIndex} = mapFindNearest(pm, t, toX, toY)
           if (moveInsertParentNodeId.length) {
-            const m = mapReducer(pm, 'moveByDrag', {moveInsertParentNodeId, moveTargetIndex})
+            const m = mapReducer(pm, MRT.moveByDrag, {moveInsertParentNodeId, moveTargetIndex})
             if (!isEqual(pm, m)) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
               state.mapListIndex = state.mapListIndex + 1
@@ -123,19 +124,19 @@ export const editorSlice = createSlice({
           state.moveCoords = []
           break
         }
-        case 'startEditReplace': {
+        case MRT.startEditReplace: {
           state.editStartMapListIndex = state.mapListIndex
           state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
           state.editType = 'replace'
           break
         }
-        case 'startEditAppend': {
+        case MRT.startEditAppend: {
           state.editStartMapListIndex = state.mapListIndex
           state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
           state.editType = 'append'
           break
         }
-        case 'removeMapListEntriesOfEdit': {
+        case MRT.removeMapListEntriesOfEdit: {
           state.editedNodeId = ''
           state.editType = ''
           state.mapList = [...state.mapList.slice(0, state.editStartMapListIndex + 1), ...state.mapList.slice(-1)]
@@ -168,7 +169,7 @@ export const editorSlice = createSlice({
       (state, { payload }) => {
         const { mapDataList } = payload
         console.log(payload)
-        state.mapList = mapDataList.map((el: M) => mapReducer(filterEmpty(el), 'LOAD', {}))
+        state.mapList = mapDataList.map((el: M) => mapReducer(filterEmpty(el), MRT.LOAD, {}))
         state.mapListIndex = 0
         state.editedNodeId = ''
         state.isLoading = false
@@ -181,14 +182,14 @@ export const editorSlice = createSlice({
         console.log(payload)
         if (gptSuggestions) {
           const pm = current(state.mapList[state.mapListIndex])
-          let mapAction = {type: '', payload: {}}
+          let mapAction = {type: MRT.LOAD, payload: {}}
           try {
             const gptParsed = JSON.parse(gptSuggestions)
             console.log(gptParsed)
             switch (promptId) {
-              case 'gptGenNodesS': mapAction = {type: 'gptParseNodesS', payload: {gptParsed}}; break
-              case 'gptGenNodesT': mapAction = {type: 'gptParseNodesT', payload: {gptParsed}}; break
-              case 'gptGenNodeMermaid': mapAction = {type: 'gptParseNodeMermaid', payload: {gptParsed}}; break
+              case 'gptGenNodesS': mapAction = {type: MRT.gptParseNodesS, payload: {gptParsed}}; break
+              case 'gptGenNodesT': mapAction = {type: MRT.gptParseNodesT, payload: {gptParsed}}; break
+              case 'gptGenNodeMermaid': mapAction = {type: MRT.gptParseNodeMermaid, payload: {gptParsed}}; break
             }
           } catch {
             console.warn('unparseable:', gptSuggestions)

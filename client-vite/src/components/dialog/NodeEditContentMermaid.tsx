@@ -2,6 +2,7 @@ import {Button, Dialog, Flex, TextArea} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
+import {MRT} from "../../reducers/MapReducerTypes.ts"
 import {getX} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
@@ -31,7 +32,7 @@ export const NodeEditContentMermaid = () => {
         <Dialog.Close>
           <Button onClick={() => {
             document.getElementById(getX(m).nodeId)!.removeAttribute('data-processed')
-            dispatch(actions.mapAction({type: 'setContentMermaid', payload: {content: content}}))
+            dispatch(actions.mapAction({type: MRT.setContentMermaid, payload: {content: content}}))
           }}>
             {'OK'}
           </Button>

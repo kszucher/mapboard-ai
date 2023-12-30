@@ -2,6 +2,7 @@ import {Button, Dialog, Flex, TextArea} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
+import {MRT} from "../../reducers/MapReducerTypes.ts"
 import {getX} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
@@ -28,7 +29,7 @@ export const NodeEditContentEquation = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(actions.mapAction({type: 'setContentEquation', payload: {content: content}}))}>
+          <Button onClick={() => dispatch(actions.mapAction({type: MRT.setContentEquation, payload: {content: content}}))}>
             {'OK'}
           </Button>
         </Dialog.Close>

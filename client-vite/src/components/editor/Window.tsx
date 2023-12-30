@@ -1,5 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
+import {mrCond} from "../../reducers/MapReducerConditions.ts"
+import {MRT} from "../../reducers/MapReducerTypes.ts"
 import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getX, getLastIndexR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, sortPath, isXAR, mTR} from "../../selectors/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, DialogState, PageState} from "../../state/Enums"
@@ -26,88 +28,93 @@ export const Window: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const keydown = (e: KeyboardEvent) => {
-    if ((+e.ctrlKey && e.code === 'KeyZ') || (+e.ctrlKey && e.code === 'KeyY') || (+e.ctrlKey && e.which >= 96 && e.which <= 105) || (e.which < 48)) {e.preventDefault()}
+    if (
+      +e.ctrlKey && e.code === 'KeyZ' ||
+      +e.ctrlKey && e.code === 'KeyY' ||
+      +e.ctrlKey && e.which >= 96 && e.which <= 105 ||
+      e.which < 48 ||
+      e.key === 'F1' ||
+      e.key === 'F3'
+    ) {e.preventDefault()
+    }
     const m = getMap().slice().sort(sortPath)
-    const ckm = [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('')
+    const ckm = [
+      +e.ctrlKey ? 'c' : '-',
+      +e.shiftKey ? 's' : '-',
+      +e.altKey ? 'a' : '-'
+    ].join('')
 
-    ckm === '---' && e.key === 'F1' && dispatch(actions.mapAction({type: '', payload: null}))
-    ckm === '---' && e.key === 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 && dispatch(actions.mapAction({type: 'startEditAppend', payload: null}))
-    ckm === '---' && e.key === 'F3' && dispatch(actions.mapAction({type: '', payload: null}))
-    ckm === '---' && e.key === 'F5' && dispatch(actions.mapAction({type: '', payload: null}))
-    ckm === '---' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: 'insertSD', payload: null}))
-    ckm === '---' && e.key === 'Enter' && isXC(m) && dispatch(actions.mapAction({type: 'selectCD', payload: null}))
-    ckm === '-s-' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: 'insertSU', payload: null}))
-    ckm === '--a' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: 'cellify', payload: null}))
-    ckm === '---' && ['Insert','Tab'].includes(e.key) && (isXS(m) || isXR(m)) && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
-    ckm === '---' && ['Insert','Tab'].includes(e.key) && isXC(m) && dispatch(actions.mapAction({type: 'selectCO', payload: null}))
-    ckm === '---' && e.key === 'Delete' && isXS(m) && dispatch(actions.mapAction({type: 'deleteS', payload: null}))
-    ckm === '---' && e.key === 'Delete' && isXR(m) && getLastIndexR(m) > 0 && mTR(m).some(ri => !ri.selected) && dispatch(actions.mapAction({type: 'deleteLR', payload: null}))
-    ckm === '---' && e.key === 'Delete' && isXACR(m) && dispatch(actions.mapAction({type: 'deleteCR', payload: null}))
-    ckm === '---' && e.key === 'Delete' && isXACC(m) && dispatch(actions.mapAction({type: 'deleteCC', payload: null}))
-    ckm === '---' && e.code === 'Space' && isXR(m) && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
-    ckm === '---' && e.code === 'Space' && isXS(m) && getCountXCO1(m) > 0 && dispatch(actions.mapAction({type: 'selectCFF', payload: null}))
-    ckm === '---' && e.code === 'Space' && isXC(m) && getCountXSO1(m) > 0 && dispatch(actions.mapAction({type: 'selectSF', payload: null}))
-    ckm === '---' && e.code === 'Space' && isXC(m) && getCountXSO1(m) === 0 && dispatch(actions.mapAction({type: 'insertSO', payload: null}))
-    ckm === '---' && e.code === 'Space' && isXACR(m) && dispatch(actions.mapAction({type: 'selectCFfirstCol', payload: null}))
-    ckm === '---' && e.code === 'Space' && isXACC(m) && dispatch(actions.mapAction({type: 'selectCFfirstRow', payload: null}))
-    ckm === '---' && e.code === 'Backspace' && isXRS(m) && dispatch(actions.mapAction({type: 'selectXR', payload: null}))
-    ckm === '---' && e.code === 'Backspace' && isXS(m) && getX(m).path.includes('c') && dispatch(actions.mapAction({type: 'selectXSIC', payload: null}))
-    ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && dispatch(actions.mapAction({type: 'selectSI', payload: null}))
-    ckm === '---' && e.code === 'Escape' && dispatch(actions.mapAction({type: 'selectXR', payload: null}))
-    ckm === 'c--' && e.code === 'KeyA' && dispatch(actions.mapAction({type: 'selectSA', payload: null}))
-    ckm === 'c--' && e.code === 'KeyM' && dispatch(actions.mapAction({type: 'createMapInMapDialog', payload: null}))
-    ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && dispatch(actions.mapAction({type: 'copyLR', payload: null}))
-    ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && dispatch(actions.mapAction({type: 'copyS', payload: null}))
-    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getLastIndexR(m) > 0 && dispatch(actions.mapAction({type: 'cutLR', payload: null}))
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && dispatch(actions.mapAction({type: 'cutS', payload: null}))
-    ckm === 'c--' && e.code === 'KeyZ' && dispatch(actions.mapAction({type: 'redo', payload: null}))
-    ckm === 'c--' && e.code === 'KeyY' && dispatch(actions.mapAction({type: 'undo', payload: null}))
+    ckm === '---' && e.key === 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 && dispatch(actions.mapAction({type: MRT.startEditAppend, payload: null}))
+    ckm === '---' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: MRT.insertSD, payload: null}))
+    ckm === '---' && e.key === 'Enter' && isXC(m) && dispatch(actions.mapAction({type: MRT.selectCD, payload: null}))
+    ckm === '-s-' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: MRT.insertSU, payload: null}))
+    ckm === '---' && ['Insert','Tab'].includes(e.key) && mrCond(m, MRT.insertSO) && dispatch(actions.mapAction({type: MRT.insertSO, payload: null}))
+    ckm === '---' && e.key === 'Delete' && isXS(m) && dispatch(actions.mapAction({type: MRT.deleteS, payload: null}))
+    ckm === '---' && e.key === 'Delete' && isXR(m) && getLastIndexR(m) > 0 && mTR(m).some(ri => !ri.selected) && dispatch(actions.mapAction({type: MRT.deleteLR, payload: null}))
+    ckm === '---' && e.key === 'Delete' && isXACR(m) && dispatch(actions.mapAction({type: MRT.deleteCR, payload: null}))
+    ckm === '---' && e.key === 'Delete' && isXACC(m) && dispatch(actions.mapAction({type: MRT.deleteCC, payload: null}))
+    ckm === '---' && e.code === 'Space' && isXR(m) && dispatch(actions.mapAction({type: MRT.selectSO, payload: null}))
+    ckm === '---' && e.code === 'Space' && isXS(m) && getCountXCO1(m) > 0 && dispatch(actions.mapAction({type: MRT.selectCFF, payload: null}))
+    ckm === '---' && e.code === 'Space' && isXC(m) && getCountXSO1(m) > 0 && dispatch(actions.mapAction({type: MRT.selectSF, payload: null}))
+    ckm === '---' && e.code === 'Space' && isXACR(m) && dispatch(actions.mapAction({type: MRT.selectCFfirstCol, payload: null}))
+    ckm === '---' && e.code === 'Space' && isXACC(m) && dispatch(actions.mapAction({type: MRT.selectCFfirstRow, payload: null}))
+    ckm === '---' && e.code === 'Backspace' && isXRS(m) && dispatch(actions.mapAction({type: MRT.selectXR, payload: null}))
+    ckm === '---' && e.code === 'Backspace' && isXS(m) && getX(m).path.includes('c') && dispatch(actions.mapAction({type: MRT.selectXSIC, payload: null}))
+    ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && dispatch(actions.mapAction({type: MRT.selectSI, payload: null}))
+    ckm === '---' && e.code === 'Escape' && dispatch(actions.mapAction({type: MRT.selectXR, payload: null}))
+    ckm === 'c--' && e.code === 'KeyA' && dispatch(actions.mapAction({type: MRT.selectSA, payload: null}))
+    ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && dispatch(actions.mapAction({type: MRT.copyLR, payload: null}))
+    ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && dispatch(actions.mapAction({type: MRT.copyS, payload: null}))
+    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getLastIndexR(m) > 0 && dispatch(actions.mapAction({type: MRT.cutLR, payload: null}))
+    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && dispatch(actions.mapAction({type: MRT.cutS, payload: null}))
+    ckm === 'c--' && e.code === 'KeyZ' && dispatch(actions.mapAction({type: MRT.redo, payload: null}))
+    ckm === 'c--' && e.code === 'KeyY' && dispatch(actions.mapAction({type: MRT.undo, payload: null}))
 
-    ckm === '---' && e.code === 'ArrowDown' && isXS(m) && getCountQuasiSD(m) > 0 && dispatch(actions.mapAction({type: 'selectSD', payload: null}))
-    ckm === '---' && e.code === 'ArrowDown' && isXC(m) && !isXCB(m) && dispatch(actions.mapAction({type: 'selectCD', payload: null}))
-    ckm === '---' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && dispatch(actions.mapAction({type: 'selectCD', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowDown' && isXR(m) && dispatch(actions.mapAction({type: 'offsetD', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getCountXASD(m) === 0 && dispatch(actions.mapAction({type: 'moveST', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getCountXASD(m) > 0 && dispatch(actions.mapAction({type: 'moveSD', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && dispatch(actions.mapAction({type: 'moveCRD', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowDown' && isXS(m)  && getCountQuasiSD(m) > 0 && dispatch(actions.mapAction({type: 'selectSDtoo', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowDown' && isXC(m) && dispatch(actions.mapAction({type: 'selectCCSAME', payload: null}))
-    ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && dispatch(actions.mapAction({type: 'insertCRD', payload: null}))
+    ckm === '---' && e.code === 'ArrowDown' && isXS(m) && getCountQuasiSD(m) > 0 && dispatch(actions.mapAction({type: MRT.selectSD, payload: null}))
+    ckm === '---' && e.code === 'ArrowDown' && isXC(m) && !isXCB(m) && dispatch(actions.mapAction({type: MRT.selectCD, payload: null}))
+    ckm === '---' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && dispatch(actions.mapAction({type: MRT.selectCD, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowDown' && isXR(m) && dispatch(actions.mapAction({type: MRT.offsetD, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getCountXASD(m) === 0 && dispatch(actions.mapAction({type: MRT.moveST, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getCountXASD(m) > 0 && dispatch(actions.mapAction({type: MRT.moveSD, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && dispatch(actions.mapAction({type: MRT.moveCRD, payload: null}))
+    ckm === '-s-' && e.code === 'ArrowDown' && isXS(m)  && getCountQuasiSD(m) > 0 && dispatch(actions.mapAction({type: MRT.selectSDtoo, payload: null}))
+    ckm === '-s-' && e.code === 'ArrowDown' && isXC(m) && dispatch(actions.mapAction({type: MRT.selectCCSAME, payload: null}))
+    ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && dispatch(actions.mapAction({type: MRT.insertCRD, payload: null}))
 
-    ckm === '---' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && dispatch(actions.mapAction({type: 'selectSU', payload: null}))
-    ckm === '---' && e.code === 'ArrowUp' && isXC(m) && !isXCT(m) && dispatch(actions.mapAction({type: 'selectCU', payload: null}))
-    ckm === '---' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && dispatch(actions.mapAction({type: 'selectCU', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowUp' && isXR(m) && dispatch(actions.mapAction({type: 'offsetU', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getCountXASU(m) === 0 && dispatch(actions.mapAction({type: 'moveSB', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getCountXASU(m) > 0 && dispatch(actions.mapAction({type: 'moveSU', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && dispatch(actions.mapAction({type: 'moveCRU', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && dispatch(actions.mapAction({type: 'selectSUtoo', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && dispatch(actions.mapAction({type: 'selectCCSAME', payload: null}))
-    ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && dispatch(actions.mapAction({type: 'insertCRU', payload: null}))
+    ckm === '---' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && dispatch(actions.mapAction({type: MRT.selectSU, payload: null}))
+    ckm === '---' && e.code === 'ArrowUp' && isXC(m) && !isXCT(m) && dispatch(actions.mapAction({type: MRT.selectCU, payload: null}))
+    ckm === '---' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && dispatch(actions.mapAction({type: MRT.selectCU, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowUp' && isXR(m) && dispatch(actions.mapAction({type: MRT.offsetU, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getCountXASU(m) === 0 && dispatch(actions.mapAction({type: MRT.moveSB, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getCountXASU(m) > 0 && dispatch(actions.mapAction({type: MRT.moveSU, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && dispatch(actions.mapAction({type: MRT.moveCRU, payload: null}))
+    ckm === '-s-' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && dispatch(actions.mapAction({type: MRT.selectSUtoo, payload: null}))
+    ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && dispatch(actions.mapAction({type: MRT.selectCCSAME, payload: null}))
+    ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && dispatch(actions.mapAction({type: MRT.insertCRU, payload: null}))
 
-    ckm === '---' && e.code === 'ArrowRight' && isXS(m) && getCountXSO1(m) > 0 && dispatch(actions.mapAction({type: 'selectSO', payload: null}))
-    ckm === '---' && e.code === 'ArrowRight' && isXC(m) && !isXCR(m) && dispatch(actions.mapAction({type: 'selectCR', payload: null}))
-    ckm === '---' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && dispatch(actions.mapAction({type: 'selectCR', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowRight' && isXR(m) && dispatch(actions.mapAction({type: 'offsetR', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowRight' && isXASVN(m) && getCountXASU(m) > 0 && dispatch(actions.mapAction({type: 'moveSO', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && dispatch(actions.mapAction({type: 'moveCCR', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowRight' && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowRight' && isXC(m) && dispatch(actions.mapAction({type: 'selectCRSAME', payload: null}))
-    ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCR', payload: null}))
+    ckm === '---' && e.code === 'ArrowRight' && isXS(m) && getCountXSO1(m) > 0 && dispatch(actions.mapAction({type: MRT.selectSO, payload: null}))
+    ckm === '---' && e.code === 'ArrowRight' && isXC(m) && !isXCR(m) && dispatch(actions.mapAction({type: MRT.selectCR, payload: null}))
+    ckm === '---' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && dispatch(actions.mapAction({type: MRT.selectCR, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowRight' && isXR(m) && dispatch(actions.mapAction({type: MRT.offsetR, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowRight' && isXASVN(m) && getCountXASU(m) > 0 && dispatch(actions.mapAction({type: MRT.moveSO, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && dispatch(actions.mapAction({type: MRT.moveCCR, payload: null}))
+    ckm === '-s-' && e.code === 'ArrowRight' && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && dispatch(actions.mapAction({type: MRT.selectFamilyX, payload: null}))
+    ckm === '-s-' && e.code === 'ArrowRight' && isXC(m) && dispatch(actions.mapAction({type: MRT.selectCRSAME, payload: null}))
+    ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && dispatch(actions.mapAction({type: MRT.insertCCR, payload: null}))
 
-    ckm === '---' && e.code === 'ArrowLeft' && isXS(m) && !isXRS(m) && !isXR(m) && dispatch(actions.mapAction({type: 'selectSI', payload: null}))
-    ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && !isXCL(m) && dispatch(actions.mapAction({type: 'selectCL', payload: null}))
-    ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && dispatch(actions.mapAction({type: 'selectCL', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowLeft' && isXR(m) && dispatch(actions.mapAction({type: 'offsetL', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowLeft' && isXASVN(m) && !isXRS(m) && dispatch(actions.mapAction({type: 'moveSI', payload: null}))
-    ckm === 'c--' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && dispatch(actions.mapAction({type: 'moveCCL', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowLeft' && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))
-    ckm === '-s-' && e.code === 'ArrowLeft' && isXC(m) && dispatch(actions.mapAction({type: 'selectCRSAME', payload: null}))
-    ckm === '--a' && e.code === 'ArrowLeft' && isXACC(m) && dispatch(actions.mapAction({type: 'insertCCL', payload: null}))
+    ckm === '---' && e.code === 'ArrowLeft' && isXS(m) && !isXRS(m) && !isXR(m) && dispatch(actions.mapAction({type: MRT.selectSI, payload: null}))
+    ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && !isXCL(m) && dispatch(actions.mapAction({type: MRT.selectCL, payload: null}))
+    ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && dispatch(actions.mapAction({type: MRT.selectCL, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowLeft' && isXR(m) && dispatch(actions.mapAction({type: MRT.offsetL, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowLeft' && isXASVN(m) && !isXRS(m) && dispatch(actions.mapAction({type: MRT.moveSI, payload: null}))
+    ckm === 'c--' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && dispatch(actions.mapAction({type: MRT.moveCCL, payload: null}))
+    ckm === '-s-' && e.code === 'ArrowLeft' && isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && dispatch(actions.mapAction({type: MRT.selectFamilyX, payload: null}))
+    ckm === '-s-' && e.code === 'ArrowLeft' && isXC(m) && dispatch(actions.mapAction({type: MRT.selectCRSAME, payload: null}))
+    ckm === '--a' && e.code === 'ArrowLeft' && isXACC(m) && dispatch(actions.mapAction({type: MRT.insertCCL, payload: null}))
 
-    ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXS(m) && dispatch(actions.mapAction({type: 'setTextColor', payload: shortcutColors[e.which - 96]}))
-    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
-    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: 'startEditReplace', payload: null}))
+    ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXS(m) && dispatch(actions.mapAction({type: MRT.setTextColor, payload: shortcutColors[e.which - 96]}))
+    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: MRT.startEditReplace, payload: null}))
+    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && dispatch(actions.mapAction({type: MRT.startEditReplace, payload: null}))
   }
 
   const paste = (e: Event) => {
@@ -131,16 +138,16 @@ export const Window: FC = () => {
                   if (isValidMap) {
                     const isPastedLR = mapJson.at(-1).path.at(0) === 'r'
                     const isPastedS = mapJson.at(-1).path.at(0) === 's'
-                    isPastedLR && dispatch(actions.mapAction({type: 'pasteLR', payload: text}))
-                    isPastedS && isXS(m) && dispatch(actions.mapAction({type: 'pasteSO', payload: text}))
+                    isPastedLR && dispatch(actions.mapAction({type: MRT.pasteLR, payload: text}))
+                    isPastedS && isXS(m) && dispatch(actions.mapAction({type: MRT.pasteSO, payload: text}))
                   } else {
                     window.alert('invalid map')
                   }
                 } else {
                   if (isUrl(text)) {
-                    isXS(m) && dispatch(actions.mapAction({type: 'insertSOLink', payload: text}))
+                    isXS(m) && dispatch(actions.mapAction({type: MRT.insertSOLink, payload: text}))
                   } else {
-                    isXS(m) && dispatch(actions.mapAction({type: 'insertSOText', payload: text}))
+                    isXS(m) && dispatch(actions.mapAction({type: MRT.insertSOText, payload: text}))
                   }
                 }
               })
@@ -153,7 +160,7 @@ export const Window: FC = () => {
                 : 'https://mapboard-server.herokuapp.com/feta'
               fetch(address, {method: 'post', body: formData})
                 .then(response => response.json().then(response => {
-                  isXS(m) && dispatch(actions.mapAction({type: 'insertSOImage', payload: response}))
+                  isXS(m) && dispatch(actions.mapAction({type: MRT.insertSOImage, payload: response}))
                 }))
             })
           }

@@ -3,6 +3,7 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
+import {MRT} from "../../reducers/MapReducerTypes.ts"
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXR, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {AccessType, FormatMode, LineType, TextType, WidthType} from "../../state/Enums"
@@ -83,13 +84,13 @@ export const Formatter: FC = () => {
                       strokeWidth={"2%"}
                       onClick={() => {
                         const color = colorList[i][j]
-                        formatMode === FormatMode.text && dispatch(actions.mapAction({type: 'setTextColor', payload: color}))
-                        formatMode === FormatMode.sBorder && dispatch(actions.mapAction({type: 'setSBorderColor', payload: color}))
-                        formatMode === FormatMode.fBorder && isXR(m) && dispatch(actions.mapAction({type: 'setFBorderColor', payload: color}))
-                        formatMode === FormatMode.fBorder && isXS(m) && dispatch(actions.mapAction({type: 'setFBorderColor', payload: color}))
-                        formatMode === FormatMode.sFill && dispatch(actions.mapAction({type: 'setSFillColor', payload: color}))
-                        formatMode === FormatMode.fFill && dispatch(actions.mapAction({type: 'setFFillColor', payload: color}))
-                        formatMode === FormatMode.line && dispatch(actions.mapAction({type: 'setLineColor', payload: color}))
+                        formatMode === FormatMode.text && dispatch(actions.mapAction({type: MRT.setTextColor, payload: color}))
+                        formatMode === FormatMode.sBorder && dispatch(actions.mapAction({type: MRT.setSBorderColor, payload: color}))
+                        formatMode === FormatMode.fBorder && isXR(m) && dispatch(actions.mapAction({type: MRT.setFBorderColor, payload: color}))
+                        formatMode === FormatMode.fBorder && isXS(m) && dispatch(actions.mapAction({type: MRT.setFBorderColor, payload: color}))
+                        formatMode === FormatMode.sFill && dispatch(actions.mapAction({type: MRT.setSFillColor, payload: color}))
+                        formatMode === FormatMode.fFill && dispatch(actions.mapAction({type: MRT.setFFillColor, payload: color}))
+                        formatMode === FormatMode.line && dispatch(actions.mapAction({type: MRT.setLineColor, payload: color}))
                       }}
                     />
                   )
@@ -105,7 +106,7 @@ export const Formatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={TextType[getTextFontSize(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setTextFontSize', payload: TextType[value as keyof typeof TextType]}))}>
+            onValueChange={(value) => dispatch(actions.mapAction({type: MRT.setTextFontSize, payload: TextType[value as keyof typeof TextType]}))}>
             <Select.Trigger />
             <Select.Content>
               {getKeys(TextType).map((el, index) => (
@@ -118,7 +119,7 @@ export const Formatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={WidthType[getSBorderWidth(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setSBorderWidth', payload: WidthType[value as keyof typeof WidthType]}))}>
+            onValueChange={(value) => dispatch(actions.mapAction({type: MRT.setSBorderWidth, payload: WidthType[value as keyof typeof WidthType]}))}>
             <Select.Trigger />
             <Select.Content>
               {getKeys(WidthType).map((el, index) => (
@@ -131,7 +132,7 @@ export const Formatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={WidthType[getFBorderWidth(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setFBorderWidth', payload: WidthType[value as keyof typeof WidthType]}))}>
+            onValueChange={(value) => dispatch(actions.mapAction({type: MRT.setFBorderWidth, payload: WidthType[value as keyof typeof WidthType]}))}>
             <Select.Trigger />
             <Select.Content>
               {getKeys(WidthType).map((el, index) => (
@@ -144,7 +145,7 @@ export const Formatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={WidthType[getLineWidth(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setLineWidth', payload: WidthType[value as keyof typeof WidthType]}))}>
+            onValueChange={(value) => dispatch(actions.mapAction({type: MRT.setLineWidth, payload: WidthType[value as keyof typeof WidthType]}))}>
             <Select.Trigger />
             <Select.Content>
               {getKeys(WidthType).map((el, index) => (
@@ -157,7 +158,7 @@ export const Formatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={LineType[getLineType(m)]}
-            onValueChange={(value) => dispatch(actions.mapAction({type: 'setLineType', payload: LineType[value as keyof typeof LineType]}))}>
+            onValueChange={(value) => dispatch(actions.mapAction({type: MRT.setLineType, payload: LineType[value as keyof typeof LineType]}))}>
             <Select.Trigger />
             <Select.Content>
               {getKeys(LineType).map((el, index) => (
@@ -171,12 +172,12 @@ export const Formatter: FC = () => {
         <Button
           variant="outline"
           onClick={() => {
-            formatMode === FormatMode.text && dispatch(actions.mapAction({type: 'clearText', payload: null}))
-            formatMode === FormatMode.sBorder && dispatch(actions.mapAction({type: 'clearSBorder', payload: null}))
-            formatMode === FormatMode.fBorder && dispatch(actions.mapAction({type: 'clearFBorder', payload: null}))
-            formatMode === FormatMode.sFill && dispatch(actions.mapAction({type: 'clearSFill', payload: null}))
-            formatMode === FormatMode.fFill && dispatch(actions.mapAction({type: 'clearFFill', payload: null}))
-            formatMode === FormatMode.line && dispatch(actions.mapAction({type: 'clearLine', payload: null}))
+            formatMode === FormatMode.text && dispatch(actions.mapAction({type: MRT.clearText, payload: null}))
+            formatMode === FormatMode.sBorder && dispatch(actions.mapAction({type: MRT.clearSBorder, payload: null}))
+            formatMode === FormatMode.fBorder && dispatch(actions.mapAction({type: MRT.clearFBorder, payload: null}))
+            formatMode === FormatMode.sFill && dispatch(actions.mapAction({type: MRT.clearSFill, payload: null}))
+            formatMode === FormatMode.fFill && dispatch(actions.mapAction({type: MRT.clearFFill, payload: null}))
+            formatMode === FormatMode.line && dispatch(actions.mapAction({type: MRT.clearLine, payload: null}))
           }}>
           {'RESET'}
         </Button>
