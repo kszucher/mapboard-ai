@@ -5,7 +5,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {AccessType, DialogState, AlertDialogState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
-import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
+import {IconButton, Theme, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
 import {Spinner} from "../assets/Spinner"
 import {RootExtraction} from "../dialog/RootExtraction.tsx"
@@ -89,73 +89,71 @@ export const Editor: FC = () => {
                 className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
                 <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
               </div>
-              <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center">
-                <Flex gap="1" align="center">
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger>
-                      <IconButton variant="soft" color="gray">
-                        <ChevronDown/>
-                      </IconButton>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content>
-                      {tabMapIdList.map((el: string, index) => (
-                        <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                          mapId: el,
-                          frameId: ''
-                        }))}>
-                          {tabMapNameList[index]?.name}
-                        </DropdownMenu.Item>
-                      ))}
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
-                  <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                    mapId: breadcrumbMapIdList[0],
-                    frameId: ''
-                  }))}>
-                    {breadcrumbMapNameList[0].name}
-                  </Button>
-                  {breadcrumbMapNameList.slice(1).map((el, index) => (
-                    <Fragment key={index}>
-                      <ChevronRight/>
-                      <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                        mapId: breadcrumbMapIdList[index + 1],
+              <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">
+                <DropdownMenu.Root>
+                  <DropdownMenu.Trigger>
+                    <IconButton variant="soft" color="gray">
+                      <ChevronDown/>
+                    </IconButton>
+                  </DropdownMenu.Trigger>
+                  <DropdownMenu.Content>
+                    {tabMapIdList.map((el: string, index) => (
+                      <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                        mapId: el,
                         frameId: ''
                       }))}>
-                        {el.name}
-                      </Button>
-                    </Fragment>
-                  ))}
-                  {frameId !== '' &&
-                    <>
-                      <ChevronRight/>
-                      <Button variant='solid' onClick={() => {
-                      }}>
-                        {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
-                      </Button>
-                      <IconButton
-                        variant="soft"
-                        color="gray"
-                        disabled={frameIdPosition === 0 || isFetching}
-                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                          mapId: getMapId(),
-                          frameId: prevFrameId
-                        }))}>
-                        <CircleChevronLeft/>
-                      </IconButton>
-                      <IconButton
-                        variant="soft"
-                        color="gray"
-                        disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
-                        onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                          mapId: getMapId(),
-                          frameId: nextFrameId
-                        }))}>
-                        <CircleChevronRight/>
-                      </IconButton>
-                    </>
-                  }
-                  <MapActions/>
-                </Flex>
+                        {tabMapNameList[index]?.name}
+                      </DropdownMenu.Item>
+                    ))}
+                  </DropdownMenu.Content>
+                </DropdownMenu.Root>
+                <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                  mapId: breadcrumbMapIdList[0],
+                  frameId: ''
+                }))}>
+                  {breadcrumbMapNameList[0].name}
+                </Button>
+                {breadcrumbMapNameList.slice(1).map((el, index) => (
+                  <Fragment key={index}>
+                    <ChevronRight/>
+                    <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                      mapId: breadcrumbMapIdList[index + 1],
+                      frameId: ''
+                    }))}>
+                      {el.name}
+                    </Button>
+                  </Fragment>
+                ))}
+                {frameId !== '' &&
+                  <>
+                    <ChevronRight/>
+                    <Button variant='solid' onClick={() => {
+                    }}>
+                      {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
+                    </Button>
+                    <IconButton
+                      variant="soft"
+                      color="gray"
+                      disabled={frameIdPosition === 0 || isFetching}
+                      onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                        mapId: getMapId(),
+                        frameId: prevFrameId
+                      }))}>
+                      <CircleChevronLeft/>
+                    </IconButton>
+                    <IconButton
+                      variant="soft"
+                      color="gray"
+                      disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
+                      onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+                        mapId: getMapId(),
+                        frameId: nextFrameId
+                      }))}>
+                      <CircleChevronRight/>
+                    </IconButton>
+                  </>
+                }
+                <MapActions/>
               </div>
               <div className="fixed flex right-1 gap-6 h-[40px]">
                 <div className="flex items-center gap-1">
