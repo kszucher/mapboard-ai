@@ -1,4 +1,4 @@
-import {FC} from "react"
+import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {getColors} from "../assets/Colors"
@@ -6,7 +6,6 @@ import {getCountTCO1, getX, isXR, isXS, mT} from "../../selectors/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
-import {T} from "../../state/MapStateTypes"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgSelectionSecondary: FC = () => {
@@ -16,20 +15,18 @@ export const MapSvgSelectionSecondary: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g>
-      {mT(m).map((t: T) => (
-        <g key={t.nodeId}>
-          {!selectionRectCoords.length && isXR(m) && t.selected && t.selected !== getX(m).selected &&
-            <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', -2)}/>
-          }
-          {!selectionRectCoords.length && isXS(m) && t.selected && t.selected !== getX(m).selected && (t.sBorderColor || t.sFillColor || t.taskStatus > 1 || getCountTCO1(m, t)) &&
-            <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', 4)}/>
-          }
-          {!selectionRectCoords.length && isXS(m) && t.selected && t.selected !== getX(m).selected && !(t.sBorderColor || t.sFillColor || t.taskStatus > 1 || getCountTCO1(m, t)) &&
-            <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', -2)}/>
-          }
-        </g>
-      ))}
-    </g>
+    mT(m).map(ti => (
+      <Fragment key={ti.nodeId}>
+        {!selectionRectCoords.length && isXR(m) && ti.selected && ti.selected !== getX(m).selected &&
+          <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', -2)}/>
+        }
+        {!selectionRectCoords.length && isXS(m) && ti.selected && ti.selected !== getX(m).selected && (ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || getCountTCO1(m, ti)) &&
+          <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', 4)}/>
+        }
+        {!selectionRectCoords.length && isXS(m) && ti.selected && ti.selected !== getX(m).selected && !(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || getCountTCO1(m, ti)) &&
+          <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', -2)}/>
+        }
+      </Fragment>
+    ))
   )
 }

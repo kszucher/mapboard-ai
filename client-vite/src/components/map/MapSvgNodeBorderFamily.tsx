@@ -8,20 +8,16 @@ import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 export const MapSvgNodeBorderFamily: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   return (
-    <g>
-      {mTS(m).map(ti => (
-        <g key={ti.nodeId}>
-          {ti.fBorderColor &&
-            <path
-              d={getPolygonPath(m, ti, 'sFamily', 0)}
-              stroke={ti.fBorderColor}
-              strokeWidth={ti.fBorderWidth}
-              fill={'none'}
-              {...pathCommonProps}
-            />
-          }
-        </g>
-      ))}
-    </g>
+    mTS(m).map(ti => (
+      ti.fBorderColor &&
+      <path
+        key={`${ti.nodeId}_fBorderColor`}
+        d={getPolygonPath(m, ti, 'sFamily', 0)}
+        stroke={ti.fBorderColor}
+        strokeWidth={ti.fBorderWidth}
+        fill={'none'}
+        {...pathCommonProps}
+      />
+    ))
   )
 }

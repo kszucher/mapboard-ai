@@ -1,4 +1,4 @@
-import {FC} from "react"
+import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import { mTR, isExistingLink, mL} from "../../selectors/MapQueries.ts"
@@ -14,10 +14,10 @@ export const MapSvgRootConnectors: FC = () => {
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <g>
+    <Fragment>
       {
         mL(m).map((l: L) => (
-          <g key={`${l.nodeId}_inter_root_bezier`}>
+          <Fragment key={`${l.nodeId}_inter_root_bezier`}>
             <path
               d={getBezierLinePath('M', getRootLinePath(m, l))}
               strokeWidth={1}
@@ -25,13 +25,12 @@ export const MapSvgRootConnectors: FC = () => {
               fill={'none'}
               {...pathCommonProps}
             />
-          </g>
+          </Fragment>
         ))
       }
-      {
-        connectionHelpersVisible &&
+      {connectionHelpersVisible &&
         mL(m).map((l: L) => (
-          <g key={`${l.nodeId}_inter_root_bezier_trash`}>
+          <Fragment key={`${l.nodeId}_inter_root_bezier_trash`}>
             {
               <g
                 width="24" height="24" viewBox="0 0 24 24"
@@ -51,13 +50,12 @@ export const MapSvgRootConnectors: FC = () => {
                 }}/>
               </g>
             }
-          </g>
+          </Fragment>
         ))
       }
-      {
-        connectionHelpersVisible &&
+      {connectionHelpersVisible &&
         mTR(m).map((t: T) => (
-          <g key={`${t.nodeId}_root_connector`}>
+          <Fragment key={`${t.nodeId}_root_connector`}>
             {
               [
                 {side: 'L', x: t.nodeStartX, y: t.nodeStartY + t.selfH / 2 - 12},
@@ -96,9 +94,9 @@ export const MapSvgRootConnectors: FC = () => {
                   />
                 )
               )}
-          </g>
+          </Fragment>
         ))
       }
-    </g>
+    </Fragment>
   )
 }

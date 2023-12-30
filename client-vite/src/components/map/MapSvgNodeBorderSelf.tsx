@@ -1,4 +1,4 @@
-import {FC} from "react"
+import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
 import {getCountTCO1, mTS} from "../../selectors/MapQueries.ts"
@@ -14,38 +14,39 @@ export const MapSvgNodeBorderSelf: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g>
-      {mTS(m).map(ti => (
-        <g key={ti.nodeId}>
-          {ti.sBorderColor && getCountTCO1(m, ti) === 0 &&
-            <path
-              d={getArcPath(ti, -2, true)}
-              stroke={ti.sBorderColor}
-              strokeWidth={ti.sBorderWidth}
-              fill={'none'}
-              {...pathCommonProps}
-            />
-          }
-          {ti.sBorderColor && getCountTCO1(m, ti) > 0 &&
-            <path
-              d={getArcPath(ti, 0, false)}
-              stroke={ti.sBorderColor}
-              strokeWidth={ti.sBorderWidth}
-              fill={'none'}
-              {...pathCommonProps}
-            />
-          }
-          {!ti.sBorderColor && getCountTCO1(m, ti) > 0 &&
-            <path
-              d={getArcPath(ti, 0, false)}
-              stroke={C.TABLE_FRAME_COLOR}
-              strokeWidth={1}
-              fill={'none'}
-              {...pathCommonProps}
-            />
-          }
-        </g>
-      ))}
-    </g>
+    mTS(m).map(ti => (
+      <Fragment key={ti.nodeId}>
+        {ti.sBorderColor && getCountTCO1(m, ti) === 0 &&
+          <path
+            key={`${ti.nodeId}_sBorderColor`}
+            d={getArcPath(ti, -2, true)}
+            stroke={ti.sBorderColor}
+            strokeWidth={ti.sBorderWidth}
+            fill={'none'}
+            {...pathCommonProps}
+          />
+        }
+        {ti.sBorderColor && getCountTCO1(m, ti) > 0 &&
+          <path
+            key={`${ti.nodeId}_sBorderColor`}
+            d={getArcPath(ti, 0, false)}
+            stroke={ti.sBorderColor}
+            strokeWidth={ti.sBorderWidth}
+            fill={'none'}
+            {...pathCommonProps}
+          />
+        }
+        {!ti.sBorderColor && getCountTCO1(m, ti) > 0 &&
+          <path
+            key={`${ti.nodeId}_sBorderColor`}
+            d={getArcPath(ti, 0, false)}
+            stroke={C.TABLE_FRAME_COLOR}
+            strokeWidth={1}
+            fill={'none'}
+            {...pathCommonProps}
+          />
+        }
+      </Fragment>
+    ))
   )
 }

@@ -6,7 +6,6 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mTR} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode} from "../../state/Enums.ts"
-import {T} from "../../state/MapStateTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
 export const MapSvgRootBackground: FC = () => {
@@ -16,34 +15,31 @@ export const MapSvgRootBackground: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <g>
-      {mTR(m).map((ti: T) => (
-        <rect
-          {...{className: ti.selected ? "hover:cursor-default" : "hover:cursor-default"}}
-          key={`${ti.nodeId}_svg_root_background`}
-          x={ti.nodeStartX}
-          y={ti.nodeStartY}
-          width={ti.selfW}
-          height={ti.selfH}
-          rx={16}
-          ry={16}
-          fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
-          style={{
-            transition: '0.3s ease-out',
-            pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE ? 'none' : 'auto'
-          }}
-          onMouseDown={(e) => {
-            e.stopPropagation()
-            if (e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-              !e.ctrlKey && dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
-              e.ctrlKey && dispatch(actions.mapAction({type: 'selectTtoo', payload: {path: ti.path}}))
-            }
-            if (e.buttons === 4) {
-              e.preventDefault()
-            }
-          }}
-        />
-      ))}
-    </g>
+    mTR(m).map(ti => (
+      <rect
+        key={`${ti.nodeId}_svg_root_background`}
+        x={ti.nodeStartX}
+        y={ti.nodeStartY}
+        width={ti.selfW}
+        height={ti.selfH}
+        rx={16}
+        ry={16}
+        fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
+        style={{
+          transition: '0.3s ease-out',
+          pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE ? 'none' : 'auto'
+        }}
+        onMouseDown={(e) => {
+          e.stopPropagation()
+          if (e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+            !e.ctrlKey && dispatch(actions.mapAction({type: 'selectT', payload: {path: ti.path}}))
+            e.ctrlKey && dispatch(actions.mapAction({type: 'selectTtoo', payload: {path: ti.path}}))
+          }
+          if (e.buttons === 4) {
+            e.preventDefault()
+          }
+        }}
+      />
+    ))
   )
 }

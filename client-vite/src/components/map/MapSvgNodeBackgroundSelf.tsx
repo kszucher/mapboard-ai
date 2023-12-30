@@ -6,7 +6,6 @@ import {getColors} from "../assets/Colors"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
-import {T} from "../../state/MapStateTypes"
 import {getArcPath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgNodeBackgroundSelf: FC = () => {
@@ -15,18 +14,13 @@ export const MapSvgNodeBackgroundSelf: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g>
-      {mT(m).map((t: T) => (
-        <g key={t.nodeId}>
-          {(t.sFillColor || t.taskStatus > 1) &&
-            <path
-              d={getArcPath(t, -2, true)}
-              fill={t.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(t.taskStatus - 2) : t.sFillColor}
-              {...pathCommonProps}
-            />
-          }
-        </g>
-      ))}
-    </g>
+    mT(m).map(ti => (ti.sFillColor || ti.taskStatus > 1) &&
+      <path
+        key={`${ti.nodeId}_sFillColor`}
+        d={getArcPath(ti, -2, true)}
+        fill={ti.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(ti.taskStatus - 2) : ti.sFillColor}
+        {...pathCommonProps}
+      />
+    )
   )
 }

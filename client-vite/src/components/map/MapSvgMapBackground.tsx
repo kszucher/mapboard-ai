@@ -9,22 +9,19 @@ export const MapSvgMapBackground: FC = () => {
   const g = getG(m)
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   return (
-    <g>
-      {connectionHelpersVisible &&
-        <rect
-          key={`${g.nodeId}_svg_map_background`}
-          x={0}
-          y={0}
-          width={g.selfW}
-          height={g.selfH}
-          rx={0}
-          ry={0}
-          fill={'none'}
-          stroke={'#dddddd'}
-          strokeWidth={0.5}
-          style={{transition: '0.3s ease-out'}}
-        />
-      }
-    </g>
+    connectionHelpersVisible &&
+    <rect
+      key={`${g.nodeId}_svg_map_background`}
+      x={0}
+      y={0}
+      width={g.selfW}
+      height={g.selfH}
+      rx={0}
+      ry={0}
+      fill={'none'}
+      stroke={'#dddddd'}
+      strokeWidth={0.5}
+      style={{transition: '0.3s ease-out'}}
+    />
   )
 }

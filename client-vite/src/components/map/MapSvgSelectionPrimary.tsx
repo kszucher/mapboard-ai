@@ -1,4 +1,4 @@
-import {FC} from "react"
+import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import { useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {getColors} from "../assets/Colors"
@@ -17,7 +17,7 @@ export const MapSvgSelectionPrimary: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g>
+    <Fragment>
       {!selectionRectCoords.length && isXR(m) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', -2)}/>
       }
@@ -33,6 +33,6 @@ export const MapSvgSelectionPrimary: FC = () => {
       {!selectionRectCoords.length && (isXC(m) || isXACR(m) || isXACC(m)) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'c', 4)}/>
       }
-    </g>
+    </Fragment>
   )
 }

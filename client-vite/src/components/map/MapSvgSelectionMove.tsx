@@ -1,4 +1,4 @@
-import {FC} from "react"
+import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
@@ -13,7 +13,7 @@ export const MapSvgSelectionMove: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g>
+    <Fragment>
       {moveCoords.length &&
         <path
           d={getBezierLinePath('M', getBezierLinePoints(moveCoords))}
@@ -36,6 +36,6 @@ export const MapSvgSelectionMove: FC = () => {
           strokeWidth={5}
         />
       }
-    </g>
+    </Fragment>
   )
 }

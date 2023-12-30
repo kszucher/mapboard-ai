@@ -1,4 +1,4 @@
-import {FC} from "react"
+import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {getColors} from "../assets/Colors"
@@ -15,9 +15,9 @@ export const MapSvgNodeAttributes: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g>
+    <Fragment>
       {mTS(m).map(ti => (
-        <g key={ti.nodeId}>
+        <Fragment key={ti.nodeId}>
           {!isRS(ti.path) && !isCS(ti.path) && getCountTCO1(m, ti) === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI1(pm, ti)
@@ -54,10 +54,10 @@ export const MapSvgNodeAttributes: FC = () => {
               {...pathCommonProps}
             />
           }
-        </g>
+        </Fragment>
       ))}
       {mTC(m).map(ti => (
-        <g key={ti.nodeId}>
+        <Fragment key={ti.nodeId}>
           {!isRSC(ti.path) && !isCSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti)
@@ -81,8 +81,8 @@ export const MapSvgNodeAttributes: FC = () => {
               }
             </path>
           }
-        </g>
+        </Fragment>
       ))}
-    </g>
+    </Fragment>
   )
 }

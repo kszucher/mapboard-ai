@@ -1,5 +1,5 @@
 import {Dialog} from "@radix-ui/themes"
-import {FC, ReactNode} from "react"
+import {FC, Fragment, ReactNode} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mTR} from "../../selectors/MapQueries.ts"
@@ -36,25 +36,19 @@ export const MapSvgNodeIcons: FC = () => {
   const m = useSelector((state: RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (
-    <g>
-      {mTR(m).map((t: T) => (
-        <g key={t.nodeId}>
-          {t.controlType === ControlType.INGESTION &&
-            <g>
-              <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 -12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
-                <ArrowUp/>
-              </DecorationIcon>
-            </g>
-          }
-          {t.controlType === ControlType.EXTRACTION &&
-            <g>
-              <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 - 12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
-                <PlayerPlayFilled/>
-              </DecorationIcon>
-            </g>
-          }
-        </g>
-      ))}
-    </g>
+    mTR(m).map((t: T) => (
+      <Fragment key={t.nodeId}>
+        {t.controlType === ControlType.INGESTION &&
+          <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 -12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
+            <ArrowUp/>
+          </DecorationIcon>
+        }
+        {t.controlType === ControlType.EXTRACTION &&
+          <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 - 12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
+            <PlayerPlayFilled/>
+          </DecorationIcon>
+        }
+      </Fragment>
+    ))
   )
 }

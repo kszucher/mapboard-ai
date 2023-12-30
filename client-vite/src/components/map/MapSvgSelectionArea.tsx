@@ -11,22 +11,17 @@ export const MapSvgSelectionArea: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    <g>
-      {
-        selectionRectCoords.length &&
-        <rect
-          x={selectionRectCoords[0]}
-          y={selectionRectCoords[1]}
-          width={selectionRectCoords[2]}
-          height={selectionRectCoords[3]}
-          rx={8}
-          ry={8}
-          fill={C.SELECTION_RECT_COLOR}
-          fillOpacity={0.05}
-          strokeWidth={2}
-        >
-        </rect>
-      }
-    </g>
+    selectionRectCoords.length &&
+    <rect
+      x={selectionRectCoords[0]}
+      y={selectionRectCoords[1]}
+      width={selectionRectCoords[2]}
+      height={selectionRectCoords[3]}
+      rx={8}
+      ry={8}
+      fill={C.SELECTION_RECT_COLOR}
+      fillOpacity={0.05}
+      strokeWidth={2}
+    />
   )
 }
