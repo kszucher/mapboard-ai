@@ -9,7 +9,7 @@ import {RootState} from "../../reducers/EditorReducer"
 import {T} from "../../state/MapStateTypes"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
-export const MapSvgLayer4SelectionSecondary: FC = () => {
+export const MapSvgSelectionSecondary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const selectionRectCoords = useSelector((state: RootState) => state.editor.selectionRectCoords)
   const { data } = useOpenWorkspaceQuery()

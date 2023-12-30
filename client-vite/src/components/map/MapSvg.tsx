@@ -3,17 +3,17 @@ import {useSelector} from "react-redux"
 import {RootState} from "../../reducers/EditorReducer"
 import {getG} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {MapSvgLayer0RootBackground} from "./MapSvgLayer0RootBackground"
-import {MapSvgLayer10Connections} from "./MapSvgLayer10Connections"
-import {MapSvgLayer1NodeFamilyBackground} from "./MapSvgLayer1NodeFamilyBackground"
-import {MapSvgLayer2NodeBackground} from "./MapSvgLayer2NodeBackground"
-import {MapSvgLayer3NodeAttributes} from "./MapSvgLayer3NodeAttributes"
-import {MapSvgLayer4SelectionSecondary} from "./MapSvgLayer4SelectionSecondary"
-import {MapSvgLayer5SelectionPrimary} from "./MapSvgLayer5SelectionPrimary"
-import {MapSvgLayer6SelectionPreview} from "./MapSvgLayer6SelectionPreview"
-import {MapSvgLayer7SelectionArea} from "./MapSvgLayer7SelectionArea"
-import {MapSvgLayer8SelectionMove} from "./MapSvgLayer8SelectionMove"
-import {MapSvgLayer9DecorationIcons} from "./MapSvgLayer9DecorationIcons"
+import {MapSvgRootBackground} from "./MapSvgRootBackground.tsx"
+import {MapSvgConnections} from "./MapSvgConnections.tsx"
+import {MapSvgNodeFamilyBackground} from "./MapSvgNodeFamilyBackground.tsx"
+import {MapSvgNodeBackground} from "./MapSvgNodeBackground.tsx"
+import {MapSvgNodeAttributes} from "./MapSvgNodeAttributes.tsx"
+import {MapSvgSelectionSecondary} from "./MapSvgSelectionSecondary.tsx"
+import {MapSvgSelectionPrimary} from "./MapSvgSelectionPrimary.tsx"
+import {MapSvgSelectionPreview} from "./MapSvgSelectionPreview.tsx"
+import {MapSvgSelectionArea} from "./MapSvgSelectionArea.tsx"
+import {MapSvgSelectionMove} from "./MapSvgSelectionMove.tsx"
+import {MapSvgDecorationIcons} from "./MapSvgDecorationIcons.tsx"
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -25,17 +25,17 @@ export const MapSvg: FC = () => {
       height={g.selfH}
       style={{transition: '0.3s ease-out'}}
     >
-      <MapSvgLayer0RootBackground/>
-      <MapSvgLayer1NodeFamilyBackground/>
-      <MapSvgLayer2NodeBackground/>
-      <MapSvgLayer3NodeAttributes/>
-      <MapSvgLayer4SelectionSecondary/>
-      <MapSvgLayer5SelectionPrimary/>
-      <MapSvgLayer6SelectionPreview/>
-      <MapSvgLayer7SelectionArea/>
-      <MapSvgLayer8SelectionMove/>
-      <MapSvgLayer9DecorationIcons/>
-      <MapSvgLayer10Connections/>
+      <MapSvgRootBackground/>
+      <MapSvgNodeFamilyBackground/>
+      <MapSvgNodeBackground/>
+      <MapSvgNodeAttributes/>
+      <MapSvgSelectionSecondary/>
+      <MapSvgSelectionPrimary/>
+      <MapSvgSelectionPreview/>
+      <MapSvgSelectionArea/>
+      <MapSvgSelectionMove/>
+      <MapSvgDecorationIcons/>
+      <MapSvgConnections/>
     </svg>
   )
 }

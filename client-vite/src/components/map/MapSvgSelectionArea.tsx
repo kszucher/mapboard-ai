@@ -5,7 +5,7 @@ import {getColors} from "../assets/Colors"
 import {RootState} from "../../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
-export const MapSvgLayer7SelectionArea: FC = () => {
+export const MapSvgSelectionArea: FC = () => {
   const selectionRectCoords = useSelector((state: RootState) => state.editor.selectionRectCoords)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

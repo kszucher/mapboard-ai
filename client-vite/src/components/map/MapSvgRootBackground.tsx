@@ -11,7 +11,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {adjust} from "../../utils/Utils.ts"
 import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
 
-export const MapSvgLayer0RootBackground: FC = () => {
+export const MapSvgRootBackground: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)

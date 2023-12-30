@@ -9,7 +9,7 @@ import {RootState} from "../../reducers/EditorReducer"
 import {T} from "../../state/MapStateTypes"
 import {getArcPath, pathCommonProps} from "./MapSvgUtils"
 
-export const MapSvgLayer2NodeBackground: FC = () => {
+export const MapSvgNodeBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

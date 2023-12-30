@@ -11,7 +11,7 @@ import {mSelector, pmSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getArcPath, getGridPath, getLinearLinePath, getNodeLinePath, getPolygonPath, getTaskRadius, getTaskStartPoint, pathCommonProps} from "./MapSvgUtils"
 
-export const MapSvgLayer3NodeAttributes: FC = () => {
+export const MapSvgNodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const pm = useSelector((state:RootState) => pmSelector(state))
   const g = getG(m)
