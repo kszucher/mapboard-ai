@@ -3,7 +3,7 @@ import {M, MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
 import {mapReducerAtomic} from "./MapReducer"
-import {MRT} from "./MapReducerEnum.ts"
+import {MR} from "./MapReducerEnum.ts"
 
 describe("MapDeleteTests", () => {
   test('deleteLR', () => {
@@ -27,7 +27,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'te', path: ['r', 1], offsetW: 440, offsetH: 550},
       {nodeId: 'tf', path: ['r', 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MRT.deleteLR, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteLR, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
   test('deleteS', () => {
     const test = [
@@ -54,7 +54,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'tk', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'tn', path: ['r', 0, 's', 0, 's', 0, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MRT.deleteS, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteS, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
   test('deleteCR', () => {
     const test = [
@@ -79,7 +79,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 2},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MRT.deleteCR, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteCR, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
   test('deleteCC', () => {
     const test = [
@@ -104,6 +104,6 @@ describe("MapDeleteTests", () => {
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 2},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MRT.deleteCC, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteCC, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
 })

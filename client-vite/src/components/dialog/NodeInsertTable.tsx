@@ -2,7 +2,7 @@ import {Button, Dialog, Flex, Grid, Select, Text} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
-import {MRT} from "../../reducers/MapReducerEnum.ts"
+import {MR} from "../../reducers/MapReducerEnum.ts"
 import {isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
@@ -44,7 +44,7 @@ export const NodeInsertTable = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => isXS(m) && dispatch(actions.mapAction({type: MRT.insertSOTable, payload: {rowLen: row, colLen: col}}))}>
+          <Button onClick={() => isXS(m) && dispatch(actions.mapAction({type: MR.insertSOTable, payload: {rowLen: row, colLen: col}}))}>
             {'OK'}
           </Button>
         </Dialog.Close>

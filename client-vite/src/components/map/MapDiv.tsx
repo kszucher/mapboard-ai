@@ -5,7 +5,7 @@ import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {MRT} from "../../reducers/MapReducerEnum.ts"
+import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getCountTCO1, getG, getNodeById, getX, isR, isS, isXR, isXS, mTS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode} from "../../state/Enums.ts";
@@ -43,7 +43,7 @@ export const MapDiv: FC = () => {
     mermaid.run({
       nodes: document.querySelectorAll('.mermaidNode'),
       postRenderCallback: () => {
-        dispatch(actions.mapAction({type: MRT.clearDimensions, payload: null}))
+        dispatch(actions.mapAction({type: MR.clearDimensions, payload: null}))
       }
     })
   }, [m])
@@ -91,7 +91,7 @@ export const MapDiv: FC = () => {
             setEndOfContentEditable(e.currentTarget)
           }}
           onBlur={() => {
-            dispatch(actions.mapAction({type: MRT.removeMapListEntriesOfEdit, payload: null}))
+            dispatch(actions.mapAction({type: MR.removeMapListEntriesOfEdit, payload: null}))
           }}
           onMouseDown={(e) => {
             e.stopPropagation()
@@ -104,21 +104,21 @@ export const MapDiv: FC = () => {
                 window.focus()
               } else {
                 if (leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-                  !e.ctrlKey && dispatch(actions.mapAction({type: MRT.selectT, payload: {path: ti.path}}))
-                  e.ctrlKey && dispatch(actions.mapAction({type: MRT.selectTtoo, payload: {path: ti.path}}))
+                  !e.ctrlKey && dispatch(actions.mapAction({type: MR.selectT, payload: {path: ti.path}}))
+                  e.ctrlKey && dispatch(actions.mapAction({type: MR.selectTtoo, payload: {path: ti.path}}))
                 }
                 const abortController = new AbortController()
                 const { signal } = abortController
                 window.addEventListener('mousemove', (e) => {
                   e.preventDefault()
                   didMove = true
-                  !isXR(m) && dispatch(actions.mapAction({type: MRT.moveByDragPreview, payload: {t: ti, e}}))
+                  !isXR(m) && dispatch(actions.mapAction({type: MR.moveByDragPreview, payload: {t: ti, e}}))
                 }, { signal })
                 window.addEventListener('mouseup', (e) => {
                   abortController.abort()
                   e.preventDefault()
                   if (didMove) {
-                    !isXR(m) && dispatch(actions.mapAction({type: MRT.moveByDrag, payload: {t: ti, e}}))
+                    !isXR(m) && dispatch(actions.mapAction({type: MR.moveByDrag, payload: {t: ti, e}}))
                   }
                 }, { signal })
               }
@@ -126,34 +126,34 @@ export const MapDiv: FC = () => {
               e.preventDefault()
             } else if (e.buttons === 2) {
               if ((isR(ti.path) || isS(ti.path)) && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-                dispatch(actions.mapAction({type: MRT.selectT, payload: {path: ti.path}}))
+                dispatch(actions.mapAction({type: MR.selectT, payload: {path: ti.path}}))
               }
             }
           }}
           onDoubleClick={(e) => {
             e.stopPropagation()
             if (isXS(m) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-              dispatch(actions.mapAction({type: MRT.startEditAppend, payload: null}))
+              dispatch(actions.mapAction({type: MR.startEditAppend, payload: null}))
             }
           }}
           onKeyDown={(e) => {
             e.stopPropagation()
             if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
-              dispatch(actions.mapAction({type: MRT.removeMapListEntriesOfEdit, payload: null}))
+              dispatch(actions.mapAction({type: MR.removeMapListEntriesOfEdit, payload: null}))
             }
             if (['Insert','Tab'].includes(e.key)) {
-              isXS(m) || isXR(m) && dispatch(actions.mapAction({type: MRT.insertSO, payload: null}))
+              isXS(m) || isXR(m) && dispatch(actions.mapAction({type: MR.insertSO, payload: null}))
             }
           }}
           onInput={(e) => {
-            dispatch(actions.mapAction({type: MRT.setContentText, payload: {content: e.currentTarget.innerHTML}}))
+            dispatch(actions.mapAction({type: MR.setContentText, payload: {content: e.currentTarget.innerHTML}}))
           }}
           onPaste={(e) => {
             e.preventDefault()
             const pasted = e.clipboardData.getData('Text')
             e.currentTarget.innerHTML += pasted
             setEndOfContentEditable(e.currentTarget)
-            dispatch(actions.mapAction({type: MRT.setContentText, payload: {content: e.currentTarget.innerHTML}}))
+            dispatch(actions.mapAction({type: MR.setContentText, payload: {content: e.currentTarget.innerHTML}}))
           }}
         >
         </div>

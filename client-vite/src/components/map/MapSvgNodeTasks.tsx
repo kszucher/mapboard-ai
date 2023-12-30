@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {MRT} from "../../reducers/MapReducerEnum.ts"
+import {MR} from "../../reducers/MapReducerEnum.ts"
 import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP} from "../../state/Consts"
 import {getColors} from "../assets/Colors"
@@ -54,7 +54,7 @@ export const MapSvgNodeTasks: FC = () => {
             onMouseDown={(e) => {
               e.preventDefault()
               e.stopPropagation()
-              dispatch(actions.mapAction({type: MRT.setTaskStatus, payload: {taskStatus: i + 1, nodeId: ti.nodeId}}))
+              dispatch(actions.mapAction({type: MR.setTaskStatus, payload: {taskStatus: i + 1, nodeId: ti.nodeId}}))
             }}
           />
         ))}

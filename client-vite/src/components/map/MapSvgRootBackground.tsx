@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {MRT} from "../../reducers/MapReducerEnum.ts"
+import {MR} from "../../reducers/MapReducerEnum.ts"
 import {mTR} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode} from "../../state/Enums.ts"
@@ -33,8 +33,8 @@ export const MapSvgRootBackground: FC = () => {
         onMouseDown={(e) => {
           e.stopPropagation()
           if (e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-            !e.ctrlKey && dispatch(actions.mapAction({type: MRT.selectT, payload: {path: ti.path}}))
-            e.ctrlKey && dispatch(actions.mapAction({type: MRT.selectTtoo, payload: {path: ti.path}}))
+            !e.ctrlKey && dispatch(actions.mapAction({type: MR.selectT, payload: {path: ti.path}}))
+            e.ctrlKey && dispatch(actions.mapAction({type: MR.selectTtoo, payload: {path: ti.path}}))
           }
           if (e.buttons === 4) {
             e.preventDefault()

@@ -1,4 +1,4 @@
-export enum MRT {
+export enum MR {
   undo = 'undo',
   redo = 'redo',
   saveView = 'saveView',

@@ -2,7 +2,7 @@ import {FC} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {MRT} from "../../reducers/MapReducerEnum.ts"
+import {MR} from "../../reducers/MapReducerEnum.ts"
 import {AccessType} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {IconButton} from "@radix-ui/themes"
@@ -49,14 +49,14 @@ export const EditorAppBarRight: FC = () => {
           variant="solid"
           color="gray"
           disabled={undoDisabled}
-          onClick={() => dispatch(actions.mapAction({type: MRT.undo, payload: null}))}>
+          onClick={() => dispatch(actions.mapAction({type: MR.undo, payload: null}))}>
           <ArrowBackUp/>
         </IconButton>
         <IconButton
           variant="solid"
           color="gray"
           disabled={redoDisabled}
-          onClick={() => dispatch(actions.mapAction({type: MRT.redo, payload: null}))}>
+          onClick={() => dispatch(actions.mapAction({type: MR.redo, payload: null}))}>
           <ArrowForwardUp/>
         </IconButton>
       </div>
