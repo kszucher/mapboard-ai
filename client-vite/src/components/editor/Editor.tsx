@@ -7,7 +7,6 @@ import {AccessType, DialogState, AlertDialogState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 import {IconButton, Theme, Flex, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
-import {ChevronDownIcon, ChevronRightIcon, CircleChevronLeftIcon, CircleChevronRightIcon, RedoIcon, UndoIcon} from "../assets/Icons"
 import {Spinner} from "../assets/Spinner"
 import {RootExtraction} from "../dialog/RootExtraction.tsx"
 import {RootIngestion} from "../dialog/RootIngestion.tsx"
@@ -35,6 +34,12 @@ import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
 import {UserSettings} from "../dropdown/UserSettings.tsx"
 import {UserAccount} from "../dropdown/UserAccount.tsx"
+import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
+import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
+import ChevronDown from "../../assets/chevron-down.svg?react"
+import ChevronRight from "../../assets/chevron-right.svg?react"
+import CircleChevronLeft from "../../assets/circle-chevron-left.svg?react"
+import CircleChevronRight from "../../assets/circle-chevron-right.svg?react"
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
@@ -92,7 +97,7 @@ export const Editor: FC = () => {
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <IconButton variant="soft" color="gray">
-                        <ChevronDownIcon/>
+                        <ChevronDown/>
                       </IconButton>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content>
@@ -114,7 +119,7 @@ export const Editor: FC = () => {
                   </Button>
                   {breadcrumbMapNameList.slice(1).map((el, index) => (
                     <Fragment key={index}>
-                      <ChevronRightIcon/>
+                      <ChevronRight/>
                       <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
                         mapId: breadcrumbMapIdList[index + 1],
                         frameId: ''
@@ -125,7 +130,7 @@ export const Editor: FC = () => {
                   ))}
                   {frameId !== '' &&
                     <>
-                      <ChevronRightIcon/>
+                      <ChevronRight/>
                       <Button variant='solid' onClick={() => {}}>
                         {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
                       </Button>
@@ -137,7 +142,7 @@ export const Editor: FC = () => {
                           mapId: getMapId(),
                           frameId: prevFrameId
                         }))}>
-                        <CircleChevronLeftIcon/>
+                        <CircleChevronLeft/>
                       </IconButton>
                       <IconButton
                         variant="soft"
@@ -147,7 +152,7 @@ export const Editor: FC = () => {
                           mapId: getMapId(),
                           frameId: nextFrameId
                         }))}>
-                        <CircleChevronRightIcon/>
+                        <CircleChevronRight/>
                       </IconButton>
                     </>
                   }
@@ -175,14 +180,14 @@ export const Editor: FC = () => {
                     color="gray"
                     disabled={undoDisabled}
                     onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
-                    <UndoIcon/>
+                    <ArrowBackUp/>
                   </IconButton>
                   <IconButton
                     variant="solid"
                     color="gray"
                     disabled={redoDisabled}
                     onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
-                    <RedoIcon/>
+                    <ArrowForwardUp/>
                   </IconButton>
                 </Flex>
               </div>

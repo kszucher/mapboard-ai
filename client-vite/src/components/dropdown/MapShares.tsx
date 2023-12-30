@@ -2,7 +2,7 @@ import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import {actions, AppDispatch} from "../../reducers/EditorReducer.ts"
 import {DialogState} from "../../state/Enums.ts"
-import {ShareIcon} from "../assets/Icons.tsx"
+import Share from "../../assets/share.svg?react"
 
 export const MapShares = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -10,7 +10,7 @@ export const MapShares = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <IconButton variant="soft" color="gray">
-          <ShareIcon/>
+          <Share/>
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>

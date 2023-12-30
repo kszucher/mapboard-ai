@@ -4,7 +4,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {getG} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {Flow} from "../../state/Enums.ts"
-import {EyeIcon} from "../assets/Icons.tsx"
+import Eye from "../../assets/eye.svg?react"
 
 export const MapViews = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -13,7 +13,7 @@ export const MapViews = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <IconButton variant="soft" color="gray">
-          <EyeIcon/>
+          <Eye/>
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>

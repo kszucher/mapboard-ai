@@ -4,7 +4,7 @@ import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
 import {actions, AppDispatch} from "../../reducers/EditorReducer.ts"
 import {DialogState} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState.ts"
-import {DotsIcon} from "../assets/Icons.tsx"
+import Dots from "../../assets/dots.svg?react"
 
 export const MapActions = () => {
   const { data } = useOpenWorkspaceQuery()
@@ -15,7 +15,7 @@ export const MapActions = () => {
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
           <IconButton variant="soft" color="gray">
-            <DotsIcon/>
+            <Dots/>
           </IconButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>

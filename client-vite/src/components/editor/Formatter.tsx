@@ -6,7 +6,9 @@ import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXR, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {AccessType, FormatMode, LineType, TextType, WidthType} from "../../state/Enums"
-import {FBorderIcon, FFillIcon, LetterTIcon, SFillIcon, SBorderIcon, VectorSplineIcon} from "../assets/Icons"
+import {FBorderIcon, FFillIcon, SFillIcon, SBorderIcon} from "../assets/Icons"
+import LetterT from "../../assets/letter-t.svg?react"
+import VectorSpline from "../../assets/vector-spline.svg?react"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 
@@ -37,7 +39,7 @@ export const Formatter: FC = () => {
         </Box>
         <Box p={formatMode === FormatMode.text ? "0" : "1"}>
           <IconButton variant={formatMode === FormatMode.text ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.text))}>
-            <LetterTIcon/>
+            <LetterT/>
           </IconButton>
         </Box>
       </Flex>
@@ -54,7 +56,7 @@ export const Formatter: FC = () => {
         </Box>
         <Box p={formatMode === FormatMode.line ? "0" : "1"}>
           <IconButton variant={formatMode === FormatMode.line ? "solid" : "ghost"} onClick={() => dispatch(actions.setFormatMode(FormatMode.line))}>
-            <VectorSplineIcon/>
+            <VectorSpline/>
           </IconButton>
         </Box>
       </Flex>

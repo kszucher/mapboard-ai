@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState.ts"
-import {SettingsIcon} from "../assets/Icons.tsx"
+import Settings2 from "../../assets/settings-2.svg?react"
 
 export const UserSettings = () => {
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
@@ -14,7 +14,7 @@ export const UserSettings = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <IconButton variant="solid" color="gray">
-          <SettingsIcon/>
+          <Settings2/>
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>

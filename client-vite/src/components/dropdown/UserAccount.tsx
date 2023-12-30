@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux"
 import {nodeApi} from "../../apis/NodeApi.ts"
 import {actions, AppDispatch} from "../../reducers/EditorReducer.ts"
 import {AlertDialogState} from "../../state/Enums.ts"
-import {UserIcon} from "../assets/Icons.tsx"
+import User from "../../assets/user.svg?react"
 
 export const UserAccount = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -13,7 +13,7 @@ export const UserAccount = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <IconButton variant="solid" color="gray">
-          <UserIcon/>
+          <User/>
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="bg-red-300">
