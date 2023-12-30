@@ -47,7 +47,7 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: MR.insertSD, payload: null}))
     ckm === '---' && e.key === 'Enter' && isXC(m) && dispatch(actions.mapAction({type: MR.selectCD, payload: null}))
     ckm === '-s-' && e.key === 'Enter' && isXS(m) && dispatch(actions.mapAction({type: MR.insertSU, payload: null}))
-    ckm === '---' && ['Insert','Tab'].includes(e.key) && isXS(m) || isXR(m) && dispatch(actions.mapAction({type: MR.insertSO, payload: null}))
+    ckm === '---' && ['Insert','Tab'].includes(e.key) && (isXS(m) || isXR(m)) && dispatch(actions.mapAction({type: MR.insertSO, payload: null}))
     ckm === '---' && e.key === 'Delete' && isXS(m) && dispatch(actions.mapAction({type: MR.deleteS, payload: null}))
     ckm === '---' && e.key === 'Delete' && isXR(m) && getLastIndexR(m) > 0 && mTR(m).some(ri => !ri.selected) && dispatch(actions.mapAction({type: MR.deleteLR, payload: null}))
     ckm === '---' && e.key === 'Delete' && isXACR(m) && dispatch(actions.mapAction({type: MR.deleteCR, payload: null}))
