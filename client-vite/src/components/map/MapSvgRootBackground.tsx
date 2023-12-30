@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {getG, mTR} from "../../selectors/MapQueries.ts"
+import {mTR} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {ControlType, LeftMouseMode} from "../../state/Enums.ts"
 import {T} from "../../state/MapStateTypes"
@@ -14,28 +14,11 @@ import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
 export const MapSvgRootBackground: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
-  const g = getG(m)
-  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <g>
-      {connectionHelpersVisible &&
-        <rect
-          key={`${g.nodeId}_svg_map_background`}
-          x={0}
-          y={0}
-          width={g.selfW}
-          height={g.selfH}
-          rx={0}
-          ry={0}
-          fill={'none'}
-          stroke={'#dddddd'}
-          strokeWidth={0.5}
-          style={{transition: '0.3s ease-out'}}
-        />
-      }
       {mTR(m).map((ti: T) => (
         <rect
           {...{className: ti.selected ? "hover:cursor-default" : "hover:cursor-default"}}
