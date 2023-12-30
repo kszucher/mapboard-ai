@@ -7,7 +7,8 @@ import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {ControlType, DialogState} from "../../state/Enums"
 import {T} from "../../state/MapStateTypes"
-import {PlayIcon, SettingsIcon, UploadIcon} from "../assets/Icons.tsx"
+import {SettingsIcon, UploadIcon} from "../assets/Icons.tsx"
+import PlayerPlayFilled from "../../assets/player-play-filled.svg?react"
 
 const DecorationIcon = ({x, y, children, onClick} : {x: number, y: number, children: ReactNode, onClick: Function}) => (
   <g
@@ -51,7 +52,7 @@ export const MapSvgLayer9DecorationIcons: FC = () => {
           {t.controlType === ControlType.EXTRACTION &&
             <g>
               <DecorationIcon x={t.nodeStartX + t.selfW - 68} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
-                <PlayIcon/>
+                <PlayerPlayFilled/>
               </DecorationIcon>
               <DecorationIcon x={t.nodeStartX + t.selfW - 36} y={t.nodeStartY + 8} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
                 <SettingsIcon/>
