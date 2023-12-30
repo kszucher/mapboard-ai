@@ -20,6 +20,8 @@ export const NodeSelect = () => {
         {isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'selectSelfX', payload: null}))}>{'Node'}</DropdownMenu.Item>}
         {isXS(m) && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'selectCFF', payload: {path: getX(m).path}}))}>{'First Cell'}</DropdownMenu.Item>}
         {<DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'selectRA', payload: null}))}>{'All Root'}</DropdownMenu.Item>}
+        <DropdownMenu.Separator/>
+
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

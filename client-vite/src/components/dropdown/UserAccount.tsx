@@ -30,7 +30,7 @@ export const UserAccount = () => {
           dispatch(nodeApi.util.resetApiState())
         }}>{'Sign Out All Devices'}
         </DropdownMenu.Item>
-        <DropdownMenu.Separator />
+        <DropdownMenu.Separator/>
         <AlertDialog.Trigger>
           <DropdownMenu.Item color="red" onClick={() => dispatch(actions.setAlertDialogState(AlertDialogState.DELETE_ACCOUNT))}>Delete Account</DropdownMenu.Item>
         </AlertDialog.Trigger>
