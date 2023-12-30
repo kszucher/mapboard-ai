@@ -18,14 +18,12 @@ export const MapSvgNodeBackgroundSelf: FC = () => {
     <g>
       {mT(m).map((t: T) => (
         <g key={t.nodeId}>
-          {
-            (t.sFillColor || t.taskStatus > 1) &&
+          {(t.sFillColor || t.taskStatus > 1) &&
             <path
               d={getArcPath(t, -2, true)}
               fill={t.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(t.taskStatus - 2) : t.sFillColor}
               {...pathCommonProps}
-            >
-            </path>
+            />
           }
         </g>
       ))}

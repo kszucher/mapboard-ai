@@ -6,7 +6,7 @@ import {isRS, isRSC, isCS, isCSC, getTSI1, getTSI2, getCountTCO1, getNodeById, m
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
-import {getArcPath, getGridPath, getNodeLinePath, getPolygonPath, pathCommonProps} from "./MapSvgUtils"
+import {getArcPath, getGridPath, getNodeLinePath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgNodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -18,24 +18,6 @@ export const MapSvgNodeAttributes: FC = () => {
     <g>
       {mTS(m).map(ti => (
         <g key={ti.nodeId}>
-          {ti.fBorderColor &&
-            <path
-              d={getPolygonPath(m, ti, 'sFamily', 0)}
-              stroke={ti.fBorderColor}
-              strokeWidth={ti.fBorderWidth}
-              fill={'none'}
-              {...pathCommonProps}
-            />
-          }
-          {ti.sBorderColor && getCountTCO1(m, ti) === 0 &&
-            <path
-              d={getArcPath(ti, -2, true)}
-              stroke={ti.sBorderColor}
-              strokeWidth={ti.sBorderWidth}
-              fill={'none'}
-              {...pathCommonProps}
-            />
-          }
           {!isRS(ti.path) && !isCS(ti.path) && getCountTCO1(m, ti) === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI1(pm, ti)
