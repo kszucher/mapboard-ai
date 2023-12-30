@@ -6,8 +6,8 @@ import {mSelector} from "../../state/EditorState"
 import {MapSvgNodeTasks} from "./MapSvgNodeTasks.tsx"
 import {MapSvgRootBackground} from "./MapSvgRootBackground.tsx"
 import {MapSvgRootConnectors} from "./MapSvgRootConnectors.tsx"
-import {MapSvgNodeFamilyBackground} from "./MapSvgNodeFamilyBackground.tsx"
-import {MapSvgNodeBackground} from "./MapSvgNodeBackground.tsx"
+import {MapSvgNodeBackgroundFamily} from "./MapSvgNodeBackgroundFamily.tsx"
+import {MapSvgNodeBackgroundSelf} from "./MapSvgNodeBackgroundSelf.tsx"
 import {MapSvgNodeAttributes} from "./MapSvgNodeAttributes.tsx"
 import {MapSvgSelectionSecondary} from "./MapSvgSelectionSecondary.tsx"
 import {MapSvgSelectionPrimary} from "./MapSvgSelectionPrimary.tsx"
@@ -27,8 +27,8 @@ export const MapSvg: FC = () => {
       style={{transition: '0.3s ease-out'}}
     >
       <MapSvgRootBackground/>
-      <MapSvgNodeFamilyBackground/>
-      <MapSvgNodeBackground/>
+      <MapSvgNodeBackgroundFamily/>
+      <MapSvgNodeBackgroundSelf/>
       <MapSvgNodeAttributes/>
       <MapSvgNodeTasks/>
       <MapSvgSelectionSecondary/>
