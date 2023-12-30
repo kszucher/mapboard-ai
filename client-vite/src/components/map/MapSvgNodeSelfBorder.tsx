@@ -8,7 +8,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState.ts"
 import {getColors} from "../assets/Colors.ts"
 import {getArcPath, pathCommonProps} from "./MapSvgUtils"
 
-export const MapSvgNodeBorderSelf: FC = () => {
+export const MapSvgNodeSelfBorder: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

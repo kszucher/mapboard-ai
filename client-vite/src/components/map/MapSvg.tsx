@@ -4,13 +4,13 @@ import {RootState} from "../../reducers/EditorReducer"
 import {getG} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {MapSvgMapBackground} from "./MapSvgMapBackground.tsx"
-import {MapSvgNodeBorderFamily} from "./MapSvgNodeBorderFamily.tsx"
-import {MapSvgNodeBorderSelf} from "./MapSvgNodeBorderSelf.tsx"
+import {MapSvgNodeFamilyBorder} from "./MapSvgNodeFamilyBorder.tsx"
+import {MapSvgNodeSelfBorder} from "./MapSvgNodeSelfBorder.tsx"
 import {MapSvgNodeTasks} from "./MapSvgNodeTasks.tsx"
 import {MapSvgRootBackground} from "./MapSvgRootBackground.tsx"
 import {MapSvgRootConnectors} from "./MapSvgRootConnectors.tsx"
-import {MapSvgNodeBackgroundFamily} from "./MapSvgNodeBackgroundFamily.tsx"
-import {MapSvgNodeBackgroundSelf} from "./MapSvgNodeBackgroundSelf.tsx"
+import {MapSvgNodeFamilyBackground} from "./MapSvgNodeFamilyBackground.tsx"
+import {MapSvgNodeSelfBackground} from "./MapSvgNodeSelfBackground.tsx"
 import {MapSvgNodeAttributes} from "./MapSvgNodeAttributes.tsx"
 import {MapSvgRootSeparators} from "./MapSvgRootSeparators.tsx"
 import {MapSvgSelectionSecondary} from "./MapSvgSelectionSecondary.tsx"
@@ -33,10 +33,10 @@ export const MapSvg: FC = () => {
       <MapSvgMapBackground/>
       <MapSvgRootBackground/>
       <MapSvgRootSeparators/>
-      <MapSvgNodeBackgroundFamily/>
-      <MapSvgNodeBackgroundSelf/>
-      <MapSvgNodeBorderFamily/>
-      <MapSvgNodeBorderSelf/>
+      <MapSvgNodeFamilyBackground/>
+      <MapSvgNodeSelfBackground/>
+      <MapSvgNodeFamilyBorder/>
+      <MapSvgNodeSelfBorder/>
       <MapSvgNodeAttributes/>
       <MapSvgNodeTasks/>
       <MapSvgSelectionSecondary/>
