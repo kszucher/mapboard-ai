@@ -1,9 +1,10 @@
-import {Button, Dialog, DropdownMenu} from "@radix-ui/themes"
+import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {getCountXCO1, getX, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState} from "../../state/Enums.ts"
+import CirclePlus from "../../assets/circle-plus.svg?react"
 
 export const NodeInsert = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -11,9 +12,9 @@ export const NodeInsert = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button size="2" variant="solid" color="gray">
-          {'Insert'}
-        </Button>
+        <IconButton variant="solid" color="violet">
+          <CirclePlus/>
+        </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         {<DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'insertR', payload: null}))}>{'Root'}</DropdownMenu.Item>}

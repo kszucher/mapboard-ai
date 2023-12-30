@@ -1,9 +1,10 @@
-import {Button, Dialog, DropdownMenu} from "@radix-ui/themes"
+import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {getCountXCO1, getX, getXAEO, isXR, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {ControlType, DialogState} from "../../state/Enums.ts"
+import Edit from "../../assets/edit.svg?react"
 
 export const NodeEdit = () => {
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
@@ -12,9 +13,9 @@ export const NodeEdit = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button size="2" variant="solid" color="gray">
-          {'Edit'}
-        </Button>
+        <IconButton variant="solid" color="violet">
+          <Edit/>
+        </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         {!formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.openFormatter())}>{'Open Formatter'}</DropdownMenu.Item>}

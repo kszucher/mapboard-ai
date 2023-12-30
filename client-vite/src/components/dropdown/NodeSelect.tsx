@@ -1,8 +1,9 @@
-import {Button, DropdownMenu} from "@radix-ui/themes"
+import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {getCountXCO1, getCountXSO1, getX, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
+import SelectAll from "../../assets/select-all.svg?react"
 
 export const NodeSelect = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -10,9 +11,9 @@ export const NodeSelect = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button size="2" variant="solid" color="gray">
-          {'Select'}
-        </Button>
+        <IconButton variant="solid" color="violet">
+          <SelectAll/>
+        </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         {isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'selectFamilyX', payload: null}))}>{'Node Family'}</DropdownMenu.Item>}

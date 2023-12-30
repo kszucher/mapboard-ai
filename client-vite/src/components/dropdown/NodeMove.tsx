@@ -1,8 +1,9 @@
-import {Button, DropdownMenu} from "@radix-ui/themes"
+import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {getCountXASD, getCountXASU, getCountXSO1, isXASVN, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
+import ArrowsMove from "../../assets/arrows-move.svg?react"
 
 export const NodeMove = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -10,9 +11,9 @@ export const NodeMove = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button size="2" variant="solid" color="gray">
-          {'Move'}
-        </Button>
+        <IconButton variant="solid" color="violet">
+          <ArrowsMove/>
+        </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: 'moveSU', payload: null}))}>{'Node Up'}</DropdownMenu.Item>}

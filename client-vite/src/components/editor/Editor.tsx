@@ -169,8 +169,8 @@ export const Editor: FC = () => {
                 <Flex gap="1" align="center">
                   <NodeSelect/>
                   <NodeInsert/>
-                  <NodeEdit/>
                   <NodeMove/>
+                  <NodeEdit/>
                 </Flex>
               </div>
               <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
@@ -214,7 +214,6 @@ export const Editor: FC = () => {
           {dialogState === DialogState.ROOT_INGESTION && <RootIngestion/>}
           {dialogState === DialogState.ROOT_EXTRACTION && <RootExtraction/>}
         </Dialog.Root>
-
       }
       <div
         style={ isLoading ? {
