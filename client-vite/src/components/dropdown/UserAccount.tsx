@@ -1,9 +1,9 @@
 import {useAuth0} from "@auth0/auth0-react"
-import {AlertDialog, DropdownMenu, IconButton} from "@radix-ui/themes"
+import {AlertDialog, Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import {nodeApi} from "../../apis/NodeApi.ts"
 import {actions, AppDispatch} from "../../reducers/EditorReducer.ts"
-import {AlertDialogState} from "../../state/Enums.ts"
+import {AlertDialogState, DialogState} from "../../state/Enums.ts"
 import User from "../../assets/user.svg?react"
 
 export const UserAccount = () => {
@@ -17,6 +17,13 @@ export const UserAccount = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="bg-red-300">
+        <Dialog.Trigger>
+          {<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_BY_ME))}>{'Maps Shared By Me'}</DropdownMenu.Item>}
+        </Dialog.Trigger>
+        <Dialog.Trigger>
+          {<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_WITH_ME))}>{'Maps Shared With Me'}</DropdownMenu.Item>}
+        </Dialog.Trigger>
+        <DropdownMenu.Separator/>
         <DropdownMenu.Item onClick={()=>{
           logout({ logoutParams: { returnTo: window.location.origin }})
           dispatch(actions.resetState())

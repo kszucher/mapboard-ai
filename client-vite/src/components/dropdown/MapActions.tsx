@@ -45,6 +45,10 @@ export const MapActions = () => {
               <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.deleteMapFrame.initiate({mapId: getMapId(), frameId: getFrameId()}))}>{'Delete Frame'}</DropdownMenu.Item>
             </>
           }
+          <DropdownMenu.Separator/>
+          <Dialog.Trigger>
+            {<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARE_THIS_MAP))}>{'Share'}</DropdownMenu.Item>}
+          </Dialog.Trigger>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     </>

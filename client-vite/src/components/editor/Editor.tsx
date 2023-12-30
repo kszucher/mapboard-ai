@@ -13,7 +13,6 @@ import {RootIngestion} from "../dialog/RootIngestion.tsx"
 import {MapActions} from "../dropdown/MapActions.tsx"
 import {MapActionsRename} from "../dialog/MapActionsRename.tsx"
 import {EditorMapControls} from "./EditorMapControls.tsx"
-import {MapShares} from "../dropdown/MapShares.tsx"
 import {MapSharesShare} from "../dialog/MapSharesShare.tsx"
 import {MapSharesSharedByMe} from "../dialog/MapSharesSharedByMe.tsx"
 import {MapSharesSharedWithMe} from "../dialog/MapSharesSharedWithMe.tsx"
@@ -163,7 +162,6 @@ export const Editor: FC = () => {
               <div className="fixed right-[400px] h-[40px] flex flex-row items-center">
                 <Flex gap="1" align="center">
                   <MapViews/>
-                  <MapShares/>
                 </Flex>
               </div>
               <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
