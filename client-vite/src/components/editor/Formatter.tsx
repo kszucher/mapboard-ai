@@ -6,7 +6,7 @@ import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer'
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXR, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {AccessType, FormatMode, LineType, TextType, WidthType} from "../../state/Enums"
-import {FBorderIcon, FFillIcon, SFillIcon, SBorderIcon} from "../assets/Icons"
+import {FBorderIcon, FFillIcon, SFillIcon, SBorderIcon} from "../assets/CustomIcons.tsx"
 import LetterT from "../../assets/letter-t.svg?react"
 import VectorSpline from "../../assets/vector-spline.svg?react"
 

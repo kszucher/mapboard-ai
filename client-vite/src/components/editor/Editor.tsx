@@ -1,63 +1,39 @@
-import {FC, Fragment, useEffect} from 'react'
+import {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import mermaid from "mermaid"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {AccessType, DialogState, AlertDialogState} from "../../state/Enums"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
-import {IconButton, Theme, AlertDialog, Dialog, DropdownMenu, Button} from "@radix-ui/themes"
+import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {DialogState, AlertDialogState} from "../../state/Enums"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {Theme, AlertDialog, Dialog} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
 import {Spinner} from "../assets/Spinner"
 import {RootExtraction} from "../dialog/RootExtraction.tsx"
 import {RootIngestion} from "../dialog/RootIngestion.tsx"
-import {MapActions} from "../dropdown/MapActions.tsx"
 import {MapActionsRename} from "../dialog/MapActionsRename.tsx"
 import {MapSharesShare} from "../dialog/MapSharesShare.tsx"
 import {MapSharesSharedByMe} from "../dialog/MapSharesSharedByMe.tsx"
 import {MapSharesSharedWithMe} from "../dialog/MapSharesSharedWithMe.tsx"
-import {NodeEdit} from "../dropdown/NodeEdit.tsx"
 import {NodeEditContentEquation} from "../dialog/NodeEditContentEquation.tsx"
 import {NodeEditContentMermaid} from "../dialog/NodeEditContentMermaid.tsx"
 import {NodeEditCreateSubMap} from "../dialog/NodeEditCreateSubMap.tsx"
-import {NodeInsert} from "../dropdown/NodeInsert.tsx"
 import {NodeInsertTable} from "../dialog/NodeInsertTable.tsx"
-import {NodeMove} from "../dropdown/NodeMove.tsx"
-import {NodeSelect} from "../dropdown/NodeSelect.tsx"
-import {UserAccountDelete} from "../dialog/UserAccountDelete.tsx"
+import {EditorAppBarLeft} from "./EditorAppBarLeft.tsx"
+import {EditorAppBarMid} from "./EditorAppBarMid.tsx"
+import {EditorAppBarRight} from "./EditorAppBarRight.tsx"
 import {Formatter} from "./Formatter"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
-import {UserSettings} from "../dropdown/UserSettings.tsx"
-import {UserAccount} from "../dropdown/UserAccount.tsx"
-import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
-import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
-import ChevronDown from "../../assets/chevron-down.svg?react"
-import ChevronRight from "../../assets/chevron-right.svg?react"
-import CircleChevronLeft from "../../assets/circle-chevron-left.svg?react"
-import CircleChevronRight from "../../assets/circle-chevron-right.svg?react"
-import ZoomCheck from "../../assets/zoom-check.svg?react"
-import ZoomCancel from "../../assets/zoom-cancel.svg?react"
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
-  const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && m.length
-  const mapList = useSelector((state: RootState) => state.editor.mapList)
-  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
-  const { data, isFetching } = useOpenWorkspaceQuery()
-  const { colorMode, access, breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList, frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
-  const frameIdPosition = frameIdList.indexOf(frameId)
-  const prevFrameIdPosition = frameIdPosition > 0 ? frameIdPosition - 1 : 0
-  const nextFrameIdPosition = frameIdPosition < frameIdList.length - 1 ? frameIdPosition + 1 : frameIdList.length - 1
-  const prevFrameId = frameIdList[prevFrameIdPosition]
-  const nextFrameId = frameIdList[nextFrameIdPosition]
-  const disabled = [AccessType.VIEW, AccessType.UNAUTHORIZED].includes(access)
-  const undoDisabled = disabled || mapListIndex === 0
-  const redoDisabled = disabled || mapListIndex === mapList.length - 1
+  const { data } = useOpenWorkspaceQuery()
+  const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
   const dispatch = useDispatch<AppDispatch>()
@@ -83,116 +59,10 @@ export const Editor: FC = () => {
         <Dialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setDialogState(DialogState.NONE))}>
           <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setAlertDialogState(AlertDialogState.NONE))}>
             <Map/>
-            <div
-              className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
-              <div
-                className="fixed top-0 w-[200px] h-[40px] py-1 flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-700 text-white z-50 rounded-r-lg">
-                <h5 style={{fontFamily: "Comfortaa"}} className="text-xl dark:text-white">mapboard</h5>
-              </div>
-              <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">
-                <DropdownMenu.Root>
-                  <DropdownMenu.Trigger>
-                    <IconButton variant="soft" color="gray">
-                      <ChevronDown/>
-                    </IconButton>
-                  </DropdownMenu.Trigger>
-                  <DropdownMenu.Content>
-                    {tabMapIdList.map((el: string, index) => (
-                      <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                        mapId: el,
-                        frameId: ''
-                      }))}>
-                        {tabMapNameList[index]?.name}
-                      </DropdownMenu.Item>
-                    ))}
-                  </DropdownMenu.Content>
-                </DropdownMenu.Root>
-                <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                  mapId: breadcrumbMapIdList[0],
-                  frameId: ''
-                }))}>
-                  {breadcrumbMapNameList[0].name}
-                </Button>
-                {breadcrumbMapNameList.slice(1).map((el, index) => (
-                  <Fragment key={index}>
-                    <ChevronRight/>
-                    <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                      mapId: breadcrumbMapIdList[index + 1],
-                      frameId: ''
-                    }))}>
-                      {el.name}
-                    </Button>
-                  </Fragment>
-                ))}
-                {frameId !== '' &&
-                  <>
-                    <ChevronRight/>
-                    <Button variant='solid' onClick={() => {
-                    }}>
-                      {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
-                    </Button>
-                    <IconButton
-                      variant="soft"
-                      color="gray"
-                      disabled={frameIdPosition === 0 || isFetching}
-                      onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                        mapId: getMapId(),
-                        frameId: prevFrameId
-                      }))}>
-                      <CircleChevronLeft/>
-                    </IconButton>
-                    <IconButton
-                      variant="soft"
-                      color="gray"
-                      disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
-                      onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
-                        mapId: getMapId(),
-                        frameId: nextFrameId
-                      }))}>
-                      <CircleChevronRight/>
-                    </IconButton>
-                  </>
-                }
-                <MapActions/>
-              </div>
-              <div className="fixed flex right-1 gap-6 h-[40px]">
-                <div className="flex items-center gap-1">
-                  <IconButton
-                    variant="solid"
-                    color="gray"
-                    onClick={() => scrollOverride ? dispatch(actions.clearScrollOverride()) : dispatch(actions.setScrollOverride())}
-                  >
-                    {scrollOverride ? <ZoomCheck/> : <ZoomCancel/>}
-                  </IconButton>
-                </div>
-                <div className="flex flex-row items-center gap-1">
-                  <NodeSelect/>
-                  <NodeInsert/>
-                  <NodeMove/>
-                  <NodeEdit/>
-                </div>
-                <div className="flex flex-row items-center gap-1">
-                  <IconButton
-                    variant="solid"
-                    color="gray"
-                    disabled={undoDisabled}
-                    onClick={() => dispatch(actions.mapAction({type: 'undo', payload: null}))}>
-                    <ArrowBackUp/>
-                  </IconButton>
-                  <IconButton
-                    variant="solid"
-                    color="gray"
-                    disabled={redoDisabled}
-                    onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
-                    <ArrowForwardUp/>
-                  </IconButton>
-                </div>
-                <div className="flex flex-row items-center gap-1">
-                  <UserSettings/>
-                  <UserAccount/>
-                  <UserAccountDelete/>
-                </div>
-              </div>
+            <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
+              <EditorAppBarLeft/>
+              <EditorAppBarMid/>
+              <EditorAppBarRight/>
             </div>
             {formatterVisible && <Formatter/>}
             <Window/>
