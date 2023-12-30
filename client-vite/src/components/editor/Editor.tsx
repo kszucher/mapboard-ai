@@ -157,36 +157,30 @@ export const Editor: FC = () => {
                   <MapActions/>
                 </Flex>
               </div>
-              <div className="fixed w-[68px] right-[600px] top-[4px] flex flex-row">
-                <Flex gap="5">
-                  <Flex gap="1">
-                    <IconButton
-                      variant="solid"
-                      color={!scrollOverride ? "violet" : "gray"}
-                      onClick={() => dispatch(actions.clearScrollOverride())}
-                    >
-                      <ArrowsUpDown/>
-                    </IconButton>
-                    <IconButton
-                      variant="solid"
-                      color={scrollOverride ? "violet" : "gray"}
-                      onClick={() => dispatch(actions.setScrollOverride())}
-                    >
-                      <ZoomFilled/>
-                    </IconButton>
-                  </Flex>
-                </Flex>
-              </div>
-              <div className="fixed right-[200px] h-[40px] flex flex-row items-center">
-                <Flex gap="1" align="center">
+              <div className="fixed flex right-1 gap-6 h-[40px]">
+                <div className="flex items-center gap-1">
+                  <IconButton
+                    variant="solid"
+                    color={!scrollOverride ? "violet" : "gray"}
+                    onClick={() => dispatch(actions.clearScrollOverride())}
+                  >
+                    <ArrowsUpDown/>
+                  </IconButton>
+                  <IconButton
+                    variant="solid"
+                    color={scrollOverride ? "violet" : "gray"}
+                    onClick={() => dispatch(actions.setScrollOverride())}
+                  >
+                    <ZoomFilled/>
+                  </IconButton>
+                </div>
+                <div className="flex flex-row items-center gap-1">
                   <NodeSelect/>
                   <NodeInsert/>
                   <NodeMove/>
                   <NodeEdit/>
-                </Flex>
-              </div>
-              <div className="fixed w-[68px] right-[100px] top-[4px] flex flex-row">
-                <Flex gap="1">
+                </div>
+                <div className="flex flex-row items-center gap-1">
                   <IconButton
                     variant="solid"
                     color="gray"
@@ -201,14 +195,12 @@ export const Editor: FC = () => {
                     onClick={() => dispatch(actions.mapAction({type: 'redo', payload: null}))}>
                     <ArrowForwardUp/>
                   </IconButton>
-                </Flex>
-              </div>
-              <div className="fixed w-[68px] right-[4px] top-[4px] flex flex-row">
-                <Flex gap="1">
+                </div>
+                <div className="flex flex-row items-center gap-1">
                   <UserSettings/>
                   <UserAccount/>
-                </Flex>
-                <UserAccountDelete/>
+                  <UserAccountDelete/>
+                </div>
               </div>
             </div>
             {formatterVisible && <Formatter/>}
@@ -228,7 +220,7 @@ export const Editor: FC = () => {
         </Dialog.Root>
       }
       <div
-        style={ isLoading ? {
+        style={isLoading ? {
           opacity: 0.5,
           transition: 'opacity 0.3s ease-out',
           pointerEvents: 'auto'
