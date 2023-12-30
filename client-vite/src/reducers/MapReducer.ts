@@ -10,7 +10,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteLR, pasteS} from "./MapMove"
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {mapPlace} from "./MapPlace"
-import { MRT } from "./MapReducerTypes.ts"
+import { MRT } from "./MapReducerEnum.ts"
 import {selectT, selectTL, selectTToo} from "./MapSelect"
 
 export const mapReducerAtomic = (m: M, action: MRT, payload: any) => {

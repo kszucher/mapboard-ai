@@ -3,7 +3,7 @@ import {M, MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
 import {mapReducerAtomic} from "./MapReducer"
-import {MRT} from "./MapReducerTypes.ts"
+import {MRT} from "./MapReducerEnum.ts"
 
 describe("MapDeleteTests", () => {
   test('deleteLR', () => {

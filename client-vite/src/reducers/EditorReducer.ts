@@ -10,7 +10,7 @@ import {mapFindNearest} from "../selectors/MapFindNearest"
 import {mapReducer} from "./MapReducer"
 import {getEditedNode, getX} from "../selectors/MapQueries.ts"
 import {filterEmpty} from "../utils/Utils"
-import {MRT} from "./MapReducerTypes.ts"
+import {MRT} from "./MapReducerEnum.ts"
 
 const editorStateDefault = JSON.stringify(editorState)
 

@@ -2,7 +2,7 @@ import {FC} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
-import {MRT} from "../../reducers/MapReducerTypes.ts"
+import {MRT} from "../../reducers/MapReducerEnum.ts"
 import {AccessType} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {IconButton} from "@radix-ui/themes"

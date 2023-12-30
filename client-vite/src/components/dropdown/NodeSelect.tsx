@@ -1,7 +1,7 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
-import {MRT} from "../../reducers/MapReducerTypes.ts"
+import {MRT} from "../../reducers/MapReducerEnum.ts"
 import {getCountXCO1, getCountXSO1, getX, isXS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import SelectAll from "../../assets/select-all.svg?react"

@@ -1,7 +1,7 @@
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {MRT} from "../../reducers/MapReducerTypes.ts"
+import {MRT} from "../../reducers/MapReducerEnum.ts"
 import { mTR, isExistingLink, mL} from "../../selectors/MapQueries.ts"
 import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
