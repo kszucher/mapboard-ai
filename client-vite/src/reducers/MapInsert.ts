@@ -1,5 +1,4 @@
-import {tSaveOptional} from "../state/MapState"
-import {N, LPartial, M, T, PT} from "../state/MapStateTypes"
+import {N, LPartial, M, T, PT, GLTPartial, GLT} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG} from "../selectors/MapQueries.ts"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
@@ -10,15 +9,13 @@ export const insertL = (m: M, lPartial: LPartial) => {
 }
 
 export const insertR = (m: M) => {
+  const lastIndexR = getLastIndexR(m)
   const newRoot = [
-    {nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['r', getLastIndexR(m) + 1], selected: 1, content: 'New Root'},
-  ] as T[]
-  newRoot.forEach(ti => Object.assign(ti, {
-    offsetW: ti.selected ? (ti.offsetW ? ti.offsetW : tSaveOptional.offsetW) + getG(m).selfW : ti.offsetW,
-    offsetH: ti.selected ? (ti.offsetH ? ti.offsetH : tSaveOptional.offsetH) + getG(m).selfH : ti.offsetH,
-  }))
+    {nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['r', lastIndexR + 1], selected: 1, offsetW: getG(m).selfW, offsetH: getG(m).selfH},
+    {nodeId: IS_TESTING ? 'u' : 'node' + genHash(8), path: ['r', lastIndexR + 1, 's', 0], content: 'New Root'},
+  ] as GLTPartial[]
   unselectNodes(m)
-  m.push(...newRoot)
+  m.push(...newRoot as GLT[])
   m.sort(sortPath)
 }
 
