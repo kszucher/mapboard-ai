@@ -99,27 +99,19 @@ export const editorSlice = createSlice({
           state.intersectingNodes = []
           break
         }
-        case 'offsetRByDragInit': {
-          const {e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const toX = originX + ((getMapX(e) - prevMapX) / scale)
-          const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          state.rOffsetCoordsInit = [toX, toY]
-          break
-        }
         case 'offsetRByDragPreview': {
           const {t, e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const toX = originX + ((getMapX(e) - prevMapX) / scale) - state.rOffsetCoordsInit[0] + t.offsetW
-          const toY = originY + ((getMapY(e) - prevMapY) / scale) - state.rOffsetCoordsInit[1] + t.offsetH
+          const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+          const toX = originX + ((getMapX(e) - prevMapX) / scale) - fromX + t.offsetW
+          const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + t.offsetH
           state.rOffsetCoords = [toX, toY, t.selfW, t.selfH]
           break
         }
         case 'offsetRByDrag': {
           const {t, e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const toX = originX + ((getMapX(e) - prevMapX) / scale) - state.rOffsetCoordsInit[0] + t.offsetW
-          const toY = originY + ((getMapY(e) - prevMapY) / scale) - state.rOffsetCoordsInit[1] + t.offsetH
+          const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+          const toX = originX + ((getMapX(e) - prevMapX) / scale) - fromX + t.offsetW
+          const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + t.offsetH
           const moveCondition = true // this should check for collisions
           if (moveCondition) {
             const m = mapReducer(pm, MR.offsetRByDrag, {toX, toY})

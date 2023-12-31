@@ -16,7 +16,6 @@ export interface EditorState {
   editType: '' | 'append' | 'replace'
   editStartMapListIndex: number
   formatterVisible: boolean
-  rOffsetCoordsInit: number[]
   rOffsetCoords: number[]
   sMoveCoords: number[]
   selectionRectCoords: number[]

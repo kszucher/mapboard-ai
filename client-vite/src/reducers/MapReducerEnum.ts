@@ -104,7 +104,6 @@ export enum MR {
   offsetU = 'offsetU',
   offsetR = 'offsetR',
   offsetL = 'offsetL',
-  offsetRByDragInit = 'offsetRByDragInit',
   offsetRByDragPreview = 'offsetRByDragPreview',
   offsetRByDrag = 'offsetRByDrag',
   setLlmData = 'setLlmData',

@@ -38,7 +38,7 @@ export const MapSvgRootBackground: FC = () => {
             !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
             e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && isXR(m) && md(MR.selectAddT, {path: ti.path})
             e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-            md(MR.offsetRByDragInit, {e})
+            md(MR.saveFromCoordinates, {e})
             const abortController = new AbortController()
             const { signal } = abortController
             window.addEventListener('mousemove', (e) => {
