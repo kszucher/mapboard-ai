@@ -50,114 +50,112 @@ export const MapDiv: FC = () => {
   }, [m])
 
   return (
-    <>
-      {mTS(m).map(ti => (
-        <div
-          key={ti.nodeId}
-          id={ti.nodeId}
-          ref={ref => ref && ref.focus()}
-          className={ti.contentType === 'mermaid' ? 'mermaidNode' : ''}
-          style={{
-            left: adjust(ti.nodeStartX),
-            top: adjust( ti.nodeStartY),
-            minWidth: ti.contentType === 'mermaid' ? 'inherit' : ti.selfW + (g.density === 'large'? -10 : -8),
-            minHeight: ti.contentType === 'mermaid' ? 'inherit' : ti.selfH + (g.density === 'large'? -10 : 0),
-            paddingLeft: g.density === 'large'? 8 : 8,
-            paddingTop: g.density === 'large'? 4 : 2,
-            position: 'absolute',
-            fontSize: ti.textFontSize,
-            fontFamily: 'Roboto',
-            textDecoration: ti.linkType.length ? "underline" : "",
-            cursor: ti.linkType !== '' ? 'pointer' : 'default',
-            color: ti.blur ? 'transparent' : (ti.textColor === 'default' ? C.TEXT_COLOR : ti.textColor),
-            transition: 'all 0.3s',
-            transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            userSelect: 'none',
-            zIndex: ti.path.length,
-            border: 0,
-            margin: 0,
-            textShadow: ti.blur? '#FFF 0 0 8px' : '',
-            pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE ? 'auto' : 'none'
-          }}
-          spellCheck={false}
-          dangerouslySetInnerHTML={ti.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(ti) }}
-          contentEditable={ti.nodeId === editedNodeId}
-          onFocus={(e) => {
-            if (editType === 'append') {
-              e.currentTarget.innerHTML = getNodeById(m, editedNodeId).content
+    mTS(m).map(ti => (
+      <div
+        key={ti.nodeId}
+        id={ti.nodeId}
+        ref={ref => ref && ref.focus()}
+        className={ti.contentType === 'mermaid' ? 'mermaidNode' : ''}
+        style={{
+          left: adjust(ti.nodeStartX),
+          top: adjust( ti.nodeStartY),
+          minWidth: ti.contentType === 'mermaid' ? 'inherit' : ti.selfW + (g.density === 'large'? -10 : -8),
+          minHeight: ti.contentType === 'mermaid' ? 'inherit' : ti.selfH + (g.density === 'large'? -10 : 0),
+          paddingLeft: g.density === 'large'? 8 : 8,
+          paddingTop: g.density === 'large'? 4 : 2,
+          position: 'absolute',
+          fontSize: ti.textFontSize,
+          fontFamily: 'Roboto',
+          textDecoration: ti.linkType.length ? "underline" : "",
+          cursor: ti.linkType !== '' ? 'pointer' : 'default',
+          color: ti.blur ? 'transparent' : (ti.textColor === 'default' ? C.TEXT_COLOR : ti.textColor),
+          transition: 'all 0.3s',
+          transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          userSelect: 'none',
+          zIndex: ti.path.length,
+          border: 0,
+          margin: 0,
+          textShadow: ti.blur? '#FFF 0 0 8px' : '',
+          pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE ? 'auto' : 'none'
+        }}
+        spellCheck={false}
+        dangerouslySetInnerHTML={ti.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(ti) }}
+        contentEditable={ti.nodeId === editedNodeId}
+        onFocus={(e) => {
+          if (editType === 'append') {
+            e.currentTarget.innerHTML = getNodeById(m, editedNodeId).content
+          }
+          setEndOfContentEditable(e.currentTarget)
+        }}
+        onBlur={() => {
+          md(MR.removeMapListEntriesOfEdit)
+        }}
+        onMouseDown={(e) => {
+          e.stopPropagation()
+          let didMove = false
+          if (e.buttons === 1) {
+            if (ti.linkType === 'internal') {
+              dispatch(nodeApi.endpoints.selectMap.initiate({mapId: ti.link, frameId: ''}))
+            } else if (ti.linkType === 'external') {
+              window.open(ti.link, '_blank')
+              window.focus()
+            } else {
+              !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
+              e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && (isXS(m) && isS(ti.path) || isXR(m) && isR(ti.path)) && md(MR.selectAddT, {path: ti.path})
+              e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
+              const abortController = new AbortController()
+              const { signal } = abortController
+              window.addEventListener('mousemove', (e) => {
+                e.preventDefault()
+                didMove = true
+                !isXR(m) && md(MR.moveByDragPreview, {t: ti, e})
+              }, { signal })
+              window.addEventListener('mouseup', (e) => {
+                abortController.abort()
+                e.preventDefault()
+                if (didMove) {
+                  !isXR(m) && md(MR.moveByDrag, {t: ti, e})
+                }
+              }, { signal })
             }
-            setEndOfContentEditable(e.currentTarget)
-          }}
-          onBlur={() => {
-            md(MR.removeMapListEntriesOfEdit)
-          }}
-          onMouseDown={(e) => {
-            e.stopPropagation()
-            let didMove = false
-            if (e.buttons === 1) {
-              if (ti.linkType === 'internal') {
-                dispatch(nodeApi.endpoints.selectMap.initiate({mapId: ti.link, frameId: ''}))
-              } else if (ti.linkType === 'external') {
-                window.open(ti.link, '_blank')
-                window.focus()
-              } else {
-                !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
-                e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && (isXS(m) && isS(ti.path) || isXR(m) && isR(ti.path)) && md(MR.selectAddT, {path: ti.path})
-                e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-                const abortController = new AbortController()
-                const { signal } = abortController
-                window.addEventListener('mousemove', (e) => {
-                  e.preventDefault()
-                  didMove = true
-                  !isXR(m) && md(MR.moveByDragPreview, {t: ti, e})
-                }, { signal })
-                window.addEventListener('mouseup', (e) => {
-                  abortController.abort()
-                  e.preventDefault()
-                  if (didMove) {
-                    !isXR(m) && md(MR.moveByDrag, {t: ti, e})
-                  }
-                }, { signal })
-              }
-            } else if (e.buttons === 4) {
-              e.preventDefault()
-            } else if (e.buttons === 2) {
-              if ((isR(ti.path) || isS(ti.path)) && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-                md(MR.selectT, {path: ti.path})
-              }
-            }
-          }}
-          onDoubleClick={(e) => {
-            e.stopPropagation()
-            if (isXS(m) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-              md(MR.startEditAppend)
-            }
-          }}
-          onKeyDown={(e) => {
-            e.stopPropagation()
-            if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
-              md(MR.removeMapListEntriesOfEdit)
-            }
-            if (['Insert','Tab'].includes(e.key)) {
-              isXS(m) || isXR(m) && md(MR.insertSO)
-            }
-          }}
-          onInput={(e) => {
-            md(MR.setContentText, {content: e.currentTarget.innerHTML})
-          }}
-          onPaste={(e) => {
+          } else if (e.buttons === 4) {
             e.preventDefault()
-            const pasted = e.clipboardData.getData('Text')
-            e.currentTarget.innerHTML += pasted
-            setEndOfContentEditable(e.currentTarget)
-            md(MR.setContentText, {content: e.currentTarget.innerHTML})
-          }}
-        >
-        </div>
-      ))}
-    </>
+          } else if (e.buttons === 2) {
+            if ((isR(ti.path) || isS(ti.path)) && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+              md(MR.selectT, {path: ti.path})
+            }
+          }
+        }}
+        onDoubleClick={(e) => {
+          e.stopPropagation()
+          if (isXS(m) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+            md(MR.startEditAppend)
+          }
+        }}
+        onKeyDown={(e) => {
+          e.stopPropagation()
+          if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
+            md(MR.removeMapListEntriesOfEdit)
+          }
+          if (['Insert','Tab'].includes(e.key)) {
+            isXS(m) || isXR(m) && md(MR.insertSO)
+          }
+        }}
+        onInput={(e) => {
+          md(MR.setContentText, {content: e.currentTarget.innerHTML})
+        }}
+        onPaste={(e) => {
+          e.preventDefault()
+          const pasted = e.clipboardData.getData('Text')
+          e.currentTarget.innerHTML += pasted
+          setEndOfContentEditable(e.currentTarget)
+          md(MR.setContentText, {content: e.currentTarget.innerHTML})
+        }}
+      >
+      </div>
+    ))
   )
 }
