@@ -190,5 +190,8 @@ export const getTextColor = (m: M): TSaveOptional['textColor'] => isArrayOfEqual
 export const hasTask = (m: M, t: T): number => +mT(m).filter(ti => ti.path.at(1) === t.path.at(1) && ti.path.length > 2).some(ti => ti.taskStatus !== 0)
 
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li =>
-  l.fromNodeId === li.fromNodeId && l.toNodeId === li.toNodeId && l.fromNodeSide  === li.fromNodeSide && l.toNodeSide === li.toNodeSide
+  l.fromNodeId === li.fromNodeId &&
+  l.toNodeId === li.toNodeId &&
+  l.fromNodeSide  === li.fromNodeSide &&
+  l.toNodeSide === li.toNodeSide
 )
