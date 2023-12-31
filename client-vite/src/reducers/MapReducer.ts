@@ -31,17 +31,17 @@ export const mapReducerAtomic = (m: M, action: MR, payload: any) => {
     case MR['selectSO']: selectT(m, getLastSO(m), 's'); break
     case MR['selectSI']: selectT(m, getXSI1(m), 's'); break
     case MR['selectSF']: selectT(m, getNodeByPath(m, [...getX(m).path, 's', 0]), 's'); break
-    case MR['selectCFfirstRow']: selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -2 ? 0 : pi) as PT) as T, 's'); break
-    case MR['selectCFfirstCol']: selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -1 ? 0 : pi) as PT) as T, 's'); break
+    case MR['selectCFR0']: selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -2 ? 0 : pi) as PT) as T, 's'); break
+    case MR['selectCFC0']: selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -1 ? 0 : pi) as PT) as T, 's'); break
     case MR['selectCFF']: selectT(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
     case MR['selectXSIC']: selectT(m,  getXSIC(m), 's'); break
-    case MR['selectTtoo']: selectTToo(m, getNodeByPath(m, payload.path), 's'); break
-    case MR['selectSDtoo']: selectTToo(m, getQuasiSD(m), 's'); break
-    case MR['selectSUtoo']: selectTToo(m, getQuasiSU(m), 's'); break
+    case MR['selectTooT']: selectTToo(m, getNodeByPath(m, payload.path), 's'); break
+    case MR['selectTooSD']: selectTToo(m, getQuasiSD(m), 's'); break
+    case MR['selectTooSU']: selectTToo(m, getQuasiSU(m), 's'); break
     case MR['selectRA']: selectTL(m, mTR(m), 's'); break
     case MR['selectSA']: selectTL(m, mT(m).filter(ti => ti.content !== ''), 's'); break
-    case MR['selectCRSAME']: selectTL(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break
-    case MR['selectCCSAME']: selectTL(m, mT(m).filter(ti => isCH(ti.path, getX(m).path)), 's'); break
+    case MR['selectSameCR']: selectTL(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break
+    case MR['selectSameCC']: selectTL(m, mT(m).filter(ti => isCH(ti.path, getX(m).path)), 's'); break
     case MR['selectCD']: selectTL(m, getXACD1(m), 's'); break
     case MR['selectCU']: selectTL(m, getXACU1(m), 's'); break
     case MR['selectCR']: selectTL(m, getXACR1(m), 's'); break
