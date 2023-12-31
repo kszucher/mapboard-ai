@@ -4,7 +4,7 @@ import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getXA, isR, isS, isXR, isXS, mTR} from "../../selectors/MapQueries.ts"
+import {getXA, isXR, mTR} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
@@ -32,11 +32,27 @@ export const MapSvgRootBackground: FC = () => {
           pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE ? 'none' : 'auto'
         }}
         onMouseDown={(e) => {
+          let didMove = false
           e.stopPropagation()
           if (e.buttons === 1) {
             !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
-            e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && (isXS(m) && isS(ti.path) || isXR(m) && isR(ti.path)) && md(MR.selectAddT, {path: ti.path})
+            e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && isXR(m) && md(MR.selectAddT, {path: ti.path})
             e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
+            const abortController = new AbortController()
+            const { signal } = abortController
+            window.addEventListener('mousemove', (e) => {
+              e.preventDefault()
+              didMove = true
+              // md(MR.moveByDragPreview, {t: ti, e})
+              console.log('move root')
+            }, { signal })
+            window.addEventListener('mouseup', (e) => {
+              abortController.abort()
+              e.preventDefault()
+              if (didMove) {
+                // md(MR.moveByDrag, {t: ti, e})
+              }
+            }, { signal })
           } else if (e.buttons === 4) {
             e.preventDefault()
           }

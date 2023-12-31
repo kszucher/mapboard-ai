@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountTCO1, getG, getNodeById, getX, getXA, isR, isS, isXR, isXS, mTS} from "../../selectors/MapQueries.ts"
+import {getCountTCO1, getG, getNodeById, getX, getXA, isXS, mTS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode} from "../../state/Enums.ts"
 import {T} from "../../state/MapStateTypes"
@@ -104,34 +104,32 @@ export const MapDiv: FC = () => {
               window.focus()
             } else {
               !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
-              e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && (isXS(m) && isS(ti.path) || isXR(m) && isR(ti.path)) && md(MR.selectAddT, {path: ti.path})
+              e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && isXS(m) && md(MR.selectAddT, {path: ti.path})
               e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
               const abortController = new AbortController()
               const { signal } = abortController
               window.addEventListener('mousemove', (e) => {
                 e.preventDefault()
                 didMove = true
-                !isXR(m) && md(MR.moveByDragPreview, {t: ti, e})
+                md(MR.moveByDragPreview, {t: ti, e})
               }, { signal })
               window.addEventListener('mouseup', (e) => {
                 abortController.abort()
                 e.preventDefault()
                 if (didMove) {
-                  !isXR(m) && md(MR.moveByDrag, {t: ti, e})
+                  md(MR.moveByDrag, {t: ti, e})
                 }
               }, { signal })
             }
           } else if (e.buttons === 4) {
             e.preventDefault()
           } else if (e.buttons === 2) {
-            if ((isR(ti.path) || isS(ti.path)) && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-              md(MR.selectT, {path: ti.path})
-            }
+            !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
           }
         }}
         onDoubleClick={(e) => {
           e.stopPropagation()
-          if (isXS(m) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+          if (getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
             md(MR.startEditAppend)
           }
         }}
@@ -141,7 +139,7 @@ export const MapDiv: FC = () => {
             md(MR.removeMapListEntriesOfEdit)
           }
           if (['Insert','Tab'].includes(e.key)) {
-            isXS(m) || isXR(m) && md(MR.insertSO)
+            md(MR.insertSO)
           }
         }}
         onInput={(e) => {
