@@ -6,9 +6,9 @@ import {useDispatch, useSelector} from "react-redux"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountTCO1, getG, getNodeById, getX, isR, isS, isXR, isXS, mTS} from "../../selectors/MapQueries.ts"
+import {getCountTCO1, getG, getNodeById, getX, getXA, isR, isS, isXR, isXS, mTS} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode} from "../../state/Enums.ts";
+import {LeftMouseMode} from "../../state/Enums.ts"
 import {T} from "../../state/MapStateTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {adjust, getLatexString} from "../../utils/Utils"
@@ -104,10 +104,9 @@ export const MapDiv: FC = () => {
                 window.open(ti.link, '_blank')
                 window.focus()
               } else {
-                if (leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-                  !e.ctrlKey && md(MR.selectT, {path: ti.path})
-                  e.ctrlKey && md(MR.selectAddT, {path: ti.path})
-                }
+                !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
+                e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && md(MR.selectAddT, {path: ti.path})
+                e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
                 const abortController = new AbortController()
                 const { signal } = abortController
                 window.addEventListener('mousemove', (e) => {

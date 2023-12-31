@@ -11,7 +11,7 @@ import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, move
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {mapPlace} from "./MapPlace"
 import { MR } from "./MapReducerEnum.ts"
-import {selectT, selectTL, selectTToo} from "./MapSelect"
+import {selectT, selectTL, selectAddT, selectRemoveT} from "./MapSelect"
 
 export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
   switch (action) {
@@ -35,9 +35,10 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectCFC0': selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -1 ? 0 : pi) as PT) as T, 's'); break
     case 'selectCFF': selectT(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
     case 'selectXSIC': selectT(m,  getXSIC(m), 's'); break
-    case 'selectAddT': selectTToo(m, getNodeByPath(m, payload.path), 's'); break
-    case 'selectAddSD': selectTToo(m, getQuasiSD(m), 's'); break
-    case 'selectAddSU': selectTToo(m, getQuasiSU(m), 's'); break
+    case 'selectAddT': selectAddT(m, getNodeByPath(m, payload.path), 's'); break
+    case 'selectRemoveT': selectRemoveT(getNodeByPath(m, payload.path)); break
+    case 'selectAddSD': selectAddT(m, getQuasiSD(m), 's'); break
+    case 'selectAddSU': selectAddT(m, getQuasiSU(m), 's'); break
     case 'selectRA': selectTL(m, mTR(m), 's'); break
     case 'selectSA': selectTL(m, mT(m).filter(ti => ti.content !== ''), 's'); break
     case 'selectSameCR': selectTL(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break

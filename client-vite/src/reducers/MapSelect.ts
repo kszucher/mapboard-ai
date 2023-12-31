@@ -1,3 +1,4 @@
+import {tSaveOptional} from "../state/MapState.ts"
 import {M, T} from "../state/MapStateTypes"
 import {getTSI1, getX, isR, mT} from "../selectors/MapQueries.ts"
 
@@ -11,8 +12,12 @@ export const selectT = (m: M, ti: T, selection: 's' | 'f') => {
   }
 }
 
-export const selectTToo = (m: M, ti: T, selection: 's' | 'f') => {
+export const selectAddT = (m: M, ti: T, selection: 's' | 'f') => {
   Object.assign(ti, {selected: getX(m).selected + 1, selection})
+}
+
+export const selectRemoveT = (ti: T) => {
+  Object.assign(ti, {selected: 0, selection: tSaveOptional.selection})
 }
 
 export const selectTL = (m: M, nList: T[], selection: 's' | 'f') => {

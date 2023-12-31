@@ -28,6 +28,7 @@ export enum MR {
   selectCFF = 'selectCFF',
   selectXSIC = 'selectXSIC',
   selectAddT = 'selectAddT',
+  selectRemoveT = 'selectRemoveT',
   selectAddSD = 'selectAddSD',
   selectAddSU = 'selectAddSU',
   selectRA = 'selectRA',
