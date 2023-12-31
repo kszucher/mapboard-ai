@@ -13,7 +13,7 @@ import {mapPlace} from "./MapPlace"
 import { MR } from "./MapReducerEnum.ts"
 import {selectT, selectTL, selectTToo} from "./MapSelect"
 
-export const mapReducerAtomic = (m: M, action: MR, payload: any) => {
+export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
   switch (action) {
     case 'load': break
 
