@@ -20,6 +20,7 @@ export const MapSvgNodeTasks: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     mTS(m).map(ti => (
       <Fragment key={ti.nodeId}>
@@ -54,7 +55,7 @@ export const MapSvgNodeTasks: FC = () => {
             onMouseDown={(e) => {
               e.preventDefault()
               e.stopPropagation()
-              dispatch(actions.mapAction({type: MR.setTaskStatus, payload: {taskStatus: i + 1, nodeId: ti.nodeId}}))
+              md(MR.setTaskStatus, {taskStatus: i + 1, nodeId: ti.nodeId})
             }}
           />
         ))}

@@ -9,6 +9,7 @@ import ArrowsMove from "../../assets/arrows-move.svg?react"
 export const NodeMove = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
@@ -17,11 +18,11 @@ export const NodeMove = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSU}))}>{'Node Up'}</DropdownMenu.Item>}
-        {isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSD}))}>{'Node Down'}</DropdownMenu.Item>}
-        {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSO}))}>{'Node Out'}</DropdownMenu.Item>}
-        {isXS(m) && isXASVN(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSI}))}>{'Node In'}</DropdownMenu.Item>}
-        {isXS(m) && getCountXSO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveS2TO}))}>{'Sub Nodes To Table'}</DropdownMenu.Item>}
+        {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveSU)}>{'Node Up'}</DropdownMenu.Item>}
+        {isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveSD)}>{'Node Down'}</DropdownMenu.Item>}
+        {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveSO)}>{'Node Out'}</DropdownMenu.Item>}
+        {isXS(m) && isXASVN(m) && <DropdownMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</DropdownMenu.Item>}
+        {isXS(m) && getCountXSO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

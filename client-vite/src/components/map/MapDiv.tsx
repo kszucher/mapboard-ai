@@ -38,12 +38,13 @@ export const MapDiv: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
   useEffect(() => {
     mermaid.run({
       nodes: document.querySelectorAll('.mermaidNode'),
       postRenderCallback: () => {
-        dispatch(actions.mapAction({type: MR.clearDimensions}))
+        md(MR.clearDimensions)
       }
     })
   }, [m])
@@ -91,7 +92,7 @@ export const MapDiv: FC = () => {
             setEndOfContentEditable(e.currentTarget)
           }}
           onBlur={() => {
-            dispatch(actions.mapAction({type: MR.removeMapListEntriesOfEdit}))
+            md(MR.removeMapListEntriesOfEdit)
           }}
           onMouseDown={(e) => {
             e.stopPropagation()
@@ -104,21 +105,21 @@ export const MapDiv: FC = () => {
                 window.focus()
               } else {
                 if (leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-                  !e.ctrlKey && dispatch(actions.mapAction({type: MR.selectT, payload: {path: ti.path}}))
-                  e.ctrlKey && dispatch(actions.mapAction({type: MR.selectTooT, payload: {path: ti.path}}))
+                  !e.ctrlKey && md(MR.selectT, {path: ti.path})
+                  e.ctrlKey && md(MR.selectTooT, {path: ti.path})
                 }
                 const abortController = new AbortController()
                 const { signal } = abortController
                 window.addEventListener('mousemove', (e) => {
                   e.preventDefault()
                   didMove = true
-                  !isXR(m) && dispatch(actions.mapAction({type: MR.moveByDragPreview, payload: {t: ti, e}}))
+                  !isXR(m) && md(MR.moveByDragPreview, {t: ti, e})
                 }, { signal })
                 window.addEventListener('mouseup', (e) => {
                   abortController.abort()
                   e.preventDefault()
                   if (didMove) {
-                    !isXR(m) && dispatch(actions.mapAction({type: MR.moveByDrag, payload: {t: ti, e}}))
+                    !isXR(m) && md(MR.moveByDrag, {t: ti, e})
                   }
                 }, { signal })
               }
@@ -126,34 +127,34 @@ export const MapDiv: FC = () => {
               e.preventDefault()
             } else if (e.buttons === 2) {
               if ((isR(ti.path) || isS(ti.path)) && !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-                dispatch(actions.mapAction({type: MR.selectT, payload: {path: ti.path}}))
+                md(MR.selectT, {path: ti.path})
               }
             }
           }}
           onDoubleClick={(e) => {
             e.stopPropagation()
             if (isXS(m) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-              dispatch(actions.mapAction({type: MR.startEditAppend}))
+              md(MR.startEditAppend)
             }
           }}
           onKeyDown={(e) => {
             e.stopPropagation()
             if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
-              dispatch(actions.mapAction({type: MR.removeMapListEntriesOfEdit}))
+              md(MR.removeMapListEntriesOfEdit)
             }
             if (['Insert','Tab'].includes(e.key)) {
-              isXS(m) || isXR(m) && dispatch(actions.mapAction({type: MR.insertSO}))
+              isXS(m) || isXR(m) && md(MR.insertSO)
             }
           }}
           onInput={(e) => {
-            dispatch(actions.mapAction({type: MR.setContentText, payload: {content: e.currentTarget.innerHTML}}))
+            md(MR.setContentText, {content: e.currentTarget.innerHTML})
           }}
           onPaste={(e) => {
             e.preventDefault()
             const pasted = e.clipboardData.getData('Text')
             e.currentTarget.innerHTML += pasted
             setEndOfContentEditable(e.currentTarget)
-            dispatch(actions.mapAction({type: MR.setContentText, payload: {content: e.currentTarget.innerHTML}}))
+            md(MR.setContentText, {content: e.currentTarget.innerHTML})
           }}
         >
         </div>

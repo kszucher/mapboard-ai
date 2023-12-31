@@ -14,6 +14,7 @@ export const MapSvgRootConnectors: FC = () => {
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <Fragment>
       {
@@ -47,7 +48,7 @@ export const MapSvgRootConnectors: FC = () => {
                 <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  dispatch(actions.mapAction({type: MR.deleteL, payload: l}))
+                  md(MR.deleteL, l)
                 }}/>
               </g>
             }
@@ -89,7 +90,7 @@ export const MapSvgRootConnectors: FC = () => {
                         connectionStart.fromNodeId !== t.nodeId &&
                         !isExistingLink(m, newLink)
                       ) {
-                        dispatch(actions.mapAction({type: MR.insertL, payload: newLink}))
+                        md(MR.insertL, newLink)
                       }
                     }}
                   />

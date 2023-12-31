@@ -11,6 +11,7 @@ export const NodeInsertTable = () => {
   const [row, setRow] = useState<number>(1)
   const [col, setCol] = useState<number>(1)
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Insert Table'}</Dialog.Title>
@@ -44,7 +45,7 @@ export const NodeInsertTable = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => isXS(m) && dispatch(actions.mapAction({type: MR.insertSOTable, payload: {rowLen: row, colLen: col}}))}>
+          <Button onClick={() => isXS(m) && md(MR.insertSOTable, {rowLen: row, colLen: col})}>
             {'OK'}
           </Button>
         </Dialog.Close>

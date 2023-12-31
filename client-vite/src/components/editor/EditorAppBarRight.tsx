@@ -28,6 +28,7 @@ export const EditorAppBarRight: FC = () => {
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <div className="fixed flex right-1 gap-6 h-[40px]">
       <div className="flex items-center gap-1">
@@ -49,14 +50,14 @@ export const EditorAppBarRight: FC = () => {
           variant="solid"
           color="gray"
           disabled={undoDisabled}
-          onClick={() => dispatch(actions.mapAction({type: MR.undo}))}>
+          onClick={() => md(MR.undo)}>
           <ArrowBackUp/>
         </IconButton>
         <IconButton
           variant="solid"
           color="gray"
           disabled={redoDisabled}
-          onClick={() => dispatch(actions.mapAction({type: MR.redo}))}>
+          onClick={() => md(MR.redo)}>
           <ArrowForwardUp/>
         </IconButton>
       </div>

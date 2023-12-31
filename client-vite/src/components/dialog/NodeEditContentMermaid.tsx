@@ -10,6 +10,7 @@ export const NodeEditContentMermaid = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const [content, setContent] = useState(getX(m).content)
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Edit Equation'}</Dialog.Title>
@@ -32,7 +33,7 @@ export const NodeEditContentMermaid = () => {
         <Dialog.Close>
           <Button onClick={() => {
             document.getElementById(getX(m).nodeId)!.removeAttribute('data-processed')
-            dispatch(actions.mapAction({type: MR.setContentMermaid, payload: {content: content}}))
+            md(MR.setContentMermaid, {content: content})
           }}>
             {'OK'}
           </Button>

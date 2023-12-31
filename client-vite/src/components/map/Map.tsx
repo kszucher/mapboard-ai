@@ -20,8 +20,8 @@ export const Map: FC = () => {
   const { density } = g
   const { data } = useOpenWorkspaceQuery()
   const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState
-
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
   const resetView = () => {
     dispatch(actions.setZoomInfo({scale: 1, prevMapX: 0, prevMapY: 0, translateX: 0, translateY: 0, originX: 0, originY: 0}))
@@ -70,7 +70,7 @@ export const Map: FC = () => {
           e.preventDefault()
         }
         if (e.button  === 0 && e.buttons === 1) {
-          dispatch(actions.mapAction({type: MR.saveFromCoordinates, payload: {e}}))
+          md(MR.saveFromCoordinates, {e})
         }
         let didMove = false
         const abortController = new AbortController()
@@ -79,7 +79,7 @@ export const Map: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
-            dispatch(actions.mapAction({type: MR.selectByRectanglePreview, payload: {e}}))
+            md(MR.selectByRectanglePreview, {e})
           } else if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
             setScrollTop(document.documentElement.scrollTop - e.movementY)
@@ -89,7 +89,7 @@ export const Map: FC = () => {
           e.preventDefault()
           abortController.abort()
           if (didMove && e.button === 0 && e.buttons === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
-            dispatch(actions.mapAction({type: MR.selectByRectangle, payload: {e}}))
+            md(MR.selectByRectangle, {e})
           }
         }, { signal })
       }}
@@ -100,7 +100,7 @@ export const Map: FC = () => {
       }}
       onWheel={(e) => {
         if (scrollOverride) {
-          dispatch(actions.mapAction({type: MR.saveView, payload: {e}}))
+          md(MR.saveView, {e})
         }
       }}
     >

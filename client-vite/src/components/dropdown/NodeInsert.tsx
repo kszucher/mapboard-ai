@@ -10,6 +10,7 @@ import CirclePlus from "../../assets/circle-plus.svg?react"
 export const NodeInsert = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
@@ -18,15 +19,15 @@ export const NodeInsert = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        {<DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.insertR}))}>{'Root'}</DropdownMenu.Item>}
-        {isXS(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.insertSU}))}>{'Node Above'}</DropdownMenu.Item>}
-        {isXS(m) || isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.insertSO}))}>{'Node Out'}</DropdownMenu.Item>}
-        {isXS(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.insertSD}))}>{'Node Below'}</DropdownMenu.Item>}
+        {<DropdownMenu.Item onClick={() => md(MR.insertR)}>{'Root'}</DropdownMenu.Item>}
+        {isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSU)}>{'Node Above'}</DropdownMenu.Item>}
+        {isXS(m) || isXR(m) && <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Node Out'}</DropdownMenu.Item>}
+        {isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSD)}>{'Node Below'}</DropdownMenu.Item>}
         {isXS(m) && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE))}>{'Table Out'}</DropdownMenu.Item></Dialog.Trigger>}
-        {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.insertSCRU}))}>{'Table Row Above'}</DropdownMenu.Item>}
-        {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.insertSCRD}))}>{'Table Row Below'}</DropdownMenu.Item>}
-        {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.insertSCCL}))}>{'Table Column Left'}</DropdownMenu.Item>}
-        {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.insertSCCR}))}>{'Table Column Right'}</DropdownMenu.Item>}
+        {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCRU)}>{'Table Row Above'}</DropdownMenu.Item>}
+        {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCRD)}>{'Table Row Below'}</DropdownMenu.Item>}
+        {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCCL)}>{'Table Column Left'}</DropdownMenu.Item>}
+        {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCCR)}>{'Table Column Right'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

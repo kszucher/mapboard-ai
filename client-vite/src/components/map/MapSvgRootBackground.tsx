@@ -15,6 +15,7 @@ export const MapSvgRootBackground: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     mTR(m).map(ti => (
       <rect
@@ -33,8 +34,8 @@ export const MapSvgRootBackground: FC = () => {
         onMouseDown={(e) => {
           e.stopPropagation()
           if (e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-            !e.ctrlKey && dispatch(actions.mapAction({type: MR.selectT, payload: {path: ti.path}}))
-            e.ctrlKey && dispatch(actions.mapAction({type: MR.selectTooT, payload: {path: ti.path}}))
+            !e.ctrlKey && md(MR.selectT, {path: ti.path})
+            e.ctrlKey && md(MR.selectTooT, {path: ti.path})
           }
           if (e.buttons === 4) {
             e.preventDefault()

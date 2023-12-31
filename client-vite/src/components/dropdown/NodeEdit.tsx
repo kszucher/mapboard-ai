@@ -11,6 +11,7 @@ export const NodeEdit = () => {
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
+  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
@@ -24,23 +25,23 @@ export const NodeEdit = () => {
         <Dialog.Trigger>
           {isXS(m) && getCountXCO1(m) === 0 && getX(m).linkType === '' && <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_MAP_IN_MAP))}>{'Create Sub Map'}</DropdownMenu.Item>}
         </Dialog.Trigger>
-        {isXS(m) && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.transpose}))}>{'Transpose'}</DropdownMenu.Item>}
-        {getXAEO(m).map(ti => ti.taskStatus).includes(0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setTaskModeOn}))}>{'Task Mode On'}</DropdownMenu.Item>}
-        {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setTaskModeOff}))}>{'Task Mode Off'}</DropdownMenu.Item>}
-        {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setTaskModeReset}))}>{'Task Mode Reset'}</DropdownMenu.Item>}
-        {isXR(m) && getX(m).controlType !== ControlType.NONE && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setControlTypeNone}))}>{'Control Type None'}</DropdownMenu.Item>}
-        {isXR(m) && getX(m).controlType !== ControlType.INGESTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setControlTypeIngestion}))}>{'Control Type Ingestion'}</DropdownMenu.Item>}
-        {isXR(m) && getX(m).controlType !== ControlType.EXTRACTION && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setControlTypeExtraction}))}>{'Control Type Extraction'}</DropdownMenu.Item>}
+        {isXS(m) && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.transpose)}>{'Transpose'}</DropdownMenu.Item>}
+        {getXAEO(m).map(ti => ti.taskStatus).includes(0) && <DropdownMenu.Item onClick={() => md(MR.setTaskModeOn)}>{'Task Mode On'}</DropdownMenu.Item>}
+        {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => md(MR.setTaskModeOff)}>{'Task Mode Off'}</DropdownMenu.Item>}
+        {getXAEO(m).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => md(MR.setTaskModeReset)}>{'Task Mode Reset'}</DropdownMenu.Item>}
+        {isXR(m) && getX(m).controlType !== ControlType.NONE && <DropdownMenu.Item onClick={() => md(MR.setControlTypeNone)}>{'Control Type None'}</DropdownMenu.Item>}
+        {isXR(m) && getX(m).controlType !== ControlType.INGESTION && <DropdownMenu.Item onClick={() => md(MR.setControlTypeIngestion)}>{'Control Type Ingestion'}</DropdownMenu.Item>}
+        {isXR(m) && getX(m).controlType !== ControlType.EXTRACTION && <DropdownMenu.Item onClick={() => md(MR.setControlTypeExtraction)}>{'Control Type Extraction'}</DropdownMenu.Item>}
         <Dialog.Trigger>
           {isXS(m) && getX(m).contentType === 'equation' && getCountXCO1(m) === 0 && <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</DropdownMenu.Item>}
         </Dialog.Trigger>
         <Dialog.Trigger>
           {isXS(m) && getX(m).contentType === 'mermaid' && getCountXCO1(m) === 0 && <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_MERMAID))}>{'Edit Mermaid'}</DropdownMenu.Item>}
         </Dialog.Trigger>
-        {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setLlmData}))}>{'set llm data'}</DropdownMenu.Item>}
-        {isXR(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.clearLlmData}))}>{'clear llm data'}</DropdownMenu.Item>}
-        {isXS(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setBlur}))}>{'set blur'}</DropdownMenu.Item>}
-        {isXS(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.clearBlur}))}>{'clear blur'}</DropdownMenu.Item>}
+        {isXR(m) && <DropdownMenu.Item onClick={() => md(MR.setLlmData)}>{'set llm data'}</DropdownMenu.Item>}
+        {isXR(m) && <DropdownMenu.Item onClick={() => md(MR.clearLlmData)}>{'clear llm data'}</DropdownMenu.Item>}
+        {isXS(m) && <DropdownMenu.Item onClick={() => md(MR.setBlur)}>{'set blur'}</DropdownMenu.Item>}
+        {isXS(m) && <DropdownMenu.Item onClick={() => md(MR.clearBlur)}>{'clear blur'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )
