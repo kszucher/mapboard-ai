@@ -4,7 +4,7 @@ import {getCountTSO1, getNodeByPath, sortPath, mT, isSEO, getTR, getRSCIPL} from
 
 export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
-  let moveCoords = [] as number[]
+  let sMoveCoords = [] as number[]
   let moveInsertParentNode = {nodeId: ''} as T
   let moveTargetIndex = 0
   if (!(
@@ -37,7 +37,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
       const moveInsertParentNodeNSO1 = getCountTSO1(m, moveInsertParentNode)
       const fromX = moveInsertParentNode.nodeStartX + moveInsertParentNode.selfW
       const fromY = moveInsertParentNode.nodeStartY + moveInsertParentNode.selfH / 2
-      moveCoords = [fromX, fromY, toX, toY]
+      sMoveCoords = [fromX, fromY, toX, toY]
       if (moveInsertParentNodeNSO1) {
         moveTargetIndex = moveInsertParentNodeNSO1
         for (let i = moveInsertParentNodeNSO1 - 1; i > -1; i--) {
@@ -55,7 +55,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
   if (isEqual(moveInsertParentNode.path, getRSCIPL(moveNode.path).at(-1)) && moveNode.path.at(-1) === moveTargetIndex) {
     moveInsertParentNode = {} as T
     moveTargetIndex = 0
-    moveCoords = []
+    sMoveCoords = []
   }
-  return { moveCoords, moveInsertParentNodeId: moveInsertParentNode.nodeId || '', moveTargetIndex }
+  return { sMoveCoords, moveInsertParentNodeId: moveInsertParentNode.nodeId || '', moveTargetIndex }
 }

@@ -110,6 +110,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'offsetU': Object.assign(getX(m), { offsetH: getX(m).offsetH -= 20 }); break
     case 'offsetR': Object.assign(getX(m), { offsetW: getX(m).offsetW += 20 }); break
     case 'offsetL': Object.assign(getX(m), { offsetW: getX(m).offsetW -= 20 }); break
+    case 'offsetRByDrag': Object.assign(getX(m), { offsetW: payload.toX, offsetH: payload.toY }); break
     case 'setLlmData': Object.assign(getX(m), { llmDataType: 'audio', llmDataId: 'llmDataId' }); break
     case 'setLineWidth': getXA(m).forEach(ti => Object.assign(ti, { lineWidth: payload })); break
     case 'setLineType': getXA(m).forEach(ti => Object.assign(ti, { lineType: payload })); break

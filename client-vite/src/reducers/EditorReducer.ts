@@ -99,13 +99,37 @@ export const editorSlice = createSlice({
           state.intersectingNodes = []
           break
         }
+        case 'offsetRByDragPreview': {
+          const {t, e} = action.payload.payload
+          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+          const toX = originX + ((getMapX(e) - prevMapX) / scale)
+          const toY = originY + ((getMapY(e) - prevMapY) / scale)
+          state.rOffsetCoords = [toX, toY, t.selfW, t.selfH]
+          break
+        }
+        case 'offsetRByDrag': {
+          const {e} = action.payload.payload
+          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+          const toX = originX + ((getMapX(e) - prevMapX) / scale)
+          const toY = originY + ((getMapY(e) - prevMapY) / scale)
+          const moveCondition = true // this should check for collisions
+          if (moveCondition) {
+            const m = mapReducer(pm, MR.offsetRByDrag, {toX, toY})
+            if (!isEqual(pm, m)) {
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+              state.mapListIndex = state.mapListIndex + 1
+            }
+          }
+          state.rOffsetCoords = []
+          break
+        }
         case 'moveSByDragPreview': {
           const {t, e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const {moveCoords} = mapFindNearest(pm, t, toX, toY)
-          state.moveCoords = moveCoords
+          const {sMoveCoords} = mapFindNearest(pm, t, toX, toY)
+          state.sMoveCoords = sMoveCoords
           break
         }
         case 'moveSByDrag': {
@@ -121,7 +145,7 @@ export const editorSlice = createSlice({
               state.mapListIndex = state.mapListIndex + 1
             }
           }
-          state.moveCoords = []
+          state.sMoveCoords = []
           break
         }
         case 'startEditReplace': {

@@ -16,7 +16,8 @@ export interface EditorState {
   editType: '' | 'append' | 'replace'
   editStartMapListIndex: number
   formatterVisible: boolean
-  moveCoords: number[]
+  rOffsetCoords: number[]
+  sMoveCoords: number[]
   selectionRectCoords: number[]
   intersectingNodes: T[]
   zoomInfo: {

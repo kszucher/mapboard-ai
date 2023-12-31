@@ -7,25 +7,25 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getBezierLinePath, getBezierLinePoints} from "./MapSvgUtils"
 
-export const MapSvgSelectionMove: FC = () => {
-  const moveCoords = useSelector((state: RootState) => state.editor.moveCoords)
+export const MapSvgNodeMove: FC = () => {
+  const sMoveCoords = useSelector((state: RootState) => state.editor.sMoveCoords)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
     <Fragment>
-      {moveCoords.length &&
+      {sMoveCoords.length &&
         <path
-          d={getBezierLinePath('M', getBezierLinePoints(moveCoords))}
+          d={getBezierLinePath('M', getBezierLinePoints(sMoveCoords))}
           stroke={C.MOVE_LINE_COLOR}
           strokeWidth={1}
           fill={'none'}
         />
       }
-      {moveCoords.length &&
+      {sMoveCoords.length &&
         <rect
-          x={moveCoords[2] - 10}
-          y={moveCoords[3] - 10}
+          x={sMoveCoords[2] - 10}
+          y={sMoveCoords[3] - 10}
           width={20}
           height={20}
           rx={8}

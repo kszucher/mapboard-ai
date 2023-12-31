@@ -43,14 +43,13 @@ export const MapSvgRootBackground: FC = () => {
             window.addEventListener('mousemove', (e) => {
               e.preventDefault()
               didMove = true
-              // md(MR.moveByDragPreview, {t: ti, e})
-              console.log('move root')
+              md(MR.offsetRByDragPreview, {t: ti, e})
             }, { signal })
             window.addEventListener('mouseup', (e) => {
               abortController.abort()
               e.preventDefault()
               if (didMove) {
-                // md(MR.moveByDrag, {t: ti, e})
+                md(MR.offsetRByDrag, {e})
               }
             }, { signal })
           } else if (e.buttons === 4) {

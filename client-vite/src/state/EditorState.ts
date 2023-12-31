@@ -17,7 +17,8 @@ export const editorState: EditorState = {
   editType: '',
   editStartMapListIndex: Infinity,
   formatterVisible: false,
-  moveCoords: [],
+  rOffsetCoords: [],
+  sMoveCoords: [],
   selectionRectCoords: [],
   intersectingNodes: [],
   zoomInfo: {

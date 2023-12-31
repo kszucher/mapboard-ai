@@ -12,12 +12,13 @@ import {MapSvgRootConnectors} from "./MapSvgRootConnectors.tsx"
 import {MapSvgNodeFamilyBackground} from "./MapSvgNodeFamilyBackground.tsx"
 import {MapSvgNodeSelfBackground} from "./MapSvgNodeSelfBackground.tsx"
 import {MapSvgNodeAttributes} from "./MapSvgNodeAttributes.tsx"
+import {MapSvgRootMove} from "./MapSvgRootMove.tsx"
 import {MapSvgRootSeparators} from "./MapSvgRootSeparators.tsx"
 import {MapSvgSelectionSecondary} from "./MapSvgSelectionSecondary.tsx"
 import {MapSvgSelectionPrimary} from "./MapSvgSelectionPrimary.tsx"
 import {MapSvgSelectionPreview} from "./MapSvgSelectionPreview.tsx"
 import {MapSvgSelectionArea} from "./MapSvgSelectionArea.tsx"
-import {MapSvgSelectionMove} from "./MapSvgSelectionMove.tsx"
+import {MapSvgNodeMove} from "./MapSvgNodeMove.tsx"
 import {MapSvgNodeIcons} from "./MapSvgNodeIcons.tsx"
 
 export const MapSvg: FC = () => {
@@ -43,7 +44,8 @@ export const MapSvg: FC = () => {
       <MapSvgSelectionPrimary/>
       <MapSvgSelectionPreview/>
       <MapSvgSelectionArea/>
-      <MapSvgSelectionMove/>
+      <MapSvgRootMove/>
+      <MapSvgNodeMove/>
       <MapSvgNodeIcons/>
       <MapSvgRootConnectors/>
     </svg>
