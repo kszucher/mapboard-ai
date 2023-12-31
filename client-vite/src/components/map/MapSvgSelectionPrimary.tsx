@@ -21,13 +21,13 @@ export const MapSvgSelectionPrimary: FC = () => {
       {!selectionRectCoords.length && getXA(m).length === 1 && isXR(m) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', -2)}/>
       }
-      {!selectionRectCoords.length && getXA(m).length === 1 &&isXS(m) && t.selection === 's' && (t.sBorderColor || t.sFillColor || t.taskStatus > 1 || getCountTCO1(m, t)) &&
+      {!selectionRectCoords.length && getXA(m).length === 1 && isXS(m) && t.selection === 's' && (t.sBorderColor || t.sFillColor || t.taskStatus > 1 || getCountTCO1(m, t)) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', 4)}/>
       }
-      {!selectionRectCoords.length && getXA(m).length === 1 &&isXS(m) && t.selection === 's' && !((t.sBorderColor  || t.sFillColor) || t.taskStatus > 1 || getCountTCO1(m, t)) &&
+      {!selectionRectCoords.length && getXA(m).length === 1 && isXS(m) && t.selection === 's' && !((t.sBorderColor  || t.sFillColor) || t.taskStatus > 1 || getCountTCO1(m, t)) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', -2)}/>
       }
-      {!selectionRectCoords.length && getXA(m).length === 1 &&isXS(m) && t.selection === 'f' &&
+      {!selectionRectCoords.length && getXA(m).length === 1 && isXS(m) && t.selection === 'f' &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sFamily', 4)}/>
       }
       {!selectionRectCoords.length && getXA(m).length === 1 && (isXC(m) || isXACR(m) || isXACC(m)) &&
