@@ -1,6 +1,5 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {getColors} from "../assets/Colors"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
@@ -21,10 +20,10 @@ export const MapSvgRootMove: FC = () => {
           height={rOffsetCoords[3]}
           rx={8}
           ry={8}
-          fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
+          fill={"none"}
           fillOpacity={1}
           stroke={C.SELECTION_RECT_COLOR}
-          strokeWidth={5}
+          strokeWidth={1}
         />
       }
     </Fragment>
