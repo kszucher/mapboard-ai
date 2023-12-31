@@ -169,7 +169,7 @@ export const editorSlice = createSlice({
       (state, { payload }) => {
         const { mapDataList } = payload
         console.log(payload)
-        state.mapList = mapDataList.map((el: M) => mapReducer(filterEmpty(el), MR.LOAD, {}))
+        state.mapList = mapDataList.map((el: M) => mapReducer(filterEmpty(el), MR.load, {}))
         state.mapListIndex = 0
         state.editedNodeId = ''
         state.isLoading = false
@@ -182,7 +182,7 @@ export const editorSlice = createSlice({
         console.log(payload)
         if (gptSuggestions) {
           const pm = current(state.mapList[state.mapListIndex])
-          let mapAction = {type: MR.LOAD, payload: {}}
+          let mapAction = {type: MR.load, payload: {}}
           try {
             const gptParsed = JSON.parse(gptSuggestions)
             console.log(gptParsed)

@@ -15,7 +15,7 @@ import {selectT, selectTL, selectTToo} from "./MapSelect"
 
 export const mapReducerAtomic = (m: M, action: MR, payload: any) => {
   switch (action) {
-    case MR.LOAD: break
+    case MR['load']: break
 
     case MR['setDensitySmall']: getG(m).density = 'small'; break
     case MR['setDensityLarge']: getG(m).density = 'large'; break

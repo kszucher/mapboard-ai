@@ -1,4 +1,6 @@
 export enum MR {
+  load = 'load',
+
   undo = 'undo',
   redo = 'redo',
   saveView = 'saveView',
@@ -6,8 +8,6 @@ export enum MR {
   startEditReplace = 'startEditReplace',
   startEditAppend = 'startEditAppend',
   removeMapListEntriesOfEdit = 'removeMapListEntriesOfEdit',
-
-  LOAD = 'LOAD',
 
   setDensitySmall = 'setDensitySmall',
   setDensityLarge = 'setDensityLarge',
