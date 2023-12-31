@@ -38,17 +38,17 @@ export const editorSlice = createSlice({
     mapAction(state, action: PayloadAction<{ type: MR, payload: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
-        case MR.undo: {
+        case 'undo': {
           state.editedNodeId = ''
           state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
           break
         }
-        case MR.redo: {
+        case 'redo': {
           state.editedNodeId = ''
           state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
           break
         }
-        case MR.saveView: {
+        case 'saveView': {
           const {e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const mapX = getMapX(e)
@@ -68,14 +68,14 @@ export const editorSlice = createSlice({
           state.zoomInfo.originY = y
           break
         }
-        case MR.saveFromCoordinates: {
+        case 'saveFromCoordinates': {
           const {e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
           state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
           break
         }
-        case MR.selectByRectanglePreview: {
+        case 'selectByRectanglePreview': {
           const {e} = action.payload.payload
           const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
@@ -84,7 +84,7 @@ export const editorSlice = createSlice({
           state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
           break
         }
-        case MR.selectByRectangle: {
+        case 'selectByRectangle': {
           const {e} = action.payload.payload
           const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
@@ -99,7 +99,7 @@ export const editorSlice = createSlice({
           state.intersectingNodes = []
           break
         }
-        case MR.moveByDragPreview: {
+        case 'moveByDragPreview': {
           const {t, e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
@@ -108,7 +108,7 @@ export const editorSlice = createSlice({
           state.moveCoords = moveCoords
           break
         }
-        case MR.moveByDrag: {
+        case 'moveByDrag': {
           const {t, e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
@@ -124,19 +124,19 @@ export const editorSlice = createSlice({
           state.moveCoords = []
           break
         }
-        case MR.startEditReplace: {
+        case 'startEditReplace': {
           state.editStartMapListIndex = state.mapListIndex
           state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
           state.editType = 'replace'
           break
         }
-        case MR.startEditAppend: {
+        case 'startEditAppend': {
           state.editStartMapListIndex = state.mapListIndex
           state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
           state.editType = 'append'
           break
         }
-        case MR.removeMapListEntriesOfEdit: {
+        case 'removeMapListEntriesOfEdit': {
           state.editedNodeId = ''
           state.editType = ''
           state.mapList = [...state.mapList.slice(0, state.editStartMapListIndex + 1), ...state.mapList.slice(-1)]
