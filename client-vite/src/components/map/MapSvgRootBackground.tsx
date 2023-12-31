@@ -4,7 +4,7 @@ import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getXA, mTR} from "../../selectors/MapQueries.ts"
+import {getXA, isR, isS, isXR, isXS, mTR} from "../../selectors/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
@@ -35,7 +35,7 @@ export const MapSvgRootBackground: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
-            e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && md(MR.selectAddT, {path: ti.path})
+            e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && (isXS(m) && isS(ti.path) || isXR(m) && isR(ti.path)) && md(MR.selectAddT, {path: ti.path})
             e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
           } else if (e.buttons === 4) {
             e.preventDefault()

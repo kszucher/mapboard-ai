@@ -105,7 +105,7 @@ export const MapDiv: FC = () => {
                 window.focus()
               } else {
                 !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
-                e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && md(MR.selectAddT, {path: ti.path})
+                e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && (isXS(m) && isS(ti.path) || isXR(m) && isR(ti.path)) && md(MR.selectAddT, {path: ti.path})
                 e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
                 const abortController = new AbortController()
                 const { signal } = abortController
