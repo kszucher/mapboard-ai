@@ -35,7 +35,7 @@ export const MapSvgRootBackground: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
             !e.ctrlKey && md(MR.selectT, {path: ti.path})
-            e.ctrlKey && md(MR.selectTooT, {path: ti.path})
+            e.ctrlKey && md(MR.selectAddT, {path: ti.path})
           }
           if (e.buttons === 4) {
             e.preventDefault()

@@ -76,7 +76,7 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getCountXASD(m) === 0 && md(MR.moveST)
     ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getCountXASD(m) > 0 && md(MR.moveSD)
     ckm === 'c--' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && md(MR.moveCRD)
-    ckm === '-s-' && e.code === 'ArrowDown' && isXS(m)  && getCountQuasiSD(m) > 0 && md(MR.selectTooSD)
+    ckm === '-s-' && e.code === 'ArrowDown' && isXS(m)  && getCountQuasiSD(m) > 0 && md(MR.selectAddSD)
     ckm === '-s-' && e.code === 'ArrowDown' && isXC(m) && md(MR.selectSameCC)
     ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && md(MR.insertCRD)
 
@@ -87,7 +87,7 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getCountXASU(m) === 0 && md(MR.moveSB)
     ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getCountXASU(m) > 0 && md(MR.moveSU)
     ckm === 'c--' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && md(MR.moveCRU)
-    ckm === '-s-' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && md(MR.selectTooSU)
+    ckm === '-s-' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && md(MR.selectAddSU)
     ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && md(MR.selectSameCC)
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && md(MR.insertCRU)
 

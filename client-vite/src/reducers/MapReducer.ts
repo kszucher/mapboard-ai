@@ -35,9 +35,9 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectCFC0': selectT(m, getNodeByPath(m, getX(m).path.map((pi, i) => i === getX(m).path.length -1 ? 0 : pi) as PT) as T, 's'); break
     case 'selectCFF': selectT(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
     case 'selectXSIC': selectT(m,  getXSIC(m), 's'); break
-    case 'selectTooT': selectTToo(m, getNodeByPath(m, payload.path), 's'); break
-    case 'selectTooSD': selectTToo(m, getQuasiSD(m), 's'); break
-    case 'selectTooSU': selectTToo(m, getQuasiSU(m), 's'); break
+    case 'selectAddT': selectTToo(m, getNodeByPath(m, payload.path), 's'); break
+    case 'selectAddSD': selectTToo(m, getQuasiSD(m), 's'); break
+    case 'selectAddSU': selectTToo(m, getQuasiSU(m), 's'); break
     case 'selectRA': selectTL(m, mTR(m), 's'); break
     case 'selectSA': selectTL(m, mT(m).filter(ti => ti.content !== ''), 's'); break
     case 'selectSameCR': selectTL(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break

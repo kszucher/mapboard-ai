@@ -106,7 +106,7 @@ export const MapDiv: FC = () => {
               } else {
                 if (leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
                   !e.ctrlKey && md(MR.selectT, {path: ti.path})
-                  e.ctrlKey && md(MR.selectTooT, {path: ti.path})
+                  e.ctrlKey && md(MR.selectAddT, {path: ti.path})
                 }
                 const abortController = new AbortController()
                 const { signal } = abortController
