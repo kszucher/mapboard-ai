@@ -23,7 +23,8 @@ export const NodeSelect = () => {
         {isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 's' && <DropdownMenu.Item onClick={() => md(MR.selectFamilyX)}>{'Node Family'}</DropdownMenu.Item>}
         {isXS(m) && getCountXSO1(m) > 0 && getX(m).selection === 'f' && <DropdownMenu.Item onClick={() => md(MR.selectSelfX)}>{'Node'}</DropdownMenu.Item>}
         {isXS(m) && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.selectCFF, {path: getX(m).path})}>{'First Cell'}</DropdownMenu.Item>}
-        {<DropdownMenu.Item onClick={() => md(MR.selectRA)}>{'All Root'}</DropdownMenu.Item>}
+        {<DropdownMenu.Item onClick={() => md(MR.selectRA)}>{'All Root Node'}</DropdownMenu.Item>}
+        {<DropdownMenu.Item onClick={() => md(MR.selectSA)}>{'All Struct Node'}</DropdownMenu.Item>}
         <DropdownMenu.Separator/>
         {leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && <DropdownMenu.Item onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_RECTANGLE))}>{'Select By Rectangle'}</DropdownMenu.Item>}
         {leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE && <DropdownMenu.Item onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_CLICK_OR_MOVE))}>{'Select By Click Or Move'}</DropdownMenu.Item>}
