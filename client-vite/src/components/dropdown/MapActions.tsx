@@ -34,10 +34,10 @@ export const MapActions = () => {
           {frameId !== '' && frameIdList.length > 0 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.createMapFrameDuplicate.initiate({mapId: getMapId(), frameId: getFrameId()}))}>{'Duplicate Frame'}</DropdownMenu.Item>}
           {frameId !== '' && frameIdList.length > 0 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.deleteMapFrame.initiate({mapId: getMapId(), frameId: getFrameId()}))}>{'Delete Frame'}</DropdownMenu.Item>}
           <DropdownMenu.Separator/>
-          {getG(m).density === 'small' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setDensityLarge, payload: null}))}>{'Density - Cozy'}</DropdownMenu.Item>}
-          {getG(m).density === 'large' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setDensitySmall, payload: null}))}>{'Density - Compact'}</DropdownMenu.Item>}
-          {getG(m).flow === Flow.EXPLODED && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setPlaceTypeIndented, payload: null}))}>{'Flow - Indented'}</DropdownMenu.Item>}
-          {getG(m).flow === Flow.INDENTED && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setPlaceTypeExploded, payload: null}))}>{'Flow - Exploded'}</DropdownMenu.Item>}
+          {getG(m).density === 'small' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setDensityLarge}))}>{'Density - Cozy'}</DropdownMenu.Item>}
+          {getG(m).density === 'large' && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setDensitySmall}))}>{'Density - Compact'}</DropdownMenu.Item>}
+          {getG(m).flow === Flow.EXPLODED && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setPlaceTypeIndented}))}>{'Flow - Indented'}</DropdownMenu.Item>}
+          {getG(m).flow === Flow.INDENTED && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.setPlaceTypeExploded}))}>{'Flow - Exploded'}</DropdownMenu.Item>}
           <DropdownMenu.Separator/>
           <Dialog.Trigger>{<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARE_THIS_MAP))}>{'Share'}</DropdownMenu.Item>}</Dialog.Trigger>
         </DropdownMenu.Content>

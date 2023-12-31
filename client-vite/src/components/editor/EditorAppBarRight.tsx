@@ -49,14 +49,14 @@ export const EditorAppBarRight: FC = () => {
           variant="solid"
           color="gray"
           disabled={undoDisabled}
-          onClick={() => dispatch(actions.mapAction({type: MR.undo, payload: null}))}>
+          onClick={() => dispatch(actions.mapAction({type: MR.undo}))}>
           <ArrowBackUp/>
         </IconButton>
         <IconButton
           variant="solid"
           color="gray"
           disabled={redoDisabled}
-          onClick={() => dispatch(actions.mapAction({type: MR.redo, payload: null}))}>
+          onClick={() => dispatch(actions.mapAction({type: MR.redo}))}>
           <ArrowForwardUp/>
         </IconButton>
       </div>

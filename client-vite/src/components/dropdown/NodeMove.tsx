@@ -17,11 +17,11 @@ export const NodeMove = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSU, payload: null}))}>{'Node Up'}</DropdownMenu.Item>}
-        {isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSD, payload: null}))}>{'Node Down'}</DropdownMenu.Item>}
-        {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSO, payload: null}))}>{'Node Out'}</DropdownMenu.Item>}
-        {isXS(m) && isXASVN(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSI, payload: null}))}>{'Node In'}</DropdownMenu.Item>}
-        {isXS(m) && getCountXSO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveS2TO, payload: null}))}>{'Sub Nodes To Table'}</DropdownMenu.Item>}
+        {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSU}))}>{'Node Up'}</DropdownMenu.Item>}
+        {isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSD}))}>{'Node Down'}</DropdownMenu.Item>}
+        {isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSO}))}>{'Node Out'}</DropdownMenu.Item>}
+        {isXS(m) && isXASVN(m) && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveSI}))}>{'Node In'}</DropdownMenu.Item>}
+        {isXS(m) && getCountXSO1(m) > 0 && <DropdownMenu.Item onClick={() => dispatch(actions.mapAction({type: MR.moveS2TO}))}>{'Sub Nodes To Table'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

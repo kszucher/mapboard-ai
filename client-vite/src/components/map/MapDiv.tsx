@@ -43,7 +43,7 @@ export const MapDiv: FC = () => {
     mermaid.run({
       nodes: document.querySelectorAll('.mermaidNode'),
       postRenderCallback: () => {
-        dispatch(actions.mapAction({type: MR.clearDimensions, payload: null}))
+        dispatch(actions.mapAction({type: MR.clearDimensions}))
       }
     })
   }, [m])
@@ -91,7 +91,7 @@ export const MapDiv: FC = () => {
             setEndOfContentEditable(e.currentTarget)
           }}
           onBlur={() => {
-            dispatch(actions.mapAction({type: MR.removeMapListEntriesOfEdit, payload: null}))
+            dispatch(actions.mapAction({type: MR.removeMapListEntriesOfEdit}))
           }}
           onMouseDown={(e) => {
             e.stopPropagation()
@@ -133,16 +133,16 @@ export const MapDiv: FC = () => {
           onDoubleClick={(e) => {
             e.stopPropagation()
             if (isXS(m) && getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
-              dispatch(actions.mapAction({type: MR.startEditAppend, payload: null}))
+              dispatch(actions.mapAction({type: MR.startEditAppend}))
             }
           }}
           onKeyDown={(e) => {
             e.stopPropagation()
             if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
-              dispatch(actions.mapAction({type: MR.removeMapListEntriesOfEdit, payload: null}))
+              dispatch(actions.mapAction({type: MR.removeMapListEntriesOfEdit}))
             }
             if (['Insert','Tab'].includes(e.key)) {
-              isXS(m) || isXR(m) && dispatch(actions.mapAction({type: MR.insertSO, payload: null}))
+              isXS(m) || isXR(m) && dispatch(actions.mapAction({type: MR.insertSO}))
             }
           }}
           onInput={(e) => {

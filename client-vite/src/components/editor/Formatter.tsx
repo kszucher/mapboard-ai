@@ -172,12 +172,12 @@ export const Formatter: FC = () => {
         <Button
           variant="outline"
           onClick={() => {
-            formatMode === FormatMode.text && dispatch(actions.mapAction({type: MR.clearText, payload: null}))
-            formatMode === FormatMode.sBorder && dispatch(actions.mapAction({type: MR.clearSBorder, payload: null}))
-            formatMode === FormatMode.fBorder && dispatch(actions.mapAction({type: MR.clearFBorder, payload: null}))
-            formatMode === FormatMode.sFill && dispatch(actions.mapAction({type: MR.clearSFill, payload: null}))
-            formatMode === FormatMode.fFill && dispatch(actions.mapAction({type: MR.clearFFill, payload: null}))
-            formatMode === FormatMode.line && dispatch(actions.mapAction({type: MR.clearLine, payload: null}))
+            formatMode === FormatMode.text && dispatch(actions.mapAction({type: MR.clearText}))
+            formatMode === FormatMode.sBorder && dispatch(actions.mapAction({type: MR.clearSBorder}))
+            formatMode === FormatMode.fBorder && dispatch(actions.mapAction({type: MR.clearFBorder}))
+            formatMode === FormatMode.sFill && dispatch(actions.mapAction({type: MR.clearSFill}))
+            formatMode === FormatMode.fFill && dispatch(actions.mapAction({type: MR.clearFFill}))
+            formatMode === FormatMode.line && dispatch(actions.mapAction({type: MR.clearLine}))
           }}>
           {'RESET'}
         </Button>
