@@ -47,7 +47,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectCU': selectTL(m, getXACU1(m), 's'); break
     case 'selectCR': selectTL(m, getXACR1(m), 's'); break
     case 'selectCL': selectTL(m, getXACL1(m), 's'); break
-    case 'selectByRectangle': selectTL(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
+    case 'selectSByRectangle': selectTL(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
@@ -91,7 +91,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'moveSB': moveS(m, getXSI1(m), getCountXASD(m)); break
     case 'moveSO': moveS(m, getXFSU1(m), getCountXASU1O1(m)); break
     case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
-    case 'moveByDrag': moveS(m, getNodeById(m, payload.moveInsertParentNodeId), payload.moveTargetIndex); break
+    case 'moveSByDrag': moveS(m, getNodeById(m, payload.moveInsertParentNodeId), payload.moveTargetIndex); break
     case 'moveCRD': moveCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
     case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break

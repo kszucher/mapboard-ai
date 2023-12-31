@@ -111,13 +111,13 @@ export const MapDiv: FC = () => {
               window.addEventListener('mousemove', (e) => {
                 e.preventDefault()
                 didMove = true
-                md(MR.moveByDragPreview, {t: ti, e})
+                md(MR.moveSByDragPreview, {t: ti, e})
               }, { signal })
               window.addEventListener('mouseup', (e) => {
                 abortController.abort()
                 e.preventDefault()
                 if (didMove) {
-                  md(MR.moveByDrag, {t: ti, e})
+                  md(MR.moveSByDrag, {t: ti, e})
                 }
               }, { signal })
             }

@@ -79,7 +79,7 @@ export const Map: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
-            md(MR.selectByRectanglePreview, {e})
+            md(MR.selectSByRectanglePreview, {e})
           } else if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
             setScrollTop(document.documentElement.scrollTop - e.movementY)
@@ -89,7 +89,7 @@ export const Map: FC = () => {
           e.preventDefault()
           abortController.abort()
           if (didMove && e.button === 0 && e.buttons === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE) {
-            md(MR.selectByRectangle, {e})
+            md(MR.selectSByRectangle, {e})
           }
         }, { signal })
       }}
