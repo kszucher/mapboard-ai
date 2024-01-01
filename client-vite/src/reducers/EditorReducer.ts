@@ -8,7 +8,7 @@ import {M} from "../state/MapStateTypes"
 import {nodeApi} from "../apis/NodeApi"
 import {mapFindNearest} from "../selectors/MapFindNearest"
 import {mapReducer} from "./MapReducer"
-import {getEditedNode, getX} from "../selectors/MapQueries.ts"
+import {getEditedNode, getX, mT, mTR} from "../selectors/MapQueries.ts"
 import {filterEmpty} from "../utils/Utils"
 import {MR} from "./MapReducerEnum.ts"
 
@@ -191,8 +191,12 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       nodeApi.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
-        const { mapDataList } = payload
         console.log(payload)
+        const { mapDataList } = structuredClone(payload)
+        if (mT(mapDataList[0]).filter(ti => ti.selected > 0).length === 0) {
+          window.alert('map restored after non-selection')
+          Object.assign(mTR(mapDataList[0])[0], {selected: 1})
+        }
         state.mapList = mapDataList.map((el: M) => mapReducer(filterEmpty(el), MR.load, {}))
         state.mapListIndex = 0
         state.editedNodeId = ''
