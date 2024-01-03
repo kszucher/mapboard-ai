@@ -49,6 +49,7 @@ export const Window: FC = () => {
     ckm === '-s-' && e.key === 'Enter' && isXS(m) && md(MR.insertSU)
     ckm === '---' && e.key === 'Insert' && isXR(m) && md(MR.insertR)
     ckm === '---' && e.key === 'Insert' && isXS(m) && md(MR.insertSO)
+    ckm === '---' && e.key === 'Insert' && isXC(m) && md(MR.insertSO)
     ckm === '---' && e.key === 'Tab' && isXR(m) && md(MR.insertR)
     ckm === '---' && e.key === 'Tab' && isXS(m) && md(MR.insertSO)
     ckm === '---' && e.key === 'Delete' && isXS(m) && md(MR.deleteS)
