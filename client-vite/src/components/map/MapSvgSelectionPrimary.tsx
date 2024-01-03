@@ -30,7 +30,7 @@ export const MapSvgSelectionPrimary: FC = () => {
       {!selectionRectCoords.length && getXA(m).length === 1 && isXS(m) && t.selection === 'f' &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sFamily', 4)}/>
       }
-      {!selectionRectCoords.length && getXA(m).length === 1 && (isXC(m) || isXACR(m) || isXACC(m)) &&
+      {!selectionRectCoords.length && (isXC(m) || isXACR(m) || isXACC(m)) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'c', 4)}/>
       }
     </Fragment>
