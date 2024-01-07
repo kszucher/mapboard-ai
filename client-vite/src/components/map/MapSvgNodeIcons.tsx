@@ -3,20 +3,15 @@ import {FC, Fragment, ReactNode} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {mTR} from "../../selectors/MapQueries.ts"
-import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {ControlType, DialogState} from "../../state/Enums"
 import {T} from "../../state/MapStateTypes"
-import ArrowUp from "../../assets/arrow-up.svg?react"
-import PlayerPlayFilled from "../../assets/player-play-filled.svg?react"
+import CircleLetterI from "../../assets/circle-letter-i.svg?react"
+import CircleLetterE from "../../assets/circle-letter-e.svg?react"
 
 const DecorationIcon = ({x, y, children, onClick} : {x: number, y: number, children: ReactNode, onClick: Function}) => (
   <g
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    transform={`translate(${adjustIcon(x)}, ${adjustIcon(y)})`}
-    {...{vectorEffect: 'non-scaling-stroke'}}
+    transform={`translate(${Math.round(x)}, ${Math.round(y)})`}
     style={{
       transition: 'all 0.3s',
       transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
@@ -24,7 +19,7 @@ const DecorationIcon = ({x, y, children, onClick} : {x: number, y: number, child
     }}
   >
     <Dialog.Trigger>
-      <circle cx={12} cy={12} r={12} className={"fill-gray-500 hover:fill-teal-700"} onClick={() => onClick()}/>
+      <rect width={24} height={24} rx={20} ry={20} className={"fill-gray-500 hover:fill-teal-700"} onClick={() => onClick()}/>
     </Dialog.Trigger>
     <g className={"pointer-events-none"}>
       {children}
@@ -39,13 +34,13 @@ export const MapSvgNodeIcons: FC = () => {
     mTR(m).map((t: T) => (
       <Fragment key={t.nodeId}>
         {t.controlType === ControlType.INGESTION &&
-          <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 -12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
-            <ArrowUp/>
+          <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 - 12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
+            <CircleLetterI/>
           </DecorationIcon>
         }
         {t.controlType === ControlType.EXTRACTION &&
           <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 - 12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
-            <PlayerPlayFilled/>
+            <CircleLetterE/>
           </DecorationIcon>
         }
       </Fragment>
