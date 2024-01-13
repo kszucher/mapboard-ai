@@ -58,6 +58,10 @@ export const getNodeLinePath = (m: M, na: T, nb: T) => {
     ex = nb.nodeStartX
     ey = nb.nodeStartY + nb.selfH / 2
   }
+  sx = Math.round(sx) + .5
+  sy = Math.round(sy) + .5
+  ex = Math.round(ex) + .5
+  ey = Math.round(ey) + .5
   const dx = ex - sx
   const dy = ey - sy
   let path
