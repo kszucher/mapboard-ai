@@ -9,7 +9,7 @@ const spawnProcess = async (mongoCmd, mongoParams) => {
   console.log(`process ${mongoCmd} started`)
   try {
     const bl = await spawn(mongoCmd, mongoParams)
-    // console.log(bl.toString())
+    console.log(bl.toString())
   } catch (e) {
     console.log(e.stderr.toString())
   }
@@ -28,7 +28,7 @@ const mongoDump = async({date, source, comment}) => {
 
 const mongoRestore = async({source, target, filename}) => {
   const mongoParams = [
-    `--uri=${baseUri}/${target}`,
+    `--uri=${baseUri}`,
     `--archive=${basePath}/${filename}`,
     '--gzip'
   ]
