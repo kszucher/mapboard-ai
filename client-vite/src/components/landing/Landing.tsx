@@ -8,6 +8,7 @@ import {setColors} from "../assets/Colors"
 import {Spinner} from "../assets/Spinner"
 
 export const Landing: FC = () => {
+  const picLink = 'https://lh3.googleusercontent.com/drive-viewer/AEYmBYTvxnCfBZM6HTz-gogQY_P4D_WZl6QVcOYOqTStEDYkyHvVfD2Q1q7OqebpwM8spk_XMZqml2347GfeDn4ki_Lvz6i9=w2560-h1313'
   const colorMode = 'dark'
   const token = useSelector((state: RootState) => state.editor.token)
   const [isWaiting, setIsWaiting] = useState(false)
@@ -97,7 +98,7 @@ export const Landing: FC = () => {
                   className="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[16px] rounded-t-xl h-[344px] max-w-[602px] md:h-[588px] md:max-w-[1024px]">
                   <div className="rounded-lg overflow-hidden h-[312px] md:h-[556px] bg-white dark:bg-gray-800">
                     <img
-                      src="https://lh3.googleusercontent.com/u/0/drive-viewer/AK7aPaDOq5FfsAQTp416-z5fHt6ty-i7yV-ng2itrxZ-TDXlCy5G3UQlPYY1jKEW4aFvjwO1Wkz3h5wcao-D3SG1b8cRvDZ4HA=w2560-h1323"
+                      src={picLink}
                       className="hidden dark:block h-[312px] md:h-[556px] w-full rounded-lg" alt=""/>
                   </div>
                 </div>
