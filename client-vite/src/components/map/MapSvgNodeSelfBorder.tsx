@@ -1,7 +1,7 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
-import {getCountTCO1, mTS} from "../../selectors/MapQueries.ts"
+import {getCountTCO1, mTS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState.ts"

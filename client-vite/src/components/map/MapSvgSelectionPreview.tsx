@@ -1,6 +1,6 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {getCountTCO1} from "../../selectors/MapQueries.ts"
+import {getCountTCO1} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {T} from "../../state/MapStateTypes.ts"

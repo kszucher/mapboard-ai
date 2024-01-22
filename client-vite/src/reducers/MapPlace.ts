@@ -1,4 +1,4 @@
-import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../selectors/MapQueries.ts"
+import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../queries/MapQueries.ts"
 import {INDENT, MARGIN_X, S_SPACING} from "../state/Consts.ts"
 import {Flow} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"

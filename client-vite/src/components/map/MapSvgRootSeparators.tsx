@@ -1,7 +1,7 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {RootState} from "../../reducers/EditorReducer"
-import {mTR} from "../../selectors/MapQueries.ts"
+import {mTR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {ControlType} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils.ts"

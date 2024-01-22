@@ -1,6 +1,6 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, getPrefixTCH, getPrefixTCV, getTCH, getTCO1, getTCO1C0, getTCO1R0, getTCV, getTSO1, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../selectors/MapQueries.ts"
+import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, getPrefixTCH, getPrefixTCV, getTCH, getTCO1, getTCO1C0, getTCO1R0, getTCV, getTSO1, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../queries/MapQueries.ts"
 import {INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING, C_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"

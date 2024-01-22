@@ -3,7 +3,7 @@ import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {isXS} from "../../selectors/MapQueries.ts"
+import {isXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
 export const NodeInsertTable = () => {

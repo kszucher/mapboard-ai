@@ -1,4 +1,4 @@
-import {getCountTSO1, getNodeByPath, mT} from "../selectors/MapQueries.ts"
+import {getCountTSO1, getNodeByPath, mT} from "../queries/MapQueries.ts"
 import {M} from "../state/MapStateTypes"
 
 export const mapCalcTask = (m: M) => {

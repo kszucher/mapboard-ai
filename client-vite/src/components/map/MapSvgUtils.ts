@@ -1,4 +1,4 @@
-import {getCountTSCH, getCountTSCV, getG, getNodeById, getNodeByPath, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../selectors/MapQueries.ts"
+import {getCountTSCH, getCountTSCV, getG, getNodeById, getNodeByPath, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../queries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"

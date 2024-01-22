@@ -1,6 +1,6 @@
 import {GSaveOptional, GSaveNever, TSaveAlways, TSaveOptional, TSaveNever, M, MPartial, LSaveOptional, LSaveNever} from "../state/MapStateTypes"
 import {gSaveNever, gSaveOptional, lSaveNever, lSaveOptional, tSaveAlways, tSaveNever, tSaveOptional} from "../state/MapState"
-import {mG, mL, mT} from "../selectors/MapQueries.ts"
+import {mG, mL, mT} from "../queries/MapQueries.ts"
 import {genHash} from "../utils/Utils"
 
 export const mapInit = (m: MPartial) => {

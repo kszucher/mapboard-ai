@@ -2,7 +2,7 @@ import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountXASD, getCountXASU, getCountXSO1, isXASVN, isXRS, isXS} from "../../selectors/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXSO1, isXASVN, isXRS, isXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import ArrowsMove from "../../assets/arrows-move.svg?react"
 

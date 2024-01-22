@@ -1,4 +1,4 @@
-import {sortNode} from "../selectors/MapQueries.ts"
+import {sortNode} from "../queries/MapQueries.ts"
 import {setIsTesting} from "../utils/Utils"
 import {M, MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
