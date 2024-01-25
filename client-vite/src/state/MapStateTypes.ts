@@ -42,6 +42,11 @@ export interface LSaveNever {
 
 }
 
+export interface TSaveAlways {
+  path: PT
+  nodeId: string
+}
+
 export interface TSaveOptional {
   controlType: ControlType // r
   offsetW: number // r
@@ -90,11 +95,6 @@ export interface TSaveNever {
   nodeStartY: number
   isTop: number
   isBottom: number
-}
-
-export interface TSaveAlways {
-  path: PT
-  nodeId: string
 }
 
 export type G = GSaveAlways & GSaveOptional & GSaveNever
