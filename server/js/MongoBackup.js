@@ -1,7 +1,7 @@
 const spawn = require('await-spawn')
 const { baseUri } = require('./MongoSecret')
 
-const basePath = 'C:/Users/Kryss/Dropbox/mapboard/mongobackup'
+const basePath = 'C:/Users/krisz/Dropbox/mapboard/mongobackup'
 
 const decodeSourceFromFilename = (filename) => (filename.slice(26, 33) === 'app_dev' ? 'app_dev' : 'app_prod')
 
@@ -88,4 +88,4 @@ const mongoBackup = async (mode) => {
   }
 }
 
-mongoBackup('prod2file2dev')
+mongoBackup('dev2file2prod')
