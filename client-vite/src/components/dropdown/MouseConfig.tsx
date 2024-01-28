@@ -18,8 +18,12 @@ export const MouseConfig = () => {
       <DropdownMenu.Content>
         <DropdownMenu.Label>{'Left Mouse'}</DropdownMenu.Label>
         <DropdownMenu.RadioGroup value={leftMouseMode} onValueChange={(value) => dispatch(actions.setLeftMouseMode(value as LeftMouseMode))}>
-          <DropdownMenu.RadioItem value={LeftMouseMode.SELECT_BY_RECTANGLE}>{'Select By Rectangle'}</DropdownMenu.RadioItem>
-          <DropdownMenu.RadioItem value={LeftMouseMode.SELECT_BY_CLICK_OR_MOVE}>{'Select By Click Or Move'}</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value={LeftMouseMode.CLICK_SELECT_ROOT}>{'Click Select Root'}</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value={LeftMouseMode.CLICK_SELECT_STRUCT}>{'Click Select Struct'}</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value={LeftMouseMode.CLICK_SELECT_AND_MOVE_ROOT}>{'Click Select And Move Root'}</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value={LeftMouseMode.CLICK_SELECT_AND_MOVE_STRUCT}>{'Click Select And Move Struct'}</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value={LeftMouseMode.RECTANGLE_SELECT_ROOT}>{'Rectangle Select Root'}</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value={LeftMouseMode.RECTANGLE_SELECT_STRUCT}>{'Rectangle Select Struct'}</DropdownMenu.RadioItem>
         </DropdownMenu.RadioGroup>
         <DropdownMenu.Separator/>
         <DropdownMenu.Label>{'Mid Mouse'}</DropdownMenu.Label>

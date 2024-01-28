@@ -29,30 +29,32 @@ export const MapSvgRootBackground: FC = () => {
         fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
         style={{
           transition: '0.3s ease-out',
-          pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE ? 'none' : 'auto'
+          pointerEvents: [LeftMouseMode.CLICK_SELECT_ROOT, LeftMouseMode.CLICK_SELECT_AND_MOVE_ROOT].includes(leftMouseMode) ? 'auto' : 'none'
         }}
         onMouseDown={(e) => {
           let didMove = false
           e.stopPropagation()
           if (e.buttons === 1) {
-            !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
-            e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && isXR(m) && md(MR.selectAddT, {path: ti.path})
-            e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-            md(MR.saveFromCoordinates, {e})
-            const abortController = new AbortController()
-            const { signal } = abortController
-            window.addEventListener('mousemove', (e) => {
-              e.preventDefault()
-              didMove = true
-              md(MR.offsetRByDragPreview, {t: ti, e})
-            }, { signal })
-            window.addEventListener('mouseup', (e) => {
-              abortController.abort()
-              e.preventDefault()
-              if (didMove) {
-                md(MR.offsetRByDrag, {t: ti, e})
-              }
-            }, { signal })
+            !e.ctrlKey && [LeftMouseMode.CLICK_SELECT_ROOT, LeftMouseMode.CLICK_SELECT_AND_MOVE_ROOT].includes(leftMouseMode) && md(MR.selectT, {path: ti.path})
+            e.ctrlKey && leftMouseMode === LeftMouseMode.CLICK_SELECT_ROOT && isXR(m) && !ti.selected && md(MR.selectAddT, {path: ti.path})
+            e.ctrlKey && leftMouseMode === LeftMouseMode.CLICK_SELECT_ROOT && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
+            if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE_ROOT) {
+              md(MR.saveFromCoordinates, {e})
+              const abortController = new AbortController()
+              const {signal} = abortController
+              window.addEventListener('mousemove', (e) => {
+                e.preventDefault()
+                didMove = true
+                md(MR.offsetRByDragPreview, {t: ti, e})
+              }, {signal})
+              window.addEventListener('mouseup', (e) => {
+                abortController.abort()
+                e.preventDefault()
+                if (didMove) {
+                  md(MR.offsetRByDrag, {t: ti, e})
+                }
+              }, {signal})
+            }
           } else if (e.buttons === 4) {
             e.preventDefault()
           }

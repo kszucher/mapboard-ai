@@ -79,7 +79,7 @@ export const MapDiv: FC = () => {
           border: 0,
           margin: 0,
           textShadow: ti.blur? '#FFF 0 0 8px' : '',
-          pointerEvents: leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE ? 'auto' : 'none'
+          pointerEvents: [LeftMouseMode.CLICK_SELECT_STRUCT, LeftMouseMode.CLICK_SELECT_AND_MOVE_STRUCT].includes(leftMouseMode) ? 'auto' : 'none'
         }}
         spellCheck={false}
         dangerouslySetInnerHTML={ti.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(ti) }}
@@ -103,33 +103,34 @@ export const MapDiv: FC = () => {
               window.open(ti.link, '_blank')
               window.focus()
             } else {
-              !e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
-              e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && !ti.selected && isXS(m) && md(MR.selectAddT, {path: ti.path})
-              e.ctrlKey && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-              const abortController = new AbortController()
-              const { signal } = abortController
-              window.addEventListener('mousemove', (e) => {
-                e.preventDefault()
-                didMove = true
-                md(MR.moveSByDragPreview, {t: ti, e})
-              }, { signal })
-              window.addEventListener('mouseup', (e) => {
-                abortController.abort()
-                e.preventDefault()
-                if (didMove) {
-                  md(MR.moveSByDrag, {t: ti, e})
-                }
-              }, { signal })
+              !e.ctrlKey && [LeftMouseMode.CLICK_SELECT_STRUCT, LeftMouseMode.CLICK_SELECT_AND_MOVE_STRUCT] && md(MR.selectT, {path: ti.path})
+              e.ctrlKey && leftMouseMode === LeftMouseMode.CLICK_SELECT_STRUCT && !ti.selected && isXS(m) && md(MR.selectAddT, {path: ti.path})
+              e.ctrlKey && leftMouseMode === LeftMouseMode.CLICK_SELECT_STRUCT && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
+              if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE_STRUCT) {
+                const abortController = new AbortController()
+                const {signal} = abortController
+                window.addEventListener('mousemove', (e) => {
+                  e.preventDefault()
+                  didMove = true
+                  md(MR.moveSByDragPreview, {t: ti, e})
+                }, {signal})
+                window.addEventListener('mouseup', (e) => {
+                  abortController.abort()
+                  e.preventDefault()
+                  if (didMove) {
+                    md(MR.moveSByDrag, {t: ti, e})
+                  }
+                }, {signal})
+              }
             }
           } else if (e.buttons === 4) {
             e.preventDefault()
           } else if (e.buttons === 2) {
-            !ti.selected && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && md(MR.selectT, {path: ti.path})
           }
         }}
         onDoubleClick={(e) => {
           e.stopPropagation()
-          if (getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE) {
+          if (getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.CLICK_SELECT_STRUCT) {
             md(MR.startEditAppend)
           }
         }}
