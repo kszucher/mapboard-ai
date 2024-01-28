@@ -23,8 +23,8 @@ export enum AlertDialogState {
 }
 
 export enum LeftMouseMode {
-  SELECT_BY_RECTANGLE,
-  SELECT_BY_CLICK_OR_MOVE
+  SELECT_BY_RECTANGLE = 'selectByRectangle',
+  SELECT_BY_CLICK_OR_MOVE = 'selectByClickOrMove'
 }
 
 export enum MidMouseMode {

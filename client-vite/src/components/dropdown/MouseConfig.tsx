@@ -16,12 +16,13 @@ export const MouseConfig = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        {leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && <DropdownMenu.Item onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_RECTANGLE))}>{'Left Mouse: Select By Rectangle'}</DropdownMenu.Item>}
-        {leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE && <DropdownMenu.Item onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_CLICK_OR_MOVE))}>{'Left Mouse: Select By Click Or Move'}</DropdownMenu.Item>}
+        <DropdownMenu.Label>{'Left Mouse'}</DropdownMenu.Label>
+        <DropdownMenu.RadioGroup value={leftMouseMode} onValueChange={(value) => dispatch(actions.setLeftMouseMode(value as LeftMouseMode))}>
+          <DropdownMenu.RadioItem value={LeftMouseMode.SELECT_BY_RECTANGLE}>{'Select By Rectangle'}</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value={LeftMouseMode.SELECT_BY_CLICK_OR_MOVE}>{'Select By Click Or Move'}</DropdownMenu.RadioItem>
+        </DropdownMenu.RadioGroup>
         <DropdownMenu.Separator/>
-        <DropdownMenu.Label>
-          {'Mid Mouse'}
-        </DropdownMenu.Label>
+        <DropdownMenu.Label>{'Mid Mouse'}</DropdownMenu.Label>
         <DropdownMenu.RadioGroup value={midMouseMode} onValueChange={(value) => dispatch(actions.setMidMouseMode(value as MidMouseMode))}>
           <DropdownMenu.RadioItem value={MidMouseMode.SCROLL}>{'Scroll'}</DropdownMenu.RadioItem>
           <DropdownMenu.RadioItem value={MidMouseMode.ZOOM}>{'Zoom'}</DropdownMenu.RadioItem>

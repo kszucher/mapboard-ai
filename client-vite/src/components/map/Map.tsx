@@ -56,7 +56,6 @@ export const Map: FC = () => {
 
   return (
     <div
-      {...{className: leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE ? "hover:cursor-crosshair" : ""}}
       style={{
         overflow: 'auto',
         display: 'grid',
