@@ -3,11 +3,11 @@ import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getX, getLastIndexR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, sortPath, isXAR, mTR} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
-import {AccessType, DialogState, PageState} from "../../state/Enums"
+import {AccessType, DialogState, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
-import {getMap, getScrollOverride, mSelector} from "../../state/EditorState"
+import {getMap, getMidMouseMode, mSelector} from "../../state/EditorState"
 import {mapDeInit} from "../../reducers/MapDeInit"
 import {N} from "../../state/MapStateTypes"
 import {shortcutColors} from "../assets/Colors"
@@ -176,7 +176,7 @@ export const Window: FC = () => {
   }
 
   const wheel = (e: WheelEvent) => {
-    if (getScrollOverride()) {
+    if (getMidMouseMode() === MidMouseMode.ZOOM) {
       e.preventDefault()
     }
   }

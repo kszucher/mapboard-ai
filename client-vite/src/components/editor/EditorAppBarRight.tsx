@@ -15,11 +15,9 @@ import {UserSettings} from "../dropdown/UserSettings.tsx"
 import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
-import ZoomCheck from "../../assets/zoom-check.svg?react"
-import ZoomCancel from "../../assets/zoom-cancel.svg?react"
+import {MouseConfig} from "../dropdown/MouseConfig.tsx"
 
 export const EditorAppBarRight: FC = () => {
-  const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const { data } = useOpenWorkspaceQuery()
@@ -32,12 +30,7 @@ export const EditorAppBarRight: FC = () => {
   return (
     <div className="fixed flex right-1 gap-6 h-[40px]">
       <div className="flex items-center gap-1">
-        <IconButton
-          variant="solid"
-          color="gray"
-          onClick={() => scrollOverride ? dispatch(actions.clearScrollOverride()) : dispatch(actions.setScrollOverride())}>
-          {scrollOverride ? <ZoomCheck/> : <ZoomCancel/>}
-        </IconButton>
+        <MouseConfig/>
       </div>
       <div className="flex flex-row items-center gap-1">
         <NodeSelect/>

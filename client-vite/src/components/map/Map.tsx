@@ -5,7 +5,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getG} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode} from "../../state/Enums.ts"
+import {LeftMouseMode, MidMouseMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {MapDiv} from "./MapDiv"
 import {setScrollLeftAnimated} from "./MapDivUtils"
@@ -13,7 +13,7 @@ import {MapSvg} from "./MapSvg"
 
 export const Map: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
-  const scrollOverride = useSelector((state: RootState) => state.editor.scrollOverride)
+  const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
@@ -99,7 +99,7 @@ export const Map: FC = () => {
         }
       }}
       onWheel={(e) => {
-        if (scrollOverride) {
+        if (midMouseMode === MidMouseMode.ZOOM) {
           md(MR.saveView, {e})
         }
       }}

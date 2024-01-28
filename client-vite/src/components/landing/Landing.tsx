@@ -65,7 +65,7 @@ export const Landing: FC = () => {
                   </div>
                 </h1>
                 <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
-                  AI-powered Visual Workspaces
+                  AI-Powered Visual Workspaces
                   <br/>
                   For Research, Analysis and Reporting
                 </p>

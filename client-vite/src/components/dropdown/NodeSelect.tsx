@@ -5,10 +5,8 @@ import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getCountXCO1, getCountXSO1, getX, isXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import SelectAll from "../../assets/select-all.svg?react"
-import {LeftMouseMode} from "../../state/Enums.ts"
 
 export const NodeSelect = () => {
-  const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
@@ -25,9 +23,6 @@ export const NodeSelect = () => {
         {isXS(m) && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.selectCFF, {path: getX(m).path})}>{'First Cell'}</DropdownMenu.Item>}
         {<DropdownMenu.Item onClick={() => md(MR.selectRA)}>{'All Root Node'}</DropdownMenu.Item>}
         {<DropdownMenu.Item onClick={() => md(MR.selectSA)}>{'All Struct Node'}</DropdownMenu.Item>}
-        <DropdownMenu.Separator/>
-        {leftMouseMode === LeftMouseMode.SELECT_BY_CLICK_OR_MOVE && <DropdownMenu.Item onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_RECTANGLE))}>{'Select By Rectangle'}</DropdownMenu.Item>}
-        {leftMouseMode === LeftMouseMode.SELECT_BY_RECTANGLE && <DropdownMenu.Item onClick={() => dispatch(actions.setLeftMouseMode(LeftMouseMode.SELECT_BY_CLICK_OR_MOVE))}>{'Select By Click Or Move'}</DropdownMenu.Item>}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

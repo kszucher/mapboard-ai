@@ -27,6 +27,11 @@ export enum LeftMouseMode {
   SELECT_BY_CLICK_OR_MOVE
 }
 
+export enum MidMouseMode {
+  SCROLL = 'scroll',
+  ZOOM = 'zoom'
+}
+
 export enum AccessType {
   UNAUTHORIZED = 'unauthorized',
   VIEW = 'view',
