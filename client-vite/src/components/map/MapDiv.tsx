@@ -103,7 +103,7 @@ export const MapDiv: FC = () => {
               window.open(ti.link, '_blank')
               window.focus()
             } else {
-              !e.ctrlKey && [LeftMouseMode.CLICK_SELECT_STRUCT, LeftMouseMode.CLICK_SELECT_AND_MOVE_STRUCT] && md(MR.selectT, {path: ti.path})
+              !e.ctrlKey && [LeftMouseMode.CLICK_SELECT_STRUCT, LeftMouseMode.CLICK_SELECT_AND_MOVE_STRUCT].includes(leftMouseMode) && md(MR.selectT, {path: ti.path})
               e.ctrlKey && leftMouseMode === LeftMouseMode.CLICK_SELECT_STRUCT && !ti.selected && isXS(m) && md(MR.selectAddT, {path: ti.path})
               e.ctrlKey && leftMouseMode === LeftMouseMode.CLICK_SELECT_STRUCT && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
               if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE_STRUCT) {
