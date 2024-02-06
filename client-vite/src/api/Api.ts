@@ -137,9 +137,14 @@ export const api = createApi({
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
     }),
     // PYTHON API
-    fileUpload: builder.mutation<void, void>({
-      query: () => ({ url: pythonBackendUrl + '/file-upload', method: 'POST', body: { } }),
-      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
+    uploadFile: builder.mutation<void, { bodyFormData: FormData }>({
+      query: ({ bodyFormData }) => ({
+        url: pythonBackendUrl + '/upload-file',
+        method: 'POST',
+        body: bodyFormData,
+        formData: true,
+      }),
+      // async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: []
     }),
   })

@@ -1,30 +1,23 @@
 import {Button, Dialog, Flex, Text} from "@radix-ui/themes"
 import {ChangeEvent, useRef, useState} from "react"
+import {useDispatch} from "react-redux"
+import {AppDispatch} from "../../reducers/EditorReducer.ts"
+import {api} from "../../api/Api.ts"
 
 export const RootIngestion = () => {
   const hiddenFileInput = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File | null>(null)
+  const dispatch = useDispatch<AppDispatch>()
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0])
     }
   }
-  const handleUpload = async () => {
+  const handleUpload = () => {
     if (file) {
-      console.log("Uploading file...")
       const formData = new FormData()
       formData.append("file", file)
-      try {
-        // You can write the URL of your server or any other endpoint used for file upload
-        const result = await fetch("https://httpbin.org/post", {
-          method: "POST",
-          body: formData,
-        })
-        const data = await result.json()
-        console.log(data)
-      } catch (error) {
-        console.error(error)
-      }
+      dispatch(api.endpoints.uploadFile.initiate({ bodyFormData: formData }))
     }
   }
   return (
