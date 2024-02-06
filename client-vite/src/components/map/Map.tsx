@@ -68,8 +68,8 @@ export const Map: FC = () => {
         if (e.button === 1 && e.buttons === 4) {
           e.preventDefault()
         }
-        if (e.button  === 0 && e.buttons === 1) {
-          if (midMouseMode === MidMouseMode.ZOOM) {
+        if (e.button === 0) {
+          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT_STRUCT) {
             md(MR.saveFromCoordinates, {e})
           }
         }
@@ -89,7 +89,7 @@ export const Map: FC = () => {
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          if (didMove && e.button === 0 && e.buttons === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT_STRUCT) {
+          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT_STRUCT) {
             md(MR.selectSByRectangle, {e})
           }
         }, { signal })
