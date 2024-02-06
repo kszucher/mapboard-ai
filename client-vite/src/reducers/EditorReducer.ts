@@ -5,7 +5,7 @@ import {mapFindIntersecting} from "../queries/MapFindIntersecting"
 import {editorState} from "../state/EditorState"
 import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
-import {nodeApi} from "../apis/NodeApi"
+import {api} from "../api/Api.ts"
 import {mapFindNearest} from "../queries/MapFindNearest"
 import {mapReducer} from "./MapReducer"
 import {getEditedNode, getX, mT, mTR} from "../queries/MapQueries.ts"
@@ -182,13 +182,13 @@ export const editorSlice = createSlice({
       isAction, () => {}
     )
     builder.addMatcher(
-      nodeApi.endpoints.signIn.matchFulfilled,
+      api.endpoints.signIn.matchFulfilled,
       (state) => {
         state.pageState = PageState.WS
       }
     )
     builder.addMatcher(
-      nodeApi.endpoints.openWorkspace.matchFulfilled,
+      api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
         console.log(payload)
         const { mapDataList } = structuredClone(payload)
@@ -203,7 +203,7 @@ export const editorSlice = createSlice({
       }
     )
     builder.addMatcher(
-      nodeApi.endpoints.getGptSuggestions.matchFulfilled,
+      api.endpoints.getGptSuggestions.matchFulfilled,
       (state, { payload }) => {
         const { promptId, gptSuggestions } = payload
         console.log(payload)
@@ -230,7 +230,7 @@ export const editorSlice = createSlice({
       }
     )
     builder.addMatcher(
-      nodeApi.endpoints.saveMap.matchFulfilled,
+      api.endpoints.saveMap.matchFulfilled,
       () => {
         console.log('save completed')
       }
@@ -241,8 +241,8 @@ export const editorSlice = createSlice({
 export const { actions } = editorSlice
 
 export const store = configureStore({
-  reducer: combineReducers({api: nodeApi.reducer, editor: editorSlice.reducer}),
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(nodeApi.middleware)
+  reducer: combineReducers({api: api.reducer, editor: editorSlice.reducer}),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(api.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>

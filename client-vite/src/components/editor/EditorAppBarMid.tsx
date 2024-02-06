@@ -1,7 +1,7 @@
 import {FC, Fragment} from 'react'
 import {useDispatch} from "react-redux"
 import {AppDispatch} from "../../reducers/EditorReducer"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 import {IconButton, DropdownMenu, Button} from "@radix-ui/themes"
 import {MapActions} from "../dropdown/MapActions.tsx"
@@ -29,7 +29,7 @@ export const EditorAppBarMid: FC = () => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           {tabMapIdList.map((el: string, index) => (
-            <DropdownMenu.Item key={index} onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({
               mapId: el,
               frameId: ''
             }))}>
@@ -38,7 +38,7 @@ export const EditorAppBarMid: FC = () => {
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+      <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({
         mapId: breadcrumbMapIdList[0],
         frameId: ''
       }))}>
@@ -47,7 +47,7 @@ export const EditorAppBarMid: FC = () => {
       {breadcrumbMapNameList.slice(1).map((el, index) => (
         <Fragment key={index}>
           <ChevronRight/>
-          <Button variant='solid' onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+          <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({
             mapId: breadcrumbMapIdList[index + 1],
             frameId: ''
           }))}>
@@ -66,7 +66,7 @@ export const EditorAppBarMid: FC = () => {
             variant="soft"
             color="gray"
             disabled={frameIdPosition === 0 || isFetching}
-            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+            onClick={() => dispatch(api.endpoints.selectMap.initiate({
               mapId: getMapId(),
               frameId: prevFrameId
             }))}>
@@ -76,7 +76,7 @@ export const EditorAppBarMid: FC = () => {
             variant="soft"
             color="gray"
             disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
-            onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({
+            onClick={() => dispatch(api.endpoints.selectMap.initiate({
               mapId: getMapId(),
               frameId: nextFrameId
             }))}>

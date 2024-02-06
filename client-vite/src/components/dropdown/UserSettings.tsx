@@ -1,6 +1,6 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
+import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState.ts"
 import Settings2 from "../../assets/settings-2.svg?react"
@@ -18,8 +18,8 @@ export const UserSettings = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        {colorMode === 'dark' && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.toggleColorMode.initiate())}>{'Light Mode'}</DropdownMenu.Item>}
-        {colorMode === 'light' && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.toggleColorMode.initiate())}>{'Dark Mode'}</DropdownMenu.Item>}
+        {colorMode === 'dark' && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>{'Light Mode'}</DropdownMenu.Item>}
+        {colorMode === 'light' && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>{'Dark Mode'}</DropdownMenu.Item>}
         {!connectionHelpersVisible && <DropdownMenu.Item onClick={() => dispatch(actions.showConnectionHelpers())}>{'Show Helpers'}</DropdownMenu.Item>}
         {connectionHelpersVisible && <DropdownMenu.Item onClick={() => dispatch(actions.hideConnectionHelpers())}>{'Hide Helpers'}</DropdownMenu.Item>}
       </DropdownMenu.Content>

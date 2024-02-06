@@ -2,7 +2,7 @@ import {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import mermaid from "mermaid"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {DialogState, AlertDialogState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {Theme, AlertDialog, Dialog} from "@radix-ui/themes"

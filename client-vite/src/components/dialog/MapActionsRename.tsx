@@ -1,7 +1,7 @@
 import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch} from "react-redux"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
+import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {AppDispatch} from "../../reducers/EditorReducer.ts"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState.ts"
 
@@ -36,7 +36,7 @@ export const MapActionsRename = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(nodeApi.endpoints.renameMap.initiate({mapId: getMapId(), name: mapName}))}>
+          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({mapId: getMapId(), name: mapName}))}>
             {'Save'}
           </Button>
         </Dialog.Close>

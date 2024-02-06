@@ -1,6 +1,6 @@
 import {Button, Dialog, Flex, Table, TableBody} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
-import {nodeApi, useGetSharesQuery} from "../../apis/NodeApi.ts"
+import {api, useGetSharesQuery} from "../../api/Api.ts"
 import {AppDispatch} from "../../reducers/EditorReducer.ts"
 
 export const MapSharesSharedWithMe = () => {
@@ -32,7 +32,7 @@ export const MapSharesSharedWithMe = () => {
               <Table.Cell>{el.status}</Table.Cell>
               {el.status === 'waiting' &&
                 <Table.Cell>
-                  <Button size="1" variant="solid" onClick={() => dispatch(nodeApi.endpoints.acceptShare.initiate({shareId: el._id}))}>
+                  <Button size="1" variant="solid" onClick={() => dispatch(api.endpoints.acceptShare.initiate({shareId: el._id}))}>
                     {'Accept'}
                   </Button>
                 </Table.Cell>}

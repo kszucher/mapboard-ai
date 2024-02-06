@@ -1,6 +1,6 @@
 import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi} from "../../apis/NodeApi.ts"
+import {api} from "../../api/Api.ts"
 import {AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {getX} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
@@ -36,7 +36,7 @@ export const NodeEditCreateSubMap = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(nodeApi.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getX(m).nodeId, content: getX(m).content}))}>
+          <Button onClick={() => dispatch(api.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getX(m).nodeId, content: getX(m).content}))}>
             {'OK'}
           </Button>
         </Dialog.Close>

@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getXA, isXR, mTR} from "../../queries/MapQueries.ts"

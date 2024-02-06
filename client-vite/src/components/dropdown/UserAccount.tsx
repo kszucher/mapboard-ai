@@ -1,7 +1,7 @@
 import {useAuth0} from "@auth0/auth0-react"
 import {AlertDialog, Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
-import {nodeApi} from "../../apis/NodeApi.ts"
+import {api} from "../../api/Api.ts"
 import {actions, AppDispatch} from "../../reducers/EditorReducer.ts"
 import {AlertDialogState, DialogState} from "../../state/Enums.ts"
 import User from "../../assets/user.svg?react"
@@ -27,14 +27,14 @@ export const UserAccount = () => {
         <DropdownMenu.Item onClick={()=>{
           logout({ logoutParams: { returnTo: window.location.origin }})
           dispatch(actions.resetState())
-          dispatch(nodeApi.util.resetApiState())
+          dispatch(api.util.resetApiState())
         }}>{'Sign Out'}
         </DropdownMenu.Item>
         <DropdownMenu.Item onClick={()=>{
           logout({ logoutParams: { returnTo: window.location.origin }})
-          dispatch(nodeApi.endpoints.signOutEverywhere.initiate())
+          dispatch(api.endpoints.signOutEverywhere.initiate())
           dispatch(actions.resetState())
-          dispatch(nodeApi.util.resetApiState())
+          dispatch(api.util.resetApiState())
         }}>{'Sign Out All Devices'}
         </DropdownMenu.Item>
         <DropdownMenu.Separator/>

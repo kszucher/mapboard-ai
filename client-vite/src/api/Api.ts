@@ -6,11 +6,11 @@ import {getMap} from "../state/EditorState"
 import {N} from "../state/MapStateTypes"
 import {actions, RootState} from "../reducers/EditorReducer"
 import {mapDeInit} from "../reducers/MapDeInit"
-import {backendUrl} from "./Urls"
+import {nodeBackendUrl} from "./Urls"
 
-export const nodeApi = createApi({
+export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: backendUrl,
+    baseUrl: nodeBackendUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).editor.token
       if (token) {
@@ -39,7 +39,7 @@ export const nodeApi = createApi({
         if (editor.mapList.length > 1) {
           console.log('save by listener')
           clearTimeout(timeoutId)
-          dispatch(nodeApi.endpoints.saveMap.initiate({
+          dispatch(api.endpoints.saveMap.initiate({
             mapId: getMapId(),
             frameId: getFrameId(),
             mapData: mapDeInit(getMap().filter((n: N) => (n.hasOwnProperty('path') && n.hasOwnProperty('nodeId'))))
@@ -130,7 +130,7 @@ export const nodeApi = createApi({
       async onQueryStarted(_, { dispatch }) {
         dispatch(actions.setIsLoading(true))
         dispatch(actions.resetState())
-        dispatch(nodeApi.util.resetApiState()
+        dispatch(api.util.resetApiState()
         )},
       invalidatesTags: []
     }),
@@ -141,4 +141,4 @@ export const nodeApi = createApi({
   })
 })
 
-export const { useOpenWorkspaceQuery, useGetSharesQuery, useCreateShareMutation } = nodeApi
+export const { useOpenWorkspaceQuery, useGetSharesQuery, useCreateShareMutation } = api

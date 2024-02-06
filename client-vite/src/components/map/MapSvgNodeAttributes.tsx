@@ -1,6 +1,6 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
 import {isRS, isRSC, isCS, isCSC, getTSI1, getTSI2, getCountTCO1, getNodeById, mTS, mTC} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"

@@ -1,6 +1,6 @@
 import {AccessType} from "./Enums"
 import {DefaultUseOpenWorkspaceQueryState} from "./NodeApiStateTypes"
-import {nodeApi} from "../apis/NodeApi"
+import {api} from "../api/Api.ts"
 import {store} from "../reducers/EditorReducer"
 
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
@@ -19,14 +19,14 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
 }
 
 export const getMapId = () => {
-  const result = nodeApi.endpoints.openWorkspace.select()(store.getState())
+  const result = api.endpoints.openWorkspace.select()(store.getState())
   const {data} = result
   const {mapId} = data || defaultUseOpenWorkspaceQueryState
   return mapId
 }
 
 export const getFrameId = () => {
-  const result = nodeApi.endpoints.openWorkspace.select()(store.getState())
+  const result = api.endpoints.openWorkspace.select()(store.getState())
   const {data} = result
   const {frameId} = data || defaultUseOpenWorkspaceQueryState
   return frameId

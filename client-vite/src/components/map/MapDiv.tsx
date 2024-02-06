@@ -3,7 +3,7 @@ import katex from "katex/dist/katex.mjs"
 import mermaid from "mermaid"
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getCountTCO1, getG, getNodeById, getX, getXA, isXS, mTS} from "../../queries/MapQueries.ts"
@@ -98,7 +98,7 @@ export const MapDiv: FC = () => {
           let didMove = false
           if (e.buttons === 1) {
             if (ti.linkType === 'internal') {
-              dispatch(nodeApi.endpoints.selectMap.initiate({mapId: ti.link, frameId: ''}))
+              dispatch(api.endpoints.selectMap.initiate({mapId: ti.link, frameId: ''}))
             } else if (ti.linkType === 'external') {
               window.open(ti.link, '_blank')
               window.focus()

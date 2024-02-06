@@ -1,7 +1,7 @@
 import {FC, Fragment} from "react"
 import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP} from "../../state/Consts"

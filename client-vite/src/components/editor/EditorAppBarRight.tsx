@@ -1,7 +1,7 @@
 import {FC} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {AccessType} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"

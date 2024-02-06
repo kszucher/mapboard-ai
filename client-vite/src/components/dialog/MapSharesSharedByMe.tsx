@@ -1,5 +1,5 @@
 import {Button, Dialog, Flex, Table, TableBody} from "@radix-ui/themes"
-import {useGetSharesQuery} from "../../apis/NodeApi.ts"
+import {useGetSharesQuery} from "../../api/Api.ts"
 
 export const MapSharesSharedByMe = () => {
   const { data } = useGetSharesQuery()
@@ -28,7 +28,7 @@ export const MapSharesSharedByMe = () => {
               <Table.Cell>{el.access}</Table.Cell>
               <Table.Cell>{el.status}</Table.Cell>
               <Table.Cell>
-                <Button size="1" variant="solid" onClick={() => window.alert('TODO: implement')/*dispatch(nodeApi.endpoints.withdrawShare.initiate({shareId: el._id}))*/}>
+                <Button size="1" variant="solid" onClick={() => window.alert('TODO: implement')/*dispatch(api.endpoints.withdrawShare.initiate({shareId: el._id}))*/}>
                   {'Withdraw'}
                 </Button>
               </Table.Cell>

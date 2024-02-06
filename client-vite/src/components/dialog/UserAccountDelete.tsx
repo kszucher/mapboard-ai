@@ -1,7 +1,7 @@
 import {AlertDialog, Button, Flex} from "@radix-ui/themes"
 import {FC} from "react"
 import {useDispatch} from "react-redux"
-import {nodeApi} from "../../apis/NodeApi.ts"
+import {api} from "../../api/Api.ts"
 import {AppDispatch} from "../../reducers/EditorReducer.ts"
 
 export const UserAccountDelete: FC = () => {
@@ -20,7 +20,7 @@ export const UserAccountDelete: FC = () => {
           </Button>
         </AlertDialog.Cancel>
         <AlertDialog.Action>
-          <Button variant="solid" color="red" onClick={() => dispatch(nodeApi.endpoints.deleteAccount.initiate())}>
+          <Button variant="solid" color="red" onClick={() => dispatch(api.endpoints.deleteAccount.initiate())}>
             {'Delete Account'}
           </Button>
         </AlertDialog.Action>

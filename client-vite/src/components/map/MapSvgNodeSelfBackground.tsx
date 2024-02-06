@@ -1,6 +1,6 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../../apis/NodeApi"
+import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {mT} from "../../queries/MapQueries.ts"
 import {getColors} from "../assets/Colors"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"

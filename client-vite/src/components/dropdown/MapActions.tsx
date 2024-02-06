@@ -1,6 +1,6 @@
 import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {nodeApi, useOpenWorkspaceQuery} from "../../apis/NodeApi.ts"
+import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {getG} from "../../queries/MapQueries.ts";
 import {mSelector} from "../../state/EditorState.ts";
@@ -25,15 +25,15 @@ export const MapActions = () => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           {frameId === '' && <Dialog.Trigger>{<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.RENAME_MAP))}>{'Rename'}</DropdownMenu.Item>}</Dialog.Trigger>}
-          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.createMapInTab.initiate())}>{'Create'}</DropdownMenu.Item>}
-          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.createMapInTabDuplicate.initiate({mapId: getMapId()}))}>{'Duplicate'}</DropdownMenu.Item>}
-          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}>{'Move Up'}</DropdownMenu.Item>}
-          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}>{'Move Down'}</DropdownMenu.Item>}
-          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.deleteMap.initiate({mapId: getMapId()}))}>{'Remove'}</DropdownMenu.Item>}
-          {frameId === '' && frameIdList.length === 0 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))}>{'Create First Frame'}</DropdownMenu.Item>}
-          {frameId === '' && frameIdList.length > 0 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))}>{'Open First Frame'}</DropdownMenu.Item>}
-          {frameId !== '' && frameIdList.length > 0 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.createMapFrameDuplicate.initiate({mapId: getMapId(), frameId: getFrameId()}))}>{'Duplicate Frame'}</DropdownMenu.Item>}
-          {frameId !== '' && frameIdList.length > 0 && <DropdownMenu.Item onClick={() => dispatch(nodeApi.endpoints.deleteMapFrame.initiate({mapId: getMapId(), frameId: getFrameId()}))}>{'Delete Frame'}</DropdownMenu.Item>}
+          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTab.initiate())}>{'Create'}</DropdownMenu.Item>}
+          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTabDuplicate.initiate({mapId: getMapId()}))}>{'Duplicate'}</DropdownMenu.Item>}
+          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}>{'Move Up'}</DropdownMenu.Item>}
+          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}>{'Move Down'}</DropdownMenu.Item>}
+          {frameId === '' && breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))}>{'Remove'}</DropdownMenu.Item>}
+          {frameId === '' && frameIdList.length === 0 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))}>{'Create First Frame'}</DropdownMenu.Item>}
+          {frameId === '' && frameIdList.length > 0 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))}>{'Open First Frame'}</DropdownMenu.Item>}
+          {frameId !== '' && frameIdList.length > 0 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapFrameDuplicate.initiate({mapId: getMapId(), frameId: getFrameId()}))}>{'Duplicate Frame'}</DropdownMenu.Item>}
+          {frameId !== '' && frameIdList.length > 0 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMapFrame.initiate({mapId: getMapId(), frameId: getFrameId()}))}>{'Delete Frame'}</DropdownMenu.Item>}
           <DropdownMenu.Separator/>
           {getG(m).density === 'small' && <DropdownMenu.Item onClick={() => md(MR.setDensityLarge)}>{'Density - Cozy'}</DropdownMenu.Item>}
           {getG(m).density === 'large' && <DropdownMenu.Item onClick={() => md(MR.setDensitySmall)}>{'Density - Compact'}</DropdownMenu.Item>}
