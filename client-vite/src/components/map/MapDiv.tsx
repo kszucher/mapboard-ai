@@ -80,10 +80,9 @@ export const MapDiv: FC = () => {
           margin: 0,
           textShadow: ti.blur? '#FFF 0 0 8px' : '',
           pointerEvents: [
-            LeftMouseMode.NONE,
             LeftMouseMode.CLICK_SELECT_STRUCT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE_STRUCT
-          ].includes(leftMouseMode)
+          ].includes(leftMouseMode) || leftMouseMode === LeftMouseMode.NONE && ti.linkType.length
             ? 'auto'
             : 'none'
         }}
