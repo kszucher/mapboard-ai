@@ -4,6 +4,13 @@ const MongoClient = require('mongodb').MongoClient
 
 async function mongoExecutorCommands (users, maps, shares) {
   await MongoMutations.deleteUnusedMaps(users, maps)
+  await users.updateMany({}, [
+    {
+      $set: {
+        sessions: [],
+      }
+    }
+  ])
   await maps.updateMany({}, [
     {
       $set: {
