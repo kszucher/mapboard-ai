@@ -69,7 +69,9 @@ export const Map: FC = () => {
           e.preventDefault()
         }
         if (e.button  === 0 && e.buttons === 1) {
-          md(MR.saveFromCoordinates, {e})
+          if (midMouseMode === MidMouseMode.ZOOM) {
+            md(MR.saveFromCoordinates, {e})
+          }
         }
         let didMove = false
         const abortController = new AbortController()
