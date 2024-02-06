@@ -23,6 +23,7 @@ export enum AlertDialogState {
 }
 
 export enum LeftMouseMode {
+  NONE = 'none',
   CLICK_SELECT_ROOT = 'clickSelectRoot',
   CLICK_SELECT_STRUCT = 'clickSelectStruct',
   CLICK_SELECT_AND_MOVE_ROOT = 'clickSelectAndMoveRoot',

@@ -18,6 +18,7 @@ export const MouseConfig = () => {
       <DropdownMenu.Content>
         <DropdownMenu.Label>{'Left Mouse'}</DropdownMenu.Label>
         <DropdownMenu.RadioGroup value={leftMouseMode} onValueChange={(value) => dispatch(actions.setLeftMouseMode(value as LeftMouseMode))}>
+          <DropdownMenu.RadioItem value={LeftMouseMode.NONE}>{'None'}</DropdownMenu.RadioItem>
           <DropdownMenu.RadioItem value={LeftMouseMode.CLICK_SELECT_ROOT}>{'Click Select Root'}</DropdownMenu.RadioItem>
           <DropdownMenu.RadioItem value={LeftMouseMode.CLICK_SELECT_STRUCT}>{'Click Select Struct'}</DropdownMenu.RadioItem>
           <DropdownMenu.RadioItem value={LeftMouseMode.CLICK_SELECT_AND_MOVE_ROOT}>{'Click Select And Move Root'}</DropdownMenu.RadioItem>
