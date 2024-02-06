@@ -6,7 +6,7 @@ import {getMap} from "../state/EditorState"
 import {N} from "../state/MapStateTypes"
 import {actions, RootState} from "../reducers/EditorReducer"
 import {mapDeInit} from "../reducers/MapDeInit"
-import {nodeBackendUrl} from "./Urls"
+import {nodeBackendUrl, pythonBackendUrl} from "./Urls"
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -21,9 +21,7 @@ export const api = createApi({
   }),
   tagTypes: ['Workspace', 'Shares'],
   endpoints: (builder) => ({
-    // liveDemo: builder.query({
-    //   query: () => ({url: 'beta-public', method: 'POST', body: { type: 'LIVE_DEMO' } }),
-    // }),
+    // NODE API
     signIn: builder.mutation<void, void>({
       query: () => ({ url: '/beta-private', method: 'POST', body: { type: 'signIn' } }),
       invalidatesTags: ['Workspace']
@@ -137,6 +135,12 @@ export const api = createApi({
     getGptSuggestions: builder.query<any, GptData>({
       query: (payload) => ({ url: 'beta-private', method: 'POST', body: { type: 'getGptSuggestions', payload } }),
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
+    }),
+    // PYTHON API
+    fileUpload: builder.mutation<void, void>({
+      query: () => ({ url: pythonBackendUrl + '/file-upload', method: 'POST', body: { } }),
+      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
+      invalidatesTags: []
     }),
   })
 })
