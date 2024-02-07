@@ -17,7 +17,19 @@ export const mapChain = (m: M) => {
       }
       case isS(ti.path): {
         ti.tsi1 = mHashP.get(ti.path.slice(0, -2).join(''))!.nodeId
-
+        break
+      }
+      case isC(ti.path): {
+        ti.tsi1 = mHashP.get(ti.path.slice(0, -3).join(''))!.nodeId
+        ti.tsi2 = mHashP.get(ti.path.slice(0, -5).join(''))!.nodeId
+        break
+      }
+    }
+    switch (true) {
+      case isR(ti.path): {
+        break
+      }
+      case isS(ti.path): {
         const si1 = mHashN.get(ti.tsi1)!
         const i = ti.path.at(-1)
         ti.isTop = i === 0 && si1.isTop ? 1 : 0
@@ -25,8 +37,6 @@ export const mapChain = (m: M) => {
         break
       }
       case isC(ti.path): {
-        ti.tsi1 = mHashP.get(ti.path.slice(0, -3).join(''))!.nodeId
-        ti.tsi2 = mHashP.get(ti.path.slice(0, -5).join(''))!.nodeId
         break
       }
     }
