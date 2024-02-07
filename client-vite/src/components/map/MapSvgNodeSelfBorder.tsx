@@ -1,7 +1,7 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
-import {getCountTCO1, mTS} from "../../queries/MapQueries.ts"
+import {mTS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState.ts"
@@ -16,7 +16,7 @@ export const MapSvgNodeSelfBorder: FC = () => {
   return (
     mTS(m).map(ti => (
       <Fragment key={ti.nodeId}>
-        {ti.sBorderColor && getCountTCO1(m, ti) === 0 &&
+        {ti.sBorderColor && ti.countTCO1 === 0 &&
           <path
             key={`${ti.nodeId}_sBorderColor`}
             d={getArcPath(ti, -2, true)}
@@ -26,7 +26,7 @@ export const MapSvgNodeSelfBorder: FC = () => {
             {...pathCommonProps}
           />
         }
-        {ti.sBorderColor && getCountTCO1(m, ti) > 0 &&
+        {ti.sBorderColor && ti.countTCO1 > 0 &&
           <path
             key={`${ti.nodeId}_sBorderColor`}
             d={getArcPath(ti, 0, false)}
@@ -36,7 +36,7 @@ export const MapSvgNodeSelfBorder: FC = () => {
             {...pathCommonProps}
           />
         }
-        {!ti.sBorderColor && getCountTCO1(m, ti) > 0 &&
+        {!ti.sBorderColor && ti.countTCO1 > 0 &&
           <path
             key={`${ti.nodeId}_sBorderColor`}
             d={getArcPath(ti, 0, false)}

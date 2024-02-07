@@ -1,4 +1,4 @@
-import {getTSI1, getTSI2, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../queries/MapQueries.ts"
+import {getNodeById, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../queries/MapQueries.ts"
 import {INDENT, MARGIN_X, S_SPACING} from "../state/Consts.ts"
 import {M} from "../state/MapStateTypes"
 
@@ -12,7 +12,7 @@ export const mapPlaceIndented = (m: M) => {
       }
       case isS(ti.path): {
         const i = ti.path.at(-1)
-        const si1 = getTSI1(m, ti)
+        const si1 = getNodeById(m, ti.tsi1)
         const elapsed = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.countTCO2)
         if (isRS(ti.path)) {
           ti.nodeStartX = MARGIN_X + si1.nodeStartX
@@ -27,8 +27,8 @@ export const mapPlaceIndented = (m: M) => {
         break
       }
       case isC(ti.path): {
-        const si1 = getTSI1(m, ti)
-        const si2 = getTSI2(m, ti)
+        const si1 = getNodeById(m, ti.tsi1)
+        const si2 = getNodeById(m, ti.tsi2)
         if (isRSC(ti.path)) {
           ti.nodeStartX = MARGIN_X + si2.nodeStartX + ti.calcOffsetX
           ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY

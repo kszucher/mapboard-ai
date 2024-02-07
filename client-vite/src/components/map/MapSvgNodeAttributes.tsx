@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {isRS, isRSC, isCS, isCSC, getTSI1, getTSI2, getCountTCO1, getNodeById, mTS, mTC} from "../../queries/MapQueries.ts"
+import {isRS, isRSC, isCS, isCSC, getTSI1, getTSI2, getNodeById, mTS, mTC} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -18,11 +18,11 @@ export const MapSvgNodeAttributes: FC = () => {
     <Fragment>
       {mTS(m).map(ti => (
         <Fragment key={ti.nodeId}>
-          {!isRS(ti.path) && !isCS(ti.path) && getCountTCO1(m, ti) === 0 &&
+          {!isRS(ti.path) && !isCS(ti.path) && ti.countTCO1 === 0 &&
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI1(pm, ti)
                 ? getNodeLinePath(m, getTSI1(pm, ti), ti)
-                : getNodeLinePath(m, getTSI1(m, ti), ti)
+                : getNodeLinePath(m, getNodeById(m, ti.tsi1), ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.taskStatus > 1
@@ -37,7 +37,7 @@ export const MapSvgNodeAttributes: FC = () => {
                 <animate
                   attributeName='d'
                   from={getNodeLinePath(m, getTSI1(pm, ti), ti)}
-                  to={getNodeLinePath(m, getTSI1(m, ti), ti)}
+                  to={getNodeLinePath(m, getNodeById(m, ti.tsi1), ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
@@ -45,7 +45,7 @@ export const MapSvgNodeAttributes: FC = () => {
               }
             </path>
           }
-          {getCountTCO1(m, ti) > 0 &&
+          {ti.countTCO1 > 0 &&
             <path
               d={getGridPath(m, ti)}
               stroke={C.TABLE_GRID}
@@ -62,7 +62,7 @@ export const MapSvgNodeAttributes: FC = () => {
             <path
               d={!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti)
                 ? getNodeLinePath(m, getTSI2(pm, ti), ti)
-                : getNodeLinePath(m, getTSI2(m, ti), ti)
+                : getNodeLinePath(m, getNodeById(m, ti.tsi2), ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.lineColor}
@@ -73,7 +73,7 @@ export const MapSvgNodeAttributes: FC = () => {
                 <animate
                   attributeName='d'
                   from={getNodeLinePath(m, getTSI2(pm, ti), ti)}
-                  to={getNodeLinePath(m, getTSI2(m, ti), ti)}
+                  to={getNodeLinePath(m, getNodeById(m, ti.tsi2), ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}

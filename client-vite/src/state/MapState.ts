@@ -81,6 +81,8 @@ export const tSaveNever = {
   countTCO2: 0,
   tso1: [],
   tco1: [],
+  tsi1: '',
+  tsi2: '',
   // mapMeasure
   selfW: 0,
   selfH: 0,

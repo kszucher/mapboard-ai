@@ -23,7 +23,7 @@ export const mapMeasure = (pm: M, m: M) => {
           ti.familyW = Math.max(...ti.tso1.map(ti => ti.maxW))
           ti.familyH = ti.tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.countTSO1 - 1) * +Boolean(ti.countTSO2 && g.flow === Flow.EXPLODED || ti.countTCO2)
         }
-        ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
+        ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(g) * hasTask(m, ti)
         ti.selfH = ti.familyH + 2 * MARGIN_Y
         break
       }
@@ -36,7 +36,6 @@ export const mapMeasure = (pm: M, m: M) => {
           ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
           ti.selfH = getTCO1C0(m, ti).reduce((a, b) => a + b.selfH, 0)
         } else {
-          const g = getG(m)
           const pti = getNodeById(pm, ti.nodeId)
           if (
             ti.content !== '' &&
