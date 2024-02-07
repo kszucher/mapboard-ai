@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {isRS, isRSC, isCS, isCSC, getTSI1, getTSI2, getNodeById, mTS, mTC} from "../../queries/MapQueries.ts"
+import {isRS, isRSC, isCS, isCSC, getNodeById, mTS, mTC} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -20,8 +20,8 @@ export const MapSvgNodeAttributes: FC = () => {
         <Fragment key={ti.nodeId}>
           {!isRS(ti.path) && !isCS(ti.path) && ti.countTCO1 === 0 &&
             <path
-              d={!getNodeById(pm, ti.nodeId) && getTSI1(pm, ti)
-                ? getNodeLinePath(m, getTSI1(pm, ti), ti)
+              d={!getNodeById(pm, ti.nodeId) && getNodeById(pm, ti.tsi1)
+                ? getNodeLinePath(m, getNodeById(pm, ti.tsi1), ti)
                 : getNodeLinePath(m, getNodeById(m, ti.tsi1), ti)
               }
               strokeWidth={ti.lineWidth}
@@ -33,10 +33,10 @@ export const MapSvgNodeAttributes: FC = () => {
               {...pathCommonProps}
             >
               {
-                !getNodeById(pm, ti.nodeId) && getTSI1(pm, ti) &&
+                !getNodeById(pm, ti.nodeId) && getNodeById(pm, ti.tsi1) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(m, getTSI1(pm, ti), ti)}
+                  from={getNodeLinePath(m, getNodeById(pm, ti.tsi1), ti)}
                   to={getNodeLinePath(m, getNodeById(m, ti.tsi1), ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
@@ -60,8 +60,8 @@ export const MapSvgNodeAttributes: FC = () => {
         <Fragment key={ti.nodeId}>
           {!isRSC(ti.path) && !isCSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
             <path
-              d={!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti)
-                ? getNodeLinePath(m, getTSI2(pm, ti), ti)
+              d={!getNodeById(pm, ti.nodeId) && getNodeById(pm, ti.tsi2)
+                ? getNodeLinePath(m, getNodeById(pm, ti.tsi2), ti)
                 : getNodeLinePath(m, getNodeById(m, ti.tsi2), ti)
               }
               strokeWidth={ti.lineWidth}
@@ -69,10 +69,10 @@ export const MapSvgNodeAttributes: FC = () => {
               fill={'none'}
               {...pathCommonProps}
             >
-              {!getNodeById(pm, ti.nodeId) && getTSI2(pm, ti) &&
+              {!getNodeById(pm, ti.nodeId) && getNodeById(pm, ti.tsi2) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(m, getTSI2(pm, ti), ti)}
+                  from={getNodeLinePath(m, getNodeById(pm, ti.tsi2), ti)}
                   to={getNodeLinePath(m, getNodeById(m, ti.tsi2), ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
