@@ -43,8 +43,7 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
   return [ax, ay, ax + dx / 4, ay, ax + dx / 4, ay + dy, bx, by]
 }
 
-export const getNodeLinePath = (m: M, na: T, nb: T) => {
-  const g = getG(m)
+export const getNodeLinePath = (g: G, na: T, nb: T) => {
   const { lineType } = nb
   let sx = 0, sy = 0, ex = 0, ey = 0
   if (g.flow === Flow.EXPLODED) {
