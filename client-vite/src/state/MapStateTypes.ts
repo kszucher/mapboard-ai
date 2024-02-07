@@ -97,7 +97,7 @@ export interface TSaveNever {
   maxH: number
   calcOffsetX: number
   calcOffsetY: number
-  // mapPlace
+  // mapPlaceIndented
   nodeStartX: number
   nodeStartY: number
   isTop: number
