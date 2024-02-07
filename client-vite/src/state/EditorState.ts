@@ -5,7 +5,7 @@ import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MidMouseMode, 
 export const editorState: EditorState = {
   token: '',
   isLoading: false,
-  leftMouseMode: LeftMouseMode.NONE,
+  leftMouseMode: LeftMouseMode.CLICK_SELECT_STRUCT,
   midMouseMode: MidMouseMode.SCROLL,
   pageState: PageState.AUTH,
   dialogState: DialogState.NONE,

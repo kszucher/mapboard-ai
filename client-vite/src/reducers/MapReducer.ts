@@ -12,6 +12,7 @@ import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt
 import {mapPlace} from "./MapPlace"
 import { MR } from "./MapReducerEnum.ts"
 import {selectT, selectTL, selectAddT, selectRemoveT} from "./MapSelect"
+import {mapChain} from "../components/map/MapChain.ts"
 
 export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
   switch (action) {
@@ -146,6 +147,7 @@ export const mapReducer = (pm: M, action: MR, payload: any) => {
   const m = structuredClone(pm).sort(sortPath)
   mapReducerAtomic(m, action, payload)
   mapInit(m)
+  mapChain(m)
   mapCalcTask(m)
   mapMeasure(pm, m)
   mapPlace(m)

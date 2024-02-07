@@ -1,4 +1,4 @@
-import {getCountTCO2, getCountTSO1, getCountTSO2, getG, getTSI1, getTSI2, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../queries/MapQueries.ts"
+import {getG, getTSI1, getTSI2, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../queries/MapQueries.ts"
 import {INDENT, MARGIN_X, S_SPACING} from "../state/Consts.ts"
 import {Flow} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"
@@ -15,9 +15,7 @@ export const mapPlace = (m: M) => {
         const g = getG(m)
         const i = ti.path.at(-1)
         const si1 = getTSI1(m, ti)
-        const elapsed =
-          mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0) +
-          i * S_SPACING * + Boolean(getCountTSO2(m, si1) && g.flow === Flow.EXPLODED || getCountTCO2(m, si1))
+        const elapsed = mT(m).filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.countTSO2 && g.flow === Flow.EXPLODED || si1.countTCO2)
         if (isRS(ti.path)) {
           if (g.flow === Flow.EXPLODED) {
             ti.nodeStartX = MARGIN_X + si1.nodeStartX
@@ -43,8 +41,6 @@ export const mapPlace = (m: M) => {
             ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2  + elapsed
           }
         }
-        ti.isTop = i === 0 && si1.isTop ? 1 : 0
-        ti.isBottom = i === getCountTSO1(m, si1) - 1 && si1.isBottom === 1 ? 1 : 0
         break
       }
       case isC(ti.path): {

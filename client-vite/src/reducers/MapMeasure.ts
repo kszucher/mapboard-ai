@@ -1,6 +1,6 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getCountTCO1, getCountTCO2, getCountTSO1, getCountTSO2, getG, getNodeById, getPrefixTCH, getPrefixTCV, getTCH, getTCO1, getTCO1C0, getTCO1R0, getTCV, getTSO1, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getPrefixTCH, getPrefixTCV, getTCH, getTCO1C0, getTCO1R0, getTCV, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../queries/MapQueries.ts"
 import {INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING, C_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M} from "../state/MapStateTypes"
@@ -19,22 +19,20 @@ export const mapMeasure = (pm: M, m: M) => {
         break
       }
       case isR(ti.path): {
-        const countTSO1 = getCountTSO1(m, ti)
-        if (countTSO1) {
-          ti.familyW = Math.max(...getTSO1(m, ti).map(ti => ti.maxW))
-          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + S_SPACING * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) && g.flow === Flow.EXPLODED || getCountTCO2(m, ti)))
+        if (ti.countTSO1) {
+          ti.familyW = Math.max(...ti.tso1.map(ti => ti.maxW))
+          ti.familyH = ti.tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.countTSO1 - 1) * +Boolean(ti.countTSO2 && g.flow === Flow.EXPLODED || ti.countTCO2)
         }
         ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(getG(m)) * hasTask(m, ti)
         ti.selfH = ti.familyH + 2 * MARGIN_Y
         break
       }
       case isS(ti.path): {
-        if (getCountTCO1(m, ti)) {
-          const tco1 = getTCO1(m, ti)
-          tco1.map(ti => Object.assign(ti, { selfW: Math.max(...getTCH(m, ti).map(ti => ti.familyW + C_SPACING)) }))
-          tco1.map(ti => Object.assign(ti, { selfH: Math.max(...getTCV(m, ti).map(ti => ti.familyH + C_SPACING)) }))
-          tco1.map(ti => Object.assign(ti, { calcOffsetX: getPrefixTCV(m, ti).reduce((a, b) => a + b.selfW, 0) }))
-          tco1.map(ti => Object.assign(ti, { calcOffsetY: getPrefixTCH(m, ti).reduce((a, b) => a + b.selfH, 0) }))
+        if (ti.countTCO1) {
+          ti.tco1.map(ti => Object.assign(ti, { selfW: Math.max(...getTCH(m, ti).map(ti => ti.familyW + C_SPACING)) }))
+          ti.tco1.map(ti => Object.assign(ti, { selfH: Math.max(...getTCV(m, ti).map(ti => ti.familyH + C_SPACING)) }))
+          ti.tco1.map(ti => Object.assign(ti, { calcOffsetX: getPrefixTCV(m, ti).reduce((a, b) => a + b.selfW, 0) }))
+          ti.tco1.map(ti => Object.assign(ti, { calcOffsetY: getPrefixTCH(m, ti).reduce((a, b) => a + b.selfH, 0) }))
           ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
           ti.selfH = getTCO1C0(m, ti).reduce((a, b) => a + b.selfH, 0)
         } else {
@@ -73,10 +71,9 @@ export const mapMeasure = (pm: M, m: M) => {
           ti.selfW = (ti.dimW > 20 ? ti.dimW : MIN_NODE_W) + (g.density === 'large' ? NODE_MARGIN_X_LARGE : NODE_MARGIN_X_SMALL)
           ti.selfH = (ti.dimH / 17 > 1 ? ti.dimH : MIN_NODE_H) + (g.density === 'large' ? NODE_MARGIN_Y_LARGE : NODE_MARGIN_Y_SMALL)
         }
-        const countTSO1 = getCountTSO1(m, ti)
-        if (countTSO1) {
-          ti.familyW = Math.max(...getTSO1(m, ti).map(ti => ti.maxW)) + (g.flow === Flow.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.flow === Flow.INDENTED ? INDENT : 0)
-          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + S_SPACING * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) && g.flow === Flow.EXPLODED || getCountTCO2(m, ti)))
+        if (ti.countTSO1) {
+          ti.familyW = Math.max(...ti.tso1.map(ti => ti.maxW)) + (g.flow === Flow.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.flow === Flow.INDENTED ? INDENT : 0)
+          ti.familyH = ti.tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.countTSO1 - 1) * +Boolean(ti.countTSO2 && g.flow === Flow.EXPLODED || ti.countTCO2)
         }
         if (g.flow === Flow.EXPLODED) {
           ti.maxW = ti.selfW + ti.familyW
@@ -88,10 +85,9 @@ export const mapMeasure = (pm: M, m: M) => {
         break
       }
       case isC(ti.path): {
-        const countTSO1 = getCountTSO1(m, ti)
-        if (countTSO1) {
-          ti.familyW = Math.max(...getTSO1(m, ti).map(ti => ti.maxW)) + (g.flow === Flow.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.flow === Flow.INDENTED ? INDENT : 0)
-          ti.familyH = getTSO1(m, ti).reduce((a, b) => a + b.maxH, 0) + S_SPACING * (countTSO1 - 1) * +Boolean((getCountTSO2(m, ti) && g.flow === Flow.EXPLODED || getCountTCO2(m, ti)))
+        if (ti.countTSO1) {
+          ti.familyW = Math.max(...ti.tso1.map(ti => ti.maxW)) + (g.flow === Flow.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.flow === Flow.INDENTED ? INDENT : 0)
+          ti.familyH = ti.tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.countTSO1 - 1) * +Boolean(ti.countTSO2 && g.flow === Flow.EXPLODED || ti.countTCO2)
         } else {
           ti.familyW = 60
           ti.familyH = 30

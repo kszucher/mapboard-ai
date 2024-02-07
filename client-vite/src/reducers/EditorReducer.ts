@@ -200,7 +200,6 @@ export const editorSlice = createSlice({
         state.mapListIndex = 0
         state.editedNodeId = ''
         state.isLoading = false
-        state.leftMouseMode = LeftMouseMode.NONE
       }
     )
     builder.addMatcher(

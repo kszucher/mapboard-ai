@@ -81,6 +81,13 @@ export interface TSaveOptional {
 }
 
 export interface TSaveNever {
+  // mapChain
+  countTSO1: number
+  countTSO2: number
+  countTCO1: number
+  countTCO2: number
+  tso1: T[]
+  tco1: T[]
   // mapMeasure
   selfW: number
   selfH: number
