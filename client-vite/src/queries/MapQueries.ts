@@ -87,7 +87,6 @@ export const isCER = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqua
 export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) > p.at(-1)
 
 export const getTSI1 = (m: M, t: T): T => m.find(ti => isSI1(t.path, ti.path as PT))! as T
-export const getTSI2 = (m: M, t: T): T => m.find(ti => isSI2(t.path, ti.path as PT))! as T
 export const getTSO1 = (m: M, t: T): T[] => m.filter(ti => isSO1(t.path, ti.path as PT))! as T[]
 export const getTCO1 = (m: M, t: T): T[] => m.filter(ti => isCO1(t.path, ti.path as PT))! as T[]
 export const getTCO1R0 = (m: M, t: T): T[] => m.filter(ti => isCO1R0(t.path, ti.path as PT))! as T[]

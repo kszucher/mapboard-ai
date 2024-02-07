@@ -1,6 +1,6 @@
 import {tSaveOptional} from "../state/MapState.ts"
 import {M, T} from "../state/MapStateTypes"
-import {getNodeById, getX, isR, mT} from "../queries/MapQueries.ts"
+import {getTSI1, getX, isR, mT} from "../queries/MapQueries.ts"
 
 export const unselectNodes = (m: M) => mT(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
 
@@ -8,7 +8,7 @@ export const selectT = (m: M, ti: T, selection: 's' | 'f') => {
   unselectNodes(m)
   Object.assign(ti, {selected: 1, selection})
   if (!isR(ti.path)) {
-    getNodeById(m, ti.tsi1).lastSelectedChild = ti.path.at(-1)
+    getTSI1(m, ti).lastSelectedChild = ti.path.at(-1)
   }
 }
 
