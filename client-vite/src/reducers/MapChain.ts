@@ -1,5 +1,5 @@
-import {M, T} from "../../state/MapStateTypes.ts"
-import {mT, isR, isS, getCountTSO1, getCountTSO2, getCountTCO1, getCountTCO2, getTSO1, getTCO1, isC} from "../../queries/MapQueries.ts"
+import {M, T} from "../state/MapStateTypes.ts"
+import {mT, isR, isS, getCountTSO1, getCountTSO2, getCountTCO1, getCountTCO2, getTSO1, getTCO1, isC} from "../queries/MapQueries.ts"
 
 export const mapChain = (m: M) => {
   const mHashN = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))

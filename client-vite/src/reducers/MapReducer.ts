@@ -12,8 +12,8 @@ import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt
 import {mapPlaceIndented} from "./MapPlaceIndented.ts"
 import {MR} from "./MapReducerEnum.ts"
 import {selectAddT, selectRemoveT, selectT, selectTL} from "./MapSelect"
-import {mapChain} from "../components/map/MapChain.ts"
-import {mapPlaceExploded} from "./MapPlaceExploded.ts";
+import {mapChain} from "./MapChain.ts"
+import {mapPlaceExploded} from "./MapPlaceExploded.ts"
 
 export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
   switch (action) {
