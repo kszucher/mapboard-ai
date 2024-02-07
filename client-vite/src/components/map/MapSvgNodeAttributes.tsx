@@ -7,16 +7,16 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getGridPath, getNodeLinePath, pathCommonProps} from "./MapSvgUtils"
-import {T} from "../../state/MapStateTypes.ts"
+import {M, T} from "../../state/MapStateTypes.ts"
 
 export const MapSvgNodeAttributes: FC = () => {
-  const m = useSelector((state:RootState) => mSelector(state))
-  const pm = useSelector((state:RootState) => pmSelector(state))
+  const m = useSelector((state:RootState) => mSelector(state)) as M
+  const pm = useSelector((state:RootState) => pmSelector(state)) as M
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
-  const mHash = new Map<string, T>(m.map((i: T) => [i.nodeId, i]))
-  const pmHash = new Map<string, T>(pm.map((i: T) => [i.nodeId, i]))
+  const mHash = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
+  const pmHash = new Map<string, T>(pm.map(ti => [ti.nodeId, ti as T]))
   const g = getG(m)
   return (
     <Fragment>
