@@ -57,6 +57,8 @@ const getSIC = (p: PT) => getRSCIPL(p).findLast(pli => getPathPattern(pli).endsW
 
 export const isSD = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
 export const isSU = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
+const isQuasiSD = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1) && sortablePath(pt) > sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
+const isQuasiSU = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1) && sortablePath(pt) < sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
 const isSU1 = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) === p.at(-1) - 1
 const isSI1 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI1(p))
 const isSI2 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI2(p))
@@ -104,23 +106,8 @@ export const getXFSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path a
 export const getXSIC = (m: M): T => getNodeByPath(m, getSIC(getX(m).path) as PT)
 export const getXR = (m: M): T => getNodeByPath(m, getX(m).path.slice(0, 2) as PT)
 
-export const getQuasiSD = (m: M): T => {
-  const x = getX(m)
-  return mT(m).find(ti =>
-    !ti.selected &&
-    ti.path.at(1) === x.path.at(1) &&
-    sortablePath(ti.path) > sortablePath(x.path) &&
-    getPathPattern(ti.path) === getPathPattern(x.path)
-  )! as T
-}
-export const getQuasiSU = (m: M): T => {
-  const x = getX(m)
-  return mT(m).findLast(ti =>
-    !ti.selected &&
-    ti.path.at(1) === x.path.at(1) &&
-    sortablePath(ti.path) < sortablePath(x.path) &&
-    getPathPattern(ti.path) === getPathPattern(x.path)
-  )! as T}
+export const getQuasiSD = (m: M): T => mT(m).find(ti => !ti.selected && isQuasiSD(getX(m).path, ti.path))! as T
+export const getQuasiSU = (m: M): T => mT(m).findLast(ti => !ti.selected && isQuasiSU(getX(m).path, ti.path))! as T
 
 export const getXSO1 = (m: M): T[] => m.filter(ti => isSO1(getX(m).path, ti.path as PT)) as T[]
 export const getXSCO = (m: M): M => m.filter(ti => isSCO(getX(m).path, ti.path as PT))
@@ -132,6 +119,8 @@ export const getXACL1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti 
 
 const getCountSD = (m: M, p: PT): number => m.filter(ti => isSD(p, ti.path as PT)).length
 const getCountSU = (m: M, p: PT): number => m.filter(ti => isSU(p, ti.path as PT)).length
+export const getCountQuasiSD = (m: M): number => mT(m).filter(ti => isQuasiSD(getX(m).path, ti.path)).length
+export const getCountQuasiSU = (m: M): number => mT(m).filter(ti => isQuasiSU(getX(m).path, ti.path)).length
 const getCountSI1U = (m: M, p: PT): number => m.filter(ti => isSI1U(p, ti.path as PT)).length
 const getCountSO1 = (m: M, p: PT): number => m.filter(ti => isSO1(p, ti.path as PT)).length
 const getCountSO2 = (m: M, p: PT): number => m.filter(ti => isSO2(p, ti.path as PT)).length
@@ -159,18 +148,6 @@ export const getCountXCV = (m: M): number => getCountCV(m, getX(m).path)
 export const getCountXCH = (m: M): number => getCountCH(m, getX(m).path)
 export const getCountXSCV = (m: M): number => getCountCV(m, [...getX(m).path, 'c', 0, 0])
 export const getCountXSCH = (m: M): number => getCountCH(m, [...getX(m).path, 'c', 0, 0])
-
-
-export const getCountQuasiSD = (m: M): number => m.filter(ti =>
-  ti.path.at(1) === getX(m).path.at(1) &&
-  sortablePath(ti.path) > sortablePath(getX(m).path)
-  && getPathPattern(ti.path) === getPathPattern(getX(m).path)
-).length
-export const getCountQuasiSU = (m: M): number => m.filter(ti =>
-  ti.path.at(1) === getX(m).path.at(1) &&
-  sortablePath(ti.path) < sortablePath(getX(m).path) &&
-  getPathPattern(ti.path) === getPathPattern(getX(m).path)
-).length
 
 export const isXAR = (m: M): boolean => getXA(m).map(ti => ti.path).every(p => isR(p))
 export const isXASVN = (m: M): boolean => isS(getX(m).path) && getXA(m).map(ti => ti.path).every(p => isSV(getX(m).path, p)) && (getXL(m).path.at(-1) - getXF(m).path.at(-1)) === getXA(m).length - 1
