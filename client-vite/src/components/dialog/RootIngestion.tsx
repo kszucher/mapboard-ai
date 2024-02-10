@@ -1,25 +1,25 @@
 import {Button, Dialog, Flex, Text} from "@radix-ui/themes"
-import {ChangeEvent, useRef, useState} from "react"
-import {useDispatch} from "react-redux"
-import {AppDispatch} from "../../reducers/EditorReducer.ts"
-import {api} from "../../api/Api.ts"
+import {useEffect, useRef, useState} from "react"
+import {useGetIngestionQuery, useUploadFileMutation} from "../../api/Api.ts"
+import {Spinner} from "../assets/Spinner.tsx"
+import {defaultGetIngestionQueryState} from "../../state/NodeApiState.ts"
 
 export const RootIngestion = () => {
   const hiddenFileInput = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File | null>(null)
-  const dispatch = useDispatch<AppDispatch>()
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0])
-    }
-  }
-  const handleUpload = () => {
-    if (file) {
-      const formData = new FormData()
-      formData.append("file", file)
-      dispatch(api.endpoints.uploadFile.initiate({ bodyFormData: formData }))
-    }
-  }
+  const [isUploading, setIsUploading] = useState<Boolean>(false)
+  const [uploadFile, {isSuccess, reset}] = useUploadFileMutation()
+  const { data } = useGetIngestionQuery()
+  const { ingestionResult } = data || defaultGetIngestionQueryState
+
+  useEffect(() => {
+      if (isSuccess) {
+        reset()
+        setIsUploading(false)
+      }
+    }, [isSuccess]
+  )
+
   return (
     <Dialog.Content style={{ maxWidth: 450 }} onInteractOutside={(e) => {e.preventDefault()}}>
       <Dialog.Title>{'INGESTION'}</Dialog.Title>
@@ -29,14 +29,20 @@ export const RootIngestion = () => {
       <Flex direction="column" gap="2" align="start" content="center">
         <input
           type="file"
-          onChange={handleFileChange}
+          onChange={(e) => {
+            if (e.target.files) {
+              setFile(e.target.files[0])
+            }
+          }}
           ref={hiddenFileInput}
           style={{display: 'none'}}
         />
-        <Button color="gray" onClick={() => (hiddenFileInput.current as HTMLInputElement).click()}>
-          Select Fle
-        </Button>
-        {file && (
+        {!isUploading &&
+          <Button color="gray" onClick={() => (hiddenFileInput.current as HTMLInputElement).click()}>
+            Select Fle
+          </Button>
+        }
+        {!isUploading && file && (
           <Flex direction="column">
             <Text size="2">File Details:</Text>
             <Text size="2">Name: {file.name}</Text>
@@ -44,10 +50,25 @@ export const RootIngestion = () => {
             <Text size="2">Size: {file.size} bytes</Text>
           </Flex>
         )}
-        {file &&
-          <Button onClick={handleUpload}>
+        {!isUploading && file &&
+          <Button onClick={() => {
+            if (file) {
+              setIsUploading(true)
+              const formData = new FormData()
+              formData.append("file", file)
+              uploadFile({ bodyFormData: formData })
+            }
+          }}>
             Upload file
           </Button>
+        }
+        {isUploading &&
+          <Spinner/>
+        }
+        {ingestionResult &&
+          <div>
+            {ingestionResult}
+          </div>
         }
       </Flex>
       <Flex gap="3" mt="4" justify="end">

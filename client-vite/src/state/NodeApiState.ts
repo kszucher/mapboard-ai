@@ -1,5 +1,5 @@
 import {AccessType} from "./Enums"
-import {DefaultUseOpenWorkspaceQueryState} from "./NodeApiStateTypes"
+import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "./NodeApiStateTypes"
 import {api} from "../api/Api.ts"
 import {store} from "../reducers/EditorReducer"
 
@@ -16,6 +16,10 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
   frameIdList: []
+}
+
+export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {
+  ingestionResult: []
 }
 
 export const getMapId = () => {

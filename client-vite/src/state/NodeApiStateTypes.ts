@@ -16,6 +16,10 @@ export interface DefaultUseOpenWorkspaceQueryState {
   frameIdList: string[]
 }
 
+export interface DefaultGetIngestionQueryState {
+  ingestionResult: any[]
+}
+
 export type GptData = {
   promptId: string
   promptJson: any[] // TODO define

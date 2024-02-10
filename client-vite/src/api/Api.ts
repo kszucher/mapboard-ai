@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {timeoutId} from "../components/editor/Window"
 import {getFrameId, getMapId} from "../state/NodeApiState"
-import {DefaultUseOpenWorkspaceQueryState, GptData} from "../state/NodeApiStateTypes"
+import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState, GptData} from "../state/NodeApiStateTypes"
 import {getMap} from "../state/EditorState"
 import {N} from "../state/MapStateTypes"
 import {actions, RootState} from "../reducers/EditorReducer"
@@ -19,7 +19,7 @@ export const api = createApi({
       return headers
     },
   }),
-  tagTypes: ['Workspace', 'Shares'],
+  tagTypes: ['Workspace', 'Shares', 'IngestionData'],
   endpoints: (builder) => ({
     // NODE API
     signIn: builder.mutation<void, void>({
@@ -138,16 +138,14 @@ export const api = createApi({
     }),
     // PYTHON API
     uploadFile: builder.mutation<void, { bodyFormData: FormData }>({
-      query: ({ bodyFormData }) => ({
-        url: pythonBackendUrl + '/upload-file',
-        method: 'POST',
-        body: bodyFormData,
-        formData: true,
-      }),
-      // async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
-      invalidatesTags: []
+      query: ({ bodyFormData }) => ({ url: pythonBackendUrl + '/upload-file', method: 'POST', body: bodyFormData, formData: true }),
+      invalidatesTags: ['IngestionData']
     }),
+    getIngestion: builder.query<DefaultGetIngestionQueryState, void>({
+      query: () => ({ url: pythonBackendUrl + '/upload-file', method: 'POST', body: {} }),
+      providesTags: ['IngestionData']
+    })
   })
 })
 
-export const { useOpenWorkspaceQuery, useGetSharesQuery, useCreateShareMutation } = api
+export const { useOpenWorkspaceQuery, useGetSharesQuery, useCreateShareMutation, useUploadFileMutation, useGetIngestionQuery } = api
