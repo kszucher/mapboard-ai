@@ -75,12 +75,13 @@ export const tSaveOptional = {
 
 export const tSaveNever = {
   // mapChain
+  tsi1: '',
+  tsi2: '',
   tso1: [],
   tso2: [],
   tco1: [],
   tco2: [],
-  tsi1: '',
-  tsi2: '',
+  tsu: [],
   // mapMeasure
   selfW: 0,
   selfH: 0,

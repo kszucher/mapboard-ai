@@ -19,6 +19,9 @@ export const mapChain = (m: M) => {
         } else if (isCS(ti.path)) {
           (m.at(pathToIndex.get(ti.path.slice(0, -5).join('')) as number) as T).tso2.push(ti.nodeId);
         }
+        for (let i = 0; i < ti.path.at(-1); i++) {
+          ti.tsu.push(mHashP.get([...ti.path.slice(0, -1), i].join(''))!.nodeId)
+        }
         break
       }
       case isC(ti.path): {

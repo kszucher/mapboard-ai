@@ -82,12 +82,13 @@ export interface TSaveOptional {
 
 export interface TSaveNever {
   // mapChain
+  tsi1: string
+  tsi2: string
   tso1: string[]
   tso2: string[]
   tco1: string[]
   tco2: string[]
-  tsi1: string
-  tsi2: string
+  tsu: string[]
   // mapMeasure
   selfW: number
   selfH: number

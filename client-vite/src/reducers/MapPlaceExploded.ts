@@ -1,12 +1,11 @@
-import {getG, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, isSU, mT} from "../queries/MapQueries.ts"
+import {getG, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, mT} from "../queries/MapQueries.ts"
 import {MARGIN_X, S_SPACING} from "../state/Consts.ts"
 import {M, T} from "../state/MapStateTypes"
 
 export const mapPlaceExploded = (m: M) => {
   const g = getG(m)
   const mHash = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
-  const mt = mT(m)
-  mt.forEach(ti => {
+  mT(m).forEach(ti => {
     switch (true) {
       case isR(ti.path): {
         ti.nodeStartX = ti.offsetW
@@ -16,7 +15,8 @@ export const mapPlaceExploded = (m: M) => {
       case isS(ti.path): {
         const i = ti.path.at(-1)
         const si1 = mHash.get(ti.tsi1)!
-        const elapsed = mt.filter(nt => isSU(ti.path, nt.path)).map(ti => ti.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.tso2.length || si1.tco2.length)
+        const tsu = ti.tsu.map(nid => mHash.get(nid)) as T[]
+        const elapsed = tsu.map(ti => ti.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.tso2.length || si1.tco2.length)
         if (isRS(ti.path)) {
           ti.nodeStartX = MARGIN_X + si1.nodeStartX
           ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + ti.maxH / 2 - ti.selfH / 2 + elapsed
