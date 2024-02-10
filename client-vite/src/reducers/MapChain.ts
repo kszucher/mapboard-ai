@@ -20,7 +20,7 @@ export const mapChain = (m: M) => {
           (m.at(pathToIndex.get(ti.path.slice(0, -5).join('')) as number) as T).so2.push(ti.nodeId);
         }
         for (let i = 0; i < ti.path.at(-1); i++) {
-          ti.tsu.push(mHashP.get([...ti.path.slice(0, -1), i].join(''))!.nodeId)
+          ti.su.push(mHashP.get([...ti.path.slice(0, -1), i].join(''))!.nodeId)
         }
         break
       }

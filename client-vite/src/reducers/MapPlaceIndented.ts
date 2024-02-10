@@ -14,7 +14,7 @@ export const mapPlaceIndented = (m: M) => {
       case isS(ti.path): {
         const i = ti.path.at(-1)
         const si1 = mHash.get(ti.si1)!
-        const tsu = ti.tsu.map(nid => mHash.get(nid)) as T[]
+        const tsu = ti.su.map(nid => mHash.get(nid)) as T[]
         const elapsed = tsu.map(ti => ti.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.co2.length)
         if (isRS(ti.path)) {
           ti.nodeStartX = MARGIN_X + si1.nodeStartX
