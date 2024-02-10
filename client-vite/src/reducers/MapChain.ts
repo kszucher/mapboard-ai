@@ -1,9 +1,10 @@
-import {M, PT, T} from "../state/MapStateTypes.ts"
-import {mT, isR, isS, getCountTSO2, getCountTCO2, isC, getNodeByPath} from "../queries/MapQueries.ts"
+import {M, T} from "../state/MapStateTypes.ts"
+import {mT, isR, isS, getCountTSO2, getCountTCO2, isC} from "../queries/MapQueries.ts"
 
 export const mapChain = (m: M) => {
-  const mHashN = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
-  const mHashP = new Map<string, T>(m.map(ti => [ti.path.join(''), ti as T]))
+  const mHashN = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]));
+  const mHashP = new Map<string, T>(m.map(ti => [ti.path.join(''), ti as T]));
+  const pathToIndex = new Map<string, number>(m.map((ti, i) => [ti.path.join(''), i]));
 
   mT(m).forEach(ti => {
     switch (true) {
@@ -11,14 +12,14 @@ export const mapChain = (m: M) => {
         break
       }
       case isS(ti.path): {
-        ti.tsi1 = mHashP.get(ti.path.slice(0, -2).join(''))!.nodeId
-        getNodeByPath(m, ti.path.slice(0, -2) as PT).tso1.push(ti.nodeId)
+        ti.tsi1 = mHashP.get(ti.path.slice(0, -2).join(''))!.nodeId;
+        (m.at(pathToIndex.get(ti.path.slice(0, -2).join('')) as number) as T).tso1.push(ti.nodeId);
         break
       }
       case isC(ti.path): {
-        ti.tsi1 = mHashP.get(ti.path.slice(0, -3).join(''))!.nodeId
-        ti.tsi2 = mHashP.get(ti.path.slice(0, -5).join(''))!.nodeId
-        getNodeByPath(m, ti.path.slice(0, -3) as PT).tco1.push(ti.nodeId)
+        ti.tsi1 = mHashP.get(ti.path.slice(0, -3).join(''))!.nodeId;
+        ti.tsi2 = mHashP.get(ti.path.slice(0, -5).join(''))!.nodeId;
+        (m.at(pathToIndex.get(ti.path.slice(0, -3).join('')) as number) as T).tco1.push(ti.nodeId);
         break
       }
     }
