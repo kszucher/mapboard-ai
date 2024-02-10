@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import { useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {getCountTCO1, getG, getX, getXA, isXACC, isXACR, isXC, isXR, isXS} from "../../queries/MapQueries.ts"
+import {getG, getX, getXA, isXACC, isXACR, isXC, isXR, isXS} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -21,10 +21,10 @@ export const MapSvgSelectionPrimary: FC = () => {
       {!selectionRectCoords.length && getXA(m).length === 1 && isXR(m) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', -2)}/>
       }
-      {!selectionRectCoords.length && getXA(m).length === 1 && isXS(m) && t.selection === 's' && (t.sBorderColor || t.sFillColor || t.taskStatus > 1 || getCountTCO1(m, t)) &&
+      {!selectionRectCoords.length && getXA(m).length === 1 && isXS(m) && t.selection === 's' && (t.sBorderColor || t.sFillColor || t.taskStatus > 1 || t.tco1.length) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', 4)}/>
       }
-      {!selectionRectCoords.length && getXA(m).length === 1 && isXS(m) && t.selection === 's' && !((t.sBorderColor  || t.sFillColor) || t.taskStatus > 1 || getCountTCO1(m, t)) &&
+      {!selectionRectCoords.length && getXA(m).length === 1 && isXS(m) && t.selection === 's' && !((t.sBorderColor  || t.sFillColor) || t.taskStatus > 1 || t.tco1.length) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', -2)}/>
       }
       {!selectionRectCoords.length && getXA(m).length === 1 && isXS(m) && t.selection === 'f' &&

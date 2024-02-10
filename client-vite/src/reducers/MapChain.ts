@@ -32,13 +32,6 @@ export const mapChain = (m: M) => {
   })
 
   mT(m).forEach(ti => {
-    ti.countTSO1 = ti.tso1.length
-    ti.countTSO2 = ti.tso2.length
-    ti.countTCO1 = ti.tco1.length
-    ti.countTCO2 = ti.tco2.length
-  })
-
-  mT(m).forEach(ti => {
     switch (true) {
       case isR(ti.path): {
         break
@@ -47,7 +40,7 @@ export const mapChain = (m: M) => {
         const si1 = mHashN.get(ti.tsi1)!
         const i = ti.path.at(-1)
         ti.isTop = i === 0 && si1.isTop ? 1 : 0
-        ti.isBottom = i === si1.countTSO1 - 1 && si1.isBottom === 1 ? 1 : 0
+        ti.isBottom = i === si1.tso1.length - 1 && si1.isBottom === 1 ? 1 : 0
         break
       }
       case isC(ti.path): {

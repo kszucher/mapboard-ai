@@ -65,9 +65,7 @@ const isSI2 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, ge
 const isSI1U = (p: PT, pt: PT): boolean => isSU(getSI1(p), pt)
 export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
-const isSO2 = (p: PT, pt: PT): boolean => pt.length === p.length + 4 && isEqual(pt.slice(0, -4), p) && pt.at(-2) === 's'
 const isCO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
-const isCO2 = (p: PT, pt: PT): boolean => pt.length === p.length + 5 && isEqual(pt.slice(0, -5), p) && pt.at(-3) === 'c'
 const isCO1R0 = (p: PT, pt: PT): boolean => isCO1(p, pt) && pt.at(-2) === 0
 const isCO1C0 = (p: PT, pt: PT): boolean => isCO1(p, pt) && pt.at(-1) === 0
 const isCD1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) + 1 && pt.at(-1) === p.at(-1)
@@ -89,8 +87,6 @@ export const isCER = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqua
 export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) > p.at(-1)
 
 export const getTSI1 = (m: M, t: T): T => m.find(ti => isSI1(t.path, ti.path as PT))! as T
-export const getTSO1 = (m: M, t: T): T[] => m.filter(ti => isSO1(t.path, ti.path as PT))! as T[]
-export const getTCO1 = (m: M, t: T): T[] => m.filter(ti => isCO1(t.path, ti.path as PT))! as T[]
 export const getTCO1R0 = (m: M, t: T): T[] => m.filter(ti => isCO1R0(t.path, ti.path as PT))! as T[]
 export const getTCO1C0 = (m: M, t: T): T[] => m.filter(ti => isCO1C0(t.path, ti.path as PT))! as T[]
 export const getTCV = (m: M, t: T): T[] => m.filter(ti => isCV(t.path, ti.path as PT))! as T[]
@@ -123,16 +119,10 @@ export const getCountQuasiSD = (m: M): number => mT(m).filter(ti => isQuasiSD(ge
 export const getCountQuasiSU = (m: M): number => mT(m).filter(ti => isQuasiSU(getX(m).path, ti.path)).length
 const getCountSI1U = (m: M, p: PT): number => m.filter(ti => isSI1U(p, ti.path as PT)).length
 const getCountSO1 = (m: M, p: PT): number => m.filter(ti => isSO1(p, ti.path as PT)).length
-const getCountSO2 = (m: M, p: PT): number => m.filter(ti => isSO2(p, ti.path as PT)).length
 const getCountCO1 = (m: M, p: PT): number => m.filter(ti => isCO1(p, ti.path as PT)).length
-const getCountCO2 = (m: M, p: PT): number => m.filter(ti => isCO2(p, ti.path as PT)).length
 const getCountCV = (m: M, p: PT): number => m.filter(ti => isCH(p, ti.path as PT)).length
 const getCountCH = (m: M, p: PT): number => m.filter(ti => isCV(p, ti.path as PT)).length
 
-export const getCountTSO1 = (m: M, t: T): number => getCountSO1(m, t.path)
-export const getCountTSO2 = (m: M, t: T): number => getCountSO2(m, t.path)
-export const getCountTCO1 = (m: M, t: T): number => getCountCO1(m, t.path)
-export const getCountTCO2 = (m: M, t: T): number => getCountCO2(m, t.path)
 export const getCountTSCV = (m: M, t: T): number => getCountCV(m, [...t.path, 'c', 0, 0])
 export const getCountTSCH = (m: M, t: T): number => getCountCH(m, [...t.path, 'c', 0, 0])
 

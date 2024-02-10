@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountTCO1, getG, getNodeById, getX, getXA, isXS, mTS} from "../../queries/MapQueries.ts"
+import {getG, getNodeById, getX, getXA, isXS, mTS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode} from "../../state/Enums.ts"
 import {T} from "../../state/MapStateTypes"
@@ -137,7 +137,7 @@ export const MapDiv: FC = () => {
         }}
         onDoubleClick={(e) => {
           e.stopPropagation()
-          if (getX(m).contentType === 'text' && getCountTCO1(m, ti) === 0 && leftMouseMode === LeftMouseMode.CLICK_SELECT_STRUCT) {
+          if (getX(m).contentType === 'text' && ti.tco1.length === 0 && leftMouseMode === LeftMouseMode.CLICK_SELECT_STRUCT) {
             md(MR.startEditAppend)
           }
         }}

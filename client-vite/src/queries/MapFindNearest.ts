@@ -1,6 +1,6 @@
 import {M, T} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
-import {getCountTSO1, getNodeByPath, sortPath, mT, isSEO, getTR, getRSCIPL} from "./MapQueries.ts"
+import {getNodeByPath, sortPath, mT, isSEO, getTR, getRSCIPL} from "./MapQueries.ts"
 
 export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
@@ -34,7 +34,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
       }
     })
     if (moveInsertParentNode.nodeId.length) {
-      const moveInsertParentNodeNSO1 = getCountTSO1(m, moveInsertParentNode)
+      const moveInsertParentNodeNSO1 = moveInsertParentNode.tso1.length
       const fromX = moveInsertParentNode.nodeStartX + moveInsertParentNode.selfW
       const fromY = moveInsertParentNode.nodeStartY + moveInsertParentNode.selfH / 2
       sMoveCoords = [fromX, fromY, toX, toY]

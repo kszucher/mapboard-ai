@@ -22,7 +22,7 @@ export const MapSvgNodeAttributes: FC = () => {
     <Fragment>
       {mTS(m).map(ti => (
         <Fragment key={ti.nodeId}>
-          {!isRS(ti.path) && !isCS(ti.path) && ti.countTCO1 === 0 &&
+          {!isRS(ti.path) && !isCS(ti.path) && ti.tco1.length === 0 &&
             <path
               d={!pmHash.has(ti.nodeId) && pmHash.get(ti.tsi1)
                 ? getNodeLinePath(g, pmHash.get(ti.tsi1)!, ti)
@@ -49,7 +49,7 @@ export const MapSvgNodeAttributes: FC = () => {
               }
             </path>
           }
-          {ti.countTCO1 > 0 &&
+          {ti.tco1.length > 0 &&
             <path
               d={getGridPath(m, ti)}
               stroke={C.TABLE_GRID}

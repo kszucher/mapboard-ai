@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {getCountTCO1, getXA, isXR, isXS, mT} from "../../queries/MapQueries.ts"
+import {getXA, isXR, isXS, mT} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -20,10 +20,10 @@ export const MapSvgSelectionSecondary: FC = () => {
         {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 && isXR(m) &&
           <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', -2)}/>
         }
-        {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 &&isXS(m) && (ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || getCountTCO1(m, ti)) &&
+        {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 &&isXS(m) && (ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.tco1.length) &&
           <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', 4)}/>
         }
-        {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 && isXS(m) && !(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || getCountTCO1(m, ti)) &&
+        {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 && isXS(m) && !(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.tco1.length) &&
           <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', -2)}/>
         }
       </Fragment>

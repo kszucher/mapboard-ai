@@ -1,6 +1,5 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {getCountTCO1} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {T} from "../../state/MapStateTypes.ts"
@@ -12,10 +11,10 @@ export const MapSvgSelectionPreview: FC = () => {
   return (
     intersectingNodes.map((ti: T) => (
       <Fragment key={ti.nodeId}>
-        {(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || getCountTCO1(m, ti)) &&
+        {(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.tco1.length) &&
           <path stroke={'#555555'} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', 4)}/>
         }
-        {!(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || getCountTCO1(m, ti)) &&
+        {!(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.tco1.length) &&
           <path stroke={'#555555'} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', -2)}/>
         }
       </Fragment>

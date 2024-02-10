@@ -1,5 +1,5 @@
 import {M} from "../state/MapStateTypes"
-import {getCountTCO1, isS, mT} from "./MapQueries.ts"
+import {isS, mT} from "./MapQueries.ts"
 
 export const rectanglesIntersect = (input: number[]) => {
   const [minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy] = input
@@ -12,7 +12,7 @@ export const rectanglesIntersect = (input: number[]) => {
 }
 export const mapFindIntersecting = (m: M, fromX: number, fromY: number, toX: number, toY: number ) => (
   mT(m).filter(ti =>
-    isS(ti.path) && getCountTCO1(m, ti) === 0 && ti.content !== '' &&
+    isS(ti.path) && ti.tco1.length === 0 && ti.content !== '' &&
     +rectanglesIntersect([
       Math.min(fromX, toX),
       Math.min(fromY, toY),

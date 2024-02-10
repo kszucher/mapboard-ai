@@ -6,7 +6,7 @@ import {MR} from "../../reducers/MapReducerEnum.ts"
 import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP} from "../../state/Consts"
 import {getColors} from "../assets/Colors"
-import {getCountTCO1, getCountTSO1, getG, mTS} from "../../queries/MapQueries.ts"
+import {getG, mTS} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -24,7 +24,7 @@ export const MapSvgNodeTasks: FC = () => {
   return (
     mTS(m).map(ti => (
       <Fragment key={ti.nodeId}>
-        {ti.taskStatus > 0 && getCountTSO1(m, ti) === 0 && getCountTCO1(m, ti) === 0 && ti.contentType !== 'image' && !isEqual(ti.nodeId, editedNodeId) &&
+        {ti.taskStatus > 0 && ti.tso1.length === 0 && ti.tco1.length === 0 && ti.contentType !== 'image' && !isEqual(ti.nodeId, editedNodeId) &&
           <path
             d={
               getLinearLinePath({
@@ -40,7 +40,7 @@ export const MapSvgNodeTasks: FC = () => {
             {...pathCommonProps}
           />
         }
-        {ti.taskStatus > 0 && getCountTSO1(m, ti) === 0 && getCountTCO1(m, ti) === 0 && ti.contentType !== 'image' && [...Array(4)].map((_, i) => (
+        {ti.taskStatus > 0 && ti.tso1.length === 0 && ti.tco1.length === 0 && ti.contentType !== 'image' && [...Array(4)].map((_, i) => (
           <circle
             key={`${ti.nodeId}_svg_taskCircle${i + 1}`}
             id={'taskCircle'}
