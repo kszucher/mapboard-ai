@@ -22,11 +22,11 @@ export const MapSvgNodeAttributes: FC = () => {
     <Fragment>
       {mTS(m).map(ti => (
         <Fragment key={ti.nodeId}>
-          {!isRS(ti.path) && !isCS(ti.path) && ti.tco1.length === 0 &&
+          {!isRS(ti.path) && !isCS(ti.path) && ti.co1.length === 0 &&
             <path
-              d={!pmHash.has(ti.nodeId) && pmHash.get(ti.tsi1)
-                ? getNodeLinePath(g, pmHash.get(ti.tsi1)!, ti)
-                : getNodeLinePath(g, mHash.get(ti.tsi1)!, ti)
+              d={!pmHash.has(ti.nodeId) && pmHash.get(ti.si1)
+                ? getNodeLinePath(g, pmHash.get(ti.si1)!, ti)
+                : getNodeLinePath(g, mHash.get(ti.si1)!, ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.taskStatus > 1
@@ -37,11 +37,11 @@ export const MapSvgNodeAttributes: FC = () => {
               {...pathCommonProps}
             >
               {
-                !pmHash.has(ti.nodeId) && pmHash.has(ti.tsi1) &&
+                !pmHash.has(ti.nodeId) && pmHash.has(ti.si1) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(g, pmHash.get(ti.tsi1)!, ti)}
-                  to={getNodeLinePath(g, mHash.get(ti.tsi1)!, ti)}
+                  from={getNodeLinePath(g, pmHash.get(ti.si1)!, ti)}
+                  to={getNodeLinePath(g, mHash.get(ti.si1)!, ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
@@ -49,7 +49,7 @@ export const MapSvgNodeAttributes: FC = () => {
               }
             </path>
           }
-          {ti.tco1.length > 0 &&
+          {ti.co1.length > 0 &&
             <path
               d={getGridPath(m, ti)}
               stroke={C.TABLE_GRID}
@@ -64,20 +64,20 @@ export const MapSvgNodeAttributes: FC = () => {
         <Fragment key={ti.nodeId}>
           {!isRSC(ti.path) && !isCSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
             <path
-              d={!pmHash.has(ti.nodeId) && pmHash.has(ti.tsi2)
-                ? getNodeLinePath(g, pmHash.get(ti.tsi2)!, ti)
-                : getNodeLinePath(g, mHash.get(ti.tsi2)!, ti)
+              d={!pmHash.has(ti.nodeId) && pmHash.has(ti.si2)
+                ? getNodeLinePath(g, pmHash.get(ti.si2)!, ti)
+                : getNodeLinePath(g, mHash.get(ti.si2)!, ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.lineColor}
               fill={'none'}
               {...pathCommonProps}
             >
-              {!pmHash.has(ti.nodeId) && pmHash.has(ti.tsi2) &&
+              {!pmHash.has(ti.nodeId) && pmHash.has(ti.si2) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(g, pmHash.get(ti.tsi2)!, ti)}
-                  to={getNodeLinePath(g, mHash.get(ti.tsi2)!, ti)}
+                  from={getNodeLinePath(g, pmHash.get(ti.si2)!, ti)}
+                  to={getNodeLinePath(g, mHash.get(ti.si2)!, ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}

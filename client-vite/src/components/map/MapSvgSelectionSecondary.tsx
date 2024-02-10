@@ -20,10 +20,10 @@ export const MapSvgSelectionSecondary: FC = () => {
         {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 && isXR(m) &&
           <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', -2)}/>
         }
-        {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 &&isXS(m) && (ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.tco1.length) &&
+        {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 &&isXS(m) && (ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.co1.length) &&
           <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', 4)}/>
         }
-        {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 && isXS(m) && !(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.tco1.length) &&
+        {!selectionRectCoords.length && ti.selected && getXA(m).length > 1 && isXS(m) && !(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.co1.length) &&
           <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', -2)}/>
         }
       </Fragment>

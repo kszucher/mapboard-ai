@@ -34,7 +34,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
       }
     })
     if (moveInsertParentNode.nodeId.length) {
-      const moveInsertParentNodeNSO1 = moveInsertParentNode.tso1.length
+      const moveInsertParentNodeNSO1 = moveInsertParentNode.so1.length
       const fromX = moveInsertParentNode.nodeStartX + moveInsertParentNode.selfW
       const fromY = moveInsertParentNode.nodeStartY + moveInsertParentNode.selfH / 2
       sMoveCoords = [fromX, fromY, toX, toY]

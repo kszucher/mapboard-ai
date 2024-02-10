@@ -13,9 +13,9 @@ export const mapPlaceIndented = (m: M) => {
       }
       case isS(ti.path): {
         const i = ti.path.at(-1)
-        const si1 = mHash.get(ti.tsi1)!
+        const si1 = mHash.get(ti.si1)!
         const tsu = ti.tsu.map(nid => mHash.get(nid)) as T[]
-        const elapsed = tsu.map(ti => ti.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.tco2.length)
+        const elapsed = tsu.map(ti => ti.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.co2.length)
         if (isRS(ti.path)) {
           ti.nodeStartX = MARGIN_X + si1.nodeStartX
           ti.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2  + elapsed
@@ -29,8 +29,8 @@ export const mapPlaceIndented = (m: M) => {
         break
       }
       case isC(ti.path): {
-        const si1 = mHash.get(ti.tsi1)!
-        const si2 = mHash.get(ti.tsi2)!
+        const si1 = mHash.get(ti.si1)!
+        const si2 = mHash.get(ti.si2)!
         if (isRSC(ti.path)) {
           ti.nodeStartX = MARGIN_X + si2.nodeStartX + ti.calcOffsetX
           ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY

@@ -12,12 +12,12 @@ export const mapChain = (m: M) => {
         break
       }
       case isS(ti.path): {
-        ti.tsi1 = mHashP.get(ti.path.slice(0, -2).join(''))!.nodeId;
-        (m.at(pathToIndex.get(ti.path.slice(0, -2).join('')) as number) as T).tso1.push(ti.nodeId);
+        ti.si1 = mHashP.get(ti.path.slice(0, -2).join(''))!.nodeId;
+        (m.at(pathToIndex.get(ti.path.slice(0, -2).join('')) as number) as T).so1.push(ti.nodeId);
         if (isSS(ti.path)) {
-          (m.at(pathToIndex.get(ti.path.slice(0, -4).join('')) as number) as T).tso2.push(ti.nodeId);
+          (m.at(pathToIndex.get(ti.path.slice(0, -4).join('')) as number) as T).so2.push(ti.nodeId);
         } else if (isCS(ti.path)) {
-          (m.at(pathToIndex.get(ti.path.slice(0, -5).join('')) as number) as T).tso2.push(ti.nodeId);
+          (m.at(pathToIndex.get(ti.path.slice(0, -5).join('')) as number) as T).so2.push(ti.nodeId);
         }
         for (let i = 0; i < ti.path.at(-1); i++) {
           ti.tsu.push(mHashP.get([...ti.path.slice(0, -1), i].join(''))!.nodeId)
@@ -25,10 +25,10 @@ export const mapChain = (m: M) => {
         break
       }
       case isC(ti.path): {
-        ti.tsi1 = mHashP.get(ti.path.slice(0, -3).join(''))!.nodeId;
-        ti.tsi2 = mHashP.get(ti.path.slice(0, -5).join(''))!.nodeId;
-        (m.at(pathToIndex.get(ti.path.slice(0, -3).join('')) as number) as T).tco1.push(ti.nodeId);
-        (m.at(pathToIndex.get(ti.path.slice(0, -5).join('')) as number) as T).tco2.push(ti.nodeId);
+        ti.si1 = mHashP.get(ti.path.slice(0, -3).join(''))!.nodeId;
+        ti.si2 = mHashP.get(ti.path.slice(0, -5).join(''))!.nodeId;
+        (m.at(pathToIndex.get(ti.path.slice(0, -3).join('')) as number) as T).co1.push(ti.nodeId);
+        (m.at(pathToIndex.get(ti.path.slice(0, -5).join('')) as number) as T).co2.push(ti.nodeId);
         break
       }
     }
@@ -40,10 +40,10 @@ export const mapChain = (m: M) => {
         break
       }
       case isS(ti.path): {
-        const si1 = mHashN.get(ti.tsi1)!
+        const si1 = mHashN.get(ti.si1)!
         const i = ti.path.at(-1)
         ti.isTop = i === 0 && si1.isTop ? 1 : 0
-        ti.isBottom = i === si1.tso1.length - 1 && si1.isBottom === 1 ? 1 : 0
+        ti.isBottom = i === si1.so1.length - 1 && si1.isBottom === 1 ? 1 : 0
         break
       }
       case isC(ti.path): {

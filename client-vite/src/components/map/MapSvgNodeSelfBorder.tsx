@@ -16,7 +16,7 @@ export const MapSvgNodeSelfBorder: FC = () => {
   return (
     mTS(m).map(ti => (
       <Fragment key={ti.nodeId}>
-        {ti.sBorderColor && ti.tco1.length === 0 &&
+        {ti.sBorderColor && ti.co1.length === 0 &&
           <path
             key={`${ti.nodeId}_sBorderColor`}
             d={getArcPath(ti, -2, true)}
@@ -26,7 +26,7 @@ export const MapSvgNodeSelfBorder: FC = () => {
             {...pathCommonProps}
           />
         }
-        {ti.sBorderColor && ti.tco1.length > 0 &&
+        {ti.sBorderColor && ti.co1.length > 0 &&
           <path
             key={`${ti.nodeId}_sBorderColor`}
             d={getArcPath(ti, 0, false)}
@@ -36,7 +36,7 @@ export const MapSvgNodeSelfBorder: FC = () => {
             {...pathCommonProps}
           />
         }
-        {!ti.sBorderColor && ti.tco1.length > 0 &&
+        {!ti.sBorderColor && ti.co1.length > 0 &&
           <path
             key={`${ti.nodeId}_sBorderColor`}
             d={getArcPath(ti, 0, false)}

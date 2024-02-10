@@ -24,7 +24,7 @@ export const MapSvgNodeTasks: FC = () => {
   return (
     mTS(m).map(ti => (
       <Fragment key={ti.nodeId}>
-        {ti.taskStatus > 0 && ti.tso1.length === 0 && ti.tco1.length === 0 && ti.contentType !== 'image' && !isEqual(ti.nodeId, editedNodeId) &&
+        {ti.taskStatus > 0 && ti.so1.length === 0 && ti.co1.length === 0 && ti.contentType !== 'image' && !isEqual(ti.nodeId, editedNodeId) &&
           <path
             d={
               getLinearLinePath({
@@ -40,7 +40,7 @@ export const MapSvgNodeTasks: FC = () => {
             {...pathCommonProps}
           />
         }
-        {ti.taskStatus > 0 && ti.tso1.length === 0 && ti.tco1.length === 0 && ti.contentType !== 'image' && [...Array(4)].map((_, i) => (
+        {ti.taskStatus > 0 && ti.so1.length === 0 && ti.co1.length === 0 && ti.contentType !== 'image' && [...Array(4)].map((_, i) => (
           <circle
             key={`${ti.nodeId}_svg_taskCircle${i + 1}`}
             id={'taskCircle'}

@@ -11,10 +11,10 @@ export const MapSvgSelectionPreview: FC = () => {
   return (
     intersectingNodes.map((ti: T) => (
       <Fragment key={ti.nodeId}>
-        {(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.tco1.length) &&
+        {(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.co1.length) &&
           <path stroke={'#555555'} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', 4)}/>
         }
-        {!(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.tco1.length) &&
+        {!(ti.sBorderColor || ti.sFillColor || ti.taskStatus > 1 || ti.co1.length) &&
           <path stroke={'#555555'} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ti, 'sSelf', -2)}/>
         }
       </Fragment>

@@ -137,7 +137,7 @@ export const MapDiv: FC = () => {
         }}
         onDoubleClick={(e) => {
           e.stopPropagation()
-          if (getX(m).contentType === 'text' && ti.tco1.length === 0 && leftMouseMode === LeftMouseMode.CLICK_SELECT_STRUCT) {
+          if (getX(m).contentType === 'text' && ti.co1.length === 0 && leftMouseMode === LeftMouseMode.CLICK_SELECT_STRUCT) {
             md(MR.startEditAppend)
           }
         }}

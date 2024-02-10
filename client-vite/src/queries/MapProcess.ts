@@ -15,7 +15,7 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
       subProcessType: ri.controlType,
       subProcessMindMapData:
         mTS(m)
-          .filter(ti => ti.path.at(1) === ri.path.at(1) && ti.tso1.length === 0)
+          .filter(ti => ti.path.at(1) === ri.path.at(1) && ti.so1.length === 0)
           .map(ti => ({
             nodeId: ti.nodeId,
             contentList: [...getSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)
