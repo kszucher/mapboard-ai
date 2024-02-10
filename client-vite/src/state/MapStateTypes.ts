@@ -87,7 +87,9 @@ export interface TSaveNever {
   countTCO1: number
   countTCO2: number
   tso1: string[]
+  tso2: string[]
   tco1: string[]
+  tco2: string[]
   tsi1: string
   tsi2: string
   // mapMeasure
