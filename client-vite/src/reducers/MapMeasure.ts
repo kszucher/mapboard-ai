@@ -1,17 +1,20 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getG, getNodeById, getPrefixTCH, getPrefixTCV, getTCH, getTCO1C0, getTCO1R0, getTCV, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../queries/MapQueries.ts"
+import {getG, getPrefixTCH, getPrefixTCV, getTCH, getTCO1C0, getTCO1R0, getTCV, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../queries/MapQueries.ts"
 import {INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING, C_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M, T} from "../state/MapStateTypes"
 
 export const mapMeasure = (pm: M, m: M) => {
   const mHashN = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
+  const pmHashN = new Map<string, T>(pm.map(ti => [ti.nodeId, ti as T]))
   const g = getG(m)
   const minOffsetW = Math.min(...mTR(m).map(ri => ri.offsetW))
   const minOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
-  mTR(m).map(el => el.offsetW -= minOffsetW)
-  mTR(m).map(el => el.offsetH -= minOffsetH)
+  mTR(m).map(tri => Object.assign(tri, {
+    offsetW: tri.offsetW - minOffsetW,
+    offsetH: tri.offsetH - minOffsetH
+  }))
   mGT(m).slice().reverse().forEach(ti => {
     switch (true) {
       case isG(ti.path): {
@@ -41,7 +44,7 @@ export const mapMeasure = (pm: M, m: M) => {
           ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
           ti.selfH = getTCO1C0(m, ti).reduce((a, b) => a + b.selfH, 0)
         } else {
-          const pti = getNodeById(pm, ti.nodeId)
+          const pti = pmHashN.get(ti.nodeId)
           if (
             ti.content !== '' &&
             (
