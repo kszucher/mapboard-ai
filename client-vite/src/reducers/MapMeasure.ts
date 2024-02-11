@@ -33,10 +33,10 @@ export const mapMeasure = (pm: M, m: M) => {
         if (ti.co1.length) {
           const tco1 = ti.co1.map(nid => mHashN.get(nid)) as T[]
           tco1.map(ti => Object.assign(ti, {
-            selfW: Math.max(...getTCH(m, ti).map(ti => ti.familyW + C_SPACING)),
-            selfH: Math.max(...getTCV(m, ti).map(ti => ti.familyH + C_SPACING)),
-            calcOffsetX: getPrefixTCV(m, ti).reduce((a, b) => a + b.selfW, 0),
-            calcOffsetY: getPrefixTCH(m, ti).reduce((a, b) => a + b.selfH, 0)
+            selfW: Math.max(...getTCH(tco1, ti).map(ti => ti.familyW + C_SPACING)),
+            selfH: Math.max(...getTCV(tco1, ti).map(ti => ti.familyH + C_SPACING)),
+            calcOffsetX: getPrefixTCV(tco1, ti).reduce((a, b) => a + b.selfW, 0),
+            calcOffsetY: getPrefixTCH(tco1, ti).reduce((a, b) => a + b.selfH, 0)
           }))
           ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
           ti.selfH = getTCO1C0(m, ti).reduce((a, b) => a + b.selfH, 0)
