@@ -1,4 +1,4 @@
-import {GSaveOptional, GSaveNever, TSaveAlways, TSaveOptional, TSaveNever, M, MPartial, LSaveOptional, LSaveNever} from "../state/MapStateTypes"
+import {GSaveOptional, TSaveAlways, M, MPartial, LSaveOptional, TSaveOptional} from "../state/MapStateTypes"
 import {gSaveNever, gSaveOptional, lSaveNever, lSaveOptional, tSaveAlways, tSaveNever, tSaveOptional} from "../state/MapState"
 import {mG, mL, mT} from "../queries/MapQueries.ts"
 import {genHash} from "../utils/Utils"
@@ -10,9 +10,7 @@ export const mapInit = (m: MPartial) => {
         Object.assign(g, {[prop]: structuredClone(gSaveOptional[prop as keyof GSaveOptional])})
       }
     }
-    for (const prop in gSaveNever) {
-      Object.assign(g, {[prop]: structuredClone(gSaveNever[prop as keyof GSaveNever])})
-    }
+    Object.assign(g, structuredClone(gSaveNever))
     g.sLineDeltaXDefault = g.density === 'large' ? 30 : 20 // 30 = 14 + 2*8, 20 = 14 + 2*3
   })
   mL(m as M).forEach(li => {
@@ -21,9 +19,7 @@ export const mapInit = (m: MPartial) => {
         Object.assign(li, {[prop]: structuredClone(lSaveOptional[prop as keyof LSaveOptional])})
       }
     }
-    for (const prop in lSaveNever) {
-      Object.assign(li, {[prop]: structuredClone(lSaveNever[prop as keyof LSaveNever])})
-    }
+    Object.assign(li, structuredClone(lSaveNever))
   })
   mT(m as M).forEach(ti => {
     for (const prop in tSaveAlways) {
@@ -40,9 +36,7 @@ export const mapInit = (m: MPartial) => {
         Object.assign(ti, {[prop]: structuredClone(tSaveOptional[prop as keyof TSaveOptional])})
       }
     }
-    for (const prop in tSaveNever) {
-      Object.assign(ti, {[prop]: structuredClone(tSaveNever[prop as keyof TSaveNever])})
-    }
+    Object.assign(ti, structuredClone(tSaveNever))
   })
   return m
 }
