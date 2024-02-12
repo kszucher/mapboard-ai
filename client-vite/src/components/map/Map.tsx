@@ -12,7 +12,7 @@ import {setScrollLeftAnimated} from "./MapDivUtils"
 import {MapSvg} from "./MapSvg"
 
 export const Map: FC = () => {
-  const mapEditMode = useSelector((state: RootState) => state.editor.mapEditMode)
+  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
@@ -70,7 +70,7 @@ export const Map: FC = () => {
           e.preventDefault()
         }
         if (e.button === 0) {
-          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapMode.STRUCT) {
+          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapMode === MapMode.EDIT_STRUCT) {
             md(MR.saveFromCoordinates, {e})
           }
         }
@@ -80,7 +80,7 @@ export const Map: FC = () => {
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
           didMove = true
-          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapMode.STRUCT) {
+          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapMode === MapMode.EDIT_STRUCT) {
             md(MR.selectSByRectanglePreview, {e})
           } else if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
@@ -90,7 +90,7 @@ export const Map: FC = () => {
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapMode.STRUCT) {
+          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapMode === MapMode.EDIT_STRUCT) {
             md(MR.selectSByRectangle, {e})
           }
         }, { signal })

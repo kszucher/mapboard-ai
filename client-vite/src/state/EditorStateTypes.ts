@@ -4,7 +4,7 @@ import {M, T} from "./MapStateTypes"
 export interface EditorState {
   token: string
   isLoading: boolean
-  mapEditMode: MapMode
+  mapMode: MapMode
   leftMouseMode: LeftMouseMode
   midMouseMode: MidMouseMode
   pageState: PageState

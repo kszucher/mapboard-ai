@@ -29,7 +29,7 @@ const getInnerHtml = (t: T) => {
 }
 
 export const MapDiv: FC = () => {
-  const mapEditMode = useSelector((state: RootState) => state.editor.mapEditMode)
+  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const editType = useSelector((state: RootState) => state.editor.editType)
@@ -68,7 +68,7 @@ export const MapDiv: FC = () => {
           fontSize: ti.textFontSize,
           fontFamily: 'Roboto',
           textDecoration: ti.linkType.length ? "underline" : "",
-          cursor: leftMouseMode === LeftMouseMode.NONE && ti.linkType !== '' ? 'pointer' : 'default',
+          cursor: mapMode === MapMode.VIEW && ti.linkType !== '' ? 'pointer' : 'default',
           color: ti.blur ? 'transparent' : (ti.textColor === 'default' ? C.TEXT_COLOR : ti.textColor),
           transition: 'all 0.3s',
           transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
@@ -83,7 +83,7 @@ export const MapDiv: FC = () => {
           pointerEvents: [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapEditMode === MapMode.STRUCT || leftMouseMode === LeftMouseMode.NONE && ti.linkType.length
+          ].includes(leftMouseMode) && mapMode === MapMode.EDIT_STRUCT || mapMode === MapMode.VIEW && ti.linkType.length
             ? 'auto'
             : 'none'
         }}
@@ -103,18 +103,18 @@ export const MapDiv: FC = () => {
           e.stopPropagation()
           let didMove = false
           if (e.buttons === 1) {
-            if (leftMouseMode === LeftMouseMode.NONE) {
+            if (mapMode === MapMode.VIEW) {
               if (ti.linkType === 'internal') {
                 dispatch(api.endpoints.selectMap.initiate({mapId: ti.link, frameId: ''}))
               } else if (ti.linkType === 'external') {
                 window.open(ti.link, '_blank')
                 window.focus()
               }
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapEditMode === MapMode.STRUCT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_STRUCT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
               e.ctrlKey && !ti.selected && isXS(m) && md(MR.selectAddT, {path: ti.path})
               e.ctrlKey && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapEditMode === MapMode.STRUCT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_STRUCT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
               const abortController = new AbortController()
               const {signal} = abortController
@@ -142,7 +142,7 @@ export const MapDiv: FC = () => {
             getX(m).contentType === 'text' &&
             ti.co1.length === 0 &&
             leftMouseMode === LeftMouseMode.CLICK_SELECT &&
-            mapEditMode === MapMode.STRUCT
+            mapMode === MapMode.EDIT_STRUCT
           ) {
             md(MR.startEditAppend)
           }

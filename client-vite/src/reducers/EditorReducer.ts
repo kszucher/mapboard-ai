@@ -21,7 +21,7 @@ export const editorSlice = createSlice({
     setToken(state, action: PayloadAction<string>) { state.token = action.payload },
     resetState() {return JSON.parse(editorStateDefault)},
     setIsLoading(state, action: PayloadAction<boolean>) { state.isLoading = action.payload},
-    setMapEditMode(state, action: PayloadAction<MapMode>) { state.mapEditMode = action.payload},
+    setMapMode(state, action: PayloadAction<MapMode>) { state.mapMode = action.payload},
     setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) { state.leftMouseMode = action.payload},
     setMidMouseMode(state, action: PayloadAction<MidMouseMode>) { state.midMouseMode = action.payload},
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },

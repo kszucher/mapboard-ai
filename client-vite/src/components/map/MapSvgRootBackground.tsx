@@ -10,7 +10,7 @@ import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
 export const MapSvgRootBackground: FC = () => {
-  const mapEditMode = useSelector((state: RootState) => state.editor.mapEditMode)
+  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()
@@ -33,7 +33,7 @@ export const MapSvgRootBackground: FC = () => {
           pointerEvents: [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapEditMode === MapMode.ROOT
+          ].includes(leftMouseMode) && mapMode === MapMode.EDIT_ROOT
             ? 'auto'
             : 'none'
         }}
@@ -41,13 +41,13 @@ export const MapSvgRootBackground: FC = () => {
           let didMove = false
           e.stopPropagation()
           if (e.buttons === 1) {
-            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapEditMode === MapMode.ROOT) {
+            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_ROOT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
               e.ctrlKey && isXR(m) && !ti.selected && md(MR.selectAddT, {path: ti.path})
               e.ctrlKey && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapEditMode === MapMode.ROOT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_ROOT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
-              if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapEditMode === MapMode.ROOT) {
+              if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_ROOT) {
                 md(MR.saveFromCoordinates, {e})
                 const abortController = new AbortController()
                 const {signal} = abortController

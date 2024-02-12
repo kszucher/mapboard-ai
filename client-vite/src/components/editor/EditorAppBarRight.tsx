@@ -18,7 +18,7 @@ import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
 
 export const EditorAppBarRight: FC = () => {
-  const mapEditMode = useSelector((state: RootState) => state.editor.mapEditMode)
+  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const { data } = useOpenWorkspaceQuery()
@@ -32,11 +32,11 @@ export const EditorAppBarRight: FC = () => {
     <div className="fixed flex right-1 gap-6 h-[40px]">
       <div className="flex items-center gap-1">
         <Select.Root
-          value={mapEditMode}
-          onValueChange={(value) => dispatch(actions.setMapEditMode(value as MapMode))}>
+          value={mapMode}
+          onValueChange={(value) => dispatch(actions.setMapMode(value as MapMode))}>
           <Select.Trigger color="gray" variant="soft"/>
           <Select.Content color="violet">
-            {[MapMode.ROOT, MapMode.STRUCT].map((el, index) => (
+            {[MapMode.VIEW, MapMode.EDIT_ROOT, MapMode.EDIT_STRUCT].map((el, index) => (
               <Select.Item key={index} value={el}>{el}</Select.Item>
             ))}
           </Select.Content>

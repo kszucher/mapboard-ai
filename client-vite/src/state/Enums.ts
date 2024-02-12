@@ -23,8 +23,9 @@ export enum AlertDialogState {
 }
 
 export enum MapMode {
-  ROOT = 'Root',
-  STRUCT = 'Struct',
+  VIEW = 'View',
+  EDIT_ROOT = 'Edit Root',
+  EDIT_STRUCT = 'Edit Struct',
 }
 
 export enum LeftMouseMode {

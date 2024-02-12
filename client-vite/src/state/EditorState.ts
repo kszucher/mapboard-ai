@@ -5,8 +5,8 @@ import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MapMode, MidMo
 export const editorState: EditorState = {
   token: '',
   isLoading: false,
-  mapEditMode: MapMode.ROOT,
-  leftMouseMode: LeftMouseMode.NONE,
+  mapMode: MapMode.VIEW,
+  leftMouseMode: LeftMouseMode.CLICK_SELECT,
   midMouseMode: MidMouseMode.SCROLL,
   pageState: PageState.AUTH,
   dialogState: DialogState.NONE,
