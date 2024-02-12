@@ -29,12 +29,9 @@ export enum MapEditMode {
 
 export enum LeftMouseMode {
   NONE = 'none',
-  CLICK_SELECT_ROOT = 'clickSelectRoot',
-  CLICK_SELECT_STRUCT = 'clickSelectStruct',
-  CLICK_SELECT_AND_MOVE_ROOT = 'clickSelectAndMoveRoot',
-  CLICK_SELECT_AND_MOVE_STRUCT = 'clickSelectAndMoveStruct',
-  RECTANGLE_SELECT_ROOT = 'rectangleSelectRoot',
-  RECTANGLE_SELECT_STRUCT = 'rectangleSelectStruct'
+  CLICK_SELECT = 'clickSelect',
+  CLICK_SELECT_AND_MOVE = 'clickSelectAndMove',
+  RECTANGLE_SELECT = 'rectangleSelect',
 }
 
 export enum MidMouseMode {

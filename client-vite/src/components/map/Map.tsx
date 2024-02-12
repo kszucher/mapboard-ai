@@ -5,13 +5,14 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getG} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode, MidMouseMode} from "../../state/Enums.ts"
+import {LeftMouseMode, MapEditMode, MidMouseMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {MapDiv} from "./MapDiv"
 import {setScrollLeftAnimated} from "./MapDivUtils"
 import {MapSvg} from "./MapSvg"
 
 export const Map: FC = () => {
+  const mapEditMode = useSelector((state: RootState) => state.editor.mapEditMode)
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
@@ -69,7 +70,7 @@ export const Map: FC = () => {
           e.preventDefault()
         }
         if (e.button === 0) {
-          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT_STRUCT) {
+          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapEditMode.STRUCT) {
             md(MR.saveFromCoordinates, {e})
           }
         }
@@ -79,9 +80,9 @@ export const Map: FC = () => {
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
           didMove = true
-          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT_STRUCT) {
+          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapEditMode.STRUCT) {
             md(MR.selectSByRectanglePreview, {e})
-          } else if (e.button === 0 && e.buttons === 1 && ![LeftMouseMode.RECTANGLE_SELECT_ROOT, LeftMouseMode.RECTANGLE_SELECT_STRUCT].includes(leftMouseMode)) {
+          } else if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
             setScrollTop(document.documentElement.scrollTop - e.movementY)
           }
@@ -89,7 +90,7 @@ export const Map: FC = () => {
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT_STRUCT) {
+          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapEditMode.STRUCT) {
             md(MR.selectSByRectangle, {e})
           }
         }, { signal })
