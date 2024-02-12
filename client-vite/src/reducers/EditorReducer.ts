@@ -4,11 +4,11 @@ import {getMapX, getMapY} from "../components/map/MapDivUtils"
 import {mapFindIntersecting} from "../queries/MapFindIntersecting"
 import {editorState} from "../state/EditorState"
 import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode, MapMode} from "../state/Enums"
-import {M} from "../state/MapStateTypes"
+import {M, T} from "../state/MapStateTypes"
 import {api} from "../api/Api.ts"
 import {mapFindNearest} from "../queries/MapFindNearest"
 import {mapReducer} from "./MapReducer"
-import {getEditedNode, getX, mT, mTR} from "../queries/MapQueries.ts"
+import {getEditedNode, getX, mTR} from "../queries/MapQueries.ts"
 import {filterEmpty} from "../utils/Utils"
 import {MR} from "./MapReducerEnum.ts"
 
@@ -193,7 +193,7 @@ export const editorSlice = createSlice({
       (state, { payload }) => {
         console.log(payload)
         const { mapDataList } = structuredClone(payload)
-        if (mT(mapDataList[0]).filter(ti => ti.selected > 0).length === 0) {
+        if (mapDataList[0].filter(ti => (ti as T).selected > 0).length === 0) {
           window.alert('map restored after non-selection')
           Object.assign(mTR(mapDataList[0])[0], {selected: 1})
         }
