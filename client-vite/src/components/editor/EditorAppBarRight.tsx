@@ -3,9 +3,9 @@ import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {AccessType} from "../../state/Enums"
+import {AccessType, MapEditMode} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {IconButton} from "@radix-ui/themes"
+import {IconButton, Select} from "@radix-ui/themes"
 import {NodeEdit} from "../dropdown/NodeEdit.tsx"
 import {NodeInsert} from "../dropdown/NodeInsert.tsx"
 import {NodeMove} from "../dropdown/NodeMove.tsx"
@@ -18,6 +18,7 @@ import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
 
 export const EditorAppBarRight: FC = () => {
+  const mapEditMode = useSelector((state: RootState) => state.editor.mapEditMode)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const { data } = useOpenWorkspaceQuery()
@@ -29,6 +30,18 @@ export const EditorAppBarRight: FC = () => {
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <div className="fixed flex right-1 gap-6 h-[40px]">
+      <div className="flex items-center gap-1">
+        <Select.Root
+          value={mapEditMode}
+          onValueChange={(value) => dispatch(actions.setMapEditMode(value as MapEditMode))}>
+          <Select.Trigger color="gray" variant="soft"/>
+          <Select.Content color="violet">
+            {[MapEditMode.ROOT, MapEditMode.STRUCT].map((el, index) => (
+              <Select.Item key={index} value={el}>{el}</Select.Item>
+            ))}
+          </Select.Content>
+        </Select.Root>
+      </div>
       <div className="flex items-center gap-1">
         <MouseConfig/>
       </div>

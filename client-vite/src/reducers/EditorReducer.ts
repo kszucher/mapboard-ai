@@ -3,7 +3,7 @@ import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../components/map/MapDivUtils"
 import {mapFindIntersecting} from "../queries/MapFindIntersecting"
 import {editorState} from "../state/EditorState"
-import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../state/Enums"
+import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode, MapEditMode} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
 import {api} from "../api/Api.ts"
 import {mapFindNearest} from "../queries/MapFindNearest"
@@ -21,8 +21,9 @@ export const editorSlice = createSlice({
     setToken(state, action: PayloadAction<string>) { state.token = action.payload },
     resetState() {return JSON.parse(editorStateDefault)},
     setIsLoading(state, action: PayloadAction<boolean>) { state.isLoading = action.payload},
-    setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) { state. leftMouseMode = action.payload},
-    setMidMouseMode(state, action: PayloadAction<MidMouseMode>) { state. midMouseMode = action.payload},
+    setMapEditMode(state, action: PayloadAction<MapEditMode>) { state.mapEditMode = action.payload},
+    setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) { state.leftMouseMode = action.payload},
+    setMidMouseMode(state, action: PayloadAction<MidMouseMode>) { state.midMouseMode = action.payload},
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
     setDialogState(state, action: PayloadAction<DialogState>) { state.dialogState = action.payload },
     setAlertDialogState(state, action: PayloadAction<AlertDialogState>) { state.alertDialogState = action.payload },

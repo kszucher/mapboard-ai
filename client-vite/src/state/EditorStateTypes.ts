@@ -1,9 +1,10 @@
-import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MidMouseMode, PageState, Side} from "./Enums"
+import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MapEditMode, MidMouseMode, PageState, Side} from "./Enums"
 import {M, T} from "./MapStateTypes"
 
 export interface EditorState {
   token: string
   isLoading: boolean
+  mapEditMode: MapEditMode
   leftMouseMode: LeftMouseMode
   midMouseMode: MidMouseMode
   pageState: PageState

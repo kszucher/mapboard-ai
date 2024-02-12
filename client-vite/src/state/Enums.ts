@@ -22,6 +22,11 @@ export enum AlertDialogState {
   DELETE_ACCOUNT
 }
 
+export enum MapEditMode {
+  ROOT = 'Root',
+  STRUCT = 'Struct',
+}
+
 export enum LeftMouseMode {
   NONE = 'none',
   CLICK_SELECT_ROOT = 'clickSelectRoot',
