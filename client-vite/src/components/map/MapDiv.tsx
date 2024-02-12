@@ -8,7 +8,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getG, getNodeById, getX, getXA, isXS, mTS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode, MapEditMode} from "../../state/Enums.ts"
+import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {T} from "../../state/MapStateTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {adjust, getLatexString} from "../../utils/Utils"
@@ -83,7 +83,7 @@ export const MapDiv: FC = () => {
           pointerEvents: [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapEditMode === MapEditMode.STRUCT || leftMouseMode === LeftMouseMode.NONE && ti.linkType.length
+          ].includes(leftMouseMode) && mapEditMode === MapMode.STRUCT || leftMouseMode === LeftMouseMode.NONE && ti.linkType.length
             ? 'auto'
             : 'none'
         }}
@@ -110,11 +110,11 @@ export const MapDiv: FC = () => {
                 window.open(ti.link, '_blank')
                 window.focus()
               }
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapEditMode === MapEditMode.STRUCT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapEditMode === MapMode.STRUCT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
               e.ctrlKey && !ti.selected && isXS(m) && md(MR.selectAddT, {path: ti.path})
               e.ctrlKey && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapEditMode === MapEditMode.STRUCT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapEditMode === MapMode.STRUCT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
               const abortController = new AbortController()
               const {signal} = abortController
@@ -142,7 +142,7 @@ export const MapDiv: FC = () => {
             getX(m).contentType === 'text' &&
             ti.co1.length === 0 &&
             leftMouseMode === LeftMouseMode.CLICK_SELECT &&
-            mapEditMode === MapEditMode.STRUCT
+            mapEditMode === MapMode.STRUCT
           ) {
             md(MR.startEditAppend)
           }

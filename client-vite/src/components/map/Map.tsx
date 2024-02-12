@@ -5,7 +5,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getG} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode, MapEditMode, MidMouseMode} from "../../state/Enums.ts"
+import {LeftMouseMode, MapMode, MidMouseMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {MapDiv} from "./MapDiv"
 import {setScrollLeftAnimated} from "./MapDivUtils"
@@ -70,7 +70,7 @@ export const Map: FC = () => {
           e.preventDefault()
         }
         if (e.button === 0) {
-          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapEditMode.STRUCT) {
+          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapMode.STRUCT) {
             md(MR.saveFromCoordinates, {e})
           }
         }
@@ -80,7 +80,7 @@ export const Map: FC = () => {
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
           didMove = true
-          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapEditMode.STRUCT) {
+          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapMode.STRUCT) {
             md(MR.selectSByRectanglePreview, {e})
           } else if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
@@ -90,7 +90,7 @@ export const Map: FC = () => {
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapEditMode.STRUCT) {
+          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapEditMode === MapMode.STRUCT) {
             md(MR.selectSByRectangle, {e})
           }
         }, { signal })

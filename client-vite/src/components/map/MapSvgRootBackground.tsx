@@ -6,7 +6,7 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getXA, isXR, mTR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode, MapEditMode} from "../../state/Enums.ts"
+import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
 export const MapSvgRootBackground: FC = () => {
@@ -33,7 +33,7 @@ export const MapSvgRootBackground: FC = () => {
           pointerEvents: [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapEditMode === MapEditMode.ROOT
+          ].includes(leftMouseMode) && mapEditMode === MapMode.ROOT
             ? 'auto'
             : 'none'
         }}
@@ -41,13 +41,13 @@ export const MapSvgRootBackground: FC = () => {
           let didMove = false
           e.stopPropagation()
           if (e.buttons === 1) {
-            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapEditMode === MapEditMode.ROOT) {
+            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapEditMode === MapMode.ROOT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
               e.ctrlKey && isXR(m) && !ti.selected && md(MR.selectAddT, {path: ti.path})
               e.ctrlKey && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapEditMode === MapEditMode.ROOT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapEditMode === MapMode.ROOT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
-              if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapEditMode === MapEditMode.ROOT) {
+              if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapEditMode === MapMode.ROOT) {
                 md(MR.saveFromCoordinates, {e})
                 const abortController = new AbortController()
                 const {signal} = abortController

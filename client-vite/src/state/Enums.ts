@@ -22,7 +22,7 @@ export enum AlertDialogState {
   DELETE_ACCOUNT
 }
 
-export enum MapEditMode {
+export enum MapMode {
   ROOT = 'Root',
   STRUCT = 'Struct',
 }

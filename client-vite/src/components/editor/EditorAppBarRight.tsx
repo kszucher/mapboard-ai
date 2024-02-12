@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {AccessType, MapEditMode} from "../../state/Enums"
+import {AccessType, MapMode} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {IconButton, Select} from "@radix-ui/themes"
 import {NodeEdit} from "../dropdown/NodeEdit.tsx"
@@ -33,10 +33,10 @@ export const EditorAppBarRight: FC = () => {
       <div className="flex items-center gap-1">
         <Select.Root
           value={mapEditMode}
-          onValueChange={(value) => dispatch(actions.setMapEditMode(value as MapEditMode))}>
+          onValueChange={(value) => dispatch(actions.setMapEditMode(value as MapMode))}>
           <Select.Trigger color="gray" variant="soft"/>
           <Select.Content color="violet">
-            {[MapEditMode.ROOT, MapEditMode.STRUCT].map((el, index) => (
+            {[MapMode.ROOT, MapMode.STRUCT].map((el, index) => (
               <Select.Item key={index} value={el}>{el}</Select.Item>
             ))}
           </Select.Content>

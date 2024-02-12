@@ -4,7 +4,7 @@ import {mT} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getPolygonPath} from "./MapSvgUtils"
-import {LeftMouseMode, MapEditMode} from "../../state/Enums.ts"
+import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 
 export const MapSvgNodeFamilyBackground: FC = () => {
   const mapEditMode = useSelector((state: RootState) => state.editor.mapEditMode)
@@ -25,7 +25,7 @@ export const MapSvgNodeFamilyBackground: FC = () => {
           pointerEvents: [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapEditMode === MapEditMode.STRUCT
+          ].includes(leftMouseMode) && mapEditMode === MapMode.STRUCT
             ? 'auto'
             : 'none'
         }}
