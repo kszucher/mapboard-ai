@@ -45,27 +45,24 @@ export const MapSvgRootBackground: FC = () => {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
               e.ctrlKey && isXR(m) && !ti.selected && md(MR.selectAddT, {path: ti.path})
               e.ctrlKey && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_ROOT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_ROOT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
-              if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_ROOT) {
-                md(MR.saveFromCoordinates, {e})
-                const abortController = new AbortController()
-                const {signal} = abortController
-                window.addEventListener('mousemove', (e) => {
-                  e.preventDefault()
-                  didMove = true
-                  md(MR.offsetRByDragPreview, {t: ti, e})
-                }, {signal})
-                window.addEventListener('mouseup', (e) => {
-                  abortController.abort()
-                  e.preventDefault()
-                  if (didMove) {
-                    md(MR.offsetRByDrag, {t: ti, e})
-                  }
-                }, {signal})
-              }
+              md(MR.saveFromCoordinates, {e})
+              const abortController = new AbortController()
+              const {signal} = abortController
+              window.addEventListener('mousemove', (e) => {
+                e.preventDefault()
+                didMove = true
+                md(MR.offsetRByDragPreview, {t: ti, e})
+              }, {signal})
+              window.addEventListener('mouseup', (e) => {
+                abortController.abort()
+                e.preventDefault()
+                if (didMove) {
+                  md(MR.offsetRByDrag, {t: ti, e})
+                }
+              }, {signal})
             }
-
           } else if (e.buttons === 4) {
             e.preventDefault()
           }

@@ -29,7 +29,6 @@ export enum MapMode {
 }
 
 export enum LeftMouseMode {
-  NONE = 'none',
   CLICK_SELECT = 'clickSelect',
   CLICK_SELECT_AND_MOVE = 'clickSelectAndMove',
   RECTANGLE_SELECT = 'rectangleSelect',
