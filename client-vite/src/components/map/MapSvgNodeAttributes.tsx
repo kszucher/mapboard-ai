@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {isRS, isRSC, isCS, isCSC, mTS, mTC, getG} from "../../queries/MapQueries.ts"
+import {isRS, isRSC, isCS, mTS, mTC, getG} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -62,7 +62,7 @@ export const MapSvgNodeAttributes: FC = () => {
       ))}
       {mTC(m).map(ti => (
         <Fragment key={ti.nodeId}>
-          {!isRSC(ti.path) && !isCSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
+          {!isRSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
             <path
               d={!pmHash.has(ti.nodeId) && pmHash.has(ti.si2)
                 ? getNodeLinePath(g, pmHash.get(ti.si2)!, ti)

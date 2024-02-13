@@ -1,4 +1,4 @@
-import {getG, isC, isCS, isCSC, isR, isRS, isRSC, isS, isSS, isSSC, mT} from "../queries/MapQueries.ts"
+import {getG, isC, isCS, isR, isRS, isRSC, isS, isSS, isSSC, mT} from "../queries/MapQueries.ts"
 import {MARGIN_X, S_SPACING} from "../state/Consts.ts"
 import {M, T} from "../state/MapStateTypes"
 
@@ -37,9 +37,6 @@ export const mapPlaceExploded = (m: M) => {
           ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
         } else if (isSSC(ti.path)) {
           ti.nodeStartX = si2.nodeStartX + si2.selfW + g.sLineDeltaXDefault + ti.calcOffsetX
-          ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
-        } else if (isCSC(ti.path)) {
-          ti.nodeStartX = si2.nodeStartX + 2
           ti.nodeStartY = si1.nodeStartY + ti.calcOffsetY
         }
         break

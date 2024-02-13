@@ -33,7 +33,6 @@ export const isSS = (p: PT): boolean => getPathPattern(p).endsWith('ss')
 export const isSSC = (p: PT): boolean => getPathPattern(p).endsWith('ssc')
 export const isC = (p: PT): boolean => getPathPattern(p).endsWith('c')
 export const isCS = (p: PT): boolean => getPathPattern(p).endsWith('cs')
-export const isCSC = (p: PT): boolean => getPathPattern(p).endsWith('csc')
 
 export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
 export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]

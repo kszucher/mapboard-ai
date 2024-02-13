@@ -24,7 +24,7 @@ export const NodeInsert = () => {
         {isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSU)}>{'Node Above'}</DropdownMenu.Item>}
         {isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Node Out'}</DropdownMenu.Item>}
         {isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSD)}>{'Node Below'}</DropdownMenu.Item>}
-        {isXS(m) && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE))}>{'Table Out'}</DropdownMenu.Item></Dialog.Trigger>}
+        {isXS(m) && !getX(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE))}>{'Table Out'}</DropdownMenu.Item></Dialog.Trigger>}
         {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCRU)}>{'Table Row Above'}</DropdownMenu.Item>}
         {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCRD)}>{'Table Row Below'}</DropdownMenu.Item>}
         {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCCL)}>{'Table Column Left'}</DropdownMenu.Item>}
