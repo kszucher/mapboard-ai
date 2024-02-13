@@ -9,7 +9,7 @@ import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
 import {getMap, getMidMouseMode, mSelector} from "../../state/EditorState"
 import {mapDeInit} from "../../reducers/MapDeInit"
-import {N} from "../../state/MapStateTypes"
+import {M, N} from "../../state/MapStateTypes"
 import {shortcutColors} from "../assets/Colors"
 
 export let timeoutId: NodeJS.Timeout
@@ -132,7 +132,7 @@ export const Window: FC = () => {
                 let isValidJson = true
                 try { JSON.parse(text) } catch { isValidJson = false }
                 if (isValidJson) {
-                  let mapJson = JSON.parse(text)
+                  const mapJson = JSON.parse(text)
                   let isValidMap = Array.isArray(mapJson) && mapJson.every(el =>
                     el.hasOwnProperty('path') && Array.isArray(el.path) &&
                     el.hasOwnProperty('nodeId') && typeof el.nodeId === 'string'
@@ -141,7 +141,10 @@ export const Window: FC = () => {
                     const isPastedLR = mapJson.at(-1).path.at(0) === 'r'
                     const isPastedS = mapJson.at(-1).path.at(0) === 's'
                     isPastedLR && md(MR.pasteLR, text)
-                    isPastedS && isXS(m) && md(MR.pasteSO, text)
+                    const hasCell = (mapJson as M).some(el => el.path.includes('c'))
+                    if (hasCell && !getX(m).path.includes('c') || !hasCell) {
+                      isPastedS && isXS(m) && md(MR.pasteSO, text)
+                    }
                   } else {
                     window.alert('invalid map')
                   }
