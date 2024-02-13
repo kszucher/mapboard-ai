@@ -1,21 +1,17 @@
 const fs = require("fs")
 
 const isEqual = (obj1, obj2) =>  JSON.stringify(obj1) === JSON.stringify(obj2)
-
 const sortablePath = (p) => p.map((pi) => isNaN(pi) ? pi: 1000 + pi).join('')
-
 const sortPath = (a, b) => sortablePath(a.path) > sortablePath(b.path) ? 1 : -1
-
+const filteredObject = (raw, allowed) => Object.fromEntries(Object.entries(raw).filter(([key, val]) => allowed.includes(key)))
 const genHash = () => {
-  const alphanumeric = '0123456789abcdefghijklmnopqrstuvwxyz'
-  const randomAlphanumeric = () => ( alphanumeric[ Math.round( Math.random() * ( alphanumeric.length -  1 )) ] )
-  const randomAlphanumeric8digit = new Array(8).fill('').map(el => randomAlphanumeric())
-  return randomAlphanumeric8digit.join('')
+    const alphanumeric = '0123456789abcdefghijklmnopqrstuvwxyz'
+    const randomAlphanumeric = () => ( alphanumeric[ Math.round( Math.random() * ( alphanumeric.length -  1 )) ] )
+    const randomAlphanumeric8digit = new Array(8).fill('').map(el => randomAlphanumeric())
+    return randomAlphanumeric8digit.join('')
 }
 
 const maps = JSON.parse(fs.readFileSync("../data/maps.json", "utf8"))
-
-const filteredObject = (raw, allowed) => Object.fromEntries(Object.entries(raw).filter(([key, val]) => allowed.includes(key)))
 
 // console.log(maps[0])
 
