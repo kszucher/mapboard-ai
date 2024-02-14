@@ -52,9 +52,6 @@ export const EditorAppBarRight: FC = () => {
           </Select.Content>
         </Select.Root>
       </div>
-      <div className="flex items-center gap-1">
-        <MouseConfig/>
-      </div>
       <div className="flex flex-row items-center gap-1">
         <NodeSelect/>
         <NodeInsert/>
@@ -78,6 +75,7 @@ export const EditorAppBarRight: FC = () => {
         </IconButton>
       </div>
       <div className="flex flex-row items-center gap-1">
+        <MouseConfig/>
         <UserSettings/>
         <UserAccount/>
         <UserAccountDelete/>
