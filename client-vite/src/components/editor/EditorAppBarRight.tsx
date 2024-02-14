@@ -16,11 +16,14 @@ import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
+import {getCountXSO1} from "../../queries/MapQueries.ts"
+import {mSelector} from "../../state/EditorState.ts"
 
 export const EditorAppBarRight: FC = () => {
   const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
+  const m = useSelector((state:RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()
   const { access } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessType.VIEW, AccessType.UNAUTHORIZED].includes(access)
@@ -33,12 +36,19 @@ export const EditorAppBarRight: FC = () => {
       <div className="flex items-center gap-1">
         <Select.Root
           value={mapMode}
-          onValueChange={(value) => dispatch(actions.setMapMode(value as MapMode))}>
+          onValueChange={(value) => {
+            if (value === MapMode.EDIT_ROOT) {
+              md(MR.selectXR)
+            } else if (value === MapMode.EDIT_STRUCT && getCountXSO1(m) > 0) {
+              md(MR.selectXS)
+            }
+            dispatch(actions.setMapMode(value as MapMode))
+          }}>
           <Select.Trigger color="gray" variant="soft"/>
           <Select.Content color="violet">
-            {[MapMode.VIEW, MapMode.EDIT_ROOT, MapMode.EDIT_STRUCT].map((el, index) => (
-              <Select.Item key={index} value={el}>{el}</Select.Item>
-            ))}
+            <Select.Item key={0} value={MapMode.VIEW}>{MapMode.VIEW}</Select.Item>
+            <Select.Item key={1} value={MapMode.EDIT_ROOT}>{MapMode.EDIT_ROOT}</Select.Item>
+            <Select.Item key={2} value={MapMode.EDIT_STRUCT} disabled={getCountXSO1(m) === 0}>{MapMode.EDIT_STRUCT}</Select.Item>
           </Select.Content>
         </Select.Root>
       </div>

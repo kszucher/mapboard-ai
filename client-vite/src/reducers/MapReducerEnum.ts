@@ -16,6 +16,7 @@ export enum MR {
 
   selectT = 'selectT',
   selectXR = 'selectXR',
+  selectXS = 'selectXS',
   selectSelfX = 'selectSelfX',
   selectFamilyX = 'selectFamilyX',
   selectSD = 'selectSD',

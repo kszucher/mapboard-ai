@@ -99,6 +99,7 @@ export const getXSI2 = (m: M): T => m.find(ti => isSI2(getX(m).path, ti.path as 
 export const getXFSU1 = (m: M): T => m.find(ti => isSU1(getXF(m).path, ti.path as PT))! as T
 export const getXFSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T
 export const getXSIC = (m: M): T => getNodeByPath(m, getSIC(getX(m).path) as PT)
+export const getXS = (m: M): T => getNodeByPath(m, [...getX(m).path, 's', 0])
 export const getXR = (m: M): T => getNodeByPath(m, getX(m).path.slice(0, 2) as PT)
 
 export const getQuasiSD = (m: M): T => mT(m).find(ti => !ti.selected && isQuasiSD(getX(m).path, ti.path))! as T
