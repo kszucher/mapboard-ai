@@ -142,7 +142,7 @@ export const api = createApi({
       invalidatesTags: ['IngestionData']
     }),
     getIngestion: builder.query<DefaultGetIngestionQueryState, void>({
-      query: () => ({ url: pythonBackendUrl + '/upload-file', method: 'POST', body: {} }),
+      query: () => ({ url: pythonBackendUrl + '/get-ingestion', method: 'POST', body: {} }),
       providesTags: ['IngestionData']
     })
   })
