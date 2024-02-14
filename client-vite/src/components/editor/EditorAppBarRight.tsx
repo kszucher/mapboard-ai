@@ -16,7 +16,7 @@ import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
-import {getCountXSO1} from "../../queries/MapQueries.ts"
+import {getCountXSO1, isXR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
 export const EditorAppBarRight: FC = () => {
@@ -48,7 +48,7 @@ export const EditorAppBarRight: FC = () => {
           <Select.Content color="violet">
             <Select.Item key={0} value={MapMode.VIEW}>{MapMode.VIEW}</Select.Item>
             <Select.Item key={1} value={MapMode.EDIT_ROOT}>{MapMode.EDIT_ROOT}</Select.Item>
-            <Select.Item key={2} value={MapMode.EDIT_STRUCT} disabled={getCountXSO1(m) === 0}>{MapMode.EDIT_STRUCT}</Select.Item>
+            <Select.Item key={2} value={MapMode.EDIT_STRUCT} disabled={isXR(m) && getCountXSO1(m) === 0}>{MapMode.EDIT_STRUCT}</Select.Item>
           </Select.Content>
         </Select.Root>
       </div>
