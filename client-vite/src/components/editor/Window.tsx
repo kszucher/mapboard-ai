@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getLastIndexR, getX, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mTR, sortPath} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getLastIndexR, getMapMode, getX, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mTR, sortPath} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -19,9 +19,9 @@ export const Window: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const m = (useSelector((state:RootState) => mSelector(state)))
+  const mapMode = getMapMode(m)
   const mExists = m && m.length
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()

@@ -2,15 +2,15 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {mTC} from "../../queries/MapQueries.ts"
+import {getMapMode, mTC} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils"
 
 export const MapDivC: FC = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
+  const mapMode = getMapMode(m)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
