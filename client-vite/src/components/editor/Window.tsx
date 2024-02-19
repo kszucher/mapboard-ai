@@ -198,7 +198,7 @@ export const Window: FC = () => {
       access === AccessType.EDIT &&
       mapMode !== MapMode.VIEW &&
       editedNodeId === ''
-  ) {
+    ) {
       console.log('WINDOW EVENT LISTENERS ADDED')
       mapAreaListener = new AbortController()
       const {signal} = mapAreaListener
