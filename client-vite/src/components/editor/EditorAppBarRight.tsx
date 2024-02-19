@@ -15,8 +15,11 @@ import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import Eye from "../../assets/eye.svg?react"
+import LetterR from "../../assets/letter-r.svg?react"
+import LetterS from "../../assets/letter-s.svg?react"
+import LetterC from "../../assets/letter-c.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
-import {getMapMode} from "../../queries/MapQueries.ts"
+import {getMapMode, isC, isS, mT} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
 export const EditorAppBarRight: FC = () => {
@@ -34,17 +37,35 @@ export const EditorAppBarRight: FC = () => {
   return (
     <div className="fixed flex right-1 gap-6 h-[40px]">
       <div className="flex items-center gap-1">
+        <MouseConfig/>
+      </div>
+      <div className="flex items-center gap-1">
         <IconButton
           variant="solid"
           color={mapMode === MapMode.VIEW ? 'violet' : 'gray'}
-          onClick={() => {
-            mapMode === MapMode.VIEW ? md(MR.selectFirstR) : md(MR.unselect)
-          }}>
+          onClick={() => md(MR.unselect)}>
           <Eye/>
         </IconButton>
-      </div>
-      <div className="flex items-center gap-1">
-        <MouseConfig/>
+        <IconButton
+          variant="solid"
+          color={mapMode === MapMode.EDIT_ROOT ? 'violet' : 'gray'}
+          onClick={() => md(MR.selectFirstR)}>
+          <LetterR/>
+        </IconButton>
+        <IconButton
+          variant="solid"
+          color={mapMode === MapMode.EDIT_STRUCT ? 'violet' : 'gray'}
+          disabled={mT(m).filter(ti => isS(ti.path)).length === 0}
+          onClick={() => md(MR.selectFirstS)}>
+          <LetterS/>
+        </IconButton>
+        <IconButton
+          variant="solid"
+          color={mapMode === MapMode.EDIT_CELL ? 'violet' : 'gray'}
+          disabled={mT(m).filter(ti => isC(ti.path)).length === 0}
+          onClick={() => md(MR.selectFirstC)}>
+          <LetterC/>
+        </IconButton>
       </div>
       <div className="flex flex-row items-center gap-1">
         <NodeSelect/>

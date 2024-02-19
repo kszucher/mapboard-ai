@@ -80,7 +80,12 @@ export const MapDivS: FC = () => {
           border: 0,
           margin: 0,
           textShadow: ti.blur? '#FFF 0 0 8px' : '',
-          pointerEvents: leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE || mapMode === MapMode.VIEW && ti.linkType.length ? 'auto' : 'none'
+          pointerEvents: [
+            LeftMouseMode.CLICK_SELECT,
+            LeftMouseMode.CLICK_SELECT_AND_MOVE
+          ].includes(leftMouseMode) && mapMode === MapMode.EDIT_STRUCT || mapMode === MapMode.VIEW && ti.linkType.length
+            ? 'auto'
+            : 'none'
         }}
         spellCheck={false}
         dangerouslySetInnerHTML={ti.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(ti) }}
@@ -105,10 +110,12 @@ export const MapDivS: FC = () => {
                 window.open(ti.link, '_blank')
                 window.focus()
               }
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_STRUCT) {
               !e.ctrlKey && md(MR.selectT, {path: ti.path})
               e.ctrlKey && !ti.selected && isXS(m) && md(MR.selectAddT, {path: ti.path})
               e.ctrlKey && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_STRUCT) {
+              !e.ctrlKey && md(MR.selectT, {path: ti.path})
               const abortController = new AbortController()
               const {signal} = abortController
               window.addEventListener('mousemove', (e) => {
@@ -134,7 +141,7 @@ export const MapDivS: FC = () => {
           if (
             getX(m).contentType === 'text' &&
             ti.co1.length === 0 &&
-            leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE &&
+            leftMouseMode === LeftMouseMode.CLICK_SELECT &&
             mapMode === MapMode.EDIT_STRUCT
           ) {
             md(MR.startEditAppend)
