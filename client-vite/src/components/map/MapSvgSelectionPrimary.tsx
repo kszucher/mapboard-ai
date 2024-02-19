@@ -7,10 +7,8 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
-import {MapMode} from "../../state/Enums.ts"
 
 export const MapSvgSelectionPrimary: FC = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const t = getX(m)
@@ -19,7 +17,6 @@ export const MapSvgSelectionPrimary: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    mapMode !== MapMode.VIEW &&
     <Fragment>
       {!selectionRectCoords.length && getXA(m).length === 1 && isXR(m) &&
         <path key={`${g.nodeId}_svg_selectionBorderPrimary`} stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, t, 'sSelf', -2)}/>

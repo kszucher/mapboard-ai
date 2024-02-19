@@ -11,7 +11,7 @@ import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, move
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {mapPlaceIndented} from "./MapPlaceIndented.ts"
 import {MR} from "./MapReducerEnum.ts"
-import {selectAddT, selectRemoveT, selectT, selectTL} from "./MapSelect"
+import {selectAddT, selectRemoveT, selectT, selectTL, unselectNodes} from "./MapSelect"
 import {mapChain} from "./MapChain.ts"
 import {mapPlaceExploded} from "./MapPlaceExploded.ts"
 
@@ -24,6 +24,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setPlaceTypeExploded': getG(m).flow = Flow.EXPLODED; break
     case 'setPlaceTypeIndented': getG(m).flow = Flow.INDENTED; break
 
+    case 'unselect': unselectNodes(m); break
     case 'selectT': selectT(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectFirstR': selectT(m, mT(m).find(ti => isR(ti.path))!, 's'); break
     case 'selectFirstS': selectT(m, mT(m).find(ti => isS(ti.path))!, 's'); break

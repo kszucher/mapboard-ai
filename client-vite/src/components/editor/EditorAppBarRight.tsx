@@ -36,7 +36,9 @@ export const EditorAppBarRight: FC = () => {
         <Select.Root
           value={mapMode}
           onValueChange={(value) => {
-            if (value === MapMode.EDIT_ROOT) {
+            if (value === MapMode.VIEW) {
+              md(MR.unselect)
+            } else if (value === MapMode.EDIT_ROOT) {
               md(MR.selectFirstR)
             } else if (value === MapMode.EDIT_STRUCT) {
               md(MR.selectFirstS)

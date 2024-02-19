@@ -14,6 +14,7 @@ export enum MR {
   setPlaceTypeExploded = 'setPlaceTypeExploded',
   setPlaceTypeIndented = 'setPlaceTypeIndented',
 
+  unselect = 'unselect',
   selectT = 'selectT',
   selectFirstR = 'selectFirstR',
   selectFirstS = 'selectFirstS',

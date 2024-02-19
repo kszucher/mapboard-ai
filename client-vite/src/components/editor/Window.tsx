@@ -1,9 +1,9 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSU, getCountQuasiSD, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getX, getLastIndexR, isXACC, isXACR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, sortPath, isXAR, mTR} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getCountXCO1, getCountXSO1, getLastIndexR, getX, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mTR, sortPath} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
-import {AccessType, DialogState, MidMouseMode, PageState} from "../../state/Enums"
+import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
@@ -18,6 +18,8 @@ let mapAreaListener: AbortController
 export const Window: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
+  const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
+  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const m = (useSelector((state:RootState) => mSelector(state)))
   const mExists = m && m.length
@@ -189,35 +191,34 @@ export const Window: FC = () => {
   }
 
   useEffect(() => {
-    if (editedNodeId) {
-      console.log('REMOVED')
-      if (mapAreaListener !== undefined) {
-        mapAreaListener.abort()
-      }
+    if (
+      pageState === PageState.WS &&
+      dialogState === DialogState.NONE &&
+      alertDialogState === AlertDialogState.NONE &&
+      access === AccessType.EDIT &&
+      mapMode !== MapMode.VIEW &&
+      editedNodeId === ''
+  ) {
+      console.log('WINDOW EVENT LISTENERS ADDED')
+      mapAreaListener = new AbortController()
+      const {signal} = mapAreaListener
+      window.addEventListener("keydown", keydown, {signal})
+      window.addEventListener("paste", paste, {signal})
+      window.addEventListener("wheel", wheel, {signal, passive: false})
+      window.addEventListener("mouseup", mouseup, {signal})
+      window.addEventListener("contextmenu", contextmenu, {signal})
     } else {
-      if (pageState === PageState.WS && dialogState === DialogState.NONE) {
-        if (access === AccessType.EDIT) {
-          console.log('ADDED')
-          mapAreaListener = new AbortController()
-          const {signal} = mapAreaListener
-          window.addEventListener("keydown", keydown, {signal})
-          window.addEventListener("paste", paste, {signal})
-          window.addEventListener("wheel", wheel, {signal, passive: false})
-          window.addEventListener("mouseup", mouseup, {signal})
-          window.addEventListener("contextmenu", contextmenu, {signal})
-        } else if (access === AccessType.VIEW) {
-          mapAreaListener = new AbortController()
-          const {signal} = mapAreaListener
-          window.addEventListener("wheel", wheel, {signal, passive: false})
-        }
+      console.log('WINDOW EVENT LISTENERS REMOVED')
+      if (mapAreaListener) {
+        mapAreaListener.abort()
       }
     }
     return () => {
-      if (mapAreaListener !== undefined) {
+      if (mapAreaListener) {
         mapAreaListener.abort()
       }
     }
-  }, [pageState, dialogState, access, editedNodeId])
+  }, [pageState, dialogState, alertDialogState, access, mapMode, editedNodeId])
 
   const timeoutFun = () => {
     dispatch(api.endpoints.saveMap.initiate({
