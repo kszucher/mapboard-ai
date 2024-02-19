@@ -1,22 +1,16 @@
 import {FC} from "react"
-import {useDispatch, useSelector} from "react-redux"
+import {useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getXA, isXR, mTR} from "../../queries/MapQueries.ts"
+import {RootState} from "../../reducers/EditorReducer"
+import {mTR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
 export const MapSvgRootBackground: FC = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
-  const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
-  const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     mTR(m).map(ti => (
       <rect
@@ -30,42 +24,6 @@ export const MapSvgRootBackground: FC = () => {
         fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
         style={{
           transition: '0.3s ease-out',
-          pointerEvents: [
-            LeftMouseMode.CLICK_SELECT,
-            LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapMode === MapMode.EDIT_ROOT
-            ? 'auto'
-            : 'none'
-        }}
-        onMouseDown={(e) => {
-          let didMove = false
-          e.stopPropagation()
-          if (e.buttons === 1) {
-            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_ROOT) {
-              !e.ctrlKey && md(MR.selectT, {path: ti.path})
-              e.ctrlKey && isXR(m) && !ti.selected && md(MR.selectAddT, {path: ti.path})
-              e.ctrlKey && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_ROOT) {
-              !e.ctrlKey && md(MR.selectT, {path: ti.path})
-              md(MR.saveFromCoordinates, {e})
-              const abortController = new AbortController()
-              const {signal} = abortController
-              window.addEventListener('mousemove', (e) => {
-                e.preventDefault()
-                didMove = true
-                md(MR.offsetRByDragPreview, {t: ti, e})
-              }, {signal})
-              window.addEventListener('mouseup', (e) => {
-                abortController.abort()
-                e.preventDefault()
-                if (didMove) {
-                  md(MR.offsetRByDrag, {t: ti, e})
-                }
-              }, {signal})
-            }
-          } else if (e.buttons === 4) {
-            e.preventDefault()
-          }
         }}
       />
     ))

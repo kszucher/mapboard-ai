@@ -28,6 +28,7 @@ export enum MapMode {
   VIEW = 'View',
   EDIT_ROOT = 'Edit Root',
   EDIT_STRUCT = 'Edit Struct',
+  EDIT_CELL = 'Edit Cell',
 }
 
 export enum LeftMouseMode {

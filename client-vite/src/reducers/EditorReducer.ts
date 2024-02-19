@@ -201,6 +201,7 @@ export const editorSlice = createSlice({
         state.mapListIndex = 0
         state.editedNodeId = ''
         state.isLoading = false
+        state.mapMode = MapMode.VIEW
       }
     )
     builder.addMatcher(

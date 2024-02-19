@@ -10,6 +10,8 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {MapDivS} from "./MapDivS.tsx"
 import {setScrollLeftAnimated} from "./MapDivUtils"
 import {MapSvg} from "./MapSvg"
+import {MapDivR} from "./MapDivR.tsx"
+import {MapDivC} from "./MapDivC.tsx"
 
 export const Map: FC = () => {
   const mapMode = useSelector((state: RootState) => state.editor.mapMode)
@@ -117,7 +119,9 @@ export const Map: FC = () => {
         transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`
       }}>
         <MapSvg/>
+        <MapDivR/>
         <MapDivS/>
+        <MapDivC/>
       </div>
       <div/>
       <div/>

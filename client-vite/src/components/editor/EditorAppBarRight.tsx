@@ -15,7 +15,7 @@ import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
-import {getCountXSO1, isXR} from "../../queries/MapQueries.ts"
+import {isC, isS, mT} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
 export const EditorAppBarRight: FC = () => {
@@ -37,9 +37,11 @@ export const EditorAppBarRight: FC = () => {
           value={mapMode}
           onValueChange={(value) => {
             if (value === MapMode.EDIT_ROOT) {
-              md(MR.selectXR)
-            } else if (value === MapMode.EDIT_STRUCT && getCountXSO1(m) > 0) {
-              md(MR.selectXS)
+              md(MR.selectFirstR)
+            } else if (value === MapMode.EDIT_STRUCT) {
+              md(MR.selectFirstS)
+            } else if (value === MapMode.EDIT_CELL) {
+              md(MR.selectFirstC)
             }
             dispatch(actions.setMapMode(value as MapMode))
           }}>
@@ -47,7 +49,8 @@ export const EditorAppBarRight: FC = () => {
           <Select.Content color="violet">
             <Select.Item key={0} value={MapMode.VIEW}>{MapMode.VIEW}</Select.Item>
             <Select.Item key={1} value={MapMode.EDIT_ROOT}>{MapMode.EDIT_ROOT}</Select.Item>
-            <Select.Item key={2} value={MapMode.EDIT_STRUCT} disabled={isXR(m) && getCountXSO1(m) === 0}>{MapMode.EDIT_STRUCT}</Select.Item>
+            <Select.Item key={2} value={MapMode.EDIT_STRUCT} disabled={mT(m).filter(ti => isS(ti.path)).length === 0}>{MapMode.EDIT_STRUCT}</Select.Item>
+            <Select.Item key={3} value={MapMode.EDIT_CELL} disabled={mT(m).filter(ti => isC(ti.path)).length === 0}>{MapMode.EDIT_CELL}</Select.Item>
           </Select.Content>
         </Select.Root>
       </div>
