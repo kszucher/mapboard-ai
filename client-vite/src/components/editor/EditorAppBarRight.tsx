@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {AccessType, MapMode} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {IconButton, Select} from "@radix-ui/themes"
+import {IconButton} from "@radix-ui/themes"
 import {NodeEdit} from "../dropdown/NodeEdit.tsx"
 import {NodeInsert} from "../dropdown/NodeInsert.tsx"
 import {NodeMove} from "../dropdown/NodeMove.tsx"
@@ -14,6 +14,10 @@ import {UserSettings} from "../dropdown/UserSettings.tsx"
 import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
+import Eye from "../../assets/eye.svg?react"
+import LetterR from "../../assets/letter-r.svg?react"
+import LetterS from "../../assets/letter-s.svg?react"
+import LetterC from "../../assets/letter-c.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
 import {getMapMode, isC, isS, mT} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
@@ -33,27 +37,35 @@ export const EditorAppBarRight: FC = () => {
   return (
     <div className="fixed flex right-1 gap-6 h-[40px]">
       <div className="flex items-center gap-1">
-        <Select.Root
-          value={mapMode}
-          onValueChange={(value) => {
-            if (value === MapMode.VIEW) {
-              md(MR.unselect)
-            } else if (value === MapMode.EDIT_ROOT) {
-              md(MR.selectFirstR)
-            } else if (value === MapMode.EDIT_STRUCT) {
-              md(MR.selectFirstS)
-            } else if (value === MapMode.EDIT_CELL) {
-              md(MR.selectFirstC)
-            }
-          }}>
-          <Select.Trigger color="gray" variant="soft"/>
-          <Select.Content color="violet">
-            <Select.Item key={0} value={MapMode.VIEW}>{MapMode.VIEW}</Select.Item>
-            <Select.Item key={1} value={MapMode.EDIT_ROOT}>{MapMode.EDIT_ROOT}</Select.Item>
-            <Select.Item key={2} value={MapMode.EDIT_STRUCT} disabled={mT(m).filter(ti => isS(ti.path)).length === 0}>{MapMode.EDIT_STRUCT}</Select.Item>
-            <Select.Item key={3} value={MapMode.EDIT_CELL} disabled={mT(m).filter(ti => isC(ti.path)).length === 0}>{MapMode.EDIT_CELL}</Select.Item>
-          </Select.Content>
-        </Select.Root>
+        <MouseConfig/>
+      </div>
+      <div className="flex items-center gap-1">
+        <IconButton
+          variant="solid"
+          color={mapMode === MapMode.VIEW ? 'violet' : 'gray'}
+          onClick={() => md(MR.unselect)}>
+          <Eye/>
+        </IconButton>
+        <IconButton
+          variant="solid"
+          color={mapMode === MapMode.EDIT_ROOT ? 'violet' : 'gray'}
+          onClick={() => md(MR.selectFirstR)}>
+          <LetterR/>
+        </IconButton>
+        <IconButton
+          variant="solid"
+          color={mapMode === MapMode.EDIT_STRUCT ? 'violet' : 'gray'}
+          disabled={mT(m).filter(ti => isS(ti.path)).length === 0}
+          onClick={() => md(MR.selectFirstS)}>
+          <LetterS/>
+        </IconButton>
+        <IconButton
+          variant="solid"
+          color={mapMode === MapMode.EDIT_CELL ? 'violet' : 'gray'}
+          disabled={mT(m).filter(ti => isC(ti.path)).length === 0}
+          onClick={() => md(MR.selectFirstC)}>
+          <LetterC/>
+        </IconButton>
       </div>
       <div className="flex flex-row items-center gap-1">
         <NodeSelect/>
@@ -78,7 +90,6 @@ export const EditorAppBarRight: FC = () => {
         </IconButton>
       </div>
       <div className="flex flex-row items-center gap-1">
-        <MouseConfig/>
         <UserSettings/>
         <UserAccount/>
       </div>
