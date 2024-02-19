@@ -7,7 +7,7 @@ import {getG} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, MapMode, MidMouseMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {MapDiv} from "./MapDiv"
+import {MapDivS} from "./MapDivS.tsx"
 import {setScrollLeftAnimated} from "./MapDivUtils"
 import {MapSvg} from "./MapSvg"
 
@@ -117,7 +117,7 @@ export const Map: FC = () => {
         transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`
       }}>
         <MapSvg/>
-        <MapDiv/>
+        <MapDivS/>
       </div>
       <div/>
       <div/>

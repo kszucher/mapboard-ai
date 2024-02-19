@@ -28,7 +28,7 @@ const getInnerHtml = (t: T) => {
   }
 }
 
-export const MapDiv: FC = () => {
+export const MapDivS: FC = () => {
   const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
