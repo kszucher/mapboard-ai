@@ -15,7 +15,7 @@ export const NodeMove = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger disabled={mapMode === MapMode.VIEW}>
-        <IconButton variant="solid" color="violet">
+        <IconButton variant="solid" color="gray">
           <ArrowsMove/>
         </IconButton>
       </DropdownMenu.Trigger>

@@ -15,7 +15,7 @@ export const NodeInsert = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger disabled={mapMode === MapMode.VIEW}>
-        <IconButton variant="solid" color="violet">
+        <IconButton variant="solid" color="gray">
           <CirclePlus/>
         </IconButton>
       </DropdownMenu.Trigger>

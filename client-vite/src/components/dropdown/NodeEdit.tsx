@@ -16,13 +16,14 @@ export const NodeEdit = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger disabled={mapMode === MapMode.VIEW}>
-        <IconButton variant="solid" color="violet">
+        <IconButton variant="solid" color="gray">
           <Edit/>
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         {!formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.openFormatter())}>{'Open Formatter'}</DropdownMenu.Item>}
         {formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.closeFormatter())}>{'Close Formatter'}</DropdownMenu.Item>}
+
         {mapMode === MapMode.EDIT_ROOT && isXR(m) && getX(m).controlType !== ControlType.NONE && <DropdownMenu.Item onClick={() => md(MR.setControlTypeNone)}>{'Control Type None'}</DropdownMenu.Item>}
         {mapMode === MapMode.EDIT_ROOT && isXR(m) && getX(m).controlType !== ControlType.INGESTION && <DropdownMenu.Item onClick={() => md(MR.setControlTypeIngestion)}>{'Control Type Ingestion'}</DropdownMenu.Item>}
         {mapMode === MapMode.EDIT_ROOT && isXR(m) && getX(m).controlType !== ControlType.EXTRACTION && <DropdownMenu.Item onClick={() => md(MR.setControlTypeExtraction)}>{'Control Type Extraction'}</DropdownMenu.Item>}

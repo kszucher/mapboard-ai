@@ -15,7 +15,7 @@ export const NodeSelect = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger disabled={mapMode === MapMode.VIEW}>
-        <IconButton variant="solid" color="violet">
+        <IconButton variant="solid" color="gray">
           <SelectAll/>
         </IconButton>
       </DropdownMenu.Trigger>
