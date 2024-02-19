@@ -2,7 +2,7 @@ import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountXCO1, getX, isXR, isXS, isXC} from "../../queries/MapQueries.ts"
+import {getCountXCO1, getX, isXS, isXC} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState, MapMode} from "../../state/Enums.ts"
 import CirclePlus from "../../assets/circle-plus.svg?react"
@@ -19,21 +19,71 @@ export const NodeInsert = () => {
           <CirclePlus/>
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        {mapMode === MapMode.EDIT_ROOT && <DropdownMenu.Item onClick={() => md(MR.insertR)}>{'Root'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXR(m) && <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Node Out'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSU)}>{'Node Above'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Node Out'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSD)}>{'Node Below'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && !getX(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_U))}>{'Table Above'}</DropdownMenu.Item></Dialog.Trigger>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && !getX(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_D))}>{'Table Below'}</DropdownMenu.Item></Dialog.Trigger>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && !getX(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_O))}>{'Table Out'}</DropdownMenu.Item></Dialog.Trigger>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCRU)}>{'Table Row Above'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCRD)}>{'Table Row Below'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCCL)}>{'Table Column Left'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCCR)}>{'Table Column Right'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXC(m) && <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Node Out'}</DropdownMenu.Item>}
-      </DropdownMenu.Content>
+      {mapMode === MapMode.EDIT_ROOT &&
+        <DropdownMenu.Content>
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>{'Root'}</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent>
+              <DropdownMenu.Item onClick={() => md(MR.insertR)}>{'Out'}</DropdownMenu.Item>
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>{'Node'}</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent>
+              <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Out'}</DropdownMenu.Item>
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
+        </DropdownMenu.Content>
+      }
+      {mapMode === MapMode.EDIT_STRUCT &&
+        <DropdownMenu.Content>
+          {isXS(m) &&
+            <DropdownMenu.Sub>
+              <DropdownMenu.SubTrigger>{'Node'}</DropdownMenu.SubTrigger>
+              <DropdownMenu.SubContent>
+                <DropdownMenu.Item onClick={() => md(MR.insertSU)}>{'Above'}</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Out'}</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => md(MR.insertSD)}>{'Below'}</DropdownMenu.Item>
+              </DropdownMenu.SubContent>
+            </DropdownMenu.Sub>
+          }
+          {isXS(m) && !getX(m).path.includes('c') &&
+            <DropdownMenu.Sub>
+              <DropdownMenu.SubTrigger>{'Table'}</DropdownMenu.SubTrigger>
+              <DropdownMenu.SubContent>
+                <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_U))}>{'Above'}</DropdownMenu.Item></Dialog.Trigger>
+                <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_D))}>{'Below'}</DropdownMenu.Item></Dialog.Trigger>
+                <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_O))}>{'Out'}</DropdownMenu.Item></Dialog.Trigger>
+              </DropdownMenu.SubContent>
+            </DropdownMenu.Sub>
+          }
+          {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 &&
+            <>
+              <DropdownMenu.Sub>
+                <DropdownMenu.SubTrigger>{'Table Row'}</DropdownMenu.SubTrigger>
+                <DropdownMenu.SubContent>
+                  <DropdownMenu.Item onClick={() => md(MR.insertSCRU)}>{'Table Row Above'}</DropdownMenu.Item>
+                  <DropdownMenu.Item onClick={() => md(MR.insertSCRD)}>{'Table Row Below'}</DropdownMenu.Item>
+                </DropdownMenu.SubContent>
+              </DropdownMenu.Sub>
+              <DropdownMenu.Sub>
+                <DropdownMenu.SubTrigger>{'Table Column'}</DropdownMenu.SubTrigger>
+                <DropdownMenu.SubContent>
+                  <DropdownMenu.Item onClick={() => md(MR.insertSCCL)}>{'Table Column Left'}</DropdownMenu.Item>
+                  <DropdownMenu.Item onClick={() => md(MR.insertSCCR)}>{'Table Column Right'}</DropdownMenu.Item>
+                </DropdownMenu.SubContent>
+              </DropdownMenu.Sub>
+            </>
+          }
+          {isXC(m) &&
+            <DropdownMenu.Sub>
+              <DropdownMenu.SubTrigger>{'Node'}</DropdownMenu.SubTrigger>
+              <DropdownMenu.SubContent>
+                <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Out'}</DropdownMenu.Item>
+              </DropdownMenu.SubContent>
+            </DropdownMenu.Sub>
+          }
+        </DropdownMenu.Content>}
     </DropdownMenu.Root>
   )
 }
