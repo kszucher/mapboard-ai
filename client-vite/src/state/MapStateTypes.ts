@@ -51,11 +51,11 @@ export interface TSaveOptional {
   controlType: ControlType // r
   offsetW: number // r
   offsetH: number // r
-  llmDataType: string // r
-  llmDataId: string // r
   note: string // r
   contentType: string // s
   content: string // s
+  ingestionHash: string // r
+  extractionHash: string // r
   linkType: string // s
   link: string // s
   imageW: number // s

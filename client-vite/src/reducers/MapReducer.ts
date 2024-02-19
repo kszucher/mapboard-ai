@@ -118,7 +118,6 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'offsetR': Object.assign(getX(m), { offsetW: getX(m).offsetW += 20 }); break
     case 'offsetL': Object.assign(getX(m), { offsetW: getX(m).offsetW -= 20 }); break
     case 'offsetRByDrag': Object.assign(getX(m), { offsetW: payload.toX, offsetH: payload.toY }); break
-    case 'setLlmData': Object.assign(getX(m), { llmDataType: 'audio', llmDataId: 'llmDataId' }); break
     case 'setLineWidth': getXA(m).forEach(ti => Object.assign(ti, { lineWidth: payload })); break
     case 'setLineType': getXA(m).forEach(ti => Object.assign(ti, { lineType: payload })); break
     case 'setLineColor': getXA(m).forEach(ti => Object.assign(ti, { lineColor: payload })); break
@@ -136,7 +135,6 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setTaskModeReset': getXAEO(m).forEach(ti => Object.assign(ti, { taskStatus: ti.taskStatus > 0 ? 1 : ti.taskStatus })); break
 
     case 'clearDimensions': Object.assign(getX(m), { dimW: tSaveOptional.dimW, dimH: tSaveOptional.dimH }); break
-    case 'clearLlmData': Object.assign(getX(m), { llmDataType: tSaveOptional.llmDataType, llmDataId: tSaveOptional.llmDataId }); break
     case 'clearLine': getXA(m).forEach(ti => Object.assign(ti, { lineWidth: tSaveOptional.lineWidth, lineType: tSaveOptional.lineType, lineColor: tSaveOptional.lineColor })); break
     case 'clearSBorder': getXA(m).forEach(ti => Object.assign(ti, { sBorderWidth: tSaveOptional.sBorderWidth, sBorderColor: tSaveOptional.sBorderColor })); break
     case 'clearFBorder': getXA(m).forEach(ti => Object.assign(ti, { fBorderWidth: tSaveOptional.fBorderWidth, fBorderColor: tSaveOptional.fBorderColor })); break

@@ -30,7 +30,7 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
           .map(li => li.fromNodeId)
       ],
       inputSubProcessesAll: [],
-      subProcessInputLink: ri.llmDataId,
+      subProcessInputLink: ri.ingestionHash,
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     } as SubProcess)

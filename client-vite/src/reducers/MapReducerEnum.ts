@@ -111,7 +111,6 @@ export enum MR {
   offsetL = 'offsetL',
   offsetRByDragPreview = 'offsetRByDragPreview',
   offsetRByDrag = 'offsetRByDrag',
-  setLlmData = 'setLlmData',
   setLineWidth = 'setLineWidth',
   setLineType = 'setLineType',
   setLineColor = 'setLineColor',
@@ -129,7 +128,6 @@ export enum MR {
   setTaskModeReset = 'setTaskModeReset',
 
   clearDimensions = 'clearDimensions',
-  clearLlmData = 'clearLlmData',
   clearLine = 'clearLine',
   clearSBorder = 'clearSBorder',
   clearFBorder = 'clearFBorder',

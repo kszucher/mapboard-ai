@@ -25,17 +25,17 @@ describe("MapProcessTests", () => {
       {nodeId: 'ld', path: ['l', 3], fromNodeId: 'te', fromNodeSide: Side.R, toNodeId: 'tc', toNodeSide: Side.L},
       {nodeId: 'le', path: ['l', 4], fromNodeId: 'tf', fromNodeSide: Side.R, toNodeId: 'tg', toNodeSide: Side.L},
       {nodeId: 'lf', path: ['l', 5], fromNodeId: 'tg', fromNodeSide: Side.R, toNodeId: 'te', toNodeSide: Side.L},
-      {nodeId: 'ta', path: ['r', 0], controlType: ControlType.INGESTION, llmDataType: 'text', llmDataId: 'hTextUrl', selected: 1},
+      {nodeId: 'ta', path: ['r', 0], controlType: ControlType.INGESTION, ingestionHash: 'hHash', selected: 1},
       {nodeId: 'tas', path: ['r', 0, 's', 0], content: 'tas'},
       {nodeId: 'tb', path: ['r', 1], controlType: ControlType.EXTRACTION},
       {nodeId: 'tbs', path: ['r', 1, 's', 0], content: 'tbs'},
       {nodeId: 'tc', path: ['r', 2], controlType: ControlType.EXTRACTION},
       {nodeId: 'tcs', path: ['r', 2, 's', 0], content: 'tcs'},
-      {nodeId: 'td', path: ['r', 3], controlType: ControlType.INGESTION, llmDataType: 'audio', llmDataId: 'kAudioUrl'},
+      {nodeId: 'td', path: ['r', 3], controlType: ControlType.INGESTION, ingestionHash: 'kHash'},
       {nodeId: 'tds', path: ['r', 3, 's', 0], content: 'tds'},
       {nodeId: 'te', path: ['r', 4], controlType: ControlType.EXTRACTION},
       {nodeId: 'tes', path: ['r', 4, 's', 0], content: 'tes'},
-      {nodeId: 'tf', path: ['r', 5], controlType: ControlType.INGESTION, llmDataType: 'text', llmDataId: 'mTextUrl'},
+      {nodeId: 'tf', path: ['r', 5], controlType: ControlType.INGESTION, ingestionHash: 'mHash'},
       {nodeId: 'tfs', path: ['r', 5, 's', 0], content: 'tfs'},
       {nodeId: 'tg', path: ['r', 6], controlType: ControlType.EXTRACTION},
       {nodeId: 'tgs', path: ['r', 6, 's', 0], content: 'tgs'},
@@ -45,7 +45,7 @@ describe("MapProcessTests", () => {
       subProcessMindMapData: [{nodeId: 'tfs', contentList: ['tfs']}] as ReadableTree,
       inputSubProcesses: [],
       inputSubProcessesAll: [],
-      subProcessInputLink: 'mTextUrl',
+      subProcessInputLink: 'mHash',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
@@ -63,7 +63,7 @@ describe("MapProcessTests", () => {
       subProcessMindMapData: [{nodeId: 'tds', contentList: ['tds']}] as ReadableTree,
       inputSubProcesses: [],
       inputSubProcessesAll: [],
-      subProcessInputLink: 'kAudioUrl',
+      subProcessInputLink: 'kHash',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
@@ -81,7 +81,7 @@ describe("MapProcessTests", () => {
       subProcessMindMapData: [{nodeId: 'tas', contentList: ['tas']}] as ReadableTree,
       inputSubProcesses: [],
       inputSubProcessesAll: [],
-      subProcessInputLink: 'hTextUrl',
+      subProcessInputLink: 'hHash',
       shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     }, {
