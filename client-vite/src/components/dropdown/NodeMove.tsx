@@ -19,13 +19,15 @@ export const NodeMove = () => {
           <ArrowsMove/>
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveSU)}>{'Node Up'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && isXASVN(m) && getCountXASD(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveSD)}>{'Node Down'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveSO)}>{'Node Out'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && !isXRS(m) && isXASVN(m) && <DropdownMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && getCountXSO1(m) > 0 && !getXAEO(m).some(ti => ti.path.includes('c')) && <DropdownMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</DropdownMenu.Item>}
-      </DropdownMenu.Content>
+      {mapMode === MapMode.EDIT_STRUCT && isXS(m) &&
+        <DropdownMenu.Content>
+          {isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveSU)}>{'Node Up'}</DropdownMenu.Item>}
+          {isXASVN(m) && getCountXASD(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveSD)}>{'Node Down'}</DropdownMenu.Item>}
+          {isXASVN(m) && getCountXASU(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.moveSO)}>{'Node Out'}</DropdownMenu.Item>}
+          {!isXRS(m) && isXASVN(m) && <DropdownMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</DropdownMenu.Item>}
+          {getCountXSO1(m) > 0 && !getXAEO(m).some(ti => ti.path.includes('c')) && <DropdownMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</DropdownMenu.Item>}
+        </DropdownMenu.Content>
+      }
     </DropdownMenu.Root>
   )
 }
