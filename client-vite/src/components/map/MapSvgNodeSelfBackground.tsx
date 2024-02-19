@@ -7,11 +7,8 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getArcPath} from "./MapSvgUtils"
-import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 
 export const MapSvgNodeSelfBackground: FC = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
-  const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
@@ -27,12 +24,6 @@ export const MapSvgNodeSelfBackground: FC = () => {
           transition: 'all 0.3s',
           transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
           transitionProperty: 'd, fill, stroke-width',
-          pointerEvents: [
-            LeftMouseMode.CLICK_SELECT,
-            LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapMode === MapMode.EDIT_STRUCT
-            ? 'auto'
-            : 'none'
         }}
       />
     )
