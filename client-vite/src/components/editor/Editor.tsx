@@ -76,7 +76,9 @@ export const Editor: FC = () => {
           {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeEditCreateSubMap/>}
           {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeEditContentEquation/>}
           {dialogState === DialogState.EDIT_CONTENT_MERMAID && <NodeEditContentMermaid/>}
-          {dialogState === DialogState.CREATE_TABLE && <NodeInsertTable/>}
+          {dialogState === DialogState.CREATE_TABLE_U && <NodeInsertTable/>}
+          {dialogState === DialogState.CREATE_TABLE_D && <NodeInsertTable/>}
+          {dialogState === DialogState.CREATE_TABLE_O && <NodeInsertTable/>}
           {dialogState === DialogState.ROOT_INGESTION && <RootIngestion/>}
           {dialogState === DialogState.ROOT_EXTRACTION && <RootExtraction/>}
         </Dialog.Root>

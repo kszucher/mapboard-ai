@@ -59,6 +59,8 @@ export enum MR {
   insertCCL = 'insertCCL',
   insertSCCR = 'insertSCCR',
   insertSCCL = 'insertSCCL',
+  insertSUTable = 'insertSUTable',
+  insertSDTable = 'insertSDTable',
   insertSOTable = 'insertSOTable',
 
   gptParseNodesS = 'gptParseNodesS',

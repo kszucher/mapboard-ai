@@ -25,7 +25,9 @@ export const NodeInsert = () => {
         {mapMode === MapMode.EDIT_STRUCT && isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSU)}>{'Node Above'}</DropdownMenu.Item>}
         {mapMode === MapMode.EDIT_STRUCT && isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Node Out'}</DropdownMenu.Item>}
         {mapMode === MapMode.EDIT_STRUCT && isXS(m) && <DropdownMenu.Item onClick={() => md(MR.insertSD)}>{'Node Below'}</DropdownMenu.Item>}
-        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && !getX(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE))}>{'Table Out'}</DropdownMenu.Item></Dialog.Trigger>}
+        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && !getX(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_U))}>{'Table Above'}</DropdownMenu.Item></Dialog.Trigger>}
+        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && !getX(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_D))}>{'Table Below'}</DropdownMenu.Item></Dialog.Trigger>}
+        {mapMode === MapMode.EDIT_STRUCT && isXS(m) && !getX(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_O))}>{'Table Out'}</DropdownMenu.Item></Dialog.Trigger>}
         {mapMode === MapMode.EDIT_STRUCT && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCRU)}>{'Table Row Above'}</DropdownMenu.Item>}
         {mapMode === MapMode.EDIT_STRUCT && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCRD)}>{'Table Row Below'}</DropdownMenu.Item>}
         {mapMode === MapMode.EDIT_STRUCT && isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 && <DropdownMenu.Item onClick={() => md(MR.insertSCCL)}>{'Table Column Left'}</DropdownMenu.Item>}

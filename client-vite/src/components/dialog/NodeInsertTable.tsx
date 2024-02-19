@@ -5,9 +5,11 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {isXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
+import {DialogState} from "../../state/Enums.ts"
 
 export const NodeInsertTable = () => {
   const m = useSelector((state:RootState) => mSelector(state))
+  const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const [row, setRow] = useState<number>(1)
   const [col, setCol] = useState<number>(1)
   const dispatch = useDispatch<AppDispatch>()
@@ -45,7 +47,11 @@ export const NodeInsertTable = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => isXS(m) && md(MR.insertSOTable, {rowLen: row, colLen: col})}>
+          <Button onClick={() => {
+            dialogState === DialogState.CREATE_TABLE_U && isXS(m) && md(MR.insertSUTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_D && isXS(m) && md(MR.insertSDTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_O && isXS(m) && md(MR.insertSOTable, {rowLen: row, colLen: col})
+          }}>
             {'OK'}
           </Button>
         </Dialog.Close>

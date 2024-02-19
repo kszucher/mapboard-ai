@@ -126,6 +126,7 @@ const getCountCH = (m: M, p: PT): number => m.filter(ti => isCV(p, ti.path as PT
 export const getCountTSCV = (m: M, t: T): number => getCountCV(m, [...t.path, 'c', 0, 0])
 export const getCountTSCH = (m: M, t: T): number => getCountCH(m, [...t.path, 'c', 0, 0])
 
+export const getCountXSU = (m: M): number => getCountSU(m, getX(m).path)
 export const getCountXASD = (m: M): number => getCountSD(m, getXL(m).path)
 export const getCountXASU = (m: M): number => getCountSU(m, getXF(m).path)
 export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXFSU1(m).path)
