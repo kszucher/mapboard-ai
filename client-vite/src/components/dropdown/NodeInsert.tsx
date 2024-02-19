@@ -62,15 +62,15 @@ export const NodeInsert = () => {
               <DropdownMenu.Sub>
                 <DropdownMenu.SubTrigger>{'Table Row'}</DropdownMenu.SubTrigger>
                 <DropdownMenu.SubContent>
-                  <DropdownMenu.Item onClick={() => md(MR.insertSCRU)}>{'Table Row Above'}</DropdownMenu.Item>
-                  <DropdownMenu.Item onClick={() => md(MR.insertSCRD)}>{'Table Row Below'}</DropdownMenu.Item>
+                  <DropdownMenu.Item onClick={() => md(MR.insertSCRU)}>{'Above'}</DropdownMenu.Item>
+                  <DropdownMenu.Item onClick={() => md(MR.insertSCRD)}>{'Below'}</DropdownMenu.Item>
                 </DropdownMenu.SubContent>
               </DropdownMenu.Sub>
               <DropdownMenu.Sub>
                 <DropdownMenu.SubTrigger>{'Table Column'}</DropdownMenu.SubTrigger>
                 <DropdownMenu.SubContent>
-                  <DropdownMenu.Item onClick={() => md(MR.insertSCCL)}>{'Table Column Left'}</DropdownMenu.Item>
-                  <DropdownMenu.Item onClick={() => md(MR.insertSCCR)}>{'Table Column Right'}</DropdownMenu.Item>
+                  <DropdownMenu.Item onClick={() => md(MR.insertSCCL)}>{'Left'}</DropdownMenu.Item>
+                  <DropdownMenu.Item onClick={() => md(MR.insertSCCR)}>{'Right'}</DropdownMenu.Item>
                 </DropdownMenu.SubContent>
               </DropdownMenu.Sub>
             </>
