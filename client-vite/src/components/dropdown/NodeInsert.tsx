@@ -2,7 +2,7 @@ import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountXCO1, getX, isXS, isXC} from "../../queries/MapQueries.ts"
+import {getCountXCO1, getX, isXS, isXC, isXR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState, MapMode} from "../../state/Enums.ts"
 import CirclePlus from "../../assets/circle-plus.svg?react"
@@ -19,7 +19,7 @@ export const NodeInsert = () => {
           <CirclePlus/>
         </IconButton>
       </DropdownMenu.Trigger>
-      {mapMode === MapMode.EDIT_ROOT &&
+      {mapMode === MapMode.EDIT_ROOT && isXR(m) &&
         <DropdownMenu.Content>
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{'Root'}</DropdownMenu.SubTrigger>
@@ -35,19 +35,17 @@ export const NodeInsert = () => {
           </DropdownMenu.Sub>
         </DropdownMenu.Content>
       }
-      {mapMode === MapMode.EDIT_STRUCT &&
+      {mapMode === MapMode.EDIT_STRUCT && isXS(m) &&
         <DropdownMenu.Content>
-          {isXS(m) &&
-            <DropdownMenu.Sub>
-              <DropdownMenu.SubTrigger>{'Node'}</DropdownMenu.SubTrigger>
-              <DropdownMenu.SubContent>
-                <DropdownMenu.Item onClick={() => md(MR.insertSU)}>{'Above'}</DropdownMenu.Item>
-                <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Out'}</DropdownMenu.Item>
-                <DropdownMenu.Item onClick={() => md(MR.insertSD)}>{'Below'}</DropdownMenu.Item>
-              </DropdownMenu.SubContent>
-            </DropdownMenu.Sub>
-          }
-          {isXS(m) && !getX(m).path.includes('c') &&
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>{'Node'}</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent>
+              <DropdownMenu.Item onClick={() => md(MR.insertSU)}>{'Above'}</DropdownMenu.Item>
+              <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Out'}</DropdownMenu.Item>
+              <DropdownMenu.Item onClick={() => md(MR.insertSD)}>{'Below'}</DropdownMenu.Item>
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
+          {!getX(m).path.includes('c') &&
             <DropdownMenu.Sub>
               <DropdownMenu.SubTrigger>{'Table'}</DropdownMenu.SubTrigger>
               <DropdownMenu.SubContent>
@@ -57,7 +55,7 @@ export const NodeInsert = () => {
               </DropdownMenu.SubContent>
             </DropdownMenu.Sub>
           }
-          {isXS(m) && getX(m).selection === 's' && getCountXCO1(m) > 0 &&
+          {getX(m).selection === 's' && getCountXCO1(m) > 0 &&
             <>
               <DropdownMenu.Sub>
                 <DropdownMenu.SubTrigger>{'Table Row'}</DropdownMenu.SubTrigger>
@@ -75,15 +73,18 @@ export const NodeInsert = () => {
               </DropdownMenu.Sub>
             </>
           }
-          {isXC(m) &&
-            <DropdownMenu.Sub>
-              <DropdownMenu.SubTrigger>{'Node'}</DropdownMenu.SubTrigger>
-              <DropdownMenu.SubContent>
-                <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Out'}</DropdownMenu.Item>
-              </DropdownMenu.SubContent>
-            </DropdownMenu.Sub>
-          }
-        </DropdownMenu.Content>}
+        </DropdownMenu.Content>
+      }
+      {mapMode === MapMode.EDIT_CELL && isXC(m) &&
+        <DropdownMenu.Content>
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>{'Node'}</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent>
+              <DropdownMenu.Item onClick={() => md(MR.insertSO)}>{'Out'}</DropdownMenu.Item>
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
+        </DropdownMenu.Content>
+      }
     </DropdownMenu.Root>
   )
 }
