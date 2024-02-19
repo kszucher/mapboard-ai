@@ -2,14 +2,14 @@ import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountXASD, getCountXASU, getCountXSO1, getXAEO, isXASVN, isXRS, isXS} from "../../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXSO1, getMapMode, getXAEO, isXASVN, isXRS, isXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import ArrowsMove from "../../assets/arrows-move.svg?react"
 import {MapMode} from "../../state/Enums.ts"
 
 export const NodeMove = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const m = useSelector((state:RootState) => mSelector(state))
+  const mapMode = getMapMode(m)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (

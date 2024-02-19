@@ -2,15 +2,15 @@ import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountXCO1, getX, getXAEO, isXR, isXS} from "../../queries/MapQueries.ts"
+import {getCountXCO1, getMapMode, getX, getXAEO} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {ControlType, DialogState, MapMode} from "../../state/Enums.ts"
 import Edit from "../../assets/edit.svg?react"
 
 export const NodeEdit = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
+  const mapMode = getMapMode(m)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
@@ -20,14 +20,14 @@ export const NodeEdit = () => {
           <Edit/>
         </IconButton>
       </DropdownMenu.Trigger>
-      {mapMode === MapMode.EDIT_ROOT && isXR(m) &&
+      {mapMode === MapMode.EDIT_ROOT &&
         <DropdownMenu.Content>
           {getX(m).controlType !== ControlType.NONE && <DropdownMenu.Item onClick={() => md(MR.setControlTypeNone)}>{'Control Type None'}</DropdownMenu.Item>}
           {getX(m).controlType !== ControlType.INGESTION && <DropdownMenu.Item onClick={() => md(MR.setControlTypeIngestion)}>{'Control Type Ingestion'}</DropdownMenu.Item>}
           {getX(m).controlType !== ControlType.EXTRACTION && <DropdownMenu.Item onClick={() => md(MR.setControlTypeExtraction)}>{'Control Type Extraction'}</DropdownMenu.Item>}
         </DropdownMenu.Content>
       }
-      {mapMode === MapMode.EDIT_STRUCT && isXS(m) &&
+      {mapMode === MapMode.EDIT_STRUCT &&
         <DropdownMenu.Content>
           {!formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.openFormatter())}>{'Open Formatter'}</DropdownMenu.Item>}
           {formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.closeFormatter())}>{'Close Formatter'}</DropdownMenu.Item>}

@@ -2,14 +2,14 @@ import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountXCO1, getX, isXS, isXC, isXR} from "../../queries/MapQueries.ts"
+import {getCountXCO1, getX, getMapMode} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState, MapMode} from "../../state/Enums.ts"
 import CirclePlus from "../../assets/circle-plus.svg?react"
 
 export const NodeInsert = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const m = useSelector((state:RootState) => mSelector(state))
+  const mapMode = getMapMode(m)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
@@ -19,7 +19,7 @@ export const NodeInsert = () => {
           <CirclePlus/>
         </IconButton>
       </DropdownMenu.Trigger>
-      {mapMode === MapMode.EDIT_ROOT && isXR(m) &&
+      {mapMode === MapMode.EDIT_ROOT &&
         <DropdownMenu.Content>
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{'Root'}</DropdownMenu.SubTrigger>
@@ -35,7 +35,7 @@ export const NodeInsert = () => {
           </DropdownMenu.Sub>
         </DropdownMenu.Content>
       }
-      {mapMode === MapMode.EDIT_STRUCT && isXS(m) &&
+      {mapMode === MapMode.EDIT_STRUCT &&
         <DropdownMenu.Content>
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{'Node'}</DropdownMenu.SubTrigger>
@@ -75,7 +75,7 @@ export const NodeInsert = () => {
           }
         </DropdownMenu.Content>
       }
-      {mapMode === MapMode.EDIT_CELL && isXC(m) &&
+      {mapMode === MapMode.EDIT_CELL &&
         <DropdownMenu.Content>
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{'Node'}</DropdownMenu.SubTrigger>

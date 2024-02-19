@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getG} from "../../queries/MapQueries.ts"
+import {getG, getMapMode} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, MapMode, MidMouseMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
@@ -14,11 +14,11 @@ import {MapDivR} from "./MapDivR.tsx"
 import {MapDivC} from "./MapDivC.tsx"
 
 export const Map: FC = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
+  const mapMode = getMapMode(m)
   const g = getG(m)
   const { density } = g
   const { data } = useOpenWorkspaceQuery()

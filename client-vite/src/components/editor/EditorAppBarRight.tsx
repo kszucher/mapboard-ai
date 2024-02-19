@@ -15,14 +15,14 @@ import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
-import {isC, isS, mT} from "../../queries/MapQueries.ts"
+import {getMapMode, isC, isS, mT} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
 export const EditorAppBarRight: FC = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const m = useSelector((state:RootState) => mSelector(state))
+  const mapMode = getMapMode(m)
   const { data } = useOpenWorkspaceQuery()
   const { access } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessType.VIEW, AccessType.UNAUTHORIZED].includes(access)
@@ -45,7 +45,6 @@ export const EditorAppBarRight: FC = () => {
             } else if (value === MapMode.EDIT_CELL) {
               md(MR.selectFirstC)
             }
-            dispatch(actions.setMapMode(value as MapMode))
           }}>
           <Select.Trigger color="gray" variant="soft"/>
           <Select.Content color="violet">

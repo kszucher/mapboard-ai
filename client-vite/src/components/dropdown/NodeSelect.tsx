@@ -2,14 +2,14 @@ import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountXCO1, getCountXSO1, getX, isXR, isXS} from "../../queries/MapQueries.ts"
+import {getCountXCO1, getCountXSO1, getMapMode, getX} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import SelectAll from "../../assets/select-all.svg?react"
 import {MapMode} from "../../state/Enums.ts"
 
 export const NodeSelect = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const m = useSelector((state:RootState) => mSelector(state))
+  const mapMode = getMapMode(m)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
@@ -19,12 +19,12 @@ export const NodeSelect = () => {
           <SelectAll/>
         </IconButton>
       </DropdownMenu.Trigger>
-      {mapMode === MapMode.EDIT_ROOT && isXR(m) &&
+      {mapMode === MapMode.EDIT_ROOT &&
         <DropdownMenu.Content>
           <DropdownMenu.Item onClick={() => md(MR.selectRA)}>{'All Root Node'}</DropdownMenu.Item>
         </DropdownMenu.Content>
       }
-      {mapMode === MapMode.EDIT_STRUCT && isXS(m) &&
+      {mapMode === MapMode.EDIT_STRUCT &&
         <DropdownMenu.Content>
           {getCountXSO1(m) > 0 && getX(m).selection === 's' && <DropdownMenu.Item onClick={() => md(MR.selectFamilyX)}>{'Node Family'}</DropdownMenu.Item>}
           {getCountXSO1(m) > 0 && getX(m).selection === 'f' && <DropdownMenu.Item onClick={() => md(MR.selectSelfX)}>{'Node'}</DropdownMenu.Item>}

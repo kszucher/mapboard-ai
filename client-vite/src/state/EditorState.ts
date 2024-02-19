@@ -1,11 +1,10 @@
 import {RootState, store} from "../reducers/EditorReducer"
 import {EditorState} from "./EditorStateTypes"
-import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MapMode, MidMouseMode, PageState, Side} from "./Enums"
+import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MidMouseMode, PageState, Side} from "./Enums"
 
 export const editorState: EditorState = {
   token: '',
   isLoading: false,
-  mapMode: MapMode.VIEW,
   leftMouseMode: LeftMouseMode.CLICK_SELECT,
   midMouseMode: MidMouseMode.SCROLL,
   pageState: PageState.AUTH,

@@ -2,6 +2,7 @@ import isEqual from "react-fast-compare"
 import {tSaveOptional} from "../state/MapState"
 import {G, L, M, N, P, PT, PTC, T, TSaveOptional} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
+import {MapMode} from "../state/Enums.ts"
 
 export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
 
@@ -186,3 +187,17 @@ export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li =>
   l.fromNodeSide  === li.fromNodeSide &&
   l.toNodeSide === li.toNodeSide
 )
+
+export const getMapMode = (m: M) => {
+  if ((m as T[]).some((ti: T) => ti.selected)) {
+    if (isXR(m)) {
+      return MapMode.EDIT_ROOT
+    } else if (isXS(m)) {
+      return MapMode.EDIT_STRUCT
+    } else if (isXC(m)) {
+      return MapMode.EDIT_CELL
+    }
+  } else {
+    return MapMode.VIEW
+  }
+}

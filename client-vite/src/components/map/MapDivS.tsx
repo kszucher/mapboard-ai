@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getG, getNodeById, getX, getXA, isXS, mTS} from "../../queries/MapQueries.ts"
+import {getG, getMapMode, getNodeById, getX, getXA, isXS, mTS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {T} from "../../state/MapStateTypes"
@@ -29,11 +29,11 @@ const getInnerHtml = (t: T) => {
 }
 
 export const MapDivS: FC = () => {
-  const mapMode = useSelector((state: RootState) => state.editor.mapMode)
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const editType = useSelector((state: RootState) => state.editor.editType)
   const m = useSelector((state:RootState) => mSelector(state))
+  const mapMode = getMapMode(m)
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
