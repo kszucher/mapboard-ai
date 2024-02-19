@@ -10,7 +10,6 @@ import {NodeEdit} from "../dropdown/NodeEdit.tsx"
 import {NodeInsert} from "../dropdown/NodeInsert.tsx"
 import {NodeMove} from "../dropdown/NodeMove.tsx"
 import {NodeSelect} from "../dropdown/NodeSelect.tsx"
-import {UserAccountDelete} from "../dialog/UserAccountDelete.tsx"
 import {UserSettings} from "../dropdown/UserSettings.tsx"
 import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
@@ -78,7 +77,6 @@ export const EditorAppBarRight: FC = () => {
         <MouseConfig/>
         <UserSettings/>
         <UserAccount/>
-        <UserAccountDelete/>
       </div>
     </div>
   )

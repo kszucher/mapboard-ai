@@ -26,6 +26,7 @@ import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
 import {setColors} from "../assets/Colors"
+import {UserAccountDelete} from "../dialog/UserAccountDelete.tsx";
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
@@ -66,7 +67,7 @@ export const Editor: FC = () => {
             </div>
             {formatterVisible && <Formatter/>}
             <Window/>
-            {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <NodeInsertTable/>}
+            {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <UserAccountDelete/>}
           </AlertDialog.Root>
           {dialogState === DialogState.RENAME_MAP && <MapActionsRename/>}
           {dialogState === DialogState.SHARE_THIS_MAP && <MapSharesShare/>}
