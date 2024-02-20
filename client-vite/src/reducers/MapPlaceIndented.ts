@@ -1,9 +1,9 @@
-import {isC, isCS, isR, isRS, isRSC, isS, isSS, isSSC, mT} from "../queries/MapQueries.ts"
+import {getHN, isC, isCS, isR, isRS, isRSC, isS, isSS, isSSC, mT} from "../queries/MapQueries.ts"
 import {INDENT, MARGIN_X, S_SPACING} from "../state/Consts.ts"
 import {M, T,} from "../state/MapStateTypes"
 
 export const mapPlaceIndented = (m: M) => {
-  const mHash = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
+  const hn = getHN(m)
   mT(m).forEach(ti => {
     switch (true) {
       case isR(ti.path): {
@@ -13,8 +13,8 @@ export const mapPlaceIndented = (m: M) => {
       }
       case isS(ti.path): {
         const i = ti.path.at(-1)
-        const si1 = mHash.get(ti.si1)!
-        const su = ti.su.map(nid => mHash.get(nid)) as T[]
+        const si1 = hn.get(ti.si1)!
+        const su = ti.su.map(nid => hn.get(nid)) as T[]
         const elapsed = su.map(ti => ti.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.co2.length)
         if (isRS(ti.path)) {
           ti.nodeStartX = MARGIN_X + si1.nodeStartX
@@ -29,10 +29,10 @@ export const mapPlaceIndented = (m: M) => {
         break
       }
       case isC(ti.path): {
-        const si1 = mHash.get(ti.si1) as T
-        const si2 = mHash.get(ti.si2) as T
-        const cl = ti.cl.map(nid => mHash.get(nid)) as T[]
-        const cu = ti.cu.map(nid => mHash.get(nid)) as T[]
+        const si1 = hn.get(ti.si1) as T
+        const si2 = hn.get(ti.si2) as T
+        const cl = ti.cl.map(nid => hn.get(nid)) as T[]
+        const cu = ti.cu.map(nid => hn.get(nid)) as T[]
         const calcOffsetX = cl.reduce((a, b) => a + b.selfW, 0)
         const calcOffsetY = cu.reduce((a, b) => a + b.selfH, 0)
         if (isRSC(ti.path)) {

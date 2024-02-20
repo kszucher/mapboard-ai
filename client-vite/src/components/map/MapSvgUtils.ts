@@ -1,4 +1,4 @@
-import {getCountTSCH, getCountTSCV, getG, getNodeById, getNodeByPath, getTR, getX, getXA, isXACC, isXACR, sortPath} from "../../queries/MapQueries.ts"
+import {getCountTSCH, getCountTSCV, getG, getHN, getNodeById, getNodeByPath, getX, getTR, getXA, isXACC, isXACR, sortPath} from "../../queries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
 import {G, L, M, T} from "../../state/MapStateTypes"
@@ -267,7 +267,7 @@ export const getArcPath = (t: T, margin: number, closed: boolean) => {
 }
 
 export const getGridPath = (m: M, t: T) => {
-  const mHash = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
+  const hn = getHN(m)
   const countSCR = getCountTSCV(m, t)
   const countSCC = getCountTSCH(m, t)
   const xi = t.nodeStartX
@@ -278,14 +278,14 @@ export const getGridPath = (m: M, t: T) => {
     const ti = getNodeByPath(m, [...t.path, 'c', i, 0])
     const x1 = adjust(t.nodeStartX)
     const x2 = adjust(t.nodeStartX + t.selfW)
-    const cu = ti.cu.map(nid => mHash.get(nid)) as T[]
+    const cu = ti.cu.map(nid => hn.get(nid)) as T[]
     const calcOffsetY = cu.reduce((a, b) => a + b.selfH, 0)
     const y = adjust(yu + calcOffsetY)
     path += `M${x1},${y} L${x2},${y}`
   }
   for (let j = 1; j < countSCC; j++) {
     const ti = getNodeByPath(m, [...t.path, 'c', 0, j])
-    const cl = ti.cl.map(nid => mHash.get(nid)) as T[]
+    const cl = ti.cl.map(nid => hn.get(nid)) as T[]
     const calcOffsetX = cl.reduce((a, b) => a + b.selfW, 0)
     const x = adjust(xi + calcOffsetX)
     path += `M${x},${yu} L${x},${yd}`

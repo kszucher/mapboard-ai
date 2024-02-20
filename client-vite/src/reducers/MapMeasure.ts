@@ -1,13 +1,13 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getG, getTCH, getTCO1C0, getTCO1R0, getTCV, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../queries/MapQueries.ts"
+import {getG, getHN, getTCH, getTCO1C0, getTCO1R0, getTCV, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../queries/MapQueries.ts"
 import {INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING, C_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M, T} from "../state/MapStateTypes"
 
 export const mapMeasure = (pm: M, m: M) => {
-  const mHashN = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
-  const pmHashN = new Map<string, T>(pm.map(ti => [ti.nodeId, ti as T]))
+  const hn = getHN(m)
+  const phn = getHN(pm)
   const g = getG(m)
   const minOffsetW = Math.min(...mTR(m).map(ri => ri.offsetW))
   const minOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
@@ -24,7 +24,7 @@ export const mapMeasure = (pm: M, m: M) => {
       }
       case isR(ti.path): {
         if (ti.so1.length) {
-          const tso1 = ti.so1.map(nid => mHashN.get(nid)) as T[]
+          const tso1 = ti.so1.map(nid => hn.get(nid)) as T[]
           ti.familyW = Math.max(...tso1.map(ti => ti.maxW))
           ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length && g.flow === Flow.EXPLODED || ti.co2.length)
         }
@@ -34,7 +34,7 @@ export const mapMeasure = (pm: M, m: M) => {
       }
       case isS(ti.path): {
         if (ti.co1.length) {
-          const tco1 = ti.co1.map(nid => mHashN.get(nid)) as T[]
+          const tco1 = ti.co1.map(nid => hn.get(nid)) as T[]
           tco1.map(ti => Object.assign(ti, {
             selfW: Math.max(...getTCH(tco1, ti).map(ti => ti.familyW + C_SPACING)),
             selfH: Math.max(...getTCV(tco1, ti).map(ti => ti.familyH + C_SPACING)),
@@ -42,7 +42,7 @@ export const mapMeasure = (pm: M, m: M) => {
           ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
           ti.selfH = getTCO1C0(m, ti).reduce((a, b) => a + b.selfH, 0)
         } else {
-          const pti = pmHashN.get(ti.nodeId)
+          const pti = phn.get(ti.nodeId)
           if (
             ti.content !== '' &&
             (
@@ -77,7 +77,7 @@ export const mapMeasure = (pm: M, m: M) => {
           ti.selfH = (ti.dimH / 17 > 1 ? ti.dimH : MIN_NODE_H) + (g.density === 'large' ? NODE_MARGIN_Y_LARGE : NODE_MARGIN_Y_SMALL)
         }
         if (ti.so1.length) {
-          const tso1 = ti.so1.map(nid => mHashN.get(nid)) as T[]
+          const tso1 = ti.so1.map(nid => hn.get(nid)) as T[]
           ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + (g.flow === Flow.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.flow === Flow.INDENTED ? INDENT : 0)
           ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length && g.flow === Flow.EXPLODED || ti.co2.length)
         }
@@ -92,7 +92,7 @@ export const mapMeasure = (pm: M, m: M) => {
       }
       case isC(ti.path): {
         if (ti.so1.length) {
-          const tso1 = ti.so1.map(nid => mHashN.get(nid)) as T[]
+          const tso1 = ti.so1.map(nid => hn.get(nid)) as T[]
           ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + (g.flow === Flow.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.flow === Flow.INDENTED ? INDENT : 0)
           ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length && g.flow === Flow.EXPLODED || ti.co2.length)
         } else {

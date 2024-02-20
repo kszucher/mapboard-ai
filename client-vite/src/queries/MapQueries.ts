@@ -12,6 +12,9 @@ export const sortNode = (a: N, b: N) => a.nodeId > b.nodeId ? 1 : -1
 export const getNodeByPath = (m: M, p: PT) => m.find(ti => isEqual(ti.path, p)) as T
 export const getNodeById = (m: M, nodeId: string) => m.find(ti => ti.nodeId === nodeId) as T
 
+export const getHN = (m: M): Map<string, T> => new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
+export const getHP = (m: M): Map<string, T> => new Map<string, T>(m.map(ti => [ti.path.join(''), ti as T]))
+
 const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 
 export const getXF = (m: M): T => mT(m).find(ti => ti.selected)! as T

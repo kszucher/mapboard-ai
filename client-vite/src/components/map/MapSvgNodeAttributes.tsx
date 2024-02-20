@@ -2,12 +2,12 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {isRS, isRSC, isCS, mTS, mTC, getG} from "../../queries/MapQueries.ts"
+import {isRS, isRSC, isCS, mTS, mTC, getG, getHN} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getGridPath, getNodeLinePath, pathCommonProps} from "./MapSvgUtils"
-import {M, T} from "../../state/MapStateTypes.ts"
+import {M} from "../../state/MapStateTypes.ts"
 
 export const MapSvgNodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state)) as M
@@ -15,8 +15,8 @@ export const MapSvgNodeAttributes: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
-  const mHash = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
-  const pmHash = new Map<string, T>(pm.map(ti => [ti.nodeId, ti as T]))
+  const hn = getHN(m)
+  const phn = getHN(pm)
   const g = getG(m)
   return (
     <Fragment>
@@ -24,9 +24,9 @@ export const MapSvgNodeAttributes: FC = () => {
         <Fragment key={ti.nodeId}>
           {!isRS(ti.path) && !isCS(ti.path) && ti.co1.length === 0 &&
             <path
-              d={!pmHash.has(ti.nodeId) && pmHash.get(ti.si1)
-                ? getNodeLinePath(g, pmHash.get(ti.si1)!, ti)
-                : getNodeLinePath(g, mHash.get(ti.si1)!, ti)
+              d={!phn.has(ti.nodeId) && phn.get(ti.si1)
+                ? getNodeLinePath(g, phn.get(ti.si1)!, ti)
+                : getNodeLinePath(g, hn.get(ti.si1)!, ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.taskStatus > 1
@@ -37,11 +37,11 @@ export const MapSvgNodeAttributes: FC = () => {
               {...pathCommonProps}
             >
               {
-                !pmHash.has(ti.nodeId) && pmHash.has(ti.si1) &&
+                !phn.has(ti.nodeId) && phn.has(ti.si1) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(g, pmHash.get(ti.si1)!, ti)}
-                  to={getNodeLinePath(g, mHash.get(ti.si1)!, ti)}
+                  from={getNodeLinePath(g, phn.get(ti.si1)!, ti)}
+                  to={getNodeLinePath(g, hn.get(ti.si1)!, ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
@@ -64,20 +64,20 @@ export const MapSvgNodeAttributes: FC = () => {
         <Fragment key={ti.nodeId}>
           {!isRSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
             <path
-              d={!pmHash.has(ti.nodeId) && pmHash.has(ti.si2)
-                ? getNodeLinePath(g, pmHash.get(ti.si2)!, ti)
-                : getNodeLinePath(g, mHash.get(ti.si2)!, ti)
+              d={!phn.has(ti.nodeId) && phn.has(ti.si2)
+                ? getNodeLinePath(g, phn.get(ti.si2)!, ti)
+                : getNodeLinePath(g, hn.get(ti.si2)!, ti)
               }
               strokeWidth={ti.lineWidth}
               stroke={ti.lineColor}
               fill={'none'}
               {...pathCommonProps}
             >
-              {!pmHash.has(ti.nodeId) && pmHash.has(ti.si2) &&
+              {!phn.has(ti.nodeId) && phn.has(ti.si2) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(g, pmHash.get(ti.si2)!, ti)}
-                  to={getNodeLinePath(g, mHash.get(ti.si2)!, ti)}
+                  from={getNodeLinePath(g, phn.get(ti.si2)!, ti)}
+                  to={getNodeLinePath(g, hn.get(ti.si2)!, ti)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}

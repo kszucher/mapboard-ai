@@ -1,9 +1,9 @@
 import {M, T} from "../state/MapStateTypes.ts"
-import {mT, isR, isS, isC, isSS, isCS} from "../queries/MapQueries.ts"
+import {mT, isR, isS, isC, isSS, isCS, getHN, getHP} from "../queries/MapQueries.ts"
 
 export const mapChain = (m: M) => {
-  const hn = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
-  const hp = new Map<string, T>(m.map(ti => [ti.path.join(''), ti as T]))
+  const hn = getHN(m)
+  const hp = getHP(m)
 
   mT(m).forEach(ti => {
     switch (true) {
