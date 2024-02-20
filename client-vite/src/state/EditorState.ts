@@ -39,7 +39,6 @@ export const editorState: EditorState = {
   }
 }
 
-export const getMidMouseMode = () => store.getState().editor.midMouseMode
 export const getMap = () => store.getState().editor.mapList[store.getState().editor.mapListIndex]
 export const mSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex]
 export const pmSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex > 0 ? state.editor.mapListIndex - 1 : 0]

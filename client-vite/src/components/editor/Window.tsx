@@ -7,15 +7,17 @@ import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageSt
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
-import {getMap, getMidMouseMode, mSelector} from "../../state/EditorState"
+import {getMap, mSelector} from "../../state/EditorState"
 import {mapDeInit} from "../../reducers/MapDeInit"
 import {M, N} from "../../state/MapStateTypes"
 import {shortcutColors} from "../assets/Colors"
 
 export let timeoutId: NodeJS.Timeout
-let mapAreaListener: AbortController
+let mapListener: AbortController
+let midMouseListener: AbortController
 
 export const Window: FC = () => {
+  const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
@@ -180,13 +182,11 @@ export const Window: FC = () => {
     dispatch(actions.clearConnectionStart())
   }
 
-  const wheel = (e: WheelEvent) => {
-    if (getMidMouseMode() === MidMouseMode.ZOOM) {
-      e.preventDefault()
-    }
+  const contextmenu = (e: MouseEvent) => {
+    e.preventDefault()
   }
 
-  const contextmenu = (e: MouseEvent) => {
+  const wheel = (e: WheelEvent) => {
     e.preventDefault()
   }
 
@@ -200,26 +200,44 @@ export const Window: FC = () => {
       editedNodeId === ''
     ) {
       console.log('WINDOW EVENT LISTENERS ADDED')
-      mapAreaListener = new AbortController()
-      const {signal} = mapAreaListener
+      mapListener = new AbortController()
+      const {signal} = mapListener
       window.addEventListener("keydown", keydown, {signal})
       window.addEventListener("paste", paste, {signal})
-      window.addEventListener("wheel", wheel, {signal, passive: false})
       window.addEventListener("mouseup", mouseup, {signal})
       window.addEventListener("contextmenu", contextmenu, {signal})
     } else {
       console.log('WINDOW EVENT LISTENERS REMOVED')
-      if (mapAreaListener) {
-        mapAreaListener.abort()
+      if (mapListener) {
+        mapListener.abort()
       }
     }
     return () => {
-      if (mapAreaListener) {
-        mapAreaListener.abort()
+      if (mapListener) {
+        mapListener.abort()
       }
     }
   }, [pageState, dialogState, alertDialogState, access, mapMode, editedNodeId])
 
+  useEffect(() => {
+    if (midMouseMode === MidMouseMode.ZOOM) {
+      console.log('MID MOUSE PREVENTION ADDED')
+      midMouseListener = new AbortController()
+      const {signal} = midMouseListener
+      window.addEventListener("wheel", wheel, {signal, passive: false})
+    } else {
+      console.log('MID MOUSE PREVENTION REMOVED')
+      if (midMouseListener) {
+        midMouseListener.abort()
+      }
+    }
+    return () => {
+      if (midMouseListener) {
+        midMouseListener.abort()
+      }
+    }
+  }, [midMouseMode])
+  
   const timeoutFun = () => {
     dispatch(api.endpoints.saveMap.initiate({
       mapId: getMapId(),
