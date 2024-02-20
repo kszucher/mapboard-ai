@@ -1,4 +1,4 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSO1, getCountXSU, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXR, getXS, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, isC, isCH, isCV, isR, isS, mT, mTR, sortNode, sortPath} from "../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXR, getXS, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, isC, isCH, isCV, isR, isS, mT, mTR, sortNode, sortPath} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {tSaveOptional} from "../state/MapState"
 import {M, PT, T} from "../state/MapStateTypes"
@@ -60,10 +60,10 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertR': insertR(m); break
     case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
     case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1), payload); break
-    case 'insertSO': insertS(m, getX(m), getCountXSO1(m), payload); break
-    case 'insertSOText': insertS(m, getX(m), getCountXSO1(m), { contentType: 'text', content: payload }); break
-    case 'insertSOLink': insertS(m, getX(m), getCountXSO1(m), { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
-    case 'insertSOImage': insertS(m, getX(m), getCountXSO1(m), { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
+    case 'insertSO': insertS(m, getX(m), getX(m).so1.length, payload); break
+    case 'insertSOText': insertS(m, getX(m), getX(m).so1.length, { contentType: 'text', content: payload }); break
+    case 'insertSOLink': insertS(m, getX(m), getX(m).so1.length, { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
+    case 'insertSOImage': insertS(m, getX(m), getX(m).so1.length, { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
     case 'insertCRD': insertCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'insertCRU': insertCR(m, getXSI1(m), getCountXCU(m)); break
     case 'insertSCRD': insertCR(m, getX(m), getCountXSCV(m)); break
@@ -74,7 +74,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertSCCL': insertCC(m, getX(m), 0); break
     case 'insertSUTable': insertTable(m, getXSI1(m), getCountXSU(m), payload); break
     case 'insertSDTable': insertTable(m, getXSI1(m), getCountXSU(m) + 1, payload); break
-    case 'insertSOTable': insertTable(m, getX(m), getCountXSO1(m), payload); break
+    case 'insertSOTable': insertTable(m, getX(m), getX(m).so1.length, payload); break
 
     case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
     case 'gptParseNodesT': gptParseNodesT(m, payload.gptParsed); break
@@ -91,7 +91,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'copyLR': copyLR(m); break
     case 'copyS': copyS(m); break
     case 'pasteLR': pasteLR(m, payload); break
-    case 'pasteSO': pasteS(m, getX(m), getCountXSO1(m), payload); break
+    case 'pasteSO': pasteS(m, getX(m), getX(m).so1.length, payload); break
     case 'duplicateR': duplicateR(m); break;
     case 'duplicateS': duplicateS(m); break;
     case 'moveSD': moveS(m, getXSI1(m), getCountXASU(m) + 1); break
