@@ -14,6 +14,7 @@ import {MR} from "./MapReducerEnum.ts"
 import {selectAddT, selectRemoveT, selectT, selectTL, unselectNodes} from "./MapSelect"
 import {mapChain} from "./MapChain.ts"
 import {mapPlaceExploded} from "./MapPlaceExploded.ts"
+import {mapCalcOrientation} from "./MapCalcOrientation.ts"
 
 export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
   switch (action) {
@@ -154,6 +155,7 @@ export const mapReducer = (pm: M, action: MR, payload: any) => {
   mapReducerAtomic(m, action, payload)
   mapInit(m)
   mapChain(m)
+  mapCalcOrientation(m)
   mapCalcTask(m)
   mapMeasure(pm, m)
   getG(m).flow === Flow.EXPLODED && mapPlaceExploded(m)

@@ -88,6 +88,9 @@ export const tSaveNever = {
   cl: [],
   cr: [],
   ch: [],
+  // mapCalcOrientation
+  isTop: 0,
+  isBottom: 0,
   // mapMeasure
   selfW: 0,
   selfH: 0,
@@ -98,6 +101,4 @@ export const tSaveNever = {
   // mapPlaceIndented
   nodeStartX: 0,
   nodeStartY: 0,
-  isTop: 0,
-  isBottom: 0,
 } as TSaveNever

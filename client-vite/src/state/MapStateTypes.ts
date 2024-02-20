@@ -95,6 +95,9 @@ export interface TSaveNever {
   cl: string[],
   cr: string[],
   ch: string[],
+  // mapCalcOrientation
+  isTop: number
+  isBottom: number
   // mapMeasure
   selfW: number
   selfH: number
@@ -105,8 +108,6 @@ export interface TSaveNever {
   // mapPlaceIndented
   nodeStartX: number
   nodeStartY: number
-  isTop: number
-  isBottom: number
 }
 
 export type G = GSaveAlways & GSaveOptional & GSaveNever

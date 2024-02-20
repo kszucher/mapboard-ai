@@ -1,10 +1,8 @@
 import {M, T} from "../state/MapStateTypes.ts"
-import {mT, isR, isS, isC, isSS, isCS, getHN, getHP} from "../queries/MapQueries.ts"
+import {mT, isR, isS, isC, isSS, isCS, getHP} from "../queries/MapQueries.ts"
 
 export const mapChain = (m: M) => {
-  const hn = getHN(m)
   const hp = getHP(m)
-
   mT(m).forEach(ti => {
     switch (true) {
       case isR(ti.path): {
@@ -43,14 +41,12 @@ export const mapChain = (m: M) => {
       }
     }
   })
-
   mT(m).slice().reverse().forEach(ti => {
     switch (true) {
       case isR(ti.path): {
         break
       }
       case isS(ti.path): {
-
         break
       }
       case isC(ti.path): {
@@ -66,37 +62,17 @@ export const mapChain = (m: M) => {
       }
     }
   })
-
   mT(m).forEach(ti => {
     switch (true) {
       case isR(ti.path): {
         break
       }
       case isS(ti.path): {
-
         break
       }
       case isC(ti.path): {
           ti.cv = [...ti.cu, ...ti.cd, ti.nodeId]
           ti.ch = [...ti.cl, ...ti.cr, ti.nodeId]
-        break
-      }
-    }
-  })
-
-  mT(m).forEach(ti => {
-    switch (true) {
-      case isR(ti.path): {
-        break
-      }
-      case isS(ti.path): {
-        const si1 = hn.get(ti.si1)!
-        const i = ti.path.at(-1)
-        ti.isTop = i === 0 && si1.isTop ? 1 : 0
-        ti.isBottom = i === si1.so1.length - 1 && si1.isBottom === 1 ? 1 : 0
-        break
-      }
-      case isC(ti.path): {
         break
       }
     }
