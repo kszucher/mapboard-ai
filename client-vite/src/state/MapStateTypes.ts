@@ -89,6 +89,12 @@ export interface TSaveNever {
   co1: string[]
   co2: string[]
   su: string[]
+  cu: string[],
+  cd: string[],
+  cv: string[],
+  cl: string[],
+  cr: string[],
+  ch: string[],
   // mapMeasure
   selfW: number
   selfH: number
