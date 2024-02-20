@@ -1,4 +1,4 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXR, getXS, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, isC, isCH, isCV, isR, isS, mT, mTR, sortNode, sortPath} from "../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXR, getXS, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, isC, isR, isS, mT, mTR, sortNode, sortPath} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {tSaveOptional} from "../state/MapState"
 import {M, PT, T} from "../state/MapStateTypes"
@@ -17,6 +17,7 @@ import {mapPlaceExploded} from "./MapPlaceExploded.ts"
 import {mapCalcOrientation} from "./MapCalcOrientation.ts"
 
 export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
+  const hn = getHN(m)
   switch (action) {
     case 'load': break
 
@@ -49,8 +50,8 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectAddSU': selectAddT(m, getQuasiSU(m), 's'); break
     case 'selectRA': selectTL(m, mTR(m), 's'); break
     case 'selectSA': selectTL(m, mT(m).filter(ti => ti.content !== ''), 's'); break
-    case 'selectSameCR': selectTL(m, mT(m).filter(ti => isCV(ti.path, getX(m).path)), 's'); break
-    case 'selectSameCC': selectTL(m, mT(m).filter(ti => isCH(ti.path, getX(m).path)), 's'); break
+    case 'selectSameCR': selectTL(m, getX(m).ch.map(nid => hn.get(nid)) as T[], 's'); break
+    case 'selectSameCC': selectTL(m, getX(m).cv.map(nid => hn.get(nid)) as T[], 's'); break
     case 'selectCD': selectTL(m, getXACD1(m), 's'); break
     case 'selectCU': selectTL(m, getXACU1(m), 's'); break
     case 'selectCR': selectTL(m, getXACR1(m), 's'); break
