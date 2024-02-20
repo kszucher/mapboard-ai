@@ -95,8 +95,6 @@ export const tSaveNever = {
   familyH: 0,
   maxW: 0,
   maxH: 0,
-  calcOffsetX: 0,
-  calcOffsetY: 0,
   // mapPlaceIndented
   nodeStartX: 0,
   nodeStartY: 0,

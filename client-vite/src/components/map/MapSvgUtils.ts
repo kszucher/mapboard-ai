@@ -267,6 +267,7 @@ export const getArcPath = (t: T, margin: number, closed: boolean) => {
 }
 
 export const getGridPath = (m: M, t: T) => {
+  const mHash = new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
   const countSCR = getCountTSCV(m, t)
   const countSCC = getCountTSCH(m, t)
   const xi = t.nodeStartX
@@ -277,12 +278,16 @@ export const getGridPath = (m: M, t: T) => {
     const ti = getNodeByPath(m, [...t.path, 'c', i, 0])
     const x1 = adjust(t.nodeStartX)
     const x2 = adjust(t.nodeStartX + t.selfW)
-    const y = adjust(yu + ti.calcOffsetY)
+    const cu = ti.cu.map(nid => mHash.get(nid)) as T[]
+    const calcOffsetY = cu.reduce((a, b) => a + b.selfH, 0)
+    const y = adjust(yu + calcOffsetY)
     path += `M${x1},${y} L${x2},${y}`
   }
   for (let j = 1; j < countSCC; j++) {
     const ti = getNodeByPath(m, [...t.path, 'c', 0, j])
-    const x = adjust(xi + ti.calcOffsetX)
+    const cl = ti.cl.map(nid => mHash.get(nid)) as T[]
+    const calcOffsetX = cl.reduce((a, b) => a + b.selfW, 0)
+    const x = adjust(xi + calcOffsetX)
     path += `M${x},${yu} L${x},${yd}`
   }
   return path
