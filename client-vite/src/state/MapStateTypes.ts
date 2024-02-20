@@ -92,12 +92,12 @@ export interface TSaveNever {
   // mapMeasure
   selfW: number
   selfH: number
-  familyW: number
-  familyH: number
+  familyW: number // s
+  familyH: number // s
   maxW: number
   maxH: number
-  calcOffsetX: number
-  calcOffsetY: number
+  calcOffsetX: number // c
+  calcOffsetY: number // c
   // mapPlaceIndented
   nodeStartX: number
   nodeStartY: number
@@ -106,13 +106,13 @@ export interface TSaveNever {
 }
 
 export type G = GSaveAlways & GSaveOptional & GSaveNever
-export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
 export type L = LSaveAlways & LSaveOptional & LSaveNever
-export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<LSaveNever>
 export type T = TSaveAlways & TSaveOptional & TSaveNever
+export type N = G | L | T
+export type M = N[]
+
+export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
+export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<LSaveNever>
 export type TPartial = Required<TSaveAlways> & Partial<TSaveOptional> & Partial<TSaveNever>
-export type GLT = G | L | T
-export type GLTPartial = GPartial | LPartial | TPartial
-export type N = GLT
-export type M = GLT[]
-export type MPartial = GLTPartial[]
+export type NPartial = GPartial | LPartial | TPartial
+export type MPartial = NPartial[]

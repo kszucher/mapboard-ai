@@ -1,4 +1,4 @@
-import {N, LPartial, M, T, PT, GLTPartial, GLT} from "../state/MapStateTypes"
+import {N, LPartial, M, T, PT, MPartial} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG} from "../queries/MapQueries.ts"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
@@ -13,9 +13,9 @@ export const insertR = (m: M) => {
   const newRoot = [
     {nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['r', lastIndexR + 1], selected: 1, offsetW: getG(m).selfW, offsetH: getG(m).selfH},
     {nodeId: IS_TESTING ? 'u' : 'node' + genHash(8), path: ['r', lastIndexR + 1, 's', 0], content: 'New Root'},
-  ] as GLTPartial[]
+  ] as MPartial
   unselectNodes(m)
-  m.push(...newRoot as GLT[])
+  m.push(...newRoot as M)
   m.sort(sortPath)
 }
 
