@@ -74,8 +74,8 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertCCL': insertCC(m, getXSI1(m), getCountXCL(m)); break
     case 'insertSCCR': insertCC(m, getX(m), getCountXSCH(m)); break
     case 'insertSCCL': insertCC(m, getX(m), 0); break
-    case 'insertSUTable': insertTable(m, getXSI1(m), getCountXSU(m), payload); break
     case 'insertSDTable': insertTable(m, getXSI1(m), getCountXSU(m) + 1, payload); break
+    case 'insertSUTable': insertTable(m, getXSI1(m), getCountXSU(m), payload); break
     case 'insertSOTable': insertTable(m, getX(m), getX(m).so1.length, payload); break
 
     case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
