@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getCountXCO1, getLastIndexR, getMapMode, getX, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mTR, sortPath} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mTR, sortPath} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -45,7 +45,7 @@ export const Window: FC = () => {
       +e.shiftKey ? 's' : '-',
       +e.altKey ? 'a' : '-'
     ].join('')
-    ckm === '---' && e.key === 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 && md(MR.startEditAppend)
+    ckm === '---' && e.key === 'F2' && isXS(m) && getX(m).contentType === 'text' && getX(m).co1.length === 0 && md(MR.startEditAppend)
     ckm === '---' && e.key === 'Enter' && isXS(m) && md(MR.insertSD)
     ckm === '---' && e.key === 'Enter' && isXC(m) && md(MR.selectCD)
     ckm === '-s-' && e.key === 'Enter' && isXS(m) && md(MR.insertSU)
@@ -117,8 +117,8 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowLeft' && isXACC(m) && md(MR.insertCCL)
 
     ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXS(m) && md(MR.setTextColor, shortcutColors[e.which - 96])
-    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && md(MR.startEditReplace)
-    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getCountXCO1(m) === 0 &&(m) && md(MR.startEditReplace)
+    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getX(m).co1.length === 0 &&(m) && md(MR.startEditReplace)
+    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getX(m).co1.length === 0 &&(m) && md(MR.startEditReplace)
   }
 
   const paste = (e: Event) => {

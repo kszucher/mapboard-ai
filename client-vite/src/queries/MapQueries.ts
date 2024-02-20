@@ -120,7 +120,6 @@ export const getCountQuasiSD = (m: M): number => mT(m).filter(ti => isQuasiSD(ge
 export const getCountQuasiSU = (m: M): number => mT(m).filter(ti => isQuasiSU(getX(m).path, ti.path)).length
 const getCountSI1U = (m: M, p: PT): number => m.filter(ti => isSI1U(p, ti.path as PT)).length
 const getCountSO1 = (m: M, p: PT): number => m.filter(ti => isSO1(p, ti.path as PT)).length
-const getCountCO1 = (m: M, p: PT): number => m.filter(ti => isCO1(p, ti.path as PT)).length
 const getCountCV = (m: M, p: PT): number => m.filter(ti => isCH(p, ti.path as PT)).length
 const getCountCH = (m: M, p: PT): number => m.filter(ti => isCV(p, ti.path as PT)).length
 
@@ -132,7 +131,6 @@ export const getCountXASD = (m: M): number => getCountSD(m, getXL(m).path)
 export const getCountXASU = (m: M): number => getCountSU(m, getXF(m).path)
 export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXFSU1(m).path)
 export const getCountXSI1U = (m: M): number => getCountSI1U(m, getX(m).path)
-export const getCountXCO1 = (m: M): number => getCountCO1(m, getX(m).path)
 export const getCountXCU = (m: M): number => getX(m).path.at(-2)
 export const getCountXCL = (m: M): number => getX(m).path.at(-1)
 export const getCountXCV = (m: M): number => getCountCV(m, getX(m).path)
