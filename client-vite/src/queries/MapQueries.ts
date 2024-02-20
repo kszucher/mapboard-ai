@@ -90,8 +90,6 @@ export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual
 export const getTSI1 = (m: M, t: T): T => m.find(ti => isSI1(t.path, ti.path as PT))! as T
 export const getTCO1R0 = (m: M, t: T): T[] => m.filter(ti => isCO1R0(t.path, ti.path as PT))! as T[]
 export const getTCO1C0 = (m: M, t: T): T[] => m.filter(ti => isCO1C0(t.path, ti.path as PT))! as T[]
-export const getTCV = (m: M, t: T): T[] => m.filter(ti => isCV(t.path, ti.path as PT))! as T[]
-export const getTCH = (m: M, t: T): T[] => m.filter(ti => isCH(t.path, ti.path as PT))! as T[]
 export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)
 
 export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T
