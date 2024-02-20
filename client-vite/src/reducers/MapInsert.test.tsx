@@ -3,6 +3,7 @@ import {setIsTesting} from "../utils/Utils"
 import {M, MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
+import {mapChain} from "./MapChain.ts"
 import {mapReducerAtomic} from "./MapReducer"
 import {MR} from "./MapReducerEnum.ts"
 
@@ -66,7 +67,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 1], selected: 1},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.insertSO, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertSO, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
   test('insertCRD', () => {
     const test = [
