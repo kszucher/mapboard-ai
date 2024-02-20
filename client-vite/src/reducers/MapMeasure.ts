@@ -51,8 +51,8 @@ export const mapMeasure = (pm: M, m: M) => {
         if (ti.co1.length) {
           const tco1 = ti.co1.map(nid => hn.get(nid)) as T[]
           tco1.forEach(ti => {
-            const ch = ti.ch.map(nid => hn.get(nid)) as T[]
             const cv = ti.cv.map(nid => hn.get(nid)) as T[]
+            const ch = ti.ch.map(nid => hn.get(nid)) as T[]
             ti.selfW = Math.max(...cv.map(ti => ti.familyW + C_SPACING))
             ti.selfH = Math.max(...ch.map(ti => ti.familyH + C_SPACING))
           })
