@@ -1,7 +1,7 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {getG, getHN, getTCO1C0, getTCO1R0, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../queries/MapQueries.ts"
-import {INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING, C_SPACING} from "../state/Consts"
+import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M, T} from "../state/MapStateTypes"
 
@@ -25,8 +25,13 @@ export const mapMeasure = (pm: M, m: M) => {
       case isR(ti.path): {
         if (ti.so1.length) {
           const tso1 = ti.so1.map(nid => hn.get(nid)) as T[]
-          ti.familyW = Math.max(...tso1.map(ti => ti.maxW))
-          ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length && g.flow === Flow.EXPLODED || ti.co2.length)
+          if (g.flow === Flow.EXPLODED) {
+            ti.familyW = Math.max(...tso1.map(ti => ti.maxW))
+            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length || ti.co2.length)
+          } else if (g.flow === Flow.INDENTED) {
+            ti.familyW = Math.max(...tso1.map(ti => ti.maxW))
+            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.co2.length)
+          }
         }
         ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(g) * hasTask(m, ti)
         ti.selfH = ti.familyH + 2 * MARGIN_Y
@@ -35,8 +40,13 @@ export const mapMeasure = (pm: M, m: M) => {
       case isS(ti.path): {
         if (ti.so1.length) {
           const tso1 = ti.so1.map(nid => hn.get(nid)) as T[]
-          ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + (g.flow === Flow.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.flow === Flow.INDENTED ? INDENT : 0)
-          ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length && g.flow === Flow.EXPLODED || ti.co2.length)
+          if (g.flow === Flow.EXPLODED) {
+            ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + g.sLineDeltaXDefault
+            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length || ti.co2.length)
+          } else if (g.flow === Flow.INDENTED) {
+            ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + INDENT
+            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.co2.length)
+          }
         }
         if (ti.co1.length) {
           ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
@@ -89,8 +99,13 @@ export const mapMeasure = (pm: M, m: M) => {
       case isC(ti.path): {
         if (ti.so1.length) {
           const tso1 = ti.so1.map(nid => hn.get(nid)) as T[]
-          ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + (g.flow === Flow.EXPLODED ? g.sLineDeltaXDefault : 0) + (g.flow === Flow.INDENTED ? INDENT : 0)
-          ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length && g.flow === Flow.EXPLODED || ti.co2.length)
+          if (g.flow === Flow.EXPLODED) {
+            ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + g.sLineDeltaXDefault
+            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length || ti.co2.length)
+          } else {
+            ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + INDENT
+            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.co2.length)
+          }
         } else {
           ti.familyW = 60
           ti.familyH = 30
