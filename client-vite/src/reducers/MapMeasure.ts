@@ -1,6 +1,6 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getG, getHN, getTCO1C0, getTCO1R0, hasTask, isC, isG, isR, isS, mGT, mTR,} from "../queries/MapQueries.ts"
+import {getG, getHN, getTCO1C0, getTCO1R0,   hasTask, isC, isG, isR, isS, mGT, mTR} from "../queries/MapQueries.ts"
 import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M, T} from "../state/MapStateTypes"
@@ -49,6 +49,13 @@ export const mapMeasure = (pm: M, m: M) => {
           }
         }
         if (ti.co1.length) {
+          const tco1 = ti.co1.map(nid => hn.get(nid)) as T[]
+          tco1.forEach(ti => {
+            const ch = ti.ch.map(nid => hn.get(nid)) as T[]
+            const cv = ti.cv.map(nid => hn.get(nid)) as T[]
+            ti.selfW = Math.max(...cv.map(ti => ti.familyW + C_SPACING))
+            ti.selfH = Math.max(...ch.map(ti => ti.familyH + C_SPACING))
+          })
           ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
           ti.selfH = getTCO1C0(m, ti).reduce((a, b) => a + b.selfH, 0)
         }
@@ -110,10 +117,6 @@ export const mapMeasure = (pm: M, m: M) => {
           ti.familyW = 60
           ti.familyH = 30
         }
-        const ch = ti.ch.map(nid => hn.get(nid)) as T[]
-        const cv = ti.cv.map(nid => hn.get(nid)) as T[]
-        ti.selfW = Math.max(...cv.map(ti => ti.familyW + C_SPACING))
-        ti.selfH = Math.max(...ch.map(ti => ti.familyH + C_SPACING))
         break
       }
     }
