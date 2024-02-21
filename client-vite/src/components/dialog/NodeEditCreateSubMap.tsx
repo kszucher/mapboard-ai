@@ -2,7 +2,7 @@ import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../../api/Api.ts"
 import {AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
-import {getX} from "../../queries/MapQueries.ts"
+import {getXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {getMapId} from "../../state/NodeApiState.ts"
 
@@ -23,7 +23,7 @@ export const NodeEditCreateSubMap = () => {
           <TextField.Input
             disabled={true}
             radius="large"
-            value={getX(m).content}
+            value={getXS(m).content}
             placeholder="Map name"
             onChange={(e) => console.log(e.target.value)}
           />
@@ -36,7 +36,7 @@ export const NodeEditCreateSubMap = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(api.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getX(m).nodeId, content: getX(m).content}))}>
+          <Button onClick={() => dispatch(api.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getXS(m).nodeId, content: getXS(m).content}))}>
             {'OK'}
           </Button>
         </Dialog.Close>

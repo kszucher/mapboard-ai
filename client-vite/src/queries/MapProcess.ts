@@ -1,5 +1,5 @@
 import {Side} from "../state/Enums"
-import {M} from "../state/MapStateTypes"
+import {M, S} from "../state/MapStateTypes"
 import {SubProcess} from "./MapProcessTypes.ts"
 import {getNodeByPath, getSIPL, mL, mS, mR} from "./MapQueries.ts"
 
@@ -18,7 +18,7 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
           .filter(ti => ti.path.at(1) === ri.path.at(1) && ti.so1.length === 0)
           .map(ti => ({
             nodeId: ti.nodeId,
-            contentList: [...getSIPL(ti.path), ti.path].map(p => getNodeByPath(m, p).content)
+            contentList: [...getSIPL(ti.path), ti.path].map(p => (getNodeByPath(m, p) as S).content)
           }))
       ,
       inputSubProcesses: [

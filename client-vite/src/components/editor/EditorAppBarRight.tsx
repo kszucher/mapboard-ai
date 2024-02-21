@@ -19,7 +19,7 @@ import LetterR from "../../assets/letter-r.svg?react"
 import LetterS from "../../assets/letter-s.svg?react"
 import LetterC from "../../assets/letter-c.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
-import {getMapMode, isC, isS, mT} from "../../queries/MapQueries.ts"
+import {getMapMode, mC, mS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
 export const EditorAppBarRight: FC = () => {
@@ -55,14 +55,14 @@ export const EditorAppBarRight: FC = () => {
         <IconButton
           variant="solid"
           color={mapMode === MapMode.EDIT_STRUCT ? 'violet' : 'gray'}
-          disabled={mT(m).filter(ti => isS(ti.path)).length === 0}
+          disabled={mS(m).length === 0}
           onClick={() => md(MR.selectFirstS)}>
           <LetterS/>
         </IconButton>
         <IconButton
           variant="solid"
           color={mapMode === MapMode.EDIT_CELL ? 'violet' : 'gray'}
-          disabled={mT(m).filter(ti => isC(ti.path)).length === 0}
+          disabled={mC(m).length === 0}
           onClick={() => md(MR.selectFirstC)}>
           <LetterC/>
         </IconButton>

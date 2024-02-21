@@ -1,6 +1,6 @@
 import {M, T} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
-import {getNodeByPath, sortPath, mT, isSEO, getTR, getRSCIPL} from "./MapQueries.ts"
+import {getNodeByPath, sortPath, isSEO, getTR, getRSCIPL, mS} from "./MapQueries.ts"
 
 export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
@@ -17,7 +17,7 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
     const aboveRoot = toY >= nr.nodeStartY + nr.selfH / 2
     const belowRoot = toY < nr.nodeStartY + nr.selfH / 2
     const overlap = 6
-    mT(m).filter(ti => ti.path.at(1) === nr.path.at(1)).forEach(ti => {
+    mS(m).filter(ti => ti.path.at(1) === nr.path.at(1)).forEach(ti => {
       if (!isSEO(moveNode.path, ti.path)) {
         let vCondition
         if (ti.isTop && belowRoot) {

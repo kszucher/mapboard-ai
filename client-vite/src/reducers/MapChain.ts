@@ -1,4 +1,4 @@
-import {M, S, C} from "../state/MapStateTypes.ts"
+import {M, R, S, C} from "../state/MapStateTypes.ts"
 import {isR, isS, isC, isSS, isCS, getHP} from "../queries/MapQueries.ts"
 
 export const mapChain = (m: M) => {
@@ -29,8 +29,8 @@ export const mapChain = (m: M) => {
         const si2 = hp.get(ci.path.slice(0, -5).join('')) as S
         ci.si1 = si1.nodeId
         ci.si2 = si2.nodeId
-        hp.get(ci.path.slice(0, -3).join(''))!.co1.push(ci.nodeId)
-        hp.get(ci.path.slice(0, -5).join(''))!.co2.push(ci.nodeId)
+        ;(hp.get(ci.path.slice(0, -3).join('')) as S).co1.push(ci.nodeId)
+        ;(hp.get(ci.path.slice(0, -5).join('')) as R | S).co2.push(ci.nodeId)
         for (let i = 0; i < ci.path.at(-2); i++) {
           const cdi = hp.get([...ci.path.slice(0, -2), i, ci.path.at(-1)].join('')) as C
           ci.cu.push(cdi.nodeId)

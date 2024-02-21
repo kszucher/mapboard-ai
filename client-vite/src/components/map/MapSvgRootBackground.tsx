@@ -12,13 +12,13 @@ export const MapSvgRootBackground: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   return (
-    mR(m).map(ti => (
+    mR(m).map(ri => (
       <rect
-        key={`${ti.nodeId}_svg_root_background`}
-        x={ti.nodeStartX}
-        y={ti.nodeStartY}
-        width={ti.selfW}
-        height={ti.selfH}
+        key={`${ri.nodeId}_svg_root_background`}
+        x={ri.nodeStartX}
+        y={ri.nodeStartY}
+        width={ri.selfW}
+        height={ri.selfH}
         rx={16}
         ry={16}
         fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}

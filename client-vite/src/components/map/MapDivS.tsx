@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getG, getMapMode, getNodeById, getX, getXA, isXS, mS} from "../../queries/MapQueries.ts"
+import {getG, getMapMode, getNodeById, getXA, getXS, isXS, mS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {S} from "../../state/MapStateTypes"
@@ -92,7 +92,7 @@ export const MapDivS: FC = () => {
         contentEditable={si.nodeId === editedNodeId}
         onFocus={(e) => {
           if (editType === 'append') {
-            e.currentTarget.innerHTML = getNodeById(m, editedNodeId).content
+            e.currentTarget.innerHTML = (getNodeById(m, editedNodeId) as S).content
           }
           setEndOfContentEditable(e.currentTarget)
         }}
@@ -139,7 +139,7 @@ export const MapDivS: FC = () => {
         onDoubleClick={(e) => {
           e.stopPropagation()
           if (
-            getX(m).contentType === 'text' &&
+            getXS(m).contentType === 'text' &&
             si.co1.length === 0 &&
             leftMouseMode === LeftMouseMode.CLICK_SELECT &&
             mapMode === MapMode.EDIT_STRUCT

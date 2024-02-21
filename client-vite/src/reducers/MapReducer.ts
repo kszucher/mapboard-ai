@@ -1,4 +1,4 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXR, getXS, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, isC, isR, isS, mT, mR, sortNode, sortPath} from "../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getThisXR, getThisXRS0, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {M, PT, T} from "../state/MapStateTypes"
@@ -28,11 +28,11 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
 
     case 'unselect': unselectNodes(m); break
     case 'selectT': selectT(m, getNodeByPath(m, payload.path), 's'); break
-    case 'selectFirstR': selectT(m, mT(m).find(ti => isR(ti.path))!, 's'); break
-    case 'selectFirstS': selectT(m, mT(m).find(ti => isS(ti.path))!, 's'); break
-    case 'selectFirstC': selectT(m, mT(m).find(ti => isC(ti.path))!, 's'); break
-    case 'selectXR': selectT(m, getXR(m), 's'); break
-    case 'selectXS': selectT(m, getXS(m), 's'); break
+    case 'selectFirstR': selectT(m, mR(m).at(0)!, 's'); break
+    case 'selectFirstS': selectT(m, mS(m).at(0)!, 's'); break
+    case 'selectFirstC': selectT(m, mC(m).at(0)!, 's'); break
+    case 'selectXR': selectT(m, getThisXR(m), 's'); break
+    case 'selectXS': selectT(m, getThisXRS0(m), 's'); break
     case 'selectSelfX': selectT(m, getX(m), 's'); break
     case 'selectFamilyX': selectT(m, getX(m), 'f'); break
     case 'selectSD': selectT(m, getQuasiSD(m), 's'); break
@@ -49,9 +49,9 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectAddSD': selectAddT(m, getQuasiSD(m), 's'); break
     case 'selectAddSU': selectAddT(m, getQuasiSU(m), 's'); break
     case 'selectRA': selectTL(m, mR(m), 's'); break
-    case 'selectSA': selectTL(m, mT(m).filter(ti => ti.content !== ''), 's'); break
-    case 'selectSameCR': selectTL(m, getX(m).ch.map(nid => hn.get(nid)) as T[], 's'); break
-    case 'selectSameCC': selectTL(m, getX(m).cv.map(nid => hn.get(nid)) as T[], 's'); break
+    case 'selectSA': selectTL(m, mS(m), 's'); break
+    case 'selectSameCR': selectTL(m, getXC(m).ch.map(nid => hn.get(nid)) as T[], 's'); break
+    case 'selectSameCC': selectTL(m, getXC(m).cv.map(nid => hn.get(nid)) as T[], 's'); break
     case 'selectCD': selectTL(m, getXACD1(m), 's'); break
     case 'selectCU': selectTL(m, getXACU1(m), 's'); break
     case 'selectCR': selectTL(m, getXACR1(m), 's'); break
@@ -117,10 +117,10 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setControlTypeNone': Object.assign(getX(m), { controlType: ControlType.NONE }); break
     case 'setControlTypeIngestion': Object.assign(getX(m), { controlType: ControlType.INGESTION }); break
     case 'setControlTypeExtraction': Object.assign(getX(m), { controlType: ControlType.EXTRACTION }); break
-    case 'offsetD': Object.assign(getX(m), { offsetH: getX(m).offsetH += 20 }); break
-    case 'offsetU': Object.assign(getX(m), { offsetH: getX(m).offsetH -= 20 }); break
-    case 'offsetR': Object.assign(getX(m), { offsetW: getX(m).offsetW += 20 }); break
-    case 'offsetL': Object.assign(getX(m), { offsetW: getX(m).offsetW -= 20 }); break
+    case 'offsetD': Object.assign(getX(m), { offsetH: getXR(m).offsetH += 20 }); break
+    case 'offsetU': Object.assign(getX(m), { offsetH: getXR(m).offsetH -= 20 }); break
+    case 'offsetR': Object.assign(getX(m), { offsetW: getXR(m).offsetW += 20 }); break
+    case 'offsetL': Object.assign(getX(m), { offsetW: getXR(m).offsetW -= 20 }); break
     case 'offsetRByDrag': Object.assign(getX(m), { offsetW: payload.toX, offsetH: payload.toY }); break
     case 'setLineWidth': getXA(m).forEach(ti => Object.assign(ti, { lineWidth: payload })); break
     case 'setLineType': getXA(m).forEach(ti => Object.assign(ti, { lineType: payload })); break
@@ -134,9 +134,9 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setTextFontSize': getXA(m).forEach(ti => Object.assign(ti, { textFontSize: payload })); break
     case 'setTextColor': getXA(m).forEach(ti => Object.assign(ti, { textColor: payload })); break
     case 'setBlur': getXA(m).forEach(ti => Object.assign(ti, { blur: 1 })); break
-    case 'setTaskModeOn': getXAEO(m).forEach(ti => !ti.path.includes('c') && Object.assign(ti, { taskStatus: ti.taskStatus === 0 ? 1 : ti.taskStatus })); break
-    case 'setTaskModeOff': getXAEO(m).forEach(ti => Object.assign(ti, { taskStatus: 0 })); break
-    case 'setTaskModeReset': getXAEO(m).forEach(ti => Object.assign(ti, { taskStatus: ti.taskStatus > 0 ? 1 : ti.taskStatus })); break
+    case 'setTaskModeOn': mS(getXAEO(m)).forEach(ti => !ti.path.includes('c') && Object.assign(ti, { taskStatus: ti.taskStatus === 0 ? 1 : ti.taskStatus })); break
+    case 'setTaskModeOff': mS(getXAEO(m)).forEach(ti => Object.assign(ti, { taskStatus: 0 })); break
+    case 'setTaskModeReset': mS(getXAEO(m)).forEach(ti => Object.assign(ti, { taskStatus: ti.taskStatus > 0 ? 1 : ti.taskStatus })); break
 
     case 'clearDimensions': Object.assign(getX(m), { dimW: sSaveOptional.dimW, dimH: sSaveOptional.dimH }); break
     case 'clearLine': getXA(m).forEach(ti => Object.assign(ti, { lineWidth: sSaveOptional.lineWidth, lineType: sSaveOptional.lineType, lineColor: sSaveOptional.lineColor })); break

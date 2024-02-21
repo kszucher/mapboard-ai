@@ -2,7 +2,7 @@ import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getX, getMapMode} from "../../queries/MapQueries.ts"
+import {getX, getMapMode, getXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState, MapMode} from "../../state/Enums.ts"
 import CirclePlus from "../../assets/circle-plus.svg?react"
@@ -55,7 +55,7 @@ export const NodeInsert = () => {
               </DropdownMenu.SubContent>
             </DropdownMenu.Sub>
           }
-          {getX(m).selection === 's' && getX(m).co1.length > 0 &&
+          {getXS(m).selection === 's' && getXS(m).co1.length > 0 &&
             <>
               <DropdownMenu.Sub>
                 <DropdownMenu.SubTrigger>{'Table Row'}</DropdownMenu.SubTrigger>

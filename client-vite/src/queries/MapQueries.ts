@@ -20,7 +20,11 @@ const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 export const getXF = (m: M): T => mT(m).find(ti => ti.selected)! as T
 export const getXL = (m: M): T => mT(m).findLast(ti => ti.selected)!
 export const getX = (m: M): T => mT(m).reduce((a, b) => a.selected > b.selected ? a : b)
+export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected ? a : b)
+export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b)
+export const getXC = (m: M): C => mC(m).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected) as T[]
+export const getXAS = (m: M): S[] => mS(m).filter(ti => ti.selected)
 
 export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) || -1
 export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) || 0
@@ -98,8 +102,8 @@ export const getXSI2 = (m: M): T => m.find(ti => isSI2(getX(m).path, ti.path as 
 export const getXFSU1 = (m: M): T => m.find(ti => isSU1(getXF(m).path, ti.path as PT))! as T
 export const getXFSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T
 export const getXSIC = (m: M): T => getNodeByPath(m, getSIC(getX(m).path) as PT)
-export const getXR = (m: M): T => getNodeByPath(m, getX(m).path.slice(0, 2) as PT)
-export const getXS = (m: M): T => getNodeByPath(m, [...getXR(m).path, 's', 0])
+export const getThisXR = (m: M): T => getNodeByPath(m, getX(m).path.slice(0, 2) as PT)
+export const getThisXRS0 = (m: M): T => getNodeByPath(m, [...getThisXR(m).path, 's', 0])
 
 export const getQuasiSD = (m: M): T => mT(m).find(ti => !ti.selected && isQuasiSD(getX(m).path, ti.path))! as T
 export const getQuasiSU = (m: M): T => mT(m).findLast(ti => !ti.selected && isQuasiSU(getX(m).path, ti.path))! as T
@@ -168,19 +172,19 @@ export const ccToCb = (m: M) => getXAEO(m).map(ti => ({
 export const getEditedPath = (p: PT): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] : p
 export const getEditedNode = (m: M, p: PT): T => getNodeByPath(m, getEditedPath(p) as PT)
 
-export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineWidth)) ? getX(m).lineWidth : sSaveOptional.lineWidth
-export const getLineType = (m: M): SSaveOptional['lineType'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineType)) ? getX(m).lineType : sSaveOptional.lineType
-export const getLineColor = (m: M): SSaveOptional['lineColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineColor)) ? getX(m).lineColor : sSaveOptional.lineColor
-export const getSBorderWidth = (m: M): SSaveOptional['sBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderWidth)) ? getX(m).sBorderWidth : sSaveOptional.sBorderWidth
-export const getFBorderWidth = (m: M): SSaveOptional['fBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderWidth)) ? getX(m).fBorderWidth : sSaveOptional.fBorderWidth
-export const getSBorderColor = (m: M): SSaveOptional['sBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderColor)) ? getX(m).sBorderColor : sSaveOptional.sBorderColor
-export const getFBorderColor = (m: M): SSaveOptional['fBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderColor)) ? getX(m).fBorderColor : sSaveOptional.fBorderColor
-export const getSFillColor = (m: M): SSaveOptional['sFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sFillColor)) ? getX(m).sFillColor : sSaveOptional.sFillColor
-export const getFFillColor = (m: M): SSaveOptional['fFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fFillColor)) ? getX(m).fFillColor : sSaveOptional.fFillColor
-export const getTextFontSize = (m: M): SSaveOptional['textFontSize'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textFontSize)) ? getX(m).textFontSize : sSaveOptional.textFontSize
-export const getTextColor = (m: M): SSaveOptional['textColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textColor)) ? getX(m).textColor : sSaveOptional.textColor
+export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineWidth)) ? getXS(m).lineWidth : sSaveOptional.lineWidth
+export const getLineType = (m: M): SSaveOptional['lineType'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineType)) ? getXS(m).lineType : sSaveOptional.lineType
+export const getLineColor = (m: M): SSaveOptional['lineColor'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineColor)) ? getXS(m).lineColor : sSaveOptional.lineColor
+export const getSBorderWidth = (m: M): SSaveOptional['sBorderWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.sBorderWidth)) ? getXS(m).sBorderWidth : sSaveOptional.sBorderWidth
+export const getFBorderWidth = (m: M): SSaveOptional['fBorderWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.fBorderWidth)) ? getXS(m).fBorderWidth : sSaveOptional.fBorderWidth
+export const getSBorderColor = (m: M): SSaveOptional['sBorderColor'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.sBorderColor)) ? getXS(m).sBorderColor : sSaveOptional.sBorderColor
+export const getFBorderColor = (m: M): SSaveOptional['fBorderColor'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.fBorderColor)) ? getXS(m).fBorderColor : sSaveOptional.fBorderColor
+export const getSFillColor = (m: M): SSaveOptional['sFillColor'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.sFillColor)) ? getXS(m).sFillColor : sSaveOptional.sFillColor
+export const getFFillColor = (m: M): SSaveOptional['fFillColor'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.fFillColor)) ? getXS(m).fFillColor : sSaveOptional.fFillColor
+export const getTextFontSize = (m: M): SSaveOptional['textFontSize'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.textFontSize)) ? getXS(m).textFontSize : sSaveOptional.textFontSize
+export const getTextColor = (m: M): SSaveOptional['textColor'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.textColor)) ? getXS(m).textColor : sSaveOptional.textColor
 
-export const hasTask = (m: M, t: T): number => +mT(m).filter(ti => ti.path.at(1) === t.path.at(1) && ti.path.length > 2).some(ti => ti.taskStatus !== 0)
+export const hasTask = (m: M, r: R): number => +mS(m).filter(ti => ti.path.at(1) === r.path.at(1) && ti.path.length > 2).some(ti => ti.taskStatus !== 0)
 
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li =>
   l.fromNodeId === li.fromNodeId &&

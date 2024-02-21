@@ -15,7 +15,9 @@ import {MapSvgNodeAttributes} from "./MapSvgNodeAttributes.tsx"
 import {MapSvgRootMove} from "./MapSvgRootMove.tsx"
 import {MapSvgRootSeparators} from "./MapSvgRootSeparators.tsx"
 import {MapSvgSelectionSecondary} from "./MapSvgSelectionSecondary.tsx"
-import {MapSvgSelectionPrimary} from "./MapSvgSelectionPrimary.tsx"
+import {MapSvgSelectionPrimaryR} from "./MapSvgSelectionPrimaryR.tsx"
+import {MapSvgSelectionPrimaryS} from "./MapSvgSelectionPrimaryS.tsx"
+import {MapSvgSelectionPrimaryC} from "./MapSvgSelectionPrimaryC.tsx"
 import {MapSvgSelectionPreview} from "./MapSvgSelectionPreview.tsx"
 import {MapSvgSelectionArea} from "./MapSvgSelectionArea.tsx"
 import {MapSvgNodeMove} from "./MapSvgNodeMove.tsx"
@@ -41,7 +43,9 @@ export const MapSvg: FC = () => {
       <MapSvgNodeAttributes/>
       <MapSvgNodeTasks/>
       <MapSvgSelectionSecondary/>
-      <MapSvgSelectionPrimary/>
+      <MapSvgSelectionPrimaryR/>
+      <MapSvgSelectionPrimaryS/>
+      <MapSvgSelectionPrimaryC/>
       <MapSvgSelectionPreview/>
       <MapSvgSelectionArea/>
       <MapSvgRootMove/>

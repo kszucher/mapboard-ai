@@ -1,8 +1,9 @@
 import {N, LPartial, M, T, PT, MPartial} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {getCountTSCV, getCountTSCH, getX, sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG} from "../queries/MapQueries.ts"
+import {getCountTSCV, getCountTSCH, sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG, getXS, isXS} from "../queries/MapQueries.ts"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
+import {sSaveOptional} from "../state/MapState.ts";
 
 export const insertL = (m: M, lPartial: LPartial) => {
   m.push({...lPartial, nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['l', getLastIndexL(m) + 1]} as N)
@@ -22,7 +23,7 @@ export const insertR = (m: M) => {
 export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, attributes: object) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PT
   makeSpaceFromS(m, ip, 1)
-  const parentTaskStatus = getX(m).taskStatus
+  const parentTaskStatus = isXS(m) ? getXS(m).taskStatus : sSaveOptional.taskStatus
   unselectNodes(m)
   m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip, taskStatus: parentTaskStatus, ...attributes} as N)
   m.sort(sortPath)

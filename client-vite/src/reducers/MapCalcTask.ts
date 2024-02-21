@@ -1,14 +1,14 @@
 import {getHP, mS} from "../queries/MapQueries.ts"
-import {M} from "../state/MapStateTypes"
+import {M, S} from "../state/MapStateTypes"
 
 export const mapCalcTask = (m: M) => {
   const hp = getHP(m)
-  mS(m).toReversed().forEach(ti => {
-    if (ti.so1.length) {
-      ti.taskStatus = 4
-      for (let i = 0; i < ti.so1.length; i++) {
-        const cn = hp.get([...ti.path, 's', i].join(''))!
-        ti.taskStatus = cn.taskStatus < ti.taskStatus ? cn.taskStatus : ti.taskStatus
+  mS(m).toReversed().forEach(si => {
+    if (si.so1.length) {
+      si.taskStatus = 4
+      for (let i = 0; i < si.so1.length; i++) {
+        const so1i = hp.get([...si.path, 's', i].join('')) as S
+        si.taskStatus = so1i.taskStatus < si.taskStatus ? so1i.taskStatus : si.taskStatus
       }
     }
   })

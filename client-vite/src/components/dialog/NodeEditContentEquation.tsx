@@ -3,12 +3,12 @@ import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getX} from "../../queries/MapQueries.ts"
+import {getXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
 export const NodeEditContentEquation = () => {
   const m = useSelector((state:RootState) => mSelector(state))
-  const [content, setContent] = useState(getX(m).content)
+  const [content, setContent] = useState(getXS(m).content)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (

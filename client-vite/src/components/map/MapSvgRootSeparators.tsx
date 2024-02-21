@@ -11,15 +11,16 @@ export const MapSvgRootSeparators: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   return (
-    connectionHelpersVisible && mR(m).filter(ti => ti.controlType !== ControlType.NONE).map(ti => (
-      <Fragment key={`${ti.nodeId}_separator`}>
+    connectionHelpersVisible &&
+    mR(m).filter(ri => ri.controlType !== ControlType.NONE).map(ri => (
+      <Fragment key={`${ri.nodeId}_separator`}>
         <path
           d={
             getLinearLinePath({
-              x1: adjust(ti.nodeStartX),
-              x2: adjust(ti.nodeStartX + ti.selfW),
-              y1: adjust(ti.nodeStartY + 40),
-              y2: adjust(ti.nodeStartY + 40),
+              x1: adjust(ri.nodeStartX),
+              x2: adjust(ri.nodeStartX + ri.selfW),
+              y1: adjust(ri.nodeStartY + 40),
+              y2: adjust(ri.nodeStartY + 40),
             })
           }
           stroke={'#444'}
@@ -28,10 +29,10 @@ export const MapSvgRootSeparators: FC = () => {
         <path
           d={
             getLinearLinePath({
-              x1: adjust(ti.nodeStartX),
-              x2: adjust(ti.nodeStartX + ti.selfW),
-              y1: adjust(ti.nodeStartY + ti.selfH - 40),
-              y2: adjust(ti.nodeStartY + ti.selfH - 40),
+              x1: adjust(ri.nodeStartX),
+              x2: adjust(ri.nodeStartX + ri.selfW),
+              y1: adjust(ri.nodeStartY + ri.selfH - 40),
+              y2: adjust(ri.nodeStartY + ri.selfH - 40),
             })
           }
           stroke={'#444'}

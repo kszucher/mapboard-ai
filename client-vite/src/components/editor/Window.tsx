@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mR, sortPath} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, getXC, getXS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mR, sortPath} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -47,7 +47,7 @@ export const Window: FC = () => {
       +e.shiftKey ? 's' : '-',
       +e.altKey ? 'a' : '-'
     ].join('')
-    ckm === '---' && e.key === 'F2' && isXS(m) && getX(m).contentType === 'text' && getX(m).co1.length === 0 && md(MR.startEditAppend)
+    ckm === '---' && e.key === 'F2' && isXS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 && md(MR.startEditAppend)
     ckm === '---' && e.key === 'Enter' && isXS(m) && md(MR.insertSD)
     ckm === '---' && e.key === 'Enter' && isXC(m) && md(MR.selectCD)
     ckm === '-s-' && e.key === 'Enter' && isXS(m) && md(MR.insertSU)
@@ -61,12 +61,12 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Delete' && isXACR(m) && md(MR.deleteCR)
     ckm === '---' && e.key === 'Delete' && isXACC(m) && md(MR.deleteCC)
     ckm === '---' && e.code === 'Space' && isXR(m) && md(MR.selectSO)
-    ckm === '---' && e.code === 'Space' && isXS(m) && getX(m).co1.length > 0 && md(MR.selectCFF)
-    ckm === '---' && e.code === 'Space' && isXC(m) && getX(m).so1.length > 0 && md(MR.selectSF)
+    ckm === '---' && e.code === 'Space' && isXS(m) && getXS(m).co1.length > 0 && md(MR.selectCFF)
+    ckm === '---' && e.code === 'Space' && isXC(m) && getXC(m).so1.length > 0 && md(MR.selectSF)
     ckm === '---' && e.code === 'Space' && isXACR(m) && md(MR.selectCFC0)
     ckm === '---' && e.code === 'Space' && isXACC(m) && md(MR.selectCFR0)
-    ckm === '---' && e.code === 'Backspace' && isXS(m) && !getX(m).path.includes('c') && md(MR.selectXR)
-    ckm === '---' && e.code === 'Backspace' && isXS(m) && getX(m).path.includes('c') && md(MR.selectXSIC)
+    ckm === '---' && e.code === 'Backspace' && isXS(m) && !getXS(m).path.includes('c') && md(MR.selectXR)
+    ckm === '---' && e.code === 'Backspace' && isXS(m) && getXS(m).path.includes('c') && md(MR.selectXSIC)
     ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && md(MR.selectSI)
     ckm === '---' && e.code === 'Escape' && md(MR.selectXS)
     ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && md(MR.copyLR)
@@ -98,13 +98,13 @@ export const Window: FC = () => {
     ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && md(MR.selectSameCC)
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && md(MR.insertCRU)
 
-    ckm === '---' && e.code === 'ArrowRight' && isXS(m) && getX(m).so1.length > 0 && md(MR.selectSO)
+    ckm === '---' && e.code === 'ArrowRight' && isXS(m) && getXS(m).so1.length > 0 && md(MR.selectSO)
     ckm === '---' && e.code === 'ArrowRight' && isXC(m) && !isXCR(m) && md(MR.selectCR)
     ckm === '---' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && md(MR.selectCR)
     ckm === 'c--' && e.code === 'ArrowRight' && isXR(m) && md(MR.offsetR)
     ckm === 'c--' && e.code === 'ArrowRight' && isXASVN(m) && getCountXASU(m) > 0 && md(MR.moveSO)
     ckm === 'c--' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && md(MR.moveCCR)
-    ckm === '-s-' && e.code === 'ArrowRight' && isXS(m) && getX(m).so1.length > 0 && getX(m).selection === 's' && md(MR.selectFamilyX)
+    ckm === '-s-' && e.code === 'ArrowRight' && isXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's' && md(MR.selectFamilyX)
     ckm === '-s-' && e.code === 'ArrowRight' && isXC(m) && md(MR.selectSameCR)
     ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && md(MR.insertCCR)
 
@@ -114,13 +114,13 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'ArrowLeft' && isXR(m) && md(MR.offsetL)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXASVN(m) && !isXRS(m) && md(MR.moveSI)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && md(MR.moveCCL)
-    ckm === '-s-' && e.code === 'ArrowLeft' && isXS(m) && getX(m).so1.length > 0 && getX(m).selection === 's' && md(MR.selectFamilyX)
+    ckm === '-s-' && e.code === 'ArrowLeft' && isXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's' && md(MR.selectFamilyX)
     ckm === '-s-' && e.code === 'ArrowLeft' && isXC(m) && md(MR.selectSameCR)
     ckm === '--a' && e.code === 'ArrowLeft' && isXACC(m) && md(MR.insertCCL)
 
     ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXS(m) && md(MR.setTextColor, shortcutColors[e.which - 96])
-    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getX(m).co1.length === 0 &&(m) && md(MR.startEditReplace)
-    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getX(m).contentType === 'text' && getX(m).co1.length === 0 &&(m) && md(MR.startEditReplace)
+    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m) && md(MR.startEditReplace)
+    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m) && md(MR.startEditReplace)
   }
 
   const paste = (e: Event) => {

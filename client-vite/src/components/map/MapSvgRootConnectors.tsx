@@ -17,28 +17,27 @@ export const MapSvgRootConnectors: FC = () => {
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <Fragment>
-      {
-        mL(m).map((l: L) => (
-          <Fragment key={`${l.nodeId}_inter_root_bezier`}>
-            <path
-              d={getBezierLinePath('M', getRootLinePath(m, l))}
-              strokeWidth={1}
-              stroke={'#ffffff'}
-              fill={'none'}
-              {...pathCommonProps}
-            />
-          </Fragment>
-        ))
+      {mL(m).map((li: L) => (
+        <Fragment key={`${li.nodeId}_inter_root_bezier`}>
+          <path
+            d={getBezierLinePath('M', getRootLinePath(m, li))}
+            strokeWidth={1}
+            stroke={'#ffffff'}
+            fill={'none'}
+            {...pathCommonProps}
+          />
+        </Fragment>
+      ))
       }
       {connectionHelpersVisible &&
-        mL(m).map((l: L) => (
-          <Fragment key={`${l.nodeId}_inter_root_bezier_trash`}>
+        mL(m).map(li => (
+          <Fragment key={`${li.nodeId}_inter_root_bezier_trash`}>
             {
               <g
                 width="24" height="24" viewBox="0 0 24 24"
                 transform={`translate(
-                    ${adjustIcon(getCoordsMidBezier(getRootLinePath(m, l)).x) - 12},
-                    ${adjustIcon(getCoordsMidBezier(getRootLinePath(m, l)).y) - 12})`}
+                    ${adjustIcon(getCoordsMidBezier(getRootLinePath(m, li)).x) - 12},
+                    ${adjustIcon(getCoordsMidBezier(getRootLinePath(m, li)).y) - 12})`}
                 {...{vectorEffect: 'non-scaling-stroke'}}
                 style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
                 <rect width="24" height="24" rx={4} ry={4} fill={'#666666'}/>
@@ -48,7 +47,7 @@ export const MapSvgRootConnectors: FC = () => {
                 <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  md(MR.deleteL, l)
+                  md(MR.deleteL, li)
                 }}/>
               </g>
             }

@@ -7,7 +7,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getGridPath, getNodeLinePath, pathCommonProps} from "./MapSvgUtils"
-import {M} from "../../state/MapStateTypes.ts"
+import {M, S, C} from "../../state/MapStateTypes.ts"
 
 export const MapSvgNodeAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state)) as M
@@ -25,8 +25,8 @@ export const MapSvgNodeAttributes: FC = () => {
           {!isRS(si.path) && !isCS(si.path) && si.co1.length === 0 &&
             <path
               d={!phn.has(si.nodeId) && phn.get(si.si1)
-                ? getNodeLinePath(g, phn.get(si.si1)!, si)
-                : getNodeLinePath(g, hn.get(si.si1)!, si)
+                ? getNodeLinePath(g, phn.get(si.si1)! as S, si)
+                : getNodeLinePath(g, hn.get(si.si1)! as S, si)
               }
               strokeWidth={si.lineWidth}
               stroke={si.taskStatus > 1
@@ -40,8 +40,8 @@ export const MapSvgNodeAttributes: FC = () => {
                 !phn.has(si.nodeId) && phn.has(si.si1) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(g, phn.get(si.si1)!, si)}
-                  to={getNodeLinePath(g, hn.get(si.si1)!, si)}
+                  from={getNodeLinePath(g, phn.get(si.si1)! as S, si)}
+                  to={getNodeLinePath(g, hn.get(si.si1)! as S, si)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
@@ -65,8 +65,8 @@ export const MapSvgNodeAttributes: FC = () => {
           {!isRSC(ci.path) && ci.path.at(-2) > -1 && ci.path.at(-1) === 0 &&
             <path
               d={!phn.has(ci.nodeId) && phn.has(ci.si2)
-                ? getNodeLinePath(g, phn.get(ci.si2)!, ci)
-                : getNodeLinePath(g, hn.get(ci.si2)!, ci)
+                ? getNodeLinePath(g, phn.get(ci.si2)! as C, ci)
+                : getNodeLinePath(g, hn.get(ci.si2)! as C, ci)
               }
               strokeWidth={ci.lineWidth}
               stroke={ci.lineColor}
@@ -76,8 +76,8 @@ export const MapSvgNodeAttributes: FC = () => {
               {!phn.has(ci.nodeId) && phn.has(ci.si2) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(g, phn.get(ci.si2)!, ci)}
-                  to={getNodeLinePath(g, hn.get(ci.si2)!, ci)}
+                  from={getNodeLinePath(g, phn.get(ci.si2)! as C, ci)}
+                  to={getNodeLinePath(g, hn.get(ci.si2)! as C, ci)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}

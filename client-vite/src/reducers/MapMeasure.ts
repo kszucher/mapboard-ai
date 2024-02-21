@@ -3,7 +3,7 @@ import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {getG, getHN, getTCO1C0, getTCO1R0,   hasTask, isC, isG, isR, isS, mR} from "../queries/MapQueries.ts"
 import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
-import {C, G, M, R, S, T} from "../state/MapStateTypes"
+import {M, G, R, S, C} from "../state/MapStateTypes"
 
 export const mapMeasure = (pm: M, m: M) => {
   const hn = getHN(m)
@@ -11,9 +11,9 @@ export const mapMeasure = (pm: M, m: M) => {
   const g = getG(m)
   const minOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))
   const minOffsetH = Math.min(...mR(m).map(ri => ri.offsetH))
-  mR(m).map(tri => Object.assign(tri, {
-    offsetW: tri.offsetW - minOffsetW,
-    offsetH: tri.offsetH - minOffsetH
+  mR(m).map(ri => Object.assign(ri, {
+    offsetW: ri.offsetW - minOffsetW,
+    offsetH: ri.offsetH - minOffsetH
   }))
   m.slice().reverse().forEach(ni => {
     switch (true) {
@@ -26,7 +26,7 @@ export const mapMeasure = (pm: M, m: M) => {
       case isR(ni.path): {
         const ri = ni as R
         if (ri.so1.length) {
-          const tso1 = ri.so1.map(nid => hn.get(nid)) as T[]
+          const tso1 = ri.so1.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
             ri.familyW = Math.max(...tso1.map(si => si.maxW))
             ri.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.so2.length || ri.co2.length)
@@ -35,7 +35,7 @@ export const mapMeasure = (pm: M, m: M) => {
             ri.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.co2.length)
           }
         }
-        ri.selfW = ri.familyW + 2 * MARGIN_X + getTaskWidth(g) * hasTask(m, ri as T)
+        ri.selfW = ri.familyW + 2 * MARGIN_X + getTaskWidth(g) * hasTask(m, ri)
         ri.selfH = ri.familyH + 2 * MARGIN_Y
         break
       }
@@ -63,17 +63,17 @@ export const mapMeasure = (pm: M, m: M) => {
           si.selfH = getTCO1C0(m, si).reduce((a, b) => a + b.selfH, 0)
         }
         if (!si.co1.length) {
-          const pti = phn.get(si.nodeId)
+          const psi = phn.get(si.nodeId) as S
           if (
             si.content !== '' &&
             (
               si.dimW === 0 ||
               si.dimH === 0 ||
               (
-                pti && (
-                  pti.content !== si.content ||
-                  pti.contentType !== si.contentType ||
-                  pti.textFontSize !== si.textFontSize
+                psi && (
+                  psi.content !== si.content ||
+                  psi.contentType !== si.contentType ||
+                  psi.textFontSize !== si.textFontSize
                 )
               )
             )

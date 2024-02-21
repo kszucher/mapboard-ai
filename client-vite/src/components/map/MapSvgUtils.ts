@@ -157,7 +157,7 @@ export const getRootLinePath = (m: M, l: L) => {
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
 
-export const getPolygonPath = (m: M, t: S | C, mode: string, margin: number) => {
+export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
   let ax = 0, bx = 0, cx = 0, ayu = 0, ayd = 0, byu = 0, byd = 0, cyu = 0, cyd = 0
   switch (mode) {
     case 'sSelf': {
@@ -275,17 +275,17 @@ export const getGridPath = (m: M, s: S) => {
   const yd = s.nodeStartY + s.selfH
   let path = ''
   for (let i = 1; i < countSCR; i++) {
-    const ti = getNodeByPath(m, [...s.path, 'c', i, 0])
+    const ci = getNodeByPath(m, [...s.path, 'c', i, 0]) as C
     const x1 = adjust(s.nodeStartX)
     const x2 = adjust(s.nodeStartX + s.selfW)
-    const cu = ti.cu.map(nid => hn.get(nid)) as T[]
+    const cu = ci.cu.map(nid => hn.get(nid)) as C[]
     const calcOffsetY = cu.reduce((a, b) => a + b.selfH, 0)
     const y = adjust(yu + calcOffsetY)
     path += `M${x1},${y} L${x2},${y}`
   }
   for (let j = 1; j < countSCC; j++) {
-    const ti = getNodeByPath(m, [...s.path, 'c', 0, j])
-    const cl = ti.cl.map(nid => hn.get(nid)) as T[]
+    const ci = getNodeByPath(m, [...s.path, 'c', 0, j]) as C
+    const cl = ci.cl.map(nid => hn.get(nid)) as C[]
     const calcOffsetX = cl.reduce((a, b) => a + b.selfW, 0)
     const x = adjust(xi + calcOffsetX)
     path += `M${x},${yu} L${x},${yd}`

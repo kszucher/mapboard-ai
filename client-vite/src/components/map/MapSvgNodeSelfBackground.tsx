@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
-import {mT} from "../../queries/MapQueries.ts"
+import {mS} from "../../queries/MapQueries.ts"
 import {getColors} from "../assets/Colors"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
@@ -14,17 +14,13 @@ export const MapSvgNodeSelfBackground: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    mT(m).map(ti => (ti.sFillColor || ti.taskStatus > 1) &&
+    mS(m).map(si => (si.sFillColor || si.taskStatus > 1) &&
       <path
-        key={`${ti.nodeId}_sFillColor`}
-        d={getArcPath(ti, -2, true)}
-        fill={ti.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(ti.taskStatus - 2) : ti.sFillColor}
-        {...{vectorEffect: 'non-scaling-stroke'}}
-        style={{
-          transition: 'all 0.3s',
-          transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-          transitionProperty: 'd, fill, stroke-width',
-        }}
+        key={`${si.nodeId}_sFillColor`}
+        d={getArcPath(si, -2, true)}
+        fill={si.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(si.taskStatus - 2) : si.sFillColor}
+        vectorEffect={'non-scaling-stroke'}
+        style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'd, fill, stroke-width'}}
       />
     )
   )
