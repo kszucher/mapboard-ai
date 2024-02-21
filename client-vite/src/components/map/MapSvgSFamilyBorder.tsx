@@ -5,7 +5,7 @@ import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
-export const MapSvgNodeFamilyBorder: FC = () => {
+export const MapSvgSFamilyBorder: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   return (
     mS(m).map(si => (

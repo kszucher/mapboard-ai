@@ -5,7 +5,7 @@ import {getColors} from "../assets/Colors"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {RootState} from "../../reducers/EditorReducer"
 
-export const MapSvgRootMove: FC = () => {
+export const MapSvgRMove: FC = () => {
   const rOffsetCoords = useSelector((state: RootState) => state.editor.rOffsetCoords)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

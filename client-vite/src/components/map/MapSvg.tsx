@@ -3,25 +3,27 @@ import {useSelector} from "react-redux"
 import {RootState} from "../../reducers/EditorReducer"
 import {getG} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {MapSvgMapBackground} from "./MapSvgMapBackground.tsx"
-import {MapSvgNodeFamilyBorder} from "./MapSvgNodeFamilyBorder.tsx"
-import {MapSvgNodeSelfBorder} from "./MapSvgNodeSelfBorder.tsx"
-import {MapSvgNodeTasks} from "./MapSvgNodeTasks.tsx"
-import {MapSvgRootBackground} from "./MapSvgRootBackground.tsx"
-import {MapSvgRootConnectors} from "./MapSvgRootConnectors.tsx"
-import {MapSvgNodeFamilyBackground} from "./MapSvgNodeFamilyBackground.tsx"
-import {MapSvgNodeSelfBackground} from "./MapSvgNodeSelfBackground.tsx"
-import {MapSvgNodeAttributes} from "./MapSvgNodeAttributes.tsx"
-import {MapSvgRootMove} from "./MapSvgRootMove.tsx"
-import {MapSvgRootSeparators} from "./MapSvgRootSeparators.tsx"
-import {MapSvgSelectionSecondary} from "./MapSvgSelectionSecondary.tsx"
-import {MapSvgSelectionPrimaryR} from "./MapSvgSelectionPrimaryR.tsx"
-import {MapSvgSelectionPrimaryS} from "./MapSvgSelectionPrimaryS.tsx"
-import {MapSvgSelectionPrimaryC} from "./MapSvgSelectionPrimaryC.tsx"
-import {MapSvgSelectionPreview} from "./MapSvgSelectionPreview.tsx"
-import {MapSvgSelectionArea} from "./MapSvgSelectionArea.tsx"
-import {MapSvgNodeMove} from "./MapSvgNodeMove.tsx"
-import {MapSvgNodeIcons} from "./MapSvgNodeIcons.tsx"
+import {MapSvgGBackground} from "./MapSvgGBackground.tsx"
+import {MapSvgSFamilyBorder} from "./MapSvgSFamilyBorder.tsx"
+import {MapSvgSSelfBorder} from "./MapSvgSSelfBorder.tsx"
+import {MapSvgSTasks} from "./MapSvgSTasks.tsx"
+import {MapSvgRBackground} from "./MapSvgRBackground.tsx"
+import {MapSvgLRConnectors} from "./MapSvgLRConnectors.tsx"
+import {MapSvgSFamilyBackground} from "./MapSvgSFamilyBackground.tsx"
+import {MapSvgSelfBackgroundS} from "./MapSvgSSelfBackground.tsx"
+import {MapSvgSAttributes} from "./MapSvgSAttributes.tsx"
+import {MapSvgCAttributes} from "./MapSvgCAttributes.tsx"
+import {MapSvgRMove} from "./MapSvgRMove.tsx"
+import {MapSvgRSeparators} from "./MapSvgRSeparators.tsx"
+import {MapSvgRSelectionSecondary} from "./MapSvgRSelectionSecondary.tsx"
+import {MapSvgSSelectionSecondary} from "./MapSvgSSelectionSecondary.tsx"
+import {MapSvgRSelectionPrimary} from "./MapSvgRSelectionPrimary.tsx"
+import {MapSvgSSelectionPrimary} from "./MapSvgSSelectionPrimary.tsx"
+import {MapSvgCSelectionPrimary} from "./MapSvgCSelectionPrimary.tsx"
+import {MapSvgSSelectionPreview} from "./MapSvgSSelectionPreview.tsx"
+import {MapSvgSSelectionArea} from "./MapSvgSSelectionArea.tsx"
+import {MapSvgSMove} from "./MapSvgSMove.tsx"
+import {MapSvgRIcons} from "./MapSvgRIcons.tsx"
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -33,25 +35,27 @@ export const MapSvg: FC = () => {
       height={g.selfH}
       style={{transition: '0.3s ease-out'}}
     >
-      <MapSvgMapBackground/>
-      <MapSvgRootBackground/>
-      <MapSvgRootSeparators/>
-      <MapSvgNodeFamilyBackground/>
-      <MapSvgNodeSelfBackground/>
-      <MapSvgNodeFamilyBorder/>
-      <MapSvgNodeSelfBorder/>
-      <MapSvgNodeAttributes/>
-      <MapSvgNodeTasks/>
-      <MapSvgSelectionSecondary/>
-      <MapSvgSelectionPrimaryR/>
-      <MapSvgSelectionPrimaryS/>
-      <MapSvgSelectionPrimaryC/>
-      <MapSvgSelectionPreview/>
-      <MapSvgSelectionArea/>
-      <MapSvgRootMove/>
-      <MapSvgNodeMove/>
-      <MapSvgNodeIcons/>
-      <MapSvgRootConnectors/>
+      <MapSvgGBackground/>
+      <MapSvgRBackground/>
+      <MapSvgRSeparators/>
+      <MapSvgSFamilyBackground/>
+      <MapSvgSelfBackgroundS/>
+      <MapSvgSFamilyBorder/>
+      <MapSvgSSelfBorder/>
+      <MapSvgSAttributes/>
+      <MapSvgCAttributes/>
+      <MapSvgSTasks/>
+      <MapSvgRSelectionSecondary/>
+      <MapSvgSSelectionSecondary/>
+      <MapSvgRSelectionPrimary/>
+      <MapSvgSSelectionPrimary/>
+      <MapSvgCSelectionPrimary/>
+      <MapSvgSSelectionPreview/>
+      <MapSvgSSelectionArea/>
+      <MapSvgRMove/>
+      <MapSvgSMove/>
+      <MapSvgRIcons/>
+      <MapSvgLRConnectors/>
     </svg>
   )
 }

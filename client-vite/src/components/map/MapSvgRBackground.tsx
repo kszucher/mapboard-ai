@@ -7,7 +7,7 @@ import {mR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
-export const MapSvgRootBackground: FC = () => {
+export const MapSvgRBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

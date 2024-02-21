@@ -12,7 +12,7 @@ import {mSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {getLinearLinePath, getTaskRadius, getTaskStartPoint, pathCommonProps} from "./MapSvgUtils"
 
-export const MapSvgNodeTasks: FC = () => {
+export const MapSvgSTasks: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)

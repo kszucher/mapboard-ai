@@ -8,7 +8,7 @@ import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
-export const MapSvgSelectionPrimaryC: FC = () => {
+export const MapSvgCSelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const xs = getXS(m)

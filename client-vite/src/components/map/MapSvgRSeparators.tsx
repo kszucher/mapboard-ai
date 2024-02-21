@@ -7,7 +7,7 @@ import {ControlType} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils.ts"
 import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
 
-export const MapSvgRootSeparators: FC = () => {
+export const MapSvgRSeparators: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   return (

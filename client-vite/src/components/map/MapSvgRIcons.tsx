@@ -26,7 +26,7 @@ const DecorationIcon = ({x, y, children, onClick} : {x: number, y: number, child
   </g>
 )
 
-export const MapSvgNodeIcons: FC = () => {
+export const MapSvgRIcons: FC = () => {
   const m = useSelector((state: RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (

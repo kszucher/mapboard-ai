@@ -7,7 +7,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getBezierLinePath, getBezierLinePoints} from "./MapSvgUtils"
 
-export const MapSvgNodeMove: FC = () => {
+export const MapSvgSMove: FC = () => {
   const sMoveCoords = useSelector((state: RootState) => state.editor.sMoveCoords)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

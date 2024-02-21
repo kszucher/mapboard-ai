@@ -5,7 +5,7 @@ import {RootState} from "../../reducers/EditorReducer"
 import {S} from "../../state/MapStateTypes.ts"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
-export const MapSvgSelectionPreview: FC = () => {
+export const MapSvgSSelectionPreview: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const intersectingNodes = useSelector((state: RootState) => state.editor.intersectingNodes)
   return (

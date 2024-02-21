@@ -4,7 +4,7 @@ import {RootState} from "../../reducers/EditorReducer"
 import {getG} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 
-export const MapSvgMapBackground: FC = () => {
+export const MapSvgGBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
