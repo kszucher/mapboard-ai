@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare"
-import {tSaveOptional} from "../state/MapState"
-import {G, L, M, N, P, PT, PTC, T, TSaveOptional} from "../state/MapStateTypes"
+import {sSaveOptional} from "../state/MapState"
+import {G, L, M, N, P, PT, PC, T, SSaveOptional, S, R, C} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
 import {MapMode} from "../state/Enums.ts"
 
@@ -26,25 +26,26 @@ export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(t
 export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) || 0
 
 export const isG = (p: P): boolean => p.at(0) === 'g'
-const isL = (p: P): boolean => p.at(0) === 'l'
-const isT = (p: P): boolean => p.at(0) === 'r' || p.at(0) === 's' || p.at(0) === 'c'
-
-export const isR = (p: PT): boolean => getPathPattern(p).endsWith('r')
-export const isRS = (p: PT): boolean => getPathPattern(p).endsWith('rs')
-export const isRSC = (p: PT): boolean => getPathPattern(p).endsWith('rsc')
-export const isS = (p: PT): boolean => getPathPattern(p).endsWith('s')
-export const isSS = (p: PT): boolean => getPathPattern(p).endsWith('ss')
-export const isSSC = (p: PT): boolean => getPathPattern(p).endsWith('ssc')
-export const isC = (p: PT): boolean => getPathPattern(p).endsWith('c')
-export const isCS = (p: PT): boolean => getPathPattern(p).endsWith('cs')
+export const isL = (p: P): boolean => p.at(0) === 'l'
+export const isR = (p: P): boolean => getPathPattern(p).endsWith('r')
+export const isRS = (p: P): boolean => getPathPattern(p).endsWith('rs')
+export const isRSC = (p: P): boolean => getPathPattern(p).endsWith('rsc')
+export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')
+export const isSS = (p: P): boolean => getPathPattern(p).endsWith('ss')
+export const isSSC = (p: P): boolean => getPathPattern(p).endsWith('ssc')
+export const isC = (p: P): boolean => getPathPattern(p).endsWith('c')
+export const isCS = (p: P): boolean => getPathPattern(p).endsWith('cs')
+const isT = (p: P): boolean =>
+  p.at(0) === 'r' ||
+  p.at(0) === 's' ||
+  p.at(0) === 'c'
 
 export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
 export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]
+export const mR = (m: M): R[] => m.filter(n => isR(n.path)) as R[]
+export const mS = (m: M): S[] => m.filter(n => isS(n.path)) as S[]
+export const mC = (m: M): C[] => m.filter(n => isC(n.path)) as C[]
 export const mT = (m: M): T[] => m.filter(n => isT(n.path)) as T[]
-export const mGT = (m: M): T[] => m.filter(n => isG(n.path) || isT(n.path)) as T[]
-export const mTR = (m: M): T[] => m.filter(n => isT(n.path) && isR(n.path as PT)) as T[]
-export const mTS = (m: M): T[] => m.filter(n => isT(n.path) && isS(n.path as PT)) as T[]
-export const mTC = (m: M): T[] => m.filter(n => isT(n.path) && isC(n.path as PT)) as T[]
 
 export const getG = (m: M): G => mG(m).at(0) as G
 
@@ -71,10 +72,10 @@ const isSO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 2 && isEqual(
 const isCO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 const isCO1R0 = (p: PT, pt: PT): boolean => isCO1(p, pt) && pt.at(-2) === 0
 const isCO1C0 = (p: PT, pt: PT): boolean => isCO1(p, pt) && pt.at(-1) === 0
-const isCD1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) + 1 && pt.at(-1) === p.at(-1)
-const isCU1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) - 1 && pt.at(-1) === p.at(-1)
-const isCR1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) + 1
-const isCL1 = (p: PTC, pt: PTC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) - 1
+const isCD1 = (p: PC, pt: PC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) + 1 && pt.at(-1) === p.at(-1)
+const isCU1 = (p: PC, pt: PC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) - 1 && pt.at(-1) === p.at(-1)
+const isCR1 = (p: PC, pt: PC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) + 1
+const isCL1 = (p: PC, pt: PC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) - 1
 const isSCO = (p: PT, pt: PT): boolean => pt.length >= p.length + 3 && isEqual(pt.slice(0, p.length), p) && pt.at(p.length) === 'c'
 const isSV = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 export const isCV = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
@@ -88,8 +89,8 @@ export const isCER = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqua
 export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) > p.at(-1)
 
 export const getTSI1 = (m: M, t: T): T => m.find(ti => isSI1(t.path, ti.path as PT))! as T
-export const getTCO1R0 = (m: M, t: T): T[] => m.filter(ti => isCO1R0(t.path, ti.path as PT))! as T[]
-export const getTCO1C0 = (m: M, t: T): T[] => m.filter(ti => isCO1C0(t.path, ti.path as PT))! as T[]
+export const getTCO1R0 = (m: M, s: S): T[] => m.filter(ti => isCO1R0(s.path, ti.path as PT))! as T[]
+export const getTCO1C0 = (m: M, s: S): T[] => m.filter(ti => isCO1C0(s.path, ti.path as PT))! as T[]
 export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)
 
 export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T
@@ -106,10 +107,10 @@ export const getQuasiSU = (m: M): T => mT(m).findLast(ti => !ti.selected && isQu
 export const getXSO1 = (m: M): T[] => m.filter(ti => isSO1(getX(m).path, ti.path as PT)) as T[]
 export const getXSCO = (m: M): M => m.filter(ti => isSCO(getX(m).path, ti.path as PT))
 export const getXAEO = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isSEO(xti.path, ti.path as PT))) as T[]}
-export const getXACD1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCD1(xti.path as PTC, ti.path as PTC))) as T[]}
-export const getXACU1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCU1(xti.path as PTC, ti.path as PTC))) as T[]}
-export const getXACR1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCR1(xti.path as PTC, ti.path as PTC))) as T[]}
-export const getXACL1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCL1(xti.path as PTC, ti.path as PTC))) as T[]}
+export const getXACD1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCD1(xti.path as PC, ti.path as PC))) as T[]}
+export const getXACU1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCU1(xti.path as PC, ti.path as PC))) as T[]}
+export const getXACR1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCR1(xti.path as PC, ti.path as PC))) as T[]}
+export const getXACL1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCL1(xti.path as PC, ti.path as PC))) as T[]}
 
 const getCountSD = (m: M, p: PT): number => m.filter(ti => isSD(p, ti.path as PT)).length
 const getCountSU = (m: M, p: PT): number => m.filter(ti => isSU(p, ti.path as PT)).length
@@ -155,23 +156,29 @@ export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCo
 export const lToCb = (m: M): L[] => mL(m).filter(li => getNodeById(m, li.fromNodeId).selected && getNodeById(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
 export const rToCb = (m: M): T[] => getXA(m).map(el => el.path.at(1)).map(ri => m.filter(ti => isEqual(ti.path.slice(0, 2), ['r', ri]))).map((m, i) => mT(m).map(ti => ({...ti, path: ['r', i, ...ti.path.slice(2)]}))).flat() as T[]
 export const sToCb = (m: M): T[] => getXAEO(m).map(ti => ({...ti, path: ['s', ti.path.at(getX(m).path.length - 1) - getCountXASU(m), ...ti.path.slice(getX(m).path.length)]})) as T[]
-export const crToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2) - getCountXCU(m), ti.path.at(getX(m).path.length - 1), ...ti.path.slice(getX(m).path.length)]})) as M
-export const ccToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2), ti.path.at(getX(m).path.length - 1) - getCountXCL(m), ...ti.path.slice(getX(m).path.length)]})) as M
+export const crToCb = (m: M) => getXAEO(m).map(ti => ({
+  ...ti,
+  path: ['c', ti.path.at(getX(m).path.length - 2) - getCountXCU(m), ti.path.at(getX(m).path.length - 1), ...ti.path.slice(getX(m).path.length)]
+})) as unknown as M
+export const ccToCb = (m: M) => getXAEO(m).map(ti => ({
+  ...ti,
+  path: ['c', ti.path.at(getX(m).path.length - 2), ti.path.at(getX(m).path.length - 1) - getCountXCL(m), ...ti.path.slice(getX(m).path.length)]
+})) as unknown as M
 
 export const getEditedPath = (p: PT): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] : p
 export const getEditedNode = (m: M, p: PT): T => getNodeByPath(m, getEditedPath(p) as PT)
 
-export const getLineWidth = (m: M): TSaveOptional['lineWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineWidth)) ? getX(m).lineWidth : tSaveOptional.lineWidth
-export const getLineType = (m: M): TSaveOptional['lineType'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineType)) ? getX(m).lineType : tSaveOptional.lineType
-export const getLineColor = (m: M): TSaveOptional['lineColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineColor)) ? getX(m).lineColor : tSaveOptional.lineColor
-export const getSBorderWidth = (m: M): TSaveOptional['sBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderWidth)) ? getX(m).sBorderWidth : tSaveOptional.sBorderWidth
-export const getFBorderWidth = (m: M): TSaveOptional['fBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderWidth)) ? getX(m).fBorderWidth : tSaveOptional.fBorderWidth
-export const getSBorderColor = (m: M): TSaveOptional['sBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderColor)) ? getX(m).sBorderColor : tSaveOptional.sBorderColor
-export const getFBorderColor = (m: M): TSaveOptional['fBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderColor)) ? getX(m).fBorderColor : tSaveOptional.fBorderColor
-export const getSFillColor = (m: M): TSaveOptional['sFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sFillColor)) ? getX(m).sFillColor : tSaveOptional.sFillColor
-export const getFFillColor = (m: M): TSaveOptional['fFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fFillColor)) ? getX(m).fFillColor : tSaveOptional.fFillColor
-export const getTextFontSize = (m: M): TSaveOptional['textFontSize'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textFontSize)) ? getX(m).textFontSize : tSaveOptional.textFontSize
-export const getTextColor = (m: M): TSaveOptional['textColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textColor)) ? getX(m).textColor : tSaveOptional.textColor
+export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineWidth)) ? getX(m).lineWidth : sSaveOptional.lineWidth
+export const getLineType = (m: M): SSaveOptional['lineType'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineType)) ? getX(m).lineType : sSaveOptional.lineType
+export const getLineColor = (m: M): SSaveOptional['lineColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.lineColor)) ? getX(m).lineColor : sSaveOptional.lineColor
+export const getSBorderWidth = (m: M): SSaveOptional['sBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderWidth)) ? getX(m).sBorderWidth : sSaveOptional.sBorderWidth
+export const getFBorderWidth = (m: M): SSaveOptional['fBorderWidth'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderWidth)) ? getX(m).fBorderWidth : sSaveOptional.fBorderWidth
+export const getSBorderColor = (m: M): SSaveOptional['sBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sBorderColor)) ? getX(m).sBorderColor : sSaveOptional.sBorderColor
+export const getFBorderColor = (m: M): SSaveOptional['fBorderColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fBorderColor)) ? getX(m).fBorderColor : sSaveOptional.fBorderColor
+export const getSFillColor = (m: M): SSaveOptional['sFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.sFillColor)) ? getX(m).sFillColor : sSaveOptional.sFillColor
+export const getFFillColor = (m: M): SSaveOptional['fFillColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.fFillColor)) ? getX(m).fFillColor : sSaveOptional.fFillColor
+export const getTextFontSize = (m: M): SSaveOptional['textFontSize'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textFontSize)) ? getX(m).textFontSize : sSaveOptional.textFontSize
+export const getTextColor = (m: M): SSaveOptional['textColor'] => isArrayOfEqualValues(getXA(m).map(ti => ti.textColor)) ? getX(m).textColor : sSaveOptional.textColor
 
 export const hasTask = (m: M, t: T): number => +mT(m).filter(ti => ti.path.at(1) === t.path.at(1) && ti.path.length > 2).some(ti => ti.taskStatus !== 0)
 

@@ -1,7 +1,7 @@
 import {getCountTSCH, getCountTSCV, getG, getHN, getNodeById, getNodeByPath, getX, getTR, getXA, isXACC, isXACR, sortPath} from "../../queries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
-import {G, L, M, T} from "../../state/MapStateTypes"
+import {C, G, L, M, S, T} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
 
 export const pathCommonProps = {
@@ -43,7 +43,7 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
   return [ax, ay, ax + dx / 4, ay, ax + dx / 4, ay + dy, bx, by]
 }
 
-export const getNodeLinePath = (g: G, na: T, nb: T) => {
+export const getNodeLinePath = (g: G, na: S | C, nb: S | C) => {
   const { lineType } = nb
   let sx = 0, sy = 0, ex = 0, ey = 0
   if (g.flow === Flow.EXPLODED) {
@@ -157,7 +157,7 @@ export const getRootLinePath = (m: M, l: L) => {
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
 
-export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
+export const getPolygonPath = (m: M, t: S | C, mode: string, margin: number) => {
   let ax = 0, bx = 0, cx = 0, ayu = 0, ayd = 0, byu = 0, byd = 0, cyu = 0, cyd = 0
   switch (mode) {
     case 'sSelf': {
@@ -248,7 +248,7 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
   return path + 'z'
 }
 
-export const getArcPath = (t: T, margin: number, closed: boolean) => {
+export const getArcPath = (t: S, margin: number, closed: boolean) => {
   const R = 8
   const xi = t.nodeStartX
   const yu = t.nodeStartY
@@ -266,25 +266,25 @@ export const getArcPath = (t: T, margin: number, closed: boolean) => {
   )
 }
 
-export const getGridPath = (m: M, t: T) => {
+export const getGridPath = (m: M, s: S) => {
   const hn = getHN(m)
-  const countSCR = getCountTSCV(m, t)
-  const countSCC = getCountTSCH(m, t)
-  const xi = t.nodeStartX
-  const yu = t.nodeStartY
-  const yd = t.nodeStartY + t.selfH
+  const countSCR = getCountTSCV(m, s as T)
+  const countSCC = getCountTSCH(m, s as T)
+  const xi = s.nodeStartX
+  const yu = s.nodeStartY
+  const yd = s.nodeStartY + s.selfH
   let path = ''
   for (let i = 1; i < countSCR; i++) {
-    const ti = getNodeByPath(m, [...t.path, 'c', i, 0])
-    const x1 = adjust(t.nodeStartX)
-    const x2 = adjust(t.nodeStartX + t.selfW)
+    const ti = getNodeByPath(m, [...s.path, 'c', i, 0])
+    const x1 = adjust(s.nodeStartX)
+    const x2 = adjust(s.nodeStartX + s.selfW)
     const cu = ti.cu.map(nid => hn.get(nid)) as T[]
     const calcOffsetY = cu.reduce((a, b) => a + b.selfH, 0)
     const y = adjust(yu + calcOffsetY)
     path += `M${x1},${y} L${x2},${y}`
   }
   for (let j = 1; j < countSCC; j++) {
-    const ti = getNodeByPath(m, [...t.path, 'c', 0, j])
+    const ti = getNodeByPath(m, [...s.path, 'c', 0, j])
     const cl = ti.cl.map(nid => hn.get(nid)) as T[]
     const calcOffsetX = cl.reduce((a, b) => a + b.selfW, 0)
     const x = adjust(xi + calcOffsetX)
@@ -297,4 +297,4 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
-export const getTaskStartPoint = (m: M, g: G, t: T) => getTR(m, t).nodeStartX + getTR(m, t).selfW - getTaskWidth(g)
+export const getTaskStartPoint = (m: M, g: G, s: S) => getTR(m, s as T).nodeStartX + getTR(m, s as T).selfW - getTaskWidth(g)

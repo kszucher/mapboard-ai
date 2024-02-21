@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mTR, sortPath} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mR, sortPath} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -57,7 +57,7 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Tab' && isXR(m) && md(MR.insertR)
     ckm === '---' && e.key === 'Tab' && isXS(m) && md(MR.insertSO)
     ckm === '---' && e.key === 'Delete' && isXS(m) && md(MR.deleteS)
-    ckm === '---' && e.key === 'Delete' && isXR(m) && getLastIndexR(m) > 0 && mTR(m).some(ri => !ri.selected) && md(MR.deleteLR)
+    ckm === '---' && e.key === 'Delete' && isXR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected) && md(MR.deleteLR)
     ckm === '---' && e.key === 'Delete' && isXACR(m) && md(MR.deleteCR)
     ckm === '---' && e.key === 'Delete' && isXACC(m) && md(MR.deleteCC)
     ckm === '---' && e.code === 'Space' && isXR(m) && md(MR.selectSO)

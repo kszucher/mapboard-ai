@@ -1,6 +1,6 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXR, getXS, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, isC, isR, isS, mT, mTR, sortNode, sortPath} from "../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXR, getXS, getXSCO, getXSI1, getXSI2, getXSIC, getXSO1, isC, isR, isS, mT, mR, sortNode, sortPath} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
-import {tSaveOptional} from "../state/MapState"
+import {sSaveOptional} from "../state/MapState"
 import {M, PT, T} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteL, deleteReselectCC, deleteReselectCR, deleteReselectLR, deleteReselectS,} from "./MapDelete"
@@ -48,7 +48,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectRemoveT': selectRemoveT(getNodeByPath(m, payload.path)); break
     case 'selectAddSD': selectAddT(m, getQuasiSD(m), 's'); break
     case 'selectAddSU': selectAddT(m, getQuasiSU(m), 's'); break
-    case 'selectRA': selectTL(m, mTR(m), 's'); break
+    case 'selectRA': selectTL(m, mR(m), 's'); break
     case 'selectSA': selectTL(m, mT(m).filter(ti => ti.content !== ''), 's'); break
     case 'selectSameCR': selectTL(m, getX(m).ch.map(nid => hn.get(nid)) as T[], 's'); break
     case 'selectSameCC': selectTL(m, getX(m).cv.map(nid => hn.get(nid)) as T[], 's'); break
@@ -138,14 +138,14 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setTaskModeOff': getXAEO(m).forEach(ti => Object.assign(ti, { taskStatus: 0 })); break
     case 'setTaskModeReset': getXAEO(m).forEach(ti => Object.assign(ti, { taskStatus: ti.taskStatus > 0 ? 1 : ti.taskStatus })); break
 
-    case 'clearDimensions': Object.assign(getX(m), { dimW: tSaveOptional.dimW, dimH: tSaveOptional.dimH }); break
-    case 'clearLine': getXA(m).forEach(ti => Object.assign(ti, { lineWidth: tSaveOptional.lineWidth, lineType: tSaveOptional.lineType, lineColor: tSaveOptional.lineColor })); break
-    case 'clearSBorder': getXA(m).forEach(ti => Object.assign(ti, { sBorderWidth: tSaveOptional.sBorderWidth, sBorderColor: tSaveOptional.sBorderColor })); break
-    case 'clearFBorder': getXA(m).forEach(ti => Object.assign(ti, { fBorderWidth: tSaveOptional.fBorderWidth, fBorderColor: tSaveOptional.fBorderColor })); break
-    case 'clearSFill': getXA(m).forEach(ti => Object.assign(ti, { sFillColor: tSaveOptional.sFillColor })); break
-    case 'clearFFill': getXA(m).forEach(ti => Object.assign(ti, { fFillColor: tSaveOptional.fFillColor })); break
-    case 'clearText': getXA(m).forEach(ti => Object.assign(ti, { textColor: tSaveOptional.textColor, textFontSize: tSaveOptional.textFontSize })); break
-    case 'clearBlur': getXA(m).forEach(ti => Object.assign(ti, { blur: tSaveOptional.blur })); break
+    case 'clearDimensions': Object.assign(getX(m), { dimW: sSaveOptional.dimW, dimH: sSaveOptional.dimH }); break
+    case 'clearLine': getXA(m).forEach(ti => Object.assign(ti, { lineWidth: sSaveOptional.lineWidth, lineType: sSaveOptional.lineType, lineColor: sSaveOptional.lineColor })); break
+    case 'clearSBorder': getXA(m).forEach(ti => Object.assign(ti, { sBorderWidth: sSaveOptional.sBorderWidth, sBorderColor: sSaveOptional.sBorderColor })); break
+    case 'clearFBorder': getXA(m).forEach(ti => Object.assign(ti, { fBorderWidth: sSaveOptional.fBorderWidth, fBorderColor: sSaveOptional.fBorderColor })); break
+    case 'clearSFill': getXA(m).forEach(ti => Object.assign(ti, { sFillColor: sSaveOptional.sFillColor })); break
+    case 'clearFFill': getXA(m).forEach(ti => Object.assign(ti, { fFillColor: sSaveOptional.fFillColor })); break
+    case 'clearText': getXA(m).forEach(ti => Object.assign(ti, { textColor: sSaveOptional.textColor, textFontSize: sSaveOptional.textFontSize })); break
+    case 'clearBlur': getXA(m).forEach(ti => Object.assign(ti, { blur: sSaveOptional.blur })); break
   }
   return m
 }

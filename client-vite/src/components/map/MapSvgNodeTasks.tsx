@@ -6,7 +6,7 @@ import {MR} from "../../reducers/MapReducerEnum.ts"
 import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP} from "../../state/Consts"
 import {getColors} from "../assets/Colors"
-import {getG, mTS} from "../../queries/MapQueries.ts"
+import {getG, mS} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -22,16 +22,16 @@ export const MapSvgNodeTasks: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
-    mTS(m).map(ti => (
-      <Fragment key={ti.nodeId}>
-        {ti.taskStatus > 0 && ti.so1.length === 0 && ti.co1.length === 0 && ti.contentType !== 'image' && !isEqual(ti.nodeId, editedNodeId) &&
+    mS(m).map(si => (
+      <Fragment key={si.nodeId}>
+        {si.taskStatus > 0 && si.so1.length === 0 && si.co1.length === 0 && si.contentType !== 'image' && !isEqual(si.nodeId, editedNodeId) &&
           <path
             d={
               getLinearLinePath({
-                x1: adjust(ti.nodeStartX + ti.selfW),
-                x2: adjust(getTaskStartPoint(m, g, ti)),
-                y1: adjust(ti.nodeStartY + ti.selfH / 2),
-                y2: adjust(ti.nodeStartY + ti.selfH / 2)
+                x1: adjust(si.nodeStartX + si.selfW),
+                x2: adjust(getTaskStartPoint(m, g, si)),
+                y1: adjust(si.nodeStartY + si.selfH / 2),
+                y2: adjust(si.nodeStartY + si.selfH / 2)
               })
             }
             stroke={C.TASK_LINE}
@@ -40,14 +40,14 @@ export const MapSvgNodeTasks: FC = () => {
             {...pathCommonProps}
           />
         }
-        {ti.taskStatus > 0 && ti.so1.length === 0 && ti.co1.length === 0 && ti.contentType !== 'image' && [...Array(4)].map((_, i) => (
+        {si.taskStatus > 0 && si.so1.length === 0 && si.co1.length === 0 && si.contentType !== 'image' && [...Array(4)].map((_, i) => (
           <circle
-            key={`${ti.nodeId}_svg_taskCircle${i + 1}`}
+            key={`${si.nodeId}_svg_taskCircle${i + 1}`}
             id={'taskCircle'}
-            cx={getTaskStartPoint(m, g, ti) + getTaskRadius(g) / 2 + i * (getTaskRadius(g) + TASK_CIRCLES_GAP)}
-            cy={ti.nodeStartY + ti.selfH / 2}
+            cx={getTaskStartPoint(m, g, si) + getTaskRadius(g) / 2 + i * (getTaskRadius(g) + TASK_CIRCLES_GAP)}
+            cy={si.nodeStartY + si.selfH / 2}
             r={getTaskRadius(g) / 2}
-            fill={ti.taskStatus === i + 1
+            fill={si.taskStatus === i + 1
               ? [C.TASK_CIRCLE_0_ON, C.TASK_CIRCLE_1_ON, C.TASK_CIRCLE_2_ON, C.TASK_CIRCLE_3_ON].at(i)
               : [C.TASK_CIRCLE_0_OFF, C.TASK_CIRCLE_1_OFF, C.TASK_CIRCLE_2_OFF, C.TASK_CIRCLE_3_OFF].at(i)}
             vectorEffect={'non-scaling-stroke'}
@@ -55,7 +55,7 @@ export const MapSvgNodeTasks: FC = () => {
             onMouseDown={(e) => {
               e.preventDefault()
               e.stopPropagation()
-              md(MR.setTaskStatus, {taskStatus: i + 1, nodeId: ti.nodeId})
+              md(MR.setTaskStatus, {taskStatus: i + 1, nodeId: si.nodeId})
             }}
           />
         ))}

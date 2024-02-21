@@ -2,10 +2,10 @@ import {LineType, ControlType, Side, Flow} from "./Enums"
 
 export type PG = ['g']
 export type PL = ['l', number]
-export type PTR = ['r', number]
-export type PTS = [...any[], 's', number] | ['s', number]
-export type PTC = [...any[], 'c', number, number] | ['c', number, number]
-export type PT = PTR | PTS | PTC
+export type PR = ['r', number]
+export type PS = [...any[], 's', number] | ['s', number]
+export type PC = [...any[], 'c', number, number] | ['c', number, number]
+export type PT = PR | PS | PC
 export type P = PG | PL | PT
 
 export interface GSaveAlways {
@@ -42,46 +42,69 @@ export interface LSaveNever {
 
 }
 
-export interface TSaveAlways {
+export interface RSaveAlways {
   path: PT
   nodeId: string
 }
 
-export interface TSaveOptional {
-  controlType: ControlType // r
-  offsetW: number // r
-  offsetH: number // r
-  note: string // r
-  contentType: string // s
-  content: string // s
-  ingestionHash: string // r
-  extractionHash: string // r
-  linkType: string // s
-  link: string // s
-  imageW: number // s
-  imageH: number // s
-  dimW: number // s || c
-  dimH: number // s || c
-  selected: number // r || s || c
-  selection: string // s
-  lastSelectedChild: number // r || s || c
-  lineWidth: number // s || c
-  lineType: LineType // s || c
-  lineColor: string // s || c
-  sBorderWidth: number // s
-  fBorderWidth: number // s
-  sBorderColor: string // s
-  fBorderColor: string // s
-  sFillColor: string // s
-  fFillColor: string // s
-  textFontSize: number // s
-  textColor: string // s
-  taskStatus: number // s
-  blur: number // s
+export interface RSaveOptional {
+  controlType: ControlType
+  offsetW: number
+  offsetH: number
+  note: string
+  ingestionHash: string
+  extractionHash: string
+  selected: number
+  lastSelectedChild: number
 }
 
-export interface TSaveNever {
-  // mapChain
+export interface RSaveNever {
+  so1: string[]
+  so2: string[]
+  co2: string[]
+  selfW: number
+  selfH: number
+  familyW: number
+  familyH: number
+  maxW: number
+  maxH: number
+  nodeStartX: number
+  nodeStartY: number
+}
+
+export interface SSaveAlways {
+  path: PT
+  nodeId: string
+}
+
+export interface SSaveOptional {
+  contentType: string
+  content: string
+  linkType: string
+  link: string
+  imageW: number
+  imageH: number
+  dimW: number
+  dimH: number
+  selected: number
+  selection: string
+  lastSelectedChild: number
+  lineWidth: number
+  lineType: LineType
+  lineColor: string
+  sBorderWidth: number
+  fBorderWidth: number
+  sBorderColor: string
+  fBorderColor: string
+  sFillColor: string
+  fFillColor: string
+  textFontSize: number
+  textColor: string
+  taskStatus: number
+  blur: number
+}
+
+export interface SSaveNever {
   si1: string
   si2: string
   so1: string[]
@@ -89,35 +112,68 @@ export interface TSaveNever {
   co1: string[]
   co2: string[]
   su: string[]
-  cu: string[],
-  cd: string[],
-  cv: string[],
-  cl: string[],
-  cr: string[],
-  ch: string[],
-  // mapCalcOrientation
   isTop: number
   isBottom: number
-  // mapMeasure
   selfW: number
   selfH: number
-  familyW: number // s
-  familyH: number // s
+  familyW: number
+  familyH: number
   maxW: number
   maxH: number
-  // mapPlaceIndented
+  nodeStartX: number
+  nodeStartY: number
+}
+
+export interface CSaveAlways {
+  path: PT
+  nodeId: string
+}
+
+export interface CSaveOptional {
+  dimW: number
+  dimH: number
+  selected: number
+  lastSelectedChild: number
+  lineWidth: number
+  lineType: LineType
+  lineColor: string
+}
+
+export interface CSaveNever {
+  si1: string
+  si2: string
+  so1: string[]
+  so2: string[]
+  co2: string[]
+  cu: string[]
+  cd: string[]
+  cv: string[]
+  cl: string[]
+  cr: string[]
+  ch: string[]
+  selfW: number
+  selfH: number
+  familyW: number
+  familyH: number
+  maxW: number
+  maxH: number
   nodeStartX: number
   nodeStartY: number
 }
 
 export type G = GSaveAlways & GSaveOptional & GSaveNever
 export type L = LSaveAlways & LSaveOptional & LSaveNever
-export type T = TSaveAlways & TSaveOptional & TSaveNever
-export type N = G | L | T
+export type R = RSaveAlways & RSaveOptional & RSaveNever
+export type S = SSaveAlways & SSaveOptional & SSaveNever
+export type C = CSaveAlways & CSaveOptional & CSaveNever
+export type T = R & S & C
+export type N = G | L | R | S | C
 export type M = N[]
 
-export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
+type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
 export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<LSaveNever>
-export type TPartial = Required<TSaveAlways> & Partial<TSaveOptional> & Partial<TSaveNever>
-export type NPartial = GPartial | LPartial | TPartial
+type RPartial = Required<RSaveAlways> & Partial<RSaveOptional> & Partial<RSaveNever>
+type SPartial = Required<SSaveAlways> & Partial<SSaveOptional> & Partial<SSaveNever>
+type CPartial = Required<CSaveAlways> & Partial<CSaveOptional> & Partial<CSaveNever>
+type NPartial = GPartial | LPartial | RPartial | SPartial | CPartial
 export type MPartial = NPartial[]

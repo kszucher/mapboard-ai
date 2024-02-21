@@ -2,10 +2,9 @@ import {Dialog} from "@radix-ui/themes"
 import {FC, Fragment, ReactNode} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {mTR} from "../../queries/MapQueries.ts"
+import {mR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {ControlType, DialogState} from "../../state/Enums"
-import {T} from "../../state/MapStateTypes"
 import CircleLetterI from "../../assets/circle-letter-i.svg?react"
 import CircleLetterE from "../../assets/circle-letter-e.svg?react"
 
@@ -31,15 +30,15 @@ export const MapSvgNodeIcons: FC = () => {
   const m = useSelector((state: RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (
-    mTR(m).map((t: T) => (
-      <Fragment key={t.nodeId}>
-        {t.controlType === ControlType.INGESTION &&
-          <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 - 12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
+    mR(m).map(ri => (
+      <Fragment key={ri.nodeId}>
+        {ri.controlType === ControlType.INGESTION &&
+          <DecorationIcon x={ri.nodeStartX + 12} y={ri.nodeStartY + ri.selfH / 2 - 12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_INGESTION))}>
             <CircleLetterI/>
           </DecorationIcon>
         }
-        {t.controlType === ControlType.EXTRACTION &&
-          <DecorationIcon x={t.nodeStartX + 12} y={t.nodeStartY + t.selfH / 2 - 12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
+        {ri.controlType === ControlType.EXTRACTION &&
+          <DecorationIcon x={ri.nodeStartX + 12} y={ri.nodeStartY + ri.selfH / 2 - 12} onClick={() => dispatch(actions.setDialogState(DialogState.ROOT_EXTRACTION))}>
             <CircleLetterE/>
           </DecorationIcon>
         }

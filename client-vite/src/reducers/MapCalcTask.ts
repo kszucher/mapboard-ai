@@ -1,9 +1,9 @@
-import {getHP, mTS} from "../queries/MapQueries.ts"
+import {getHP, mS} from "../queries/MapQueries.ts"
 import {M} from "../state/MapStateTypes"
 
 export const mapCalcTask = (m: M) => {
   const hp = getHP(m)
-  mTS(m).toReversed().forEach(ti => {
+  mS(m).toReversed().forEach(ti => {
     if (ti.so1.length) {
       ti.taskStatus = 4
       for (let i = 0; i < ti.so1.length; i++) {

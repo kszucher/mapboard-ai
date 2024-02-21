@@ -2,7 +2,7 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getMapMode, mTC} from "../../queries/MapQueries.ts"
+import {getMapMode, mC} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils"
@@ -15,18 +15,18 @@ export const MapDivC: FC = () => {
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
   return (
-    mTC(m).map(ti => (
+    mC(m).map(ci => (
       <div
-        key={ti.nodeId}
-        id={ti.nodeId}
+        key={ci.nodeId}
+        id={ci.nodeId}
         ref={ref => ref && ref.focus()}
         style={{
-          left: adjust(ti.nodeStartX),
-          top: adjust(ti.nodeStartY),
-          minWidth: ti.selfW,
-          minHeight: ti.selfH,
+          left: adjust(ci.nodeStartX),
+          top: adjust(ci.nodeStartY),
+          minWidth: ci.selfW,
+          minHeight: ci.selfH,
           position: 'absolute',
-          zIndex: ti.path.length,
+          zIndex: ci.path.length,
           border: 0,
           margin: 0,
           pointerEvents: [
@@ -40,7 +40,7 @@ export const MapDivC: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_CELL) {
-              !e.ctrlKey && md(MR.selectT, {path: ti.path})
+              !e.ctrlKey && md(MR.selectT, {path: ci.path})
             }
           } else if (e.buttons === 4) {
             e.preventDefault()

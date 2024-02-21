@@ -1,7 +1,7 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {RootState} from "../../reducers/EditorReducer"
-import {mTR} from "../../queries/MapQueries.ts"
+import {mR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {ControlType} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils.ts"
@@ -11,7 +11,7 @@ export const MapSvgRootSeparators: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   return (
-    connectionHelpersVisible && mTR(m).filter(ti => ti.controlType !== ControlType.NONE).map(ti => (
+    connectionHelpersVisible && mR(m).filter(ti => ti.controlType !== ControlType.NONE).map(ti => (
       <Fragment key={`${ti.nodeId}_separator`}>
         <path
           d={

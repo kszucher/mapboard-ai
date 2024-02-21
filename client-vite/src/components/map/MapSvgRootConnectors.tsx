@@ -2,11 +2,11 @@ import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import { mTR, isExistingLink, mL} from "../../queries/MapQueries.ts"
+import {mR, isExistingLink, mL} from "../../queries/MapQueries.ts"
 import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
 import {Side} from "../../state/Enums"
-import {L, T} from "../../state/MapStateTypes"
+import {L} from "../../state/MapStateTypes"
 import {getCoordsMidBezier, getBezierLinePath, getRootLinePath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgRootConnectors: FC = () => {
@@ -56,17 +56,17 @@ export const MapSvgRootConnectors: FC = () => {
         ))
       }
       {connectionHelpersVisible &&
-        mTR(m).map((t: T) => (
-          <Fragment key={`${t.nodeId}_root_connector`}>
+        mR(m).map(ri => (
+          <Fragment key={`${ri.nodeId}_root_connector`}>
             {
               [
-                {side: 'L', x: t.nodeStartX, y: t.nodeStartY + t.selfH / 2 - 12},
-                {side: 'R', x: t.nodeStartX + t.selfW - 24, y: t.nodeStartY + t.selfH / 2 - 12},
-                {side: 'T', x: t.nodeStartX + t.selfW / 2 - 12, y: t.nodeStartY},
-                {side: 'B', x: t.nodeStartX + t.selfW / 2 - 12, y: t.nodeStartY + t.selfH - 24}
+                {side: 'L', x: ri.nodeStartX, y: ri.nodeStartY + ri.selfH / 2 - 12},
+                {side: 'R', x: ri.nodeStartX + ri.selfW - 24, y: ri.nodeStartY + ri.selfH / 2 - 12},
+                {side: 'T', x: ri.nodeStartX + ri.selfW / 2 - 12, y: ri.nodeStartY},
+                {side: 'B', x: ri.nodeStartX + ri.selfW / 2 - 12, y: ri.nodeStartY + ri.selfH - 24}
               ].map(el => (
                   <rect
-                    key={`${t.nodeId}_plus_${el.side}`}
+                    key={`${ri.nodeId}_plus_${el.side}`}
                     viewBox="0 0 24 24"
                     width="24"
                     height="24"
@@ -79,15 +79,15 @@ export const MapSvgRootConnectors: FC = () => {
                     onMouseDown={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
-                      dispatch(actions.setConnectionStart({fromNodeId: t.nodeId, fromNodeSide: Side[el.side as keyof typeof Side]}))
+                      dispatch(actions.setConnectionStart({fromNodeId: ri.nodeId, fromNodeSide: Side[el.side as keyof typeof Side]}))
                     }}
                     onMouseUp={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
-                      const newLink = {...connectionStart, toNodeId: t.nodeId, toNodeSide: Side[el.side as keyof typeof Side]} as L
+                      const newLink = {...connectionStart, toNodeId: ri.nodeId, toNodeSide: Side[el.side as keyof typeof Side]} as L
                       if (
                         connectionStart.fromNodeId !== '' &&
-                        connectionStart.fromNodeId !== t.nodeId &&
+                        connectionStart.fromNodeId !== ri.nodeId &&
                         !isExistingLink(m, newLink)
                       ) {
                         md(MR.insertL, newLink)

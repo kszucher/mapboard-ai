@@ -2,7 +2,7 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getMapMode, getXA, isXR, mTR} from "../../queries/MapQueries.ts"
+import {getMapMode, getXA, isXR, mR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils"
@@ -15,18 +15,18 @@ export const MapDivR: FC = () => {
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
   return (
-    mTR(m).map(ti => (
+    mR(m).map(ri => (
       <div
-        key={ti.nodeId}
-        id={ti.nodeId}
+        key={ri.nodeId}
+        id={ri.nodeId}
         ref={ref => ref && ref.focus()}
         style={{
-          left: adjust(ti.nodeStartX),
-          top: adjust(ti.nodeStartY),
-          minWidth: ti.selfW,
-          minHeight: ti.selfH,
+          left: adjust(ri.nodeStartX),
+          top: adjust(ri.nodeStartY),
+          minWidth: ri.selfW,
+          minHeight: ri.selfH,
           position: 'absolute',
-          zIndex: ti.path.length,
+          zIndex: ri.path.length,
           border: 0,
           margin: 0,
           pointerEvents: [
@@ -41,24 +41,24 @@ export const MapDivR: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_ROOT) {
-              !e.ctrlKey && md(MR.selectT, {path: ti.path})
-              e.ctrlKey && isXR(m) && !ti.selected && md(MR.selectAddT, {path: ti.path})
-              e.ctrlKey && ti.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ti.path})
+              !e.ctrlKey && md(MR.selectT, {path: ri.path})
+              e.ctrlKey && isXR(m) && !ri.selected && md(MR.selectAddT, {path: ri.path})
+              e.ctrlKey && ri.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ri.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_ROOT) {
-              !e.ctrlKey && md(MR.selectT, {path: ti.path})
+              !e.ctrlKey && md(MR.selectT, {path: ri.path})
               md(MR.saveFromCoordinates, {e})
               const abortController = new AbortController()
               const {signal} = abortController
               window.addEventListener('mousemove', (e) => {
                 e.preventDefault()
                 didMove = true
-                md(MR.offsetRByDragPreview, {t: ti, e})
+                md(MR.offsetRByDragPreview, {t: ri, e})
               }, {signal})
               window.addEventListener('mouseup', (e) => {
                 abortController.abort()
                 e.preventDefault()
                 if (didMove) {
-                  md(MR.offsetRByDrag, {t: ti, e})
+                  md(MR.offsetRByDrag, {t: ri, e})
                 }
               }, {signal})
             }

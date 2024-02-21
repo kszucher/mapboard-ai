@@ -1,121 +1,125 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getG, getHN, getTCO1C0, getTCO1R0,   hasTask, isC, isG, isR, isS, mGT, mTR} from "../queries/MapQueries.ts"
+import {getG, getHN, getTCO1C0, getTCO1R0,   hasTask, isC, isG, isR, isS, mR} from "../queries/MapQueries.ts"
 import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
-import {M, T} from "../state/MapStateTypes"
+import {C, G, M, R, S, T} from "../state/MapStateTypes"
 
 export const mapMeasure = (pm: M, m: M) => {
   const hn = getHN(m)
   const phn = getHN(pm)
   const g = getG(m)
-  const minOffsetW = Math.min(...mTR(m).map(ri => ri.offsetW))
-  const minOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
-  mTR(m).map(tri => Object.assign(tri, {
+  const minOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))
+  const minOffsetH = Math.min(...mR(m).map(ri => ri.offsetH))
+  mR(m).map(tri => Object.assign(tri, {
     offsetW: tri.offsetW - minOffsetW,
     offsetH: tri.offsetH - minOffsetH
   }))
-  mGT(m).slice().reverse().forEach(ti => {
+  m.slice().reverse().forEach(ni => {
     switch (true) {
-      case isG(ti.path): {
-        ti.selfW = Math.max(...mTR(m).map(ri => ri.offsetW + ri.selfW))
-        ti.selfH = Math.max(...mTR(m).map(ri => ri.offsetH + ri.selfH))
+      case isG(ni.path): {
+        const g = ni as G
+        g.selfW = Math.max(...mR(m).map(ri => ri.offsetW + ri.selfW))
+        g.selfH = Math.max(...mR(m).map(ri => ri.offsetH + ri.selfH))
         break
       }
-      case isR(ti.path): {
-        if (ti.so1.length) {
-          const tso1 = ti.so1.map(nid => hn.get(nid)) as T[]
+      case isR(ni.path): {
+        const ri = ni as R
+        if (ri.so1.length) {
+          const tso1 = ri.so1.map(nid => hn.get(nid)) as T[]
           if (g.flow === Flow.EXPLODED) {
-            ti.familyW = Math.max(...tso1.map(ti => ti.maxW))
-            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length || ti.co2.length)
+            ri.familyW = Math.max(...tso1.map(si => si.maxW))
+            ri.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.so2.length || ri.co2.length)
           } else if (g.flow === Flow.INDENTED) {
-            ti.familyW = Math.max(...tso1.map(ti => ti.maxW))
-            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.co2.length)
+            ri.familyW = Math.max(...tso1.map(ti => ti.maxW))
+            ri.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.co2.length)
           }
         }
-        ti.selfW = ti.familyW + 2 * MARGIN_X + getTaskWidth(g) * hasTask(m, ti)
-        ti.selfH = ti.familyH + 2 * MARGIN_Y
+        ri.selfW = ri.familyW + 2 * MARGIN_X + getTaskWidth(g) * hasTask(m, ri as T)
+        ri.selfH = ri.familyH + 2 * MARGIN_Y
         break
       }
-      case isS(ti.path): {
-        if (ti.so1.length) {
-          const tso1 = ti.so1.map(nid => hn.get(nid)) as T[]
+      case isS(ni.path): {
+        const si = ni as S
+        if (si.so1.length) {
+          const tso1 = si.so1.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
-            ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + g.sLineDeltaXDefault
-            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length || ti.co2.length)
+            si.familyW = Math.max(...tso1.map(ti => ti.maxW)) + g.sLineDeltaXDefault
+            si.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (si.so1.length - 1) * +Boolean(si.so2.length || si.co2.length)
           } else if (g.flow === Flow.INDENTED) {
-            ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + INDENT
-            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.co2.length)
+            si.familyW = Math.max(...tso1.map(ti => ti.maxW)) + INDENT
+            si.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (si.so1.length - 1) * +Boolean(si.co2.length)
           }
         }
-        if (ti.co1.length) {
-          const tco1 = ti.co1.map(nid => hn.get(nid)) as T[]
+        if (si.co1.length) {
+          const tco1 = si.co1.map(nid => hn.get(nid)) as C[]
           tco1.forEach(ti => {
-            const cv = ti.cv.map(nid => hn.get(nid)) as T[]
-            const ch = ti.ch.map(nid => hn.get(nid)) as T[]
+            const cv = ti.cv.map(nid => hn.get(nid)) as C[]
+            const ch = ti.ch.map(nid => hn.get(nid)) as C[]
             ti.selfW = Math.max(...cv.map(ti => ti.familyW + C_SPACING))
             ti.selfH = Math.max(...ch.map(ti => ti.familyH + C_SPACING))
           })
-          ti.selfW = getTCO1R0(m, ti).reduce((a, b) => a + b.selfW, 0)
-          ti.selfH = getTCO1C0(m, ti).reduce((a, b) => a + b.selfH, 0)
+          si.selfW = getTCO1R0(m, si).reduce((a, b) => a + b.selfW, 0)
+          si.selfH = getTCO1C0(m, si).reduce((a, b) => a + b.selfH, 0)
         }
-        if (!ti.co1.length) {
-          const pti = phn.get(ti.nodeId)
+        if (!si.co1.length) {
+          const pti = phn.get(si.nodeId)
           if (
-            ti.content !== '' &&
+            si.content !== '' &&
             (
-              ti.dimW === 0 ||
-              ti.dimH === 0 ||
+              si.dimW === 0 ||
+              si.dimH === 0 ||
               (
                 pti && (
-                  pti.content !== ti.content ||
-                  pti.contentType !== ti.contentType ||
-                  pti.textFontSize !== ti.textFontSize
+                  pti.content !== si.content ||
+                  pti.contentType !== si.contentType ||
+                  pti.textFontSize !== si.textFontSize
                 )
               )
             )
           ) {
-            if (ti.contentType === 'text') {
-              const dim = getTextDim(ti.content, ti.textFontSize)
-              ti.dimW = dim[0]
-              ti.dimH = dim[1]
-            } else if (ti.contentType === 'mermaid') {
-              const currDiv = document.getElementById(ti.nodeId) as HTMLDivElement
+            if (si.contentType === 'text') {
+              const dim = getTextDim(si.content, si.textFontSize)
+              si.dimW = dim[0]
+              si.dimH = dim[1]
+            } else if (si.contentType === 'mermaid') {
+              const currDiv = document.getElementById(si.nodeId) as HTMLDivElement
               if (currDiv) {
-                ti.dimW = currDiv.offsetWidth
-                ti.dimH = currDiv.offsetHeight
+                si.dimW = currDiv.offsetWidth
+                si.dimH = currDiv.offsetHeight
               }
-            } else if (ti.contentType === 'equation') {
-              const dim = getEquationDim(ti.content)
-              ti.dimW = dim[0]
-              ti.dimH = dim[1]
+            } else if (si.contentType === 'equation') {
+              const dim = getEquationDim(si.content)
+              si.dimW = dim[0]
+              si.dimH = dim[1]
             }
           }
-          ti.selfW = (ti.dimW > 20 ? ti.dimW : MIN_NODE_W) + (g.density === 'large' ? NODE_MARGIN_X_LARGE : NODE_MARGIN_X_SMALL)
-          ti.selfH = (ti.dimH / 17 > 1 ? ti.dimH : MIN_NODE_H) + (g.density === 'large' ? NODE_MARGIN_Y_LARGE : NODE_MARGIN_Y_SMALL)
+          si.selfW = (si.dimW > 20 ? si.dimW : MIN_NODE_W) + (g.density === 'large' ? NODE_MARGIN_X_LARGE : NODE_MARGIN_X_SMALL)
+          si.selfH = (si.dimH / 17 > 1 ? si.dimH : MIN_NODE_H) + (g.density === 'large' ? NODE_MARGIN_Y_LARGE : NODE_MARGIN_Y_SMALL)
         }
         if (g.flow === Flow.EXPLODED) {
-          ti.maxW = ti.selfW + ti.familyW
-          ti.maxH = Math.max(...[ti.selfH, ti.familyH])
+          si.maxW = si.selfW + si.familyW
+          si.maxH = Math.max(...[si.selfH, si.familyH])
         } else if (g.flow === Flow.INDENTED) {
-          ti.maxW = Math.max(...[ti.selfW, ti.familyW])
-          ti.maxH = ti.selfH + ti.familyH
+          si.maxW = Math.max(...[si.selfW, si.familyW])
+          si.maxH = si.selfH + si.familyH
         }
         break
       }
-      case isC(ti.path): {
-        if (ti.so1.length) {
-          const tso1 = ti.so1.map(nid => hn.get(nid)) as T[]
+      case isC(ni.path): {
+        const ci = ni as C
+        if (ci.so1.length) {
+          const tso1 = ci.so1.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
-            ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + g.sLineDeltaXDefault
-            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.so2.length || ti.co2.length)
+            ci.familyW = Math.max(...tso1.map(si => si.maxW)) + g.sLineDeltaXDefault
+            ci.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ci.so1.length - 1) * +Boolean(ci.so2.length || ci.co2.length)
           } else {
-            ti.familyW = Math.max(...tso1.map(ti => ti.maxW)) + INDENT
-            ti.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ti.so1.length - 1) * +Boolean(ti.co2.length)
+            ci.familyW = Math.max(...tso1.map(si => si.maxW)) + INDENT
+            ci.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ci.so1.length - 1) * +Boolean(ci.co2.length)
           }
         } else {
-          ti.familyW = 60
-          ti.familyH = 30
+          ci.familyW = 60
+          ci.familyH = 30
         }
         break
       }

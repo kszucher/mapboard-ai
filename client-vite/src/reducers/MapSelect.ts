@@ -1,5 +1,4 @@
-import {tSaveOptional} from "../state/MapState.ts"
-import {M, T} from "../state/MapStateTypes"
+import {M, N, T} from "../state/MapStateTypes"
 import {getTSI1, getX, isR, mT} from "../queries/MapQueries.ts"
 
 export const unselectNodes = (m: M) => mT(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
@@ -17,10 +16,10 @@ export const selectAddT = (m: M, ti: T, selection: 's' | 'f') => {
 }
 
 export const selectRemoveT = (ti: T) => {
-  Object.assign(ti, {selected: 0, selection: tSaveOptional.selection})
+  Object.assign(ti, {selected: 0, selection: 's'})
 }
 
-export const selectTL = (m: M, nList: T[], selection: 's' | 'f') => {
+export const selectTL = (m: M, nList: N[], selection: 's' | 'f') => {
   if (nList.length) {
     unselectNodes(m)
     nList.map((ti, i) => Object.assign(ti, {selected: i + 1, selection}))

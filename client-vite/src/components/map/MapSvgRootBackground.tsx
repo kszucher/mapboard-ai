@@ -3,7 +3,7 @@ import {useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {RootState} from "../../reducers/EditorReducer"
-import {mTR} from "../../queries/MapQueries.ts"
+import {mR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 
@@ -12,7 +12,7 @@ export const MapSvgRootBackground: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   return (
-    mTR(m).map(ti => (
+    mR(m).map(ti => (
       <rect
         key={`${ti.nodeId}_svg_root_background`}
         x={ti.nodeStartX}

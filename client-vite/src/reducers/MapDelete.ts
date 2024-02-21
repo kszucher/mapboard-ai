@@ -1,6 +1,6 @@
 import {L, M, PL, PT} from "../state/MapStateTypes"
 import {selectT, selectTL} from "./MapSelect"
-import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getRSCIPL, isSD, isSDO, mG, mL, mT, isSEO, mTR, isR} from "../queries/MapQueries.ts"
+import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getRSCIPL, isSD, isSDO, mG, mL, mT, isSEO, mR, isR} from "../queries/MapQueries.ts"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[
@@ -16,8 +16,8 @@ export const deleteL = (m: M, l: L) => {
 
 export const deleteLR = (m: M) => {
   const xa = getXA(m)
-  const nonSelectedMinOffsetW = Math.min(...mTR(m).map(ri => ri.offsetW))
-  const nonSelectedMinOffsetH = Math.min(...mTR(m).map(ri => ri.offsetH))
+  const nonSelectedMinOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))
+  const nonSelectedMinOffsetH = Math.min(...mR(m).map(ri => ri.offsetH))
   m.splice(0, m.length, ...[
       ...mG(m),
       ...mL(m)

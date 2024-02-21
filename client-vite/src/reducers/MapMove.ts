@@ -1,6 +1,6 @@
-import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getG, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, mTR, rToCb, sortPath, sToCb} from "../queries/MapQueries.ts"
-import {tSaveOptional} from "../state/MapState"
-import {M, T, PT, L, PL, PTR} from "../state/MapStateTypes"
+import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getG, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, mR, rToCb, sortPath, sToCb} from "../queries/MapQueries.ts"
+import {rSaveOptional, sSaveOptional} from "../state/MapState"
+import {M, T, PT, L, PL, PR} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {deleteCC, deleteCR, deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
@@ -25,7 +25,7 @@ const cbSave = (cb: any) => {
   })
 }
 
-const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
+const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PR) => {
   const nodeIdMappingR = cbR.map((ti, i) => ({
     oldNodeId: ti.nodeId,
     newNodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8)
@@ -40,11 +40,11 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PTR) => {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ti.path.at(1) + ipR.at(-1), ...ti.path.slice(2)],
   }))
-  const nonSelectedMinOffsetW = Math.min(...mTR(cbR).map(ri => ri.offsetW || tSaveOptional.offsetW))
-  const nonSelectedMinOffsetH = Math.min(...mTR(cbR).map(ri => ri.offsetH || tSaveOptional.offsetH))
-  mTR(cbR).map(ri => Object.assign(ri, {
-    offsetW:  (ri.offsetW ? ri.offsetW : tSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).selfW,
-    offsetH:  (ri.offsetH ? ri.offsetH : tSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
+  const nonSelectedMinOffsetW = Math.min(...mR(cbR).map(ri => ri.offsetW || rSaveOptional.offsetW))
+  const nonSelectedMinOffsetH = Math.min(...mR(cbR).map(ri => ri.offsetH || rSaveOptional.offsetH))
+  mR(cbR).map(ri => Object.assign(ri, {
+    offsetW:  (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).selfW,
+    offsetH:  (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)
@@ -55,8 +55,8 @@ const cbToS = (m: M, cbS: M, ip: PT) => {
   cbS.forEach((ti, i) => Object.assign(ti, {
     nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)],
-    linkType: tSaveOptional.linkType,
-    link: tSaveOptional.link
+    linkType: sSaveOptional.linkType,
+    link: sSaveOptional.link
   }))
   makeSpaceFromS(m, ip, getXA(cbS).length)
   unselectNodes(m)
@@ -94,7 +94,7 @@ export const copyS = (m: M) => {
 
 export const pasteLR = (m: M, payload: any) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
-  const ipR = ['r', mT(m).at(-1)?.path.at(1) + 1] as PTR
+  const ipR = ['r', mT(m).at(-1)?.path.at(1) + 1] as PR
   const cbLR = JSON.parse(payload) as M
   const cbL = mL(cbLR)
   const cbR = mT(cbLR)
@@ -109,7 +109,7 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
 
 export const duplicateR = (m: M) => {
   const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
-  const ipR = ['r', mT(m).at(-1)!.path.at(1) + 1] as PTR
+  const ipR = ['r', mT(m).at(-1)!.path.at(1) + 1] as PR
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
   cbToLR(m, cbL, cbR, ipL, ipR)

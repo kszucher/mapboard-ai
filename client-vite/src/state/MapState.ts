@@ -1,8 +1,8 @@
 import {ControlType, LineType, Flow, Side} from "./Enums"
-import {GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, PL, PT, TSaveAlways, TSaveNever, TSaveOptional} from "./MapStateTypes"
+import {PG, PL, PR, PS, PC, GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, RSaveAlways, RSaveNever, RSaveOptional, SSaveAlways, SSaveNever, SSaveOptional, CSaveAlways, CSaveNever, CSaveOptional,} from "./MapStateTypes"
 
 export const gSaveAlways = {
-  path: ['g'],
+  path: ['g'] as PG,
   nodeId: ''
 } as GSaveAlways
 
@@ -35,18 +35,42 @@ export const lSaveNever = {
 
 } as LSaveNever
 
-export const tSaveAlways = {
-  path: [] as unknown as PT,
+export const rSaveAlways = {
+  path: [] as unknown as PR,
   nodeId: '',
-} as TSaveAlways
+} as RSaveAlways
 
-export const tSaveOptional = {
+export const rSaveOptional = {
   controlType: ControlType.NONE,
   offsetW: 0,
   offsetH: 0,
+  note: '',
   ingestionHash: '',
   extractionHash: '',
-  note: '',
+  selected: 0,
+  lastSelectedChild: -1,
+} as RSaveOptional
+
+export const rSaveNever = {
+  so1: [],
+  so2: [],
+  co2: [],
+  selfW: 0,
+  selfH: 0,
+  maxW: 0,
+  maxH: 0,
+  familyW: 0,
+  familyH: 0,
+  nodeStartX: 0,
+  nodeStartY: 0,
+} as RSaveNever
+
+export const sSaveAlways = {
+  path: [] as unknown as PS,
+  nodeId: '',
+} as SSaveAlways
+
+export const sSaveOptional = {
   contentType: 'text',
   content: '',
   linkType: '',
@@ -71,10 +95,9 @@ export const tSaveOptional = {
   textColor: 'default',
   taskStatus: 0,
   blur: 0,
-} as TSaveOptional
+} as SSaveOptional
 
-export const tSaveNever = {
-  // mapChain
+export const sSaveNever = {
   si1: '',
   si2: '',
   so1: [],
@@ -82,23 +105,51 @@ export const tSaveNever = {
   co1: [],
   co2: [],
   su: [],
-  cu: [],
-  cd: [],
-  cv: [],
-  cl: [],
-  cr: [],
-  ch: [],
-  // mapCalcOrientation
   isTop: 0,
   isBottom: 0,
-  // mapMeasure
   selfW: 0,
   selfH: 0,
   familyW: 0,
   familyH: 0,
   maxW: 0,
   maxH: 0,
-  // mapPlaceIndented
   nodeStartX: 0,
   nodeStartY: 0,
-} as TSaveNever
+} as SSaveNever
+
+export const cSaveAlways = {
+  path: [] as unknown as PC,
+  nodeId: '',
+} as CSaveAlways
+
+export const cSaveOptional = {
+  dimW: 0,
+  dimH: 0,
+  selected: 0,
+  lastSelectedChild: -1,
+  lineWidth: 1,
+  lineType: LineType.bezier,
+  lineColor: '#bbbbbb',
+} as CSaveOptional
+
+export const cSaveNever = {
+  si1: '',
+  si2: '',
+  so1: [],
+  so2: [],
+  co2: [],
+  cu: [],
+  cd: [],
+  cv: [],
+  cl: [],
+  cr: [],
+  ch: [],
+  selfW: 0,
+  selfH: 0,
+  familyW: 0,
+  familyH: 0,
+  maxW: 0,
+  maxH: 0,
+  nodeStartX: 0,
+  nodeStartY: 0,
+} as CSaveNever

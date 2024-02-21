@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {isRS, isRSC, isCS, mTS, mTC, getG, getHN} from "../../queries/MapQueries.ts"
+import {isRS, isRSC, isCS, mS, mC, getG, getHN} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -20,28 +20,28 @@ export const MapSvgNodeAttributes: FC = () => {
   const g = getG(m)
   return (
     <Fragment>
-      {mTS(m).map(ti => (
-        <Fragment key={ti.nodeId}>
-          {!isRS(ti.path) && !isCS(ti.path) && ti.co1.length === 0 &&
+      {mS(m).map(si => (
+        <Fragment key={si.nodeId}>
+          {!isRS(si.path) && !isCS(si.path) && si.co1.length === 0 &&
             <path
-              d={!phn.has(ti.nodeId) && phn.get(ti.si1)
-                ? getNodeLinePath(g, phn.get(ti.si1)!, ti)
-                : getNodeLinePath(g, hn.get(ti.si1)!, ti)
+              d={!phn.has(si.nodeId) && phn.get(si.si1)
+                ? getNodeLinePath(g, phn.get(si.si1)!, si)
+                : getNodeLinePath(g, hn.get(si.si1)!, si)
               }
-              strokeWidth={ti.lineWidth}
-              stroke={ti.taskStatus > 1
-                ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(ti.taskStatus - 2)
-                : ti.lineColor
+              strokeWidth={si.lineWidth}
+              stroke={si.taskStatus > 1
+                ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(si.taskStatus - 2)
+                : si.lineColor
               }
               fill={'none'}
               {...pathCommonProps}
             >
               {
-                !phn.has(ti.nodeId) && phn.has(ti.si1) &&
+                !phn.has(si.nodeId) && phn.has(si.si1) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(g, phn.get(ti.si1)!, ti)}
-                  to={getNodeLinePath(g, hn.get(ti.si1)!, ti)}
+                  from={getNodeLinePath(g, phn.get(si.si1)!, si)}
+                  to={getNodeLinePath(g, hn.get(si.si1)!, si)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
@@ -49,9 +49,9 @@ export const MapSvgNodeAttributes: FC = () => {
               }
             </path>
           }
-          {ti.co1.length > 0 &&
+          {si.co1.length > 0 &&
             <path
-              d={getGridPath(m, ti)}
+              d={getGridPath(m, si)}
               stroke={C.TABLE_GRID}
               strokeWidth={1}
               fill={'none'}
@@ -60,24 +60,24 @@ export const MapSvgNodeAttributes: FC = () => {
           }
         </Fragment>
       ))}
-      {mTC(m).map(ti => (
-        <Fragment key={ti.nodeId}>
-          {!isRSC(ti.path) && ti.path.at(-2) > -1 && ti.path.at(-1) === 0 &&
+      {mC(m).map(ci => (
+        <Fragment key={ci.nodeId}>
+          {!isRSC(ci.path) && ci.path.at(-2) > -1 && ci.path.at(-1) === 0 &&
             <path
-              d={!phn.has(ti.nodeId) && phn.has(ti.si2)
-                ? getNodeLinePath(g, phn.get(ti.si2)!, ti)
-                : getNodeLinePath(g, hn.get(ti.si2)!, ti)
+              d={!phn.has(ci.nodeId) && phn.has(ci.si2)
+                ? getNodeLinePath(g, phn.get(ci.si2)!, ci)
+                : getNodeLinePath(g, hn.get(ci.si2)!, ci)
               }
-              strokeWidth={ti.lineWidth}
-              stroke={ti.lineColor}
+              strokeWidth={ci.lineWidth}
+              stroke={ci.lineColor}
               fill={'none'}
               {...pathCommonProps}
             >
-              {!phn.has(ti.nodeId) && phn.has(ti.si2) &&
+              {!phn.has(ci.nodeId) && phn.has(ci.si2) &&
                 <animate
                   attributeName='d'
-                  from={getNodeLinePath(g, phn.get(ti.si2)!, ti)}
-                  to={getNodeLinePath(g, hn.get(ti.si2)!, ti)}
+                  from={getNodeLinePath(g, phn.get(ci.si2)!, ci)}
+                  to={getNodeLinePath(g, hn.get(ci.si2)!, ci)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}
