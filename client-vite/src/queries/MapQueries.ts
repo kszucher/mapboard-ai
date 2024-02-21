@@ -28,12 +28,12 @@ export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(t
 export const isG = (p: P): boolean => p.at(0) === 'g'
 export const isL = (p: P): boolean => p.at(0) === 'l'
 export const isR = (p: P): boolean => getPathPattern(p).endsWith('r')
+export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')
+export const isC = (p: P): boolean => getPathPattern(p).endsWith('c')
 export const isRS = (p: P): boolean => getPathPattern(p).endsWith('rs')
 export const isRSC = (p: P): boolean => getPathPattern(p).endsWith('rsc')
-export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')
 export const isSS = (p: P): boolean => getPathPattern(p).endsWith('ss')
 export const isSSC = (p: P): boolean => getPathPattern(p).endsWith('ssc')
-export const isC = (p: P): boolean => getPathPattern(p).endsWith('c')
 export const isCS = (p: P): boolean => getPathPattern(p).endsWith('cs')
 const isT = (p: P): boolean =>
   p.at(0) === 'r' ||
