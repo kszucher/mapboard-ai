@@ -42,6 +42,8 @@ maps.forEach(map => Object.assign(map.versions[0], [
           'lastSelectedChild',
       ])),
       ...map.versions[0].filter(node => isS(node.path)).map(el => filteredObject(el, [
+          'path',
+          'nodeId',
           'contentType',
           'content',
           'linkType',
@@ -68,6 +70,8 @@ maps.forEach(map => Object.assign(map.versions[0], [
           'blur',
       ])),
       ...map.versions[0].filter(node => isC(node.path)).map(el => filteredObject(el, [
+          'path',
+          'nodeId',
           'dimW',
           'dimH',
           'selected',
