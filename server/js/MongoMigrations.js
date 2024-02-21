@@ -4,11 +4,11 @@ const sortablePath = (p) => p.map((pi) => isNaN(pi) ? pi: 1000 + pi).join('')
 const sortPath = (a, b) => sortablePath(a.path) > sortablePath(b.path) ? 1 : -1
 const filteredObject = (raw, allowed) => Object.fromEntries(Object.entries(raw).filter(([key, val]) => allowed.includes(key)))
 const getPathPattern = (p) => p.filter(pi => isNaN(pi)).join('')
-export const isG = (p) => p.at(0) === 'g'
-export const isL = (p) => p.at(0) === 'l'
-export const isR = (p) => getPathPattern(p).endsWith('r')
-export const isS = (p) => getPathPattern(p).endsWith('s')
-export const isC = (p) => getPathPattern(p).endsWith('c')
+const isG = (p) => p.at(0) === 'g'
+const isL = (p) => p.at(0) === 'l'
+const isR = (p) => getPathPattern(p).endsWith('r')
+const isS = (p) => getPathPattern(p).endsWith('s')
+const isC = (p) => getPathPattern(p).endsWith('c')
 
 const maps = JSON.parse(fs.readFileSync("../data/maps.json", "utf8"))
 
