@@ -31,18 +31,15 @@ export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(t
 
 export const isG = (p: P): boolean => p.at(0) === 'g'
 export const isL = (p: P): boolean => p.at(0) === 'l'
-export const isR = (p: P): boolean => getPathPattern(p).endsWith('r')
-export const isS = (p: P): boolean => getPathPattern(p).endsWith('s')
-export const isC = (p: P): boolean => getPathPattern(p).endsWith('c')
-export const isRS = (p: P): boolean => getPathPattern(p).endsWith('rs')
-export const isRSC = (p: P): boolean => getPathPattern(p).endsWith('rsc')
-export const isSS = (p: P): boolean => getPathPattern(p).endsWith('ss')
-export const isSSC = (p: P): boolean => getPathPattern(p).endsWith('ssc')
-export const isCS = (p: P): boolean => getPathPattern(p).endsWith('cs')
-const isT = (p: P): boolean =>
-  p.at(0) === 'r' ||
-  p.at(0) === 's' ||
-  p.at(0) === 'c'
+export const isR = (p: P): boolean => p.at(-2) === 'r'
+export const isS = (p: P): boolean => p.at(-2) === 's'
+export const isC = (p: P): boolean => p.at(-3) === 'c'
+export const isRS = (p: P): boolean => p.at(-4) === 'r' && isS(p)
+export const isRSC = (p: P): boolean => p.at(-7) === 'r' && p.at(-5) === 's' && p.at(-3) === 'c'
+export const isSS = (p: P): boolean => p.at(-4) === 's' && p.at(-2) === 's'
+export const isSSC = (p: P): boolean => p.at(-7) === 's' && p.at(-5) === 's' && p.at(-3) === 'c'
+export const isCS = (p: P): boolean => p.at(-5) === 'c' && p.at(-2) === 's'
+const isT = (p: P): boolean => p.at(0) === 'r' || p.at(0) === 's' || p.at(0) === 'c'
 
 export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
 export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]
