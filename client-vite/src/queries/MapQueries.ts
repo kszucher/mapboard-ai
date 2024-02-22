@@ -21,10 +21,10 @@ export const getXF = (m: M): T => mT(m).find(ti => ti.selected)!
 export const getXFS = (m: M): S => mS(m).find(si => si.selected)!
 export const getXL = (m: M): T => mT(m).findLast(ti => ti.selected)!
 export const getXLS = (m: M): S => mS(m).findLast(si => si.selected)!
-export const getX = (m: M): T => mT(m).reduce((a, b) => a.selected > b.selected ? a : b)
-export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected ? a : b)
-export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b)
-export const getXC = (m: M): C => mC(m).reduce((a, b) => a.selected > b.selected ? a : b)
+export const getX = (m: M): T => mT(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as T)
+export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as R)
+export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as S)
+export const getXC = (m: M): C => mC(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as C)
 export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected)
 export const getXAS = (m: M): S[] => mS(m).filter(ti => ti.selected)
 
