@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, getXC, getXS, getLeftCS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCS, isXCT, isXR, isXRS, isXS, mR, sortPath} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, getXC, getXS, getLCS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCS, isXCT, isXR, isXRS, isXS, mR, sortPath, getRCS, getUCS, getDCS} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -77,6 +77,7 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyY' && md(MR.undo)
 
     ckm === '---' && e.code === 'ArrowDown' && isXS(m) && getCountQuasiSD(m) > 0 && md(MR.selectSD)
+    ckm === '---' && e.code === 'ArrowDown' && isXCS(m) && getDCS(m) && md(MR.selectDCS)
     ckm === '---' && e.code === 'ArrowDown' && isXC(m) && !isXCB(m) && md(MR.selectCD)
     ckm === '---' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && md(MR.selectCD)
     ckm === 'c--' && e.code === 'ArrowDown' && isXR(m) && md(MR.offsetD)
@@ -88,6 +89,7 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && md(MR.insertCRD)
 
     ckm === '---' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && md(MR.selectSU)
+    ckm === '---' && e.code === 'ArrowUp' && isXCS(m) && getUCS(m) && md(MR.selectUCS)
     ckm === '---' && e.code === 'ArrowUp' && isXC(m) && !isXCT(m) && md(MR.selectCU)
     ckm === '---' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && md(MR.selectCU)
     ckm === 'c--' && e.code === 'ArrowUp' && isXR(m) && md(MR.offsetU)
@@ -99,6 +101,7 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && md(MR.insertCRU)
 
     ckm === '---' && e.code === 'ArrowRight' && isXS(m) && getXS(m).so1.length > 0 && md(MR.selectSO)
+    ckm === '---' && e.code === 'ArrowRight' && isXCS(m) && getX(m).so1.length === 0 && getRCS(m) && md(MR.selectRCS)
     ckm === '---' && e.code === 'ArrowRight' && isXC(m) && !isXCR(m) && md(MR.selectCR)
     ckm === '---' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && md(MR.selectCR)
     ckm === 'c--' && e.code === 'ArrowRight' && isXR(m) && md(MR.offsetR)
@@ -109,7 +112,7 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && md(MR.insertCCR)
 
     ckm === '---' && e.code === 'ArrowLeft' && isXS(m) && !isXRS(m) && !isXCS(m) && md(MR.selectSI)
-    ckm === '---' && e.code === 'ArrowLeft' && isXCS(m) && getLeftCS(m) && md(MR.selectLeftCS)
+    ckm === '---' && e.code === 'ArrowLeft' && isXCS(m) && getLCS(m) && md(MR.selectLCS)
     ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && !isXCL(m) && md(MR.selectCL)
     ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && md(MR.selectCL)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXR(m) && md(MR.offsetL)

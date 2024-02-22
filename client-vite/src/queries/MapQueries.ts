@@ -62,7 +62,10 @@ const getSI2 = (p: PT) => getSI1(getSI1(p))
 export const isOfSameR = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1)
 export const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex(pi => pi === 'c') + 3), pt.slice(0, pt.findLastIndex(pti => pti === 'c') + 3))
 
-export const getLeftCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4), getX(m).path.at(-3) - 1, 's', 0])
+export const getLCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4), getX(m).path.at(-3) - 1, 's', 0])
+export const getRCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4), getX(m).path.at(-3) + 1, 's', 0])
+export const getDCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4) + 1, getX(m).path.at(-3), 's', 0])
+export const getUCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4) - 1, getX(m).path.at(-3), 's', 0])
 
 export const isSD = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
 export const isSU = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
