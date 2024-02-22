@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, getXC, getXS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCS, isXCT, isXR, isXRS, isXS, mR, sortPath} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, getXC, getXS, getLeftCS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCS, isXCT, isXR, isXRS, isXS, mR, sortPath} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -109,6 +109,7 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && md(MR.insertCCR)
 
     ckm === '---' && e.code === 'ArrowLeft' && isXS(m) && !isXRS(m) && !isXCS(m) && md(MR.selectSI)
+    ckm === '---' && e.code === 'ArrowLeft' && isXCS(m) && getLeftCS(m) && md(MR.selectLeftCS)
     ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && !isXCL(m) && md(MR.selectCL)
     ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && md(MR.selectCL)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXR(m) && md(MR.offsetL)

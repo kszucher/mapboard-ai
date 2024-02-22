@@ -28,6 +28,7 @@ export enum MR {
   selectSO = 'selectSO',
   selectSI = 'selectSI',
   selectSF = 'selectSF',
+  selectLeftCS = 'selectLeftCS',
   selectCFR0 = 'selectCFR0',
   selectCFC0 = 'selectCFC0',
   selectCFF = 'selectCFF',

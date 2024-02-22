@@ -62,6 +62,8 @@ const getSI2 = (p: PT) => getSI1(getSI1(p))
 export const isOfSameR = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1)
 export const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex(pi => pi === 'c') + 3), pt.slice(0, pt.findLastIndex(pti => pti === 'c') + 3))
 
+export const getLeftCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4), getX(m).path.at(-3) - 1, 's', 0])
+
 export const isSD = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
 export const isSU = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
 const isQuasiSD = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) > sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
