@@ -1,4 +1,4 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getThisXR, getThisXRS0, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC} from "../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {M, PT, T} from "../state/MapStateTypes"
@@ -31,8 +31,8 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectFirstR': selectT(m, mR(m).at(0)!, 's'); break
     case 'selectFirstS': selectT(m, mS(m).at(0)!, 's'); break
     case 'selectFirstC': selectT(m, mC(m).at(0)!, 's'); break
-    case 'selectXR': selectT(m, getThisXR(m), 's'); break
-    case 'selectXS': selectT(m, getThisXRS0(m), 's'); break
+    case 'selectXR': selectT(m, getNodeByPath(m, getX(m).path.slice(0, 2) as PT), 's'); break
+    case 'selectXS': selectT(m, getNodeByPath(m, [...getX(m).path.slice(0, 2), 's', 0]), 's'); break
     case 'selectSelfX': selectT(m, getX(m), 's'); break
     case 'selectFamilyX': selectT(m, getX(m), 'f'); break
     case 'selectSD': selectT(m, getQuasiSD(m), 's'); break
