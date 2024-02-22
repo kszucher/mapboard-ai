@@ -85,8 +85,8 @@ export enum MR {
   deleteCC = 'deleteCC',
 
   cutLR = 'cutLR',
-  cutSJumpSU = 'cutSJumpSU',
   cutSJumpRI = 'cutSJumpRI',
+  cutSJumpSU = 'cutSJumpSU',
   cutSJumpSD = 'cutSJumpSD',
   cutSJumpSI = 'cutSJumpSI',
   cutSJumpCI = 'cutSJumpCI',
