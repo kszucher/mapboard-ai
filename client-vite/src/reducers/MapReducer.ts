@@ -1,4 +1,4 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS} from "../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS,} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S, T} from "../state/MapStateTypes"
@@ -95,7 +95,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'deleteCR': deleteReselectCR(m); break
     case 'deleteCC': deleteReselectCC(m); break
 
-    case 'cutLR': cutLR(m); break
+    case 'cutLR': {const reselect = mR(m).find(ri => !ri.selected)!.nodeId; cutLR(m); selectR(m, getNodeById(m, reselect) as R); break}
     case 'cutSJumpSU': {const reselect = getXFS(m).su.at(-1); cutS(m); selectS(m, getNodeById(m, reselect as string) as S, 's'); break}
     case 'cutSJumpSD': {const reselect = getXLS(m).sd.at(0); cutS(m); selectS(m, getNodeById(m, reselect as string) as S, 's'); break}
     case 'cutSJumpSI': {const reselect = getXS(m).si1; cutS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break}
