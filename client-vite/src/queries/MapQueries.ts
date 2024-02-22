@@ -49,20 +49,23 @@ export const mC = (m: M): C[] => m.filter(n => isC(n.path)) as C[]
 export const mT = (m: M): T[] => m.filter(n => isT(n.path)) as T[]
 
 export const getG = (m: M): G => mG(m).at(0) as G
-
 export const isXR = (m: M): boolean => isR(getX(m).path)
-export const isXRS = (m: M): boolean => isRS(getX(m).path)
 export const isXS = (m: M): boolean => isS(getX(m).path)
+export const isXRS = (m: M): boolean => isRS(getX(m).path)
+export const isXCS = (m : M): boolean => isCS(getX(m).path)
 
 export const getRSCIPL = (p: PT): PT[] => p.map((_, i) => p.slice(0, i)).filter(pi => (['r', 's'].includes(pi.at(-2)) || pi.at(-3) === 'c' )).map(el => el as PT)
 export const getSIPL = (p: PT): PT[] => getRSCIPL(p).filter(pi => !isR(pi) && !isC(pi))
 const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string')) as PT
 const getSI2 = (p: PT) => getSI1(getSI1(p))
 
+export const isOfSameR = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1)
+export const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex(pi => pi === 'c') + 3), pt.slice(0, pt.findLastIndex(pti => pti === 'c') + 3))
+
 export const isSD = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
 export const isSU = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
-const isQuasiSD = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1) && sortablePath(pt) > sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
-const isQuasiSU = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1) && sortablePath(pt) < sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
+const isQuasiSD = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) > sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
+const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) < sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
 const isSU1 = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) === p.at(-1) - 1
 const isSI1 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI1(p))
 const isSI2 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI2(p))

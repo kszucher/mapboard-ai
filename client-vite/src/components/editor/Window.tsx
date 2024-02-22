@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, getXC, getXS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCT, isXR, isXRS, isXS, mR, sortPath} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, getXC, getXS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCS, isXCT, isXR, isXRS, isXS, mR, sortPath} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -108,11 +108,11 @@ export const Window: FC = () => {
     ckm === '-s-' && e.code === 'ArrowRight' && isXC(m) && md(MR.selectSameCR)
     ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && md(MR.insertCCR)
 
-    ckm === '---' && e.code === 'ArrowLeft' && isXS(m) && !isXRS(m) && !isXR(m) && md(MR.selectSI)
+    ckm === '---' && e.code === 'ArrowLeft' && isXS(m) && !isXRS(m) && !isXCS(m) && md(MR.selectSI)
     ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && !isXCL(m) && md(MR.selectCL)
     ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && md(MR.selectCL)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXR(m) && md(MR.offsetL)
-    ckm === 'c--' && e.code === 'ArrowLeft' && isXASVN(m) && !isXRS(m) && md(MR.moveSI)
+    ckm === 'c--' && e.code === 'ArrowLeft' && isXASVN(m) && !isXRS(m) && !isXCS(m) && md(MR.moveSI)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && md(MR.moveCCL)
     ckm === '-s-' && e.code === 'ArrowLeft' && isXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's' && md(MR.selectFamilyX)
     ckm === '-s-' && e.code === 'ArrowLeft' && isXC(m) && md(MR.selectSameCR)
