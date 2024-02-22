@@ -111,11 +111,11 @@ export const MapDivS: FC = () => {
                 window.focus()
               }
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_STRUCT) {
-              !e.ctrlKey && md(MR.selectT, {path: si.path})
+              !e.ctrlKey && md(MR.selectS, {path: si.path})
               e.ctrlKey && !si.selected && isXS(m) && md(MR.selectAddT, {path: si.path})
               e.ctrlKey && si.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: si.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_STRUCT) {
-              !e.ctrlKey && md(MR.selectT, {path: si.path})
+              !e.ctrlKey && md(MR.selectS, {path: si.path})
               const abortController = new AbortController()
               const {signal} = abortController
               window.addEventListener('mousemove', (e) => {

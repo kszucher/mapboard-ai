@@ -41,11 +41,11 @@ export const MapDivR: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_ROOT) {
-              !e.ctrlKey && md(MR.selectT, {path: ri.path})
+              !e.ctrlKey && md(MR.selectR, {path: ri.path})
               e.ctrlKey && isXR(m) && !ri.selected && md(MR.selectAddT, {path: ri.path})
               e.ctrlKey && ri.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: ri.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_ROOT) {
-              !e.ctrlKey && md(MR.selectT, {path: ri.path})
+              !e.ctrlKey && md(MR.selectR, {path: ri.path})
               md(MR.saveFromCoordinates, {e})
               const abortController = new AbortController()
               const {signal} = abortController

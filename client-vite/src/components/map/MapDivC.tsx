@@ -40,7 +40,7 @@ export const MapDivC: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_CELL) {
-              !e.ctrlKey && md(MR.selectT, {path: ci.path})
+              !e.ctrlKey && md(MR.selectC, {path: ci.path})
             }
           } else if (e.buttons === 4) {
             e.preventDefault()

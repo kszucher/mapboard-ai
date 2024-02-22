@@ -62,10 +62,10 @@ const getSI2 = (p: PT) => getSI1(getSI1(p))
 export const isOfSameR = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1)
 export const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex(pi => pi === 'c') + 3), pt.slice(0, pt.findLastIndex(pti => pti === 'c') + 3))
 
-export const getLCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4), getX(m).path.at(-3) - 1, 's', 0])
-export const getRCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4), getX(m).path.at(-3) + 1, 's', 0])
-export const getDCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4) + 1, getX(m).path.at(-3), 's', 0])
-export const getUCS = (m: M) => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4) - 1, getX(m).path.at(-3), 's', 0])
+export const getLCS = (m: M): S => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4), getX(m).path.at(-3) - 1, 's', 0]) as S
+export const getRCS = (m: M): S => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4), getX(m).path.at(-3) + 1, 's', 0]) as S
+export const getDCS = (m: M): S => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4) + 1, getX(m).path.at(-3), 's', 0]) as S
+export const getUCS = (m: M): S => getNodeByPath(m, [...getX(m).path.slice(0, -5), 'c', getX(m).path.at(-4) - 1, getX(m).path.at(-3), 's', 0]) as S
 
 export const isSD = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
 export const isSU = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
@@ -153,7 +153,7 @@ export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 
 
 export const getLastSO = (m: M): T => getNodeByPath(m, [...getX(m).path, 's', getX(m).lastSelectedChild > - 1 && getX(m).lastSelectedChild < getX(m).so1.length ? getX(m).lastSelectedChild : 0])
 
-export const getReselectR = (m: M): T => mT(m).find(ti => !ti.selected && isR(ti.path))!
+export const getReselectR = (m: M): R => mR(m).find(ti => !ti.selected) as R
 export const getReselectS = (m: M): T => getCountXASU(m) ? getXFSU1(m) : getXFSI1(m)
 export const getReselectCR = (m: M): M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXACD1(m) : [getXSI1(m)] as M )
 export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXACR1(m) : [getXSI1(m)] as M )

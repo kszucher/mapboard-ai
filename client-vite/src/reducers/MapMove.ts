@@ -1,11 +1,11 @@
 import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getCountXASU, getG, getNodeById, getReselectR, getReselectS, getXA, getXSI1, lToCb, mL, mT, mR, rToCb, sortPath, sToCb} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
-import {M, T, PT, L, PL, PR} from "../state/MapStateTypes"
+import {M, T, PT, L, PL, PR, R} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {deleteCC, deleteCR, deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {insertTable} from "./MapInsert"
-import {selectT, selectTL, unselectNodes} from "./MapSelect"
+import {selectR, selectT, selectTL, unselectNodes} from "./MapSelect"
 import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
@@ -70,7 +70,7 @@ export const cutLR = (m: M) => {
   const cbR = structuredClone(rToCb(m))
   cbSave(mapDeInit([...cbL, ...cbR]))
   deleteLR(m)
-  selectT(m, getNodeById(m, reselect), 's')
+  selectR(m, getNodeById(m, reselect) as R)
 }
 
 export const cutS = (m: M) => {

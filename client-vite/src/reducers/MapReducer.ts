@@ -1,7 +1,7 @@
 import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
-import {M, PT, S, T} from "../state/MapStateTypes"
+import {C, M, PC, PR, PS, PT, R, S, T} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteL, deleteReselectCC, deleteReselectCR, deleteReselectLR, deleteReselectS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
@@ -11,7 +11,7 @@ import {copyLR, copyS, cutLR, cutS, duplicateR, duplicateS, moveCC, moveCR, move
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {mapPlaceIndented} from "./MapPlaceIndented.ts"
 import {MR} from "./MapReducerEnum.ts"
-import {selectAddT, selectRemoveT, selectS, selectT, selectTL, unselectNodes} from "./MapSelect"
+import {selectAddT, selectC, selectR, selectRemoveT, selectS, selectT, selectTL, unselectNodes} from "./MapSelect"
 import {mapChain} from "./MapChain.ts"
 import {mapPlaceExploded} from "./MapPlaceExploded.ts"
 import {mapCalcOrientation} from "./MapCalcOrientation.ts"
@@ -27,28 +27,30 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setPlaceTypeIndented': getG(m).flow = Flow.INDENTED; break
 
     case 'unselect': unselectNodes(m); break
-    case 'selectT': selectT(m, getNodeByPath(m, payload.path), 's'); break
-    case 'selectFirstR': selectT(m, mR(m).at(0)!, 's'); break
-    case 'selectFirstS': selectT(m, mS(m).at(0)!, 's'); break
-    case 'selectFirstC': selectT(m, mC(m).at(0)!, 's'); break
-    case 'selectXR': selectT(m, getNodeByPath(m, getX(m).path.slice(0, 2) as PT), 's'); break
-    case 'selectXS': selectT(m, getNodeByPath(m, getX(m).path.slice(0, 2).concat('s', 0) as PT), 's'); break
-    case 'selectSelfX': selectT(m, getX(m), 's'); break
-    case 'selectFamilyX': selectT(m, getX(m), 'f'); break
-    case 'selectSD': selectT(m, getQuasiSD(m), 's'); break
-    case 'selectSU': selectT(m, getQuasiSU(m), 's'); break
-    case 'selectSO': selectT(m, getLastSO(m), 's'); break
+    case 'selectR': selectR(m, getNodeByPath(m, payload.path) as R); break
+    case 'selectS': selectS(m, getNodeByPath(m, payload.path) as S, 's'); break
+    case 'selectC': selectC(m, getNodeByPath(m, payload.path) as C); break
+    case 'selectFirstR': selectR(m, mR(m).at(0)!); break
+    case 'selectFirstS': selectS(m, mS(m).at(0)!, 's'); break
+    case 'selectFirstC': selectC(m, mC(m).at(0)!); break
+    case 'selectXR': selectR(m, getNodeByPath(m, getX(m).path.slice(0, 2) as PR) as R); break
+    case 'selectXS': selectS(m, getNodeByPath(m, getX(m).path.slice(0, 2).concat('s', 0) as PS) as S, 's'); break
+    case 'selectSelfX': selectS(m, getXS(m), 's'); break
+    case 'selectFamilyX': selectS(m, getXS(m), 'f'); break
+    case 'selectSD': selectS(m, getQuasiSD(m) as S, 's'); break
+    case 'selectSU': selectS(m, getQuasiSU(m) as S, 's'); break
+    case 'selectSO': selectS(m, getLastSO(m) as S, 's'); break
     case 'selectSI': selectS(m, getNodeById(m, getXS(m).si1) as S, 's'); break
-    case 'selectSF': selectT(m, getNodeByPath(m, getX(m).path.concat('s', 0) as PT), 's'); break
-    case 'selectLCS': selectT(m, getLCS(m), 's'); break
-    case 'selectRCS': selectT(m, getRCS(m), 's'); break
-    case 'selectDCS': selectT(m, getDCS(m), 's'); break
-    case 'selectUCS': selectT(m, getUCS(m), 's'); break
+    case 'selectSF': selectS(m, getNodeByPath(m, getX(m).path.concat('s', 0) as PS) as S, 's'); break
+    case 'selectLCS': selectS(m, getLCS(m), 's'); break
+    case 'selectRCS': selectS(m, getRCS(m), 's'); break
+    case 'selectDCS': selectS(m, getDCS(m), 's'); break
+    case 'selectUCS': selectS(m, getUCS(m), 's'); break
     case 'selectCFR0': selectT(m, getNodeByPath(m, getX(m).path.with(-2, 0) as PT), 's'); break
     case 'selectCFC0': selectT(m, getNodeByPath(m, getX(m).path.with(-1, 0) as PT), 's'); break
     case 'selectCFF': selectT(m, getNodeByPath(m, getX(m).path.concat('c', 0, 0) as PT), 's'); break
     case 'selectXCIS': selectS(m, getNodeByPath(m, getX(m).path.slice(0, -3) as PT) as S, 's'); break
-    case 'selectXSIC': selectT(m, getNodeByPath(m, getX(m).path.slice(0, getX(m).path.findLastIndex(pi => pi === 'c') + 3) as PT), 's'); break
+    case 'selectXSIC': selectC(m, getNodeByPath(m, getX(m).path.slice(0, getX(m).path.findLastIndex(pi => pi === 'c') + 3) as PC) as C); break
     case 'selectAddT': selectAddT(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectRemoveT': selectRemoveT(getNodeByPath(m, payload.path)); break
     case 'selectAddSD': selectAddT(m, getQuasiSD(m), 's'); break
