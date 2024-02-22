@@ -8,7 +8,7 @@ import {M} from "../state/MapStateTypes"
 import {api} from "../api/Api.ts"
 import {mapFindNearest} from "../queries/MapFindNearest"
 import {mapReducer} from "./MapReducer"
-import {getEditedNode, getX} from "../queries/MapQueries.ts"
+import {getX} from "../queries/MapQueries.ts"
 import {filterEmpty} from "../utils/Utils"
 import {MR} from "./MapReducerEnum.ts"
 
@@ -149,13 +149,13 @@ export const editorSlice = createSlice({
         }
         case 'startEditReplace': {
           state.editStartMapListIndex = state.mapListIndex
-          state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
+          state.editedNodeId = getX(pm).nodeId
           state.editType = 'replace'
           break
         }
         case 'startEditAppend': {
           state.editStartMapListIndex = state.mapListIndex
-          state.editedNodeId = getEditedNode(pm, getX(pm).path).nodeId
+          state.editedNodeId = getX(pm).nodeId
           state.editType = 'append'
           break
         }
