@@ -1,6 +1,5 @@
 import {L, M, PL, PT} from "../state/MapStateTypes"
-import {selectT, selectTL} from "./MapSelect"
-import {getReselectS, getReselectCR, getReselectCC, getReselectR, getX, isCD, isCR, getXA, isRDO, getNodeById, getRSCIPL, isSD, isSDO, mG, mL, mT, isSEO, mR, mS, mC} from "../queries/MapQueries.ts"
+import {getX, isCD, isCR, getXA, isRDO, getRSCIPL, isSD, isSDO, mG, mL, mT, isSEO, mR, mS, mC} from "../queries/MapQueries.ts"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[
@@ -84,28 +83,4 @@ export const deleteCC = (m: M) => {
         )
     ]
   )
-}
-
-export const deleteReselectLR = (m: M) => {
-  const reselect = getReselectR(m).nodeId
-  deleteLR(m)
-  selectT(m, getNodeById(m, reselect), 's')
-}
-
-export const deleteReselectS = (m: M) => {
-  const reselect = getReselectS(m).nodeId
-  deleteS(m)
-  selectT(m, getNodeById(m, reselect), 's')
-}
-
-export const deleteReselectCR = (m: M) => {
-  const reselectList = getReselectCR(m).map(ti => ti.nodeId)
-  deleteCR(m)
-  selectTL(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's')
-}
-
-export const deleteReselectCC = (m: M) => {
-  const reselectList = getReselectCC(m).map(ti => ti.nodeId)
-  deleteCC(m)
-  selectTL(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's')
 }

@@ -1,9 +1,9 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS,} from "../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getReselectR, getReselectS, getReselectCR, getReselectCC,} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S, T} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
-import {deleteL, deleteReselectCC, deleteReselectCR, deleteReselectLR, deleteReselectS,} from "./MapDelete"
+import {deleteCC, deleteCR, deleteL, deleteLR, deleteS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertL, insertR, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
@@ -90,16 +90,16 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'gptParseNodeMermaid': gptParseNodeMermaid(m, payload.gptParsed); break
 
     case 'deleteL': deleteL(m, payload); break
-    case 'deleteLR': deleteReselectLR(m); break
-    case 'deleteS': deleteReselectS(m); break
-    case 'deleteCR': deleteReselectCR(m); break
-    case 'deleteCC': deleteReselectCC(m); break
+    case 'deleteLR': { const reselect = getReselectR(m).nodeId; deleteLR(m); selectT(m, getNodeById(m, reselect), 's') ;break }
+    case 'deleteS': { const reselect = getReselectS(m).nodeId; deleteS(m); selectT(m, getNodeById(m, reselect), 's'); break }
+    case 'deleteCR': { const reselectList = getReselectCR(m).map(ti => ti.nodeId); deleteCR(m); selectTL(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's'); break }
+    case 'deleteCC': { const reselectList = getReselectCC(m).map(ti => ti.nodeId); deleteCC(m); selectTL(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's'); break }
 
-    case 'cutLR': {const reselect = mR(m).find(ri => !ri.selected)!.nodeId; cutLR(m); selectR(m, getNodeById(m, reselect) as R); break}
-    case 'cutSJumpSU': {const reselect = getXFS(m).su.at(-1); cutS(m); selectS(m, getNodeById(m, reselect as string) as S, 's'); break}
-    case 'cutSJumpSD': {const reselect = getXLS(m).sd.at(0); cutS(m); selectS(m, getNodeById(m, reselect as string) as S, 's'); break}
-    case 'cutSJumpSI': {const reselect = getXS(m).si1; cutS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break}
-    case 'cutSJumpR': {const reselect = getXS(m).si1; cutS(m); selectR(m, getNodeById(m, reselect) as R); break}
+    case 'cutLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; cutLR(m); selectR(m, getNodeById(m, reselect) as R); break }
+    case 'cutSJumpSU': { const reselect = getXFS(m).su.at(-1); cutS(m); selectS(m, getNodeById(m, reselect as string) as S, 's'); break }
+    case 'cutSJumpSD': { const reselect = getXLS(m).sd.at(0); cutS(m); selectS(m, getNodeById(m, reselect as string) as S, 's'); break }
+    case 'cutSJumpSI': { const reselect = getXS(m).si1; cutS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
+    case 'cutSJumpR': { const reselect = getXS(m).si1; cutS(m); selectR(m, getNodeById(m, reselect) as R); break }
     case 'copyLR': copyLR(m); break
     case 'copyS': copyS(m); break
     case 'pasteLR': pasteLR(m, payload); break
