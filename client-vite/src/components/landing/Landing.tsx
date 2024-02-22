@@ -8,7 +8,7 @@ import {setColors} from "../assets/Colors"
 import {Spinner} from "../assets/Spinner"
 
 export const Landing: FC = () => {
-  const picLink = 'https://lh3.googleusercontent.com/drive-viewer/AEYmBYTvxnCfBZM6HTz-gogQY_P4D_WZl6QVcOYOqTStEDYkyHvVfD2Q1q7OqebpwM8spk_XMZqml2347GfeDn4ki_Lvz6i9=w2560-h1313'
+  const picLink = 'https://lh3.googleusercontent.com/drive-viewer/AEYmBYQTC_YiqwyXOF1fUjFw8ffxlUJS5wqYOtBpWYRwZ33a136Z1Z77bEDBtYk0R7S728K9K8gJTLwVB_SxaywWzLl9D6r2=w2560-h1313'
   const colorMode = 'dark'
   const token = useSelector((state: RootState) => state.editor.token)
   const [isWaiting, setIsWaiting] = useState(false)
@@ -67,7 +67,7 @@ export const Landing: FC = () => {
                 <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
                   AI-Powered Visual Workspaces
                   <br/>
-                  For Research, Analysis and Reporting
+                  For Research, Learning, Analysis and Reporting
                 </p>
                 <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                   <a href="#"
