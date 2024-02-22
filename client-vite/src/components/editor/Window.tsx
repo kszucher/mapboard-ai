@@ -67,7 +67,7 @@ export const Window: FC = () => {
     ckm === '---' && e.code === 'Space' && isXACC(m) && md(MR.selectCFR0)
     ckm === '---' && e.code === 'Backspace' && isXS(m) && !getXS(m).path.includes('c') && md(MR.selectXR)
     ckm === '---' && e.code === 'Backspace' && isXS(m) && getXS(m).path.includes('c') && md(MR.selectXSIC)
-    ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && md(MR.selectSI)
+    ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && md(MR.selectXCIS)
     ckm === '---' && e.code === 'Escape' && md(MR.selectXS)
     ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && md(MR.copyLR)
     ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && md(MR.copyS)
