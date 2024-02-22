@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, getXC, getXS, getLCS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCS, isXCT, isXR, isXRS, isXS, mR, sortPath, getRCS, getUCS, getDCS, isXARS,} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getCountXASD, getCountXASU, getLastIndexR, getMapMode, getX, getXC, getXS, getLCS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCS, isXCT, isXR, isXRS, isXS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, isXARS, isXACS} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -72,10 +72,11 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && md(MR.copyLR)
     ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && md(MR.copyS)
     ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getLastIndexR(m) > 0 && md(MR.cutLR)
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && !isXARS(m) && getCountXASU(m) > 0 && md(MR.cutSJumpSU)
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && !isXARS(m) && getCountXASU(m) === 0 && getCountXASD(m) > 0 && md(MR.cutSJumpSD)
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && !isXARS(m) && getCountXASU(m) === 0 && getCountXASD(m) === 0 && md(MR.cutSJumpSI)
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXARS(m) && getCountXASU(m) === 0 && getCountXASD(m) === 0 && md(MR.cutSJumpR)
+    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXARS(m) && getCountXASU(m) === 0 && getCountXASD(m) === 0 && md(MR.cutSJumpRI)
+    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getCountXASU(m) > 0 && md(MR.cutSJumpSU)
+    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getCountXASU(m) === 0 && getCountXASD(m) > 0 && md(MR.cutSJumpSD)
+    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getCountXASU(m) === 0 && getCountXASD(m) === 0 && md(MR.cutSJumpSI)
+    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXACS(m) && getCountXASU(m) === 0 && getCountXASD(m) === 0 && md(MR.cutSJumpCI)
     ckm === 'c--' && e.code === 'KeyZ' && md(MR.redo)
     ckm === 'c--' && e.code === 'KeyY' && md(MR.undo)
 
