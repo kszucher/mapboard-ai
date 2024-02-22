@@ -1,4 +1,4 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXACD1, getXACL1, getXACR1, getXACU1, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC} from "../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {M, PT, T} from "../state/MapStateTypes"
@@ -52,10 +52,10 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectSA': selectTL(m, mS(m), 's'); break
     case 'selectSameCR': selectTL(m, getXC(m).ch.map(nid => hn.get(nid)) as T[], 's'); break
     case 'selectSameCC': selectTL(m, getXC(m).cv.map(nid => hn.get(nid)) as T[], 's'); break
-    case 'selectCD': selectTL(m, getXACD1(m), 's'); break
-    case 'selectCU': selectTL(m, getXACU1(m), 's'); break
-    case 'selectCR': selectTL(m, getXACR1(m), 's'); break
-    case 'selectCL': selectTL(m, getXACL1(m), 's'); break
+    case 'selectCD': selectTL(m, getXA(m).map(ci => getNodeByPath(m, ci.path.with(-2, ci.path.at(-2) + 1) as PT)), 's'); break
+    case 'selectCU': selectTL(m, getXA(m).map(ci => getNodeByPath(m, ci.path.with(-2, ci.path.at(-2) - 1) as PT)), 's'); break
+    case 'selectCR': selectTL(m, getXA(m).map(ci => getNodeByPath(m, ci.path.with(-1, ci.path.at(-1) + 1) as PT)), 's'); break
+    case 'selectCL': selectTL(m, getXA(m).map(ci => getNodeByPath(m, ci.path.with(-1, ci.path.at(-1) - 1) as PT)), 's'); break
     case 'selectSByRectangle': selectTL(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
 
     case 'insertL': insertL(m, payload); break
