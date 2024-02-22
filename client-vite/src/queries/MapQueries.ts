@@ -153,8 +153,8 @@ export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCo
 export const lToCb = (m: M): L[] => mL(m).filter(li => getNodeById(m, li.fromNodeId).selected && getNodeById(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
 export const rToCb = (m: M): T[] => getXA(m).map(el => el.path.at(1)).map(ri => m.filter(ti => isEqual(ti.path.slice(0, 2), ['r', ri]))).map((m, i) => mT(m).map(ti => ({...ti, path: ['r', i, ...ti.path.slice(2)]}))).flat() as T[]
 export const sToCb = (m: M): T[] => getXAEO(m).map(ti => ({...ti, path: ['s', ti.path.at(getX(m).path.length - 1) - getCountXASU(m), ...ti.path.slice(getX(m).path.length)]})) as T[]
-export const crToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2) - getCountXCU(m), ti.path.at(getX(m).path.length - 1), ...ti.path.slice(getX(m).path.length)]})) as T[]
-export const ccToCb = (m: M) => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2), ti.path.at(getX(m).path.length - 1) - getCountXCL(m), ...ti.path.slice(getX(m).path.length)]})) as T[]
+export const crToCb = (m: M): T[] => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2) - getCountXCU(m), ti.path.at(getX(m).path.length - 1), ...ti.path.slice(getX(m).path.length)]})) as T[]
+export const ccToCb = (m: M): T[] => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2), ti.path.at(getX(m).path.length - 1) - getCountXCL(m), ...ti.path.slice(getX(m).path.length)]})) as T[]
 
 export const getEditedPath = (p: PT): P => getPathPattern(p).endsWith('c') ? [...p, 's', 0] : p
 export const getEditedNode = (m: M, p: PT): T => getNodeByPath(m, getEditedPath(p) as PT)
