@@ -112,6 +112,7 @@ export interface SSaveNever {
   co1: string[]
   co2: string[]
   su: string[]
+  sd: string[]
   isTop: number
   isBottom: number
   selfW: number

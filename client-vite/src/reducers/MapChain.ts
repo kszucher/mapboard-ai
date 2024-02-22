@@ -1,13 +1,10 @@
 import {M, R, S, C} from "../state/MapStateTypes.ts"
-import {isR, isS, isC, isSS, isCS, getHP} from "../queries/MapQueries.ts"
+import {isS, isC, isSS, isCS, getHP} from "../queries/MapQueries.ts"
 
 export const mapChain = (m: M) => {
   const hp = getHP(m)
   m.forEach(ni => {
     switch (true) {
-      case isR(ni.path): {
-        break
-      }
       case isS(ni.path): {
         const si = ni as S
         si.si1 = hp.get(si.path.slice(0, -2).join(''))!.nodeId
@@ -45,6 +42,14 @@ export const mapChain = (m: M) => {
   })
   m.slice().reverse().forEach(ni => {
     switch (true) {
+      case isS(ni.path): {
+        const si = ni as S
+        for (let i = 0; i < si.path.at(-1); i++) {
+          const sdi = hp.get([...si.path.slice(0, -1), i].join('')) as S
+          sdi.sd.push(si.nodeId)
+        }
+        break
+      }
       case isC(ni.path): {
         const ci = ni as C
         for (let i = 0; i < ci.path.at(-2); i++) {
