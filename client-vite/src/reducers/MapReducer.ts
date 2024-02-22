@@ -32,17 +32,17 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectFirstS': selectT(m, mS(m).at(0)!, 's'); break
     case 'selectFirstC': selectT(m, mC(m).at(0)!, 's'); break
     case 'selectXR': selectT(m, getNodeByPath(m, getX(m).path.slice(0, 2) as PT), 's'); break
-    case 'selectXS': selectT(m, getNodeByPath(m, [...getX(m).path.slice(0, 2), 's', 0]), 's'); break
+    case 'selectXS': selectT(m, getNodeByPath(m, getX(m).path.slice(0, 2).concat('s', 0) as PT), 's'); break
     case 'selectSelfX': selectT(m, getX(m), 's'); break
     case 'selectFamilyX': selectT(m, getX(m), 'f'); break
     case 'selectSD': selectT(m, getQuasiSD(m), 's'); break
     case 'selectSU': selectT(m, getQuasiSU(m), 's'); break
     case 'selectSO': selectT(m, getLastSO(m), 's'); break
     case 'selectSI': selectT(m, getXSI1(m), 's'); break
-    case 'selectSF': selectT(m, getNodeByPath(m, [...getX(m).path, 's', 0]), 's'); break
+    case 'selectSF': selectT(m, getNodeByPath(m, getX(m).path.concat('s', 0) as PT), 's'); break
     case 'selectCFR0': selectT(m, getNodeByPath(m, getX(m).path.with(-2, 0) as PT), 's'); break
     case 'selectCFC0': selectT(m, getNodeByPath(m, getX(m).path.with(-1, 0) as PT), 's'); break
-    case 'selectCFF': selectT(m, getNodeByPath(m, [...getX(m).path, 'c', 0, 0]), 's'); break
+    case 'selectCFF': selectT(m, getNodeByPath(m, getX(m).path.concat('c', 0, 0) as PT), 's'); break
     case 'selectXSIC': selectT(m, getNodeByPath(m, getX(m).path.slice(0, getX(m).path.findLastIndex(pi => pi === 'c') + 3) as PT), 's'); break
     case 'selectAddT': selectAddT(m, getNodeByPath(m, payload.path), 's'); break
     case 'selectRemoveT': selectRemoveT(getNodeByPath(m, payload.path)); break
