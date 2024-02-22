@@ -17,13 +17,15 @@ export const getHP = (m: M): Map<string, T> => new Map<string, T>(m.map(ti => [t
 
 const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 
-export const getXF = (m: M): T => mT(m).find(ti => ti.selected)! as T
+export const getXF = (m: M): T => mT(m).find(ti => ti.selected)!
+export const getXFS = (m: M): S => mS(m).find(si => si.selected)!
 export const getXL = (m: M): T => mT(m).findLast(ti => ti.selected)!
+export const getXLS = (m: M): S => mS(m).findLast(si => si.selected)!
 export const getX = (m: M): T => mT(m).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getXC = (m: M): C => mC(m).reduce((a, b) => a.selected > b.selected ? a : b)
-export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected) as T[]
+export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected)
 export const getXAS = (m: M): S[] => mS(m).filter(ti => ti.selected)
 
 export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) || -1
@@ -142,6 +144,7 @@ export const getCountXSCV = (m: M): number => getCountCV(m, [...getX(m).path, 'c
 export const getCountXSCH = (m: M): number => getCountCH(m, [...getX(m).path, 'c', 0, 0])
 
 export const isXAR = (m: M): boolean => getXA(m).map(ti => ti.path).every(p => isR(p))
+export const isXARS = (m: M): boolean => getXA(m).map(ti => ti.path).every(p => isRS(p))
 export const isXASVN = (m: M): boolean => isS(getX(m).path) && getXA(m).map(ti => ti.path).every(p => isSV(getX(m).path, p)) && (getXL(m).path.at(-1) - getXF(m).path.at(-1)) === getXA(m).length - 1
 export const isXC = (m: M): boolean => isC(getX(m).path) && getXA(m).length === 1
 export const isXACR = (m: M): boolean => isC(getX(m).path) && getXA(m).length > 1 && getXA(m).map(ti => ti.path).every(p => isCV(getX(m).path, p))
