@@ -58,7 +58,6 @@ export const getRSCIPL = (p: PT): PT[] => p.map((_, i) => p.slice(0, i)).filter(
 export const getSIPL = (p: PT): PT[] => getRSCIPL(p).filter(pi => !isR(pi) && !isC(pi))
 const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string')) as PT
 const getSI2 = (p: PT) => getSI1(getSI1(p))
-const getSIC = (p: PT) => getRSCIPL(p).findLast(pli => getPathPattern(pli).endsWith('c'))!
 
 export const isSD = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
 export const isSU = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
@@ -98,7 +97,6 @@ export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as
 export const getXSI2 = (m: M): T => m.find(ti => isSI2(getX(m).path, ti.path as PT))! as T
 export const getXFSU1 = (m: M): T => m.find(ti => isSU1(getXF(m).path, ti.path as PT))! as T
 export const getXFSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T
-export const getXSIC = (m: M): T => getNodeByPath(m, getSIC(getX(m).path) as PT)
 export const getThisXR = (m: M): T => getNodeByPath(m, getX(m).path.slice(0, 2) as PT)
 export const getThisXRS0 = (m: M): T => getNodeByPath(m, [...getThisXR(m).path, 's', 0])
 
