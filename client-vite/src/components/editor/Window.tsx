@@ -56,7 +56,7 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Insert' && isXC(m) && md(MR.insertSO)
     ckm === '---' && e.key === 'Tab' && isXR(m) && md(MR.insertR)
     ckm === '---' && e.key === 'Tab' && isXS(m) && md(MR.insertSO)
-    ckm === '---' && e.key === 'Delete' && isXS(m) && md(MR.deleteS)
+    ckm === '---' && e.key === 'Delete' && isXS(m) && md(MR.deleteSJumpSI)
     ckm === '---' && e.key === 'Delete' && isXR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected) && md(MR.deleteLR)
     ckm === '---' && e.key === 'Delete' && isXACR(m) && md(MR.deleteCR)
     ckm === '---' && e.key === 'Delete' && isXACC(m) && md(MR.deleteCC)

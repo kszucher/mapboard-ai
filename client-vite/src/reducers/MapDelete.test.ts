@@ -54,7 +54,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'tk', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'tn', path: ['r', 0, 's', 0, 's', 0, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteS) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteSJumpSI) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
   test('deleteCR', () => {
     const test = [

@@ -90,7 +90,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
 
     case 'deleteL': deleteL(m, payload); break
     case 'deleteLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; deleteLR(m); selectT(m, getNodeById(m, reselect), 's') ;break }
-    case 'deleteS': { const reselect = getReselectS(m).nodeId; deleteS(m); selectT(m, getNodeById(m, reselect), 's'); break }
+    case 'deleteSJumpSI': { const reselect = getReselectS(m).nodeId; deleteS(m); selectT(m, getNodeById(m, reselect), 's'); break }
     case 'deleteCR': { const reselectList = getReselectCR(m).map(ti => ti.nodeId); deleteCR(m); selectTL(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's'); break }
     case 'deleteCC': { const reselectList = getReselectCC(m).map(ti => ti.nodeId); deleteCC(m); selectTL(m, reselectList.map(nodeId => getNodeById(m, nodeId)), 's'); break }
 
