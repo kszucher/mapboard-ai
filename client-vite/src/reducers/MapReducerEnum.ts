@@ -80,6 +80,8 @@ export enum MR {
 
   deleteL = 'deleteL',
   deleteLR = 'deleteLR',
+  deleteSJumpSU = 'deleteSJumpSU',
+  deleteSJumpSD = 'deleteSJumpSD',
   deleteSJumpSI = 'deleteSJumpSI',
   deleteCR = 'deleteCR',
   deleteCC = 'deleteCC',
