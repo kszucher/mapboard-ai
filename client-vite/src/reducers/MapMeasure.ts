@@ -1,6 +1,6 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getG, getHN, getTCO1C0, getTCO1R0,   hasTask, isC, isG, isR, isS, mR} from "../queries/MapQueries.ts"
+import {getG, getHN, hasTask, isC, isG, isR, isS, mR} from "../queries/MapQueries.ts"
 import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M, G, R, S, C} from "../state/MapStateTypes"
@@ -59,8 +59,8 @@ export const mapMeasure = (pm: M, m: M) => {
             ti.selfW = Math.max(...cv.map(ti => ti.familyW + C_SPACING))
             ti.selfH = Math.max(...ch.map(ti => ti.familyH + C_SPACING))
           })
-          si.selfW = getTCO1R0(m, si).reduce((a, b) => a + b.selfW, 0)
-          si.selfH = getTCO1C0(m, si).reduce((a, b) => a + b.selfH, 0)
+          si.selfW = tco1.at(0)!.ch.map(nid => hn.get(nid) as S).reduce((a, b) => a + b.selfW, 0)
+          si.selfH = tco1.at(0)!.cv.map(nid => hn.get(nid) as S).reduce((a, b) => a + b.selfH, 0)
         }
         if (!si.co1.length) {
           const psi = phn.get(si.nodeId) as S
