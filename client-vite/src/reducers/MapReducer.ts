@@ -1,4 +1,4 @@
-import {getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC,} from "../queries/MapQueries.ts"
+import {getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC,} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
@@ -80,8 +80,8 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertCCL': insertCC(m, getXSI1(m), getCountXCL(m)); break
     case 'insertSCCR': insertCC(m, getX(m), getCountXSCH(m)); break
     case 'insertSCCL': insertCC(m, getX(m), 0); break
-    case 'insertSDTable': insertTable(m, getXSI1(m), getCountXSU(m) + 1, payload); break
-    case 'insertSUTable': insertTable(m, getXSI1(m), getCountXSU(m), payload); break
+    case 'insertSDTable': insertTable(m, getXSI1(m), getXS(m).su.length + 1, payload); break
+    case 'insertSUTable': insertTable(m, getXSI1(m), getXS(m).su.length, payload); break
     case 'insertSOTable': insertTable(m, getX(m), getX(m).so1.length, payload); break
 
     case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
