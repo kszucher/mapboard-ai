@@ -39,7 +39,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectSD': selectS(m, getQuasiSD(m) as S, 's'); break
     case 'selectSU': selectS(m, getQuasiSU(m) as S, 's'); break
     case 'selectSO': selectS(m, getLastSO(m) as S, 's'); break
-    case 'selectSI': selectS(m, getNodeById(m, getXS(m).si1) as S, 's'); break
+    case 'selectSI': selectS(m, getNodeById(m, getXS(m).si1) as S, 's'); getNodeById(m, getXS(m).si1).lastSelectedChild = getXS(m).path.at(-1); break
     case 'selectSF': selectS(m, getNodeByPath(m, getX(m).path.concat('s', 0) as PS) as S, 's'); break
     case 'selectLCS': selectS(m, getLCS(m), 's'); break
     case 'selectRCS': selectS(m, getRCS(m), 's'); break
@@ -93,6 +93,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'deleteSJumpSU': { const reselect = getXFS(m).su.at(-1)!; deleteS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
     case 'deleteSJumpSD': { const reselect = getXLS(m).sd.at(-1)!; deleteS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
     case 'deleteSJumpSI': { const reselect = getXS(m).si1; deleteS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
+    case 'deleteSJumpR': { const reselect = getXR(m).nodeId; deleteS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
     case 'deleteCRJumpU': { const reselectList = getXAC(m).map(ci => ci.cu.at(-1)!); deleteCR(m); selectTL(m, reselectList.map(nid => getNodeById(m, nid)), 's'); break }
     case 'deleteCRJumpD': { const reselectList = getXAC(m).map(ci => ci.cd.at(-1)!); deleteCR(m); selectTL(m, reselectList.map(nid => getNodeById(m, nid)), 's'); break }
     case 'deleteCRJumpSI': { const reselect = getXC(m).si1; deleteCR(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }

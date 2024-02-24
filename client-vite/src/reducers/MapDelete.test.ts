@@ -50,12 +50,12 @@ describe("MapDeleteTests", () => {
     ] as MPartial
     const result = [
       {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0], lastSelectedChild: 0},
-      {nodeId: 'tb', path: ['r', 0, 's', 0], selected: 1},
+      {nodeId: 'ta', path: ['r', 0], selected: 1},
+      {nodeId: 'tb', path: ['r', 0, 's', 0]},
       {nodeId: 'tk', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'tn', path: ['r', 0, 's', 0, 's', 0, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.deleteSJumpSI) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.deleteSJumpR) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
   test('deleteCR', () => {
     const test = [

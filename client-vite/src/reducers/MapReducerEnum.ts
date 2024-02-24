@@ -83,6 +83,7 @@ export enum MR {
   deleteSJumpSU = 'deleteSJumpSU',
   deleteSJumpSD = 'deleteSJumpSD',
   deleteSJumpSI = 'deleteSJumpSI',
+  deleteSJumpR = 'deleteSJumpR',
   deleteCRJumpU = 'deleteCRJumpU',
   deleteCRJumpD = 'deleteCRJumpD',
   deleteCRJumpSI = 'deleteCRJumpSI',
