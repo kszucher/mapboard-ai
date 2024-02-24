@@ -79,7 +79,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 2},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteCR) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteCRJumpD) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
   test('deleteCC', () => {
     const test = [
@@ -104,6 +104,6 @@ describe("MapDeleteTests", () => {
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 2},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteCC) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapInit(test) as M, MR.deleteCCJumpR) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
   })
 })

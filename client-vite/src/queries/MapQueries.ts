@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare"
 import {sSaveOptional} from "../state/MapState"
-import {G, L, M, N, P, PT, PC, T, SSaveOptional, S, R, C} from "../state/MapStateTypes"
+import {G, L, M, N, P, PT, T, SSaveOptional, S, R, C} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
 import {MapMode} from "../state/Enums.ts"
 
@@ -26,7 +26,8 @@ export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected
 export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as S)
 export const getXC = (m: M): C => mC(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as C)
 export const getXA = (m: M): T[] => mT(m).filter(ti => ti.selected)
-export const getXAS = (m: M): S[] => mS(m).filter(ti => ti.selected)
+export const getXAS = (m: M): S[] => mS(m).filter(si => si.selected)
+export const getXAC = (m: M): C[] => mC(m).filter(ci => ci.selected)
 
 export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) || -1
 export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) || 0
@@ -79,10 +80,6 @@ const isSI2 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, ge
 const isSI1U = (p: PT, pt: PT): boolean => isSU(getSI1(p), pt)
 export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 const isSO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
-const isCD1 = (p: PC, pt: PC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) + 1 && pt.at(-1) === p.at(-1)
-const isCU1 = (p: PC, pt: PC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) - 1 && pt.at(-1) === p.at(-1)
-const isCR1 = (p: PC, pt: PC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) + 1
-const isCL1 = (p: PC, pt: PC): boolean => pt.length === p.length && isEqual(pt.slice(0, -3), p.slice(0, -3)) && pt.at(-2) === p.at(-2) && pt.at(-1) === p.at(-1) - 1
 const isSCO = (p: PT, pt: PT): boolean => pt.length >= p.length + 3 && isEqual(pt.slice(0, p.length), p) && pt.at(p.length) === 'c'
 const isSV = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 export const isCV = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
@@ -101,7 +98,6 @@ export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as P
 export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T
 export const getXSI2 = (m: M): T => m.find(ti => isSI2(getX(m).path, ti.path as PT))! as T
 export const getXFSU1 = (m: M): T => m.find(ti => isSU1(getXF(m).path, ti.path as PT))! as T
-export const getXFSI1 = (m: M): T => m.find(ti => isSI1(getXF(m).path, ti.path as PT))! as T
 
 export const getQuasiSD = (m: M): T => mT(m).find(ti => !ti.selected && isQuasiSD(getX(m).path, ti.path))! as T
 export const getQuasiSU = (m: M): T => mT(m).findLast(ti => !ti.selected && isQuasiSU(getX(m).path, ti.path))! as T
@@ -109,10 +105,6 @@ export const getQuasiSU = (m: M): T => mT(m).findLast(ti => !ti.selected && isQu
 export const getXSO1 = (m: M): T[] => m.filter(ti => isSO1(getX(m).path, ti.path as PT)) as T[]
 export const getXSCO = (m: M): M => m.filter(ti => isSCO(getX(m).path, ti.path as PT))
 export const getXAEO = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isSEO(xti.path, ti.path as PT))) as T[]}
-export const getXACD1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCD1(xti.path as PC, ti.path as PC))) as T[]}
-export const getXACU1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCU1(xti.path as PC, ti.path as PC))) as T[]}
-export const getXACR1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCR1(xti.path as PC, ti.path as PC))) as T[]}
-export const getXACL1 = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isCL1(xti.path as PC, ti.path as PC))) as T[]}
 
 const getCountSD = (m: M, p: PT): number => m.filter(ti => isSD(p, ti.path as PT)).length
 const getCountSU = (m: M, p: PT): number => m.filter(ti => isSU(p, ti.path as PT)).length
@@ -152,10 +144,6 @@ export const isXCR = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 
 export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 0
 
 export const getLastSO = (m: M): T => getNodeByPath(m, [...getX(m).path, 's', getX(m).lastSelectedChild > - 1 && getX(m).lastSelectedChild < getX(m).so1.length ? getX(m).lastSelectedChild : 0])
-
-export const getReselectS = (m: M): T => getCountXASU(m) ? getXFSU1(m) : getXFSI1(m)
-export const getReselectCR = (m: M): M => getCountXCU(m) ? getXACU1(m) : ( getCountXCV(m) >= 2 ? getXACD1(m) : [getXSI1(m)] as M )
-export const getReselectCC = (m: M): M => getCountXCL(m) ? getXACL1(m) : ( getCountXCH(m) >= 2 ? getXACR1(m) : [getXSI1(m)] as M )
 
 export const lToCb = (m: M): L[] => mL(m).filter(li => getNodeById(m, li.fromNodeId).selected && getNodeById(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
 export const rToCb = (m: M): T[] => getXA(m).map(el => el.path.at(1)).map(ri => m.filter(ti => isEqual(ti.path.slice(0, 2), ['r', ri]))).map((m, i) => mT(m).map(ti => ({...ti, path: ['r', i, ...ti.path.slice(2)]}))).flat() as T[]
