@@ -118,8 +118,6 @@ export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXFSU1(m).path
 export const getCountXSI1U = (m: M): number => getCountSI1U(m, getX(m).path)
 export const getCountXCU = (m: M): number => getX(m).path.at(-2)
 export const getCountXCL = (m: M): number => getX(m).path.at(-1)
-export const getCountXCV = (m: M): number => getCountCV(m, getX(m).path)
-export const getCountXCH = (m: M): number => getCountCH(m, getX(m).path)
 export const getCountXSCV = (m: M): number => getCountCV(m, [...getX(m).path, 'c', 0, 0])
 export const getCountXSCH = (m: M): number => getCountCH(m, [...getX(m).path, 'c', 0, 0])
 
@@ -131,10 +129,6 @@ export const isXASVN = (m: M): boolean => isS(getX(m).path) && getXA(m).map(ti =
 export const isXC = (m: M): boolean => isC(getX(m).path) && getXA(m).length === 1
 export const isXACR = (m: M): boolean => isC(getX(m).path) && getXA(m).length > 1 && getXA(m).map(ti => ti.path).every(p => isCV(getX(m).path, p))
 export const isXACC = (m: M): boolean => isC(getX(m).path) && getXA(m).length > 1 && getXA(m).map(ti => ti.path).every(p => isCH(getX(m).path, p))
-export const isXCB = (m: M): boolean => isC(getX(m).path) && getCountXCU(m) === getCountXCV(m) - 1
-export const isXCT = (m: M): boolean => isC(getX(m).path) && getCountXCU(m) === 0
-export const isXCR = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === getCountXCH(m) - 1
-export const isXCL = (m: M): boolean => isC(getX(m).path) && getCountXCL(m) === 0
 
 export const getLastSO = (m: M): T => getNodeByPath(m, [...getX(m).path, 's', getX(m).lastSelectedChild > - 1 && getX(m).lastSelectedChild < getX(m).so1.length ? getX(m).lastSelectedChild : 0])
 

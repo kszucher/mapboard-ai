@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getLastIndexR, getMapMode, getX, getXC, getXS, getLCS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCB, isXCL, isXCR, isXCS, isXCT, isXR, isXRS, isXS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, isXARS, isXACS, getXFS, getXLS} from "../../queries/MapQueries.ts"
+import {getCountQuasiSD, getCountQuasiSU, getLastIndexR, getMapMode, getX, getXC, getXS, getLCS, isXACC, isXACR, isXAR, isXASVN, isXC, isXCS, isXR, isXRS, isXS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, isXARS, isXACS, getXFS, getXLS} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -88,46 +88,46 @@ export const Window: FC = () => {
 
     ckm === '---' && e.code === 'ArrowDown' && isXS(m) && getCountQuasiSD(m) > 0 && md(MR.selectSD)
     ckm === '---' && e.code === 'ArrowDown' && isXCS(m) && getXLS(m).sd.length === 0 && getDCS(m) && md(MR.selectDCS)
-    ckm === '---' && e.code === 'ArrowDown' && isXC(m) && !isXCB(m) && md(MR.selectCD)
-    ckm === '---' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && md(MR.selectCD)
+    ckm === '---' && e.code === 'ArrowDown' && isXC(m) && getXC(m).cd.length > 0 && md(MR.selectCD)
+    ckm === '---' && e.code === 'ArrowDown' && isXACR(m) && getXC(m).cd.length > 0 && md(MR.selectCD)
     ckm === 'c--' && e.code === 'ArrowDown' && isXR(m) && md(MR.offsetD)
     ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getXLS(m).sd.length === 0 && md(MR.moveST)
     ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getXLS(m).sd.length > 0 && md(MR.moveSD)
-    ckm === 'c--' && e.code === 'ArrowDown' && isXACR(m) && !isXCB(m) && md(MR.moveCRD)
+    ckm === 'c--' && e.code === 'ArrowDown' && isXACR(m) && getXC(m).cd.length > 0 && md(MR.moveCRD)
     ckm === '-s-' && e.code === 'ArrowDown' && isXS(m)  && getCountQuasiSD(m) > 0 && md(MR.selectAddSD)
     ckm === '-s-' && e.code === 'ArrowDown' && isXC(m) && md(MR.selectSameCC)
     ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && md(MR.insertCRD)
 
     ckm === '---' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && md(MR.selectSU)
     ckm === '---' && e.code === 'ArrowUp' && isXCS(m) && getXFS(m).su.length === 0 && getUCS(m) && md(MR.selectUCS)
-    ckm === '---' && e.code === 'ArrowUp' && isXC(m) && !isXCT(m) && md(MR.selectCU)
-    ckm === '---' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && md(MR.selectCU)
+    ckm === '---' && e.code === 'ArrowUp' && isXC(m) && getXC(m).cu.length > 0 && md(MR.selectCU)
+    ckm === '---' && e.code === 'ArrowUp' && isXACR(m) && getXC(m).cu.length > 0 && md(MR.selectCU)
     ckm === 'c--' && e.code === 'ArrowUp' && isXR(m) && md(MR.offsetU)
     ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getXFS(m).su.length === 0 && md(MR.moveSB)
     ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getXFS(m).su.length > 0 && md(MR.moveSU)
-    ckm === 'c--' && e.code === 'ArrowUp' && isXACR(m) && !isXCT(m) && md(MR.moveCRU)
+    ckm === 'c--' && e.code === 'ArrowUp' && isXACR(m) && getXC(m).cu.length > 0 && md(MR.moveCRU)
     ckm === '-s-' && e.code === 'ArrowUp' && isXS(m) && getCountQuasiSU(m) > 0 && md(MR.selectAddSU)
     ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && md(MR.selectSameCC)
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && md(MR.insertCRU)
 
     ckm === '---' && e.code === 'ArrowRight' && isXS(m) && getXS(m).so1.length > 0 && md(MR.selectSO)
     ckm === '---' && e.code === 'ArrowRight' && isXCS(m) && getX(m).so1.length === 0 && getRCS(m) && md(MR.selectRCS)
-    ckm === '---' && e.code === 'ArrowRight' && isXC(m) && !isXCR(m) && md(MR.selectCR)
-    ckm === '---' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && md(MR.selectCR)
+    ckm === '---' && e.code === 'ArrowRight' && isXC(m) && getXC(m).cr.length > 0 && md(MR.selectCR)
+    ckm === '---' && e.code === 'ArrowRight' && isXACC(m) && getXC(m).cr.length > 0 && md(MR.selectCR)
     ckm === 'c--' && e.code === 'ArrowRight' && isXR(m) && md(MR.offsetR)
     ckm === 'c--' && e.code === 'ArrowRight' && isXASVN(m) && getXFS(m).su.length > 0 && md(MR.moveSO)
-    ckm === 'c--' && e.code === 'ArrowRight' && isXACC(m) && !isXCR(m) && md(MR.moveCCR)
+    ckm === 'c--' && e.code === 'ArrowRight' && isXACC(m) && getXC(m).cr.length > 0 && md(MR.moveCCR)
     ckm === '-s-' && e.code === 'ArrowRight' && isXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's' && md(MR.selectFamilyX)
     ckm === '-s-' && e.code === 'ArrowRight' && isXC(m) && md(MR.selectSameCR)
     ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && md(MR.insertCCR)
 
     ckm === '---' && e.code === 'ArrowLeft' && isXS(m) && !isXRS(m) && !isXCS(m) && md(MR.selectSI)
     ckm === '---' && e.code === 'ArrowLeft' && isXCS(m) && getLCS(m) && md(MR.selectLCS)
-    ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && !isXCL(m) && md(MR.selectCL)
-    ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && md(MR.selectCL)
+    ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && getXC(m).cl.length > 0 && md(MR.selectCL)
+    ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && getXC(m).cl.length > 0 && md(MR.selectCL)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXR(m) && md(MR.offsetL)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXASVN(m) && !isXRS(m) && !isXCS(m) && md(MR.moveSI)
-    ckm === 'c--' && e.code === 'ArrowLeft' && isXACC(m) && !isXCL(m) && md(MR.moveCCL)
+    ckm === 'c--' && e.code === 'ArrowLeft' && isXACC(m) && getXC(m).cl.length > 0 && md(MR.moveCCL)
     ckm === '-s-' && e.code === 'ArrowLeft' && isXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's' && md(MR.selectFamilyX)
     ckm === '-s-' && e.code === 'ArrowLeft' && isXC(m) && md(MR.selectSameCR)
     ckm === '--a' && e.code === 'ArrowLeft' && isXACC(m) && md(MR.insertCCL)
