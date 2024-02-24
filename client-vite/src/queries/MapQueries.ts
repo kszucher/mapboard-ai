@@ -106,7 +106,6 @@ export const getXSO1 = (m: M): T[] => m.filter(ti => isSO1(getX(m).path, ti.path
 export const getXSCO = (m: M): M => m.filter(ti => isSCO(getX(m).path, ti.path as PT))
 export const getXAEO = (m: M): T[] => {const xa = getXA(m); return m.filter(ti => xa.some(xti => isSEO(xti.path, ti.path as PT))) as T[]}
 
-const getCountSD = (m: M, p: PT): number => m.filter(ti => isSD(p, ti.path as PT)).length
 const getCountSU = (m: M, p: PT): number => m.filter(ti => isSU(p, ti.path as PT)).length
 export const getCountQuasiSD = (m: M): number => mT(m).filter(ti => isQuasiSD(getX(m).path, ti.path)).length
 export const getCountQuasiSU = (m: M): number => mT(m).filter(ti => isQuasiSU(getX(m).path, ti.path)).length
@@ -119,8 +118,6 @@ export const getCountTSCV = (m: M, t: T): number => getCountCV(m, [...t.path, 'c
 export const getCountTSCH = (m: M, t: T): number => getCountCH(m, [...t.path, 'c', 0, 0])
 
 export const getCountXSU = (m: M): number => getCountSU(m, getX(m).path)
-export const getCountXASD = (m: M): number => getCountSD(m, getXL(m).path)
-export const getCountXASU = (m: M): number => getCountSU(m, getXF(m).path)
 export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXFSU1(m).path)
 export const getCountXSI1U = (m: M): number => getCountSI1U(m, getX(m).path)
 export const getCountXCU = (m: M): number => getX(m).path.at(-2)
@@ -147,7 +144,7 @@ export const getLastSO = (m: M): T => getNodeByPath(m, [...getX(m).path, 's', ge
 
 export const lToCb = (m: M): L[] => mL(m).filter(li => getNodeById(m, li.fromNodeId).selected && getNodeById(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
 export const rToCb = (m: M): T[] => getXA(m).map(el => el.path.at(1)).map(ri => m.filter(ti => isEqual(ti.path.slice(0, 2), ['r', ri]))).map((m, i) => mT(m).map(ti => ({...ti, path: ['r', i, ...ti.path.slice(2)]}))).flat() as T[]
-export const sToCb = (m: M): T[] => getXAEO(m).map(ti => ({...ti, path: ['s', ti.path.at(getX(m).path.length - 1) - getCountXASU(m), ...ti.path.slice(getX(m).path.length)]})) as T[]
+export const sToCb = (m: M): T[] => getXAEO(m).map(ti => ({...ti, path: ['s', ti.path.at(getX(m).path.length - 1) - getXFS(m).su.length, ...ti.path.slice(getX(m).path.length)]})) as T[]
 export const crToCb = (m: M): T[] => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2) - getCountXCU(m), ti.path.at(getX(m).path.length - 1), ...ti.path.slice(getX(m).path.length)]})) as T[]
 export const ccToCb = (m: M): T[] => getXAEO(m).map(ti => ({...ti, path: ['c', ti.path.at(getX(m).path.length - 2), ti.path.at(getX(m).path.length - 1) - getCountXCL(m), ...ti.path.slice(getX(m).path.length)]})) as T[]
 

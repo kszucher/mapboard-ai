@@ -1,4 +1,4 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC,} from "../queries/MapQueries.ts"
+import {getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC,} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
@@ -66,7 +66,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
-    case 'insertSD': insertS(m, getXSI1(m), getCountXASU(m) + 1, payload); break
+    case 'insertSD': insertS(m, getXSI1(m), getXFS(m).su.length + 1, payload); break
     case 'insertSU': insertS(m, getXSI1(m), getX(m).path.at(-1), payload); break
     case 'insertSO': insertS(m, getX(m), getX(m).so1.length, payload); break
     case 'insertSOText': insertS(m, getX(m), getX(m).so1.length, { contentType: 'text', content: payload }); break
@@ -111,10 +111,10 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'pasteSO': pasteS(m, getX(m), getX(m).so1.length, payload); break
     case 'duplicateR': duplicateR(m); break;
     case 'duplicateS': duplicateS(m); break;
-    case 'moveSD': moveS(m, getXSI1(m), getCountXASU(m) + 1); break
+    case 'moveSD': moveS(m, getXSI1(m), getXFS(m).su.length + 1); break
     case 'moveST': moveS(m, getXSI1(m), 0); break
-    case 'moveSU': moveS(m, getXSI1(m), getCountXASU(m) - 1); break
-    case 'moveSB': moveS(m, getXSI1(m), getCountXASD(m)); break
+    case 'moveSU': moveS(m, getXSI1(m), getXFS(m).su.length - 1); break
+    case 'moveSB': moveS(m, getXSI1(m), getXLS(m).sd.length); break
     case 'moveSO': moveS(m, getXFSU1(m), getCountXASU1O1(m)); break
     case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
     case 'moveSByDrag': moveS(m, getNodeById(m, payload.moveInsertParentNodeId), payload.moveTargetIndex); break
