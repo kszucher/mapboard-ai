@@ -1,7 +1,7 @@
-import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getHN, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getReselectS, getReselectCR, getReselectCC,} from "../queries/MapQueries.ts"
+import {getCountXASD, getCountXASU, getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getCountXSU, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getReselectS, getReselectCR, getReselectCC,} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
-import {C, M, PC, PR, PS, PT, R, S, T} from "../state/MapStateTypes"
+import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteCC, deleteCR, deleteL, deleteLR, deleteS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
@@ -17,7 +17,6 @@ import {mapPlaceExploded} from "./MapPlaceExploded.ts"
 import {mapCalcOrientation} from "./MapCalcOrientation.ts"
 
 export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
-  const hn = getHN(m)
   switch (action) {
     case 'load': break
 
@@ -57,8 +56,8 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectAddSU': selectAddT(m, getQuasiSU(m), 's'); break
     case 'selectRA': selectTL(m, mR(m), 's'); break
     case 'selectSA': selectTL(m, mS(m), 's'); break
-    case 'selectSameCR': selectTL(m, getXC(m).ch.map(nid => hn.get(nid)) as T[], 's'); break
-    case 'selectSameCC': selectTL(m, getXC(m).cv.map(nid => hn.get(nid)) as T[], 's'); break
+    case 'selectSameCR': selectTL(m, getXC(m).ch.map(nid => getNodeById(m, nid)), 's'); break
+    case 'selectSameCC': selectTL(m, getXC(m).cv.map(nid => getNodeById(m, nid)), 's'); break
     case 'selectCD': selectTL(m, getXA(m).map(ci => getNodeByPath(m, ci.path.with(-2, ci.path.at(-2) + 1) as PT)), 's'); break
     case 'selectCU': selectTL(m, getXA(m).map(ci => getNodeByPath(m, ci.path.with(-2, ci.path.at(-2) - 1) as PT)), 's'); break
     case 'selectCR': selectTL(m, getXA(m).map(ci => getNodeByPath(m, ci.path.with(-1, ci.path.at(-1) + 1) as PT)), 's'); break
