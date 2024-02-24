@@ -118,8 +118,6 @@ export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXFSU1(m).path
 export const getCountXSI1U = (m: M): number => getCountSI1U(m, getX(m).path)
 export const getCountXCU = (m: M): number => getX(m).path.at(-2)
 export const getCountXCL = (m: M): number => getX(m).path.at(-1)
-export const getCountXSCV = (m: M): number => getCountCV(m, [...getX(m).path, 'c', 0, 0])
-export const getCountXSCH = (m: M): number => getCountCH(m, [...getX(m).path, 'c', 0, 0])
 
 export const isXAR = (m: M): boolean => getXA(m).map(ti => ti.path).every(p => isR(p))
 export const isXARS = (m: M): boolean => getXA(m).map(ti => ti.path).every(p => isRS(p))

@@ -1,4 +1,4 @@
-import {getCountXASU1O1, getCountXCL, getCountXCU, getCountXSCH, getCountXSCV, getCountXSI1U, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC,} from "../queries/MapQueries.ts"
+import {getCountXASU1O1, getCountXCL, getCountXCU, getCountXSI1U, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC,} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
@@ -74,11 +74,11 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertSOImage': insertS(m, getX(m), getX(m).so1.length, { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
     case 'insertCRD': insertCR(m, getXSI1(m), getCountXCU(m) + 1); break
     case 'insertCRU': insertCR(m, getXSI1(m), getCountXCU(m)); break
-    case 'insertSCRD': insertCR(m, getX(m), getCountXSCV(m)); break
-    case 'insertSCRU': insertCR(m, getX(m), 0); break
     case 'insertCCR': insertCC(m, getXSI1(m), getCountXCL(m) + 1); break
     case 'insertCCL': insertCC(m, getXSI1(m), getCountXCL(m)); break
-    case 'insertSCCR': insertCC(m, getX(m), getCountXSCH(m)); break
+    case 'insertSCRD': insertCR(m, getX(m), (getNodeById(m, getXS(m).co1.at(0) as string) as C).cv.length); break
+    case 'insertSCRU': insertCR(m, getX(m), 0); break
+    case 'insertSCCR': insertCC(m, getX(m), (getNodeById(m, getXS(m).co1.at(0) as string) as C).ch.length); break
     case 'insertSCCL': insertCC(m, getX(m), 0); break
     case 'insertSDTable': insertTable(m, getXSI1(m), getXS(m).su.length + 1, payload); break
     case 'insertSUTable': insertTable(m, getXSI1(m), getXS(m).su.length, payload); break
