@@ -109,12 +109,10 @@ export const getXAEO = (m: M): T[] => {const xa = getXA(m); return m.filter(ti =
 export const getCountQuasiSD = (m: M): number => mT(m).filter(ti => isQuasiSD(getX(m).path, ti.path)).length
 export const getCountQuasiSU = (m: M): number => mT(m).filter(ti => isQuasiSU(getX(m).path, ti.path)).length
 const getCountSI1U = (m: M, p: PT): number => m.filter(ti => isSI1U(p, ti.path as PT)).length
-const getCountSO1 = (m: M, p: PT): number => m.filter(ti => isSO1(p, ti.path as PT)).length
 const getCountCV = (m: M, p: PT): number => m.filter(ti => isCH(p, ti.path as PT)).length
 const getCountCH = (m: M, p: PT): number => m.filter(ti => isCV(p, ti.path as PT)).length
 export const getCountTSCV = (m: M, t: T): number => getCountCV(m, [...t.path, 'c', 0, 0])
 export const getCountTSCH = (m: M, t: T): number => getCountCH(m, [...t.path, 'c', 0, 0])
-export const getCountXASU1O1 = (m: M): number => getCountSO1(m, getXFSU1(m).path)
 export const getCountXSI1U = (m: M): number => getCountSI1U(m, getX(m).path)
 export const getCountXCU = (m: M): number => getX(m).path.at(-2)
 export const getCountXCL = (m: M): number => getX(m).path.at(-1)
