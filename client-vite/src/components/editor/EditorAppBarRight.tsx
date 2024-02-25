@@ -6,10 +6,6 @@ import {MR} from "../../reducers/MapReducerEnum.ts"
 import {AccessType, MapMode} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {IconButton} from "@radix-ui/themes"
-import {NodeEdit} from "../dropdown/NodeEdit.tsx"
-import {NodeInsert} from "../dropdown/NodeInsert.tsx"
-import {NodeMove} from "../dropdown/NodeMove.tsx"
-import {NodeSelect} from "../dropdown/NodeSelect.tsx"
 import {UserSettings} from "../dropdown/UserSettings.tsx"
 import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
@@ -66,12 +62,6 @@ export const EditorAppBarRight: FC = () => {
           onClick={() => md(MR.selectFirstC)}>
           <LetterC/>
         </IconButton>
-      </div>
-      <div className="flex flex-row items-center gap-1">
-        <NodeSelect/>
-        <NodeInsert/>
-        <NodeMove/>
-        <NodeEdit/>
       </div>
       <div className="flex flex-row items-center gap-1">
         <IconButton
