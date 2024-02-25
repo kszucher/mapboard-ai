@@ -145,6 +145,7 @@ export interface CSaveNever {
   si2: string
   so1: string[]
   so2: string[]
+  so: string[]
   co2: string[]
   cu: string[]
   cd: string[]

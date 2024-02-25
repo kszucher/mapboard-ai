@@ -138,6 +138,7 @@ export const cSaveNever = {
   si2: '',
   so1: [],
   so2: [],
+  so: [],
   co2: [],
   cu: [],
   cd: [],

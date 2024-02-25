@@ -53,6 +53,10 @@ export const mapChain = (m: M) => {
           const sdi = hp.get([...si.path.slice(0, -1), i].join('')) as S
           sdi.sd.push(si.nodeId)
         }
+        if (si.path.includes('c')) {
+          const cix = hp.get(si.path.slice(0, si.path.indexOf('c') + 3).join('')) as C
+          cix.so.push(si.nodeId)
+        }
         break
       }
       case isC(ni.path): {
