@@ -1,12 +1,12 @@
-import {ccToCb, crToCb, getCountTSCH, getCountTSCV, getG, getNodeById, getXA, getXSI1, lToCb, mL, mT, mR, rToCb, sortPath, sToCb, getXFS} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getXA, getXSI1, lToCb, mL, mT, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
-import {M, L, T, PT, PL, PR} from "../state/MapStateTypes"
+import {M, L, T, PT, PL, PR, C} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
-import {deleteCC, deleteCR, deleteLR, deleteS} from "./MapDelete"
+import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {insertTable} from "./MapInsert"
 import {selectTL, unselectNodes} from "./MapSelect"
-import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
+import {makeSpaceFromS} from "./MapSpace"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -130,31 +130,39 @@ export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
   m.sort(sortPath)
 }
 
-export const moveCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) => {
-  const insertParentNodeId = insertParentNode.nodeId
-  const cbCr = structuredClone(crToCb(m))
-  deleteCR(m)
-  const ip = [...getNodeById(m, insertParentNodeId).path, 'c', insertTargetRowIndex, 0] as PT
-  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as PT)
-  cbCr.forEach(ti => Object.assign(ti, {
-    path: [...ip.slice(0, -3), 'c', ti.path.at(1) + ip.at(-2), ti.path.at(2), ...ti.path.slice(3)]
-  }))
-  makeSpaceFromCr(m, ipList, 1)
-  m.push(...cbCr)
+export const moveCRD = (m: M) => {
+  const crIndex = getXC(m).path.indexOf('c') + 1
+  const toMoveD = getXAC(m).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  const toMoveU = getXAC(m).map(ci => (getNodeById(m, ci.cd.at(-1)!)) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  toMoveD.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) + 1))
+  toMoveU.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) - 1))
   m.sort(sortPath)
 }
 
-export const moveCC = (m: M, insertParentNode: T, insertTargetColumnIndex: number) => {
-  const insertParentNodeId = insertParentNode.nodeId
-  const cbCc = structuredClone(ccToCb(m))
-  deleteCC(m)
-  const ip = [...getNodeById(m, insertParentNodeId).path, 'c', 0, insertTargetColumnIndex] as PT
-  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as PT)
-  cbCc.forEach(ti => Object.assign(ti, {
-    path: [...ip.slice(0, -3), 'c', ti.path.at(1), ti.path.at(2) + ip.at(-1), ...ti.path.slice(3)]
-  }))
-  makeSpaceFromCc(m, ipList, 1)
-  m.push(...cbCc)
+export const moveCRU = (m: M) => {
+  const crIndex = getXC(m).path.indexOf('c') + 1
+  const toMoveU = getXAC(m).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  const toMoveD = getXAC(m).map(ci => (getNodeById(m, ci.cu.at(-1)!)) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  toMoveU.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) - 1))
+  toMoveD.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) + 1))
+  m.sort(sortPath)
+}
+
+export const moveCCR = (m: M) => {
+  const ccIndex = getXC(m).path.indexOf('c') + 2
+  const toMoveR = getXAC(m).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  const toMoveL = getXAC(m).map(ci => (getNodeById(m, ci.cr.at(-1)!)) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  toMoveR.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) + 1))
+  toMoveL.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) - 1))
+  m.sort(sortPath)
+}
+
+export const moveCCL = (m: M) => {
+  const ccIndex = getXC(m).path.indexOf('c') + 2
+  const toMoveL = getXAC(m).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  const toMoveR = getXAC(m).map(ci => (getNodeById(m, ci.cl.at(-1)!)) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  toMoveL.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) - 1))
+  toMoveR.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) + 1))
   m.sort(sortPath)
 }
 

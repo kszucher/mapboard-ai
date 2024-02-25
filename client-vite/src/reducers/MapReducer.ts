@@ -7,7 +7,7 @@ import {deleteCC, deleteCR, deleteL, deleteLR, deleteS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertL, insertR, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {copyLR, copyS, cutLR, duplicateR, duplicateS, moveCC, moveCR, moveS, moveS2T, pasteLR, pasteS, cutS} from "./MapMove"
+import {copyLR, copyS, cutLR, duplicateR, duplicateS, moveS, moveS2T, pasteLR, pasteS, cutS, moveCRD, moveCRU, moveCCR, moveCCL} from "./MapMove"
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {mapPlaceIndented} from "./MapPlaceIndented.ts"
 import {MR} from "./MapReducerEnum.ts"
@@ -119,10 +119,10 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'moveSO': moveS(m, getXFSU1(m), getNodeById(m, getXFS(m).su.at(-1)!).so1.length); break
     case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
     case 'moveSByDrag': moveS(m, getNodeById(m, payload.moveInsertParentNodeId), payload.moveTargetIndex); break
-    case 'moveCRD': moveCR(m, getXSI1(m), getCountXCU(m) + 1); break
-    case 'moveCRU': moveCR(m, getXSI1(m), getCountXCU(m) - 1); break
-    case 'moveCCR': moveCC(m, getXSI1(m), getCountXCL(m) + 1); break
-    case 'moveCCL': moveCC(m, getXSI1(m), getCountXCL(m) - 1); break
+    case 'moveCRD': moveCRD(m); break
+    case 'moveCRU': moveCRU(m); break
+    case 'moveCCR': moveCCR(m); break
+    case 'moveCCL': moveCCL(m); break
     case 'moveS2TO': moveS2T(m, getX(m), getXSO1(m)); break
     case 'transpose': getXSCO(m).forEach(ti => ti.path = [...ti.path.slice(0, getX(m).path.length + 1), ti.path.at(getX(m).path.length + 2), ti.path.at(getX(m).path.length + 1), ...ti.path.slice(getX(m).path.length + 3)] as PT); break
 
