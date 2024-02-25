@@ -7,8 +7,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
-import {DropdownMenu} from "@radix-ui/themes"
-import Dots from "../../assets/dots.svg?react"
+import {ContextMenu} from "@radix-ui/themes"
 
 export const MapSvgSSelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -50,24 +49,40 @@ export const MapSvgSSelectionPrimary: FC = () => {
       }
       {
         getXA(m).length === 1 &&
-        <DropdownMenu.Root>
-          <g
-            transform={`translate(${Math.round(xs.nodeStartX + xs.selfW + 12)}, ${Math.round(xs.nodeStartY + xs.selfH / 2 - 12)})`}
-            style={{transition: 'all 0.3s', transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)', transitionProperty: 'all'}}>
-            <DropdownMenu.Trigger>
-              <rect width={24} height={24} rx={20} ry={20} className={"fill-gray-500 hover:fill-teal-700"}/>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content>
-              <DropdownMenu.Item onClick={() => console.log('x')}>
-                {'Menu'}
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-            <g className={"pointer-events-none"}>
-              <Dots/>
-            </g>
+        <ContextMenu.Root>
+          <g transform={`translate(${Math.round(xs.nodeStartX)}, ${Math.round(xs.nodeStartY)})`}>
+            <ContextMenu.Trigger>
+              <rect width={xs.selfW} height={xs.selfH} fill={'transparent'}/>
+            </ContextMenu.Trigger>
+            <ContextMenu.Content alignOffset={120}>
+              <ContextMenu.Sub>
+                <ContextMenu.SubTrigger>{'Select'}</ContextMenu.SubTrigger>
+                <ContextMenu.SubContent>
+
+                </ContextMenu.SubContent>
+              </ContextMenu.Sub>
+              <ContextMenu.Sub>
+                <ContextMenu.SubTrigger>{'Insert'}</ContextMenu.SubTrigger>
+                <ContextMenu.SubContent>
+
+                </ContextMenu.SubContent>
+              </ContextMenu.Sub>
+              <ContextMenu.Sub>
+                <ContextMenu.SubTrigger>{'Move'}</ContextMenu.SubTrigger>
+                <ContextMenu.SubContent>
+
+                </ContextMenu.SubContent>
+              </ContextMenu.Sub>
+              <ContextMenu.Sub>
+                <ContextMenu.SubTrigger>{'Edit'}</ContextMenu.SubTrigger>
+                <ContextMenu.SubContent>
+
+                </ContextMenu.SubContent>
+              </ContextMenu.Sub>
+            </ContextMenu.Content>
           </g>
           )
-        </DropdownMenu.Root>
+        </ContextMenu.Root>
       }
     </Fragment>
   )

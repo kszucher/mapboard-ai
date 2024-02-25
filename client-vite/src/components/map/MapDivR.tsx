@@ -29,7 +29,7 @@ export const MapDivR: FC = () => {
           zIndex: ri.path.length,
           border: 0,
           margin: 0,
-          pointerEvents: [
+          pointerEvents: !ri.selected && [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
           ].includes(leftMouseMode) && mapMode === MapMode.EDIT_ROOT
