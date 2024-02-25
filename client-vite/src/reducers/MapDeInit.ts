@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare"
 import {M, GSaveNever, GSaveOptional, LSaveOptional, LSaveNever, G, L, R, RSaveOptional, RSaveNever, S, SSaveOptional, SSaveNever, C, CSaveOptional, CSaveNever, MPartial} from "../state/MapStateTypes"
-import {cSaveOptional, gSaveOptional, lSaveOptional, rSaveOptional, sSaveOptional} from "../state/MapState"
+import {cSaveAlways, cSaveOptional, gSaveAlways, gSaveOptional, lSaveAlways, lSaveOptional, rSaveAlways, rSaveOptional, sSaveAlways, sSaveOptional} from "../state/MapState"
 import {isC, isG, isL, isR, isS, sortPath} from "../queries/MapQueries.ts"
 
 export const mapDeInit = (m: M) => {
@@ -10,7 +10,9 @@ export const mapDeInit = (m: M) => {
       case isG(ni.path): {
         const g  = ni as G
         for (const prop in g) {
-          if (gSaveOptional.hasOwnProperty(prop)) {
+          if (gSaveAlways.hasOwnProperty(prop)) {
+            // do nothing
+          } else if (gSaveOptional.hasOwnProperty(prop)) {
             if (isEqual(g[prop as keyof GSaveOptional], gSaveOptional[prop as keyof GSaveOptional])) {
               delete g[prop as keyof GSaveOptional]
             }
@@ -23,7 +25,9 @@ export const mapDeInit = (m: M) => {
       case isL(ni.path): {
         const li = ni as L
         for (const prop in li) {
-          if (lSaveOptional.hasOwnProperty(prop)) {
+          if (lSaveAlways.hasOwnProperty(prop)) {
+            // do nothing
+          } else if (lSaveOptional.hasOwnProperty(prop)) {
             if (isEqual(li[prop as keyof LSaveOptional], lSaveOptional[prop as keyof LSaveOptional])) {
               delete li[prop as keyof LSaveOptional]
             }
@@ -36,7 +40,9 @@ export const mapDeInit = (m: M) => {
       case isR(ni.path): {
         const ri = ni as R
         for (const prop in ri) {
-          if (rSaveOptional.hasOwnProperty(prop)) {
+          if (rSaveAlways.hasOwnProperty(prop)) {
+            // do nothing
+          } else if (rSaveOptional.hasOwnProperty(prop)) {
             if (isEqual(ri[prop as keyof RSaveOptional], rSaveOptional[prop as keyof RSaveOptional])) {
               delete ri[prop as keyof RSaveOptional]
             }
@@ -49,7 +55,9 @@ export const mapDeInit = (m: M) => {
       case isS(ni.path): {
         const si = ni as S
         for (const prop in si) {
-          if (sSaveOptional.hasOwnProperty(prop)) {
+          if (sSaveAlways.hasOwnProperty(prop)) {
+            // do nothing
+          } else if (sSaveOptional.hasOwnProperty(prop)) {
             if (isEqual(si[prop as keyof SSaveOptional], sSaveOptional[prop as keyof SSaveOptional])) {
               delete si[prop as keyof SSaveOptional]
             }
@@ -62,7 +70,9 @@ export const mapDeInit = (m: M) => {
       case isC(ni.path): {
         const ci = ni as C
         for (const prop in ci) {
-          if (cSaveOptional.hasOwnProperty(prop)) {
+          if (cSaveAlways.hasOwnProperty(prop)) {
+            // do nothing
+          } else if (cSaveOptional.hasOwnProperty(prop)) {
             if (isEqual(ci[prop as keyof CSaveOptional], cSaveOptional[prop as keyof CSaveOptional])) {
               delete ci[prop as keyof CSaveOptional]
             }
