@@ -23,7 +23,7 @@ export const MapSvgSSelectionPrimary: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
-    isXS(m) && !selectionRectCoords.length &&
+    isXS(m) && !selectionRectCoords.length && getXA(m).length === 1 &&
     <Fragment>
       {getXA(m).length === 1 && xs.selection === 's' && (xs.sBorderColor || xs.sFillColor || xs.taskStatus > 1 || xs.co1.length) &&
         <path
@@ -34,7 +34,7 @@ export const MapSvgSSelectionPrimary: FC = () => {
           d={getPolygonPath(m, xs, 'sSelf', 2)}
         />
       }
-      {getXA(m).length === 1 && xs.selection === 's' && !((xs.sBorderColor || xs.sFillColor) || xs.taskStatus > 1 || xs.co1.length) &&
+      {xs.selection === 's' && !((xs.sBorderColor || xs.sFillColor) || xs.taskStatus > 1 || xs.co1.length) &&
         <path
           key={`${g.nodeId}_svg_selectionBorderPrimary`}
           stroke={C.SELECTION_COLOR}
@@ -43,7 +43,7 @@ export const MapSvgSSelectionPrimary: FC = () => {
           d={getPolygonPath(m, xs, 'sSelf', -2)}
         />
       }
-      {getXA(m).length === 1 && xs.selection === 'f' &&
+      {xs.selection === 'f' &&
         <path
           key={`${g.nodeId}_svg_selectionBorderPrimary`}
           stroke={C.SELECTION_COLOR}
@@ -52,75 +52,71 @@ export const MapSvgSSelectionPrimary: FC = () => {
           d={getPolygonPath(m, xs, 'sFamily', 4)}
         />
       }
-      {
-        getXA(m).length === 1 &&
-        <ContextMenu.Root onOpenChange={(value) => console.log('OPENNESS:', value /*TODO: set a redux variable, that removes map event listeners*/)}>
-          <g transform={`translate(${Math.round(xs.nodeStartX)}, ${Math.round(xs.nodeStartY)})`}>
-            <ContextMenu.Trigger>
-              <rect width={xs.selfW} height={xs.selfH} fill={'transparent'}/>
-            </ContextMenu.Trigger>
-            <ContextMenu.Content alignOffset={120}>
-              <ContextMenu.Sub>
-                <ContextMenu.SubTrigger>{'Select'}</ContextMenu.SubTrigger>
-                <ContextMenu.SubContent>
-                  {getXS(m).so1.length > 0 && getXS(m).selection === 's' && <ContextMenu.Item onClick={() => md(MR.selectFamilyX)}>{'Node Family'}</ContextMenu.Item>}
-                  {getXS(m).so1.length > 0 && getXS(m).selection === 'f' && <ContextMenu.Item onClick={() => md(MR.selectSelfX)}>{'Node'}</ContextMenu.Item>}
-                  {getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.selectCFF, {path: getXS(m).path})}>{'First Cell'}</ContextMenu.Item>}
-                  {<ContextMenu.Item onClick={() => md(MR.selectSA)}>{'All Struct Node'}</ContextMenu.Item>}
-                </ContextMenu.SubContent>
-              </ContextMenu.Sub>
-              <ContextMenu.Sub>
-                <ContextMenu.SubTrigger>{'Insert'}</ContextMenu.SubTrigger>
-                <ContextMenu.SubContent>
-                  <ContextMenu.Item onClick={() => md(MR.insertSU)}>{'Above'}</ContextMenu.Item>
-                  <ContextMenu.Item onClick={() => md(MR.insertSO)}>{'Out'}</ContextMenu.Item>
-                  <ContextMenu.Item onClick={() => md(MR.insertSD)}>{'Below'}</ContextMenu.Item>
-                  {!getX(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_U))}>{'Table Above'}</ContextMenu.Item></Dialog.Trigger>}
-                  {!getX(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_D))}>{'Table Below'}</ContextMenu.Item></Dialog.Trigger>}
-                  {!getX(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_O))}>{'Table Out'}</ContextMenu.Item></Dialog.Trigger>}
-                  {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCRU)}>{'Table Row Above'}</ContextMenu.Item>}
-                  {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCRD)}>{'Table Row Below'}</ContextMenu.Item>}
-                  {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCCL)}>{'Table Column Left'}</ContextMenu.Item>}
-                  {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCCR)}>{'Table Column Right'}</ContextMenu.Item>}
-                </ContextMenu.SubContent>
-              </ContextMenu.Sub>
-              <ContextMenu.Sub>
-                <ContextMenu.SubTrigger>{'Move'}</ContextMenu.SubTrigger>
-                <ContextMenu.SubContent>
-                  {isXASVN(m) && getXFS(m).su.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSU)}>{'Node Up'}</ContextMenu.Item>}
-                  {isXASVN(m) && getXLS(m).sd.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSD)}>{'Node Down'}</ContextMenu.Item>}
-                  {isXASVN(m) && getXFS(m).su.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSO)}>{'Node Out'}</ContextMenu.Item>}
-                  {!isXRS(m) && isXASVN(m) && <ContextMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</ContextMenu.Item>}
-                  {getX(m).so1.length > 0 && !getXAEO(m).some(ti => ti.path.includes('c')) && <ContextMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
-                </ContextMenu.SubContent>
-              </ContextMenu.Sub>
-              <ContextMenu.Sub>
-                <ContextMenu.SubTrigger>{'Edit'}</ContextMenu.SubTrigger>
-                <ContextMenu.SubContent>
-                  {!formatterVisible && <ContextMenu.Item onClick={() => dispatch(actions.openFormatter())}>{'Open Formatter'}</ContextMenu.Item>}
-                  {formatterVisible && <ContextMenu.Item onClick={() => dispatch(actions.closeFormatter())}>{'Close Formatter'}</ContextMenu.Item>}
-                  <Dialog.Trigger>
-                    {getXS(m).co1.length === 0 && getXS(m).linkType === '' && <ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_MAP_IN_MAP))}>{'Create Sub Map'}</ContextMenu.Item>}
-                  </Dialog.Trigger>
-                  {getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.transpose)}>{'Transpose'}</ContextMenu.Item>}
-                  {mS(getXAEO(m)).map(ti => ti.taskStatus).includes(0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeOn)}>{'Task Mode On'}</ContextMenu.Item>}
-                  {mS(getXAEO(m)).map(ti => ti.taskStatus).some(el => el > 0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeOff)}>{'Task Mode Off'}</ContextMenu.Item>}
-                  {mS(getXAEO(m)).map(ti => ti.taskStatus).some(el => el > 0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeReset)}>{'Task Mode Reset'}</ContextMenu.Item>}
-                  <Dialog.Trigger>
-                    {getXS(m).contentType === 'equation' && getXS(m).co1.length === 0 && <ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</ContextMenu.Item>}
-                  </Dialog.Trigger>
-                  <Dialog.Trigger>
-                    {getXS(m).contentType === 'mermaid' && getXS(m).co1.length === 0 && <ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_MERMAID))}>{'Edit Mermaid'}</ContextMenu.Item>}
-                  </Dialog.Trigger>
-                  {<ContextMenu.Item onClick={() => md(MR.setBlur)}>{'set blur'}</ContextMenu.Item>}
-                  {<ContextMenu.Item onClick={() => md(MR.clearBlur)}>{'clear blur'}</ContextMenu.Item>}
-                </ContextMenu.SubContent>
-              </ContextMenu.Sub>
-            </ContextMenu.Content>
-          </g>
-          )
-        </ContextMenu.Root>
-      }
+      <ContextMenu.Root onOpenChange={(value) => console.log('OPENNESS:', value /*TODO: set a redux variable, that removes map event listeners*/)}>
+        <g transform={`translate(${Math.round(xs.nodeStartX)}, ${Math.round(xs.nodeStartY)})`}>
+          <ContextMenu.Trigger>
+            <rect width={xs.selfW} height={xs.selfH} fill={'transparent'}/>
+          </ContextMenu.Trigger>
+          <ContextMenu.Content alignOffset={120}>
+            <ContextMenu.Sub>
+              <ContextMenu.SubTrigger>{'Select'}</ContextMenu.SubTrigger>
+              <ContextMenu.SubContent>
+                {getXS(m).so1.length > 0 && getXS(m).selection === 's' && <ContextMenu.Item onClick={() => md(MR.selectFamilyX)}>{'Node Family'}</ContextMenu.Item>}
+                {getXS(m).so1.length > 0 && getXS(m).selection === 'f' && <ContextMenu.Item onClick={() => md(MR.selectSelfX)}>{'Node'}</ContextMenu.Item>}
+                {getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.selectCFF, {path: getXS(m).path})}>{'First Cell'}</ContextMenu.Item>}
+                {<ContextMenu.Item onClick={() => md(MR.selectSA)}>{'All Struct'}</ContextMenu.Item>}
+              </ContextMenu.SubContent>
+            </ContextMenu.Sub>
+            <ContextMenu.Sub>
+              <ContextMenu.SubTrigger>{'Insert'}</ContextMenu.SubTrigger>
+              <ContextMenu.SubContent>
+                <ContextMenu.Item onClick={() => md(MR.insertSU)}>{'Struct Above'}</ContextMenu.Item>
+                <ContextMenu.Item onClick={() => md(MR.insertSO)}>{'Struct Out'}</ContextMenu.Item>
+                <ContextMenu.Item onClick={() => md(MR.insertSD)}>{'Struct Below'}</ContextMenu.Item>
+                {!getX(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_U))}>{'Table Above'}</ContextMenu.Item></Dialog.Trigger>}
+                {!getX(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_D))}>{'Table Below'}</ContextMenu.Item></Dialog.Trigger>}
+                {!getX(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_O))}>{'Table Out'}</ContextMenu.Item></Dialog.Trigger>}
+                {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCRU)}>{'Table Row Above'}</ContextMenu.Item>}
+                {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCRD)}>{'Table Row Below'}</ContextMenu.Item>}
+                {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCCL)}>{'Table Column Left'}</ContextMenu.Item>}
+                {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCCR)}>{'Table Column Right'}</ContextMenu.Item>}
+              </ContextMenu.SubContent>
+            </ContextMenu.Sub>
+            <ContextMenu.Sub>
+              <ContextMenu.SubTrigger>{'Move'}</ContextMenu.SubTrigger>
+              <ContextMenu.SubContent>
+                {isXASVN(m) && getXFS(m).su.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSU)}>{'Node Up'}</ContextMenu.Item>}
+                {isXASVN(m) && getXLS(m).sd.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSD)}>{'Node Down'}</ContextMenu.Item>}
+                {isXASVN(m) && getXFS(m).su.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSO)}>{'Node Out'}</ContextMenu.Item>}
+                {!isXRS(m) && isXASVN(m) && <ContextMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</ContextMenu.Item>}
+                {getX(m).so1.length > 0 && !getXAEO(m).some(ti => ti.path.includes('c')) && <ContextMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
+              </ContextMenu.SubContent>
+            </ContextMenu.Sub>
+            <ContextMenu.Sub>
+              <ContextMenu.SubTrigger>{'Edit'}</ContextMenu.SubTrigger>
+              <ContextMenu.SubContent>
+                {!formatterVisible && <ContextMenu.Item onClick={() => dispatch(actions.openFormatter())}>{'Open Formatter'}</ContextMenu.Item>}
+                {formatterVisible && <ContextMenu.Item onClick={() => dispatch(actions.closeFormatter())}>{'Close Formatter'}</ContextMenu.Item>}
+                <Dialog.Trigger>
+                  {getXS(m).co1.length === 0 && getXS(m).linkType === '' && <ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_MAP_IN_MAP))}>{'Create Sub Map'}</ContextMenu.Item>}
+                </Dialog.Trigger>
+                {getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.transpose)}>{'Transpose'}</ContextMenu.Item>}
+                {mS(getXAEO(m)).map(ti => ti.taskStatus).includes(0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeOn)}>{'Task Mode On'}</ContextMenu.Item>}
+                {mS(getXAEO(m)).map(ti => ti.taskStatus).some(el => el > 0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeOff)}>{'Task Mode Off'}</ContextMenu.Item>}
+                {mS(getXAEO(m)).map(ti => ti.taskStatus).some(el => el > 0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeReset)}>{'Task Mode Reset'}</ContextMenu.Item>}
+                <Dialog.Trigger>
+                  {getXS(m).contentType === 'equation' && getXS(m).co1.length === 0 && <ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</ContextMenu.Item>}
+                </Dialog.Trigger>
+                <Dialog.Trigger>
+                  {getXS(m).contentType === 'mermaid' && getXS(m).co1.length === 0 && <ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_MERMAID))}>{'Edit Mermaid'}</ContextMenu.Item>}
+                </Dialog.Trigger>
+                {<ContextMenu.Item onClick={() => md(MR.setBlur)}>{'set blur'}</ContextMenu.Item>}
+                {<ContextMenu.Item onClick={() => md(MR.clearBlur)}>{'clear blur'}</ContextMenu.Item>}
+              </ContextMenu.SubContent>
+            </ContextMenu.Sub>
+          </ContextMenu.Content>
+        </g>
+      </ContextMenu.Root>
     </Fragment>
   )
 }
