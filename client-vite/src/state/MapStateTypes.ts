@@ -176,5 +176,5 @@ export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<
 type RPartial = Required<RSaveAlways> & Partial<RSaveOptional> & Partial<RSaveNever>
 type SPartial = Required<SSaveAlways> & Partial<SSaveOptional> & Partial<SSaveNever>
 type CPartial = Required<CSaveAlways> & Partial<CSaveOptional> & Partial<CSaveNever>
-type NPartial = GPartial | LPartial | RPartial | SPartial | CPartial
+export type NPartial = GPartial | LPartial | RPartial | SPartial | CPartial
 export type MPartial = NPartial[]

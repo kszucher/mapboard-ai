@@ -1,6 +1,6 @@
 import {sortNode} from "../queries/MapQueries.ts"
 import {setIsTesting} from "../utils/Utils"
-import {M, MPartial} from "../state/MapStateTypes"
+import {MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
 import {mapChain} from "./MapChain.ts"
@@ -29,7 +29,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'te', path: ['r', 0, 's', 0, 's', 3]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 's', 4]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertSD, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSD, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertSU', () => {
     const test = [
@@ -51,7 +51,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 3], selected: 1},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 's', 4]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertSU, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSU, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertSO', () => {
     const test = [
@@ -67,7 +67,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 1], selected: 1},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertSO, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSO, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertCRD', () => {
     const test = [
@@ -98,7 +98,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 2, 1]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertCRD, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertCRD, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertCRU', () => {
     const test = [
@@ -129,7 +129,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 2, 1], selected: 1},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertCRU, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertCRU, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertCCR', () => {
     const test = [
@@ -160,7 +160,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 2]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertCCR, {}) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertCCR, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertCCL', () => {
     const test = [
@@ -191,7 +191,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 2], selected: 1},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertCCL) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertCCL)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertSCRD', () => {
     const test = [
@@ -214,7 +214,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 2, 1]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertSCRD) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSCRD)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertSCRU', () => {
     const test = [
@@ -237,7 +237,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 2, 1]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertSCRU) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSCRU)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertSCCR', () => {
     const test = [
@@ -260,7 +260,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 2]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertSCCR) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSCCR)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertSCCL', () => {
     const test = [
@@ -283,6 +283,6 @@ describe("MapInsertTests", () => {
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 1, 2]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test) as M) as M, MR.insertSCCL) as M).sort(sortNode)).toEqual((result as M).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSCCL)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
 })
