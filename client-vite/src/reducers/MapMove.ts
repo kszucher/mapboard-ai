@@ -1,20 +1,4 @@
-import {
-  getG,
-  getNodeById,
-  getXA,
-  getXSI1,
-  lToCb,
-  mL,
-  mT,
-  mR,
-  rToCb,
-  sortPath,
-  sToCb,
-  getXFS,
-  getXAC,
-  getXC,
-  isSEODO
-} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getXA, getXSI1, lToCb, mL, mT, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, T, PT, PL, PR, C} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
