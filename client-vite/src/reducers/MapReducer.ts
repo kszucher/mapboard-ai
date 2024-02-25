@@ -1,11 +1,11 @@
-import {getCountXCL, getCountXCU, getCountXSI1U, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC,} from "../queries/MapQueries.ts"
+import {getCountXSI1U, getG, getLastSO, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getX, getXA, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC,} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteCC, deleteCR, deleteL, deleteLR, deleteS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
-import {insertCC, insertCR, insertL, insertR, insertS, insertTable} from "./MapInsert"
+import {insertCCL, insertCCR, insertCRD, insertCRU, insertL, insertR, insertS, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyLR, copyS, cutLR, duplicateR, duplicateS, moveS, moveS2T, pasteLR, pasteS, cutS, moveCRD, moveCRU, moveCCR, moveCCL} from "./MapMove"
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
@@ -72,14 +72,14 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertSOText': insertS(m, getX(m), getX(m).so1.length, { contentType: 'text', content: payload }); break
     case 'insertSOLink': insertS(m, getX(m), getX(m).so1.length, { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
     case 'insertSOImage': insertS(m, getX(m), getX(m).so1.length, { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
-    case 'insertCRD': insertCR(m, getXSI1(m), getCountXCU(m) + 1); break
-    case 'insertCRU': insertCR(m, getXSI1(m), getCountXCU(m)); break
-    case 'insertCCR': insertCC(m, getXSI1(m), getCountXCL(m) + 1); break
-    case 'insertCCL': insertCC(m, getXSI1(m), getCountXCL(m)); break
-    case 'insertSCRD': insertCR(m, getX(m), (getNodeById(m, getXS(m).co1.at(0)!) as C).cv.length); break
-    case 'insertSCRU': insertCR(m, getX(m), 0); break
-    case 'insertSCCR': insertCC(m, getX(m), (getNodeById(m, getXS(m).co1.at(0)!) as C).ch.length); break
-    case 'insertSCCL': insertCC(m, getX(m), 0); break
+    case 'insertCRD': insertCRD(m); break
+    case 'insertCRU': insertCRU(m); break
+    case 'insertCCR': insertCCR(m); break
+    case 'insertCCL': insertCCL(m); break
+    case 'insertSCRD': insertSCRD(m); break
+    case 'insertSCRU': insertSCRU(m); break
+    case 'insertSCCR': insertSCCR(m); break
+    case 'insertSCCL': insertSCCL(m); break
     case 'insertSDTable': insertTable(m, getXSI1(m), getXS(m).su.length + 1, payload); break
     case 'insertSUTable': insertTable(m, getXSI1(m), getXS(m).su.length, payload); break
     case 'insertSOTable': insertTable(m, getX(m), getX(m).so1.length, payload); break

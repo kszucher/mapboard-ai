@@ -1,4 +1,20 @@
-import {getG, getNodeById, getXA, getXSI1, lToCb, mL, mT, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC} from "../queries/MapQueries.ts"
+import {
+  getG,
+  getNodeById,
+  getXA,
+  getXSI1,
+  lToCb,
+  mL,
+  mT,
+  mR,
+  rToCb,
+  sortPath,
+  sToCb,
+  getXFS,
+  getXAC,
+  getXC,
+  isSEODO
+} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, T, PT, PL, PR, C} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
@@ -6,7 +22,6 @@ import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {insertTable} from "./MapInsert"
 import {selectTL, unselectNodes} from "./MapSelect"
-import {makeSpaceFromS} from "./MapSpace"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -58,7 +73,7 @@ const cbToS = (m: M, cbS: M, ip: PT) => {
     linkType: sSaveOptional.linkType,
     link: sSaveOptional.link
   }))
-  makeSpaceFromS(m, ip, getXA(cbS).length)
+  mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + getXA(cbS).length))
   unselectNodes(m)
   m.push(...cbS)
   m.sort(sortPath)
@@ -125,7 +140,7 @@ export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
   cbS.forEach(ti => Object.assign(ti, {
     path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)]
   }))
-  makeSpaceFromS(m, ip, getXA(cbS).length)
+  mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + getXA(cbS).length))
   m.push(...cbS)
   m.sort(sortPath)
 }

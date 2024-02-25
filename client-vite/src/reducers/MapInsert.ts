@@ -1,9 +1,8 @@
-import {N, LPartial, M, T, PT, MPartial} from "../state/MapStateTypes"
+import {N, LPartial, M, T, PT, MPartial, C} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {getCountTSCV, getCountTSCH, sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG, getXS, isXS} from "../queries/MapQueries.ts"
+import {sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG, getXS, isXS, getXAC, getNodeById, getXC} from "../queries/MapQueries.ts"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
-import {makeSpaceFromCc, makeSpaceFromCr, makeSpaceFromS} from "./MapSpace"
-import {sSaveOptional} from "../state/MapState.ts";
+import {sSaveOptional} from "../state/MapState.ts"
 
 export const insertL = (m: M, lPartial: LPartial) => {
   m.push({...lPartial, nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['l', getLastIndexL(m) + 1]} as N)
@@ -22,24 +21,76 @@ export const insertR = (m: M) => {
 
 export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, attributes: object) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PT
-  makeSpaceFromS(m, ip, 1)
+  mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + 1))
   const parentTaskStatus = isXS(m) ? getXS(m).taskStatus : sSaveOptional.taskStatus
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip, taskStatus: parentTaskStatus, ...attributes} as N)
+  m.push({selected: 1, nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip, taskStatus: parentTaskStatus, ...attributes} as N)
   m.sort(sortPath)
 }
 
-export const insertCR = (m: M, insertParentNode: T, insertTargetRowIndex: number) => {
-  const ipList = Array(getCountTSCH(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', insertTargetRowIndex, i] as PT)
-  makeSpaceFromCr(m, ipList, 1)
-  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8), path: p}  as N)))
+export const insertCRD = (m: M) => {
+  const crIndex = getXC(m).path.indexOf('c') + 1
+  const crValue = getXC(m).path.at(crIndex)
+  const toMoveD = getXAC(m).map(ci => ci.cd).flat().map(nid => getNodeById(m, nid) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  toMoveD.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) + 1))
+  m.push(...getXAC(m).map((ci, i) => ({nodeId: genNodeId(i), path: ci.path.with(crIndex, crValue + 1)} as N)))
   m.sort(sortPath)
 }
 
-export const insertCC = (m: M, insertParentNode: T, insertTargetColumnIndex: number) => {
-  const ipList = Array(getCountTSCV(m, insertParentNode)).fill(null).map((_, i) => [...insertParentNode.path, 'c', i, insertTargetColumnIndex] as PT)
-  makeSpaceFromCc(m, ipList, 1)
-  m.push(...ipList.map((p, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8), path: p} as N)))
+export const insertCRU = (m: M) => {
+  const crIndex = getXC(m).path.indexOf('c') + 1
+  const crValue = getXC(m).path.at(crIndex)
+  const toMoveD = getXAC(m).map(ci => [ci.nodeId, ...ci.cd]).flat().map(nid => getNodeById(m, nid) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  toMoveD.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) + 1))
+  m.push(...getXAC(m).map((ci, i) => ({nodeId: genNodeId(i), path: ci.path.with(crIndex, crValue)} as N)))
+  m.sort(sortPath)
+}
+
+export const insertCCR = (m: M) => {
+  const ccIndex = getXC(m).path.indexOf('c') + 2
+  const ccValue = getXC(m).path.at(ccIndex)
+  const toMoveR = getXAC(m).map(ci => ci.cr).flat().map(nid => getNodeById(m, nid) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  toMoveR.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) + 1))
+  m.push(...getXAC(m).map((ci, i) => ({nodeId: genNodeId(i), path: ci.path.with(ccIndex, ccValue + 1)} as N)))
+  m.sort(sortPath)
+}
+
+export const insertCCL = (m: M) => {
+  const ccIndex = getXC(m).path.indexOf('c') + 2
+  const ccValue = getXC(m).path.at(ccIndex)
+  const toMoveR = getXAC(m).map(ci => [ci.nodeId, ...ci.cr]).flat().map(nid => getNodeById(m, nid) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  toMoveR.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) + 1))
+  m.push(...getXAC(m).map((ci, i) => ({nodeId: genNodeId(i), path: ci.path.with(ccIndex, ccValue)} as N)))
+  m.sort(sortPath)
+}
+
+export const insertSCRD = (m: M) => {
+  const sc00 = getNodeById(m, getXS(m).co1.at(0) as string) as C
+  m.push(...Array.from({length: sc00.ch.length}, (_, i) =>({nodeId: genNodeId(i), path: getXS(m).path.concat('c', sc00.cv.length, i)} as N)))
+  m.sort(sortPath)
+}
+
+export const insertSCRU = (m: M) => {
+  const crIndex = getXS(m).path.length + 1
+  const toMoveD = [...getXS(m).co1, ...getXS(m).co1.map(nid => getNodeById(m, nid) as C).map(el => el.so).flat()].map(nid => getNodeById(m, nid))
+  toMoveD.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) + 1))
+  const sc00 = getNodeById(m, getXS(m).co1.at(0) as string) as C
+  m.push(...Array.from({length: sc00.ch.length}, (_, i) =>({nodeId: genNodeId(i), path: getXS(m).path.concat('c', 0, i)} as N)))
+  m.sort(sortPath)
+}
+
+export const insertSCCR = (m: M) => {
+  const sc00 = getNodeById(m, getXS(m).co1.at(0) as string) as C
+  m.push(...Array.from({length: sc00.cv.length}, (_, i) =>({nodeId: genNodeId(i), path: getXS(m).path.concat('c', i, sc00.ch.length)} as N)))
+  m.sort(sortPath)
+}
+
+export const insertSCCL = (m: M) => {
+  const ccIndex = getXS(m).path.length + 2
+  const toMoveR = [...getXS(m).co1, ...getXS(m).co1.map(nid => getNodeById(m, nid) as C).map(el => el.so).flat()].map(nid => getNodeById(m, nid))
+  toMoveR.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) + 1))
+  const sc00 = getNodeById(m, getXS(m).co1.at(0) as string) as C
+  m.push(...Array.from({length: sc00.cv.length}, (_, i) =>({nodeId: genNodeId(i), path: getXS(m).path.concat('c', i, 0)} as N)))
   m.sort(sortPath)
 }
 
@@ -48,7 +99,9 @@ export const insertTable = (m: M, insertParentNode: T, insertTargetIndex: number
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
   mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + 1))
   unselectNodes(m)
-  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip} as N)
-  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8), path: [...ip, 'c', ...el]} as N)))
+  m.push({selected: 1, nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip} as N)
+  m.push(...tableIndices.map((el, i) => ({nodeId: genNodeId(i), path: [...ip, 'c', ...el]} as N)))
   m.sort(sortPath)
 }
+
+const genNodeId = (i: number): string => IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8)
