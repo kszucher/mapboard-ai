@@ -31,7 +31,7 @@ export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, at
 export const insertCRD = (m: M) => {
   const crIndex = getXC(m).path.indexOf('c') + 1
   const crValue = getXC(m).path.at(crIndex)
-  const toMoveD = getXAC(m).map(ci => ci.cd).flat().map(nid => getNodeById(m, nid) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  const toMoveD = getXAC(m).flatMap(ci => ci.cd).map(nid => getNodeById(m, nid) as C).flatMap(ci => [ci.nodeId, ...ci.so]).map(nid => getNodeById(m, nid))
   toMoveD.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) + 1))
   m.push(...getXAC(m).map((ci, i) => ({nodeId: genNodeId(i), path: ci.path.with(crIndex, crValue + 1)} as N)))
   m.sort(sortPath)
@@ -40,7 +40,7 @@ export const insertCRD = (m: M) => {
 export const insertCRU = (m: M) => {
   const crIndex = getXC(m).path.indexOf('c') + 1
   const crValue = getXC(m).path.at(crIndex)
-  const toMoveD = getXAC(m).map(ci => [ci.nodeId, ...ci.cd]).flat().map(nid => getNodeById(m, nid) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  const toMoveD = getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cd]).map(nid => getNodeById(m, nid) as C).flatMap(ci => [ci.nodeId, ...ci.so]).map(nid => getNodeById(m, nid))
   toMoveD.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) + 1))
   m.push(...getXAC(m).map((ci, i) => ({nodeId: genNodeId(i), path: ci.path.with(crIndex, crValue)} as N)))
   m.sort(sortPath)
@@ -49,7 +49,7 @@ export const insertCRU = (m: M) => {
 export const insertCCR = (m: M) => {
   const ccIndex = getXC(m).path.indexOf('c') + 2
   const ccValue = getXC(m).path.at(ccIndex)
-  const toMoveR = getXAC(m).map(ci => ci.cr).flat().map(nid => getNodeById(m, nid) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  const toMoveR = getXAC(m).flatMap(ci => ci.cr).map(nid => getNodeById(m, nid) as C).flatMap(ci => [ci.nodeId, ...ci.so]).map(nid => getNodeById(m, nid))
   toMoveR.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) + 1))
   m.push(...getXAC(m).map((ci, i) => ({nodeId: genNodeId(i), path: ci.path.with(ccIndex, ccValue + 1)} as N)))
   m.sort(sortPath)
@@ -58,7 +58,7 @@ export const insertCCR = (m: M) => {
 export const insertCCL = (m: M) => {
   const ccIndex = getXC(m).path.indexOf('c') + 2
   const ccValue = getXC(m).path.at(ccIndex)
-  const toMoveR = getXAC(m).map(ci => [ci.nodeId, ...ci.cr]).flat().map(nid => getNodeById(m, nid) as C).map(ci => [ci.nodeId, ...ci.so]).flat().map(nid => getNodeById(m, nid))
+  const toMoveR = getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cr]).map(nid => getNodeById(m, nid) as C).flatMap(ci => [ci.nodeId, ...ci.so]).map(nid => getNodeById(m, nid))
   toMoveR.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) + 1))
   m.push(...getXAC(m).map((ci, i) => ({nodeId: genNodeId(i), path: ci.path.with(ccIndex, ccValue)} as N)))
   m.sort(sortPath)
@@ -72,7 +72,7 @@ export const insertSCRD = (m: M) => {
 
 export const insertSCRU = (m: M) => {
   const crIndex = getXS(m).path.length + 1
-  const toMoveD = [...getXS(m).co1, ...getXS(m).co1.map(nid => getNodeById(m, nid) as C).map(el => el.so).flat()].map(nid => getNodeById(m, nid))
+  const toMoveD = [...getXS(m).co1, ...getXS(m).co1.map(nid => getNodeById(m, nid) as C).flatMap(el => el.so)].map(nid => getNodeById(m, nid))
   toMoveD.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) + 1))
   const sc00 = getNodeById(m, getXS(m).co1.at(0) as string) as C
   m.push(...Array.from({length: sc00.ch.length}, (_, i) =>({nodeId: genNodeId(i), path: getXS(m).path.concat('c', 0, i)} as N)))
@@ -87,7 +87,7 @@ export const insertSCCR = (m: M) => {
 
 export const insertSCCL = (m: M) => {
   const ccIndex = getXS(m).path.length + 2
-  const toMoveR = [...getXS(m).co1, ...getXS(m).co1.map(nid => getNodeById(m, nid) as C).map(el => el.so).flat()].map(nid => getNodeById(m, nid))
+  const toMoveR = [...getXS(m).co1, ...getXS(m).co1.map(nid => getNodeById(m, nid) as C).flatMap(el => el.so)].map(nid => getNodeById(m, nid))
   toMoveR.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) + 1))
   const sc00 = getNodeById(m, getXS(m).co1.at(0) as string) as C
   m.push(...Array.from({length: sc00.cv.length}, (_, i) =>({nodeId: genNodeId(i), path: getXS(m).path.concat('c', i, 0)} as N)))
