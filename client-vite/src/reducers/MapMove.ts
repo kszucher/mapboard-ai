@@ -1,6 +1,6 @@
-import {getG, getNodeById, getXSI1, lToCb, mL, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getXSI1, lToCb, mL, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, idToC} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
-import {M, L, T, PT, PL, PR, C} from "../state/MapStateTypes"
+import {M, L, T, PT, PL, PR, C, PC} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
@@ -180,4 +180,10 @@ export const moveS2T = (m: M, insertParentNode: T, moveNodes: T[]) => {
   insertTable(m, insertParentNode, 0, {rowLen: moveNodes.length, colLen: 1})
   m.push(...cbS)
   m.sort(sortPath)
+}
+
+export const transpose = (m: M) => {
+  const insertAt = getXS(m).path.length + 1
+  const toTranspose = [...getXS(m).co1, ...getXS(m).co1.map(ni => idToC(m, ni)).flatMap(el => el.so)].map(ni => getNodeById(m, ni))
+  toTranspose.forEach(ti => ti.path = [...ti.path.slice(0, insertAt), ti.path.at(insertAt + 1), ti.path.at(insertAt), ...ti.path.slice(insertAt + 2)] as PC)
 }

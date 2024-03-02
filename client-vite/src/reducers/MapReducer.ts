@@ -1,4 +1,4 @@
-import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, getXSCO, getXSI1, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS,} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, getXSI1, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
@@ -7,7 +7,7 @@ import {deleteCC, deleteCR, deleteL, deleteLR, deleteS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertL, insertR, insertS, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {copyLR, copyS, cutLR, duplicateR, duplicateS, moveS, moveS2T, pasteLR, pasteS, cutS, moveCRD, moveCRU, moveCCR, moveCCL} from "./MapMove"
+import {copyLR, copyS, cutLR, duplicateR, duplicateS, moveS, moveS2T, pasteLR, pasteS, cutS, moveCRD, moveCRU, moveCCR, moveCCL, transpose} from "./MapMove"
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {mapPlaceIndented} from "./MapPlaceIndented.ts"
 import {MR} from "./MapReducerEnum.ts"
@@ -129,8 +129,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'moveCCR': moveCCR(m); break
     case 'moveCCL': moveCCL(m); break
     case 'moveS2TO': moveS2T(m, getXS(m), getXSO1(m)); break
-    case 'transpose': getXSCO(m).forEach(ti => ti.path = [...ti.path.slice(0, getXS(m).path.length + 1), ti.path.at(getXS(m).path.length + 2), ti.path.at(getXS(m).path.length + 1), ...ti.path.slice(getXS(m).path.length + 3)] as PT); break
-
+    case 'transpose': transpose(m); break
     case 'setTaskStatus': Object.assign(getNodeById(m, payload.nodeId), { taskStatus: payload.taskStatus }); break
     case 'setContentText': Object.assign(getXS(m), { contentType: 'text', content: payload.content }); break
     case 'setContentEquation': Object.assign(getXS(m), { contentType: 'equation', content: payload.content }); break
