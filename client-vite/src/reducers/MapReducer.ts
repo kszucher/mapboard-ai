@@ -43,7 +43,6 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectSSOLast': selectS(m, getNodeByPath(m, [...getXS(m).path, 's', getXS(m).lastSelectedChild] as PS) as S, 's'); break
     case 'selectCSO': selectS(m, getNodeByPath(m, [...getXC(m).path, 's', 0] as PS) as S, 's'); break
     case 'selectSI': getNodeById(m, getXS(m).ti1).lastSelectedChild = getXS(m).path.at(-1); selectS(m, getNodeById(m, getXS(m).ti1) as S, 's'); break
-    case 'selectSF': selectS(m, getNodeByPath(m, getXS(m).path.concat('s', 0) as PS) as S, 's'); break
     case 'selectLCS': selectS(m, getLCS(m), 's'); break
     case 'selectRCS': selectS(m, getRCS(m), 's'); break
     case 'selectDCS': selectS(m, getDCS(m), 's'); break

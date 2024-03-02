@@ -32,7 +32,6 @@ export enum MR {
   selectSSOLast = 'selectSSOLast',
   selectCSO = 'selectCSO',
   selectSI = 'selectSI',
-  selectSF = 'selectSF',
   selectLCS = 'selectLCS',
   selectRCS = 'selectRCS',
   selectDCS = 'selectDCS',
