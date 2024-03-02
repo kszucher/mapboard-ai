@@ -35,7 +35,7 @@ export const mapChain = (m: M) => {
       case isC(ni.path): {
         const ci = ni as C
         const si1 = hp.get(ci.path.slice(0, -3).join('')) as S
-        const si2 = hp.get(ci.path.slice(0, -5).join('')) as S
+        const si2 = hp.get(ci.path.slice(0, -5).join('')) as R | S
         ci.si1 = si1.nodeId
         ci.si2 = si2.nodeId
         const ti1 = hp.get(ci.path.slice(0, -3).join('')) as S
