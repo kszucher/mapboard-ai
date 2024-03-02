@@ -152,9 +152,7 @@ export const getRSCIPL = (p: PT): PT[] => p.map((_, i) => p.slice(0, i)).filter(
 export const getSIPL = (p: PT): PT[] => getRSCIPL(p).filter(pi => !isR(pi) && !isC(pi))
 const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string')) as PT
 const isSI1 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI1(p))
-const isSO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
 export const getNodeByPath = (m: M, p: PT) => m.find(ti => isEqual(ti.path, p)) as T
 export const getNodeById = (m: M, nodeId: string) => m.find(ti => ti.nodeId === nodeId) as T
 export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)
 export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXFS(m).path, ti.path as PT))! as T
-export const getXSO1 = (m: M): T[] => m.filter(ti => isSO1(getXS(m).path, ti.path as PT)) as T[]

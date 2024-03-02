@@ -62,18 +62,46 @@ export const mapChain = (m: M) => {
     switch (true) {
       case isS(ni.path): {
         const si = ni as S
+        const tiList = si.path.map((_, i) => si.path.slice(0, i))
+        const siListR = tiList.filter(pi => pi.at(-2) === 'r')
+        const siListS = tiList.filter(pi => pi.at(-2) === 's')
+        const siListC = tiList.filter(pi => pi.at(-3) === 'c')
+        for (let i = 0; i < siListR.length; i++) {
+          const rix = hp.get(siListR[i].join('')) as R
+          rix.so.push(si.nodeId)
+        }
+        for (let i = 0; i < siListS.length; i++) {
+          const six = hp.get(siListS[i].join('')) as S
+          six.so.push(si.nodeId)
+        }
+        for (let i = 0; i < siListC.length; i++) {
+          const cix = hp.get(siListC[i].join('')) as C
+          cix.so.push(si.nodeId)
+        }
         for (let i = 0; i < si.path.at(-1); i++) {
           const sdi = hp.get([...si.path.slice(0, -1), i].join('')) as S
           sdi.sd.push(si.nodeId)
-        }
-        if (si.path.includes('c')) {
-          const cix = hp.get(si.path.slice(0, si.path.indexOf('c') + 3).join('')) as C
-          cix.so.push(si.nodeId)
         }
         break
       }
       case isC(ni.path): {
         const ci = ni as C
+        const tiList = ci.path.map((_, i) => ci.path.slice(0, i))
+        const siListR = tiList.filter(pi => pi.at(-2) === 'r')
+        const siListS = tiList.filter(pi => pi.at(-2) === 's')
+        const siListC = tiList.filter(pi => pi.at(-3) === 'c')
+        for (let i = 0; i < siListR.length; i++) {
+          const rix = hp.get(siListR[i].join('')) as R
+          rix.so.push(ci.nodeId)
+        }
+        for (let i = 0; i < siListS.length; i++) {
+          const six = hp.get(siListS[i].join('')) as S
+          six.so.push(ci.nodeId)
+        }
+        for (let i = 0; i < siListC.length; i++) {
+          const cix = hp.get(siListC[i].join('')) as C
+          cix.so.push(ci.nodeId)
+        }
         for (let i = 0; i < ci.path.at(-2); i++) {
           const cdi = hp.get([...ci.path.slice(0, -2), i, ci.path.at(-1)].join('')) as C
           cdi.cd.push(ci.nodeId)

@@ -1,4 +1,4 @@
-import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, getXSI1, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, getXSI1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
@@ -128,7 +128,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'moveCRU': moveCRU(m); break
     case 'moveCCR': moveCCR(m); break
     case 'moveCCL': moveCCL(m); break
-    case 'moveS2TO': moveS2T(m, getXS(m), getXSO1(m)); break
+    case 'moveS2TO': moveS2T(m); break
     case 'transpose': transpose(m); break
     case 'setTaskStatus': Object.assign(getNodeById(m, payload.nodeId), { taskStatus: payload.taskStatus }); break
     case 'setContentText': Object.assign(getXS(m), { contentType: 'text', content: payload.content }); break

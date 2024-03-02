@@ -61,7 +61,9 @@ export interface RSaveOptional {
 export interface RSaveNever {
   so1: string[]
   so2: string[]
+  so: string[]
   co2: string[]
+  co: string[]
   selfW: number
   selfH: number
   familyW: number
@@ -109,8 +111,10 @@ export interface SSaveNever {
   ti2: string
   so1: string[]
   so2: string[]
+  so: string[]
   co1: string[]
   co2: string[]
+  co: string[]
   su: string[]
   sd: string[]
   rowCount: number

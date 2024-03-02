@@ -4,8 +4,7 @@ import {M, L, T, PT, PL, PR, C, PC} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
-import {insertTable} from "./MapInsert"
-import {selectTL, unselectNodes} from "./MapSelect"
+import {unselectNodes} from "./MapSelect"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -168,17 +167,21 @@ export const moveCCL = (m: M) => {
   m.sort(sortPath)
 }
 
-export const moveS2T = (m: M, insertParentNode: T, moveNodes: T[]) => {
-  const insertParentNodeId = insertParentNode.nodeId
-  selectTL(m, moveNodes, 's')
-  const cbS = structuredClone(sToCb(m))
-  deleteS(m)
-  cbS.forEach(ti => Object.assign(ti, {
-    selected: 0,
-    path: [...getNodeById(m, insertParentNodeId).path, 's', 0, 'c', ti.path.at(1), 0, 's', 0, ...ti.path.slice(2)] as PT
-  }))
-  insertTable(m, insertParentNode, 0, {rowLen: moveNodes.length, colLen: 1})
-  m.push(...cbS)
+export const moveS2T = (m: M) => {
+
+  // const insertParentNode = getXS(m)
+  // const toMoveInsideCell = [...getXS(m).so1, ...getXS(m).so1.map(ni => idToS(ni))
+
+  // const insertParentNodeId = insertParentNode.nodeId
+  // selectTL(m, moveNodes, 's')
+  // const cbS = structuredClone(sToCb(m))
+  // deleteS(m)
+  // cbS.forEach(ti => Object.assign(ti, {
+  //   selected: 0,
+  //   path: [...getNodeById(m, insertParentNodeId).path, 's', 0, 'c', ti.path.at(1), 0, 's', 0, ...ti.path.slice(2)] as PT
+  // }))
+  // insertTable(m, insertParentNode, 0, {rowLen: moveNodes.length, colLen: 1})
+  // m.push(...cbS)
   m.sort(sortPath)
 }
 
