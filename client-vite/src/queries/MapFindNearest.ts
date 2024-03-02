@@ -46,13 +46,13 @@ export const mapFindNearest = (pm: M, moveNode: S, toX: number, toY: number) => 
             moveTargetIndex = i
           }
         }
-        if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.si1).path) && moveNode.path.at(-1) < moveTargetIndex) {
+        if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.ti1).path) && moveNode.path.at(-1) < moveTargetIndex) {
           moveTargetIndex -= 1
         }
       }
     }
   }
-  if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.si1).path) && moveNode.path.at(-1) === moveTargetIndex) {
+  if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.ti1).path) && moveNode.path.at(-1) === moveTargetIndex) {
     moveInsertParentNode = {} as T
     moveTargetIndex = 0
     sMoveCoords = []

@@ -105,8 +105,8 @@ export interface SSaveOptional {
 }
 
 export interface SSaveNever {
-  si1: string
-  si2: string
+  ti1: string
+  ti2: string
   so1: string[]
   so2: string[]
   co1: string[]

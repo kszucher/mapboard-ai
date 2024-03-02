@@ -42,8 +42,8 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PR) => {
   const nonSelectedMinOffsetW = Math.min(...mR(cbR).map(ri => ri.offsetW || rSaveOptional.offsetW))
   const nonSelectedMinOffsetH = Math.min(...mR(cbR).map(ri => ri.offsetH || rSaveOptional.offsetH))
   mR(cbR).map(ri => Object.assign(ri, {
-    offsetW:  (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).selfW,
-    offsetH:  (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
+    offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).selfW,
+    offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbR)
@@ -118,8 +118,8 @@ export const duplicateS = (m: M) => {
   cbToS(m, cbS, ip)
 }
 
-export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
-  const insertParentNodeId = insertParentNode.nodeId
+export const moveS = (m: M, insertParentNodeId: string, insertTargetIndex: number) => {
+  console.log(insertParentNodeId)
   const cbS = structuredClone(sToCb(m))
   deleteS(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 's', insertTargetIndex] as PT

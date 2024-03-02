@@ -98,8 +98,8 @@ export const sSaveOptional = {
 } as SSaveOptional
 
 export const sSaveNever = {
-  si1: '',
-  si2: '',
+  ti1: '',
+  ti2: '',
   so1: [],
   so2: [],
   co1: [],

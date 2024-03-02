@@ -20,7 +20,7 @@ export const selectC = (m: M, ci: C) => {
 }
 
 export const selectAddR = (m: M, ri: R) => {
-  Object.assign(ri, {selected: getXR(m).selected + 1})
+  ri.selected = getXR(m).selected + 1
 }
 
 export const selectAddS = (m: M, si: S, selection: 's' | 'f') => {

@@ -15,7 +15,7 @@ export const mapPlaceIndented = (m: M) => {
       case isS(ni.path): {
         const si = ni as S
         const i = si.path.at(-1)
-        const si1 = hn.get(si.si1)!
+        const si1 = hn.get(si.ti1)!
         const su = si.su.map(nid => hn.get(nid)) as S[]
         const elapsed = su.map(si => si.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.co2.length)
         if (isRS(si.path)) {

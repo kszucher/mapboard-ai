@@ -1,5 +1,5 @@
 import {M, R, S, C} from "../state/MapStateTypes.ts"
-import {isS, isC, isSS, isCS, getHP} from "../queries/MapQueries.ts"
+import {isS, isC, isSS, isCS, getHP, isRS} from "../queries/MapQueries.ts"
 
 export const mapChain = (m: M) => {
   const hp = getHP(m)
@@ -7,15 +7,24 @@ export const mapChain = (m: M) => {
     switch (true) {
       case isS(ni.path): {
         const si = ni as S
-        si.si1 = hp.get(si.path.slice(0, -2).join(''))!.nodeId
-        const ti1 = hp.get(si.path.slice(0, -2).join(''))!
-        ti1.so1.push(si.nodeId)
-        if (isSS(si.path)) {
-          const si2 = hp.get(si.path.slice(0, -4).join(''))!
-          si2.so2.push(si.nodeId)
+        if (isRS(si.path)) {
+          const ti1 = hp.get(si.path.slice(0, -2).join('')) as R
+          si.ti1 = ti1.nodeId
+          ti1.so1.push(si.nodeId)
+        } else if (isSS(si.path)) {
+          const ti1 = hp.get(si.path.slice(0, -2).join('')) as S
+          const ti2 = hp.get(si.path.slice(0, -4).join('')) as S
+          si.ti1 = ti1.nodeId
+          si.ti2 = ti2.nodeId
+          ti1.so1.push(si.nodeId)
+          ti2.so2.push(si.nodeId)
         } else if (isCS(si.path)) {
-          const ci2 = hp.get(si.path.slice(0, -5).join(''))!
-          ci2.so2.push(si.nodeId)
+          const ti1 = hp.get(si.path.slice(0, -2).join('')) as S
+          const ti2 = hp.get(si.path.slice(0, -5).join('')) as C
+          si.ti1 = ti1.nodeId
+          si.ti2 = ti2.nodeId
+          ti1.so1.push(si.nodeId)
+          ti2.so2.push(si.nodeId)
         }
         for (let i = 0; i < si.path.at(-1); i++) {
           const sui = hp.get([...si.path.slice(0, -1), i].join('')) as S
