@@ -1,4 +1,4 @@
-import {getG, getNodeById, getXA, getXSI1, lToCb, mL, mT, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getXSI1, lToCb, mL, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, T, PT, PL, PR, C} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
@@ -57,7 +57,9 @@ const cbToS = (m: M, cbS: M, ip: PT) => {
     linkType: sSaveOptional.linkType,
     link: sSaveOptional.link
   }))
-  mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + getXA(cbS).length))
+  mR(m).forEach(ri => isSEODO(ip, ri.path) && ri.path.splice(ip.length - 1, 1, ri.path.at(ip.length - 1) as number + getXAS(cbS).length))
+  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + getXAS(cbS).length))
+  mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + getXAS(cbS).length))
   unselectNodes(m)
   m.push(...cbS)
   m.sort(sortPath)
@@ -92,7 +94,7 @@ export const pasteLR = (m: M, payload: any) => {
   const ipR = ['r', mR(m).at(-1)?.path.at(1) as number + 1] as PR
   const cbLR = JSON.parse(payload) as M
   const cbL = mL(cbLR)
-  const cbR = mT(cbLR)
+  const cbR = mR(cbLR)
   cbToLR(m, cbL, cbR, ipL, ipR)
 }
 
@@ -111,7 +113,7 @@ export const duplicateR = (m: M) => {
 }
 
 export const duplicateS = (m: M) => {
-  const ip = [...getXSI1(m).path, 's', getXFS(m).su.length + getXA(m).length] as PT
+  const ip = [...getXSI1(m).path, 's', getXFS(m).su.length + getXAS(m).length] as PT
   const cbS = structuredClone(sToCb(m))
   cbToS(m, cbS, ip)
 }
@@ -124,7 +126,9 @@ export const moveS = (m: M, insertParentNode: T, insertTargetIndex: number) => {
   cbS.forEach(ti => Object.assign(ti, {
     path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)]
   }))
-  mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + getXA(cbS).length))
+  mR(m).forEach(ri => isSEODO(ip, ri.path) && ri.path.splice(ip.length - 1, 1, ri.path.at(ip.length - 1) as number + getXAS(cbS).length))
+  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + getXAS(cbS).length))
+  mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + getXAS(cbS).length))
   m.push(...cbS)
   m.sort(sortPath)
 }

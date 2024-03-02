@@ -1,5 +1,5 @@
 import {M, N, R, S, C, T} from "../state/MapStateTypes"
-import {getX, mT} from "../queries/MapQueries.ts"
+import {getXR, getXS, mT} from "../queries/MapQueries.ts"
 
 export const unselectNodes = (m: M) => mT(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
 
@@ -19,13 +19,12 @@ export const selectC = (m: M, ci: C) => {
   ci.selected = 1
 }
 
-export const selectT = (m: M, ti: T, selection: 's' | 'f') => {
-  unselectNodes(m)
-  Object.assign(ti, {selected: 1, selection})
+export const selectAddR = (m: M, ri: R) => {
+  Object.assign(ri, {selected: getXR(m).selected + 1})
 }
 
-export const selectAddT = (m: M, ti: T, selection: 's' | 'f') => {
-  Object.assign(ti, {selected: getX(m).selected + 1, selection})
+export const selectAddS = (m: M, si: S, selection: 's' | 'f') => {
+  Object.assign(si, {selected: getXS(m).selected + 1, selection})
 }
 
 export const selectRemoveT = (ti: T) => {

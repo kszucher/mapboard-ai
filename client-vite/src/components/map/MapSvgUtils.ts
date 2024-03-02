@@ -1,4 +1,4 @@
-import {getCountTSCH, getCountTSCV, getG, getHN, getNodeById, getNodeByPath, getX, getTR, getXA, isXACC, isXACR, sortPath} from "../../queries/MapQueries.ts"
+import {getCountTSCH, getCountTSCV, getG, getHN, getNodeById, getNodeByPath, getTR, isXACC, isXACR, sortPath, getXAC, getXC} from "../../queries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
 import {C, G, L, M, S, T} from "../../state/MapStateTypes"
@@ -197,19 +197,19 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
     }
     case 'c': {
       if (isXACR(m)) {
-        const xa = getXA(m).slice().sort(sortPath)
+        const xa = getXAC(m).slice().sort(sortPath)
         ax = xa.at(0)!.nodeStartX
         bx = cx = xa.at(-1)!.nodeStartX + xa.at(-1)!.selfW
         ayu = byu = cyu = xa.at(0)!.nodeStartY
         ayd = byd = cyd = xa.at(0)!.nodeStartY + xa.at(0)!.selfH
       } else if (isXACC(m)) {
-        const xa = getXA(m).slice().sort(sortPath)
+        const xa = getXAC(m).slice().sort(sortPath)
         ax = xa.at(0)!.nodeStartX
         bx = cx = xa.at(0)!.nodeStartX + xa.at(0)!.selfW
         ayu = byu = cyu = xa.at(0)!.nodeStartY
         ayd = byd = cyd = xa.at(-1)!.nodeStartY + xa.at(-1)!.selfH
       } else {
-        const x = getX(m)
+        const x = getXC(m)
         ax = x.nodeStartX
         bx = cx = x.nodeStartX + x.selfW
         ayu = byu = cyu = x.nodeStartY

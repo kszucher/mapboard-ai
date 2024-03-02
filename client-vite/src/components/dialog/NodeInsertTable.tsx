@@ -3,7 +3,7 @@ import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {isXS} from "../../queries/MapQueries.ts"
+import {isXAS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState} from "../../state/Enums.ts"
 
@@ -48,9 +48,9 @@ export const NodeInsertTable = () => {
         </Dialog.Close>
         <Dialog.Close>
           <Button onClick={() => {
-            dialogState === DialogState.CREATE_TABLE_U && isXS(m) && md(MR.insertSUTable, {rowLen: row, colLen: col})
-            dialogState === DialogState.CREATE_TABLE_D && isXS(m) && md(MR.insertSDTable, {rowLen: row, colLen: col})
-            dialogState === DialogState.CREATE_TABLE_O && isXS(m) && md(MR.insertSOTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_U && isXAS(m) && md(MR.insertSUTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_D && isXAS(m) && md(MR.insertSDTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_O && isXAS(m) && md(MR.insertSOTable, {rowLen: row, colLen: col})
           }}>
             {'OK'}
           </Button>

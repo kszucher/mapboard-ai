@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import { useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {getG, getX, getXA, getXAEO, getXFS, getXLS, getXS, isXASVN, isXRS, isXS, mS} from "../../queries/MapQueries.ts"
+import {getG, getXAS, getXAEO, getXFS, getXLS, getXS, isXASVN, isXARS, isXAS, mS} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -23,9 +23,9 @@ export const MapSvgSSelectionPrimary: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
-    isXS(m) && !selectionRectCoords.length && getXA(m).length === 1 &&
+    isXAS(m) && getXAS(m).length === 1 && !selectionRectCoords.length &&
     <Fragment>
-      {getXA(m).length === 1 && xs.selection === 's' && (xs.sBorderColor || xs.sFillColor || xs.taskStatus > 1 || xs.co1.length) &&
+      {xs.selection === 's' && (xs.sBorderColor || xs.sFillColor || xs.taskStatus > 1 || xs.co1.length) &&
         <path
           key={`${g.nodeId}_svg_selectionBorderPrimary`}
           stroke={C.SELECTION_COLOR}
@@ -88,8 +88,8 @@ export const MapSvgSSelectionPrimary: FC = () => {
                 {isXASVN(m) && getXFS(m).su.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSU)}>{'Node Up'}</ContextMenu.Item>}
                 {isXASVN(m) && getXLS(m).sd.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSD)}>{'Node Down'}</ContextMenu.Item>}
                 {isXASVN(m) && getXFS(m).su.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSO)}>{'Node Out'}</ContextMenu.Item>}
-                {!isXRS(m) && isXASVN(m) && <ContextMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</ContextMenu.Item>}
-                {getX(m).so1.length > 0 && !mS(getXAEO(m)).some(ti => ti.path.includes('c')) && <ContextMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
+                {!isXARS(m) && isXASVN(m) && <ContextMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</ContextMenu.Item>}
+                {getXS(m).so1.length > 0 && !mS(getXAEO(m)).some(ti => ti.path.includes('c')) && <ContextMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
               </ContextMenu.SubContent>
             </ContextMenu.Sub>
             <ContextMenu.Sub>

@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {getXA, mR} from "../../queries/MapQueries.ts"
+import {getXAR, mR} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -17,7 +17,7 @@ export const MapSvgRSelectionSecondary: FC = () => {
   return (
     mR(m).map(ri => (
       <Fragment key={ri.nodeId}>
-        {!selectionRectCoords.length && ri.selected && getXA(m).length > 1 &&
+        {!selectionRectCoords.length && getXAR(m).length > 1 && ri.selected &&
           <path stroke={C.SELECTION_COLOR} strokeWidth={1} fill={'none'}{...pathCommonProps} d={getPolygonPath(m, ri, 'sSelf', -2)}/>
         }
       </Fragment>

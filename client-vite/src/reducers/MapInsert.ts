@@ -1,6 +1,6 @@
 import {N, LPartial, M, T, PT, MPartial, C, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG, getXS, isXS, getXAC, getNodeById, getXC} from "../queries/MapQueries.ts"
+import {sortPath, isSEODO, getLastIndexL, mT, getLastIndexR, getG, getXS, isXAS, getXAC, getNodeById, getXC} from "../queries/MapQueries.ts"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 
@@ -22,7 +22,7 @@ export const insertR = (m: M) => {
 export const insertS = (m: M, insertParentNode: T, insertTargetIndex: number, attributes: object) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PT
   mT(m).forEach(ti => isSEODO(ip, ti.path) && ti.path.splice(ip.length - 1, 1, ti.path.at(ip.length - 1) + 1))
-  const parentTaskStatus = isXS(m) ? getXS(m).taskStatus : sSaveOptional.taskStatus
+  const parentTaskStatus = isXAS(m) ? getXS(m).taskStatus : sSaveOptional.taskStatus
   unselectNodes(m)
   m.push({selected: 1, nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip, taskStatus: parentTaskStatus, ...attributes} as N)
   m.sort(sortPath)

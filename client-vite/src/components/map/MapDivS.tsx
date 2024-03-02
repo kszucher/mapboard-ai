@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getG, getMapMode, getNodeById, getXA, getXS, isXS, mS} from "../../queries/MapQueries.ts"
+import {getG, getMapMode, getNodeById, getXAS, getXS, isXAS, mS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {S} from "../../state/MapStateTypes"
@@ -112,8 +112,8 @@ export const MapDivS: FC = () => {
               }
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_STRUCT) {
               !e.ctrlKey && md(MR.selectS, {path: si.path})
-              e.ctrlKey && !si.selected && isXS(m) && md(MR.selectAddT, {path: si.path})
-              e.ctrlKey && si.selected && getXA(m).length > 1 && md(MR.selectRemoveT, {path: si.path})
+              e.ctrlKey && !si.selected && isXAS(m) && md(MR.selectAddS, {path: si.path})
+              e.ctrlKey && si.selected && getXAS(m).length > 1 && md(MR.selectRemoveT, {path: si.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_STRUCT) {
               !e.ctrlKey && md(MR.selectS, {path: si.path})
               const abortController = new AbortController()

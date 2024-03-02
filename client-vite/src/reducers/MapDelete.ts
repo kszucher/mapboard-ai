@@ -1,5 +1,5 @@
 import {L, M, PL, PR, PS, PC} from "../state/MapStateTypes"
-import {getX, isCD, isCR, getXA, isRDO, mG, mL, mR, mS, mC, isREO, isSEO, isCEO, pathToS, idToS, sortPath,} from "../queries/MapQueries.ts"
+import {isCD, isCR, isRDO, mG, mL, mR, mS, mC, isREO, isSEO, isCEO, pathToS, idToS, sortPath, getXAS, getXAC, getXAR, getXC} from "../queries/MapQueries.ts"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[
@@ -15,7 +15,7 @@ export const deleteL = (m: M, l: L) => {
 }
 
 export const deleteLR = (m: M) => {
-  const xa = getXA(m)
+  const xa = getXAR(m)
   const nonSelectedMinOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))
   const nonSelectedMinOffsetH = Math.min(...mR(m).map(ri => ri.offsetH))
   m.splice(0, m.length, ...[
@@ -38,7 +38,7 @@ export const deleteLR = (m: M) => {
 }
 
 export const deleteS = (m: M) => {
-  const xa = getXA(m)
+  const xa = getXAS(m)
   m.splice(0, m.length,
     ...[
       ...mG(m),
@@ -55,33 +55,33 @@ export const deleteS = (m: M) => {
 }
 
 export const deleteCR = (m: M) => {
-  const xa = getXA(m)
+  const xa = getXAC(m)
   m.splice(0, m.length, ...[
       ...mG(m),
       ...mL(m),
       ...mR(m),
       ...mS(m)
         .filter(ti => xa.every(xti => !isCEO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isCD(xti.path, ti.path)) ? {...ti, path: ti.path.with(getX(m).path.length - 2, ti.path.at(getX(m).path.length - 2) - 1) as PS} : ti),
+        .map(ti => xa.some(xti => isCD(xti.path, ti.path)) ? {...ti, path: ti.path.with(getXC(m).path.length - 2, ti.path.at(getXC(m).path.length - 2) - 1) as PS} : ti),
       ...mC(m)
         .filter(ti => xa.every(xti => !isCEO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isCD(xti.path, ti.path)) ? {...ti, path: ti.path.with(getX(m).path.length - 2, ti.path.at(getX(m).path.length - 2) - 1) as PC} : ti)
+        .map(ti => xa.some(xti => isCD(xti.path, ti.path)) ? {...ti, path: ti.path.with(getXC(m).path.length - 2, ti.path.at(getXC(m).path.length - 2) - 1) as PC} : ti)
     ].sort(sortPath)
   )
 }
 
 export const deleteCC = (m: M) => {
-  const xa = getXA(m)
+  const xa = getXAC(m)
   m.splice(0, m.length, ...[
       ...mG(m),
       ...mL(m),
       ...mR(m),
       ...mS(m)
         .filter(ti => xa.every(xti => !isCEO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isCR(xti.path, ti.path)) ? {...ti, path: ti.path.with(getX(m).path.length - 1, ti.path.at(getX(m).path.length - 1) - 1) as PS} : ti),
+        .map(ti => xa.some(xti => isCR(xti.path, ti.path)) ? {...ti, path: ti.path.with(getXC(m).path.length - 1, ti.path.at(getXC(m).path.length - 1) - 1) as PS} : ti),
       ...mC(m)
         .filter(ti => xa.every(xti => !isCEO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isCR(xti.path, ti.path)) ? {...ti, path: ti.path.with(getX(m).path.length - 1, ti.path.at(getX(m).path.length - 1) - 1) as PC} : ti)
+        .map(ti => xa.some(xti => isCR(xti.path, ti.path)) ? {...ti, path: ti.path.with(getXC(m).path.length - 1, ti.path.at(getXC(m).path.length - 1) - 1) as PC} : ti)
     ].sort(sortPath)
   )
 }
