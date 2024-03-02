@@ -73,9 +73,9 @@ export const MapSvgSSelectionPrimary: FC = () => {
                 <ContextMenu.Item onClick={() => md(MR.insertSU)}>{'Struct Above'}</ContextMenu.Item>
                 <ContextMenu.Item onClick={() => md(MR.insertSO)}>{'Struct Out'}</ContextMenu.Item>
                 <ContextMenu.Item onClick={() => md(MR.insertSD)}>{'Struct Below'}</ContextMenu.Item>
-                {!getX(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_U))}>{'Table Above'}</ContextMenu.Item></Dialog.Trigger>}
-                {!getX(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_D))}>{'Table Below'}</ContextMenu.Item></Dialog.Trigger>}
-                {!getX(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_O))}>{'Table Out'}</ContextMenu.Item></Dialog.Trigger>}
+                {!getXS(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_U))}>{'Table Above'}</ContextMenu.Item></Dialog.Trigger>}
+                {!getXS(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_D))}>{'Table Below'}</ContextMenu.Item></Dialog.Trigger>}
+                {!getXS(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_O))}>{'Table Out'}</ContextMenu.Item></Dialog.Trigger>}
                 {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCRU)}>{'Table Row Above'}</ContextMenu.Item>}
                 {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCRD)}>{'Table Row Below'}</ContextMenu.Item>}
                 {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.insertSCCL)}>{'Table Column Left'}</ContextMenu.Item>}
@@ -89,7 +89,7 @@ export const MapSvgSSelectionPrimary: FC = () => {
                 {isXASVN(m) && getXLS(m).sd.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSD)}>{'Node Down'}</ContextMenu.Item>}
                 {isXASVN(m) && getXFS(m).su.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSO)}>{'Node Out'}</ContextMenu.Item>}
                 {!isXRS(m) && isXASVN(m) && <ContextMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</ContextMenu.Item>}
-                {getX(m).so1.length > 0 && !getXAEO(m).some(ti => ti.path.includes('c')) && <ContextMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
+                {getX(m).so1.length > 0 && !mS(getXAEO(m)).some(ti => ti.path.includes('c')) && <ContextMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
               </ContextMenu.SubContent>
             </ContextMenu.Sub>
             <ContextMenu.Sub>

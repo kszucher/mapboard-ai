@@ -40,14 +40,14 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectSU': selectS(m, getQuasiSU(m) as S, 's'); break
     case 'selectSO': selectS(m, getLastSO(m) as S, 's'); break
     case 'selectSI': selectS(m, getNodeById(m, getXS(m).si1) as S, 's'); getNodeById(m, getXS(m).si1).lastSelectedChild = getXS(m).path.at(-1); break
-    case 'selectSF': selectS(m, getNodeByPath(m, getX(m).path.concat('s', 0) as PS) as S, 's'); break
+    case 'selectSF': selectS(m, getNodeByPath(m, getXS(m).path.concat('s', 0) as PS) as S, 's'); break
     case 'selectLCS': selectS(m, getLCS(m), 's'); break
     case 'selectRCS': selectS(m, getRCS(m), 's'); break
     case 'selectDCS': selectS(m, getDCS(m), 's'); break
     case 'selectUCS': selectS(m, getUCS(m), 's'); break
     case 'selectCFR0': selectT(m, getNodeByPath(m, getX(m).path.with(-2, 0) as PT), 's'); break
     case 'selectCFC0': selectT(m, getNodeByPath(m, getX(m).path.with(-1, 0) as PT), 's'); break
-    case 'selectCFF': selectT(m, getNodeByPath(m, getX(m).path.concat('c', 0, 0) as PT), 's'); break
+    case 'selectCFF': selectT(m, getNodeByPath(m, getXS(m).path.concat('c', 0, 0) as PT), 's'); break
     case 'selectXCIS': selectS(m, getNodeByPath(m, getX(m).path.slice(0, -3) as PT) as S, 's'); break
     case 'selectXSIC': selectC(m, getNodeByPath(m, getX(m).path.slice(0, getX(m).path.findLastIndex(pi => pi === 'c') + 3) as PC) as C); break
     case 'selectAddT': selectAddT(m, getNodeByPath(m, payload.path), 's'); break

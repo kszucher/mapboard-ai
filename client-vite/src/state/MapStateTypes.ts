@@ -3,8 +3,8 @@ import {LineType, ControlType, Side, Flow} from "./Enums"
 export type PG = ['g']
 export type PL = ['l', number]
 export type PR = ['r', number]
-export type PS = [...any[], 's', number] | ['s', number]
-export type PC = [...any[], 'c', number, number] | ['c', number, number]
+export type PS = [...any[], 's', number]
+export type PC = [...any[], 'c', number, number]
 export type PT = PR | PS | PC
 export type P = PG | PL | PR | PS | PC
 

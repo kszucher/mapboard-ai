@@ -161,7 +161,7 @@ export const Window: FC = () => {
                     const isPastedS = mapJson.at(-1).path.at(0) === 's'
                     isPastedLR && md(MR.pasteLR, text)
                     const hasCell = (mapJson as M).some(el => el.path.includes('c'))
-                    if (hasCell && !getX(m).path.includes('c') || !hasCell) {
+                    if (hasCell && !getXS(m).path.includes('c') || !hasCell) {
                       isPastedS && isXS(m) && md(MR.pasteSO, text)
                     }
                   } else {

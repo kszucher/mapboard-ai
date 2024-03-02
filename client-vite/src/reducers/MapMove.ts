@@ -89,7 +89,7 @@ export const copyS = (m: M) => {
 
 export const pasteLR = (m: M, payload: any) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
-  const ipR = ['r', mT(m).at(-1)?.path.at(1) + 1] as PR
+  const ipR = ['r', mR(m).at(-1)?.path.at(1) as number + 1] as PR
   const cbLR = JSON.parse(payload) as M
   const cbL = mL(cbLR)
   const cbR = mT(cbLR)
@@ -104,7 +104,7 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
 
 export const duplicateR = (m: M) => {
   const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
-  const ipR = ['r', mT(m).at(-1)!.path.at(1) + 1] as PR
+  const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
   cbToLR(m, cbL, cbR, ipL, ipR)
