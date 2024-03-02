@@ -1,7 +1,7 @@
 import {N, LPartial, M, T, PT, MPartial, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {sortPath, isSEODO, getLastIndexL, mR, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getNodeById, getXC, idToC} from "../queries/MapQueries.ts"
-import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
+import {genHash, genNodeId, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 
 export const insertL = (m: M, lPartial: LPartial) => {
@@ -103,5 +103,3 @@ export const insertTable = (m: M, insertParentNode: T, insertTargetIndex: number
   m.push(...tableIndices.map((el, i) => ({nodeId: genNodeId(i), path: [...ip, 'c', ...el]} as N)))
   m.sort(sortPath)
 }
-
-const genNodeId = (i: number): string => IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8)

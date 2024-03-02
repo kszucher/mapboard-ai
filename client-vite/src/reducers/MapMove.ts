@@ -1,7 +1,7 @@
-import {getG, getNodeById, getXSI1, lToCb, mL, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getXSI1, lToCb, mL, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
-import {M, L, T, PT, PL, PR, C, PC} from "../state/MapStateTypes"
-import {generateCharacterFrom, genHash, IS_TESTING} from "../utils/Utils"
+import {M, L, T, PT, PL, PR, C, PC, PS, S} from "../state/MapStateTypes"
+import {generateCharacterFrom, genHash, genNodeId, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
@@ -168,25 +168,24 @@ export const moveCCL = (m: M) => {
 }
 
 export const moveS2T = (m: M) => {
-
-  // const insertParentNode = getXS(m)
-  // const toMoveInsideCell = [...getXS(m).so1, ...getXS(m).so1.map(ni => idToS(ni))
-
-  // const insertParentNodeId = insertParentNode.nodeId
-  // selectTL(m, moveNodes, 's')
-  // const cbS = structuredClone(sToCb(m))
-  // deleteS(m)
-  // cbS.forEach(ti => Object.assign(ti, {
-  //   selected: 0,
-  //   path: [...getNodeById(m, insertParentNodeId).path, 's', 0, 'c', ti.path.at(1), 0, 's', 0, ...ti.path.slice(2)] as PT
-  // }))
-  // insertTable(m, insertParentNode, 0, {rowLen: moveNodes.length, colLen: 1})
-  // m.push(...cbS)
-  m.sort(sortPath)
+  const pos = getXS(m).path.length
+  const so = getXS(m).so
+  m.splice(0, m.length,
+    ...[
+      ...mG(m),
+      ...mL(m),
+      ...mR(m),
+      ...mS(m).filter(si => !so.includes(si.nodeId)).map(si => ({...si, selected: 0})),
+      ...mS(m).filter(si => so.includes(si.nodeId)).map(si => ({...si, path: [...si.path.slice(0, pos), 's', 0, 'c', si.path.at(pos + 1), 0, 's', 0, ...si.path.slice(pos + 2)] as PS})),
+      ...[{nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: [...getXS(m).path, 's', 0] as PS, selected: 1} as S],
+      ...Array.from({length: getXS(m).so1.length}, (_, i) => ({nodeId: genNodeId(i), path: [...getXS(m).path, 's', 0, 'c', i, 0] as PC, selected: 0} as C)),
+      ...mC(m)
+    ].sort(sortPath)
+  )
 }
 
 export const transpose = (m: M) => {
-  const insertAt = getXS(m).path.length + 1
+  const pos = getXS(m).path.length
   const toTranspose = [...getXS(m).co, ...getXS(m).so].map(ni => getNodeById(m, ni))
-  toTranspose.forEach(ti => ti.path = [...ti.path.slice(0, insertAt), ti.path.at(insertAt + 1), ti.path.at(insertAt), ...ti.path.slice(insertAt + 2)] as PC)
+  toTranspose.forEach(ti => ti.path = [...ti.path.slice(0, pos), 'c', ti.path.at(pos + 2), ti.path.at(pos + 1), ...ti.path.slice(pos + 3)] as PC)
 }

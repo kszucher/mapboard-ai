@@ -17,3 +17,4 @@ export const getTableIndices = (r: number, c: number) => Array(r*c).fill(null).m
 export const filterEmpty = (array: any[]) => array.filter(el => Object.keys(el).length !== 0 && el.hasOwnProperty('nodeId') && el.hasOwnProperty('path'))
 export const generateCharacterFrom = (character: string, index: number) => String.fromCharCode(character.charCodeAt(0) + index)
 export const setIsTesting = () => IS_TESTING = true
+export const genNodeId = (i: number): string => IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8)

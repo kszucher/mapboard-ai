@@ -89,7 +89,7 @@ export const MapSvgSSelectionPrimary: FC = () => {
                 {isXASVN(m) && getXLS(m).sd.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSD)}>{'Node Down'}</ContextMenu.Item>}
                 {isXASVN(m) && getXFS(m).su.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSO)}>{'Node Out'}</ContextMenu.Item>}
                 {!isXARS(m) && isXASVN(m) && <ContextMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</ContextMenu.Item>}
-                {getXS(m).so1.length > 0 && !mS(getXAEO(m)).some(ti => ti.path.includes('c')) && <ContextMenu.Item onClick={() => md(MR.moveS2TO)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
+                {getXS(m).so1.length > 0 && !mS(getXAEO(m)).some(ti => ti.path.includes('c')) && <ContextMenu.Item onClick={() => md(MR.moveS2T)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
               </ContextMenu.SubContent>
             </ContextMenu.Sub>
             <ContextMenu.Sub>

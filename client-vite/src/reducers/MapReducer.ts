@@ -128,7 +128,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'moveCRU': moveCRU(m); break
     case 'moveCCR': moveCCR(m); break
     case 'moveCCL': moveCCL(m); break
-    case 'moveS2TO': moveS2T(m); break
+    case 'moveS2T': moveS2T(m); break
     case 'transpose': transpose(m); break
     case 'setTaskStatus': Object.assign(getNodeById(m, payload.nodeId), { taskStatus: payload.taskStatus }); break
     case 'setContentText': Object.assign(getXS(m), { contentType: 'text', content: payload.content }); break

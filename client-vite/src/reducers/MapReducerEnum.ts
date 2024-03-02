@@ -119,7 +119,7 @@ export enum MR {
   moveCRU = 'moveCRU',
   moveCCR = 'moveCCR',
   moveCCL = 'moveCCL',
-  moveS2TO = 'moveS2TO',
+  moveS2T = 'moveS2T',
   transpose = 'transpose',
 
   setTaskStatus = 'setTaskStatus',
