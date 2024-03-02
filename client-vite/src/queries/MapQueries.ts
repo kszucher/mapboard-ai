@@ -109,7 +109,7 @@ export const rToCb = (m: M): T[] => {
 }
 
 export const sToCb = (m: M): N[] =>
-  mS(getXAEO(m))
+  getXAEO(m)
     .map(ti => ({...ti, path: ['s', ti.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ti.path.slice(getXS(m).path.length)]})) as unknown as N[]
 
 export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineWidth)) ? getXS(m).lineWidth : sSaveOptional.lineWidth
