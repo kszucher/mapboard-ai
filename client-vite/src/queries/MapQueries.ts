@@ -154,15 +154,9 @@ const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string
 const isSI1 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI1(p))
 const isSO1 = (p: PT, pt: PT): boolean => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
 const isSCO = (p: PT, pt: PT): boolean => pt.length >= p.length + 3 && isEqual(pt.slice(0, p.length), p) && pt.at(p.length) === 'c'
-export const isCV = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
-export const isCH = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
 export const getNodeByPath = (m: M, p: PT) => m.find(ti => isEqual(ti.path, p)) as T
 export const getNodeById = (m: M, nodeId: string) => m.find(ti => ti.nodeId === nodeId) as T
 export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)
 export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXFS(m).path, ti.path as PT))! as T
 export const getXSO1 = (m: M): T[] => m.filter(ti => isSO1(getXS(m).path, ti.path as PT)) as T[]
 export const getXSCO = (m: M): M => m.filter(ti => isSCO(getXS(m).path, ti.path as PT))
-const getCountCV = (m: M, p: PT): number => m.filter(ti => isCH(p, ti.path as PT)).length
-const getCountCH = (m: M, p: PT): number => m.filter(ti => isCV(p, ti.path as PT)).length
-export const getCountTSCV = (m: M, t: T): number => getCountCV(m, [...t.path, 'c', 0, 0])
-export const getCountTSCH = (m: M, t: T): number => getCountCH(m, [...t.path, 'c', 0, 0])

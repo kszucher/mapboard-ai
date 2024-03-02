@@ -106,6 +106,8 @@ export const sSaveNever = {
   co2: [],
   su: [],
   sd: [],
+  rowCount: 0,
+  colCount: 0,
   isTop: 0,
   isBottom: 0,
   selfW: 0,

@@ -113,6 +113,8 @@ export interface SSaveNever {
   co2: string[]
   su: string[]
   sd: string[]
+  rowCount: number
+  colCount: number
   isTop: number
   isBottom: number
   selfW: number

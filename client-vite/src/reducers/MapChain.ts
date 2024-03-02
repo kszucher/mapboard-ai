@@ -84,6 +84,14 @@ export const mapChain = (m: M) => {
           cri.cr.push(ci.nodeId)
           cri.ch.push(ci.nodeId)
         }
+        if (ci.path.at(-1) === 0) {
+          const si1 = hp.get(ci.path.slice(0, -3).join('')) as S
+          si1.rowCount++
+        }
+        if (ci.path.at(-2) === 0) {
+          const si1 = hp.get(ci.path.slice(0, -3).join('')) as S
+          si1.colCount++
+        }
         break
       }
     }
