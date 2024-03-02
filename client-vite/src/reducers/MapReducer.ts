@@ -1,4 +1,4 @@
-import {getCountXSI1U, getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR,} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, getXFSU1, getXSCO, getXSI1, getXSI2, getXSO1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS,} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
@@ -121,7 +121,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'moveSU': moveS(m, getXSI1(m), getXFS(m).su.length - 1); break
     case 'moveSB': moveS(m, getXSI1(m), getXLS(m).sd.length); break
     case 'moveSO': moveS(m, getXFSU1(m), getNodeById(m, getXFS(m).su.at(-1)!).so1.length); break
-    case 'moveSI': moveS(m, getXSI2(m), getCountXSI1U(m) + 1); break
+    case 'moveSI': moveS(m, getXSI2(m), idToS(m, getXS(m).si1).su.length/*getCountXSI1U(m)*/ + 1); break
     case 'moveSByDrag': moveS(m, getNodeById(m, payload.moveInsertParentNodeId), payload.moveTargetIndex); break
     case 'moveCRD': moveCRD(m); break
     case 'moveCRU': moveCRU(m); break

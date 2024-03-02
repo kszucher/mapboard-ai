@@ -1,8 +1,8 @@
-import {M, T} from "../state/MapStateTypes"
+import {M, S, T} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
-import {getNodeByPath, sortPath, isSEO, getTR, getRSCIPL, mS} from "./MapQueries.ts"
+import {sortPath, isSEO, getTR, mS, idToS, pathToS} from "./MapQueries.ts"
 
-export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => {
+export const mapFindNearest = (pm: M, moveNode: S, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
   let sMoveCoords = [] as number[]
   let moveInsertParentNode = {nodeId: ''} as T
@@ -41,18 +41,18 @@ export const mapFindNearest = (pm: M, moveNode: T, toX: number, toY: number) => 
       if (moveInsertParentNodeNSO1) {
         moveTargetIndex = moveInsertParentNodeNSO1
         for (let i = moveInsertParentNodeNSO1 - 1; i > -1; i--) {
-          const currMoveTargetNodeChild = getNodeByPath(m, [...moveInsertParentNode.path, 's', i])
+          const currMoveTargetNodeChild = pathToS(m, [...moveInsertParentNode.path, 's', i])
           if (toY < currMoveTargetNodeChild.nodeStartY + currMoveTargetNodeChild.selfH / 2) {
             moveTargetIndex = i
           }
         }
-        if (isEqual(moveInsertParentNode.path, getRSCIPL(moveNode.path).at(-1)) && moveNode.path.at(-1) < moveTargetIndex) {
+        if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.si1).path) && moveNode.path.at(-1) < moveTargetIndex) {
           moveTargetIndex -= 1
         }
       }
     }
   }
-  if (isEqual(moveInsertParentNode.path, getRSCIPL(moveNode.path).at(-1)) && moveNode.path.at(-1) === moveTargetIndex) {
+  if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.si1).path) && moveNode.path.at(-1) === moveTargetIndex) {
     moveInsertParentNode = {} as T
     moveTargetIndex = 0
     sMoveCoords = []
