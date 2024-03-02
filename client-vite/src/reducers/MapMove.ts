@@ -119,7 +119,6 @@ export const duplicateS = (m: M) => {
 }
 
 export const moveS = (m: M, insertParentNodeId: string, insertTargetIndex: number) => {
-  console.log(insertParentNodeId)
   const cbS = structuredClone(sToCb(m))
   deleteS(m)
   const ip = [...getNodeById(m, insertParentNodeId).path, 's', insertTargetIndex] as PT

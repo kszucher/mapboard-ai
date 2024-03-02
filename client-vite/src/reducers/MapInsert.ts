@@ -1,4 +1,4 @@
-import {N, LPartial, M, T, PT, MPartial, C, PC} from "../state/MapStateTypes"
+import {N, LPartial, M, T, PT, MPartial, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {sortPath, isSEODO, getLastIndexL, mR, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getNodeById, getXC, idToC} from "../queries/MapQueries.ts"
 import {generateCharacterFrom, genHash, getTableIndices, IS_TESTING} from "../utils/Utils"
@@ -67,8 +67,7 @@ export const insertCCL = (m: M) => {
 }
 
 export const insertSCRD = (m: M) => {
-  const sc00 = idToC(m, getXS(m).co1.at(0)!)
-  m.push(...Array.from({length: sc00.ch.length}, (_, i) =>({nodeId: genNodeId(i), path: [...getXS(m).path, 'c', sc00.cv.length, i] as PC} as N)))
+  m.push(...Array.from({length: getXS(m).colCount}, (_, i) =>({nodeId: genNodeId(i), path: [...getXS(m).path, 'c', getXS(m).rowCount, i] as PC} as N)))
   m.sort(sortPath)
 }
 
@@ -76,14 +75,12 @@ export const insertSCRU = (m: M) => {
   const crIndex = getXS(m).path.length + 1
   const toMoveD = [...getXS(m).co1, ...getXS(m).co1.map(ni => idToC(m, ni)).flatMap(el => el.so)].map(ni => getNodeById(m, ni))
   toMoveD.forEach(ti => ti.path.splice(crIndex, 1, ti.path.at(crIndex) + 1))
-  const sc00 = getNodeById(m, getXS(m).co1.at(0) as string) as C
-  m.push(...Array.from({length: sc00.ch.length}, (_, i) =>({nodeId: genNodeId(i), path: [...getXS(m).path, 'c', 0, i] as PC} as N)))
+  m.push(...Array.from({length: getXS(m).colCount}, (_, i) =>({nodeId: genNodeId(i), path: [...getXS(m).path, 'c', 0, i] as PC} as N)))
   m.sort(sortPath)
 }
 
 export const insertSCCR = (m: M) => {
-  const sc00 = idToC(m, getXS(m).co1.at(0)!)
-  m.push(...Array.from({length: sc00.cv.length}, (_, i) =>({nodeId: genNodeId(i), path: [...getXS(m).path, 'c', i, sc00.ch.length] as PC} as N)))
+  m.push(...Array.from({length: getXS(m).rowCount}, (_, i) =>({nodeId: genNodeId(i), path: [...getXS(m).path, 'c', i, getXS(m).colCount] as PC} as N)))
   m.sort(sortPath)
 }
 
@@ -91,8 +88,7 @@ export const insertSCCL = (m: M) => {
   const ccIndex = getXS(m).path.length + 2
   const toMoveR = [...getXS(m).co1, ...getXS(m).co1.map(ni => idToC(m, ni)).flatMap(el => el.so)].map(ni => getNodeById(m, ni))
   toMoveR.forEach(ti => ti.path.splice(ccIndex, 1, ti.path.at(ccIndex) + 1))
-  const sc00 = idToC(m, getXS(m).co1.at(0)!)
-  m.push(...Array.from({length: sc00.cv.length}, (_, i) =>({nodeId: genNodeId(i), path: [...getXS(m).path, 'c', i, 0] as PC} as N)))
+  m.push(...Array.from({length: getXS(m).rowCount}, (_, i) =>({nodeId: genNodeId(i), path: [...getXS(m).path, 'c', i, 0] as PC} as N)))
   m.sort(sortPath)
 }
 
