@@ -44,7 +44,7 @@ export const MapSvgCSelectionPrimary: FC = () => {
             <ContextMenu.Sub>
               <ContextMenu.SubTrigger>{'Insert'}</ContextMenu.SubTrigger>
               <ContextMenu.SubContent>
-                <ContextMenu.Item onClick={() => md(MR.insertSO)}>{'Struct Out'}</ContextMenu.Item>
+                <ContextMenu.Item onClick={() => md(MR.insertCSO)}>{'Struct Out'}</ContextMenu.Item>
               </ContextMenu.SubContent>
             </ContextMenu.Sub>
             <ContextMenu.Sub>

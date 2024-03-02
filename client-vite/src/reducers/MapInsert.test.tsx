@@ -53,7 +53,7 @@ describe("MapInsertTests", () => {
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSU, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
-  test('insertSO', () => {
+  test('insertSSO', () => {
     const test = [
       {nodeId: 'ga', path: ['g']},
       {nodeId: 'ta', path: ['r', 0]},
@@ -67,7 +67,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 1], selected: 1},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSO, {})).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSSO, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('insertCRD', () => {
     const test = [

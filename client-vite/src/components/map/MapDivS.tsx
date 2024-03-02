@@ -153,7 +153,7 @@ export const MapDivS: FC = () => {
             md(MR.removeMapListEntriesOfEdit)
           }
           if (['Insert','Tab'].includes(e.key)) {
-            md(MR.insertSO)
+            isXAS(m) && md(MR.insertSSO)
           }
         }}
         onInput={(e) => {

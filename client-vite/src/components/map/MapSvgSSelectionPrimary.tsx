@@ -71,7 +71,7 @@ export const MapSvgSSelectionPrimary: FC = () => {
               <ContextMenu.SubTrigger>{'Insert'}</ContextMenu.SubTrigger>
               <ContextMenu.SubContent>
                 <ContextMenu.Item onClick={() => md(MR.insertSU)}>{'Struct Above'}</ContextMenu.Item>
-                <ContextMenu.Item onClick={() => md(MR.insertSO)}>{'Struct Out'}</ContextMenu.Item>
+                <ContextMenu.Item onClick={() => md(MR.insertSSO)}>{'Struct Out'}</ContextMenu.Item>
                 <ContextMenu.Item onClick={() => md(MR.insertSD)}>{'Struct Below'}</ContextMenu.Item>
                 {!getXS(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_U))}>{'Table Above'}</ContextMenu.Item></Dialog.Trigger>}
                 {!getXS(m).path.includes('c') && <Dialog.Trigger><ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_D))}>{'Table Below'}</ContextMenu.Item></Dialog.Trigger>}

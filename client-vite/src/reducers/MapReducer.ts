@@ -71,7 +71,9 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertR': insertR(m); break
     case 'insertSD': insertS(m, getXSI1(m), getXFS(m).su.length + 1, payload); break
     case 'insertSU': insertS(m, getXSI1(m), getXS(m).path.at(-1), payload); break
-    case 'insertSO': insertS(m, getXS(m), getXS(m).so1.length, payload); break
+    case 'insertRSO': insertS(m, getXR(m), getXR(m).so1.length, payload); break
+    case 'insertSSO': insertS(m, getXS(m), getXS(m).so1.length, payload); break
+    case 'insertCSO': insertS(m, getXC(m), getXC(m).so1.length, payload); break
     case 'insertSOText': insertS(m, getXS(m), getXS(m).so1.length, { contentType: 'text', content: payload }); break
     case 'insertSOLink': insertS(m, getXS(m), getXS(m).so1.length, { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
     case 'insertSOImage': insertS(m, getXS(m), getXS(m).so1.length, { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
