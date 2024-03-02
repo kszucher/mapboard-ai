@@ -42,13 +42,17 @@ export const mapChain = (m: M) => {
         const ti2 = hp.get(ci.path.slice(0, -5).join('')) as R | S
         ti1.co1.push(ci.nodeId)
         ti2.co2.push(ci.nodeId)
+        ci.cv.push(ci.nodeId)
+        ci.ch.push(ci.nodeId)
         for (let i = 0; i < ci.path.at(-2); i++) {
           const cdi = hp.get([...ci.path.slice(0, -2), i, ci.path.at(-1)].join('')) as C
           ci.cu.push(cdi.nodeId)
+          ci.cv.push(cdi.nodeId)
         }
         for (let i = 0; i < ci.path.at(-1); i++) {
           const cri = hp.get([...ci.path.slice(0, -2), ci.path.at(-2), i].join('')) as C
           ci.cl.push(cri.nodeId)
+          ci.ch.push(cri.nodeId)
         }
         break
       }
@@ -73,21 +77,13 @@ export const mapChain = (m: M) => {
         for (let i = 0; i < ci.path.at(-2); i++) {
           const cdi = hp.get([...ci.path.slice(0, -2), i, ci.path.at(-1)].join('')) as C
           cdi.cd.push(ci.nodeId)
+          cdi.cv.push(ci.nodeId)
         }
         for (let i = 0; i < ci.path.at(-1); i++) {
           const cri = hp.get([...ci.path.slice(0, -2), ci.path.at(-2), i].join('')) as C
           cri.cr.push(ci.nodeId)
+          cri.ch.push(ci.nodeId)
         }
-        break
-      }
-    }
-  })
-  m.forEach(ni => {
-    switch (true) {
-      case isC(ni.path): {
-        const ci = ni as C
-        ci.cv = [...ci.cu, ...ci.cd, ci.nodeId]
-        ci.ch = [...ci.cl, ...ci.cr, ci.nodeId]
         break
       }
     }

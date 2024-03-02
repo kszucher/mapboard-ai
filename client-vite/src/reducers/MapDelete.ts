@@ -46,10 +46,10 @@ export const deleteS = (m: M) => {
       ...mR(m),
       ...mS(m)
         .filter(ti => xa.every(xti => !isSEO(xti.path, ti.path)))
-        .map(ti => ({...ti, path: ti.path.map((pi, i) => ti.path.at(i - 1) === 's' ? pi - pathToS(m, ti.path.slice(0, i + 1) as PS).su.map(ii => idToS(m, ii)).filter(si => si.selected).length : pi) as PS})),
+        .map(ti => ({...ti, path: ti.path.map((pi, i) => ti.path.at(i - 1) === 's' ? pi - pathToS(m, ti.path.slice(0, i + 1) as PS).su.map(ni => idToS(m, ni)).filter(si => si.selected).length : pi) as PS})),
       ...mC(m)
         .filter(ti => xa.every(xti => !isSEO(xti.path, ti.path)))
-        .map(ti => ({...ti, path: ti.path.map((pi, i) => ti.path.at(i - 1) === 's' ? pi - pathToS(m, ti.path.slice(0, i + 1) as PS).su.map(ii => idToS(m, ii)).filter(si => si.selected).length : pi) as PC})),
+        .map(ti => ({...ti, path: ti.path.map((pi, i) => ti.path.at(i - 1) === 's' ? pi - pathToS(m, ti.path.slice(0, i + 1) as PS).su.map(ni => idToS(m, ni)).filter(si => si.selected).length : pi) as PC})),
     ].sort(sortPath)
   )
 }

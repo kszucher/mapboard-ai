@@ -35,7 +35,6 @@ export const isRSC = (p: P): boolean => p.at(-7) === 'r' && p.at(-5) === 's' && 
 export const isSS = (p: P): boolean => p.at(-4) === 's' && p.at(-2) === 's'
 export const isSSC = (p: P): boolean => p.at(-7) === 's' && p.at(-5) === 's' && p.at(-3) === 'c'
 export const isCS = (p: P): boolean => p.at(-5) === 'c' && p.at(-2) === 's'
-const isT = (p: P): boolean => p.at(0) === 'r' || p.at(0) === 's' || p.at(0) === 'c'
 
 export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
 export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]
@@ -45,7 +44,6 @@ export const mRS = (m: M): S[] => m.filter(n => isRS(n.path)) as S[]
 export const mSS = (m: M): S[] => m.filter(n => isSS(n.path)) as S[]
 export const mCS = (m: M): S[] => m.filter(n => isCS(n.path)) as S[]
 export const mC = (m: M): C[] => m.filter(n => isC(n.path)) as C[]
-export const mT = (m: M): T[] => m.filter(n => isT(n.path)) as T[]
 
 export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as R)
 export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as S)
@@ -113,16 +111,27 @@ export const getXSO1 = (m: M): T[] => m.filter(ti => isSO1(getXS(m).path, ti.pat
 export const getXSCO = (m: M): M => m.filter(ti => isSCO(getXS(m).path, ti.path as PT))
 export const getXAEO = (m: M): T[] => {const xa = getXAS(m); return m.filter(ti => xa.some(xti => isSEO(xti.path, ti.path as PT))) as T[]}
 
-export const getCountQuasiSD = (m: M): number => mS(m).filter(si => isQuasiSD(getXS(m).path, si.path)).length
-export const getCountQuasiSU = (m: M): number => mS(m).filter(si => isQuasiSU(getXS(m).path, si.path)).length
 const getCountCV = (m: M, p: PT): number => m.filter(ti => isCH(p, ti.path as PT)).length
 const getCountCH = (m: M, p: PT): number => m.filter(ti => isCV(p, ti.path as PT)).length
 export const getCountTSCV = (m: M, t: T): number => getCountCV(m, [...t.path, 'c', 0, 0])
 export const getCountTSCH = (m: M, t: T): number => getCountCH(m, [...t.path, 'c', 0, 0])
 
-export const lToCb = (m: M): L[] => mL(m).filter(li => getNodeById(m, li.fromNodeId).selected && getNodeById(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
-export const rToCb = (m: M): T[] => getXAR(m).map(el => el.path.at(1)).map(ri => m.filter(ti => isEqual(ti.path.slice(0, 2), ['r', ri]))).map((m, i) => mT(m).map(ti => ({...ti, path: ['r', i, ...ti.path.slice(2)]}))).flat() as T[]
-export const sToCb = (m: M): S[] => mS(getXAEO(m)).map(ti => ({...ti, path: ['s', ti.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ti.path.slice(getXS(m).path.length)]})) as unknown as S[]
+export const lToCb = (m: M): L[] =>
+  mL(m).filter(li => getNodeById(m, li.fromNodeId).selected && getNodeById(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
+
+export const rToCb = (m: M): T[] => {
+  const xar = getXAR(m)
+  const xarIndices = xar.map(ri => ri.path.at(1))
+  return ([
+    ...mR(m).filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1))).map(ri => ({...ri, path: ri.path.with(1, xarIndices.indexOf(ri.path[1]))})),
+    ...mS(m).filter(si => xar.some(xari => xari.path.at(1) === si.path.at(1))).map(si => ({...si, path: si.path.with(1, xarIndices.indexOf(si.path[1]))})),
+    ...mC(m).filter(ci => xar.some(xari => xari.path.at(1) === ci.path.at(1))).map(ci => ({...ci, path: ci.path.with(1, xarIndices.indexOf(ci.path[1]))}))
+  ] as T[]).sort(sortPath)
+}
+
+export const sToCb = (m: M): N[] =>
+  mS(getXAEO(m))
+    .map(ti => ({...ti, path: ['s', ti.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ti.path.slice(getXS(m).path.length)]})) as unknown as N[]
 
 export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineWidth)) ? getXS(m).lineWidth : sSaveOptional.lineWidth
 export const getLineType = (m: M): SSaveOptional['lineType'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineType)) ? getXS(m).lineType : sSaveOptional.lineType

@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getCountQuasiSD, getCountQuasiSU, getLastIndexR, getMapMode, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS} from "../../queries/MapQueries.ts"
+import {getLastIndexR, getMapMode, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -88,7 +88,7 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyZ' && md(MR.redo)
     ckm === 'c--' && e.code === 'KeyY' && md(MR.undo)
 
-    ckm === '---' && e.code === 'ArrowDown' && isXAS(m) && getCountQuasiSD(m) > 0 && md(MR.selectSD)
+    ckm === '---' && e.code === 'ArrowDown' && isXAS(m) && getQuasiSD(m) && md(MR.selectSD)
     ckm === '---' && e.code === 'ArrowDown' && isXACS(m) && getXLS(m).sd.length === 0 && getDCS(m) && md(MR.selectDCS)
     ckm === '---' && e.code === 'ArrowDown' && isXC(m) && getXC(m).cd.length > 0 && md(MR.selectCD)
     ckm === '---' && e.code === 'ArrowDown' && isXACR(m) && getXC(m).cd.length > 0 && md(MR.selectCD)
@@ -96,11 +96,11 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getXLS(m).sd.length === 0 && md(MR.moveST)
     ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getXLS(m).sd.length > 0 && md(MR.moveSD)
     ckm === 'c--' && e.code === 'ArrowDown' && isXACR(m) && getXC(m).cd.length > 0 && md(MR.moveCRD)
-    ckm === '-s-' && e.code === 'ArrowDown' && isXAS(m)  && getCountQuasiSD(m) > 0 && md(MR.selectAddSD)
+    ckm === '-s-' && e.code === 'ArrowDown' && isXAS(m) && getQuasiSD(m) && md(MR.selectAddSD)
     ckm === '-s-' && e.code === 'ArrowDown' && isXC(m) && md(MR.selectSameCC)
     ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && md(MR.insertCRD)
 
-    ckm === '---' && e.code === 'ArrowUp' && isXAS(m) && getCountQuasiSU(m) > 0 && md(MR.selectSU)
+    ckm === '---' && e.code === 'ArrowUp' && isXAS(m) && getQuasiSU(m) && md(MR.selectSU)
     ckm === '---' && e.code === 'ArrowUp' && isXACS(m) && getXFS(m).su.length === 0 && getUCS(m) && md(MR.selectUCS)
     ckm === '---' && e.code === 'ArrowUp' && isXC(m) && getXC(m).cu.length > 0 && md(MR.selectCU)
     ckm === '---' && e.code === 'ArrowUp' && isXACR(m) && getXC(m).cu.length > 0 && md(MR.selectCU)
@@ -108,7 +108,7 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getXFS(m).su.length === 0 && md(MR.moveSB)
     ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getXFS(m).su.length > 0 && md(MR.moveSU)
     ckm === 'c--' && e.code === 'ArrowUp' && isXACR(m) && getXC(m).cu.length > 0 && md(MR.moveCRU)
-    ckm === '-s-' && e.code === 'ArrowUp' && isXAS(m) && getCountQuasiSU(m) > 0 && md(MR.selectAddSU)
+    ckm === '-s-' && e.code === 'ArrowUp' && isXAS(m) && getQuasiSU(m) && md(MR.selectAddSU)
     ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && md(MR.selectSameCC)
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && md(MR.insertCRU)
 

@@ -1,7 +1,11 @@
 import {M, N, R, S, C, T} from "../state/MapStateTypes"
-import {getXR, getXS, mT} from "../queries/MapQueries.ts"
+import {getXR, getXS, mR, mS, mC} from "../queries/MapQueries.ts"
 
-export const unselectNodes = (m: M) => mT(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
+export const unselectNodes = (m: M) => {
+  mR(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
+  mS(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
+  mC(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
+}
 
 export const selectR = (m: M, ri: R) => {
   unselectNodes(m)
