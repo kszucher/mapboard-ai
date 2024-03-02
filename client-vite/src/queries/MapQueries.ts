@@ -78,7 +78,6 @@ export const getG = (m: M): G => mG(m).at(0) as G
 export const getRSCIPL = (p: PT): PT[] => p.map((_, i) => p.slice(0, i)).filter(pi => (['r', 's'].includes(pi.at(-2)) || pi.at(-3) === 'c' )).map(el => el as PT)
 export const getSIPL = (p: PT): PT[] => getRSCIPL(p).filter(pi => !isR(pi) && !isC(pi))
 const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string')) as PT
-const getSI2 = (p: PT) => getSI1(getSI1(p))
 
 export const isOfSameR = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1)
 export const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex(pi => pi === 'c') + 3), pt.slice(0, pt.findLastIndex(pti => pti === 'c') + 3))
@@ -90,9 +89,7 @@ export const getUCS = (m: M): S => pathToS(m, [...getXS(m).path.slice(0, -5), 'c
 
 const isQuasiSD = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) > sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
 const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) < sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
-const isSU1 = (p: PT, pt: PT): boolean => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) === p.at(-1) - 1
 const isSI1 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI1(p))
-const isSI2 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI2(p))
 export const isREO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isCEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
@@ -108,8 +105,6 @@ export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual
 export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)
 
 export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXFS(m).path, ti.path as PT))! as T
-export const getXSI2 = (m: M): T => m.find(ti => isSI2(getXS(m).path, ti.path as PT))! as T
-export const getXFSU1 = (m: M): T => m.find(ti => isSU1(getXFS(m).path, ti.path as PT))! as T
 
 export const getQuasiSD = (m: M): S => mS(m).find(ti => !ti.selected && isQuasiSD(getXS(m).path, ti.path))!
 export const getQuasiSU = (m: M): S => mS(m).findLast(ti => !ti.selected && isQuasiSU(getXS(m).path, ti.path))!
