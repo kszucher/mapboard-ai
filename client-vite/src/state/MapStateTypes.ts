@@ -6,7 +6,7 @@ export type PR = ['r', number]
 export type PS = [...any[], 's', number] | ['s', number]
 export type PC = [...any[], 'c', number, number] | ['c', number, number]
 export type PT = PR | PS | PC
-export type P = PG | PL | PT
+export type P = PG | PL | PR | PS | PC
 
 export interface GSaveAlways {
   path: PG
@@ -43,7 +43,7 @@ export interface LSaveNever {
 }
 
 export interface RSaveAlways {
-  path: PT
+  path: PR
   nodeId: string
 }
 
@@ -73,7 +73,7 @@ export interface RSaveNever {
 }
 
 export interface SSaveAlways {
-  path: PT
+  path: PS
   nodeId: string
 }
 
@@ -126,7 +126,7 @@ export interface SSaveNever {
 }
 
 export interface CSaveAlways {
-  path: PT
+  path: PC
   nodeId: string
 }
 
