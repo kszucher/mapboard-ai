@@ -124,7 +124,6 @@ export const moveS = (m: M, insertParentNodeId: string, insertTargetIndex: numbe
   cbS.forEach(ti => Object.assign(ti, {
     path : [...ip.slice(0, -2), 's', ti.path.at(1) + ip.at(-1), ...ti.path.slice(2)]
   }))
-  mR(m).forEach(ri => isSEODO(ip, ri.path) && ri.path.splice(ip.length - 1, 1, ri.path.at(ip.length - 1) as number + getXAS(cbS).length))
   mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + getXAS(cbS).length))
   mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + getXAS(cbS).length))
   m.push(...cbS)
