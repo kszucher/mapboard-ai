@@ -1,7 +1,7 @@
-import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, idToC} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getQuasiSD, getQuasiSU, getXAEO, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, idToC} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
-import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
+import {C, M, PC, PR, PS, R, S} from "../state/MapStateTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {deleteCC, deleteCR, deleteL, deleteLR, deleteS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
@@ -67,7 +67,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectCU': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-2, ci.path.at(-2) - 1) as PC))); break
     case 'selectCR': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) + 1) as PC))); break
     case 'selectCL': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) - 1) as PC))); break
-    case 'selectSByRectangle': selectSL(m, payload.pathList.map((p: PT) => getNodeByPath(m, p))); break
+    case 'selectSByRectangle': selectSL(m, (payload.pathList as PS[]).map(p => pathToS(m, p))); break
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break

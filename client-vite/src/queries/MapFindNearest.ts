@@ -1,6 +1,6 @@
-import {M, S, T} from "../state/MapStateTypes"
+import {M, S, T, PR} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
-import {sortPath, isSEO, getTR, mS, idToS, pathToS} from "./MapQueries.ts"
+import {sortPath, isSEO, mS, idToS, pathToS, pathToR} from "./MapQueries.ts"
 
 export const mapFindNearest = (pm: M, moveNode: S, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
@@ -13,7 +13,7 @@ export const mapFindNearest = (pm: M, moveNode: S, toX: number, toY: number) => 
     moveNode.nodeStartY < toY &&
     toY < (moveNode.nodeStartY + moveNode.selfH)
   )) {
-    const nr = getTR(m, moveNode)
+    const nr = pathToR(m, moveNode.path.slice(0, 2) as PR)
     const aboveRoot = toY >= nr.nodeStartY + nr.selfH / 2
     const belowRoot = toY < nr.nodeStartY + nr.selfH / 2
     const overlap = 6

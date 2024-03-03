@@ -148,6 +148,4 @@ export const getMapMode = (m: M) => {
 }
 
 // TODO remove
-export const getNodeByPath = (m: M, p: PT) => m.find(ti => isEqual(ti.path, p)) as T
 export const getNodeById = (m: M, nodeId: string) => m.find(ti => ti.nodeId === nodeId) as T
-export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)

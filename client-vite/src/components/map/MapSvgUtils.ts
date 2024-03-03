@@ -1,7 +1,7 @@
-import {getG, getHN, getNodeById, getTR, isXACC, isXACR, sortPath, getXAC, getXC, pathToC} from "../../queries/MapQueries.ts"
+import {getG, getHN, getNodeById, isXACC, isXACR, sortPath, getXAC, getXC, pathToC, pathToR} from "../../queries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
-import {C, G, L, M, S, T} from "../../state/MapStateTypes"
+import {C, G, L, M, PR, S, T} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
 
 export const pathCommonProps = {
@@ -295,4 +295,4 @@ export const getTaskWidth = (g: G) => TASK_CIRCLES_NUM * (g.density === 'large' 
 
 export const getTaskRadius = (g: G) => g.density === 'large' ? 24 : 20
 
-export const getTaskStartPoint = (m: M, g: G, s: S) => getTR(m, s as T).nodeStartX + getTR(m, s as T).selfW - getTaskWidth(g)
+export const getTaskStartPoint = (m: M, g: G, s: S) => pathToR(m, s.path.slice(0, 2) as PR).nodeStartX + pathToR(m, s.path.slice(0, 2) as PR).selfW - getTaskWidth(g)
