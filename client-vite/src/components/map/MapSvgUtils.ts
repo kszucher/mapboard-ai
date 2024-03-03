@@ -1,4 +1,4 @@
-import {getG, getHN, getNodeById, isXACC, isXACR, sortPath, getXAC, getXC, pathToC, pathToR} from "../../queries/MapQueries.ts"
+import {getG, getHN, isXACC, isXACR, sortPath, getXAC, getXC, pathToC, pathToR, idToR} from "../../queries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
 import {C, G, L, M, PR, S, T} from "../../state/MapStateTypes"
@@ -98,8 +98,8 @@ export const getNodeLinePath = (g: G, na: S | C, nb: S | C) => {
 
 export const getRootLinePath = (m: M, l: L) => {
   const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l
-  const fromNode = getNodeById(m, fromNodeId)
-  const toNode = getNodeById(m, toNodeId)
+  const fromNode = idToR(m, fromNodeId)
+  const toNode = idToR(m, toNodeId)
   let sx = 0, sy = 0, c1x = 0, c1y = 0
   switch (fromNodeSide) {
     case Side.R:

@@ -41,6 +41,8 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectSSO': selectS(m, pathToS(m, [...getXS(m).path, 's', 0] as PS), 's'); break
     case 'selectSSOLast': selectS(m, pathToS(m, [...getXS(m).path, 's', getXS(m).lastSelectedChild] as PS), 's'); break
     case 'selectCSO': selectS(m, pathToS(m, [...getXC(m).path, 's', 0] as PS), 's'); break
+
+    // TODO differentiate select SIR, SIS, SIC
     case 'selectSI': getNodeById(m, getXS(m).ti1).lastSelectedChild = getXS(m).path.at(-1); selectS(m, getNodeById(m, getXS(m).ti1) as S, 's'); break
     case 'selectLCS': selectS(m, getLCS(m), 's'); break
     case 'selectRCS': selectS(m, getRCS(m), 's'); break
@@ -125,6 +127,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'duplicateR': duplicateR(m); break;
     case 'duplicateS': duplicateS(m); break;
 
+    // TODO differentiate moveSU, moveSD, moveST, moveSB + add differentiated moveSIR, moveSIS, moveSIC
     case 'moveSD': moveS(m, getXS(m).ti1, getXFS(m).su.length + 1); break
     case 'moveST': moveS(m, getXS(m).ti1, 0); break
     case 'moveSU': moveS(m, getXS(m).ti1, getXFS(m).su.length - 1); break
@@ -170,7 +173,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setTaskModeOn': mS(getXAEO(m)).forEach(ti => !ti.path.includes('c') && Object.assign(ti, { taskStatus: ti.taskStatus === 0 ? 1 : ti.taskStatus })); break
     case 'setTaskModeOff': mS(getXAEO(m)).forEach(ti => Object.assign(ti, { taskStatus: 0 })); break
     case 'setTaskModeReset': mS(getXAEO(m)).forEach(ti => Object.assign(ti, { taskStatus: ti.taskStatus > 0 ? 1 : ti.taskStatus })); break
-    case 'setTaskStatus': Object.assign(getNodeById(m, payload.nodeId), { taskStatus: payload.taskStatus }); break
+    case 'setTaskStatus': Object.assign(idToS(m, payload.nodeId), { taskStatus: payload.taskStatus }); break
 
     case 'clearDimensions': Object.assign(getXS(m), { dimW: sSaveOptional.dimW, dimH: sSaveOptional.dimH }); break
     case 'clearLine': getXAS(m).forEach(ti => Object.assign(ti, { lineWidth: sSaveOptional.lineWidth, lineType: sSaveOptional.lineType, lineColor: sSaveOptional.lineColor })); break

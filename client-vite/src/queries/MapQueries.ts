@@ -96,7 +96,7 @@ export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual
 export const getXAEO = (m: M): T[] => {const xa = getXAS(m); return m.filter(ti => xa.some(xti => isSEO(xti.path, ti.path as PT))) as T[]}
 
 export const lToCb = (m: M): L[] =>
-  mL(m).filter(li => getNodeById(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
+  mL(m).filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
 
 export const rToCb = (m: M): T[] => {
   const xar = getXAR(m)
