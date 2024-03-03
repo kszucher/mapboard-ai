@@ -150,7 +150,4 @@ export const getMapMode = (m: M) => {
 // TODO remove
 export const getNodeByPath = (m: M, p: PT) => m.find(ti => isEqual(ti.path, p)) as T
 export const getNodeById = (m: M, nodeId: string) => m.find(ti => ti.nodeId === nodeId) as T
-const getSI1 = (p: PT) => p.slice(0, p.findLastIndex(el => typeof el === 'string')) as PT
-const isSI1 = (p: PT, pt: PT): boolean => pt.length < p.length && isEqual(pt, getSI1(p))
-export const getXSI1 = (m: M): T => m.find(ti => isSI1(getXFS(m).path, ti.path as PT))! as T
 export const getTR = (m: M, t: T): T => getNodeByPath(m, t.path.slice(0, 2) as PT)

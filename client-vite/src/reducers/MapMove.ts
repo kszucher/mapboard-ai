@@ -1,4 +1,4 @@
-import {getG, getNodeById, getXSI1, lToCb, mL, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG} from "../queries/MapQueries.ts"
+import {getG, getNodeById, lToCb, mL, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, T, PT, PL, PR, C, PC, PS, S} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, genNodeId, IS_TESTING} from "../utils/Utils"
@@ -112,7 +112,7 @@ export const duplicateR = (m: M) => {
 }
 
 export const duplicateS = (m: M) => {
-  const ip = [...getXSI1(m).path, 's', getXFS(m).su.length + getXAS(m).length] as PT
+  const ip = [...getXS(m).path.slice(0, -2), 's', getXFS(m).su.length + getXAS(m).length] as PT
   const cbS = structuredClone(sToCb(m))
   cbToS(m, cbS, ip)
 }

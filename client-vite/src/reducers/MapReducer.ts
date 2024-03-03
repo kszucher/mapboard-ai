@@ -1,4 +1,4 @@
-import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, getXSI1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, idToC} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, idToC} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
@@ -71,8 +71,8 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
-    case 'insertSD': insertS(m, getXSI1(m), getXFS(m).su.length + 1, payload); break
-    case 'insertSU': insertS(m, getXSI1(m), getXS(m).path.at(-1), payload); break
+    case 'insertSD': insertS(m, idToS(m, getXS(m).ti1), getXFS(m).su.length + 1, payload); break
+    case 'insertSU': insertS(m, idToS(m, getXS(m).ti1), getXS(m).path.at(-1), payload); break
     case 'insertRSO': insertS(m, getXR(m), getXR(m).so1.length, payload); break
     case 'insertSSO': insertS(m, getXS(m), getXS(m).so1.length, payload); break
     case 'insertCSO': insertS(m, getXC(m), getXC(m).so1.length, payload); break
@@ -87,8 +87,8 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertSCRU': insertSCRU(m); break
     case 'insertSCCR': insertSCCR(m); break
     case 'insertSCCL': insertSCCL(m); break
-    case 'insertSDTable': insertTable(m, getXSI1(m), getXS(m).su.length + 1, payload); break
-    case 'insertSUTable': insertTable(m, getXSI1(m), getXS(m).su.length, payload); break
+    case 'insertSDTable': insertTable(m, idToS(m, getXS(m).ti1), getXS(m).su.length + 1, payload); break
+    case 'insertSUTable': insertTable(m, idToS(m, getXS(m).ti1), getXS(m).su.length, payload); break
     case 'insertSOTable': insertTable(m, getXS(m), getXS(m).so1.length, payload); break
 
     case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
