@@ -25,7 +25,6 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setPlaceTypeExploded': getG(m).flow = Flow.EXPLODED; break
     case 'setPlaceTypeIndented': getG(m).flow = Flow.INDENTED; break
 
-    case 'unselect': unselectNodes(m); break
     case 'selectR': selectR(m, pathToR(m, payload.path)); break
     case 'selectS': selectS(m, pathToS(m, payload.path), 's'); break
     case 'selectC': selectC(m, pathToC(m, payload.path)); break
@@ -54,9 +53,6 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectXSIC': selectC(m, pathToC(m, getXS(m).path.slice(0, getXS(m).path.findLastIndex(pi => pi === 'c') + 3) as PC)); break
     case 'selectAddR': selectAddR(m, pathToR(m, payload.path)); break
     case 'selectAddS': selectAddS(m, pathToS(m, payload.path), 's'); break
-    case 'unselectR': unselectR(pathToR(m, payload.path)); break
-    case 'unselectS': unselectS(pathToS(m, payload.path)); break
-    case 'unselectC': unselectC(pathToC(m, payload.path)); break
     case 'selectAddSD': selectAddS(m, getQuasiSD(m), 's'); break
     case 'selectAddSU': selectAddS(m, getQuasiSU(m), 's'); break
     case 'selectRA': selectRL(m, mR(m)); break
@@ -68,6 +64,11 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectCR': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) + 1) as PC))); break
     case 'selectCL': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) - 1) as PC))); break
     case 'selectSByRectangle': selectSL(m, (payload.pathList as PS[]).map(p => pathToS(m, p))); break
+
+    case 'unselect': unselectNodes(m); break
+    case 'unselectR': unselectR(pathToR(m, payload.path)); break
+    case 'unselectS': unselectS(pathToS(m, payload.path)); break
+    case 'unselectC': unselectC(pathToC(m, payload.path)); break
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
@@ -107,18 +108,23 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'deleteCCJumpL': { const reselectList = getXAC(m).map(ci => ci.cl.at(-1)!); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCCJumpR': { const reselectList = getXAC(m).map(ci => ci.cr.at(-1)!); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCCJumpSI': { const reselect = getXC(m).si1; deleteCC(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
+
     case 'cutLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; cutLR(m); selectR(m, getNodeById(m, reselect) as R); break }
     case 'cutSJumpRI': { const reselect = getXS(m).ti1; cutS(m); selectR(m, getNodeById(m, reselect) as R); break }
     case 'cutSJumpSU': { const reselect = getXFS(m).su.at(-1)!; cutS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
     case 'cutSJumpSD': { const reselect = getXLS(m).sd.at(-1)!; cutS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
     case 'cutSJumpSI': { const reselect = getXS(m).ti1; cutS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
     case 'cutSJumpCI': { const reselect = getXS(m).ti1; cutS(m); selectC(m, getNodeById(m, reselect) as C); break }
+
     case 'copyLR': copyLR(m); break
     case 'copyS': copyS(m); break
+
     case 'pasteLR': pasteLR(m, payload); break
     case 'pasteSO': pasteS(m, getXS(m), getXS(m).so1.length, payload); break
+
     case 'duplicateR': duplicateR(m); break;
     case 'duplicateS': duplicateS(m); break;
+
     case 'moveSD': moveS(m, getXS(m).ti1, getXFS(m).su.length + 1); break
     case 'moveST': moveS(m, getXS(m).ti1, 0); break
     case 'moveSU': moveS(m, getXS(m).ti1, getXFS(m).su.length - 1); break
@@ -131,19 +137,23 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'moveCCR': moveCCR(m); break
     case 'moveCCL': moveCCL(m); break
     case 'moveS2T': moveS2T(m); break
+
     case 'transpose': transpose(m); break
-    case 'setTaskStatus': Object.assign(getNodeById(m, payload.nodeId), { taskStatus: payload.taskStatus }); break
-    case 'setContentText': Object.assign(getXS(m), { contentType: 'text', content: payload.content }); break
-    case 'setContentEquation': Object.assign(getXS(m), { contentType: 'equation', content: payload.content }); break
-    case 'setContentMermaid': Object.assign(getXS(m), { contentType: 'mermaid', content: payload.content }); break
-    case 'setControlTypeNone': Object.assign(getXR(m), { controlType: ControlType.NONE }); break
-    case 'setControlTypeIngestion': Object.assign(getXR(m), { controlType: ControlType.INGESTION }); break
-    case 'setControlTypeExtraction': Object.assign(getXR(m), { controlType: ControlType.EXTRACTION }); break
+
     case 'offsetD': Object.assign(getXR(m), { offsetH: getXR(m).offsetH += 20 }); break
     case 'offsetU': Object.assign(getXR(m), { offsetH: getXR(m).offsetH -= 20 }); break
     case 'offsetR': Object.assign(getXR(m), { offsetW: getXR(m).offsetW += 20 }); break
     case 'offsetL': Object.assign(getXR(m), { offsetW: getXR(m).offsetW -= 20 }); break
     case 'offsetRByDrag': Object.assign(getXR(m), { offsetW: payload.toX, offsetH: payload.toY }); break
+
+    case 'setControlTypeNone': Object.assign(getXR(m), { controlType: ControlType.NONE }); break
+    case 'setControlTypeIngestion': Object.assign(getXR(m), { controlType: ControlType.INGESTION }); break
+    case 'setControlTypeExtraction': Object.assign(getXR(m), { controlType: ControlType.EXTRACTION }); break
+
+    case 'setContentText': Object.assign(getXS(m), { contentType: 'text', content: payload.content }); break
+    case 'setContentEquation': Object.assign(getXS(m), { contentType: 'equation', content: payload.content }); break
+    case 'setContentMermaid': Object.assign(getXS(m), { contentType: 'mermaid', content: payload.content }); break
+
     case 'setLineWidth': getXAS(m).forEach(ti => Object.assign(ti, { lineWidth: payload })); break
     case 'setLineType': getXAS(m).forEach(ti => Object.assign(ti, { lineType: payload })); break
     case 'setLineColor': getXAS(m).forEach(ti => Object.assign(ti, { lineColor: payload })); break
@@ -156,9 +166,11 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setTextFontSize': getXAS(m).forEach(ti => Object.assign(ti, { textFontSize: payload })); break
     case 'setTextColor': getXAS(m).forEach(ti => Object.assign(ti, { textColor: payload })); break
     case 'setBlur': getXAS(m).forEach(ti => Object.assign(ti, { blur: 1 })); break
+
     case 'setTaskModeOn': mS(getXAEO(m)).forEach(ti => !ti.path.includes('c') && Object.assign(ti, { taskStatus: ti.taskStatus === 0 ? 1 : ti.taskStatus })); break
     case 'setTaskModeOff': mS(getXAEO(m)).forEach(ti => Object.assign(ti, { taskStatus: 0 })); break
     case 'setTaskModeReset': mS(getXAEO(m)).forEach(ti => Object.assign(ti, { taskStatus: ti.taskStatus > 0 ? 1 : ti.taskStatus })); break
+    case 'setTaskStatus': Object.assign(getNodeById(m, payload.nodeId), { taskStatus: payload.taskStatus }); break
 
     case 'clearDimensions': Object.assign(getXS(m), { dimW: sSaveOptional.dimW, dimH: sSaveOptional.dimH }); break
     case 'clearLine': getXAS(m).forEach(ti => Object.assign(ti, { lineWidth: sSaveOptional.lineWidth, lineType: sSaveOptional.lineType, lineColor: sSaveOptional.lineColor })); break

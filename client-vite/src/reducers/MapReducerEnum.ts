@@ -14,7 +14,6 @@ export enum MR {
   setPlaceTypeExploded = 'setPlaceTypeExploded',
   setPlaceTypeIndented = 'setPlaceTypeIndented',
 
-  unselect = 'unselect',
   selectR = 'selectR',
   selectS = 'selectS',
   selectC = 'selectC',
@@ -43,9 +42,6 @@ export enum MR {
   selectXCIS = 'selectXCIS',
   selectAddR = 'selectAddR',
   selectAddS = 'selectAddS',
-  unselectR = 'unselectR',
-  unselectS = 'unselectS',
-  unselectC = 'unselectC',
   selectAddSD = 'selectAddSD',
   selectAddSU = 'selectAddSU',
   selectRA = 'selectRA',
@@ -58,6 +54,11 @@ export enum MR {
   selectCL = 'selectCL',
   selectSByRectanglePreview = 'selectSByRectanglePreview',
   selectSByRectangle = 'selectSByRectangle',
+
+  unselect = 'unselect',
+  unselectR = 'unselectR',
+  unselectS = 'unselectS',
+  unselectC = 'unselectC',
 
   insertL = 'insertL',
   insertR = 'insertR',
@@ -97,18 +98,23 @@ export enum MR {
   deleteCCJumpL = 'deleteCCJumpL',
   deleteCCJumpR = 'deleteCCJumpR',
   deleteCCJumpSI = 'deleteCCJumpSI',
+
   cutLR = 'cutLR',
   cutSJumpRI = 'cutSJumpRI',
   cutSJumpSU = 'cutSJumpSU',
   cutSJumpSD = 'cutSJumpSD',
   cutSJumpSI = 'cutSJumpSI',
   cutSJumpCI = 'cutSJumpCI',
+
   copyLR = 'copyLR',
   copyS = 'copyS',
+
   pasteLR = 'pasteLR',
   pasteSO = 'pasteSO',
+
   duplicateR = 'duplicateR',
   duplicateS = 'duplicateS',
+
   moveSD = 'moveSD',
   moveST = 'moveST',
   moveSU = 'moveSU',
@@ -122,21 +128,24 @@ export enum MR {
   moveCCR = 'moveCCR',
   moveCCL = 'moveCCL',
   moveS2T = 'moveS2T',
+
   transpose = 'transpose',
 
-  setTaskStatus = 'setTaskStatus',
-  setContentText = 'setContentText',
-  setContentEquation = 'setContentEquation',
-  setContentMermaid = 'setContentMermaid',
-  setControlTypeNone = 'setControlTypeNone',
-  setControlTypeIngestion = 'setControlTypeIngestion',
-  setControlTypeExtraction = 'setControlTypeExtraction',
   offsetD = 'offsetD',
   offsetU = 'offsetU',
   offsetR = 'offsetR',
   offsetL = 'offsetL',
   offsetRByDragPreview = 'offsetRByDragPreview',
   offsetRByDrag = 'offsetRByDrag',
+
+  setControlTypeNone = 'setControlTypeNone',
+  setControlTypeIngestion = 'setControlTypeIngestion',
+  setControlTypeExtraction = 'setControlTypeExtraction',
+
+  setContentText = 'setContentText',
+  setContentEquation = 'setContentEquation',
+  setContentMermaid = 'setContentMermaid',
+
   setLineWidth = 'setLineWidth',
   setLineType = 'setLineType',
   setLineColor = 'setLineColor',
@@ -149,9 +158,11 @@ export enum MR {
   setTextFontSize = 'setTextFontSize',
   setTextColor = 'setTextColor',
   setBlur = 'setBlur',
+
   setTaskModeOn = 'setTaskModeOn',
   setTaskModeOff = 'setTaskModeOff',
   setTaskModeReset = 'setTaskModeReset',
+  setTaskStatus = 'setTaskStatus',
 
   clearDimensions = 'clearDimensions',
   clearLine = 'clearLine',
