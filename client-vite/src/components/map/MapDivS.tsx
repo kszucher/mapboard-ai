@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getG, getMapMode, getNodeById, getXAS, getXS, isXAS, mS} from "../../queries/MapQueries.ts"
+import {getG, getMapMode, getXAS, getXS, idToS, isXAS, mS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
 import {S} from "../../state/MapStateTypes"
@@ -92,7 +92,7 @@ export const MapDivS: FC = () => {
         contentEditable={si.nodeId === editedNodeId}
         onFocus={(e) => {
           if (editType === 'append') {
-            e.currentTarget.innerHTML = (getNodeById(m, editedNodeId) as S).content
+            e.currentTarget.innerHTML = idToS(m, editedNodeId).content
           }
           setEndOfContentEditable(e.currentTarget)
         }}
