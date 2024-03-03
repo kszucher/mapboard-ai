@@ -43,7 +43,7 @@ export const MapDivR: FC = () => {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_ROOT) {
               !e.ctrlKey && md(MR.selectR, {path: ri.path})
               e.ctrlKey && isXAR(m) && !ri.selected && md(MR.selectAddR, {path: ri.path})
-              e.ctrlKey && ri.selected && getXAR(m).length > 1 && md(MR.selectRemoveT, {path: ri.path})
+              e.ctrlKey && ri.selected && getXAR(m).length > 1 && md(MR.unselectR, {path: ri.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_ROOT) {
               !e.ctrlKey && md(MR.selectR, {path: ri.path})
               md(MR.saveFromCoordinates, {e})

@@ -1,11 +1,5 @@
-import {M, N, R, S, C, T} from "../state/MapStateTypes"
+import {M, R, S, C} from "../state/MapStateTypes"
 import {getXR, getXS, mR, mS, mC} from "../queries/MapQueries.ts"
-
-export const unselectNodes = (m: M) => {
-  mR(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
-  mS(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
-  mC(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
-}
 
 export const selectR = (m: M, ri: R) => {
   unselectNodes(m)
@@ -31,13 +25,36 @@ export const selectAddS = (m: M, si: S, selection: 's' | 'f') => {
   Object.assign(si, {selected: getXS(m).selected + 1, selection})
 }
 
-export const selectRemoveT = (ti: T) => {
-  Object.assign(ti, {selected: 0, selection: 's'})
+
+export const selectRL = (m: M, rList: R[]) => {
+  unselectNodes(m)
+  rList.forEach((ri, i) => ri.selected = i + 1)
 }
 
-export const selectTL = (m: M, nList: N[], selection: 's' | 'f') => {
-  if (nList.length) {
-    unselectNodes(m)
-    nList.map((ti, i) => Object.assign(ti, {selected: i + 1, selection}))
-  }
+export const selectSL = (m: M, sList: S[]) => {
+  unselectNodes(m)
+  sList.forEach((si, i) => si.selected = i + 1)
+}
+
+export const selectCL = (m: M, cList: C[]) => {
+  unselectNodes(m)
+  cList.forEach((ci, i) => ci.selected = i + 1)
+}
+
+export const unselectNodes = (m: M) => {
+  mR(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
+  mS(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
+  mC(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
+}
+
+export const unselectR = (ri: R) => {
+  ri.selected = 0
+}
+
+export const unselectS = (si: S) => {
+  si.selected = 0
+}
+
+export const unselectC = (ci: C) => {
+  ci.selected = 0
 }

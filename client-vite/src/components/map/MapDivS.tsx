@@ -113,7 +113,7 @@ export const MapDivS: FC = () => {
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_STRUCT) {
               !e.ctrlKey && md(MR.selectS, {path: si.path})
               e.ctrlKey && !si.selected && isXAS(m) && md(MR.selectAddS, {path: si.path})
-              e.ctrlKey && si.selected && getXAS(m).length > 1 && md(MR.selectRemoveT, {path: si.path})
+              e.ctrlKey && si.selected && getXAS(m).length > 1 && md(MR.unselectS, {path: si.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_STRUCT) {
               !e.ctrlKey && md(MR.selectS, {path: si.path})
               const abortController = new AbortController()

@@ -1,4 +1,4 @@
-import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, getXSI1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS} from "../queries/MapQueries.ts"
+import {getG, getNodeById, getNodeByPath, getQuasiSD, getQuasiSU, getXAEO, getXSI1, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, idToC} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {C, M, PC, PR, PS, PT, R, S} from "../state/MapStateTypes"
@@ -11,7 +11,7 @@ import {copyLR, copyS, cutLR, duplicateR, duplicateS, moveS, moveS2T, pasteLR, p
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {mapPlaceIndented} from "./MapPlaceIndented.ts"
 import {MR} from "./MapReducerEnum.ts"
-import {selectAddR, selectAddS, selectC, selectR, selectRemoveT, selectS, selectTL, unselectNodes} from "./MapSelect"
+import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {mapChain} from "./MapChain.ts"
 import {mapPlaceExploded} from "./MapPlaceExploded.ts"
 import {mapCalcOrientation} from "./MapCalcOrientation.ts"
@@ -26,22 +26,22 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'setPlaceTypeIndented': getG(m).flow = Flow.INDENTED; break
 
     case 'unselect': unselectNodes(m); break
-    case 'selectR': selectR(m, getNodeByPath(m, payload.path) as R); break
-    case 'selectS': selectS(m, getNodeByPath(m, payload.path) as S, 's'); break
-    case 'selectC': selectC(m, getNodeByPath(m, payload.path) as C); break
+    case 'selectR': selectR(m, pathToR(m, payload.path)); break
+    case 'selectS': selectS(m, pathToS(m, payload.path), 's'); break
+    case 'selectC': selectC(m, pathToC(m, payload.path)); break
     case 'selectFirstR': selectR(m, mR(m).at(0)!); break
     case 'selectFirstS': selectS(m, mS(m).at(0)!, 's'); break
     case 'selectFirstC': selectC(m, mC(m).at(0)!); break
-    case 'selectXR': selectR(m, getNodeByPath(m, getXS(m).path.slice(0, 2) as PR) as R); break
-    case 'selectXRS': selectS(m, getNodeByPath(m, getXS(m).path.slice(0, 2).concat('s', 0) as PS) as S, 's'); break
+    case 'selectXR': selectR(m, pathToR(m, getXS(m).path.slice(0, 2) as PR)); break
+    case 'selectXRS': selectS(m, pathToS(m, getXS(m).path.slice(0, 2).concat('s', 0) as PS), 's'); break
     case 'selectSelfX': selectS(m, getXS(m), 's'); break
     case 'selectFamilyX': selectS(m, getXS(m), 'f'); break
     case 'selectSD': selectS(m, getQuasiSD(m) as S, 's'); break
     case 'selectSU': selectS(m, getQuasiSU(m) as S, 's'); break
-    case 'selectRSO': selectS(m, getNodeByPath(m, [...getXR(m).path, 's', 0] as PS) as S, 's'); break
-    case 'selectSSO': selectS(m, getNodeByPath(m, [...getXS(m).path, 's', 0] as PS) as S, 's'); break
-    case 'selectSSOLast': selectS(m, getNodeByPath(m, [...getXS(m).path, 's', getXS(m).lastSelectedChild] as PS) as S, 's'); break
-    case 'selectCSO': selectS(m, getNodeByPath(m, [...getXC(m).path, 's', 0] as PS) as S, 's'); break
+    case 'selectRSO': selectS(m, pathToS(m, [...getXR(m).path, 's', 0] as PS), 's'); break
+    case 'selectSSO': selectS(m, pathToS(m, [...getXS(m).path, 's', 0] as PS), 's'); break
+    case 'selectSSOLast': selectS(m, pathToS(m, [...getXS(m).path, 's', getXS(m).lastSelectedChild] as PS), 's'); break
+    case 'selectCSO': selectS(m, pathToS(m, [...getXC(m).path, 's', 0] as PS), 's'); break
     case 'selectSI': getNodeById(m, getXS(m).ti1).lastSelectedChild = getXS(m).path.at(-1); selectS(m, getNodeById(m, getXS(m).ti1) as S, 's'); break
     case 'selectLCS': selectS(m, getLCS(m), 's'); break
     case 'selectRCS': selectS(m, getRCS(m), 's'); break
@@ -54,18 +54,20 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectXSIC': selectC(m, pathToC(m, getXS(m).path.slice(0, getXS(m).path.findLastIndex(pi => pi === 'c') + 3) as PC)); break
     case 'selectAddR': selectAddR(m, pathToR(m, payload.path)); break
     case 'selectAddS': selectAddS(m, pathToS(m, payload.path), 's'); break
-    case 'selectRemoveT': selectRemoveT(getNodeByPath(m, payload.path)); break
+    case 'unselectR': unselectR(pathToR(m, payload.path)); break
+    case 'unselectS': unselectS(pathToS(m, payload.path)); break
+    case 'unselectC': unselectC(pathToC(m, payload.path)); break
     case 'selectAddSD': selectAddS(m, getQuasiSD(m), 's'); break
     case 'selectAddSU': selectAddS(m, getQuasiSU(m), 's'); break
-    case 'selectRA': selectTL(m, mR(m), 's'); break
-    case 'selectSA': selectTL(m, mS(m), 's'); break
-    case 'selectSameCR': selectTL(m, getXC(m).ch.map(nid => getNodeById(m, nid)), 's'); break
-    case 'selectSameCC': selectTL(m, getXC(m).cv.map(nid => getNodeById(m, nid)), 's'); break
-    case 'selectCD': selectTL(m, getXAC(m).map(ci => getNodeByPath(m, ci.path.with(-2, ci.path.at(-2) + 1) as PC)), 's'); break
-    case 'selectCU': selectTL(m, getXAC(m).map(ci => getNodeByPath(m, ci.path.with(-2, ci.path.at(-2) - 1) as PC)), 's'); break
-    case 'selectCR': selectTL(m, getXAC(m).map(ci => getNodeByPath(m, ci.path.with(-1, ci.path.at(-1) + 1) as PC)), 's'); break
-    case 'selectCL': selectTL(m, getXAC(m).map(ci => getNodeByPath(m, ci.path.with(-1, ci.path.at(-1) - 1) as PC)), 's'); break
-    case 'selectSByRectangle': selectTL(m, payload.pathList.map((p: PT) => getNodeByPath(m, p)), 's'); break
+    case 'selectRA': selectRL(m, mR(m)); break
+    case 'selectSA': selectSL(m, mS(m)); break
+    case 'selectSameCR': selectCL(m, getXC(m).ch.map(nid => idToC(m, nid))); break
+    case 'selectSameCC': selectCL(m, getXC(m).cv.map(nid => idToC(m, nid))); break
+    case 'selectCD': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-2, ci.path.at(-2) + 1) as PC))); break
+    case 'selectCU': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-2, ci.path.at(-2) - 1) as PC))); break
+    case 'selectCR': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) + 1) as PC))); break
+    case 'selectCL': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) - 1) as PC))); break
+    case 'selectSByRectangle': selectSL(m, payload.pathList.map((p: PT) => getNodeByPath(m, p))); break
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
@@ -99,11 +101,11 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'deleteSJumpSD': { const reselect = getXLS(m).sd.at(-1)!; deleteS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
     case 'deleteSJumpSI': { const reselect = getXS(m).ti1; deleteS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
     case 'deleteSJumpR': { const reselect = getXR(m).nodeId; deleteS(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
-    case 'deleteCRJumpU': { const reselectList = getXAC(m).map(ci => ci.cu.at(-1)!); deleteCR(m); selectTL(m, reselectList.map(nid => getNodeById(m, nid)), 's'); break }
-    case 'deleteCRJumpD': { const reselectList = getXAC(m).map(ci => ci.cd.at(-1)!); deleteCR(m); selectTL(m, reselectList.map(nid => getNodeById(m, nid)), 's'); break }
+    case 'deleteCRJumpU': { const reselectList = getXAC(m).map(ci => ci.cu.at(-1)!); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
+    case 'deleteCRJumpD': { const reselectList = getXAC(m).map(ci => ci.cd.at(-1)!); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCRJumpSI': { const reselect = getXC(m).si1; deleteCR(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
-    case 'deleteCCJumpL': { const reselectList = getXAC(m).map(ci => ci.cl.at(-1)!); deleteCC(m); selectTL(m, reselectList.map(nid => getNodeById(m, nid)), 's'); break }
-    case 'deleteCCJumpR': { const reselectList = getXAC(m).map(ci => ci.cr.at(-1)!); deleteCC(m); selectTL(m, reselectList.map(nid => getNodeById(m, nid)), 's'); break }
+    case 'deleteCCJumpL': { const reselectList = getXAC(m).map(ci => ci.cl.at(-1)!); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
+    case 'deleteCCJumpR': { const reselectList = getXAC(m).map(ci => ci.cr.at(-1)!); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCCJumpSI': { const reselect = getXC(m).si1; deleteCC(m); selectS(m, getNodeById(m, reselect) as S, 's'); break }
     case 'cutLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; cutLR(m); selectR(m, getNodeById(m, reselect) as R); break }
     case 'cutSJumpRI': { const reselect = getXS(m).ti1; cutS(m); selectR(m, getNodeById(m, reselect) as R); break }
