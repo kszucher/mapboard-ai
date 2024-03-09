@@ -1,6 +1,6 @@
 import {getG, lToCb, mL, mR, rToCb, sortPath, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
-import {M, L, T, PT, PL, PR, C, PC, PS, S} from "../state/MapStateTypes"
+import {M, L, T, PL, PR, C, PC, PS, S} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, genNodeId, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
@@ -67,20 +67,6 @@ const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PR) => {
   m.sort(sortPath)
 }
 
-const cbToS = (m: M, cbS: M, ip: PT) => {
-  cbS.forEach((ti, i) => Object.assign(ti, {
-    nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
-    path : [...ip.slice(0, -2), 's', ip.at(-1) + ti.path.at(1), ...ti.path.slice(2)],
-    linkType: sSaveOptional.linkType,
-    link: sSaveOptional.link
-  }))
-  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + getXAS(cbS).length))
-  mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + getXAS(cbS).length))
-  unselectNodes(m)
-  m.push(...cbS)
-  m.sort(sortPath)
-}
-
 export const cutLR = (m: M) => {
   const cbL = structuredClone(lToCb(m))
   const cbR = structuredClone(rToCb(m))
@@ -117,9 +103,25 @@ export const pasteLR = (m: M, payload: any) => {
 }
 
 export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
-  const ip = [...insertParentNode.path, 's', insertTargetIndex] as PT
+  const ip = [...insertParentNode.path, 's', insertTargetIndex] as PS
   const cbS = JSON.parse(payload) as M
-  cbToS(m, cbS, ip)
+  const clipboardSS = getClipboardSS(JSON.parse(payload) as M)
+  const clipboardSC = getClipboardSC(JSON.parse(payload) as M)
+  clipboardSS.forEach((si, i) => Object.assign(si, {
+    nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
+    path : [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)],
+    linkType: sSaveOptional.linkType,
+    link: sSaveOptional.link
+  }))
+  clipboardSC.forEach((ci, i) => Object.assign(ci, {
+    nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
+    path : [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)],
+  }))
+  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + getXAS(cbS).length))
+  mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + getXAS(cbS).length))
+  unselectNodes(m)
+  m.push(...clipboardSS, ...clipboardSC)
+  m.sort(sortPath)
 }
 
 export const duplicateR = (m: M) => {
@@ -131,10 +133,26 @@ export const duplicateR = (m: M) => {
 }
 
 export const duplicateS = (m: M) => {
-  const ip = [...getXS(m).path.slice(0, -2), 's', getXFS(m).su.length + getXAS(m).length] as PT
+  const ip = [...getXS(m).path.slice(0, -2), 's', getXFS(m).su.length + getXAS(m).length] as PS
+  const xas = getXAS(m)
+  const xasLength = xas.length
   const clipboardSS = getClipboardSS(m)
+  clipboardSS.forEach((si, i) => Object.assign(si, {
+    nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
+    path : [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)],
+    linkType: sSaveOptional.linkType,
+    link: sSaveOptional.link
+  }))
   const clipboardSC = getClipboardSC(m)
-  cbToS(m, [...clipboardSS, ...clipboardSC].sort(sortPath), ip)
+  clipboardSC.forEach((ci, i) => Object.assign(ci, {
+    nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
+    path : [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)],
+  }))
+  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + xasLength))
+  mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + xasLength))
+  unselectNodes(m)
+  m.push(...clipboardSS, ...clipboardSC)
+  m.sort(sortPath)
 }
 
 export const moveS = (m: M, ip: PS) => {
