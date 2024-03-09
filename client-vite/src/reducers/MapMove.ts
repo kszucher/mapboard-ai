@@ -23,14 +23,14 @@ const cbSave = (cb: any) => {
   })
 }
 
-export const getClipboardL = (m: M): L[] => {
+const getClipboardL = (m: M): L[] => {
   return structuredClone(mL(m)
     .filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected)
     .map((li, i) => ({...li, path: ['l', i]}))
   )
 }
 
-export const getClipboardRR = (m: M): R[] => {
+const getClipboardRR = (m: M): R[] => {
   const xar = getXAR(m)
   return structuredClone(mR(m)
     .filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1)))
@@ -38,7 +38,7 @@ export const getClipboardRR = (m: M): R[] => {
   ) as R[]
 }
 
-export const getClipboardRS = (m: M): S[] => {
+const getClipboardRS = (m: M): S[] => {
   const xar = getXAR(m)
   return structuredClone(mS(m)
     .filter(si => xar.some(xari => xari.path.at(1) === si.path.at(1)))
@@ -46,7 +46,7 @@ export const getClipboardRS = (m: M): S[] => {
   ) as S[]
 }
 
-export const getClipboardRC = (m: M): C[] => {
+const getClipboardRC = (m: M): C[] => {
   const xar = getXAR(m)
   return structuredClone(mC(m)
     .filter(ci => xar.some(xari => xari.path.at(1) === ci.path.at(1)))
