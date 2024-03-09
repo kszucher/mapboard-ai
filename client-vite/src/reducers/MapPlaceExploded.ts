@@ -44,7 +44,7 @@ export const mapPlaceExploded = (m: M) => {
         const calcOffsetX = cl.reduce((a, b) => a + b.selfW, 0)
         const calcOffsetY = cu.reduce((a, b) => a + b.selfH, 0)
         if (isRSC(ci.path)) {
-          const ri2 = hn.get(ci.si2) as R
+          const ri2 = hn.get(ci.ri2) as R
           const si1 = hn.get(ci.si1) as S
           ci.nodeStartX = MARGIN_X + ri2.nodeStartX + calcOffsetX
           ci.nodeStartY = si1.nodeStartY + calcOffsetY
