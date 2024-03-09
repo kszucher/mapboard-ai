@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {isRS, isCS, mS, getG, getHN} from "../../queries/MapQueries.ts"
+import {mS, getG, getHN, isSS} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
@@ -21,11 +21,11 @@ export const MapSvgSAttributes: FC = () => {
   return (
     mS(m).map(si => (
       <Fragment key={si.nodeId}>
-        {!isRS(si.path) && !isCS(si.path) && si.co1.length === 0 &&
+        {isSS(si.path) && si.co1.length === 0 &&
           <path
-            d={!phn.has(si.nodeId) && phn.get(si.ti1)
-              ? getNodeLinePath(g, phn.get(si.ti1)! as S, si)
-              : getNodeLinePath(g, hn.get(si.ti1)! as S, si)
+            d={!phn.has(si.nodeId) && phn.get(si.si1)
+              ? getNodeLinePath(g, phn.get(si.si1) as S, si)
+              : getNodeLinePath(g, hn.get(si.si1) as S, si)
             }
             strokeWidth={si.lineWidth}
             stroke={si.taskStatus > 1
@@ -36,11 +36,11 @@ export const MapSvgSAttributes: FC = () => {
             {...pathCommonProps}
           >
             {
-              !phn.has(si.nodeId) && phn.has(si.ti1) &&
+              !phn.has(si.nodeId) && phn.has(si.si1) &&
               <animate
                 attributeName='d'
-                from={getNodeLinePath(g, phn.get(si.ti1)! as S, si)}
-                to={getNodeLinePath(g, hn.get(si.ti1)! as S, si)}
+                from={getNodeLinePath(g, phn.get(si.si1) as S, si)}
+                to={getNodeLinePath(g, hn.get(si.si1) as S, si)}
                 dur={'0.3s'}
                 repeatCount={'once'}
                 fill={'freeze'}

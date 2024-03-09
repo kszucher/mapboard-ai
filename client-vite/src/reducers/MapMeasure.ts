@@ -26,13 +26,13 @@ export const mapMeasure = (pm: M, m: M) => {
       case isR(ni.path): {
         const ri = ni as R
         if (ri.so1.length) {
-          const tso1 = ri.so1.map(nid => hn.get(nid)) as S[]
+          const so1 = ri.so1.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
-            ri.familyW = Math.max(...tso1.map(si => si.maxW))
-            ri.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.so2.length || ri.co2.length)
+            ri.familyW = Math.max(...so1.map(si => si.maxW))
+            ri.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.so.length > ri.so1.length || ri.co.length)
           } else if (g.flow === Flow.INDENTED) {
-            ri.familyW = Math.max(...tso1.map(ti => ti.maxW))
-            ri.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.co2.length)
+            ri.familyW = Math.max(...so1.map(si => si.maxW))
+            ri.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.co.length)
           }
         }
         ri.selfW = ri.familyW + 2 * MARGIN_X + getTaskWidth(g) * hasTask(m, ri)
@@ -42,23 +42,23 @@ export const mapMeasure = (pm: M, m: M) => {
       case isS(ni.path): {
         const si = ni as S
         if (si.so1.length) {
-          const tso1 = si.so1.map(nid => hn.get(nid)) as S[]
+          const so1 = si.so1.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
-            si.familyW = Math.max(...tso1.map(ti => ti.maxW)) + g.sLineDeltaXDefault
-            si.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (si.so1.length - 1) * +Boolean(si.so2.length || si.co2.length)
+            si.familyW = Math.max(...so1.map(si => si.maxW)) + g.sLineDeltaXDefault
+            si.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (si.so1.length - 1) * +Boolean(si.so.length > si.so1.length || si.co.length)
           } else if (g.flow === Flow.INDENTED) {
-            si.familyW = Math.max(...tso1.map(ti => ti.maxW)) + INDENT
-            si.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (si.so1.length - 1) * +Boolean(si.co2.length)
+            si.familyW = Math.max(...so1.map(si => si.maxW)) + INDENT
+            si.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (si.so1.length - 1) * +Boolean(si.co.length)
           }
         }
         if (si.co1.length) {
-          const tco1 = si.co1.map(nid => hn.get(nid)) as C[]
-          tco1.forEach(ti => {
-            ti.selfW = Math.max(...ti.cv.map(ni => hn.get(ni)!.familyW + C_SPACING))
-            ti.selfH = Math.max(...ti.ch.map(ni => hn.get(ni)!.familyH + C_SPACING))
+          const co1 = si.co1.map(nid => hn.get(nid)) as C[]
+          co1.forEach(ci => {
+            ci.selfW = Math.max(...ci.cv.map(ni => (hn.get(ni) as C).familyW + C_SPACING))
+            ci.selfH = Math.max(...ci.ch.map(ni => (hn.get(ni) as C).familyH + C_SPACING))
           })
-          si.selfW = tco1.at(0)!.ch.map(nid => hn.get(nid) as S).reduce((a, b) => a + b.selfW, 0)
-          si.selfH = tco1.at(0)!.cv.map(nid => hn.get(nid) as S).reduce((a, b) => a + b.selfH, 0)
+          si.selfW = co1.at(0)!.ch.map(nid => hn.get(nid) as S).reduce((a, b) => a + b.selfW, 0)
+          si.selfH = co1.at(0)!.cv.map(nid => hn.get(nid) as S).reduce((a, b) => a + b.selfH, 0)
         }
         if (!si.co1.length) {
           const psi = phn.get(si.nodeId) as S
@@ -107,13 +107,13 @@ export const mapMeasure = (pm: M, m: M) => {
       case isC(ni.path): {
         const ci = ni as C
         if (ci.so1.length) {
-          const tso1 = ci.so1.map(nid => hn.get(nid)) as S[]
+          const so1 = ci.so1.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
-            ci.familyW = Math.max(...tso1.map(si => si.maxW)) + g.sLineDeltaXDefault
-            ci.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ci.so1.length - 1) * +Boolean(ci.so2.length || ci.co2.length)
+            ci.familyW = Math.max(...so1.map(si => si.maxW)) + g.sLineDeltaXDefault
+            ci.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ci.so1.length - 1) * +Boolean(ci.so.length > ci.so1.length)
           } else {
-            ci.familyW = Math.max(...tso1.map(si => si.maxW)) + INDENT
-            ci.familyH = tso1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ci.so1.length - 1) * +Boolean(ci.co2.length)
+            ci.familyW = Math.max(...so1.map(si => si.maxW)) + INDENT
+            ci.familyH = so1.reduce((a, b) => a + b.maxH, 0)
           }
         } else {
           ci.familyW = 60

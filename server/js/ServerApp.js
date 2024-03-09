@@ -147,19 +147,19 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const mapId = ObjectId(req.body.payload.mapId)
         const map = await maps.findOne({ _id: mapId })
         const newMap = getDefaultMap(`${map.name} - copy`, userId, [])
-        const nodeIdMapping = map.versions.at(-1).map(ti => ({
-          oldNodeId: ti.nodeId,
+        const nodeIdMapping = map.versions.at(-1).map(ni => ({
+          oldNodeId: ni.nodeId,
           newNodeId: 'node' + genHash()
         }))
         newMap.versions = [map.versions.at(-1)]
-        newMap.versions.at(-1).forEach((ti, i) => {
-          if (ti.path.at(0) === 'l') {
-            Object.assign(ti, {
-              fromNodeId : nodeIdMapping.find(el => el.oldNodeId === ti.fromNodeId)?.newNodeId || ti.fromNodeSide,
-              toNodeId: nodeIdMapping.find(el => el.oldNodeId === ti.toNodeId)?.newNodeId || ti.nodeId
+        newMap.versions.at(-1).forEach((ni, i) => {
+          if (ni.path.at(0) === 'l') {
+            Object.assign(ni, {
+              fromNodeId : nodeIdMapping.find(el => el.oldNodeId === ni.fromNodeId)?.newNodeId || ni.fromNodeSide,
+              toNodeId: nodeIdMapping.find(el => el.oldNodeId === ni.toNodeId)?.newNodeId || ni.nodeId
             })
-          } else if (ti.path.at(0) === 'r') {
-            Object.assign(ti, {
+          } else if (ni.path.at(0) === 'r') {
+            Object.assign(ni, {
               nodeId: nodeIdMapping.at(i).newNodeId,
             })
           }

@@ -129,7 +129,7 @@ export const Window: FC = () => {
     ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && getXC(m).cl.length > 0 && md(MR.selectCL)
     ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && getXC(m).cl.length > 0 && md(MR.selectCL)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXAR(m) && md(MR.offsetL)
-    ckm === 'c--' && e.code === 'ArrowLeft' && isXASVN(m) && !isXARS(m) && !isXACS(m) && md(MR.moveSI)
+    ckm === 'c--' && e.code === 'ArrowLeft' && isXASVN(m) && isXASS(m) && md(MR.moveSI)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXACC(m) && getXC(m).cl.length > 0 && md(MR.moveCCL)
     ckm === '-s-' && e.code === 'ArrowLeft' && isXAS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's' && md(MR.selectFamilyX)
     ckm === '-s-' && e.code === 'ArrowLeft' && isXC(m) && md(MR.selectSameCR)

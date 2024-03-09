@@ -9,16 +9,8 @@ export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi:
 export const sortPath = (a: N, b: N) => sortablePath(a.path) > sortablePath(b.path) ? 1 : -1
 export const sortNode = (a: NPartial, b: NPartial) => a.nodeId > b.nodeId ? 1 : -1
 
-export const pathToR = (m: M, p: PR) => m.find(ti => isEqual(ti.path, p)) as R
-export const pathToS = (m: M, p: PS) => m.find(ti => isEqual(ti.path, p)) as S
-export const pathToC = (m: M, p: PC) => m.find(ti => isEqual(ti.path, p)) as C
-
-export const idToR = (m: M, nodeId: string) => m.find(ri => ri.nodeId === nodeId) as R
-export const idToS = (m: M, nodeId: string) => m.find(si => si.nodeId === nodeId) as S
-export const idToC = (m: M, nodeId: string) => m.find(ci => ci.nodeId === nodeId) as C
-
-export const getHN = (m: M): Map<string, T> => new Map<string, T>(m.map(ti => [ti.nodeId, ti as T]))
-export const getHP = (m: M): Map<string, T> => new Map<string, T>(m.map(ti => [ti.path.join(''), ti as T]))
+export const getHN = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.nodeId, ni as N]))
+export const getHP = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.path.join(''), ni as N]))
 
 const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 
@@ -41,6 +33,14 @@ export const mRS = (m: M): S[] => m.filter(n => isRS(n.path)) as S[]
 export const mSS = (m: M): S[] => m.filter(n => isSS(n.path)) as S[]
 export const mCS = (m: M): S[] => m.filter(n => isCS(n.path)) as S[]
 export const mC = (m: M): C[] => m.filter(n => isC(n.path)) as C[]
+
+export const pathToR = (m: M, p: PR) => mR(m).find(ri => isEqual(ri.path, p)) as R
+export const pathToS = (m: M, p: PS) => mS(m).find(si => isEqual(si.path, p)) as S
+export const pathToC = (m: M, p: PC) => mC(m).find(ci => isEqual(ci.path, p)) as C
+
+export const idToR = (m: M, nodeId: string) => mR(m).find(ri => ri.nodeId === nodeId) as R
+export const idToS = (m: M, nodeId: string) => mS(m).find(si => si.nodeId === nodeId) as S
+export const idToC = (m: M, nodeId: string) => mC(m).find(ci => ci.nodeId === nodeId) as C
 
 export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as R)
 export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as S)
@@ -81,8 +81,8 @@ const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex
 const isQuasiSD = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) > sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
 const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) < sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
 
-export const getQuasiSD = (m: M): S => mS(m).find(ti => !ti.selected && isQuasiSD(getXS(m).path, ti.path))!
-export const getQuasiSU = (m: M): S => mS(m).findLast(ti => !ti.selected && isQuasiSU(getXS(m).path, ti.path))!
+export const getQuasiSD = (m: M): S => mS(m).find(si => !si.selected && isQuasiSD(getXS(m).path, si.path))!
+export const getQuasiSU = (m: M): S => mS(m).findLast(si => !si.selected && isQuasiSU(getXS(m).path, si.path))!
 
 export const isREO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
@@ -93,24 +93,24 @@ export const isSEODO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEq
 export const isCD = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) > p.at(-2)! && pt.at(p.length - 1) === p.at(-1)
 export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) > p.at(-1)
 
-export const getXAEO = (m: M): T[] => {const xa = getXAS(m); return m.filter(ti => xa.some(xti => isSEO(xti.path, ti.path as PT))) as T[]}
-
 export const lToCb = (m: M): L[] =>
   mL(m).filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
 
 export const rToCb = (m: M): T[] => {
   const xar = getXAR(m)
-  const xarIndices = xar.map(ri => ri.path.at(1))
   return ([
-    ...mR(m).filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1))).map(ri => ({...ri, path: ri.path.with(1, xarIndices.indexOf(ri.path[1]))})),
-    ...mS(m).filter(si => xar.some(xari => xari.path.at(1) === si.path.at(1))).map(si => ({...si, path: si.path.with(1, xarIndices.indexOf(si.path[1]))})),
-    ...mC(m).filter(ci => xar.some(xari => xari.path.at(1) === ci.path.at(1))).map(ci => ({...ci, path: ci.path.with(1, xarIndices.indexOf(ci.path[1]))}))
+    ...mR(m).filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1))).map(ri => ({...ri, path: ri.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ri.path[1]))})),
+    ...mS(m).filter(si => xar.some(xari => xari.path.at(1) === si.path.at(1))).map(si => ({...si, path: si.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(si.path[1]))})),
+    ...mC(m).filter(ci => xar.some(xari => xari.path.at(1) === ci.path.at(1))).map(ci => ({...ci, path: ci.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ci.path[1]))}))
   ] as T[]).sort(sortPath)
 }
 
-export const sToCb = (m: M): N[] =>
-  getXAEO(m)
+export const sToCb = (m: M): N[] => {
+  const xas = getXAS(m)
+  return m
+    .filter(ti => xas.some(xti => isSEO(xti.path, ti.path as PT)))
     .map(ti => ({...ti, path: ['s', ti.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ti.path.slice(getXS(m).path.length)]})) as unknown as N[]
+}
 
 export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineWidth)) ? getXS(m).lineWidth : sSaveOptional.lineWidth
 export const getLineType = (m: M): SSaveOptional['lineType'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineType)) ? getXS(m).lineType : sSaveOptional.lineType
@@ -146,6 +146,3 @@ export const getMapMode = (m: M) => {
     return MapMode.VIEW
   }
 }
-
-// TODO remove
-export const getNodeById = (m: M, nodeId: string) => m.find(ti => ti.nodeId === nodeId) as T

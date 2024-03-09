@@ -42,9 +42,9 @@ export const selectCL = (m: M, cList: C[]) => {
 }
 
 export const unselectNodes = (m: M) => {
-  mR(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
-  mS(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
-  mC(m).forEach(ti => Object.assign(ti, {selected: 0, selection: 's'}))
+  mR(m).forEach(ri => Object.assign(ri, {selected: 0, selection: 's'}))
+  mS(m).forEach(si => Object.assign(si, {selected: 0, selection: 's'}))
+  mC(m).forEach(ci => Object.assign(ci, {selected: 0, selection: 's'}))
 }
 
 export const unselectR = (ri: R) => {

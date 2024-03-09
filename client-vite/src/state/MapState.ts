@@ -53,9 +53,7 @@ export const rSaveOptional = {
 
 export const rSaveNever = {
   so1: [],
-  so2: [],
   so: [],
-  co2: [],
   co: [],
   selfW: 0,
   selfH: 0,
@@ -100,13 +98,12 @@ export const sSaveOptional = {
 } as SSaveOptional
 
 export const sSaveNever = {
-  ti1: '',
-  ti2: '',
+  ri1: '',
+  si1: '',
+  ci1: '',
   so1: [],
-  so2: [],
   so: [],
   co1: [],
-  co2: [],
   co: [],
   su: [],
   sd: [],
@@ -143,9 +140,7 @@ export const cSaveNever = {
   si1: '',
   si2: '',
   so1: [],
-  so2: [],
   so: [],
-  co2: [],
   cu: [],
   cd: [],
   cv: [],

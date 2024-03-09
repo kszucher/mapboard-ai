@@ -60,9 +60,7 @@ export interface RSaveOptional {
 
 export interface RSaveNever {
   so1: string[]
-  so2: string[]
   so: string[]
-  co2: string[]
   co: string[]
   selfW: number
   selfH: number
@@ -107,13 +105,12 @@ export interface SSaveOptional {
 }
 
 export interface SSaveNever {
-  ti1: string
-  ti2: string
+  ri1: string
+  si1: string
+  ci1: string
   so1: string[]
-  so2: string[]
   so: string[]
   co1: string[]
-  co2: string[]
   co: string[]
   su: string[]
   sd: string[]
@@ -150,9 +147,7 @@ export interface CSaveNever {
   si1: string
   si2: string
   so1: string[]
-  so2: string[]
   so: string[]
-  co2: string[]
   cu: string[]
   cd: string[]
   cv: string[]

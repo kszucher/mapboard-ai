@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import { useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../assets/Colors"
-import {getG, getXAS, getXAEO, getXFS, getXLS, getXS, isXASVN, isXARS, isXAS, mS} from "../../queries/MapQueries.ts"
+import {getG, getXAS, getXFS, getXLS, getXS, isXASVN, isXARS, isXAS, idToS} from "../../queries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {mSelector} from "../../state/EditorState"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -89,7 +89,7 @@ export const MapSvgSSelectionPrimary: FC = () => {
                 {isXASVN(m) && getXLS(m).sd.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSD)}>{'Node Down'}</ContextMenu.Item>}
                 {isXASVN(m) && getXFS(m).su.length > 0 && <ContextMenu.Item onClick={() => md(MR.moveSO)}>{'Node Out'}</ContextMenu.Item>}
                 {!isXARS(m) && isXASVN(m) && <ContextMenu.Item onClick={() => md(MR.moveSI)}>{'Node In'}</ContextMenu.Item>}
-                {getXS(m).so1.length > 0 && !mS(getXAEO(m)).some(ti => ti.path.includes('c')) && <ContextMenu.Item onClick={() => md(MR.moveS2T)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
+                {getXS(m).so1.length > 0 && getXS(m).co.length === 0 && <ContextMenu.Item onClick={() => md(MR.moveS2T)}>{'Sub Nodes To Table'}</ContextMenu.Item>}
               </ContextMenu.SubContent>
             </ContextMenu.Sub>
             <ContextMenu.Sub>
@@ -100,10 +100,10 @@ export const MapSvgSSelectionPrimary: FC = () => {
                 <Dialog.Trigger>
                   {getXS(m).co1.length === 0 && getXS(m).linkType === '' && <ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_MAP_IN_MAP))}>{'Create Sub Map'}</ContextMenu.Item>}
                 </Dialog.Trigger>
-                {getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.transpose)}>{'Transpose'}</ContextMenu.Item>}
-                {mS(getXAEO(m)).map(ti => ti.taskStatus).includes(0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeOn)}>{'Task Mode On'}</ContextMenu.Item>}
-                {mS(getXAEO(m)).map(ti => ti.taskStatus).some(el => el > 0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeOff)}>{'Task Mode Off'}</ContextMenu.Item>}
-                {mS(getXAEO(m)).map(ti => ti.taskStatus).some(el => el > 0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeReset)}>{'Task Mode Reset'}</ContextMenu.Item>}
+                {getXAS(m).length ===  1 && getXS(m).co1.length > 0 && <ContextMenu.Item onClick={() => md(MR.transpose)}>{'Transpose'}</ContextMenu.Item>}
+                {getXAS(m).length ===  1 && getXS(m).co.length === 0 && getXS(m).so.map(nid => idToS(m, nid)).map(ti => ti.taskStatus).includes(0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeOn)}>{'Task Mode On'}</ContextMenu.Item>}
+                {getXAS(m).length ===  1 && getXS(m).co.length === 0 && getXS(m).so.map(nid => idToS(m, nid)).map(ti => ti.taskStatus).some(el => el > 0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeOff)}>{'Task Mode Off'}</ContextMenu.Item>}
+                {getXAS(m).length ===  1 && getXS(m).co.length === 0 && getXS(m).so.map(nid => idToS(m, nid)).map(ti => ti.taskStatus).some(el => el > 0) && <ContextMenu.Item onClick={() => md(MR.setTaskModeReset)}>{'Task Mode Reset'}</ContextMenu.Item>}
                 <Dialog.Trigger>
                   {getXS(m).contentType === 'equation' && getXS(m).co1.length === 0 && <ContextMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</ContextMenu.Item>}
                 </Dialog.Trigger>

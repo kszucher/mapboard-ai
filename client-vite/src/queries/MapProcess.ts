@@ -15,10 +15,10 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
       subProcessType: ri.controlType,
       subProcessMindMapData:
         mS(m)
-          .filter(ti => ti.path.at(1) === ri.path.at(1) && ti.so1.length === 0)
-          .map(ti => ({
-            nodeId: ti.nodeId,
-            contentList: [ti.path, ...ti.path.map((_, i) => ti.path.slice(0, i)).filter(pi => pi.at(-2) === 's')].map(pi => pathToS(m, pi as PS).content)
+          .filter(si => si.path.at(1) === ri.path.at(1) && si.so1.length === 0)
+          .map(si => ({
+            nodeId: si.nodeId,
+            contentList: [si.path, ...si.path.map((_, i) => si.path.slice(0, i)).filter(pi => pi.at(-2) === 's')].map(pi => pathToS(m, pi as PS).content)
           }))
       ,
       inputSubProcesses: [

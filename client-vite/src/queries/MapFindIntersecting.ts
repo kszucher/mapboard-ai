@@ -11,17 +11,17 @@ export const rectanglesIntersect = (input: number[]) => {
   )
 }
 export const mapFindIntersecting = (m: M, fromX: number, fromY: number, toX: number, toY: number ) => (
-  mS(m).filter(ti =>
-    ti.co1.length === 0 && ti.content !== '' &&
+  mS(m).filter(si =>
+    si.co1.length === 0 && si.content !== '' &&
     +rectanglesIntersect([
       Math.min(fromX, toX),
       Math.min(fromY, toY),
       Math.max(fromX, toX),
       Math.max(fromY, toY),
-      ti.nodeStartX,
-      ti.nodeStartY,
-      ti.nodeStartX + ti.selfW,
-      ti.nodeStartY + ti.selfH
+      si.nodeStartX,
+      si.nodeStartY,
+      si.nodeStartX + si.selfW,
+      si.nodeStartY + si.selfH
     ])
   )
 )

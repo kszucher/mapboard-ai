@@ -24,15 +24,15 @@ export const deleteLR = (m: M) => {
         .filter(li => xa.every(xti => xti.nodeId !== li.fromNodeId && xti.nodeId !== li.toNodeId))
         .map((li, i) => ({...li, path: ['l', i] as PL})),
       ...mR(m)
-        .filter(ti => xa.every(xti => !isREO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isRDO(xti.path, ti.path)) ? {...ti, path: ti.path.with(1, ti.path[1] - 1) as PR} : ti)
-        .map(ti => ({...ti, offsetW: ti.offsetW - nonSelectedMinOffsetW, offsetH: ti.offsetH - nonSelectedMinOffsetH})),
+        .filter(ri => xa.every(xti => !isREO(xti.path, ri.path)))
+        .map(ri => xa.some(xti => isRDO(xti.path, ri.path)) ? {...ri, path: ri.path.with(1, ri.path[1] - 1) as PR} : ri)
+        .map(ri => ({...ri, offsetW: ri.offsetW - nonSelectedMinOffsetW, offsetH: ri.offsetH - nonSelectedMinOffsetH})),
       ...mS(m)
-        .filter(ti => xa.every(xti => !isREO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isRDO(xti.path, ti.path)) ? {...ti, path: ti.path.with(1, ti.path.at(1) - 1) as PS} : ti),
+        .filter(si => xa.every(xti => !isREO(xti.path, si.path)))
+        .map(si => xa.some(xti => isRDO(xti.path, si.path)) ? {...si, path: si.path.with(1, si.path.at(1) - 1) as PS} : si),
       ...mC(m)
-        .filter(ti => xa.every(xti => !isREO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isRDO(xti.path, ti.path)) ? {...ti, path: ti.path.with(1, ti.path.at(1) - 1) as PC} : ti)
+        .filter(ci => xa.every(xti => !isREO(xti.path, ci.path)))
+        .map(ci => xa.some(xti => isRDO(xti.path, ci.path)) ? {...ci, path: ci.path.with(1, ci.path.at(1) - 1) as PC} : ci)
     ].sort(sortPath)
   )
 }
@@ -45,11 +45,11 @@ export const deleteS = (m: M) => {
       ...mL(m),
       ...mR(m),
       ...mS(m)
-        .filter(ti => xa.every(xti => !isSEO(xti.path, ti.path)))
-        .map(ti => ({...ti, path: ti.path.map((pi, i) => ti.path.at(i - 1) === 's' ? pi - pathToS(m, ti.path.slice(0, i + 1) as PS).su.map(ni => idToS(m, ni)).filter(si => si.selected).length : pi) as PS})),
+        .filter(si => xa.every(xti => !isSEO(xti.path, si.path)))
+        .map(si => ({...si, path: si.path.map((pi, i) => si.path.at(i - 1) === 's' ? pi - pathToS(m, si.path.slice(0, i + 1) as PS).su.map(nid => idToS(m, nid)).filter(si => si.selected).length : pi) as PS})),
       ...mC(m)
-        .filter(ti => xa.every(xti => !isSEO(xti.path, ti.path)))
-        .map(ti => ({...ti, path: ti.path.map((pi, i) => ti.path.at(i - 1) === 's' ? pi - pathToS(m, ti.path.slice(0, i + 1) as PS).su.map(ni => idToS(m, ni)).filter(si => si.selected).length : pi) as PC})),
+        .filter(ci => xa.every(xti => !isSEO(xti.path, ci.path)))
+        .map(ci => ({...ci, path: ci.path.map((pi, i) => ci.path.at(i - 1) === 's' ? pi - pathToS(m, ci.path.slice(0, i + 1) as PS).su.map(nid => idToS(m, nid)).filter(si => si.selected).length : pi) as PC})),
     ].sort(sortPath)
   )
 }
@@ -61,11 +61,11 @@ export const deleteCR = (m: M) => {
       ...mL(m),
       ...mR(m),
       ...mS(m)
-        .filter(ti => xa.every(xti => !isCEO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isCD(xti.path, ti.path)) ? {...ti, path: ti.path.with(getXC(m).path.length - 2, ti.path.at(getXC(m).path.length - 2) - 1) as PS} : ti),
+        .filter(si => xa.every(xti => !isCEO(xti.path, si.path)))
+        .map(si => xa.some(xti => isCD(xti.path, si.path)) ? {...si, path: si.path.with(getXC(m).path.length - 2, si.path.at(getXC(m).path.length - 2) - 1) as PS} : si),
       ...mC(m)
-        .filter(ti => xa.every(xti => !isCEO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isCD(xti.path, ti.path)) ? {...ti, path: ti.path.with(getXC(m).path.length - 2, ti.path.at(getXC(m).path.length - 2) - 1) as PC} : ti)
+        .filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))
+        .map(ci => xa.some(xti => isCD(xti.path, ci.path)) ? {...ci, path: ci.path.with(getXC(m).path.length - 2, ci.path.at(getXC(m).path.length - 2) - 1) as PC} : ci)
     ].sort(sortPath)
   )
 }
@@ -77,11 +77,11 @@ export const deleteCC = (m: M) => {
       ...mL(m),
       ...mR(m),
       ...mS(m)
-        .filter(ti => xa.every(xti => !isCEO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isCR(xti.path, ti.path)) ? {...ti, path: ti.path.with(getXC(m).path.length - 1, ti.path.at(getXC(m).path.length - 1) - 1) as PS} : ti),
+        .filter(si => xa.every(xti => !isCEO(xti.path, si.path)))
+        .map(si => xa.some(xti => isCR(xti.path, si.path)) ? {...si, path: si.path.with(getXC(m).path.length - 1, si.path.at(getXC(m).path.length - 1) - 1) as PS} : si),
       ...mC(m)
-        .filter(ti => xa.every(xti => !isCEO(xti.path, ti.path)))
-        .map(ti => xa.some(xti => isCR(xti.path, ti.path)) ? {...ti, path: ti.path.with(getXC(m).path.length - 1, ti.path.at(getXC(m).path.length - 1) - 1) as PC} : ti)
+        .filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))
+        .map(ci => xa.some(xti => isCR(xti.path, ci.path)) ? {...ci, path: ci.path.with(getXC(m).path.length - 1, ci.path.at(getXC(m).path.length - 1) - 1) as PC} : ci)
     ].sort(sortPath)
   )
 }

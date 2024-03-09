@@ -16,18 +16,24 @@ export const mapPlaceExploded = (m: M) => {
       case isS(ni.path): {
         const si = ni as S
         const i = si.path.at(-1)
-        const si1 = hn.get(si.ti1)!
-        const su = si.su.map(nid => hn.get(nid)) as S[]
-        const elapsed = su.map(si => si.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.so2.length || si1.co2.length)
         if (isRS(si.path)) {
-          si.nodeStartX = MARGIN_X + si1.nodeStartX
-          si.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + si.maxH / 2 - si.selfH / 2 + elapsed
+          const ri1 = hn.get(si.ri1) as R
+          const su = si.su.map(nid => hn.get(nid)) as S[]
+          const elapsed = su.map(si => si.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(ri1.so.length > ri1.so1.length || ri1.co.length)
+          si.nodeStartX = MARGIN_X + ri1.nodeStartX
+          si.nodeStartY = ri1.nodeStartY + ri1.selfH / 2 - ri1.familyH / 2 + si.maxH / 2 - si.selfH / 2 + elapsed
         } else if (isSS(si.path)) {
+          const si1 = hn.get(si.si1) as S
+          const su = si.su.map(nid => hn.get(nid)) as S[]
+          const elapsed = su.map(si => si.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.so.length > si1.so1.length || si1.co.length)
           si.nodeStartX = si1.nodeStartX + si1.selfW + g.sLineDeltaXDefault
           si.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + si.maxH / 2 - si.selfH / 2 + elapsed
         } else if (isCS(si.path)) {
-          si.nodeStartX = si1.nodeStartX + 2
-          si.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + si.maxH / 2 - si.selfH / 2 + elapsed
+          const ci1 = hn.get(si.ci1) as C
+          const su = si.su.map(nid => hn.get(nid)) as S[]
+          const elapsed = su.map(si => si.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(ci1.so.length > ci1.so1.length)
+          si.nodeStartX = ci1.nodeStartX + 2
+          si.nodeStartY = ci1.nodeStartY + ci1.selfH / 2 - ci1.familyH / 2 + si.maxH / 2 - si.selfH / 2 + elapsed
         }
         break
       }

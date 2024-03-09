@@ -88,8 +88,8 @@ export const editorSlice = createSlice({
           const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const nList = mapFindIntersecting(pm, fromX, fromY, toX, toY)
-          const m = mapReducer(pm, MR.selectSByRectangle, {pathList: nList.map(ti => ti.path)})
+          const sList = mapFindIntersecting(pm, fromX, fromY, toX, toY)
+          const m = mapReducer(pm, MR.selectSByRectangle, {pathList: sList.map(si => si.path)})
           if (!isEqual(pm, m)) {
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
             state.mapListIndex = state.mapListIndex + 1

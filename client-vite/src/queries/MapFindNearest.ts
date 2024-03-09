@@ -17,19 +17,19 @@ export const mapFindNearest = (pm: M, moveNode: S, toX: number, toY: number) => 
     const aboveRoot = toY >= nr.nodeStartY + nr.selfH / 2
     const belowRoot = toY < nr.nodeStartY + nr.selfH / 2
     const overlap = 6
-    mS(m).filter(ti => ti.path.at(1) === nr.path.at(1)).forEach(ti => {
-      if (!isSEO(moveNode.path, ti.path)) {
+    mS(m).filter(si => si.path.at(1) === nr.path.at(1)).forEach(si => {
+      if (!isSEO(moveNode.path, si.path)) {
         let vCondition
-        if (ti.isTop && belowRoot) {
-          vCondition = toY < (ti.nodeStartY + ti.selfH / 2 + ti.maxH / 2 + overlap)
-        } else if (ti.isBottom && aboveRoot) {
-          vCondition = toY > (ti.nodeStartY + ti.selfH / 2 - ti.maxH / 2 - overlap)
+        if (si.isTop && belowRoot) {
+          vCondition = toY < (si.nodeStartY + si.selfH / 2 + si.maxH / 2 + overlap)
+        } else if (si.isBottom && aboveRoot) {
+          vCondition = toY > (si.nodeStartY + si.selfH / 2 - si.maxH / 2 - overlap)
         } else {
-          vCondition = Math.abs(toY - ti.nodeStartY - ti.selfH / 2) <= ti.maxH / 2 + overlap
+          vCondition = Math.abs(toY - si.nodeStartY - si.selfH / 2) <= si.maxH / 2 + overlap
         }
-        let hCondition = toX > (ti.nodeStartX + ti.selfW)
+        let hCondition = toX > (si.nodeStartX + si.selfW)
         if (vCondition && hCondition ) {
-          moveInsertParentNode = ti
+          moveInsertParentNode = si
         }
       }
     })
@@ -46,13 +46,13 @@ export const mapFindNearest = (pm: M, moveNode: S, toX: number, toY: number) => 
             moveTargetIndex = i
           }
         }
-        if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.ti1).path) && moveNode.path.at(-1) < moveTargetIndex) {
+        if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.si1).path) && moveNode.path.at(-1) < moveTargetIndex) {
           moveTargetIndex -= 1
         }
       }
     }
   }
-  if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.ti1).path) && moveNode.path.at(-1) === moveTargetIndex) {
+  if (isEqual(moveInsertParentNode.path, idToS(m, moveNode.si1).path) && moveNode.path.at(-1) === moveTargetIndex) {
     moveInsertParentNode = {} as T
     moveTargetIndex = 0
     sMoveCoords = []
