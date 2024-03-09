@@ -15,24 +15,24 @@ export const deleteL = (m: M, l: L) => {
 }
 
 export const deleteLR = (m: M) => {
-  const xa = getXAR(m)
+  const xac = getXAR(m)
   const nonSelectedMinOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))
   const nonSelectedMinOffsetH = Math.min(...mR(m).map(ri => ri.offsetH))
   m.splice(0, m.length, ...[
       ...mG(m),
       ...mL(m)
-        .filter(li => xa.every(xti => xti.nodeId !== li.fromNodeId && xti.nodeId !== li.toNodeId))
+        .filter(li => xac.every(xti => xti.nodeId !== li.fromNodeId && xti.nodeId !== li.toNodeId))
         .map((li, i) => ({...li, path: ['l', i] as PL})),
       ...mR(m)
-        .filter(ri => xa.every(xti => !isREO(xti.path, ri.path)))
-        .map(ri => xa.some(xti => isRDO(xti.path, ri.path)) ? {...ri, path: ri.path.with(1, ri.path[1] - 1) as PR} : ri)
+        .filter(ri => xac.every(xti => !isREO(xti.path, ri.path)))
+        .map(ri => xac.some(xti => isRDO(xti.path, ri.path)) ? {...ri, path: ri.path.with(1, ri.path[1] - 1) as PR} : ri)
         .map(ri => ({...ri, offsetW: ri.offsetW - nonSelectedMinOffsetW, offsetH: ri.offsetH - nonSelectedMinOffsetH})),
       ...mS(m)
-        .filter(si => xa.every(xti => !isREO(xti.path, si.path)))
-        .map(si => xa.some(xti => isRDO(xti.path, si.path)) ? {...si, path: si.path.with(1, si.path.at(1) - 1) as PS} : si),
+        .filter(si => xac.every(xti => !isREO(xti.path, si.path)))
+        .map(si => xac.some(xti => isRDO(xti.path, si.path)) ? {...si, path: si.path.with(1, si.path.at(1) - 1) as PS} : si),
       ...mC(m)
-        .filter(ci => xa.every(xti => !isREO(xti.path, ci.path)))
-        .map(ci => xa.some(xti => isRDO(xti.path, ci.path)) ? {...ci, path: ci.path.with(1, ci.path.at(1) - 1) as PC} : ci)
+        .filter(ci => xac.every(xti => !isREO(xti.path, ci.path)))
+        .map(ci => xac.some(xti => isRDO(xti.path, ci.path)) ? {...ci, path: ci.path.with(1, ci.path.at(1) - 1) as PC} : ci)
     ].sort(sortPath)
   )
 }
@@ -49,20 +49,20 @@ export const deleteS = (m: M) => {
 }
 
 export const deleteCR = (m: M) => {
-  const xa = getXAC(m)
+  const xac = getXAC(m)
   const cd = getXAC(m).flatMap(ci => ci.cd)
   const crIndex = getXC(m).path.indexOf('c') + 1
-  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mS(m).filter(si => xa.every(xti => !isCEO(xti.path, si.path))),...mC(m).filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))])
+  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mS(m).filter(si => xac.every(xti => !isCEO(xti.path, si.path))),...mC(m).filter(ci => xac.every(xti => !isCEO(xti.path, ci.path)))])
   cd.map(nid => idToC(m, nid)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) - 1))
   cd.map(nid => idToC(m, nid)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) - 1))
   m.sort(sortPath)
 }
 
 export const deleteCC = (m: M) => {
-  const xa = getXAC(m)
+  const xac = getXAC(m)
   const cd = getXAC(m).flatMap(ci => ci.cr)
   const ccIndex = getXC(m).path.indexOf('c') + 2
-  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mS(m).filter(si => xa.every(xti => !isCEO(xti.path, si.path))), ...mC(m).filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))])
+  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mS(m).filter(si => xac.every(xti => !isCEO(xti.path, si.path))), ...mC(m).filter(ci => xac.every(xti => !isCEO(xti.path, ci.path)))])
   cd.map(nid => idToC(m, nid)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(ccIndex, 1, ci.path.at(ccIndex) - 1))
   cd.map(nid => idToC(m, nid)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(ccIndex, 1, si.path.at(ccIndex) - 1))
   m.sort(sortPath)

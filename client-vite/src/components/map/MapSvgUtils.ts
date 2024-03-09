@@ -197,17 +197,17 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
     }
     case 'c': {
       if (isXACR(m)) {
-        const xa = getXAC(m).slice().sort(sortPath)
-        ax = xa.at(0)!.nodeStartX
-        bx = cx = xa.at(-1)!.nodeStartX + xa.at(-1)!.selfW
-        ayu = byu = cyu = xa.at(0)!.nodeStartY
-        ayd = byd = cyd = xa.at(0)!.nodeStartY + xa.at(0)!.selfH
+        const xac = getXAC(m).slice().sort(sortPath)
+        ax = xac.at(0)!.nodeStartX
+        bx = cx = xac.at(-1)!.nodeStartX + xac.at(-1)!.selfW
+        ayu = byu = cyu = xac.at(0)!.nodeStartY
+        ayd = byd = cyd = xac.at(0)!.nodeStartY + xac.at(0)!.selfH
       } else if (isXACC(m)) {
-        const xa = getXAC(m).slice().sort(sortPath)
-        ax = xa.at(0)!.nodeStartX
-        bx = cx = xa.at(0)!.nodeStartX + xa.at(0)!.selfW
-        ayu = byu = cyu = xa.at(0)!.nodeStartY
-        ayd = byd = cyd = xa.at(-1)!.nodeStartY + xa.at(-1)!.selfH
+        const xac = getXAC(m).slice().sort(sortPath)
+        ax = xac.at(0)!.nodeStartX
+        bx = cx = xac.at(0)!.nodeStartX + xac.at(0)!.selfW
+        ayu = byu = cyu = xac.at(0)!.nodeStartY
+        ayd = byd = cyd = xac.at(-1)!.nodeStartY + xac.at(-1)!.selfH
       } else {
         const x = getXC(m)
         ax = x.nodeStartX
