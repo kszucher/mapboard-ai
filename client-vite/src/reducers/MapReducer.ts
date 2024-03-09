@@ -7,7 +7,7 @@ import {deleteCC, deleteCR, deleteL, deleteLR, deleteS,} from "./MapDelete"
 import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertL, insertR, insertS, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {copyLR, copyS, cutLR, duplicateR, duplicateS, moveS2T, pasteLR, pasteS, cutS, moveCRD, moveCRU, moveCCR, moveCCL, transpose, moveS} from "./MapMove"
+import {copyLRSC, copySC, cutLRSC, duplicateRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, cutSC, moveCRD, moveCRU, moveCCR, moveCCL, transpose, moveSC} from "./MapMove"
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {mapPlaceIndented} from "./MapPlaceIndented.ts"
 import {MR} from "./MapReducerEnum.ts"
@@ -109,29 +109,29 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'deleteCCJumpR': { const reselectList = getXAC(m).map(ci => ci.cr.at(-1)!); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCCJumpSI': { const reselect = getXC(m).si1; deleteCC(m); selectS(m, idToS(m, reselect), 's'); break }
 
-    case 'cutLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; cutLR(m); selectR(m, idToR(m, reselect) as R); break }
-    case 'cutSJumpRI': { const reselect = getXS(m).ri1; cutS(m); selectR(m, idToR(m, reselect)); break }
-    case 'cutSJumpSU': { const reselect = getXFS(m).su.at(-1)!; cutS(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'cutSJumpSD': { const reselect = getXLS(m).sd.at(-1)!; cutS(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'cutSJumpSI': { const reselect = getXS(m).si1; cutS(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'cutSJumpCI': { const reselect = getXS(m).ci1; cutS(m); selectC(m, idToC(m, reselect)); break }
+    case 'cutLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; cutLRSC(m); selectR(m, idToR(m, reselect) as R); break }
+    case 'cutSJumpRI': { const reselect = getXS(m).ri1; cutSC(m); selectR(m, idToR(m, reselect)); break }
+    case 'cutSJumpSU': { const reselect = getXFS(m).su.at(-1)!; cutSC(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'cutSJumpSD': { const reselect = getXLS(m).sd.at(-1)!; cutSC(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'cutSJumpSI': { const reselect = getXS(m).si1; cutSC(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'cutSJumpCI': { const reselect = getXS(m).ci1; cutSC(m); selectC(m, idToC(m, reselect)); break }
 
-    case 'copyLR': copyLR(m); break
-    case 'copyS': copyS(m); break
+    case 'copyLR': copyLRSC(m); break
+    case 'copyS': copySC(m); break
 
-    case 'pasteLR': pasteLR(m, payload); break
-    case 'pasteSO': pasteS(m, getXS(m), getXS(m).so1.length, payload); break
+    case 'pasteLR': pasteLRSC(m, payload); break
+    case 'pasteSO': pasteSC(m, getXS(m), getXS(m).so1.length, payload); break
 
-    case 'duplicateR': duplicateR(m); break;
-    case 'duplicateS': duplicateS(m); break;
+    case 'duplicateR': duplicateRSC(m); break;
+    case 'duplicateS': duplicateSC(m); break;
 
-    case 'moveSD': moveS(m, getXS(m).path.with(-1, getXFS(m).su.length + 1) as PS); break
-    case 'moveST': moveS(m, getXS(m).path.with(-1, 0) as PS); break
-    case 'moveSU': moveS(m, getXS(m).path.with(-1, getXFS(m).su.length - 1) as PS); break
-    case 'moveSB': moveS(m, getXS(m).path.with(-1, getXLS(m).sd.length) as PS); break
-    case 'moveSO': moveS(m, [...idToS(m, getXFS(m).su.at(-1) as string).path, 's', idToS(m, getXFS(m).su.at(-1) as string).so1.length] as PS); break
-    case 'moveSI': moveS(m, idToS(m, getXS(m).si1).path.with(-1, idToS(m, getXS(m).si1).su.length + 1) as PS); break
-    case 'moveSByDrag': moveS(m, [...idToS(m, payload.moveInsertParentNodeId).path, 's', payload.moveTargetIndex]); break
+    case 'moveSD': moveSC(m, getXS(m).path.with(-1, getXFS(m).su.length + 1) as PS); break
+    case 'moveST': moveSC(m, getXS(m).path.with(-1, 0) as PS); break
+    case 'moveSU': moveSC(m, getXS(m).path.with(-1, getXFS(m).su.length - 1) as PS); break
+    case 'moveSB': moveSC(m, getXS(m).path.with(-1, getXLS(m).sd.length) as PS); break
+    case 'moveSO': moveSC(m, [...idToS(m, getXFS(m).su.at(-1) as string).path, 's', idToS(m, getXFS(m).su.at(-1) as string).so1.length] as PS); break
+    case 'moveSI': moveSC(m, idToS(m, getXS(m).si1).path.with(-1, idToS(m, getXS(m).si1).su.length + 1) as PS); break
+    case 'moveSByDrag': moveSC(m, [...idToS(m, payload.moveInsertParentNodeId).path, 's', payload.moveTargetIndex]); break
     case 'moveCRD': moveCRD(m); break
     case 'moveCRU': moveCRU(m); break
     case 'moveCCR': moveCCR(m); break

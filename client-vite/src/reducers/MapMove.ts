@@ -78,7 +78,7 @@ const getClipboardSC = (m: M) => {
   )
 }
 
-const cbToLR = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
+const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
   const cb = [...cbRR, ...cbRS, ...cbRC].sort(sortPath)
   const nodeIdMapping = cb.map((ri, i) => ({
     oldNodeId: ri.nodeId,
@@ -105,7 +105,7 @@ const cbToLR = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: P
   m.sort(sortPath)
 }
 
-export const cutLR = (m: M) => {
+export const cutLRSC = (m: M) => {
   const cbL = getClipboardL(m)
   const cbRR = getClipboardRR(m)
   const cbRS = getClipboardRS(m)
@@ -114,14 +114,14 @@ export const cutLR = (m: M) => {
   deleteLR(m)
 }
 
-export const cutS = (m: M) => {
+export const cutSC = (m: M) => {
   const cbSS = getClipboardSS(m)
   const cbSC = getClipboardSC(m)
   cbSave(mapDeInit([...cbSS, ...cbSC].sort(sortPath)))
   deleteS(m)
 }
 
-export const copyLR = (m: M) => {
+export const copyLRSC = (m: M) => {
   const cbL = getClipboardL(m)
   const cbRR = getClipboardRR(m)
   const cbRS = getClipboardRS(m)
@@ -129,13 +129,13 @@ export const copyLR = (m: M) => {
   cbSave(mapDeInit([...cbL, ...cbRR, ...cbRS, ...cbRC]))
 }
 
-export const copyS = (m: M) => {
+export const copySC = (m: M) => {
   const cbSS = getClipboardSS(m)
   const cbSC = getClipboardSC(m)
   cbSave(mapDeInit([...cbSS, ...cbSC].sort(sortPath)))
 }
 
-export const pasteLR = (m: M, payload: any) => {
+export const pasteLRSC = (m: M, payload: any) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
   const ipR = ['r', mR(m).at(-1)?.path.at(1) as number + 1] as PR
   const cbLRSC = JSON.parse(payload) as M
@@ -143,10 +143,10 @@ export const pasteLR = (m: M, payload: any) => {
   const cbR = mR(cbLRSC)
   const cbS = mS(cbLRSC)
   const cbC = mC(cbLRSC)
-  cbToLR(m, cbL, cbR, cbS, cbC, ipL, ipR)
+  cbToLRSC(m, cbL, cbR, cbS, cbC, ipL, ipR)
 }
 
-export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
+export const pasteSC = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PS
   const xas = JSON.parse(payload) as M
   const xasLength = (xas).length
@@ -161,17 +161,17 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
   m.sort(sortPath)
 }
 
-export const duplicateR = (m: M) => {
+export const duplicateRSC = (m: M) => {
   const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
   const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
   const cbL = getClipboardL(m)
   const cbRR = getClipboardRR(m)
   const cbRS = getClipboardRS(m)
   const cbRC = getClipboardRC(m)
-  cbToLR(m, cbL, cbRR, cbRS, cbRC, ipL, ipR)
+  cbToLRSC(m, cbL, cbRR, cbRS, cbRC, ipL, ipR)
 }
 
-export const duplicateS = (m: M) => {
+export const duplicateSC = (m: M) => {
   const ip = [...getXS(m).path.slice(0, -2), 's', getXFS(m).su.length + getXAS(m).length] as PS
   const xas = getXAS(m)
   const xasLength = xas.length
@@ -186,7 +186,7 @@ export const duplicateS = (m: M) => {
   m.sort(sortPath)
 }
 
-export const moveS = (m: M, ip: PS) => {
+export const moveSC = (m: M, ip: PS) => {
   const xas = getXAS(m)
   const xasLength = xas.length
   const cbSS = getClipboardSS(m)
