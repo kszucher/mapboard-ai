@@ -41,8 +41,8 @@ export const deleteS = (m: M) => {
   const xaso = getXAS(m).flatMap(si => si.so)
   const xaco = getXAS(m).flatMap(si => si.co)
   m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mS(m).filter(si => !xaso.includes(si.nodeId)), ...mC(m).filter(si => !xaco.includes(si.nodeId))])
-  mS(m).forEach(si => si.path.forEach((pi, i) => si.path.at(i - 1) === 's' && si.path.splice(i, 1, pi - pathToS(m, si.path.slice(0, i + 1) as PS)?.su.map(nid => idToS(m, nid)).filter(si => si.selected).length || 0)))
-  mC(m).forEach(ci => ci.path.forEach((pi, i) => ci.path.at(i - 1) === 's' && ci.path.splice(i, 1, pi - pathToS(m, ci.path.slice(0, i + 1) as PS)?.su.map(nid => idToS(m, nid)).filter(si => si.selected).length || 0)))
+  mS(m).toReversed().forEach(si => si.path.forEach((pi, i) => si.path.at(i - 1) === 's' && si.path.splice(i, 1, pi - pathToS(m, si.path.slice(0, i + 1) as PS)?.su.map(nid => idToS(m, nid)).filter(si => si.selected).length || 0)))
+  mC(m).toReversed().forEach(ci => ci.path.forEach((pi, i) => ci.path.at(i - 1) === 's' && ci.path.splice(i, 1, pi - pathToS(m, ci.path.slice(0, i + 1) as PS)?.su.map(nid => idToS(m, nid)).filter(si => si.selected).length || 0)))
   m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mS(m).filter(si => !si.selected), ...mC(m)])
   m.sort(sortPath)
 }
