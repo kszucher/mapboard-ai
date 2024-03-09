@@ -28,7 +28,11 @@ const getClipboardSS = (m: M) => {
   const xaseo = xas.flatMap(si => [si.nodeId, ...si.so])
   return structuredClone(mS(m)
     .filter(si => xaseo.includes(si.nodeId))
-    .map(si => ({...si, path: ['s', si.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...si.path.slice(getXS(m).path.length) as PS]})) as S[]
+    .map(si => ({...si,
+      path: ['s', si.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...si.path.slice(getXS(m).path.length) as PS],
+      linkType: sSaveOptional.linkType,
+      link: sSaveOptional.link
+    })) as S[]
   )
 }
 
@@ -37,7 +41,9 @@ const getClipboardSC = (m: M) => {
   const xasco = xas.flatMap(si => si.co)
   return structuredClone(mC(m)
     .filter(ci => xasco.includes(ci.nodeId))
-    .map(ci => ({...ci, path: ['s', ci.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ci.path.slice(getXS(m).path.length) as PC]})) as C[]
+    .map(ci => ({...ci,
+      path: ['s', ci.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ci.path.slice(getXS(m).path.length) as PC]
+    })) as C[]
   )
 }
 
@@ -110,8 +116,6 @@ export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, pay
   clipboardSS.forEach((si, i) => Object.assign(si, {
     nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path : [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)],
-    linkType: sSaveOptional.linkType,
-    link: sSaveOptional.link
   }))
   clipboardSC.forEach((ci, i) => Object.assign(ci, {
     nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
@@ -140,8 +144,6 @@ export const duplicateS = (m: M) => {
   clipboardSS.forEach((si, i) => Object.assign(si, {
     nodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path : [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)],
-    linkType: sSaveOptional.linkType,
-    link: sSaveOptional.link
   }))
   const clipboardSC = getClipboardSC(m)
   clipboardSC.forEach((ci, i) => Object.assign(ci, {
