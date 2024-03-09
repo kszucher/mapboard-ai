@@ -1,4 +1,4 @@
-import {getG, lToCb, mL, mR, rToCb, sortPath, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS} from "../queries/MapQueries.ts"
+import {getG, mL, mR, sortPath, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS, idToR, getXAR} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, T, PL, PR, C, PC, PS, S} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, genNodeId, IS_TESTING} from "../utils/Utils"
@@ -21,6 +21,18 @@ const cbSave = (cb: any) => {
         })
     }
   })
+}
+
+const lToCb = (m: M): L[] =>
+  mL(m).filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
+
+const rToCb = (m: M): T[] => {
+  const xar = getXAR(m)
+  return ([
+    ...mR(m).filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1))).map(ri => ({...ri, path: ri.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ri.path[1]))})),
+    ...mS(m).filter(si => xar.some(xari => xari.path.at(1) === si.path.at(1))).map(si => ({...si, path: si.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(si.path[1]))})),
+    ...mC(m).filter(ci => xar.some(xari => xari.path.at(1) === ci.path.at(1))).map(ci => ({...ci, path: ci.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ci.path[1]))}))
+  ] as T[]).sort(sortPath)
 }
 
 const getClipboardSS = (m: M) => {

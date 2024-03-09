@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare"
 import {sSaveOptional} from "../state/MapState"
-import {G, L, M, N, P, PT, T, SSaveOptional, S, R, C, NPartial, PR, PS, PC} from "../state/MapStateTypes"
+import {G, L, M, N, P, PT, SSaveOptional, S, R, C, NPartial, PR, PS, PC} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
 import {MapMode} from "../state/Enums.ts"
 
@@ -84,25 +84,6 @@ const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, p
 export const getQuasiSD = (m: M): S => mS(m).find(si => !si.selected && isQuasiSD(getXS(m).path, si.path))!
 export const getQuasiSU = (m: M): S => mS(m).findLast(si => !si.selected && isQuasiSU(getXS(m).path, si.path))!
 
-export const isREO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
-export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
-export const isCEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
-
-export const isRDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
-export const isSEODO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) >= p.at(-1)
-
-export const lToCb = (m: M): L[] =>
-  mL(m).filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
-
-export const rToCb = (m: M): T[] => {
-  const xar = getXAR(m)
-  return ([
-    ...mR(m).filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1))).map(ri => ({...ri, path: ri.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ri.path[1]))})),
-    ...mS(m).filter(si => xar.some(xari => xari.path.at(1) === si.path.at(1))).map(si => ({...si, path: si.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(si.path[1]))})),
-    ...mC(m).filter(ci => xar.some(xari => xari.path.at(1) === ci.path.at(1))).map(ci => ({...ci, path: ci.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ci.path[1]))}))
-  ] as T[]).sort(sortPath)
-}
-
 export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineWidth)) ? getXS(m).lineWidth : sSaveOptional.lineWidth
 export const getLineType = (m: M): SSaveOptional['lineType'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineType)) ? getXS(m).lineType : sSaveOptional.lineType
 export const getLineColor = (m: M): SSaveOptional['lineColor'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineColor)) ? getXS(m).lineColor : sSaveOptional.lineColor
@@ -130,3 +111,9 @@ export const getMapMode = (m: M) => {
   if (isXAS(m)) return MapMode.EDIT_STRUCT
   if (isXC(m)) return MapMode.EDIT_CELL
 }
+
+// TODO remove
+export const isREO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
+export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
+export const isRDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
+export const isSEODO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) >= p.at(-1)
