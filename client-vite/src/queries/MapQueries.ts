@@ -18,12 +18,12 @@ export const isG = (p: P): boolean => p.at(0) === 'g'
 export const isL = (p: P): boolean => p.at(0) === 'l'
 export const isR = (p: P): boolean => p.at(-2) === 'r'
 export const isS = (p: P): boolean => p.at(-2) === 's'
-export const isC = (p: P): boolean => p.at(-3) === 'c'
-export const isRS = (p: P): boolean => p.at(-4) === 'r' && isS(p)
-export const isRSC = (p: P): boolean => p.at(-7) === 'r' && p.at(-5) === 's' && p.at(-3) === 'c'
+export const isRS = (p: P): boolean => p.at(-4) === 'r' && p.at(-2) === 's'
 export const isSS = (p: P): boolean => p.at(-4) === 's' && p.at(-2) === 's'
-export const isSSC = (p: P): boolean => p.at(-7) === 's' && p.at(-5) === 's' && p.at(-3) === 'c'
 export const isCS = (p: P): boolean => p.at(-5) === 'c' && p.at(-2) === 's'
+export const isC = (p: P): boolean => p.at(-3) === 'c'
+export const isRSC = (p: P): boolean => p.at(-7) === 'r' && p.at(-5) === 's' && p.at(-3) === 'c'
+export const isSSC = (p: P): boolean => p.at(-7) === 's' && p.at(-5) === 's' && p.at(-3) === 'c'
 
 export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
 export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]
