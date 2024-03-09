@@ -84,8 +84,13 @@ const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, p
 export const getQuasiSD = (m: M): S => mS(m).find(si => !si.selected && isQuasiSD(getXS(m).path, si.path))!
 export const getQuasiSU = (m: M): S => mS(m).findLast(si => !si.selected && isQuasiSU(getXS(m).path, si.path))!
 
+export const isREO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
+export const isCEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
+export const isRDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
 export const isSEODO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) >= p.at(-1)
+export const isCD = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) > p.at(-2)! && pt.at(p.length - 1) === p.at(-1)
+export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) > p.at(-1)
 
 export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineWidth)) ? getXS(m).lineWidth : sSaveOptional.lineWidth
 export const getLineType = (m: M): SSaveOptional['lineType'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineType)) ? getXS(m).lineType : sSaveOptional.lineType
@@ -114,7 +119,3 @@ export const getMapMode = (m: M) => {
   if (isXAS(m)) return MapMode.EDIT_STRUCT
   if (isXC(m)) return MapMode.EDIT_CELL
 }
-
-// TODO remove
-export const isREO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
-export const isRDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
