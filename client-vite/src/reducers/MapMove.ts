@@ -122,13 +122,13 @@ export const pasteLR = (m: M, payload: any) => {
 
 export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PS
-  const cbS = JSON.parse(payload) as M
+  const xasLength = (JSON.parse(payload) as M).length
   const clipboardSS = getClipboardSS(JSON.parse(payload) as M)
   const clipboardSC = getClipboardSC(JSON.parse(payload) as M)
   clipboardSS.forEach((si, i) => Object.assign(si, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]}))
   clipboardSC.forEach((ci, i) => Object.assign(ci, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]}))
-  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + getXAS(cbS).length))
-  mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + getXAS(cbS).length))
+  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + xasLength))
+  mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + xasLength))
   unselectNodes(m)
   m.push(...clipboardSS, ...clipboardSC)
   m.sort(sortPath)
