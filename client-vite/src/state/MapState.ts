@@ -137,6 +137,7 @@ export const cSaveOptional = {
 } as CSaveOptional
 
 export const cSaveNever = {
+  ri2: '',
   si1: '',
   si2: '',
   so1: [],

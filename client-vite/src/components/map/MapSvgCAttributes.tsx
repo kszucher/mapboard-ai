@@ -1,6 +1,6 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {isRSC, mC, getG, getHN} from "../../queries/MapQueries.ts"
+import {isSSC, mC, getG, getHN} from "../../queries/MapQueries.ts"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getNodeLinePath, pathCommonProps} from "./MapSvgUtils"
@@ -15,7 +15,7 @@ export const MapSvgCAttributes: FC = () => {
   return (
     mC(m).map(ci => (
       <Fragment key={ci.nodeId}>
-        {!isRSC(ci.path) && ci.path.at(-2) > -1 && ci.path.at(-1) === 0 &&
+        {isSSC(ci.path) && ci.path.at(-2) > -1 && ci.path.at(-1) === 0 &&
           <path
             d={!phn.has(ci.nodeId) && phn.has(ci.si2)
               ? getNodeLinePath(g, phn.get(ci.si2)! as C, ci)

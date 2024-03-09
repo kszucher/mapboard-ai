@@ -38,16 +38,18 @@ export const mapPlaceIndented = (m: M) => {
       }
       case isC(ni.path): {
         const ci = ni as C
-        const si1 = hn.get(ci.si1) as C
-        const si2 = hn.get(ci.si2) as C
         const cl = ci.cl.map(nid => hn.get(nid)) as C[]
         const cu = ci.cu.map(nid => hn.get(nid)) as C[]
         const calcOffsetX = cl.reduce((a, b) => a + b.selfW, 0)
         const calcOffsetY = cu.reduce((a, b) => a + b.selfH, 0)
         if (isRSC(ci.path)) {
-          ci.nodeStartX = MARGIN_X + si2.nodeStartX + calcOffsetX
+          const ri2 = hn.get(ci.si2) as R
+          const si1 = hn.get(ci.si1) as S
+          ci.nodeStartX = MARGIN_X + ri2.nodeStartX + calcOffsetX
           ci.nodeStartY = si1.nodeStartY + calcOffsetY
         } else if (isSSC(ci.path)) {
+          const si2 = hn.get(ci.si2) as S
+          const si1 = hn.get(ci.si1) as S
           ci.nodeStartX = si2.nodeStartX + INDENT + 2 + calcOffsetX
           ci.nodeStartY = si1.nodeStartY + calcOffsetY
         }

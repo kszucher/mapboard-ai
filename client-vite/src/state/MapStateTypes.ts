@@ -144,6 +144,7 @@ export interface CSaveOptional {
 }
 
 export interface CSaveNever {
+  ri2: string
   si1: string
   si2: string
   so1: string[]
