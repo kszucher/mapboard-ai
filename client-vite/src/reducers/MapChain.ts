@@ -82,9 +82,9 @@ export const mapChain = (m: M) => {
       }
       case isC(ni.path): {
         const ci = ni as C
-        const tiList = ci.path.map((_, i) => ci.path.slice(0, i))
-        const siListR = tiList.filter(pi => pi.at(-2) === 'r')
-        const siListS = tiList.filter(pi => pi.at(-2) === 's')
+        const niList = ci.path.map((_, i) => ci.path.slice(0, i))
+        const siListR = niList.filter(pi => pi.at(-2) === 'r')
+        const siListS = niList.filter(pi => pi.at(-2) === 's')
         for (let i = 0; i < siListR.length; i++) {
           const rix = hp.get(siListR[i].join('')) as R
           rix.co.push(ci.nodeId)
