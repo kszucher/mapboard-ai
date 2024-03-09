@@ -134,15 +134,8 @@ export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li =>
 )
 
 export const getMapMode = (m: M) => {
-  if ((m as T[]).some((ti: T) => ti.selected)) {
-    if (isXAR(m)) {
-      return MapMode.EDIT_ROOT
-    } else if (isXAS(m)) {
-      return MapMode.EDIT_STRUCT
-    } else if (isXC(m)) {
-      return MapMode.EDIT_CELL
-    }
-  } else {
-    return MapMode.VIEW
-  }
+  if ([...mR(m), ...mS(m), ...mC(m)].every(ni => ni.selected === 0)) return MapMode.VIEW
+  if (isXAR(m)) return MapMode.EDIT_ROOT
+  if (isXAS(m)) return MapMode.EDIT_STRUCT
+  if (isXC(m)) return MapMode.EDIT_CELL
 }
