@@ -1,6 +1,6 @@
 import {getG, mL, mR, sortPath, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS, idToR, getXAR} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
-import {M, L, T, PL, PR, C, PC, PS, S} from "../state/MapStateTypes"
+import {M, L, T, PL, PR, PC, PS, S, R, C} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, genNodeId, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
@@ -23,16 +23,35 @@ const cbSave = (cb: any) => {
   })
 }
 
-export const lToCb = (m: M): L[] =>
-  mL(m).filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
+export const getClipboardL = (m: M): L[] => {
+  return structuredClone(mL(m)
+    .filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected)
+    .map((li, i) => ({...li, path: ['l', i]}))
+  )
+}
 
-export const rToCb = (m: M): T[] => {
+export const getClipboardRR = (m: M): R[] => {
   const xar = getXAR(m)
-  return ([
-    ...mR(m).filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1))).map(ri => ({...ri, path: ri.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ri.path[1]))})),
-    ...mS(m).filter(si => xar.some(xari => xari.path.at(1) === si.path.at(1))).map(si => ({...si, path: si.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(si.path[1]))})),
-    ...mC(m).filter(ci => xar.some(xari => xari.path.at(1) === ci.path.at(1))).map(ci => ({...ci, path: ci.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ci.path[1]))}))
-  ] as T[]).sort(sortPath)
+  return structuredClone(mR(m)
+    .filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1)))
+    .map(ri => ({...ri, path: ri.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ri.path[1]))}))
+  ) as R[]
+}
+
+export const getClipboardRS = (m: M): S[] => {
+  const xar = getXAR(m)
+  return structuredClone(mS(m)
+    .filter(si => xar.some(xari => xari.path.at(1) === si.path.at(1)))
+    .map(si => ({...si, path: si.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(si.path[1]))}))
+  ) as S[]
+}
+
+export const getClipboardRC = (m: M): C[] => {
+  const xar = getXAR(m)
+  return structuredClone(mC(m)
+    .filter(ci => xar.some(xari => xari.path.at(1) === ci.path.at(1)))
+    .map(ci => ({...ci, path: ci.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ci.path[1]))}))
+  ) as C[]
 }
 
 const getClipboardSS = (m: M) => {
@@ -59,116 +78,125 @@ const getClipboardSC = (m: M) => {
   )
 }
 
-const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PR) => {
-  const nodeIdMappingR = cbR.map((ri, i) => ({
+const cbToLR = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
+  const cb = [...cbRR, ...cbRS, ...cbRC].sort(sortPath)
+  const nodeIdMapping = cb.map((ri, i) => ({
     oldNodeId: ri.nodeId,
     newNodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8)
   }))
   cbL.forEach((li, i) => Object.assign(li, {
     nodeId: IS_TESTING ? 'xl' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
-    fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
-    toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
+    fromNodeId : nodeIdMapping.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
+    toNodeId: nodeIdMapping.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
   }))
-  cbR.forEach((ri, i) => Object.assign(ri, {
-    nodeId: nodeIdMappingR[i].newNodeId,
+  cb.forEach((ri, i) => Object.assign(ri, {
+    nodeId: nodeIdMapping[i].newNodeId,
     path: ['r', ri.path.at(1) + ipR.at(-1), ...ri.path.slice(2)],
   }))
-  const nonSelectedMinOffsetW = Math.min(...mR(cbR).map(ri => ri.offsetW || rSaveOptional.offsetW))
-  const nonSelectedMinOffsetH = Math.min(...mR(cbR).map(ri => ri.offsetH || rSaveOptional.offsetH))
-  mR(cbR).map(ri => Object.assign(ri, {
+  const nonSelectedMinOffsetW = Math.min(...mR(cbRR).map(ri => ri.offsetW || rSaveOptional.offsetW))
+  const nonSelectedMinOffsetH = Math.min(...mR(cbRR).map(ri => ri.offsetH || rSaveOptional.offsetH))
+  mR(cbRR).map(ri => Object.assign(ri, {
     offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).selfW,
     offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
   }))
   unselectNodes(m)
-  m.push(...cbL, ...cbR)
+  m.push(...cbL, ...cbRR, ...cbRS, ...cbRC)
   m.sort(sortPath)
 }
 
 export const cutLR = (m: M) => {
-  const cbL = structuredClone(lToCb(m))
-  const cbR = structuredClone(rToCb(m))
-  cbSave(mapDeInit([...cbL, ...cbR]))
+  const cbL = getClipboardL(m)
+  const cbRR = getClipboardRR(m)
+  const cbRS = getClipboardRS(m)
+  const cbRC = getClipboardRC(m)
+  cbSave(mapDeInit([...cbL, ...cbRR, ...cbRS, ...cbRC]))
   deleteLR(m)
 }
 
 export const cutS = (m: M) => {
-  const clipboardSS = getClipboardSS(m)
-  const clipboardSC = getClipboardSC(m)
-  cbSave(mapDeInit([...clipboardSS, ...clipboardSC].sort(sortPath)))
+  const cbSS = getClipboardSS(m)
+  const cbSC = getClipboardSC(m)
+  cbSave(mapDeInit([...cbSS, ...cbSC].sort(sortPath)))
   deleteS(m)
 }
 
 export const copyLR = (m: M) => {
-  const cbL = structuredClone(lToCb(m))
-  const cbR = structuredClone(rToCb(m))
-  cbSave(mapDeInit([...cbL, ...cbR]))
+  const cbL = getClipboardL(m)
+  const cbRR = getClipboardRR(m)
+  const cbRS = getClipboardRS(m)
+  const cbRC = getClipboardRC(m)
+  cbSave(mapDeInit([...cbL, ...cbRR, ...cbRS, ...cbRC]))
 }
 
 export const copyS = (m: M) => {
-  const clipboardSS = getClipboardSS(m)
-  const clipboardSC = getClipboardSC(m)
-  cbSave(mapDeInit([...clipboardSS, ...clipboardSC].sort(sortPath)))
+  const cbSS = getClipboardSS(m)
+  const cbSC = getClipboardSC(m)
+  cbSave(mapDeInit([...cbSS, ...cbSC].sort(sortPath)))
 }
 
 export const pasteLR = (m: M, payload: any) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
   const ipR = ['r', mR(m).at(-1)?.path.at(1) as number + 1] as PR
-  const cbLR = JSON.parse(payload) as M
-  const cbL = mL(cbLR)
-  const cbR = mR(cbLR)
-  cbToLR(m, cbL, cbR, ipL, ipR)
+  const cbLRSC = JSON.parse(payload) as M
+  const cbL = mL(cbLRSC)
+  const cbR = mR(cbLRSC)
+  const cbS = mS(cbLRSC)
+  const cbC = mC(cbLRSC)
+  cbToLR(m, cbL, cbR, cbS, cbC, ipL, ipR)
 }
 
 export const pasteS = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PS
   const xas = JSON.parse(payload) as M
   const xasLength = (xas).length
-  const clipboardSS = mS(xas)
-  const clipboardSC = mC(xas)
-  clipboardSS.forEach((si, i) => Object.assign(si, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]}))
-  clipboardSC.forEach((ci, i) => Object.assign(ci, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]}))
+  const cbSS = mS(xas)
+  const cbSC = mC(xas)
+  cbSS.forEach((si, i) => Object.assign(si, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]}))
+  cbSC.forEach((ci, i) => Object.assign(ci, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]}))
   mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + xasLength))
   mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + xasLength))
   unselectNodes(m)
-  m.push(...clipboardSS, ...clipboardSC)
+  m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
 }
 
 export const duplicateR = (m: M) => {
   const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
   const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
-  const cbL = structuredClone(lToCb(m))
-  const cbR = structuredClone(rToCb(m))
-  cbToLR(m, cbL, cbR, ipL, ipR)
+  const cbL = getClipboardL(m)
+  const cbRR = getClipboardRR(m)
+  const cbRS = getClipboardRS(m)
+  const cbRC = getClipboardRC(m)
+  cbToLR(m, cbL, cbRR, cbRS, cbRC, ipL, ipR)
 }
 
 export const duplicateS = (m: M) => {
   const ip = [...getXS(m).path.slice(0, -2), 's', getXFS(m).su.length + getXAS(m).length] as PS
   const xas = getXAS(m)
   const xasLength = xas.length
-  const clipboardSS = getClipboardSS(m)
-  const clipboardSC = getClipboardSC(m)
-  clipboardSS.forEach((si, i) => Object.assign(si, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]}))
-  clipboardSC.forEach((ci, i) => Object.assign(ci, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]}))
+  const cbSS = getClipboardSS(m)
+  const cbSC = getClipboardSC(m)
+  cbSS.forEach((si, i) => Object.assign(si, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]}))
+  cbSC.forEach((ci, i) => Object.assign(ci, {nodeId: genNodeId(i), path : [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]}))
   mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + xasLength))
   mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + xasLength))
   unselectNodes(m)
-  m.push(...clipboardSS, ...clipboardSC)
+  m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
 }
 
 export const moveS = (m: M, ip: PS) => {
   const xas = getXAS(m)
   const xasLength = xas.length
-  const clipboardSS = getClipboardSS(m)
-  const clipboardSC = getClipboardSC(m)
+  const cbSS = getClipboardSS(m)
+  const cbSC = getClipboardSC(m)
   deleteS(m)
-  clipboardSS.forEach(si => Object.assign(si, {path: [...ip.with(-1, ip.at(-1) + si.path.at(1)), ...si.path.slice(2)]}))
-  clipboardSC.forEach(ci => Object.assign(ci, {path: [...ip.with(-1, ip.at(-1) + ci.path.at(1)), ...ci.path.slice(2)]}))
+  cbSS.forEach(si => Object.assign(si, {path: [...ip.with(-1, ip.at(-1) + si.path.at(1)), ...si.path.slice(2)]}))
+  cbSC.forEach(ci => Object.assign(ci, {path: [...ip.with(-1, ip.at(-1) + ci.path.at(1)), ...ci.path.slice(2)]}))
   mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + xasLength))
   mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + xasLength))
-  m.push(...clipboardSS, ...clipboardSC)
+  m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
 }
 
