@@ -1,5 +1,5 @@
 import {L, M, PL, PR, PS, PC} from "../state/MapStateTypes"
-import {isCD, isCR, isRDO, mG, mL, mR, mS, mC, isREO, isSEO, isCEO, pathToS, idToS, sortPath, getXAS, getXAC, getXAR, getXC} from "../queries/MapQueries.ts"
+import {isRDO, mG, mL, mR, mS, mC, isREO, isSEO, isCEO, pathToS, idToS, sortPath, getXAS, getXAC, getXAR, getXC, idToC} from "../queries/MapQueries.ts"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[
@@ -56,32 +56,22 @@ export const deleteS = (m: M) => {
 
 export const deleteCR = (m: M) => {
   const xa = getXAC(m)
-  m.splice(0, m.length, ...[
-      ...mG(m),
-      ...mL(m),
-      ...mR(m),
-      ...mS(m)
-        .filter(si => xa.every(xti => !isCEO(xti.path, si.path)))
-        .map(si => xa.some(xti => isCD(xti.path, si.path)) ? {...si, path: si.path.with(getXC(m).path.length - 2, si.path.at(getXC(m).path.length - 2) - 1) as PS} : si),
-      ...mC(m)
-        .filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))
-        .map(ci => xa.some(xti => isCD(xti.path, ci.path)) ? {...ci, path: ci.path.with(getXC(m).path.length - 2, ci.path.at(getXC(m).path.length - 2) - 1) as PC} : ci)
-    ].sort(sortPath)
-  )
+  const cd = getXAC(m).flatMap(ci => ci.cd)
+  const crIndex = getXC(m).path.indexOf('c') + 1
+  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mC(m), ...mS(m).filter(si => xa.every(xti => !isCEO(xti.path, si.path)))])
+  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mS(m), ...mC(m).filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))])
+  cd.map(nid => idToC(m, nid)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) - 1))
+  cd.map(nid => idToC(m, nid)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) - 1))
+  m.sort(sortPath)
 }
 
 export const deleteCC = (m: M) => {
   const xa = getXAC(m)
-  m.splice(0, m.length, ...[
-      ...mG(m),
-      ...mL(m),
-      ...mR(m),
-      ...mS(m)
-        .filter(si => xa.every(xti => !isCEO(xti.path, si.path)))
-        .map(si => xa.some(xti => isCR(xti.path, si.path)) ? {...si, path: si.path.with(getXC(m).path.length - 1, si.path.at(getXC(m).path.length - 1) - 1) as PS} : si),
-      ...mC(m)
-        .filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))
-        .map(ci => xa.some(xti => isCR(xti.path, ci.path)) ? {...ci, path: ci.path.with(getXC(m).path.length - 1, ci.path.at(getXC(m).path.length - 1) - 1) as PC} : ci)
-    ].sort(sortPath)
-  )
+  const cd = getXAC(m).flatMap(ci => ci.cr)
+  const ccIndex = getXC(m).path.indexOf('c') + 2
+  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mC(m), ...mS(m).filter(si => xa.every(xti => !isCEO(xti.path, si.path)))])
+  m.splice(0, m.length, ...[...mG(m), ...mL(m), ...mR(m), ...mS(m), ...mC(m).filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))])
+  cd.map(nid => idToC(m, nid)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(ccIndex, 1, ci.path.at(ccIndex) - 1))
+  cd.map(nid => idToC(m, nid)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(ccIndex, 1, si.path.at(ccIndex) - 1))
+  m.sort(sortPath)
 }
