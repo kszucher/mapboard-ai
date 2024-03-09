@@ -1,4 +1,4 @@
-import {getG, lToCb, mL, mR, rToCb, sortPath, sToCb, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS} from "../queries/MapQueries.ts"
+import {getG, lToCb, mL, mR, rToCb, sortPath, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, T, PT, PL, PR, C, PC, PS, S} from "../state/MapStateTypes"
 import {generateCharacterFrom, genHash, genNodeId, IS_TESTING} from "../utils/Utils"
@@ -21,6 +21,24 @@ const cbSave = (cb: any) => {
         })
     }
   })
+}
+
+const getClipboardSS = (m: M) => {
+  const xas = getXAS(m)
+  const xaseo = xas.flatMap(si => [si.nodeId, ...si.so])
+  return structuredClone(mS(m)
+    .filter(si => xaseo.includes(si.nodeId))
+    .map(si => ({...si, path: ['s', si.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...si.path.slice(getXS(m).path.length) as PS]})) as S[]
+  )
+}
+
+const getClipboardSC = (m: M) => {
+  const xas = getXAS(m)
+  const xasco = xas.flatMap(si => si.co)
+  return structuredClone(mC(m)
+    .filter(ci => xasco.includes(ci.nodeId))
+    .map(ci => ({...ci, path: ['s', ci.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ci.path.slice(getXS(m).path.length) as PC]})) as C[]
+  )
 }
 
 const cbToLR = (m: M, cbL: L[], cbR: T[], ipL: PL, ipR: PR) => {
@@ -71,8 +89,9 @@ export const cutLR = (m: M) => {
 }
 
 export const cutS = (m: M) => {
-  const cbS = structuredClone(sToCb(m))
-  cbSave(mapDeInit(cbS))
+  const clipboardSS = getClipboardSS(m)
+  const clipboardSC = getClipboardSC(m)
+  cbSave(mapDeInit([...clipboardSS, ...clipboardSC].sort(sortPath)))
   deleteS(m)
 }
 
@@ -83,8 +102,9 @@ export const copyLR = (m: M) => {
 }
 
 export const copyS = (m: M) => {
-  const cbS = structuredClone(sToCb(m))
-  cbSave(mapDeInit(cbS))
+  const clipboardSS = getClipboardSS(m)
+  const clipboardSC = getClipboardSC(m)
+  cbSave(mapDeInit([...clipboardSS, ...clipboardSC].sort(sortPath)))
 }
 
 export const pasteLR = (m: M, payload: any) => {
@@ -112,17 +132,22 @@ export const duplicateR = (m: M) => {
 
 export const duplicateS = (m: M) => {
   const ip = [...getXS(m).path.slice(0, -2), 's', getXFS(m).su.length + getXAS(m).length] as PT
-  const cbS = structuredClone(sToCb(m))
-  cbToS(m, cbS, ip)
+  const clipboardSS = getClipboardSS(m)
+  const clipboardSC = getClipboardSC(m)
+  cbToS(m, [...clipboardSS, ...clipboardSC].sort(sortPath), ip)
 }
 
 export const moveS = (m: M, ip: PS) => {
-  const cbS = structuredClone(sToCb(m))
+  const xas = getXAS(m)
+  const xasLength = xas.length
+  const clipboardSS = getClipboardSS(m)
+  const clipboardSC = getClipboardSC(m)
   deleteS(m)
-  cbS.forEach(ti => Object.assign(ti, {path: [...ip.with(-1, ip.at(-1) + ti.path.at(1)), ...ti.path.slice(2)]}))
-  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + getXAS(cbS).length))
-  mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + getXAS(cbS).length))
-  m.push(...cbS)
+  clipboardSS.forEach(si => Object.assign(si, {path: [...ip.with(-1, ip.at(-1) + si.path.at(1)), ...si.path.slice(2)]}))
+  clipboardSC.forEach(ci => Object.assign(ci, {path: [...ip.with(-1, ip.at(-1) + ci.path.at(1)), ...ci.path.slice(2)]}))
+  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + xasLength))
+  mC(m).forEach(ci => isSEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + xasLength))
+  m.push(...clipboardSS, ...clipboardSC)
   m.sort(sortPath)
 }
 

@@ -103,13 +103,6 @@ export const rToCb = (m: M): T[] => {
   ] as T[]).sort(sortPath)
 }
 
-export const sToCb = (m: M): N[] => {
-  const xas = getXAS(m)
-  return m
-    .filter(ti => xas.some(xti => isSEO(xti.path, ti.path as PT)))
-    .map(ti => ({...ti, path: ['s', ti.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ti.path.slice(getXS(m).path.length)]})) as unknown as N[]
-}
-
 export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineWidth)) ? getXS(m).lineWidth : sSaveOptional.lineWidth
 export const getLineType = (m: M): SSaveOptional['lineType'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineType)) ? getXS(m).lineType : sSaveOptional.lineType
 export const getLineColor = (m: M): SSaveOptional['lineColor'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineColor)) ? getXS(m).lineColor : sSaveOptional.lineColor
