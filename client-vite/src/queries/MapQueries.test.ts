@@ -1,7 +1,8 @@
 import {mapDeInit} from "../reducers/MapDeInit"
 import {mapInit} from "../reducers/MapInit"
 import {MPartial} from "../state/MapStateTypes"
-import {lToCb, rToCb, sortNode} from "./MapQueries.ts"
+import {sortNode} from "./MapQueries.ts"
+import {lToCb, rToCb} from "../reducers/MapMove.ts"
 
 describe("MapQueriesTests", () => {
   test('lToCb', () => {

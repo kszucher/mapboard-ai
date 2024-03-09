@@ -23,10 +23,10 @@ const cbSave = (cb: any) => {
   })
 }
 
-const lToCb = (m: M): L[] =>
+export const lToCb = (m: M): L[] =>
   mL(m).filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected).map((li, i) => ({...li, path: ['l', i]}))
 
-const rToCb = (m: M): T[] => {
+export const rToCb = (m: M): T[] => {
   const xar = getXAR(m)
   return ([
     ...mR(m).filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1))).map(ri => ({...ri, path: ri.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ri.path[1]))})),
