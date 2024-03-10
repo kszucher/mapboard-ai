@@ -17,7 +17,7 @@ export const UserSettings = () => {
           <Settings2/>
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
+      <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
         {colorMode === 'dark' && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>{'Light Mode'}</DropdownMenu.Item>}
         {colorMode === 'light' && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>{'Dark Mode'}</DropdownMenu.Item>}
         {!connectionHelpersVisible && <DropdownMenu.Item onClick={() => dispatch(actions.showConnectionHelpers())}>{'Show Helpers'}</DropdownMenu.Item>}

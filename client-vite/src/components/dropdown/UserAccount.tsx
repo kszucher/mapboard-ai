@@ -16,7 +16,7 @@ export const UserAccount = () => {
           <User/>
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className="bg-red-300">
+      <DropdownMenu.Content className="bg-red-300" onCloseAutoFocus={e => e.preventDefault()}>
         <Dialog.Trigger>
           {<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_BY_ME))}>{'Maps Shared By Me'}</DropdownMenu.Item>}
         </Dialog.Trigger>

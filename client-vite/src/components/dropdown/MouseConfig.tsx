@@ -15,7 +15,7 @@ export const MouseConfig = () => {
           <Mouse/>
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
+      <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
         <DropdownMenu.Label>{'Left Mouse'}</DropdownMenu.Label>
         <DropdownMenu.RadioGroup value={leftMouseMode} onValueChange={(value) => dispatch(actions.setLeftMouseMode(value as LeftMouseMode))}>
           <DropdownMenu.RadioItem value={LeftMouseMode.CLICK_SELECT}>{'Click Select'}</DropdownMenu.RadioItem>

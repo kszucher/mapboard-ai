@@ -27,7 +27,7 @@ export const NodeModeConfig = () => {
           {nodeMode === NodeMode.EDIT_CELL_COLUMN && <LetterC/>}
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
+      <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
         <DropdownMenu.Label>{'Map Mode'}</DropdownMenu.Label>
         <DropdownMenu.RadioGroup
           value={nodeMode}

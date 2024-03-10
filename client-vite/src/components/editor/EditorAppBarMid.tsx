@@ -27,7 +27,7 @@ export const EditorAppBarMid: FC = () => {
             <ChevronDown/>
           </IconButton>
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
+        <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           {tabMapIdList.map((el: string, index) => (
             <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({
               mapId: el,
