@@ -29,34 +29,25 @@ export const EditorAppBarMid: FC = () => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           {tabMapIdList.map((el: string, index) => (
-            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({
-              mapId: el,
-              frameId: ''
-            }))}>
+            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: el, frameId: ''}))}>
               {tabMapNameList[index]?.name}
             </DropdownMenu.Item>
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({
-        mapId: breadcrumbMapIdList[0],
-        frameId: ''
-      }))}>
+      <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0], frameId: ''}))}>
         {breadcrumbMapNameList[0].name}
       </Button>
       {breadcrumbMapNameList.slice(1).map((el, index) => (
         <Fragment key={index}>
           <ChevronRight/>
-          <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({
-            mapId: breadcrumbMapIdList[index + 1],
-            frameId: ''
-          }))}>
+          <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], frameId: ''}))}>
             {el.name}
           </Button>
         </Fragment>
       ))}
       {frameId !== '' &&
-        <>
+        <Fragment>
           <ChevronRight/>
           <Button variant='solid' onClick={() => {}}>
             {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
@@ -65,23 +56,17 @@ export const EditorAppBarMid: FC = () => {
             variant="solid"
             color="gray"
             disabled={frameIdPosition === 0 || isFetching}
-            onClick={() => dispatch(api.endpoints.selectMap.initiate({
-              mapId: getMapId(),
-              frameId: prevFrameId
-            }))}>
+            onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: getMapId(), frameId: prevFrameId}))}>
             <CircleChevronLeft/>
           </IconButton>
           <IconButton
             variant="solid"
             color="gray"
             disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
-            onClick={() => dispatch(api.endpoints.selectMap.initiate({
-              mapId: getMapId(),
-              frameId: nextFrameId
-            }))}>
+            onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: getMapId(), frameId: nextFrameId}))}>
             <CircleChevronRight/>
           </IconButton>
-        </>
+        </Fragment>
       }
       <MapActions/>
     </div>
