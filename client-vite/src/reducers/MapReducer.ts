@@ -14,6 +14,7 @@ import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, s
 import {mapChain} from "./MapChain.ts"
 import {mapPlace} from "./MapPlace.ts"
 import {mapCalcOrientation} from "./MapCalcOrientation.ts"
+import {getRD, getRL, getRR, getRU} from "../queries/MapFindNearestR.ts"
 
 export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
   switch (action) {
@@ -27,6 +28,10 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectR': selectR(m, pathToR(m, payload.path)); break
     case 'selectS': selectS(m, pathToS(m, payload.path), 's'); break
     case 'selectC': selectC(m, pathToC(m, payload.path)); break
+    case 'selectRR': selectR(m, getRR(m, getXR(m))!); break
+    case 'selectRL': selectR(m, getRL(m, getXR(m))!); break
+    case 'selectRD': selectR(m, getRD(m, getXR(m))!); break
+    case 'selectRU': selectR(m, getRU(m, getXR(m))!); break
     case 'selectFirstR': selectR(m, mR(m).at(0)!); break
     case 'selectFirstS': selectS(m, mS(m).at(0)!, 's'); break
     case 'selectFirstC': selectC(m, mC(m).at(0)!); break

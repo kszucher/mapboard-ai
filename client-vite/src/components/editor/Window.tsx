@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getLastIndexR, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU} from "../../queries/MapQueries.ts"
+import {getLastIndexR, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU, getXR} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -11,6 +11,7 @@ import {getMap, mSelector} from "../../state/EditorState"
 import {mapDeInit} from "../../reducers/MapDeInit"
 import {M, N} from "../../state/MapStateTypes"
 import {shortcutColors} from "../assets/Colors"
+import {getRR, getRL, getRD, getRU} from "../../queries/MapFindNearestR.ts"
 
 export let timeoutId: NodeJS.Timeout
 let mapListener: AbortController
@@ -90,6 +91,7 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyZ' && md(MR.redo)
     ckm === 'c--' && e.code === 'KeyY' && md(MR.undo)
 
+    ckm === '---' && e.code === 'ArrowDown' && isXAR(m) && getRD(m, getXR(m)) && md(MR.selectRD)
     ckm === '---' && e.code === 'ArrowDown' && isXAS(m) && getQuasiSD(m) && md(MR.selectSD)
     ckm === '---' && e.code === 'ArrowDown' && isXACS(m) && getXLS(m).sd.length === 0 && getDCS(m) && md(MR.selectDCS)
     ckm === '---' && e.code === 'ArrowDown' && isXC(m) && getXC(m).cd.length > 0 && md(MR.selectCD)
@@ -102,6 +104,7 @@ export const Window: FC = () => {
     ckm === '-s-' && e.code === 'ArrowDown' && isXC(m) && md(MR.selectSameCC)
     ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && md(MR.insertCRD)
 
+    ckm === '---' && e.code === 'ArrowUp' && isXAR(m) && getRU(m, getXR(m)) && md(MR.selectRU)
     ckm === '---' && e.code === 'ArrowUp' && isXAS(m) && getQuasiSU(m) && md(MR.selectSU)
     ckm === '---' && e.code === 'ArrowUp' && isXACS(m) && getXFS(m).su.length === 0 && getUCS(m) && md(MR.selectUCS)
     ckm === '---' && e.code === 'ArrowUp' && isXC(m) && getXC(m).cu.length > 0 && md(MR.selectCU)
@@ -114,6 +117,7 @@ export const Window: FC = () => {
     ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && md(MR.selectSameCC)
     ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && md(MR.insertCRU)
 
+    ckm === '---' && e.code === 'ArrowRight' && isXAR(m) && getRR(m, getXR(m)) && md(MR.selectRR)
     ckm === '---' && e.code === 'ArrowRight' && isXAS(m) && getXS(m).so1.length > 0 && (getXS(m).lastSelectedChild < 0 || getXS(m).lastSelectedChild > getXS(m).so1.length) && md(MR.selectSSO)
     ckm === '---' && e.code === 'ArrowRight' && isXAS(m) && getXS(m).so1.length > 0 && getXS(m).lastSelectedChild >= 0 && getXS(m).lastSelectedChild < getXS(m).so1.length && md(MR.selectSSOLast)
     ckm === '---' && e.code === 'ArrowRight' && isXACS(m) && getXS(m).so1.length === 0 && getRCS(m) && md(MR.selectRCS)
@@ -126,6 +130,7 @@ export const Window: FC = () => {
     ckm === '-s-' && e.code === 'ArrowRight' && isXC(m) && md(MR.selectSameCR)
     ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && md(MR.insertCCR)
 
+    ckm === '---' && e.code === 'ArrowLeft' && isXAR(m) && getRL(m, getXR(m)) && md(MR.selectRL)
     ckm === '---' && e.code === 'ArrowLeft' && isXASS(m) && md(MR.selectSI)
     ckm === '---' && e.code === 'ArrowLeft' && isXACS(m) && getLCS(m) && md(MR.selectLCS)
     ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && getXC(m).cl.length > 0 && md(MR.selectCL)

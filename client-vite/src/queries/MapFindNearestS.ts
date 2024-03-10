@@ -2,7 +2,7 @@ import {M, S, T, PR} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
 import {sortPath, isSEO, mS, idToS, pathToS, pathToR} from "./MapQueries.ts"
 
-export const mapFindNearest = (pm: M, moveNode: S, toX: number, toY: number) => {
+export const mapFindNearestS = (pm: M, moveNode: S, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
   let sMoveCoords = [] as number[]
   let moveInsertParentNode = {nodeId: ''} as T

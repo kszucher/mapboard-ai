@@ -6,7 +6,7 @@ import {editorState} from "../state/EditorState"
 import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../state/Enums"
 import {M} from "../state/MapStateTypes"
 import {api} from "../api/Api.ts"
-import {mapFindNearest} from "../queries/MapFindNearest"
+import {mapFindNearestS} from "../queries/MapFindNearestS.ts"
 import {mapReducer} from "./MapReducer"
 import {getXS} from "../queries/MapQueries.ts"
 import {filterEmpty} from "../utils/Utils"
@@ -127,7 +127,7 @@ export const editorSlice = createSlice({
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const {sMoveCoords} = mapFindNearest(pm, t, toX, toY)
+          const {sMoveCoords} = mapFindNearestS(pm, t, toX, toY)
           state.sMoveCoords = sMoveCoords
           break
         }
@@ -136,7 +136,7 @@ export const editorSlice = createSlice({
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const {moveInsertParentNodeId, moveTargetIndex} = mapFindNearest(pm, t, toX, toY)
+          const {moveInsertParentNodeId, moveTargetIndex} = mapFindNearestS(pm, t, toX, toY)
           if (moveInsertParentNodeId.length) {
             const m = mapReducer(pm, MR.moveSByDrag, {moveInsertParentNodeId, moveTargetIndex})
             if (!isEqual(pm, m)) {
