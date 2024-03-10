@@ -23,7 +23,7 @@ export const EditorAppBarMid: FC = () => {
     <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <IconButton variant="soft" color="gray">
+          <IconButton variant="solid" color="gray">
             <ChevronDown/>
           </IconButton>
         </DropdownMenu.Trigger>
@@ -63,7 +63,7 @@ export const EditorAppBarMid: FC = () => {
             {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
           </Button>
           <IconButton
-            variant="soft"
+            variant="solid"
             color="gray"
             disabled={frameIdPosition === 0 || isFetching}
             onClick={() => dispatch(api.endpoints.selectMap.initiate({
@@ -73,7 +73,7 @@ export const EditorAppBarMid: FC = () => {
             <CircleChevronLeft/>
           </IconButton>
           <IconButton
-            variant="soft"
+            variant="solid"
             color="gray"
             disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
             onClick={() => dispatch(api.endpoints.selectMap.initiate({
