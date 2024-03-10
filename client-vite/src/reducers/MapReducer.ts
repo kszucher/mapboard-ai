@@ -32,7 +32,6 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectFirstS': selectS(m, mS(m).at(0)!, 's'); break
     case 'selectFirstC': selectC(m, mC(m).at(0)!); break
     case 'selectXR': selectR(m, pathToR(m, getXS(m).path.slice(0, 2) as PR)); break
-    case 'selectXSIR': selectS(m, pathToS(m, getXS(m).path.slice(0, 2).concat('s', 0) as PS), 's'); break
     case 'selectSelfX': selectS(m, getXS(m), 's'); break
     case 'selectFamilyX': selectS(m, getXS(m), 'f'); break
     case 'selectSD': selectS(m, getQuasiSD(m) as S, 's'); break
@@ -50,7 +49,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectCFC0': selectC(m, pathToC(m, getXC(m).path.with(-1, 0) as PC)); break
     case 'selectCFF': selectC(m, pathToC(m, [...getXS(m).path, 'c', 0, 0])); break
     case 'selectXCIS': selectS(m, pathToS(m, getXC(m).path.slice(0, -3) as PS), 's'); break
-
+    case 'selectXSIR': selectS(m, pathToS(m, getXS(m).path.slice(0, 2).concat('s', 0) as PS), 's'); break
     case 'selectXSIC': selectC(m, pathToC(m, getXS(m).path.slice(0, getXS(m).path.findLastIndex(pi => pi === 'c') + 3) as PC)); break
     case 'selectAddR': selectAddR(m, pathToR(m, payload.path)); break
     case 'selectAddS': selectAddS(m, pathToS(m, payload.path), 's'); break
