@@ -50,7 +50,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectXSIR': selectR(m, pathToR(m, getXS(m).path.slice(0, 2) as PR)); break
     case 'selectXSIRS': selectS(m, pathToS(m, getXS(m).path.slice(0, 2).concat('s', 0) as PS), 's'); break
     case 'selectXSIC': selectC(m, pathToC(m, getXS(m).path.slice(0, getXS(m).path.findLastIndex(pi => pi === 'c') + 3) as PC)); break
-    case 'selectXSICS': //selectC(m, pathToC(m, getXS(m).path.slice(0, getXS(m).path.findLastIndex(pi => pi === 'c') + 3) as PC)); break
+    case 'selectXSICS': selectS(m, pathToS(m, getXS(m).path.slice(0, getXS(m).path.findLastIndex(pi => pi === 'c') + 3).concat('s', 0) as PS), 's'); break
     case 'selectXCIS': selectS(m, pathToS(m, getXC(m).path.slice(0, -3) as PS), 's'); break
     case 'selectAddR': selectAddR(m, pathToR(m, payload.path)); break
     case 'selectAddS': selectAddS(m, pathToS(m, payload.path), 's'); break
