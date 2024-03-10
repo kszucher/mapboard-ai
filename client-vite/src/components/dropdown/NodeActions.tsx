@@ -15,13 +15,13 @@ export const NodeActions = () => {
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
+      <DropdownMenu.Trigger >
         <IconButton variant="solid" color="gray">
           <Dots/>
         </IconButton>
       </DropdownMenu.Trigger>
       {nodeMode === NodeMode.EDIT_ROOT &&
-        <DropdownMenu.Content>
+        <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{'Select'}</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
@@ -51,7 +51,7 @@ export const NodeActions = () => {
         </DropdownMenu.Content>
       }
       {nodeMode === NodeMode.EDIT_STRUCT &&
-        <DropdownMenu.Content>
+        <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{'Select'}</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
@@ -111,7 +111,7 @@ export const NodeActions = () => {
         </DropdownMenu.Content>
       }
       {nodeMode === NodeMode.EDIT_CELL &&
-        <DropdownMenu.Content>
+        <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{'Select'}</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
