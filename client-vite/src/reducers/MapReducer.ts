@@ -9,11 +9,10 @@ import {insertCCL, insertCCR, insertCRD, insertCRU, insertL, insertR, insertS, i
 import {mapMeasure} from "./MapMeasure"
 import {copyLRSC, copySC, cutLRSC, duplicateRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, cutSC, moveCRD, moveCRU, moveCCR, moveCCL, transpose, moveSC} from "./MapMove"
 import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
-import {mapPlaceIndented} from "./MapPlaceIndented.ts"
 import {MR} from "./MapReducerEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {mapChain} from "./MapChain.ts"
-import {mapPlaceExploded} from "./MapPlaceExploded.ts"
+import {mapPlace} from "./MapPlace.ts"
 import {mapCalcOrientation} from "./MapCalcOrientation.ts"
 
 export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
@@ -196,7 +195,6 @@ export const mapReducer = (pm: M, action: MR, payload: any) => {
   mapCalcOrientation(m)
   mapCalcTask(m)
   mapMeasure(pm, m)
-  getG(m).flow === Flow.EXPLODED && mapPlaceExploded(m)
-  getG(m).flow === Flow.INDENTED && mapPlaceIndented(m)
+  mapPlace(m)
   return m.sort(sortNode)
 }
