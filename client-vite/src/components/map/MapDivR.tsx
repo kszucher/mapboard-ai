@@ -13,7 +13,6 @@ export const MapDivR: FC = () => {
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
-
   return (
     mR(m).map(ri => (
       <div
@@ -29,7 +28,7 @@ export const MapDivR: FC = () => {
           zIndex: ri.path.length,
           border: 0,
           margin: 0,
-          pointerEvents: ri.selected !== 1 && [
+          pointerEvents: [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
           ].includes(leftMouseMode) && nodeMode === NodeMode.EDIT_ROOT

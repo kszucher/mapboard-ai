@@ -80,7 +80,7 @@ export const MapDivS: FC = () => {
           border: 0,
           margin: 0,
           textShadow: si.blur? '#FFF 0 0 8px' : '',
-          pointerEvents: si.selected !== 1 && [
+          pointerEvents: [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
           ].includes(leftMouseMode) && nodeMode === NodeMode.EDIT_STRUCT || nodeMode === NodeMode.VIEW && si.linkType.length

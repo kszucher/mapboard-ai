@@ -13,7 +13,6 @@ export const MapDivC: FC = () => {
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
-
   return (
     mC(m).map(ci => (
       <div
@@ -29,7 +28,7 @@ export const MapDivC: FC = () => {
           zIndex: ci.path.length,
           border: 0,
           margin: 0,
-          pointerEvents: ci.selected !== 1 && [
+          pointerEvents: [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
           ].includes(leftMouseMode) && nodeMode === NodeMode.EDIT_CELL

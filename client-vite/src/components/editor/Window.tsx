@@ -1,9 +1,9 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getLastIndexR, getNodeMode, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU} from "../../queries/MapQueries.ts"
+import {getLastIndexR, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
-import {AccessType, AlertDialogState, DialogState, NodeMode, MidMouseMode, PageState} from "../../state/Enums"
+import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
@@ -23,7 +23,6 @@ export const Window: FC = () => {
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const m = (useSelector((state:RootState) => mSelector(state)))
-  const nodeMode = getNodeMode(m)
   const mExists = m && m.length
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()
@@ -68,16 +67,18 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Delete' && isXACC(m) && getXC(m).cl.length > 0 && md(MR.deleteCCJumpL)
     ckm === '---' && e.key === 'Delete' && isXACC(m) && getXC(m).cl.length === 0 && getXC(m).cr.length > 0 && md(MR.deleteCCJumpR)
     ckm === '---' && e.key === 'Delete' && isXACC(m) && getXC(m).cl.length === 0 && getXC(m).cr.length === 0 && md(MR.deleteCCJumpSI)
+    ckm === '---' && e.code === 'Space' && !isXAR(m) && !isXAS(m) && !isXC(m) && !isXACR(m) && !isXACC(m) && md(MR.selectFirstR) && console.log('SFR')
     ckm === '---' && e.code === 'Space' && isXAR(m) && md(MR.selectRSO)
     ckm === '---' && e.code === 'Space' && isXAS(m) && getXS(m).co1.length > 0 && md(MR.selectCFF)
     ckm === '---' && e.code === 'Space' && isXC(m) && getXC(m).so1.length > 0 && md(MR.selectCSO)
     ckm === '---' && e.code === 'Space' && isXACR(m) && md(MR.selectCFC0)
     ckm === '---' && e.code === 'Space' && isXACC(m) && md(MR.selectCFR0)
+    ckm === '---' && e.code === 'Backspace' && isXAR(m) && md(MR.unselect)
     ckm === '---' && e.code === 'Backspace' && isXAS(m) && !getXS(m).path.includes('c') && md(MR.selectXSIR)
     ckm === '---' && e.code === 'Backspace' && isXAS(m) && getXS(m).path.includes('c') && md(MR.selectXSIC)
     ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && md(MR.selectXCIS)
-    ckm === '---' && e.code === 'Escape' && !getXS(m).path.includes('c') && md(MR.selectXSIRS)
-    ckm === '---' && e.code === 'Escape' && getXS(m).path.includes('c') && md(MR.selectXSICS)
+    ckm === '---' && e.code === 'Escape' && isXAS(m) && !getXS(m).path.includes('c') && md(MR.selectXSIRS)
+    ckm === '---' && e.code === 'Escape' && isXAS(m) && getXS(m).path.includes('c') && md(MR.selectXSICS)
     ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && md(MR.copyLR)
     ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && md(MR.copyS)
     ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getLastIndexR(m) > 0 && md(MR.cutLR)
@@ -214,7 +215,6 @@ export const Window: FC = () => {
       dialogState === DialogState.NONE &&
       alertDialogState === AlertDialogState.NONE &&
       access === AccessType.EDIT &&
-      nodeMode !== NodeMode.VIEW &&
       editedNodeId === ''
     ) {
       console.log('WINDOW EVENT LISTENERS ADDED')
@@ -235,7 +235,7 @@ export const Window: FC = () => {
         mapListener.abort()
       }
     }
-  }, [pageState, dialogState, alertDialogState, access, nodeMode, editedNodeId])
+  }, [pageState, dialogState, alertDialogState, access, editedNodeId])
 
   useEffect(() => {
     if (midMouseMode === MidMouseMode.ZOOM) {
