@@ -118,4 +118,6 @@ export const getMapMode = (m: M) => {
   if (isXAR(m)) return MapMode.EDIT_ROOT
   if (isXAS(m)) return MapMode.EDIT_STRUCT
   if (isXC(m)) return MapMode.EDIT_CELL
+  if (isXACR(m)) return MapMode.EDIT_CELL_ROW
+  if (isXACC(m)) return MapMode.EDIT_CELL_COLUMN
 }
