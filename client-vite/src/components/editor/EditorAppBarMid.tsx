@@ -58,8 +58,7 @@ export const EditorAppBarMid: FC = () => {
       {frameId !== '' &&
         <>
           <ChevronRight/>
-          <Button variant='solid' onClick={() => {
-          }}>
+          <Button variant='solid' onClick={() => {}}>
             {`Frame ${frameIdList.indexOf(frameId) + 1}/${frameIdList.length}`}
           </Button>
           <IconButton
