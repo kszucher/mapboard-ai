@@ -3,26 +3,19 @@ import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {AccessType, MapMode} from "../../state/Enums"
+import {AccessType} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {IconButton} from "@radix-ui/themes"
 import {UserSettings} from "../dropdown/UserSettings.tsx"
 import {UserAccount} from "../dropdown/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
-import Eye from "../../assets/eye.svg?react"
-import LetterR from "../../assets/letter-r.svg?react"
-import LetterS from "../../assets/letter-s.svg?react"
-import LetterC from "../../assets/letter-c.svg?react"
 import {MouseConfig} from "../dropdown/MouseConfig.tsx"
-import {getMapMode, mC, mS} from "../../queries/MapQueries.ts"
-import {mSelector} from "../../state/EditorState.ts"
+import {NodeModeConfig} from "../dropdown/NodeModeConfig.tsx"
 
 export const EditorAppBarRight: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
-  const m = useSelector((state:RootState) => mSelector(state))
-  const mapMode = getMapMode(m)
   const { data } = useOpenWorkspaceQuery()
   const { access } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessType.VIEW, AccessType.UNAUTHORIZED].includes(access)
@@ -36,32 +29,7 @@ export const EditorAppBarRight: FC = () => {
         <MouseConfig/>
       </div>
       <div className="flex items-center gap-1">
-        <IconButton
-          variant="solid"
-          color={mapMode === MapMode.VIEW ? 'violet' : 'gray'}
-          onClick={() => md(MR.unselect)}>
-          <Eye/>
-        </IconButton>
-        <IconButton
-          variant="solid"
-          color={mapMode === MapMode.EDIT_ROOT ? 'violet' : 'gray'}
-          onClick={() => md(MR.selectFirstR)}>
-          <LetterR/>
-        </IconButton>
-        <IconButton
-          variant="solid"
-          color={mapMode === MapMode.EDIT_STRUCT ? 'violet' : 'gray'}
-          disabled={mS(m).length === 0}
-          onClick={() => md(MR.selectFirstS)}>
-          <LetterS/>
-        </IconButton>
-        <IconButton
-          variant="solid"
-          color={mapMode === MapMode.EDIT_CELL ? 'violet' : 'gray'}
-          disabled={mC(m).length === 0}
-          onClick={() => md(MR.selectFirstC)}>
-          <LetterC/>
-        </IconButton>
+        <NodeModeConfig/>
       </div>
       <div className="flex flex-row items-center gap-1">
         <IconButton

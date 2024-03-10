@@ -20,6 +20,8 @@ export enum MR {
   selectFirstR = 'selectFirstR',
   selectFirstS = 'selectFirstS',
   selectFirstC = 'selectFirstC',
+  selectFirstCR = 'selectFirstCR',
+  selectFirstCC = 'selectFirstCC',
   selectXR = 'selectXR',
   selectXRS = 'selectXRS',
   selectSelfX = 'selectSelfX',

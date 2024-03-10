@@ -1,9 +1,9 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getLastIndexR, getMapMode, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU} from "../../queries/MapQueries.ts"
+import {getLastIndexR, getNodeMode, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
-import {AccessType, AlertDialogState, DialogState, MapMode, MidMouseMode, PageState} from "../../state/Enums"
+import {AccessType, AlertDialogState, DialogState, NodeMode, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../state/NodeApiState"
@@ -23,7 +23,7 @@ export const Window: FC = () => {
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
   const m = (useSelector((state:RootState) => mSelector(state)))
-  const mapMode = getMapMode(m)
+  const nodeMode = getNodeMode(m)
   const mExists = m && m.length
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()
@@ -213,7 +213,7 @@ export const Window: FC = () => {
       dialogState === DialogState.NONE &&
       alertDialogState === AlertDialogState.NONE &&
       access === AccessType.EDIT &&
-      mapMode !== MapMode.VIEW &&
+      nodeMode !== NodeMode.VIEW &&
       editedNodeId === ''
     ) {
       console.log('WINDOW EVENT LISTENERS ADDED')
@@ -234,7 +234,7 @@ export const Window: FC = () => {
         mapListener.abort()
       }
     }
-  }, [pageState, dialogState, alertDialogState, access, mapMode, editedNodeId])
+  }, [pageState, dialogState, alertDialogState, access, nodeMode, editedNodeId])
 
   useEffect(() => {
     if (midMouseMode === MidMouseMode.ZOOM) {

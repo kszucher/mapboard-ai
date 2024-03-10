@@ -57,6 +57,8 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'selectAddSU': selectAddS(m, getQuasiSU(m), 's'); break
     case 'selectRA': selectRL(m, mR(m)); break
     case 'selectSA': selectSL(m, mS(m)); break
+    case 'selectFirstCR': selectCL(m, mC(m).at(0)!.ch.map(nid => idToC(m, nid))); break
+    case 'selectFirstCC': selectCL(m, mC(m).at(0)!.cv.map(nid => idToC(m, nid))); break
     case 'selectSameCR': selectCL(m, getXC(m).ch.map(nid => idToC(m, nid))); break
     case 'selectSameCC': selectCL(m, getXC(m).cv.map(nid => idToC(m, nid))); break
     case 'selectCD': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-2, ci.path.at(-2) + 1) as PC))); break

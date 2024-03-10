@@ -2,15 +2,15 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getMapMode, mC} from "../../queries/MapQueries.ts"
+import {getNodeMode, mC} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
+import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils"
 
 export const MapDivC: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
-  const mapMode = getMapMode(m)
+  const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
@@ -32,14 +32,14 @@ export const MapDivC: FC = () => {
           pointerEvents: ci.selected !== 1 && [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapMode === MapMode.EDIT_CELL
+          ].includes(leftMouseMode) && nodeMode === NodeMode.EDIT_CELL
             ? 'auto'
             : 'none'
         }}
         onMouseDown={(e) => {
           e.stopPropagation()
           if (e.buttons === 1) {
-            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_CELL) {
+            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_CELL) {
               !e.ctrlKey && md(MR.selectC, {path: ci.path})
             }
           } else if (e.buttons === 4) {

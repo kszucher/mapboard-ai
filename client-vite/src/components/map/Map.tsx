@@ -3,9 +3,9 @@ import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getG, getMapMode} from "../../queries/MapQueries.ts"
+import {getG, getNodeMode} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode, MapMode, MidMouseMode} from "../../state/Enums.ts"
+import {LeftMouseMode, NodeMode, MidMouseMode} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {MapDivS} from "./MapDivS.tsx"
 import {setScrollLeftAnimated} from "./MapDivUtils"
@@ -18,7 +18,7 @@ export const Map: FC = () => {
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
-  const mapMode = getMapMode(m)
+  const nodeMode = getNodeMode(m)
   const g = getG(m)
   const { density } = g
   const { data } = useOpenWorkspaceQuery()
@@ -72,7 +72,7 @@ export const Map: FC = () => {
           e.preventDefault()
         }
         if (e.button === 0) {
-          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapMode === MapMode.EDIT_STRUCT) {
+          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
             md(MR.saveFromCoordinates, {e})
           }
         }
@@ -82,7 +82,7 @@ export const Map: FC = () => {
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
           didMove = true
-          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapMode === MapMode.EDIT_STRUCT) {
+          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
             md(MR.selectSByRectanglePreview, {e})
           } else if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
@@ -92,7 +92,7 @@ export const Map: FC = () => {
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && mapMode === MapMode.EDIT_STRUCT) {
+          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
             md(MR.selectSByRectangle, {e})
           }
         }, { signal })

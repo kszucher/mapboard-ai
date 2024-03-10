@@ -24,7 +24,7 @@ export enum AlertDialogState {
   DELETE_ACCOUNT
 }
 
-export enum MapMode {
+export enum NodeMode {
   VIEW = 'View',
   EDIT_ROOT = 'Edit Root',
   EDIT_STRUCT = 'Edit Struct',

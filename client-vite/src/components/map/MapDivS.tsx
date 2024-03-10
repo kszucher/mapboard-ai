@@ -6,9 +6,9 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getG, getMapMode, getXAS, getXS, idToS, isXAS, mS} from "../../queries/MapQueries.ts"
+import {getG, getNodeMode, getXAS, getXS, idToS, isXAS, mS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
+import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
 import {S} from "../../state/MapStateTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {adjust, getLatexString} from "../../utils/Utils"
@@ -33,7 +33,7 @@ export const MapDivS: FC = () => {
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const editType = useSelector((state: RootState) => state.editor.editType)
   const m = useSelector((state:RootState) => mSelector(state))
-  const mapMode = getMapMode(m)
+  const nodeMode = getNodeMode(m)
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
@@ -68,7 +68,7 @@ export const MapDivS: FC = () => {
           fontSize: si.textFontSize,
           fontFamily: 'Roboto',
           textDecoration: si.linkType.length ? "underline" : "",
-          cursor: mapMode === MapMode.VIEW && si.linkType !== '' ? 'pointer' : 'default',
+          cursor: nodeMode === NodeMode.VIEW && si.linkType !== '' ? 'pointer' : 'default',
           color: si.blur ? 'transparent' : (si.textColor === 'default' ? C.TEXT_COLOR : si.textColor),
           transition: 'all 0.3s',
           transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
@@ -83,7 +83,7 @@ export const MapDivS: FC = () => {
           pointerEvents: si.selected !== 1 && [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapMode === MapMode.EDIT_STRUCT || mapMode === MapMode.VIEW && si.linkType.length
+          ].includes(leftMouseMode) && nodeMode === NodeMode.EDIT_STRUCT || nodeMode === NodeMode.VIEW && si.linkType.length
             ? 'auto'
             : 'none'
         }}
@@ -103,18 +103,18 @@ export const MapDivS: FC = () => {
           e.stopPropagation()
           let didMove = false
           if (e.buttons === 1) {
-            if (mapMode === MapMode.VIEW) {
+            if (nodeMode === NodeMode.VIEW) {
               if (si.linkType === 'internal') {
                 dispatch(api.endpoints.selectMap.initiate({mapId: si.link, frameId: ''}))
               } else if (si.linkType === 'external') {
                 window.open(si.link, '_blank')
                 window.focus()
               }
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_STRUCT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
               !e.ctrlKey && md(MR.selectS, {path: si.path})
               e.ctrlKey && !si.selected && isXAS(m) && md(MR.selectAddS, {path: si.path})
               e.ctrlKey && si.selected && getXAS(m).length > 1 && md(MR.unselectS, {path: si.path})
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_STRUCT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_STRUCT) {
               !e.ctrlKey && md(MR.selectS, {path: si.path})
               const abortController = new AbortController()
               const {signal} = abortController
@@ -142,7 +142,7 @@ export const MapDivS: FC = () => {
             getXS(m).contentType === 'text' &&
             si.co1.length === 0 &&
             leftMouseMode === LeftMouseMode.CLICK_SELECT &&
-            mapMode === MapMode.EDIT_STRUCT
+            nodeMode === NodeMode.EDIT_STRUCT
           ) {
             md(MR.startEditAppend)
           }

@@ -2,7 +2,7 @@ import isEqual from "react-fast-compare"
 import {sSaveOptional} from "../state/MapState"
 import {G, L, M, N, P, PT, SSaveOptional, S, R, C, NPartial, PR, PS, PC} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
-import {MapMode} from "../state/Enums.ts"
+import {NodeMode} from "../state/Enums.ts"
 
 export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
 
@@ -114,11 +114,11 @@ export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li =>
   l.toNodeSide === li.toNodeSide
 )
 
-export const getMapMode = (m: M) => {
-  if ([...mR(m), ...mS(m), ...mC(m)].every(ni => ni.selected === 0)) return MapMode.VIEW
-  if (isXAR(m)) return MapMode.EDIT_ROOT
-  if (isXAS(m)) return MapMode.EDIT_STRUCT
-  if (isXC(m)) return MapMode.EDIT_CELL
-  if (isXACR(m)) return MapMode.EDIT_CELL_ROW
-  if (isXACC(m)) return MapMode.EDIT_CELL_COLUMN
+export const getNodeMode = (m: M) => {
+  if ([...mR(m), ...mS(m), ...mC(m)].every(ni => ni.selected === 0)) return NodeMode.VIEW
+  if (isXAR(m)) return NodeMode.EDIT_ROOT
+  if (isXAS(m)) return NodeMode.EDIT_STRUCT
+  if (isXC(m)) return NodeMode.EDIT_CELL
+  if (isXACR(m)) return NodeMode.EDIT_CELL_ROW
+  if (isXACC(m)) return NodeMode.EDIT_CELL_COLUMN
 }

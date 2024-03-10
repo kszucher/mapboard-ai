@@ -2,15 +2,15 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {MR} from "../../reducers/MapReducerEnum.ts"
-import {getMapMode, getXAR, isXAR, mR} from "../../queries/MapQueries.ts"
+import {getNodeMode, getXAR, isXAR, mR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {LeftMouseMode, MapMode} from "../../state/Enums.ts"
+import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils"
 
 export const MapDivR: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
-  const mapMode = getMapMode(m)
+  const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
@@ -32,7 +32,7 @@ export const MapDivR: FC = () => {
           pointerEvents: ri.selected !== 1 && [
             LeftMouseMode.CLICK_SELECT,
             LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && mapMode === MapMode.EDIT_ROOT
+          ].includes(leftMouseMode) && nodeMode === NodeMode.EDIT_ROOT
             ? 'auto'
             : 'none'
         }}
@@ -40,11 +40,11 @@ export const MapDivR: FC = () => {
           let didMove = false
           e.stopPropagation()
           if (e.buttons === 1) {
-            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && mapMode === MapMode.EDIT_ROOT) {
+            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT) {
               !e.ctrlKey && md(MR.selectR, {path: ri.path})
               e.ctrlKey && isXAR(m) && !ri.selected && md(MR.selectAddR, {path: ri.path})
               e.ctrlKey && ri.selected && getXAR(m).length > 1 && md(MR.unselectR, {path: ri.path})
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && mapMode === MapMode.EDIT_ROOT) {
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_ROOT) {
               !e.ctrlKey && md(MR.selectR, {path: ri.path})
               md(MR.saveFromCoordinates, {e})
               const abortController = new AbortController()
