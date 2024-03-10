@@ -76,7 +76,7 @@ export const Window: FC = () => {
     ckm === '---' && e.code === 'Backspace' && isXAS(m) && !getXS(m).path.includes('c') && md(MR.selectXR)
     ckm === '---' && e.code === 'Backspace' && isXAS(m) && getXS(m).path.includes('c') && md(MR.selectXSIC)
     ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && md(MR.selectXCIS)
-    ckm === '---' && e.code === 'Escape' && isXAS(m) && md(MR.selectXRS)
+    ckm === '---' && e.code === 'Escape' && isXAS(m) && md(MR.selectXSIR)
     ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && md(MR.copyLR)
     ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && md(MR.copyS)
     ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getLastIndexR(m) > 0 && md(MR.cutLR)
