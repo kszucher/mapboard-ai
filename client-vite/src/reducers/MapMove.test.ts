@@ -11,35 +11,35 @@ describe("MapMoveTests", () => {
   beforeEach(() => setIsTesting() as any)
   test('duplicateR', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'la', path: ['l', 0], fromNodeId: 'ra', toNodeId: 'rb'},
-      {nodeId: 'lb', path: ['l', 1], fromNodeId: 'ra', toNodeId: 'rc'},
-      {nodeId: 'lc', path: ['l', 2], fromNodeId: 'ra', toNodeId: 'rd'},
-      {nodeId: 'ld', path: ['l', 3], fromNodeId: 'rb', toNodeId: 'rc'},
-      {nodeId: 'ra', path: ['r', 0]},
-      {nodeId: 'sa', path: ['r', 0, 's', 0]},
-      {nodeId: 'rb', path: ['r', 1], selected: 1, offsetW: 100, offsetH: 200},
-      {nodeId: 'sb', path: ['r', 1, 's', 0]},
-      {nodeId: 'rc', path: ['r', 2], selected: 2, offsetW: 110, offsetH: 220},
-      {nodeId: 'sc', path: ['r', 2, 's', 0]},
-      {nodeId: 'rd', path: ['r', 3]},
-      {nodeId: 'sd', path: ['r', 3, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', toNodeId: 'r1'},
+      {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r0', toNodeId: 'r2'},
+      {nodeId: 'l2', path: ['l', 2], fromNodeId: 'r0', toNodeId: 'r3'},
+      {nodeId: 'l3', path: ['l', 3], fromNodeId: 'r1', toNodeId: 'r2'},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
+      {nodeId: 'r1', path: ['r', 1], selected: 1, offsetW: 100, offsetH: 200},
+      {nodeId: 'r1s0', path: ['r', 1, 's', 0]},
+      {nodeId: 'r2', path: ['r', 2], selected: 2, offsetW: 110, offsetH: 220},
+      {nodeId: 'r2s0', path: ['r', 2, 's', 0]},
+      {nodeId: 'r3', path: ['r', 3]},
+      {nodeId: 'r3s0', path: ['r', 3, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'la', path: ['l', 0], fromNodeId: 'ra', toNodeId: 'rb'},
-      {nodeId: 'lb', path: ['l', 1], fromNodeId: 'ra', toNodeId: 'rc'},
-      {nodeId: 'lc', path: ['l', 2], fromNodeId: 'ra', toNodeId: 'rd'},
-      {nodeId: 'ld', path: ['l', 3], fromNodeId: 'rb', toNodeId: 'rc'},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', toNodeId: 'r1'},
+      {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r0', toNodeId: 'r2'},
+      {nodeId: 'l2', path: ['l', 2], fromNodeId: 'r0', toNodeId: 'r3'},
+      {nodeId: 'l3', path: ['l', 3], fromNodeId: 'r1', toNodeId: 'r2'},
       {nodeId: 'xla', path: ['l', 4], fromNodeId: 'xra', toNodeId: 'xrb'},
-      {nodeId: 'ra', path: ['r', 0]},
-      {nodeId: 'sa', path: ['r', 0, 's', 0]},
-      {nodeId: 'rb', path: ['r', 1], offsetW: 100, offsetH: 200},
-      {nodeId: 'sb', path: ['r', 1, 's', 0]},
-      {nodeId: 'rc', path: ['r', 2], offsetW: 110, offsetH: 220},
-      {nodeId: 'sc', path: ['r', 2, 's', 0]},
-      {nodeId: 'rd', path: ['r', 3]},
-      {nodeId: 'sd', path: ['r', 3, 's', 0]},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
+      {nodeId: 'r1', path: ['r', 1], offsetW: 100, offsetH: 200},
+      {nodeId: 'r1s0', path: ['r', 1, 's', 0]},
+      {nodeId: 'r2', path: ['r', 2], offsetW: 110, offsetH: 220},
+      {nodeId: 'r2s0', path: ['r', 2, 's', 0]},
+      {nodeId: 'r3', path: ['r', 3]},
+      {nodeId: 'r3s0', path: ['r', 3, 's', 0]},
       {nodeId: 'xra', path: ['r', 4], selected: 1},
       {nodeId: 'xsa', path: ['r', 4, 's', 0]},
       {nodeId: 'xrb', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20},
@@ -49,9 +49,9 @@ describe("MapMoveTests", () => {
   })
   test('duplicateS', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 1], selected: 1},
       {nodeId: 'te', path: ['r', 0, 's', 1, 's', 0]},
@@ -61,9 +61,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'ti', path: ['r', 0, 's', 3, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 1]},
       {nodeId: 'te', path: ['r', 0, 's', 1, 's', 0]},
@@ -80,9 +80,9 @@ describe("MapMoveTests", () => {
   })
   test('moveSD', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 1], selected: 1},
       {nodeId: 'te', path: ['r', 0, 's', 1, 's', 0]},
@@ -94,9 +94,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'tk', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'th', path: ['r', 0, 's', 1]},
       {nodeId: 'ti', path: ['r', 0, 's', 1, 's', 0]},
@@ -111,9 +111,9 @@ describe("MapMoveTests", () => {
   })
   test('moveST', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 1]},
       {nodeId: 'te', path: ['r', 0, 's', 1, 's', 0]},
@@ -125,13 +125,13 @@ describe("MapMoveTests", () => {
       {nodeId: 'tk', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
       {nodeId: 'th', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'ti', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 1], selected: 2},
       {nodeId: 'tk', path: ['r', 0, 's', 1, 's', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 2]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 2]},
       {nodeId: 'tc', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 3]},
       {nodeId: 'te', path: ['r', 0, 's', 3, 's', 0]},
@@ -142,9 +142,9 @@ describe("MapMoveTests", () => {
   })
   test('moveSU', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 1]},
       {nodeId: 'te', path: ['r', 0, 's', 1, 's', 0]},
@@ -156,9 +156,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'tk', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'tf', path: ['r', 0, 's', 1], selected: 1},
       {nodeId: 'tg', path: ['r', 0, 's', 1, 's', 0]},
@@ -173,9 +173,9 @@ describe("MapMoveTests", () => {
   })
   test('moveSB', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0], selected: 1},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 1], selected: 2},
       {nodeId: 'te', path: ['r', 0, 's', 1, 's', 0]},
@@ -187,15 +187,15 @@ describe("MapMoveTests", () => {
       {nodeId: 'tk', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
       {nodeId: 'tf', path: ['r', 0, 's', 0]},
       {nodeId: 'tg', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'th', path: ['r', 0, 's', 1]},
       {nodeId: 'ti', path: ['r', 0, 's', 1, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 2]},
       {nodeId: 'tk', path: ['r', 0, 's', 2, 's', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 3], selected: 1},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 3], selected: 1},
       {nodeId: 'tc', path: ['r', 0, 's', 3, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 4], selected: 2},
       {nodeId: 'te', path: ['r', 0, 's', 4, 's', 0]},
@@ -204,9 +204,9 @@ describe("MapMoveTests", () => {
   })
   test('moveSO', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 's', 1]},
       {nodeId: 'te', path: ['r', 0, 's', 1], selected: 1},
@@ -217,9 +217,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'tj', path: ['r', 0, 's', 2, 's', 1]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 's', 1]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 's', 2], selected: 1},
@@ -233,9 +233,9 @@ describe("MapMoveTests", () => {
   })
   test('moveSI', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 's', 1]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 's', 2], selected: 1},
@@ -246,9 +246,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'tj', path: ['r', 0, 's', 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 's', 1]},
       {nodeId: 'th', path: ['r', 0, 's', 0, 's', 2]},
@@ -262,9 +262,9 @@ describe("MapMoveTests", () => {
   })
   test('moveCRD', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 2},
@@ -275,9 +275,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 0, 1]},
@@ -291,9 +291,9 @@ describe("MapMoveTests", () => {
   })
   test('moveCRU', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 1]},
@@ -304,9 +304,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
       {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 2},
@@ -320,9 +320,9 @@ describe("MapMoveTests", () => {
   })
   test('moveCCR', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 1]},
@@ -333,9 +333,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 1},
@@ -349,9 +349,9 @@ describe("MapMoveTests", () => {
   })
   test('moveCCL', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 1},
@@ -362,9 +362,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
       {nodeId: 'tf', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 1]},
@@ -378,17 +378,17 @@ describe("MapMoveTests", () => {
   })
   test('moveS2T', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0], selected: 1},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 's', 1]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 's', 2]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0]},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 0], selected: 1},
       {nodeId: 'xta', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0, 's', 0]},
@@ -401,9 +401,9 @@ describe("MapMoveTests", () => {
   })
   test('transpose', () => {
     const test = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0], selected: 1},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'te', path: ['r', 0, 's', 0, 'c', 0, 1]},
@@ -418,9 +418,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'tn', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
     const result = [
-      {nodeId: 'ga', path: ['g']},
-      {nodeId: 'ta', path: ['r', 0]},
-      {nodeId: 'tb', path: ['r', 0, 's', 0], selected: 1},
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'tc', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'td', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 0, 1]},
