@@ -1,7 +1,7 @@
 import {getG, mL, mR, sortPath, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS, idToR, getXAR, isCEODO} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, T, PL, PR, PC, PS, S, R, C} from "../state/MapStateTypes"
-import {genHash, genNodeId, IS_TESTING} from "../utils/Utils"
+import {genHash, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
@@ -255,8 +255,15 @@ export const moveS2T = (m: M) => {
       ...mR(m),
       ...mS(m).filter(si => !so.includes(si.nodeId)).map(si => ({...si, selected: 0})),
       ...mS(m).filter(si => so.includes(si.nodeId)).map(si => ({...si, path: [...si.path.slice(0, pos), 's', 0, 'c', si.path.at(pos + 1), 0, 's', 0, ...si.path.slice(pos + 2)] as PS})),
-      ...[{nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: [...getXS(m).path, 's', 0] as PS, selected: 1} as S],
-      ...Array.from({length: getXS(m).so1.length}, (_, i) => ({nodeId: genNodeId(i), path: [...getXS(m).path, 's', 0, 'c', i, 0] as PC, selected: 0} as C)),
+      ...[{
+        nodeId: IS_TESTING ? [...getXS(m).path, 's', 0].join('') : 'node' + genHash(8),
+        path: [...getXS(m).path, 's', 0] as PS, selected: 1
+      } as S],
+      ...Array.from({length: getXS(m).so1.length}, (_, i) => ({
+        nodeId: IS_TESTING ? [...getXS(m).path, 's', 0, 'c', i, 0].join('') : 'node' + genHash(8),
+        path: [...getXS(m).path, 's', 0, 'c', i, 0] as PC,
+        selected: 0
+      } as C)),
       ...mC(m)
     ].sort(sortPath)
   )

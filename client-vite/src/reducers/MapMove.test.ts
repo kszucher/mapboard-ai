@@ -389,12 +389,12 @@ describe("MapMoveTests", () => {
       {nodeId: 'g', path: ['g']},
       {nodeId: 'r0', path: ['r', 0]},
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
-      {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 0], selected: 1},
-      {nodeId: 'xta', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0]},
+      {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0], selected: 1},
+      {nodeId: 'r0s0s0c00', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0, 's', 0]},
-      {nodeId: 'xtb', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'r0s0s0c10', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'r0s0s1', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'xtc', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0]},
+      {nodeId: 'r0s0s0c20', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveS2T)).sort(sortNode)).toEqual((result).sort(sortNode))
