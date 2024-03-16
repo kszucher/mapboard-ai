@@ -154,7 +154,7 @@ export const pasteLRSC = (m: M, payload: any) => {
 export const pasteSC = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
   const ip = [...insertParentNode.path, 's', insertTargetIndex] as PS
   const xas = JSON.parse(payload) as M
-  const xasLength = (xas).length
+  const xasLength = xas.length
   const cbSS = mS(xas)
   const cbSC = mC(xas)
   const pathSS = cbSS.map(si => [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)])
