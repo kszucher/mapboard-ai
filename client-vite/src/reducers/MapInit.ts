@@ -1,7 +1,7 @@
 import {G, GSaveOptional, L, LSaveOptional, R, RSaveAlways, RSaveOptional, S, SSaveAlways, SSaveOptional, C, CSaveAlways, CSaveOptional, MPartial, M} from "../state/MapStateTypes"
 import {gSaveNever, gSaveOptional, lSaveNever, lSaveOptional, rSaveAlways, rSaveNever, rSaveOptional, sSaveAlways, sSaveNever, sSaveOptional, cSaveAlways, cSaveNever, cSaveOptional} from "../state/MapState"
 import {isC, isG, isL, isR, isS} from "../queries/MapQueries.ts"
-import {genHash} from "../utils/Utils"
+import {genNodeId} from "../utils/Utils"
 
 export const mapInit = (m: MPartial) => {
   m.forEach(ni => {
@@ -32,7 +32,7 @@ export const mapInit = (m: MPartial) => {
         for (const prop in rSaveAlways) {
           if (!ri.hasOwnProperty(prop)) {
             if (prop === 'nodeId') {
-              ri[prop] = 'node' + genHash(8)
+              ri[prop] = genNodeId()
             } else {
               Object.assign(ri, {[prop]: structuredClone(rSaveAlways[prop as keyof RSaveAlways])})
             }
@@ -51,7 +51,7 @@ export const mapInit = (m: MPartial) => {
         for (const prop in sSaveAlways) {
           if (!si.hasOwnProperty(prop)) {
             if (prop === 'nodeId') {
-              si[prop] = 'node' + genHash(8)
+              si[prop] = genNodeId()
             } else {
               Object.assign(si, {[prop]: structuredClone(sSaveAlways[prop as keyof SSaveAlways])})
             }
@@ -70,7 +70,7 @@ export const mapInit = (m: MPartial) => {
         for (const prop in cSaveAlways) {
           if (!ci.hasOwnProperty(prop)) {
             if (prop === 'nodeId') {
-              ci[prop] = 'node' + genHash(8)
+              ci[prop] = genNodeId()
             } else {
               Object.assign(ci, {[prop]: structuredClone(cSaveAlways[prop as keyof CSaveAlways])})
             }

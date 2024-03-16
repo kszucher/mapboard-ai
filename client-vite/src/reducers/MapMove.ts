@@ -1,7 +1,7 @@
 import {getG, mL, mR, sortPath, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS, idToR, getXAR, isCEODO} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, T, PL, PR, PC, PS, S, R, C} from "../state/MapStateTypes"
-import {genHash, IS_TESTING} from "../utils/Utils"
+import {genNodeId, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
@@ -81,10 +81,10 @@ const getClipboardSC = (m: M) => {
 const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
   const nodeIdMappingR = cbRR.map(ri => ({
     oldNodeId: ri.nodeId,
-    newNodeId: IS_TESTING ? ['r', (ri.path.at(1) as number) + (ipR.at(-1) as number), ...ri.path.slice(2)].join('') : 'node' + genHash(8)
+    newNodeId: IS_TESTING ? ['r', (ri.path.at(1) as number) + (ipR.at(-1) as number), ...ri.path.slice(2)].join('') : genNodeId()
   }))
   cbL.forEach(li => Object.assign(li, {
-    nodeId: IS_TESTING ? ['l', (li.path.at(1) as number) + (ipL.at(1) as number)].join('') : 'node' + genHash(8),
+    nodeId: IS_TESTING ? ['l', (li.path.at(1) as number) + (ipL.at(1) as number)].join('') : genNodeId(),
     path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
@@ -98,11 +98,11 @@ const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR:
     offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
   }))
   cbRS.forEach(si => Object.assign(si, {
-    nodeId: IS_TESTING ? ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)].join('') : 'node' + genHash(8),
+    nodeId: IS_TESTING ? ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)].join('') : genNodeId(),
     path: ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)],
   }))
   cbRC.forEach(ci => Object.assign(ci, {
-    nodeId: IS_TESTING ? ['r', ci.path.at(1) + ipR.at(-1), ...ci.path.slice(2)].join('') : 'node' + genHash(8),
+    nodeId: IS_TESTING ? ['r', ci.path.at(1) + ipR.at(-1), ...ci.path.slice(2)].join('') : genNodeId(),
     path: ['r', ci.path.at(1) + ipR.at(-1), ...ci.path.slice(2)],
   }))
   unselectNodes(m)
@@ -159,8 +159,8 @@ export const pasteSC = (m: M, insertParentNode: T, insertTargetIndex: number, pa
   const cbSC = mC(xas)
   const pathSS = cbSS.map(si => [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)])
   const pathSC = cbSS.map(ci => [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)])
-  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSS[i].join('') : 'node' + genHash(8), path: pathSS[i]}))
-  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSC[i].join('') : 'node' + genHash(8), path: pathSC[i]}))
+  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSS[i].join('') : genNodeId(), path: pathSS[i]}))
+  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSC[i].join('') : genNodeId(), path: pathSC[i]}))
   mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + xasLength))
   mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + xasLength))
   unselectNodes(m)
@@ -186,8 +186,8 @@ export const duplicateSC = (m: M) => {
   const cbSC = getClipboardSC(m)
   const pathSS = cbSS.map(si => [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)])
   const pathSC = cbSS.map(ci => [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)])
-  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSS[i].join('') : 'node' + genHash(8), path: pathSS[i]}))
-  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSC[i].join('') : 'node' + genHash(8), path: pathSC[i]}))
+  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSS[i].join('') : genNodeId(), path: pathSS[i]}))
+  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSC[i].join('') : genNodeId(), path: pathSC[i]}))
   mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) as number + xasLength))
   mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + xasLength))
   unselectNodes(m)
@@ -256,11 +256,11 @@ export const moveS2T = (m: M) => {
       ...mS(m).filter(si => !so.includes(si.nodeId)).map(si => ({...si, selected: 0})),
       ...mS(m).filter(si => so.includes(si.nodeId)).map(si => ({...si, path: [...si.path.slice(0, pos), 's', 0, 'c', si.path.at(pos + 1), 0, 's', 0, ...si.path.slice(pos + 2)] as PS})),
       ...[{
-        nodeId: IS_TESTING ? [...getXS(m).path, 's', 0].join('') : 'node' + genHash(8),
+        nodeId: IS_TESTING ? [...getXS(m).path, 's', 0].join('') : genNodeId(),
         path: [...getXS(m).path, 's', 0] as PS, selected: 1
       } as S],
       ...Array.from({length: getXS(m).so1.length}, (_, i) => ({
-        nodeId: IS_TESTING ? [...getXS(m).path, 's', 0, 'c', i, 0].join('') : 'node' + genHash(8),
+        nodeId: IS_TESTING ? [...getXS(m).path, 's', 0, 'c', i, 0].join('') : genNodeId(),
         path: [...getXS(m).path, 's', 0, 'c', i, 0] as PC,
         selected: 0
       } as C)),
