@@ -79,7 +79,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 1},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0]},
-      {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
+      {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
@@ -94,7 +94,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 2, 0]},
-      {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 2, 0, 's', 0]},
+      {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 2, 0, 's', 0]},
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 2, 1]},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
