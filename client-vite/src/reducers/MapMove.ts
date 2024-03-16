@@ -79,26 +79,30 @@ const getClipboardSC = (m: M) => {
 }
 
 const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
-  const cb = [...cbRR, ...cbRS, ...cbRC].sort(sortPath)
-  const nodeIdMapping = cb.map((ri, i) => ({
-    oldNodeId: ri.nodeId,
-    newNodeId: IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8)
-  }))
+  const nodeIdMappingR = cbRR.map((ri, i) => ({oldNodeId: ri.nodeId, newNodeId: IS_TESTING ? 'xr' + generateCharacterFrom('a', i) : 'node' + genHash(8)}))
+  const nodeIdMappingS = cbRS.map((si, i) => ({oldNodeId: si.nodeId, newNodeId: IS_TESTING ? 'xs' + generateCharacterFrom('a', i) : 'node' + genHash(8)}))
+  const nodeIdMappingC = cbRC.map((ri, i) => ({oldNodeId: ri.nodeId, newNodeId: IS_TESTING ? 'xc' + generateCharacterFrom('a', i) : 'node' + genHash(8)}))
   cbL.forEach((li, i) => Object.assign(li, {
     nodeId: IS_TESTING ? 'xl' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
-    fromNodeId : nodeIdMapping.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
-    toNodeId: nodeIdMapping.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
-  }))
-  cb.forEach((ri, i) => Object.assign(ri, {
-    nodeId: nodeIdMapping[i].newNodeId,
-    path: ['r', ri.path.at(1) + ipR.at(-1), ...ri.path.slice(2)],
+    fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
+    toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
   }))
   const nonSelectedMinOffsetW = Math.min(...mR(cbRR).map(ri => ri.offsetW || rSaveOptional.offsetW))
   const nonSelectedMinOffsetH = Math.min(...mR(cbRR).map(ri => ri.offsetH || rSaveOptional.offsetH))
-  mR(cbRR).map(ri => Object.assign(ri, {
+  cbRR.forEach((ri, i) => Object.assign(ri, {
+    nodeId: nodeIdMappingR[i].newNodeId,
+    path: ['r', (ri.path.at(1) as number) + (ipR.at(-1) as number), ...ri.path.slice(2)],
     offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).selfW,
     offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
+  }))
+  cbRS.forEach((si, i) => Object.assign(si, {
+    nodeId: nodeIdMappingS[i].newNodeId,
+    path: ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)],
+  }))
+  cbRC.forEach((ri, i) => Object.assign(ri, {
+    nodeId: nodeIdMappingC[i].newNodeId,
+    path: ['r', ri.path.at(1) + ipR.at(-1), ...ri.path.slice(2)],
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbRR, ...cbRS, ...cbRC)
