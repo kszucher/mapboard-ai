@@ -80,8 +80,6 @@ const getClipboardSC = (m: M) => {
 
 const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
   const nodeIdMappingR = cbRR.map((ri, i) => ({oldNodeId: ri.nodeId, newNodeId: IS_TESTING ? 'xr' + generateCharacterFrom('a', i) : 'node' + genHash(8)}))
-  const nodeIdMappingS = cbRS.map((si, i) => ({oldNodeId: si.nodeId, newNodeId: IS_TESTING ? 'xs' + generateCharacterFrom('a', i) : 'node' + genHash(8)}))
-  const nodeIdMappingC = cbRC.map((ri, i) => ({oldNodeId: ri.nodeId, newNodeId: IS_TESTING ? 'xc' + generateCharacterFrom('a', i) : 'node' + genHash(8)}))
   cbL.forEach((li, i) => Object.assign(li, {
     nodeId: IS_TESTING ? 'xl' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
@@ -97,11 +95,11 @@ const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR:
     offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
   }))
   cbRS.forEach((si, i) => Object.assign(si, {
-    nodeId: nodeIdMappingS[i].newNodeId,
+    nodeId: IS_TESTING ? 'xs' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path: ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)],
   }))
   cbRC.forEach((ri, i) => Object.assign(ri, {
-    nodeId: nodeIdMappingC[i].newNodeId,
+    nodeId: IS_TESTING ? 'xc' + generateCharacterFrom('a', i) : 'node' + genHash(8),
     path: ['r', ri.path.at(1) + ipR.at(-1), ...ri.path.slice(2)],
   }))
   unselectNodes(m)
