@@ -11,8 +11,18 @@ export const insertL = (m: M, lPartial: LPartial) => {
 export const insertR = (m: M) => {
   const lastIndexR = getLastIndexR(m)
   const newRoot = [
-    {nodeId: IS_TESTING ? 't' : 'node' + genHash(8), path: ['r', lastIndexR + 1], selected: 1, offsetW: getG(m).selfW, offsetH: getG(m).selfH},
-    {nodeId: IS_TESTING ? 'u' : 'node' + genHash(8), path: ['r', lastIndexR + 1, 's', 0], content: 'New Root'},
+    {
+      nodeId: IS_TESTING ? 't' : 'node' + genHash(8),
+      path: ['r', lastIndexR + 1],
+      selected: 1,
+      offsetW: getG(m).selfW,
+      offsetH: getG(m).selfH
+    },
+    {
+      nodeId: IS_TESTING ? 'u' : 'node' + genHash(8),
+      path: ['r', lastIndexR + 1, 's', 0],
+      content: 'New Root'
+    },
   ] as MPartial
   unselectNodes(m)
   m.push(...newRoot as M)
