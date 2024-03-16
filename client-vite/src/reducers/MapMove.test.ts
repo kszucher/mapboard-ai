@@ -58,7 +58,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2', path: ['r', 0, 's', 2], selected: 2},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 3]},
-      {nodeId: 'ti', path: ['r', 0, 's', 3, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 3, 's', 0]},
     ] as MPartial
     const result = [
       {nodeId: 'g', path: ['g']},
@@ -74,7 +74,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'xtc', path: ['r', 0, 's', 4], selected: 2},
       {nodeId: 'xtd', path: ['r', 0, 's', 4, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 5]},
-      {nodeId: 'ti', path: ['r', 0, 's', 5, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 5, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.duplicateS)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
@@ -89,7 +89,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2', path: ['r', 0, 's', 2], selected: 2},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 3]},
-      {nodeId: 'ti', path: ['r', 0, 's', 3, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 3, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 4]},
       {nodeId: 'tk', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
@@ -99,7 +99,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 1]},
-      {nodeId: 'ti', path: ['r', 0, 's', 1, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 1, 's', 0]},
       {nodeId: 'r0s1', path: ['r', 0, 's', 2], selected: 1},
       {nodeId: 'r0s1s0', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'r0s2', path: ['r', 0, 's', 3], selected: 2},
@@ -120,7 +120,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2', path: ['r', 0, 's', 2]},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 3], selected: 1},
-      {nodeId: 'ti', path: ['r', 0, 's', 3, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 3, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 4], selected: 2},
       {nodeId: 'tk', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
@@ -128,7 +128,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'g', path: ['g']},
       {nodeId: 'r0', path: ['r', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 0], selected: 1},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 1], selected: 2},
       {nodeId: 'tk', path: ['r', 0, 's', 1, 's', 0]},
       {nodeId: 'r0s0', path: ['r', 0, 's', 2]},
@@ -151,7 +151,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2', path: ['r', 0, 's', 2], selected: 1},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 3], selected: 2},
-      {nodeId: 'ti', path: ['r', 0, 's', 3, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 3, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 4]},
       {nodeId: 'tk', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
@@ -163,7 +163,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2', path: ['r', 0, 's', 1], selected: 1},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 1, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 2], selected: 2},
-      {nodeId: 'ti', path: ['r', 0, 's', 2, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'r0s1', path: ['r', 0, 's', 3]},
       {nodeId: 'r0s1s0', path: ['r', 0, 's', 3, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 4]},
@@ -182,7 +182,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2', path: ['r', 0, 's', 2]},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 3]},
-      {nodeId: 'ti', path: ['r', 0, 's', 3, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 3, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 4]},
       {nodeId: 'tk', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
@@ -192,7 +192,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2', path: ['r', 0, 's', 0]},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 1]},
-      {nodeId: 'ti', path: ['r', 0, 's', 1, 's', 0]},
+      {nodeId: 'r0s3s0', path: ['r', 0, 's', 1, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 2]},
       {nodeId: 'tk', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'r0s0', path: ['r', 0, 's', 3], selected: 1},
@@ -213,7 +213,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s1s0', path: ['r', 0, 's', 1, 's', 0]},
       {nodeId: 'r0s1s1', path: ['r', 0, 's', 1, 's', 1]},
       {nodeId: 'r0s2', path: ['r', 0, 's', 2], selected: 2},
-      {nodeId: 'ti', path: ['r', 0, 's', 2, 's', 0]},
+      {nodeId: 'r0s2s0', path: ['r', 0, 's', 2, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 2, 's', 1]},
     ] as MPartial
     const result = [
@@ -226,7 +226,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s1s0', path: ['r', 0, 's', 0, 's', 2, 's', 0]},
       {nodeId: 'r0s1s1', path: ['r', 0, 's', 0, 's', 2, 's', 1]},
       {nodeId: 'r0s2', path: ['r', 0, 's', 0, 's', 3], selected: 2},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 's', 3, 's', 0]},
+      {nodeId: 'r0s2s0', path: ['r', 0, 's', 0, 's', 3, 's', 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 's', 3, 's', 1]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveSO)).sort(sortNode)).toEqual((result).sort(sortNode))
@@ -242,7 +242,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0s3', path: ['r', 0, 's', 0, 's', 3], selected: 2},
       {nodeId: 'r0s0s3s0', path: ['r', 0, 's', 0, 's', 3, 's', 0]},
       {nodeId: 'r0s0s4', path: ['r', 0, 's', 0, 's', 4]},
-      {nodeId: 'ti', path: ['r', 0, 's', 1]},
+      {nodeId: 'r0s1', path: ['r', 0, 's', 1]},
       {nodeId: 'tj', path: ['r', 0, 's', 1, 's', 0]},
     ] as MPartial
     const result = [
@@ -255,7 +255,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 1], selected: 1},
       {nodeId: 'r0s0s3', path: ['r', 0, 's', 2], selected: 2},
       {nodeId: 'r0s0s3s0', path: ['r', 0, 's', 2, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 3]},
+      {nodeId: 'r0s1', path: ['r', 0, 's', 3]},
       {nodeId: 'tj', path: ['r', 0, 's', 3, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveSI)).sort(sortNode)).toEqual((result).sort(sortNode))
@@ -271,7 +271,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 1]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
@@ -280,7 +280,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 0, 1]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'r0s0c00', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 1},
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
@@ -300,7 +300,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 1},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 2},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 2},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
@@ -309,7 +309,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 2},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 2},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'r0s0c00', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
@@ -329,7 +329,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 2},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 1]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
@@ -340,7 +340,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'r0s0c00', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 1},
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 2},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
@@ -358,7 +358,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 2},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 2},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
@@ -369,7 +369,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'r0s0c00', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 2},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 2},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
@@ -410,7 +410,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'r0s0c02', path: ['r', 0, 's', 0, 'c', 0, 2]},
       {nodeId: 'r0s0c02s0', path: ['r', 0, 's', 0, 'c', 0, 2, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
       {nodeId: 'tk', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'tl', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
@@ -423,7 +423,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0', path: ['r', 0, 's', 0], selected: 1},
       {nodeId: 'r0s0c00', path: ['r', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 0, 1]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
