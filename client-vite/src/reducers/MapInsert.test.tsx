@@ -78,10 +78,10 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 1},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
-      {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 1]},
-      {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 1]},
+      {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
       {nodeId: 'g', path: ['g']},
@@ -93,10 +93,10 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 1]},
-      {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 2, 0]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 2, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 2, 1]},
-      {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 2, 1]},
+      {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertCRD, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
@@ -109,10 +109,10 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
-      {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 1},
-      {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 1},
-      {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 1},
+      {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 1},
+      {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
       {nodeId: 'g', path: ['g']},
@@ -124,10 +124,10 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
       {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 1]},
-      {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 2, 0], selected: 1},
-      {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 2, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 2, 1], selected: 1},
-      {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 2, 0], selected: 1},
+      {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 2, 0, 's', 0]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 2, 1], selected: 1},
+      {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertCRU, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
@@ -140,10 +140,10 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
-      {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 1},
-      {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 1]},
-      {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 1},
+      {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 1]},
+      {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
       {nodeId: 'g', path: ['g']},
@@ -154,11 +154,11 @@ describe("MapInsertTests", () => {
       {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 0, 2]},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 2, 's', 0]},
-      {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 1},
-      {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 1},
+      {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
       {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 1]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 2]},
-      {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 2]},
+      {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertCCR, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
@@ -171,10 +171,10 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 1},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
-      {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 1, 0]},
-      {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 1},
-      {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 1},
+      {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
     const result = [
       {nodeId: 'g', path: ['g']},
@@ -185,11 +185,11 @@ describe("MapInsertTests", () => {
       {nodeId: 'xta', path: ['r', 0, 's', 0, 'c', 0, 1]},
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 0, 2], selected: 1},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 0, 2, 's', 0]},
-      {nodeId: 'tg', path: ['r', 0, 's', 0, 'c', 1, 0]},
-      {nodeId: 'th', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
+      {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
       {nodeId: 'xtb', path: ['r', 0, 's', 0, 'c', 1, 1]},
-      {nodeId: 'ti', path: ['r', 0, 's', 0, 'c', 1, 2], selected: 1},
-      {nodeId: 'tj', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
+      {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 2], selected: 1},
+      {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertCCL)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
