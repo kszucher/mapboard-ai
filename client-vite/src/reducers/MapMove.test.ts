@@ -31,7 +31,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r0', toNodeId: 'r2'},
       {nodeId: 'l2', path: ['l', 2], fromNodeId: 'r0', toNodeId: 'r3'},
       {nodeId: 'l3', path: ['l', 3], fromNodeId: 'r1', toNodeId: 'r2'},
-      {nodeId: 'l4', path: ['l', 4], fromNodeId: 'xra', toNodeId: 'xrb'},
+      {nodeId: 'l4', path: ['l', 4], fromNodeId: 'r4', toNodeId: 'r5'},
       {nodeId: 'r0', path: ['r', 0]},
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'r1', path: ['r', 1], offsetW: 100, offsetH: 200},
@@ -40,9 +40,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'r2s0', path: ['r', 2, 's', 0]},
       {nodeId: 'r3', path: ['r', 3]},
       {nodeId: 'r3s0', path: ['r', 3, 's', 0]},
-      {nodeId: 'xra', path: ['r', 4], selected: 1},
+      {nodeId: 'r4', path: ['r', 4], selected: 1},
       {nodeId: 'r4s0', path: ['r', 4, 's', 0]},
-      {nodeId: 'xrb', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20},
+      {nodeId: 'r5', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20},
       {nodeId: 'r5s0', path: ['r', 5, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.duplicateR)).sort(sortNode)).toEqual((result).sort(sortNode))

@@ -1,7 +1,7 @@
 import {getG, mL, mR, sortPath, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS, idToR, getXAR, isCEODO} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, T, PL, PR, PC, PS, S, R, C} from "../state/MapStateTypes"
-import {generateCharacterFrom, genHash, genNodeId, IS_TESTING} from "../utils/Utils"
+import {genHash, genNodeId, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
@@ -79,7 +79,10 @@ const getClipboardSC = (m: M) => {
 }
 
 const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
-  const nodeIdMappingR = cbRR.map((ri, i) => ({oldNodeId: ri.nodeId, newNodeId: IS_TESTING ? 'xr' + generateCharacterFrom('a', i) : 'node' + genHash(8)}))
+  const nodeIdMappingR = cbRR.map(ri => ({
+    oldNodeId: ri.nodeId,
+    newNodeId: IS_TESTING ? ['r', (ri.path.at(1) as number) + (ipR.at(-1) as number), ...ri.path.slice(2)].join('') : 'node' + genHash(8)
+  }))
   cbL.forEach(li => Object.assign(li, {
     nodeId: IS_TESTING ? ['l', (li.path.at(1) as number) + (ipL.at(1) as number)].join('') : 'node' + genHash(8),
     path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
