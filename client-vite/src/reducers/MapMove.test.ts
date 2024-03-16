@@ -41,9 +41,9 @@ describe("MapMoveTests", () => {
       {nodeId: 'r3', path: ['r', 3]},
       {nodeId: 'r3s0', path: ['r', 3, 's', 0]},
       {nodeId: 'xra', path: ['r', 4], selected: 1},
-      {nodeId: 'xsa', path: ['r', 4, 's', 0]},
+      {nodeId: 'r4s0', path: ['r', 4, 's', 0]},
       {nodeId: 'xrb', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20},
-      {nodeId: 'xsb', path: ['r', 5, 's', 0]},
+      {nodeId: 'r5s0', path: ['r', 5, 's', 0]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.duplicateR)).sort(sortNode)).toEqual((result).sort(sortNode))
   })

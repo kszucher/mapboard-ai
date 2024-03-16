@@ -94,13 +94,13 @@ const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR:
     offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).selfW,
     offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
   }))
-  cbRS.forEach((si, i) => Object.assign(si, {
-    nodeId: IS_TESTING ? 'xs' + generateCharacterFrom('a', i) : 'node' + genHash(8),
+  cbRS.forEach(si => Object.assign(si, {
+    nodeId: IS_TESTING ? ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)].join('') : 'node' + genHash(8),
     path: ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)],
   }))
-  cbRC.forEach((ri, i) => Object.assign(ri, {
-    nodeId: IS_TESTING ? 'xc' + generateCharacterFrom('a', i) : 'node' + genHash(8),
-    path: ['r', ri.path.at(1) + ipR.at(-1), ...ri.path.slice(2)],
+  cbRC.forEach(ci => Object.assign(ci, {
+    nodeId: IS_TESTING ? ['r', ci.path.at(1) + ipR.at(-1), ...ci.path.slice(2)].join('') : 'node' + genHash(8),
+    path: ['r', ci.path.at(1) + ipR.at(-1), ...ci.path.slice(2)],
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbRR, ...cbRS, ...cbRC)
