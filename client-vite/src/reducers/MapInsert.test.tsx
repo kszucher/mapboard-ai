@@ -24,7 +24,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0', path: ['r', 0]},
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0]},
-      {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 1], selected: 1},
+      {nodeId: '_r0s0s1', path: ['r', 0, 's', 0, 's', 1], selected: 1},
       {nodeId: 'r0s0s1', path: ['r', 0, 's', 0, 's', 2]},
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 3]},
       {nodeId: 'r0s0s3', path: ['r', 0, 's', 0, 's', 4]},
@@ -48,7 +48,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'r0s0s1', path: ['r', 0, 's', 0, 's', 1]},
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 2]},
-      {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 3], selected: 1},
+      {nodeId: '_r0s0s3', path: ['r', 0, 's', 0, 's', 3], selected: 1},
       {nodeId: 'r0s0s3', path: ['r', 0, 's', 0, 's', 4]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSU, {})).sort(sortNode)).toEqual((result).sort(sortNode))
@@ -65,7 +65,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0', path: ['r', 0]},
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0]},
-      {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 1], selected: 1},
+      {nodeId: '_r0s0s1', path: ['r', 0, 's', 0, 's', 1], selected: 1},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSSO, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })

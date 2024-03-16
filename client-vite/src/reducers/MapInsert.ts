@@ -24,7 +24,7 @@ export const insertS = (m: M, ip: PS, attributes: object) => {
   mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) as number + 1))
   const parentTaskStatus = isXAS(m) ? getXS(m).taskStatus : sSaveOptional.taskStatus
   unselectNodes(m)
-  m.push({selected: 1, nodeId: IS_TESTING ? 'xt_' : 'node' + genHash(8), path: ip, taskStatus: parentTaskStatus, ...attributes} as N)
+  m.push({selected: 1, nodeId: IS_TESTING ? '_' + ip.join('') : 'node' + genHash(8), path: ip, taskStatus: parentTaskStatus, ...attributes} as N)
   m.sort(sortPath)
 }
 
