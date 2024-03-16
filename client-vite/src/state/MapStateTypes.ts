@@ -174,10 +174,10 @@ export type T = R | S | C
 export type N = G | L | R | S | C
 export type M = N[]
 
-type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
+export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
 export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<LSaveNever>
-type RPartial = Required<RSaveAlways> & Partial<RSaveOptional> & Partial<RSaveNever>
-type SPartial = Required<SSaveAlways> & Partial<SSaveOptional> & Partial<SSaveNever>
-type CPartial = Required<CSaveAlways> & Partial<CSaveOptional> & Partial<CSaveNever>
+export type RPartial = Required<RSaveAlways> & Partial<RSaveOptional> & Partial<RSaveNever>
+export type SPartial = Required<SSaveAlways> & Partial<SSaveOptional> & Partial<SSaveNever>
+export type CPartial = Required<CSaveAlways> & Partial<CSaveOptional> & Partial<CSaveNever>
 export type NPartial = GPartial | LPartial | RPartial | SPartial | CPartial
 export type MPartial = NPartial[]
