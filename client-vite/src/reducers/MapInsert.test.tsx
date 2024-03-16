@@ -17,7 +17,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0], selected: 1},
       {nodeId: 'r0s0s1', path: ['r', 0, 's', 0, 's', 1]},
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 2]},
-      {nodeId: 'tf', path: ['r', 0, 's', 0, 's', 3]},
+      {nodeId: 'r0s0s3', path: ['r', 0, 's', 0, 's', 3]},
     ] as MPartial
     const result = [
       {nodeId: 'g', path: ['g']},
@@ -27,7 +27,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'xt_', path: ['r', 0, 's', 0, 's', 1], selected: 1},
       {nodeId: 'r0s0s1', path: ['r', 0, 's', 0, 's', 2]},
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 3]},
-      {nodeId: 'tf', path: ['r', 0, 's', 0, 's', 4]},
+      {nodeId: 'r0s0s3', path: ['r', 0, 's', 0, 's', 4]},
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSD, {})).sort(sortNode)).toEqual((result).sort(sortNode))
   })
