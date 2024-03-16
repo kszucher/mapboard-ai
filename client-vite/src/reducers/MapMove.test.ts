@@ -31,7 +31,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r0', toNodeId: 'r2'},
       {nodeId: 'l2', path: ['l', 2], fromNodeId: 'r0', toNodeId: 'r3'},
       {nodeId: 'l3', path: ['l', 3], fromNodeId: 'r1', toNodeId: 'r2'},
-      {nodeId: 'xla', path: ['l', 4], fromNodeId: 'xra', toNodeId: 'xrb'},
+      {nodeId: 'l4', path: ['l', 4], fromNodeId: 'xra', toNodeId: 'xrb'},
       {nodeId: 'r0', path: ['r', 0]},
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'r1', path: ['r', 1], offsetW: 100, offsetH: 200},
