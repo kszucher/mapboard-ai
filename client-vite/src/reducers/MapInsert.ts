@@ -1,11 +1,11 @@
-import {N, LPartial, M, MPartial, PC, PS} from "../state/MapStateTypes"
+import {M, MPartial, L, LPartial, S, C, PS, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {sortPath, isSEODO, getLastIndexL, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getXC, idToC, idToS, isCEODO} from "../queries/MapQueries.ts"
 import {genNodeId, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 
 export const insertL = (m: M, lPartial: LPartial) => {
-  m.push({...lPartial, nodeId: IS_TESTING ? 't' : genNodeId(), path: ['l', getLastIndexL(m) + 1]} as N)
+  m.push({...lPartial, nodeId: IS_TESTING ? 't' : genNodeId(), path: ['l', getLastIndexL(m) + 1]} as L)
 }
 
 export const insertR = (m: M) => {
@@ -39,7 +39,7 @@ export const insertS = (m: M, ip: PS, attributes: object) => {
     nodeId: IS_TESTING ? '_' + ip.join('') : genNodeId(),
     path: ip, taskStatus: parentTaskStatus,
     ...attributes
-  } as N)
+  } as S)
   m.sort(sortPath)
 }
 
@@ -52,7 +52,7 @@ export const insertCRD = (m: M) => {
   m.push(...getXAC(m).map(ci => ({
     nodeId: IS_TESTING ? '_' + ci.path.with(crIndex, crValue + 1).join('') : genNodeId(),
     path: ci.path.with(crIndex, crValue + 1)
-  } as N)))
+  } as C)))
   m.sort(sortPath)
 }
 
@@ -65,7 +65,7 @@ export const insertCRU = (m: M) => {
   m.push(...getXAC(m).map(ci => ({
     nodeId: IS_TESTING ? '_' + ci.path.with(crIndex, crValue).join('') : genNodeId(),
     path: ci.path.with(crIndex, crValue)
-  } as N)))
+  } as C)))
   m.sort(sortPath)
 }
 
@@ -78,7 +78,7 @@ export const insertCCR = (m: M) => {
   m.push(...getXAC(m).map(ci => ({
     nodeId: IS_TESTING ? '_' + ci.path.with(ccIndex, ccValue + 1).join('') : genNodeId(),
     path: ci.path.with(ccIndex, ccValue + 1)
-  } as N)))
+  } as C)))
   m.sort(sortPath)
 }
 
@@ -91,7 +91,7 @@ export const insertCCL = (m: M) => {
   m.push(...getXAC(m).map(ci => ({
     nodeId: IS_TESTING ? '_' + ci.path.with(ccIndex, ccValue).join('') : genNodeId(),
     path: ci.path.with(ccIndex, ccValue)
-  } as N)))
+  } as C)))
   m.sort(sortPath)
 }
 
@@ -99,7 +99,7 @@ export const insertSCRD = (m: M) => {
   m.push(...Array.from({length: getXS(m).colCount}, (_, i) =>({
     nodeId: IS_TESTING ? '_' + [...getXS(m).path, 'c', getXS(m).rowCount, i].join('') : genNodeId(),
     path: [...getXS(m).path, 'c', getXS(m).rowCount, i] as PC
-  } as N)))
+  } as C)))
   m.sort(sortPath)
 }
 
@@ -110,7 +110,7 @@ export const insertSCRU = (m: M) => {
   m.push(...Array.from({length: getXS(m).colCount}, (_, i) =>({
     nodeId: IS_TESTING ? '_' + [...getXS(m).path, 'c', 0, i].join('') : genNodeId(),
     path: [...getXS(m).path, 'c', 0, i] as PC
-  } as N)))
+  } as C)))
   m.sort(sortPath)
 }
 
@@ -118,7 +118,7 @@ export const insertSCCR = (m: M) => {
   m.push(...Array.from({length: getXS(m).rowCount}, (_, i) =>({
     nodeId: IS_TESTING ? '_' + [...getXS(m).path, 'c', i, getXS(m).colCount].join('') : genNodeId(),
     path: [...getXS(m).path, 'c', i, getXS(m).colCount] as PC
-  } as N)))
+  } as C)))
   m.sort(sortPath)
 }
 
@@ -129,7 +129,7 @@ export const insertSCCL = (m: M) => {
   m.push(...Array.from({length: getXS(m).rowCount}, (_, i) =>({
     nodeId: IS_TESTING ? '_' + [...getXS(m).path, 'c', i, 0].join('') : genNodeId(),
     path: [...getXS(m).path, 'c', i, 0] as PC
-  } as N)))
+  } as C)))
   m.sort(sortPath)
 }
 
@@ -142,10 +142,10 @@ export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: numb
     selected: 1,
     nodeId: IS_TESTING ? '_' + ip.join('') : genNodeId(),
     path: ip
-  } as N)
+  } as S)
   m.push(...tableIndices.map(el => ({
     nodeId: IS_TESTING ? '_' + [...ip, 'c', ...el].join('') : genNodeId(),
     path: [...ip, 'c', ...el]
-  } as N)))
+  } as C)))
   m.sort(sortPath)
 }
