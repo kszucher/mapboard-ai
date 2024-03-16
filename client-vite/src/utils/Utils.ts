@@ -1,8 +1,6 @@
 import isEqual from "react-fast-compare"
-
 export let IS_TESTING = false
 export const isArrayOfEqualValues = (array: any[]) => array.every(el => isEqual(el, array[0]))
-export const createArray = (dim1: number, dim2: number) => Array.from(Array(dim1), () => new Array(dim2))
 export const isUrl = (string: string) => { try { return Boolean(new URL(string)) } catch(e) { return false } }
 export const dec2hex = (dec: number) => ('0' + dec.toString(16)).substr(-2)
 export const genHash = (len: number) => {
@@ -15,6 +13,4 @@ export const adjust = (x: number) => Number.isInteger(x) ? x + 0.5 : Math.ceil(x
 export const adjustIcon = (x: number) => !Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5
 export const getTableIndices = (r: number, c: number) => Array(r*c).fill(null).map((_, i) => [Math.floor(i/c), i%c])
 export const filterEmpty = (array: any[]) => array.filter(el => Object.keys(el).length !== 0 && el.hasOwnProperty('nodeId') && el.hasOwnProperty('path'))
-export const generateCharacterFrom = (character: string, index: number) => String.fromCharCode(character.charCodeAt(0) + index)
 export const setIsTesting = () => IS_TESTING = true
-export const genNodeId = (i: number): string => IS_TESTING ? 'xt' + generateCharacterFrom('a', i) : 'node' + genHash(8)
