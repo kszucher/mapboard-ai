@@ -1,6 +1,6 @@
 import {getG, mL, mR, sortPath, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS, idToR, getXAR, isCEODO} from "../queries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
-import {M, L, T, PL, PR, PC, PS, S, R, C} from "../state/MapStateTypes"
+import {M, L, PL, PR, PC, PS, S, R, C} from "../state/MapStateTypes"
 import {genNodeId, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
@@ -140,8 +140,7 @@ export const pasteLRSC = (m: M, payload: any) => {
   cbToLRSC(m, cbL, cbR, cbS, cbC, ipL, ipR)
 }
 
-export const pasteSC = (m: M, insertParentNode: T, insertTargetIndex: number, payload: any) => {
-  const ip = [...insertParentNode.path, 's', insertTargetIndex] as PS
+export const pasteSC = (m: M, ip: PS, payload: any) => {
   const xas = JSON.parse(payload) as M
   const xasLength = xas.length
   const cbSS = mS(xas)

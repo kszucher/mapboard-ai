@@ -168,10 +168,22 @@ export const Window: FC = () => {
                   if (isValidMap) {
                     const isPastedLR = mapJson.at(-1).path.at(0) === 'r'
                     const isPastedS = mapJson.at(-1).path.at(0) === 's'
-                    isPastedLR && md(MR.pasteLR, text)
-                    const hasCell = (mapJson as M).some(el => el.path.includes('c'))
-                    if (hasCell && !getXS(m).path.includes('c') || !hasCell) {
-                      isPastedS && isXAS(m) && md(MR.pasteSO, text)
+                    if (isXAR(m)) {
+                      isPastedLR && md(MR.pasteLR, text)
+                      isPastedS && md(MR.pasteRSO, text)
+                    } else if (isXAS(m)) {
+                      const hasCell = (mapJson as M).some(el => el.path.includes('c'))
+                      if (hasCell && !getXS(m).path.includes('c') || !hasCell) {
+                        isPastedS && md(MR.pasteSSO, text)
+                      }
+                    } else if (isXC(m)) {
+                      isPastedS && md(MR.pasteCSO, text)
+                    } else if (isXACC(m)) {
+                      // do nothing
+                    } else if (isXACR(m)) {
+                      // do nothing
+                    } else {
+                      isPastedLR && md(MR.pasteLR, text)
                     }
                   } else {
                     window.alert('invalid map')

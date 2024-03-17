@@ -127,7 +127,9 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'copyS': copySC(m); break
 
     case 'pasteLR': pasteLRSC(m, payload); break
-    case 'pasteSO': pasteSC(m, getXS(m), getXS(m).so1.length, payload); break
+    case 'pasteRSO': pasteSC(m, [...getXR(m).path, 's',  getXR(m).so1.length], payload); break
+    case 'pasteSSO': pasteSC(m, [...getXS(m).path, 's',  getXS(m).so1.length], payload); break
+    case 'pasteCSO': pasteSC(m, [...getXC(m).path, 's',  getXC(m).so1.length], payload); break
 
     case 'duplicateR': duplicateRSC(m); break;
     case 'duplicateS': duplicateSC(m); break;

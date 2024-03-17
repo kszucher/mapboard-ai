@@ -117,7 +117,9 @@ export enum MR {
   copyS = 'copyS',
 
   pasteLR = 'pasteLR',
-  pasteSO = 'pasteSO',
+  pasteRSO = 'pasteRSO',
+  pasteSSO = 'pasteSSO',
+  pasteCSO = 'pasteCSO',
 
   duplicateR = 'duplicateR',
   duplicateS = 'duplicateS',
