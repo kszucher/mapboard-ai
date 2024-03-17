@@ -131,7 +131,7 @@ export const copySC = (m: M) => {
 
 export const pasteLRSC = (m: M, payload: any) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
-  const ipR = ['r', mR(m).at(-1)?.path.at(1) as number + 1] as PR
+  const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
   const cbLRSC = JSON.parse(payload) as M
   const cbL = mL(cbLRSC)
   const cbR = mR(cbLRSC)
@@ -157,7 +157,7 @@ export const pasteSC = (m: M, ip: PS, payload: any) => {
 }
 
 export const duplicateRSC = (m: M) => {
-  const ipL = ['l', mL(m).at(-1)!.path.at(1) as number + 1] as PL
+  const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
   const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
   const cbL = getClipboardL(m)
   const cbRR = getClipboardRR(m)
