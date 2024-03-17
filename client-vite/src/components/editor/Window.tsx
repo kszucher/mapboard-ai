@@ -68,7 +68,7 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Delete' && isXACC(m) && getXC(m).cl.length > 0 && md(MR.deleteCCJumpL)
     ckm === '---' && e.key === 'Delete' && isXACC(m) && getXC(m).cl.length === 0 && getXC(m).cr.length > 0 && md(MR.deleteCCJumpR)
     ckm === '---' && e.key === 'Delete' && isXACC(m) && getXC(m).cl.length === 0 && getXC(m).cr.length === 0 && md(MR.deleteCCJumpSI)
-    ckm === '---' && e.code === 'Space' && !isXAR(m) && !isXAS(m) && !isXC(m) && !isXACR(m) && !isXACC(m) && md(MR.selectFirstR) && console.log('SFR')
+    ckm === '---' && e.code === 'Space' && !isXAR(m) && !isXAS(m) && !isXC(m) && !isXACR(m) && !isXACC(m) && md(MR.selectFirstR)
     ckm === '---' && e.code === 'Space' && isXAR(m) && md(MR.selectRSO)
     ckm === '---' && e.code === 'Space' && isXAS(m) && getXS(m).co1.length > 0 && md(MR.selectCFF)
     ckm === '---' && e.code === 'Space' && isXC(m) && getXC(m).so1.length > 0 && md(MR.selectCSO)
