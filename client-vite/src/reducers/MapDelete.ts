@@ -25,7 +25,7 @@ export const deleteLR = (m: M) => {
         .map((li, i) => ({...li, path: ['l', i] as PL})),
       ...mR(m)
         .filter(ri => xac.every(xti => !isREO(xti.path, ri.path)))
-        .map(ri => xac.some(xti => isRDO(xti.path, ri.path)) ? {...ri, path: ri.path.with(1, ri.path[1] - 1) as PR} : ri)
+        .map(ri => xac.some(xti => isRDO(xti.path, ri.path)) ? {...ri, path: ri.path.with(1, ri.path.at(1) as number - 1) as PR} : ri)
         .map(ri => ({...ri, offsetW: ri.offsetW - nonSelectedMinOffsetW, offsetH: ri.offsetH - nonSelectedMinOffsetH})),
       ...mS(m)
         .filter(si => xac.every(xti => !isREO(xti.path, si.path)))
