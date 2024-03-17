@@ -31,9 +31,13 @@ const getClipboardL = (m: M): L[] => {
 }
 
 const getClipboardRR = (m: M): R[] => {
+  const nonSelectedMinOffsetW = Math.min(...getXAR(m).map(ri => ri.offsetW || rSaveOptional.offsetW))
+  const nonSelectedMinOffsetH = Math.min(...getXAR(m).map(ri => ri.offsetH || rSaveOptional.offsetH))
   const xarIndices = getXAR(m).map(ri => ri.path[1])
   return structuredClone(getXAR(m).map(ri => ({...ri,
-    path: ri.path.with(1, xarIndices.indexOf(ri.path[1])) as PR
+    path: ri.path.with(1, xarIndices.indexOf(ri.path[1])) as PR,
+    offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW,
+    offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH
   })))
 }
 
@@ -76,13 +80,11 @@ const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR:
     fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
   }))
-  const nonSelectedMinOffsetW = Math.min(...mR(cbRR).map(ri => ri.offsetW || rSaveOptional.offsetW))
-  const nonSelectedMinOffsetH = Math.min(...mR(cbRR).map(ri => ri.offsetH || rSaveOptional.offsetH))
   cbRR.forEach((ri, i) => Object.assign(ri, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', (ri.path.at(1) as number) + (ipR.at(-1) as number), ...ri.path.slice(2)],
-    offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW + getG(m).selfW,
-    offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH + getG(m).selfH
+    offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) + getG(m).selfW,
+    offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) + getG(m).selfH
   }))
   cbRS.forEach(si => Object.assign(si, {
     nodeId: IS_TESTING ? ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)].join('') : genNodeId(),
