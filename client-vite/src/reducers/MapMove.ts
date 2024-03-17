@@ -31,51 +31,38 @@ const getClipboardL = (m: M): L[] => {
 }
 
 const getClipboardRR = (m: M): R[] => {
-  const xar = getXAR(m)
-  return structuredClone(mR(m)
-    .filter(ri => xar.some(xari => xari.path.at(1) === ri.path.at(1)))
-    .map(ri => ({...ri, path: ri.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ri.path[1]))}))
-  ) as R[]
+  const xarIndices = getXAR(m).map(ri => ri.path[1])
+  return structuredClone(getXAR(m).map(ri => ({...ri,
+    path: ri.path.with(1, xarIndices.indexOf(ri.path[1])) as PR
+  })))
 }
 
 const getClipboardRS = (m: M): S[] => {
-  const xar = getXAR(m)
-  return structuredClone(mS(m)
-    .filter(si => xar.some(xari => xari.path.at(1) === si.path.at(1)))
-    .map(si => ({...si, path: si.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(si.path[1]))}))
-  ) as S[]
+  const xarIndices = getXAR(m).map(ri => ri.path[1])
+  return structuredClone(getXAR(m).flatMap(ri => ri.so).map(nid => idToS(m, nid)).map(si => ({...si,
+    path: si.path.with(1, xarIndices.indexOf(si.path[1])) as PS
+  })))
 }
 
 const getClipboardRC = (m: M): C[] => {
-  const xar = getXAR(m)
-  return structuredClone(mC(m)
-    .filter(ci => xar.some(xari => xari.path.at(1) === ci.path.at(1)))
-    .map(ci => ({...ci, path: ci.path.with(1, xar.map(ri => ri.path.at(1)).indexOf(ci.path[1]))}))
-  ) as C[]
+  const xarIndices = getXAR(m).map(ri => ri.path[1])
+  return structuredClone(getXAR(m).flatMap(ri => ri.co).map(nid => idToC(m, nid)).map(ci => ({...ci,
+    path: ci.path.with(1, xarIndices.indexOf(ci.path[1])) as PC
+  })))
 }
 
-const getClipboardSS = (m: M) => {
-  const xas = getXAS(m)
-  const xaseo = xas.flatMap(si => [si.nodeId, ...si.so])
-  return structuredClone(mS(m)
-    .filter(si => xaseo.includes(si.nodeId))
-    .map(si => ({...si,
-      path: ['s', si.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...si.path.slice(getXS(m).path.length) as PS],
-      linkType: sSaveOptional.linkType,
-      link: sSaveOptional.link
-    })) as S[]
-  )
+const getClipboardSS = (m: M): S[] => {
+  return structuredClone(getXAS(m).flatMap(si => [si.nodeId, ...si.so]).map(nid => idToS(m, nid)).map(si => ({...si,
+    path: ['s', si.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...si.path.slice(getXS(m).path.length) as PS],
+    linkType: sSaveOptional.linkType,
+    link: sSaveOptional.link
+  })))
 }
 
-const getClipboardSC = (m: M) => {
-  const xas = getXAS(m)
-  const xasco = xas.flatMap(si => si.co)
-  return structuredClone(mC(m)
-    .filter(ci => xasco.includes(ci.nodeId))
-    .map(ci => ({...ci,
-      path: ['s', ci.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ci.path.slice(getXS(m).path.length) as PC]
-    })) as C[]
-  )
+const getClipboardSC = (m: M): C[] => {
+  return structuredClone(getXAS(m).flatMap(si => si.co).map(nid => idToC(m, nid)).map(ci => ({...ci,
+    path: ['s', ci.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ci.path.slice(getXS(m).path.length) as PC],
+  })))
 }
 
 const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
