@@ -147,7 +147,7 @@ export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: numb
       nodeId: IS_TESTING ? '_' + ip.join('') : genNodeId(),
       path: ip
     } as SPartial,
-    tableIndices.map(el => ({
+    ...tableIndices.map(el => ({
       nodeId: IS_TESTING ? '_' + [...ip, 'c', ...el].join('') : genNodeId(),
       path: [...ip, 'c', ...el]
     } as CPartial))

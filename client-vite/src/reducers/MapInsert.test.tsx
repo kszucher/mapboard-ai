@@ -285,4 +285,24 @@ describe("MapInsertTests", () => {
     ] as MPartial
     expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSCCL)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
+  test('insertTable', () => {
+    const test = [
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0], selected: 1},
+    ] as MPartial
+    const result = [
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
+      {nodeId: '_r0s0s0', path: ['r', 0, 's', 0, 's', 0], selected: 1},
+      {nodeId: '_r0s0s0c00', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0]},
+      {nodeId: '_r0s0s0c01', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 1]},
+      {nodeId: '_r0s0s0c10', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: '_r0s0s0c11', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 1]},
+      {nodeId: '_r0s0s0c20', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0]},
+      {nodeId: '_r0s0s0c21', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 1]},
+    ] as MPartial
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertSOTable, {rowLen: 3, colLen: 2})).sort(sortNode)).toEqual((result).sort(sortNode))
+  })
 })
