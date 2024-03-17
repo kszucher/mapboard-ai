@@ -190,9 +190,9 @@ export const Window: FC = () => {
                   }
                 } else {
                   if (isUrl(text)) {
-                    isXAS(m) && md(MR.insertSOLink, text)
+                    isXAS(m) && md(MR.insertSSOLink, text)
                   } else {
-                    isXAS(m) && md(MR.insertSOText, text)
+                    isXAS(m) && md(MR.insertSSOText, text)
                   }
                 }
               })
@@ -205,7 +205,7 @@ export const Window: FC = () => {
                 : 'https://mapboard-server.herokuapp.com/feta'
               fetch(address, {method: 'post', body: formData})
                 .then(response => response.json().then(response => {
-                  isXAS(m) && md(MR.insertSOImage, response)
+                  isXAS(m) && md(MR.insertSSOImage, response)
                 }))
             })
           }

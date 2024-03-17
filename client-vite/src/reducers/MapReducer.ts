@@ -79,14 +79,14 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
-    case 'insertSD': insertS(m, getXLS(m).path.with(-1, getXLS(m).path.at(-1) + 1) as PS, payload); break
-    case 'insertSU': insertS(m, getXFS(m).path.with(-1, getXFS(m).path.at(-1)) as PS, payload); break
+    case 'insertSD': insertS(m, getXLS(m).path.with(-1, getXLS(m).su.length + 1) as PS, payload); break
+    case 'insertSU': insertS(m, getXFS(m).path.with(-1, getXFS(m).su.length) as PS, payload); break
     case 'insertRSO': insertS(m, [...getXR(m).path, 's', getXR(m).so1.length], payload); break
     case 'insertSSO': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], payload); break
+    case 'insertSSOText': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload }); break
+    case 'insertSSOLink': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
+    case 'insertSSOImage': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
     case 'insertCSO': insertS(m, [...getXC(m).path, 's', getXC(m).so1.length], payload); break
-    case 'insertSOText': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload }); break
-    case 'insertSOLink': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
-    case 'insertSOImage': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
     case 'insertCRD': insertCRD(m); break
     case 'insertCRU': insertCRU(m); break
     case 'insertCCR': insertCCR(m); break
@@ -97,7 +97,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertSCCL': insertSCCL(m); break
     case 'insertSDTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length + 1) as PS, payload); break
     case 'insertSUTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length) as PS, payload); break
-    case 'insertSOTable': insertTable(m, getXS(m).path.with(-1, getXS(m).so1.length) as PS, payload); break
+    case 'insertSSOTable': insertTable(m, [...getXS(m).path, 's', getXS(m).so1.length] as PS, payload); break
 
     case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
     case 'gptParseNodesT': gptParseNodesT(m, payload.gptParsed); break
