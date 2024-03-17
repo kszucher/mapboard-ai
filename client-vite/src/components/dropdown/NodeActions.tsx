@@ -15,7 +15,7 @@ export const NodeActions = () => {
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger >
+      <DropdownMenu.Trigger disabled={nodeMode === NodeMode.VIEW}>
         <IconButton variant="solid" color="gray">
           <Dots/>
         </IconButton>
