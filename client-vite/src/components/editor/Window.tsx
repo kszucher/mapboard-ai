@@ -33,6 +33,7 @@ export const Window: FC = () => {
 
   const keydown = (e: KeyboardEvent) => {
     if (
+      +e.ctrlKey && e.code === 'KeyD' ||
       +e.ctrlKey && e.code === 'KeyZ' ||
       +e.ctrlKey && e.code === 'KeyY' ||
       +e.ctrlKey && e.which >= 96 && e.which <= 105 ||
@@ -88,6 +89,8 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length > 0 && md(MR.cutSJumpSD)
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && md(MR.cutSJumpSI)
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXACS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && md(MR.cutSJumpCI)
+    ckm === 'c--' && e.code === 'KeyD' && isXAR(m) && md(MR.duplicateR)
+    ckm === 'c--' && e.code === 'KeyD' && isXAS(m) && md(MR.duplicateS)
     ckm === 'c--' && e.code === 'KeyZ' && md(MR.redo)
     ckm === 'c--' && e.code === 'KeyY' && md(MR.undo)
 
