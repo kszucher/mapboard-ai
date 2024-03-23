@@ -44,7 +44,9 @@ const getClipboardRR = (m: M): R[] => {
 const getClipboardRS = (m: M): S[] => {
   const xarIndices = getXAR(m).map(ri => ri.path.at(1))
   return structuredClone(getXAR(m).flatMap(ri => ri.so).map(nid => idToS(m, nid)).map(si => ({...si,
-    path: si.path.with(1, xarIndices.indexOf(si.path.at(1))) as PS
+    path: si.path.with(1, xarIndices.indexOf(si.path.at(1))) as PS,
+    linkType: sSaveOptional.linkType,
+    link: sSaveOptional.link
   })))
 }
 
@@ -99,6 +101,18 @@ const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR:
   m.sort(sortPath)
 }
 
+const cbToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS, xasLength: number) => {
+  const pathSS = cbSS.map(si => [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)])
+  const pathSC = cbSC.map(ci => [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)])
+  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSS[i].join('') : genNodeId(), path: pathSS[i]}))
+  cbSC.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSC[i].join('') : genNodeId(), path: pathSC[i]}))
+  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + xasLength))
+  mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + xasLength))
+  unselectNodes(m)
+  m.push(...cbSS, ...cbSC)
+  m.sort(sortPath)
+}
+
 export const cutLRSC = (m: M) => {
   const cbL = getClipboardL(m)
   const cbRR = getClipboardRR(m)
@@ -145,15 +159,7 @@ export const pasteSC = (m: M, ip: PS, payload: any) => {
   const xasLength = xas.length
   const cbSS = mS(xas)
   const cbSC = mC(xas)
-  const pathSS = cbSS.map(si => [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)])
-  const pathSC = cbSC.map(ci => [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)])
-  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSS[i].join('') : genNodeId(), path: pathSS[i]}))
-  cbSC.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSC[i].join('') : genNodeId(), path: pathSC[i]}))
-  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + xasLength))
-  mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + xasLength))
-  unselectNodes(m)
-  m.push(...cbSS, ...cbSC)
-  m.sort(sortPath)
+  cbToSC(m, cbSS, cbSC, ip, xasLength)
 }
 
 export const duplicateRSC = (m: M) => {
@@ -172,15 +178,7 @@ export const duplicateSC = (m: M) => {
   const xasLength = xas.length
   const cbSS = getClipboardSS(m)
   const cbSC = getClipboardSC(m)
-  const pathSS = cbSS.map(si => [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)])
-  const pathSC = cbSC.map(ci => [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)])
-  cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSS[i].join('') : genNodeId(), path: pathSS[i]}))
-  cbSC.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSC[i].join('') : genNodeId(), path: pathSC[i]}))
-  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + xasLength))
-  mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + xasLength))
-  unselectNodes(m)
-  m.push(...cbSS, ...cbSC)
-  m.sort(sortPath)
+  cbToSC(m, cbSS, cbSC, ip, xasLength)
 }
 
 export const moveSC = (m: M, ip: PS) => {
