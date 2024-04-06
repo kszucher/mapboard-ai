@@ -199,33 +199,6 @@ export const editorSlice = createSlice({
       }
     )
     builder.addMatcher(
-      api.endpoints.getGptSuggestions.matchFulfilled,
-      (state, { payload }) => {
-        const { promptId, gptSuggestions } = payload
-        console.log(payload)
-        if (gptSuggestions) {
-          const pm = current(state.mapList[state.mapListIndex])
-          let mapAction = {type: MR.load, payload: {}}
-          try {
-            const gptParsed = JSON.parse(gptSuggestions)
-            console.log(gptParsed)
-            switch (promptId) {
-              case 'gptGenNodesS': mapAction = {type: MR.gptParseNodesS, payload: {gptParsed}}; break
-              case 'gptGenNodesT': mapAction = {type: MR.gptParseNodesT, payload: {gptParsed}}; break
-              case 'gptGenNodeMermaid': mapAction = {type: MR.gptParseNodeMermaid, payload: {gptParsed}}; break
-            }
-          } catch {
-            console.warn('unparseable:', gptSuggestions)
-          }
-          const m = mapReducer(pm, mapAction.type, mapAction.payload)
-          if (!isEqual(pm, m)) {
-            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            state.mapListIndex = state.mapListIndex + 1
-          }
-        }
-      }
-    )
-    builder.addMatcher(
       api.endpoints.saveMap.matchFulfilled,
       () => {
         console.log('save completed')

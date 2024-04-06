@@ -89,10 +89,6 @@ export enum MR {
   insertSDTable = 'insertSDTable',
   insertSOTable = 'insertSSOTable',
 
-  gptParseNodesS = 'gptParseNodesS',
-  gptParseNodesT = 'gptParseNodesT',
-  gptParseNodeMermaid = 'gptParseNodeMermaid',
-
   deleteL = 'deleteL',
   deleteLR = 'deleteLR',
   deleteSJumpSU = 'deleteSJumpSU',

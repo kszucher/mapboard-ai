@@ -8,7 +8,6 @@ import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertL, insertR, insertS, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyLRSC, copySC, cutLRSC, duplicateRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, cutSC, moveCRD, moveCRU, moveCCR, moveCCL, transpose, moveSC} from "./MapMove"
-import {gptParseNodeMermaid, gptParseNodesS, gptParseNodesT} from "./MapParseGpt"
 import {MR} from "./MapReducerEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {mapChain} from "./MapChain.ts"
@@ -98,10 +97,6 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'insertSDTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length + 1) as PS, payload); break
     case 'insertSUTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length) as PS, payload); break
     case 'insertSSOTable': insertTable(m, [...getXS(m).path, 's', getXS(m).so1.length] as PS, payload); break
-
-    case 'gptParseNodesS': gptParseNodesS(m, payload.gptParsed); break
-    case 'gptParseNodesT': gptParseNodesT(m, payload.gptParsed); break
-    case 'gptParseNodeMermaid': gptParseNodeMermaid(m, payload.gptParsed); break
 
     case 'deleteL': deleteL(m, payload); break
     case 'deleteLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; deleteLR(m); selectR(m, idToR(m, reselect )); break }
