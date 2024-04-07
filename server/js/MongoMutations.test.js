@@ -108,15 +108,14 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'createMapFrameDuplicate', [maps, 'm1', 'f2id', 'f_id'])).toEqual(result)
   })
   test('deleteMap', async() => {
-    const getSessions = (mapId) => ({sessions: [{sessionId: 's1', mapId, frameId: ''}]})
     const database = {
       users: [
-        { _id: 'u1', ...getSessions('map_o_1'), tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
-        { _id: 'u2', ...getSessions('map_o_2'), tabMapIdList: ['map_o_2', 'map_o_1_s_23456'] },
-        { _id: 'u3', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
-        { _id: 'u4', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
-        { _id: 'u5', ...getSessions('map_o_5'), tabMapIdList: ['map_o_5'] },
-        { _id: 'u6', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_1_s_23456'] },
+        { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'map_o_1', frameId: ''}], tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
+        { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'map_o_2', frameId: ''}], tabMapIdList: ['map_o_2', 'map_o_1_s_23456'] },
+        { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
+        { _id: 'u4', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
+        { _id: 'u5', sessions: [{sessionId: 's1', mapId: 'map_o_5', frameId: ''}], tabMapIdList: ['map_o_5'] },
+        { _id: 'u6', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_1_s_23456'] },
       ],
       maps: [
         { _id: 'map_o_1_s_23456', ownerUser: 'u1' },
@@ -143,12 +142,12 @@ describe("MongoMutationsTests", async() => {
       { ...database,
         ...{
           users: [
-            { _id: 'u1', ...getSessions('map_o_1'), tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
-            { _id: 'u2', ...getSessions('map_o_2'), tabMapIdList: ['map_o_2'] },
-            { _id: 'u3', ...getSessions('map_o_3'), tabMapIdList: ['map_o_3'] },
-            { _id: 'u4', ...getSessions('map_o_4'), tabMapIdList: ['map_o_4'] },
-            { _id: 'u5', ...getSessions('map_o_5'), tabMapIdList: ['map_o_5'] },
-            { _id: 'u6', ...getSessions(''), tabMapIdList: [] },
+            { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'map_o_1', frameId: ''}], tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
+            { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'map_o_2', frameId: ''}], tabMapIdList: ['map_o_2'] },
+            { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'map_o_3', frameId: ''}], tabMapIdList: ['map_o_3'] },
+            { _id: 'u4', sessions: [{sessionId: 's1', mapId: 'map_o_4', frameId: ''}], tabMapIdList: ['map_o_4'] },
+            { _id: 'u5', sessions: [{sessionId: 's1', mapId: 'map_o_5', frameId: ''}], tabMapIdList: ['map_o_5'] },
+            { _id: 'u6', sessions: [{sessionId: 's1', mapId: '', frameId: ''}], tabMapIdList: [] },
           ],
           shares: [
             { _id: 'share_2_1', ownerUser: 'u2', shareUser: 'u1', sharedMap: 'map_o_2_s_1' },
@@ -162,12 +161,12 @@ describe("MongoMutationsTests", async() => {
       { ...database,
         ...{
           users: [
-            { _id: 'u1', ...getSessions('map_o_1'), tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
-            { _id: 'u2', ...getSessions('map_o_2'), tabMapIdList: ['map_o_2'] },
-            { _id: 'u3', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
-            { _id: 'u4', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
-            { _id: 'u5', ...getSessions('map_o_5'), tabMapIdList: ['map_o_5'] },
-            { _id: 'u6', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_1_s_23456'] },
+            { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'map_o_1', frameId: ''}], tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
+            { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'map_o_2', frameId: ''}], tabMapIdList: ['map_o_2'] },
+            { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
+            { _id: 'u4', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
+            { _id: 'u5', sessions: [{sessionId: 's1', mapId: 'map_o_5', frameId: ''}], tabMapIdList: ['map_o_5'] },
+            { _id: 'u6', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_1_s_23456'] },
           ],
           shares: [
             { _id: 'share_1_3', ownerUser: 'u1', shareUser: 'u3', sharedMap: 'map_o_1_s_23456' },
