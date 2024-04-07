@@ -102,7 +102,7 @@ describe("MongoMutationsTests", async() => {
     }
     const result = {
       users: [ { _id: 'u1'}],
-      maps: [ { _id: 'm1', frames: [ 'f1', 'f2', 'f2', 'f3' ], framesInfo: [ {frameId: 'f1id'}, {frameId: 'f2id'},  {frameId: 'f_id'}, {frameId: 'f3id'} ] } ]
+      maps: [ { _id: 'm1', frames: [ 'f1', 'f2', 'f2', 'f3' ], framesInfo: [ {frameId: 'f1id'}, {frameId: 'f2id'}, {frameId: 'f_id'}, {frameId: 'f3id'} ] } ]
     }
     expect(await resolveMutation(test, 'createMapFrameDuplicate', [maps, 'm1', 'f2id', 'f_id'])).toEqual(result)
   })
@@ -271,7 +271,7 @@ describe("MongoMutationsTests", async() => {
         {_id: 'u1', tabMapIdList: ['map10', 'map20'] },
         {_id: 'u2', tabMapIdList: ['map30'] }
       ],
-      maps:  [
+      maps: [
         { _id: 'map10', path: [] },
         { _id: 'map11', path: ['map10'] },
         { _id: 'map12', path: ['map10', 'map11'] },
@@ -287,7 +287,7 @@ describe("MongoMutationsTests", async() => {
         {_id: 'u1', tabMapIdList: ['map10', 'map20'] },
         {_id: 'u2', tabMapIdList: ['map30'] }
       ],
-      maps:  [
+      maps: [
         { _id: 'map10', path: [] },
         { _id: 'map11', path: ['map10'] },
         { _id: 'map12', path: ['map10', 'map11'] },
