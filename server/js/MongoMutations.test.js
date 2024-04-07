@@ -107,77 +107,76 @@ describe("MongoMutationsTests", async() => {
     }
     expect(await resolveMutation(test, 'createMapFrameDuplicate', [maps, 'm1', 'f2id', 'f_id'])).toEqual(result)
   })
-  test('deleteMap', async() => {
-    const database = {
+  test('deleteMap.owned', async() => {
+    const test = {
       users: [
-        { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'map_o_1', frameId: ''}], tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
-        { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'map_o_2', frameId: ''}], tabMapIdList: ['map_o_2', 'map_o_1_s_23456'] },
-        { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
-        { _id: 'u4', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
-        { _id: 'u5', sessions: [{sessionId: 's1', mapId: 'map_o_5', frameId: ''}], tabMapIdList: ['map_o_5'] },
-        { _id: 'u6', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_1_s_23456'] },
+        { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm2'] },
+        { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm3'] },
+        { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm4'] },
+
       ],
       maps: [
-        { _id: 'map_o_1_s_23456', ownerUser: 'u1' },
-        { _id: 'map_o_1', ownerUser: 'u1' },
-        { _id: 'map_o_2_s_1', ownerUser: 'u2' },
-        { _id: 'map_o_2', ownerUser: 'u2' },
-        { _id: 'map_o_3', ownerUser: 'u3' },
-        { _id: 'map_o_4', ownerUser: 'u4' },
-        { _id: 'map_o_5', ownerUser: 'u5' },
-        { _id: 'map_o_6', ownerUser: 'u6' },
+        { _id: 'm1', ownerUser: 'u1' },
+        { _id: 'm2', ownerUser: 'u1' },
+        { _id: 'm3', ownerUser: 'u2' },
+        { _id: 'm4', ownerUser: 'u3' },
       ],
       shares: [
-        { _id: 'share_1_2', ownerUser: 'u1', shareUser: 'u2', sharedMap: 'map_o_1_s_23456' },
-        { _id: 'share_1_3', ownerUser: 'u1', shareUser: 'u3', sharedMap: 'map_o_1_s_23456' },
-        { _id: 'share_1_4', ownerUser: 'u1', shareUser: 'u4', sharedMap: 'map_o_1_s_23456' },
-        { _id: 'share_1_5', ownerUser: 'u1', shareUser: 'u5', sharedMap: 'map_o_1_s_23456' },
-        { _id: 'share_1_6', ownerUser: 'u1', shareUser: 'u6', sharedMap: 'map_o_1_s_23456' },
-        { _id: 'share_2_1', ownerUser: 'u2', shareUser: 'u1', sharedMap: 'map_o_2_s_1' },
+        { _id: 's1', ownerUser: 'u1', shareUser: 'u2', sharedMap: 'm1' },
+        { _id: 's2', ownerUser: 'u1', shareUser: 'u3', sharedMap: 'm1' },
       ],
     }
-    expect(
-      await resolveMutation(database, 'deleteMap', [users, shares, 'u1', 's1', 'map_o_1_s_23456'])
-    ).toEqual(
-      { ...database,
-        ...{
-          users: [
-            { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'map_o_1', frameId: ''}], tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
-            { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'map_o_2', frameId: ''}], tabMapIdList: ['map_o_2'] },
-            { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'map_o_3', frameId: ''}], tabMapIdList: ['map_o_3'] },
-            { _id: 'u4', sessions: [{sessionId: 's1', mapId: 'map_o_4', frameId: ''}], tabMapIdList: ['map_o_4'] },
-            { _id: 'u5', sessions: [{sessionId: 's1', mapId: 'map_o_5', frameId: ''}], tabMapIdList: ['map_o_5'] },
-            { _id: 'u6', sessions: [{sessionId: 's1', mapId: '', frameId: ''}], tabMapIdList: [] },
-          ],
-          shares: [
-            { _id: 'share_2_1', ownerUser: 'u2', shareUser: 'u1', sharedMap: 'map_o_2_s_1' },
-          ]
-        }
-      }
-    )
-    expect(
-      await resolveMutation(database, 'deleteMap', [users, shares, 'u2', 's1', 'map_o_1_s_23456'])
-    ).toEqual(
-      { ...database,
-        ...{
-          users: [
-            { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'map_o_1', frameId: ''}], tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
-            { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'map_o_2', frameId: ''}], tabMapIdList: ['map_o_2'] },
-            { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
-            { _id: 'u4', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
-            { _id: 'u5', sessions: [{sessionId: 's1', mapId: 'map_o_5', frameId: ''}], tabMapIdList: ['map_o_5'] },
-            { _id: 'u6', sessions: [{sessionId: 's1', mapId: 'map_o_1_s_23456', frameId: ''}], tabMapIdList: ['map_o_1_s_23456'] },
-          ],
-          shares: [
-            { _id: 'share_1_3', ownerUser: 'u1', shareUser: 'u3', sharedMap: 'map_o_1_s_23456' },
-            { _id: 'share_1_4', ownerUser: 'u1', shareUser: 'u4', sharedMap: 'map_o_1_s_23456' },
-            { _id: 'share_1_5', ownerUser: 'u1', shareUser: 'u5', sharedMap: 'map_o_1_s_23456' },
-            { _id: 'share_1_6', ownerUser: 'u1', shareUser: 'u6', sharedMap: 'map_o_1_s_23456' },
-            { _id: 'share_2_1', ownerUser: 'u2', shareUser: 'u1', sharedMap: 'map_o_2_s_1' },
-          ],
-        }
-      }
-    )
+    const result = {
+      users: [
+        { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'm2', frameId: ''}], tabMapIdList: ['m2'] },
+        { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'm3', frameId: ''}], tabMapIdList: ['m3'] },
+        { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'm4', frameId: ''}], tabMapIdList: ['m4'] },
+      ],
+      maps: [
+        { _id: 'm1', ownerUser: 'u1' },
+        { _id: 'm2', ownerUser: 'u1' },
+        { _id: 'm3', ownerUser: 'u2' },
+        { _id: 'm4', ownerUser: 'u3' },
+      ],
+      shares: []
+    }
+    expect(await resolveMutation(test, 'deleteMap', [users, shares, 'u1', 's1', 'm1'])).toEqual(result)
+  })
+  test('deleteMap.notOwned', async() => {
+    const test = {
+      users: [
+        { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm2'] },
+        { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm3'] },
+        { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm4'] },
+      ],
+      maps: [
+        { _id: 'm1', ownerUser: 'u2' },
+        { _id: 'm2', ownerUser: 'u1' },
+        { _id: 'm3', ownerUser: 'u2' },
+        { _id: 'm4', ownerUser: 'u3' },
+      ],
+      shares: [
+        { _id: 's1', ownerUser: 'u2', shareUser: 'u1', sharedMap: 'm1' },
+        { _id: 's2', ownerUser: 'u2', shareUser: 'u3', sharedMap: 'm1' },
+      ],
+    }
+    const result = {
+      users: [
+        { _id: 'u1', sessions: [{sessionId: 's1', mapId: 'm2', frameId: ''}], tabMapIdList: ['m2'] },
+        { _id: 'u2', sessions: [{sessionId: 's1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm3'] },
+        { _id: 'u3', sessions: [{sessionId: 's1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm4'] },
+      ],
+      maps: [
+        { _id: 'm1', ownerUser: 'u2' },
+        { _id: 'm2', ownerUser: 'u1' },
+        { _id: 'm3', ownerUser: 'u2' },
+        { _id: 'm4', ownerUser: 'u3' },
+      ],
+      shares: [
+        { _id: 's2', ownerUser: 'u2', shareUser: 'u3', sharedMap: 'm1' },
+      ],
+    }
+    expect(await resolveMutation(test, 'deleteMap', [users, shares, 'u1', 's1', 'm1'])).toEqual(result)
   })
   test('deleteMapFrame.fromStart', async() => {
     const test = {
