@@ -47,16 +47,10 @@ async function openWorkspace(users, userId, sessionId) {
         {
           $set: {
             access: {
-              $cond: { // TODO cond tests-reducers
+              $cond: {
                 if: { $eq: [ '$map.ownerUser', userId ] },
                 then: ACCESS_TYPES.EDIT,
-                else: {
-                  $cond: {
-                    if: { $ne: [ { $type: '$share' }, 'missing' ] },
-                    then: '$share.access',
-                    else: ACCESS_TYPES.UNAUTHORIZED
-                  }
-                }
+                else: '$share.access'
               }
             }
           }
