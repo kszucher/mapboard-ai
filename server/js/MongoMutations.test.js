@@ -78,21 +78,27 @@ describe("MongoMutationsTests", async() => {
     const modified = await resolveMutation(database, 'appendMapInTab', [users, 'user1', 'm3'])
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['m1', 'm2', 'm3'])
   })
-  test('createMapFrameImport', async() => {
-    const getDatabase = ({frames, framesInfo}) => ({
+  test('createMapFrameImport.withoutFrames', async() => {
+    const test = {
       users: [ { _id: 'user1'}],
-      maps: [ { _id: 'map1', versions: ['v1'], frames, framesInfo } ]
-    })
-    expect(await resolveMutation(
-      getDatabase({ frames: [ 'f1', 'f2', 'f3' ], framesInfo: [ {frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'f3'} ] }),
-      'createMapFrameImport', [maps, 'map1', 'f2', 'fn'])).toEqual(
-      getDatabase({ frames: [ 'f1', 'f2', 'v1', 'f3' ], framesInfo: [ { frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'fn'}, {frameId: 'f3'} ] })
-    )
-    expect(await resolveMutation(
-      getDatabase({ frames: [], framesInfo: [] }),
-      'createMapFrameImport', [maps, 'map1', '', 'fn'])).toEqual(
-      getDatabase({ frames: [ 'v1' ], framesInfo: [ {frameId: 'fn'} ] })
-    )
+      maps: [ { _id: 'map1', versions: ['v1'], frames: [ ], framesInfo: [ ] } ]
+    }
+    const result = {
+      users: [ { _id: 'user1'}],
+      maps: [ { _id: 'map1', versions: ['v1'], frames: ['v1'], framesInfo: [ {frameId: 'fn'} ] } ]
+    }
+    expect(await resolveMutation(test, 'createMapFrameImport', [maps, 'map1', '', 'fn'])).toEqual(result)
+  })
+  test('createMapFrameImport.withFrames', async() => {
+    const test = {
+      users: [ { _id: 'user1'}],
+      maps: [ { _id: 'map1', versions: ['v1'], frames: ['f1', 'f2', 'f3'], framesInfo: [ {frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'f3'} ] } ]
+    }
+    const result = {
+      users: [ { _id: 'user1'}],
+      maps: [ { _id: 'map1', versions: ['v1'], frames: ['f1', 'f2', 'v1', 'f3'], framesInfo: [ { frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'fn'}, {frameId: 'f3'} ] } ]
+    }
+    expect(await resolveMutation(test, 'createMapFrameImport', [maps, 'map1', 'f2', 'fn'])).toEqual(result)
   })
   test('createMapFrameDuplicate', async() => {
     const getDatabase = ({frames, framesInfo}) => ({
