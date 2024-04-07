@@ -1,6 +1,6 @@
 import { ACCESS_TYPES } from './Types'
 import { describe, expect, test,  beforeEach, afterEach } from 'vitest'
-import { getMultiMapMultiSource, mongoConnect, mongoDisconnect } from './MongoTestUtils'
+import { mongoConnect, mongoDisconnect } from './MongoTestUtils'
 import { resolveQuery } from './MongoTestUtils'
 
 let users, maps, shares

@@ -5,11 +5,6 @@ import MongoMutations from './MongoMutations'
 
 let client, users, maps, shares
 
-export const getMultiMapMultiSource = (mapArray) => {
-  const multiSource = { frames: mapArray, versions: mapArray }
-  return { maps: [ { _id: 'map1', ...multiSource }, { _id: 'map2', ...multiSource } ] }
-}
-
 export const mongoConnect = async () => {
   client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true, })
   await client.connect()
