@@ -54,24 +54,24 @@ describe("MongoMutationsTests", async() => {
     expect(getElemById(modified.users, 'user1').sessions).toEqual(expected)
   })
   test('moveUpMapInTab.canMove', async() => {
-    const database = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
-    const modified = await resolveMutation(database, 'moveUpMapInTab', [users, 'user1', 'mapMove'])
-    expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapMove', 'mapKeep1', 'mapKeep2'])
+    const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    const result = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm3', 'm2'] } ] }
+    expect(await resolveMutation(test, 'moveUpMapInTab', [users, 'u1', 'm3'])).toEqual(result)
   })
   test('moveUpMapInTab.cannotMove', async() => {
-    const database = { users: [ {_id: 'user1', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
-    const modified = await resolveMutation(database, 'moveUpMapInTab', [users, 'user1', 'mapMove'])
-    expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapMove', 'mapKeep1', 'mapKeep2'])
+    const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    const result = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    expect(await resolveMutation(test, 'moveUpMapInTab', [users, 'u1', 'm1'])).toEqual(result)
   })
   test('moveDownMapInTab.canMove', async() => {
-    const database = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
-    const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1', 'mapMove'])
-    expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapKeep1', 'mapKeep2', 'mapMove'])
+    const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    const result = { users: [ {_id: 'u1', tabMapIdList: ['m2', 'm1', 'm3'] } ] }
+    expect(await resolveMutation(test, 'moveDownMapInTab', [users, 'u1', 'm1'])).toEqual(result)
   })
   test('moveDownMapInTab.cannotMove', async() => {
-    const database = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
-    const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1', 'mapMove'])
-    expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapKeep1', 'mapKeep2', 'mapMove'])
+    const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    const result = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    expect(await resolveMutation(test, 'moveDownMapInTab', [users, 'u1', 'm3'])).toEqual(result)
   })
   test('appendMapInTab', async() => {
     const database = { users: [ {_id: 'user1', tabMapIdList: ['m1', 'm2'] } ] }
