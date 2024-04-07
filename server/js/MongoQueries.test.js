@@ -128,7 +128,7 @@ describe("MongoQueriesTests", async() => {
     expect((await resolveQuery(test, 'openWorkspace', [users, 'user1', 'session1'])).at(0)).toEqual(result)
   })
   test('getUserShares', async() => {
-    const database = {
+    const test = {
       users: [
         { _id: 'user1', email: 'user1@mail.com' },
         { _id: 'user2', email: 'user2@mail.com' },
@@ -146,8 +146,7 @@ describe("MongoQueriesTests", async() => {
         { _id: 'share4', access: 'edit', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map4' }
       ]
     }
-    const modified = await resolveQuery(database, 'getUserShares', [shares, 'user1'])
-    const expected = {
+    const result = {
       shareDataExport: [
         { _id: 'share1', access: 'view', status: 'accepted', shareUserEmail: 'user2@mail.com', sharedMapName: 'mapName1' },
         { _id: 'share2', access: 'edit', status: 'accepted', shareUserEmail: 'user2@mail.com', sharedMapName: 'mapName2' }
@@ -157,6 +156,6 @@ describe("MongoQueriesTests", async() => {
         { _id: 'share4', access: 'edit', status: 'accepted', ownerUserEmail: 'user2@mail.com', sharedMapName: 'mapName4' }
       ]
     }
-    expect(modified).toEqual(expected)
+    expect(await resolveQuery(test, 'getUserShares', [shares, 'user1'])).toEqual(result)
   })
 })
