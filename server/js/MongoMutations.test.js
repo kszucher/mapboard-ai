@@ -15,27 +15,19 @@ describe("MongoMutationsTests", async() => {
     await mongoDisconnect()
   })
   test('updateWorkspace.createUsingFirstTab', async() => {
-    const database = { users: [ {_id: 'user1', signInCount: 1, tabMapIdList: ['map1', 'map2'], sessions: [ ] } ] }
-    const modified = await resolveMutation(database, 'updateWorkspace', [users, 'user1', 'session1'])
-    const signInCountExpected = 2
-    const sessionsExpected = [ { sessionId: 'session1', mapId: 'map1', frameId: ''} ]
-    expect(getElemById(modified.users, 'user1').signInCount).toEqual(signInCountExpected)
-    expect(getElemById(modified.users, 'user1').sessions).toEqual(sessionsExpected)
+    const test = { users: [ {_id: 'u1', signInCount: 1, tabMapIdList: ['m1', 'm2'], sessions: [ ] } ] }
+    const result = { users: [ {_id: 'u1', signInCount: 2, tabMapIdList: ['m1', 'm2'], sessions: [ { sessionId: 's1', mapId: 'm1', frameId: '' } ] } ] }
+    expect(await resolveMutation(test, 'updateWorkspace', [users, 'u1', 's1'])).toEqual(result)
   })
   test('updateWorkspace.createUsingLastSession', async() => {
-    const database = { users: [ {_id: 'user1', signInCount: 1, sessions: [ { sessionId: 'session1', mapId: 'map1', frameId: 'frame1' } ] } ] }
-    const modified = await resolveMutation(database, 'updateWorkspace', [users, 'user1', 'session2'])
-    const sessionsExpected = [
-      { sessionId: 'session1', mapId: 'map1', frameId: 'frame1'},
-      { sessionId: 'session2', mapId: 'map1', frameId: 'frame1'},
-    ]
-    expect(getElemById(modified.users, 'user1').sessions).toEqual(sessionsExpected)
+    const test = { users: [ {_id: 'u1', signInCount: 1, sessions: [ { sessionId: 's1', mapId: 'm1', frameId: 'f1' } ] } ] }
+    const result = { users: [ {_id: 'u1', signInCount: 2, sessions: [ { sessionId: 's1', mapId: 'm1', frameId: 'f1'}, { sessionId: 's2', mapId: 'm1', frameId: 'f1'} ] } ] }
+    expect(await resolveMutation(test, 'updateWorkspace', [users, 'u1', 's2'])).toEqual(result)
   })
   test('updateWorkspace.keep', async() => {
-    const database = { users: [ {_id: 'user1', signInCount: 1, sessions: [ { sessionId: 'session1', mapId: 'map1', frameId: 'frame1' } ] } ] }
-    const modified = await resolveMutation(database, 'updateWorkspace', [users, 'user1', 'session1'])
-    const sessionsExpected = [ { sessionId: 'session1', mapId: 'map1', frameId: 'frame1'} ]
-    expect(getElemById(modified.users, 'user1').sessions).toEqual(sessionsExpected)
+    const test = { users: [ {_id: 'u1', signInCount: 1, sessions: [ { sessionId: 's1', mapId: 'm1', frameId: 'f1' } ] } ] }
+    const result = { users: [ {_id: 'u1', signInCount: 2, sessions: [ { sessionId: 's1', mapId: 'm1', frameId: 'f1' } ] } ] }
+    expect(await resolveMutation(test, 'updateWorkspace', [users, 'u1', 's1'])).toEqual(result)
   })
   test('toggleColorMode', async() => {
     const database = { users: [ {_id: 'user1', colorMode: 'light' } ] }
