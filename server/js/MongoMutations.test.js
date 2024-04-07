@@ -45,10 +45,9 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'resetSessions', [users, 'u1'])).toEqual(result)
   })
   test('selectMap', async() => {
-    const database = { users: [ {_id: 'u1', sessions: [ { sessionId: 's1' }, { sessionId: 's2' } ] } ] }
-    const modified = await resolveMutation(database, 'selectMap', [users, 'u1', 's2', 'm1', 'frame1'])
-    const expected = [ { sessionId: 's1' }, { sessionId: 's2', mapId: 'm1', frameId: 'frame1' } ]
-    expect(getElemById(modified.users, 'u1').sessions).toEqual(expected)
+    const test = { users: [ {_id: 'u1', sessions: [ { sessionId: 's1' }, { sessionId: 's2' } ] } ] }
+    const result = { users: [ {_id: 'u1', sessions: [ { sessionId: 's1' }, { sessionId: 's2', mapId: 'm1', frameId: 'f1' } ] } ] }
+    expect(await resolveMutation(test, 'selectMap', [users, 'u1', 's2', 'm1', 'f1'])).toEqual(result)
   })
   test('moveUpMapInTab.canMove', async() => {
     const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
