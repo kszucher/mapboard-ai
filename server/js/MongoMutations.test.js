@@ -211,19 +211,19 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'deleteMapFrame', [users, maps, 'u1', 's1', 'm1', 'f1'])).toEqual(result)
   })
   test('saveMap', async() => {
-    const mergeBase = [
+    const original = [
       {nodeId: 's', a: 'vo'},
       {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'vo', e: 'vo', f: 'vo', g: 'vo', h: 'vo', i: 'vo'},
     ]
-    const mergeMutationA = [
+    const mutationA = [
       {nodeId: 's', a: 'vo'},
       {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'va', e: 'va', f: 'va', j: 'va', l: 'vab'}
     ]
-    const mergeMutationB = [
+    const mutationB = [
       {nodeId: 's', a: 'vo'},
       {nodeId: 't', a: 'vo', b: 'vb', d: 'vo', e: 'vb', g: 'vo', h: 'vb', k: 'vb', l: 'vab'}
     ]
-    const mergeResult = [
+    const mergeAB = [
       {nodeId: 's', a: 'vo'},
       {nodeId: 't', a: 'vo', b: 'vb', d: 'va', e: 'va', j: 'va', k: 'vb', l: 'vab'}
     ]
@@ -235,7 +235,7 @@ describe("MongoMutationsTests", async() => {
         versionsInfo: [
           { modifierType: "user", userId: "user0", sessionId: 's1', versionId: 1 }
         ],
-        versions: [ mergeBase, mergeMutationA ]
+        versions: [ original, mutationA ]
       } ]
     }
     const result = {
@@ -248,11 +248,11 @@ describe("MongoMutationsTests", async() => {
             { modifierType: "user", userId: "user0", sessionId: 's1', versionId: 1 },
             { modifierType: "user", userId: "u1", sessionId: 's1', versionId: 2 }
           ],
-          versions: [ mergeBase, mergeMutationA, mergeResult ]
+          versions: [ original, mutationA, mergeAB ]
         }
       ]
     }
-    expect(await resolveMutation(test, 'saveMap', [maps, 'm1', 's1', 'map', mergeMutationB])).toEqual(result)
+    expect(await resolveMutation(test, 'saveMap', [maps, 'm1', 's1', 'map', mutationB])).toEqual(result)
   })
   test('saveMapFrame', async() => {
     const test = {
