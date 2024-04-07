@@ -1,6 +1,6 @@
 import { ACCESS_TYPES } from './Types'
 import { describe, expect, test,  beforeEach, afterEach } from 'vitest'
-import { mongoConnect, mongoDisconnect } from './MongoTestUtils'
+import {mongoConnect, mongoDisconnect} from './MongoTestUtils'
 import { resolveQuery } from './MongoTestUtils'
 
 let users, maps, shares
@@ -15,43 +15,117 @@ describe("MongoQueriesTests", async() => {
   afterEach(async () => {
     await mongoDisconnect()
   })
-  test('openWorkspace', async() => {
-    const getDatabase = ({frameId}) => ({
+  test('openWorkspace.nestedMap', async() => {
+    const test = {
       users: [
-        { _id: 'user1', name: 'user1', tabMapIdList: ['map1', 'map3', 'map2aa', 'map4'], sessions: [ { sessionId: 'session1', mapId: 'map2aaa', frameId } ], colorMode: 'dark' },
-        { _id: 'user2', name: 'user2', tabMapIdList: ['map2'], sessions: [ { sessionId: 'session1', mapId: 'map2' } ] }
+        { _id: 'user1', name: 'user1', tabMapIdList: ['map1', 'map2'], sessions: [ { sessionId: 'session1', mapId: 'map2aaa', frameId: '' } ], colorMode: 'dark' },
       ],
-      maps:  [
-        { _id: 'map1', name: 'mapName1', ownerUser: 'user1', path: [], versions: [ 'map1v1' ] },
-        { _id: 'map2', name: 'mapName2', ownerUser: 'user2', path: [], versions: [ 'map2v1' ] },
-        { _id: 'map2a', name: 'mapName2a', ownerUser: 'user2', path: ['map2'], versions: [ 'map2av1' ] },
-        { _id: 'map2aa', name: 'mapName2aa', ownerUser: 'user2', path: ['map2', 'map2a'], versions: [ 'map2aav1' ] },
-        { _id: 'map2aaa', name: 'mapName2aaa', ownerUser: 'user2', path: ['map2', 'map2a', 'map2aa'], frames: ['mf1', 'mf2'], framesInfo: [{ frameId: 'f1' }, { frameId: 'f2' }], versions: [ 'map2aaav1' ] },
-        { _id: 'map3', name: 'mapName3', ownerUser: 'user1', path: [], versions: [ 'map3v1' ] },
-        { _id: 'map4', name: 'mapName4', ownerUser: 'user1', path: [], versions: [ 'map4v1' ] },
+      maps: [
+        { _id: 'map1', name: 'mapName1', ownerUser: 'user1',  path: [] },
+        { _id: 'map2', name: 'mapName2', ownerUser: 'user1', path: [] },
+        { _id: 'map2a', name: 'mapName2a', ownerUser: 'user1', path: ['map2']},
+        { _id: 'map2aa', name: 'mapName2aa', ownerUser: 'user1', path: ['map2', 'map2a'] },
+        { _id: 'map2aaa', name: 'mapName2aaa', ownerUser: 'user1', path: ['map2', 'map2a', 'map2aa'], frames: [], framesInfo: [], versions: [ 'map2aaav1' ] },
+      ],
+    }
+    const result = {
+      name: 'user1',
+      colorMode: 'dark',
+      access: ACCESS_TYPES.EDIT,
+      tabId: 1,
+      mapId: 'map2aaa',
+      frameId: '',
+      mapDataList: [ 'map2aaav1' ],
+      tabMapIdList: ['map1', 'map2'],
+      tabMapNameList: [ { name: 'mapName1' }, { name:'mapName2' } ],
+      breadcrumbMapIdList: ['map2', 'map2a', 'map2aa', 'map2aaa'],
+      breadcrumbMapNameList: [ { name: 'mapName2' }, { name: 'mapName2a' }, { name: 'mapName2aa' }, { name: 'mapName2aaa' } ],
+      frameIdList: []
+    }
+    expect((await resolveQuery(test, 'openWorkspace', [users, 'user1', 'session1'])).at(0)).toEqual(result)
+  })
+  test('openWorkspace.frame', async() => {
+    const test = {
+      users: [
+        { _id: 'user1', name: 'user1', tabMapIdList: ['map1', 'map2'], sessions: [ { sessionId: 'session1', mapId: 'map2', frameId: 'f2' } ], colorMode: 'dark' },
+      ],
+      maps: [
+        { _id: 'map1', name: 'mapName1', ownerUser: 'user1', path: [] },
+        { _id: 'map2', name: 'mapName2', ownerUser: 'user1', path: [], frames: ['mf1', 'mf2'], framesInfo: [{ frameId: 'f1' }, { frameId: 'f2' }]},
+      ],
+    }
+    const result = {
+      name: 'user1',
+      colorMode: 'dark',
+      access: ACCESS_TYPES.EDIT,
+      tabId: 1,
+      mapId: 'map2',
+      frameId: 'f2',
+      mapDataList: [ 'mf2' ],
+      tabMapIdList: ['map1', 'map2'],
+      tabMapNameList: [ { name: 'mapName1' }, { name:'mapName2' } ],
+      breadcrumbMapIdList: [ 'map2' ],
+      breadcrumbMapNameList: [ { name: 'mapName2' } ],
+      frameIdList: ['f1', 'f2']
+    }
+    expect((await resolveQuery(test, 'openWorkspace', [users, 'user1', 'session1'])).at(0)).toEqual(result)
+  })
+  test('openWorkspace.foreignMapView', async() => {
+    const test = {
+      users: [
+        { _id: 'user1', name: 'user1', tabMapIdList: ['map1'], sessions: [ { sessionId: 'session1', mapId: 'map1', frameId: '' } ], colorMode: 'dark' },
+        { _id: 'user2'},
+      ],
+      maps: [
+        { _id: 'map1', name: 'mapName1', ownerUser: 'user2',  path: [], frames: [], framesInfo: [], versions: [ 'map1v1' ] },
       ],
       shares: [
-        { _id: 'share1', access: 'view', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map2aa' },
+        { _id: 'share1', access: 'view', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map1' },
       ]
-    })
-    const modifiedA = (await resolveQuery(getDatabase({frameId: ''}), 'openWorkspace', [users, 'user1', 'session1'])).at(0)
-    const modifiedB = (await resolveQuery(getDatabase({frameId: 'f2'}), 'openWorkspace', [users, 'user1', 'session1'])).at(0)
-    const getExpected = ({frameId, mapDataList}) => ({
+    }
+    const result = {
       name: 'user1',
       colorMode: 'dark',
       access: ACCESS_TYPES.VIEW,
-      tabId: 2,
-      mapId: 'map2aaa',
-      frameId,
-      mapDataList,
-      tabMapIdList: ['map1', 'map3', 'map2aa', 'map4'],
-      tabMapNameList: [ { name: 'mapName1' }, { name:'mapName3' }, { name:'mapName2aa' }, { name:'mapName4' } ],
-      breadcrumbMapIdList: ['map2aa', 'map2aaa'],
-      breadcrumbMapNameList: [ { name: 'mapName2aa' }, { name: 'mapName2aaa' } ],
-      frameIdList: ['f1', 'f2']
-    })
-    expect(modifiedA).toEqual(getExpected({frameId: '', mapDataList: [ 'map2aaav1' ]}))
-    expect(modifiedB).toEqual(getExpected({frameId: 'f2', mapDataList: [ 'mf2' ] }))
+      tabId: 0,
+      mapId: 'map1',
+      frameId: '',
+      mapDataList: [ 'map1v1' ],
+      tabMapIdList: ['map1'],
+      tabMapNameList: [ { name: 'mapName1' } ],
+      breadcrumbMapIdList: ['map1' ],
+      breadcrumbMapNameList: [ { name: 'mapName1' } ],
+      frameIdList: []
+    }
+    expect((await resolveQuery(test, 'openWorkspace', [users, 'user1', 'session1'])).at(0)).toEqual(result)
+  })
+  test('openWorkspace.foreignMapEdit', async() => {
+    const test = {
+      users: [
+        { _id: 'user1', name: 'user1', tabMapIdList: ['map1'], sessions: [ { sessionId: 'session1', mapId: 'map1', frameId: '' } ], colorMode: 'dark' },
+      ],
+      maps: [
+        { _id: 'map1', name: 'mapName1', ownerUser: 'user2',  path: [], frames: [], framesInfo: [], versions: [ 'map1v1' ] },
+      ],
+      shares: [
+        { _id: 'share1', access: 'edit', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map1' },
+      ]
+    }
+    const result = {
+      name: 'user1',
+      colorMode: 'dark',
+      access: ACCESS_TYPES.EDIT,
+      tabId: 0,
+      mapId: 'map1',
+      frameId: '',
+      mapDataList: [ 'map1v1' ],
+      tabMapIdList: ['map1'],
+      tabMapNameList: [ { name: 'mapName1' } ],
+      breadcrumbMapIdList: ['map1' ],
+      breadcrumbMapNameList: [ { name: 'mapName1' } ],
+      frameIdList: []
+    }
+    expect((await resolveQuery(test, 'openWorkspace', [users, 'user1', 'session1'])).at(0)).toEqual(result)
   })
   test('getUserShares', async() => {
     const database = {
