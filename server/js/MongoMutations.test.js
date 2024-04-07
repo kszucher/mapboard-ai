@@ -266,7 +266,7 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'saveMapFrame', [maps, 'm1', 'f2id', 'nmf'])).toEqual(result)
   })
   test('deleteUnusedMaps', async() => {
-    const database = {
+    const test = {
       users: [
         {_id: 'u1', tabMapIdList: ['map10', 'map20'] },
         {_id: 'u2', tabMapIdList: ['map30'] }
@@ -282,14 +282,19 @@ describe("MongoMutationsTests", async() => {
         { _id: 'map41', path: ['map40'] },
       ]
     }
-    const modified = await resolveMutation(database, 'deleteUnusedMaps', [users, maps])
-    const expected = [
-      { _id: 'map10', path: [] },
-      { _id: 'map11', path: ['map10'] },
-      { _id: 'map12', path: ['map10', 'map11'] },
-      { _id: 'map20', path: [] },
-      { _id: 'map30', path: [] },
-    ]
-    expect(modified.maps).toEqual(expected)
+    const result = {
+      users: [
+        {_id: 'u1', tabMapIdList: ['map10', 'map20'] },
+        {_id: 'u2', tabMapIdList: ['map30'] }
+      ],
+      maps:  [
+        { _id: 'map10', path: [] },
+        { _id: 'map11', path: ['map10'] },
+        { _id: 'map12', path: ['map10', 'map11'] },
+        { _id: 'map20', path: [] },
+        { _id: 'map30', path: [] },
+      ]
+    }
+    expect(await resolveMutation(test, 'deleteUnusedMaps', [users, maps])).toEqual(result)
   })
 })
