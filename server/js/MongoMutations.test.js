@@ -29,10 +29,15 @@ describe("MongoMutationsTests", async() => {
     const result = { users: [ {_id: 'u1', signInCount: 2, sessions: [ { sessionId: 's1', mapId: 'm1', frameId: 'f1' } ] } ] }
     expect(await resolveMutation(test, 'updateWorkspace', [users, 'u1', 's1'])).toEqual(result)
   })
-  test('toggleColorMode', async() => {
-    const database = { users: [ {_id: 'u1', colorMode: 'light' } ] }
-    const modified = await resolveMutation(database, 'toggleColorMode', [users, 'u1'])
-    expect(getElemById(modified.users, 'u1').colorMode).toEqual('dark')
+  test('toggleColorMode.l2d', async() => {
+    const test = { users: [ {_id: 'u1', colorMode: 'light' } ] }
+    const result = { users: [ {_id: 'u1', colorMode: 'dark' } ] }
+    expect(await resolveMutation(test, 'toggleColorMode', [users, 'u1'])).toEqual(result)
+  })
+  test('toggleColorMode.d2l', async() => {
+    const test = { users: [ {_id: 'u1', colorMode: 'dark' } ] }
+    const result = { users: [ {_id: 'u1', colorMode: 'light' } ] }
+    expect(await resolveMutation(test, 'toggleColorMode', [users, 'u1'])).toEqual(result)
   })
   test('resetSessions', async() => {
     const database = { users: [ {_id: 'u1', session: ['a', 'b'] } ] }
