@@ -222,10 +222,9 @@ app.post('/move-down-map-in-tab', checkJwt, async (req, res) => {
 app.post('/delete-map', checkJwt, async (req, res) => {
   const user = await users.findOne({ sub: req.auth.payload.sub })
   const userId = user._id
-  const sessionId = req.auth.token.slice(-8)
   // TODO prevent deleting the last map in tab
   const mapId = ObjectId(req.body.mapId)
-  await MongoMutations.deleteMap(users, shares, userId, sessionId, mapId)
+  await MongoMutations.deleteMap(users, shares, userId, mapId)
   return res.json({})
 })
 

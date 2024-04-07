@@ -166,10 +166,7 @@ async function createMapFrameDuplicate (maps, mapId, frameId, newFrameId) {
   await createMapFrame (maps, mapId, frameId, newFrameId, { $arrayElemAt: [ '$frames', getIndexOfFrameId(frameId) ] })
 }
 
-async function deleteMap (users, shares, userId, sessionId, mapId) {
-  const mapTabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
-  const mapInTab = { $ne: [ mapTabIndex, -1 ] }
-  const tabSize = { $size: "$tabMapIdList" }
+async function deleteMap (users, shares, userId, mapId) {
   await users.aggregate(
     [
       { $lookup: { from: "maps", localField: '_id', foreignField: "ownerUser", pipeline: [ { $match: { _id: mapId } } ], as: "map" } },
@@ -199,29 +196,52 @@ async function deleteMap (users, shares, userId, sessionId, mapId) {
           }
         }
       },
-      { ...setSession(
-          sessionId,
-          {
-            $switch: {
-              branches: [
-                {
-                  case: { $and: [ mapInTab, { $eq: [ tabSize, 1 ] } ] },
-                  then: ''
+      {
+        $set: {
+          sessions: {
+            $map: {
+              input: "$sessions",
+              as: "session",
+              in: {
+                sessionId: '$$session.sessionId',
+                mapId: {
+                  $switch: {
+                    branches: [
+                      {
+                        case: {
+                          $and: [
+                            { $ne: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, -1 ] },
+                            { $eq: [ { $size: "$tabMapIdList" }, 1 ] }
+                          ] },
+                        then: ''
+                      },
+                      {
+                        case: {
+                          $and: [
+                            { $ne: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, -1 ] },
+                            { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
+                            { $eq: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] }
+                          ] },
+                        then: { $arrayElemAt: [ '$tabMapIdList', 1 ] }
+                      },
+                      {
+                        case: {
+                          $and: [
+                            { $ne: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, -1 ] },
+                            { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
+                            { $gt: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] }
+                          ] },
+                        then: { $arrayElemAt: [ '$tabMapIdList', { $subtract: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 1 ] } ] }
+                      },
+                    ],
+                    default: '$$session.mapId'
+                  }
                 },
-                {
-                  case: { $and: [ mapInTab, { $gt: [ tabSize, 1 ] }, { $eq: [ mapTabIndex, 0 ] } ] },
-                  then: { $arrayElemAt: [ '$tabMapIdList', 1 ] }
-                },
-                {
-                  case: { $and: [ mapInTab, { $gt: [ tabSize, 1 ] }, { $gt: [ mapTabIndex, 0 ] } ] },
-                  then: { $arrayElemAt: [ '$tabMapIdList', { $subtract: [ mapTabIndex, 1 ] } ] }
-                },
-              ],
-              default: getSessionField(sessionId, 'mapId')
+                frameId: '$$session.frameId'
+              }
             }
-          },
-          ''
-        )
+          }
+        }
       },
       {
         $set: {
