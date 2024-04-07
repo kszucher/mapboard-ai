@@ -1,6 +1,5 @@
 import { describe, expect, test,  beforeEach, afterEach } from 'vitest'
 import { mongoConnect, mongoDisconnect, resolveMutation } from './MongoTestUtils'
-const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestData')
 
 let users, maps, shares
 
@@ -212,29 +211,48 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'deleteMapFrame', [users, maps, 'u1', 's1', 'm1', 'f1'])).toEqual(result)
   })
   test('saveMap', async() => {
-    const database = {
-      users: [{ _id: 'u1'}],
-      maps: [
-        { _id: 'm1',
-          ownerUser:'u1',
-          versionsInfo: [ { modifierType: "user", userId: "user0", sessionId: 's1', versionId: 1 } ],
-          versions: [ mergeBase, mergeMutationA ]
-        }
-      ]
-    }
-    const modified = await resolveMutation(database, 'saveMap', [maps, 'm1', 's1', 'map', mergeMutationB])
-    const expected = [
-      {
+    const mergeBase = [
+      {nodeId: 's', a: 'vo'},
+      {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'vo', e: 'vo', f: 'vo', g: 'vo', h: 'vo', i: 'vo'},
+    ]
+    const mergeMutationA = [
+      {nodeId: 's', a: 'vo'},
+      {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'va', e: 'va', f: 'va', j: 'va', l: 'vab'}
+    ]
+    const mergeMutationB = [
+      {nodeId: 's', a: 'vo'},
+      {nodeId: 't', a: 'vo', b: 'vb', d: 'vo', e: 'vb', g: 'vo', h: 'vb', k: 'vb', l: 'vab'}
+    ]
+    const mergeResult = [
+      {nodeId: 's', a: 'vo'},
+      {nodeId: 't', a: 'vo', b: 'vb', d: 'va', e: 'va', j: 'va', k: 'vb', l: 'vab'}
+    ]
+    const test = {
+      users: [ { _id: 'u1'} ],
+      maps: [ {
         _id: 'm1',
         ownerUser:'u1',
         versionsInfo: [
-          { modifierType: "user", userId: "user0", sessionId: 's1', versionId: 1 },
-          { modifierType: "user", userId: "u1", sessionId: 's1', versionId: 2 }
+          { modifierType: "user", userId: "user0", sessionId: 's1', versionId: 1 }
         ],
-        versions: [ mergeBase, mergeMutationA, mergeResult ]
-      }
-    ]
-    expect(modified.maps).toEqual(expected)
+        versions: [ mergeBase, mergeMutationA ]
+      } ]
+    }
+    const result = {
+      users: [ { _id: 'u1'} ],
+      maps: [
+        {
+          _id: 'm1',
+          ownerUser:'u1',
+          versionsInfo: [
+            { modifierType: "user", userId: "user0", sessionId: 's1', versionId: 1 },
+            { modifierType: "user", userId: "u1", sessionId: 's1', versionId: 2 }
+          ],
+          versions: [ mergeBase, mergeMutationA, mergeResult ]
+        }
+      ]
+    }
+    expect(await resolveMutation(test, 'saveMap', [maps, 'm1', 's1', 'map', mergeMutationB])).toEqual(result)
   })
   test('saveMapFrame', async() => {
     const test = {
