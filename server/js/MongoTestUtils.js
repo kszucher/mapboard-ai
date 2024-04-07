@@ -10,8 +10,6 @@ export const getMultiMapMultiSource = (mapArray) => {
   return { maps: [ { _id: 'map1', ...multiSource }, { _id: 'map2', ...multiSource } ] }
 }
 
-export const getElemById = (list, id) => (list.find(el => el._id === id))
-
 export const mongoConnect = async () => {
   client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true, })
   await client.connect()

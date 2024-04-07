@@ -1,5 +1,5 @@
 import { describe, expect, test,  beforeEach, afterEach } from 'vitest'
-import { getElemById, mongoConnect, mongoDisconnect, resolveMutation } from './MongoTestUtils'
+import { mongoConnect, mongoDisconnect, resolveMutation } from './MongoTestUtils'
 const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestData')
 
 let users, maps, shares
@@ -70,9 +70,9 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'moveDownMapInTab', [users, 'u1', 'm3'])).toEqual(result)
   })
   test('appendMapInTab', async() => {
-    const database = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2'] } ] }
-    const modified = await resolveMutation(database, 'appendMapInTab', [users, 'u1', 'm3'])
-    expect(getElemById(modified.users, 'u1').tabMapIdList).toEqual(['m1', 'm2', 'm3'])
+    const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2'] } ] }
+    const result = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    expect(await resolveMutation(test, 'appendMapInTab', [users, 'u1', 'm3'])).toEqual(result)
   })
   test('createMapFrameImport.withoutFrames', async() => {
     const test = {
@@ -227,12 +227,15 @@ describe("MongoMutationsTests", async() => {
     expect(modified.maps).toEqual(expected)
   })
   test('saveMapFrame', async() => {
-    const database = {
+    const test = {
       users: [ {_id: 'u1'} ],
       maps: [ { _id: 'm1', ownerUser: 'u1', frames: [ 'mf1', 'omf', 'mf2' ], framesInfo: [ {frameId: 'f1id'}, {frameId: 'f2id'}, {frameId: 'f3id'} ] }]
     }
-    const modified = await resolveMutation(database, 'saveMapFrame', [maps, 'm1', 'f2id', 'nmf'])
-    expect(getElemById(modified.maps, 'm1').frames).toEqual([ 'mf1', 'nmf', 'mf2' ])
+    const result = {
+      users: [ {_id: 'u1'} ],
+      maps: [ { _id: 'm1', ownerUser: 'u1', frames: [ 'mf1', 'nmf', 'mf2' ], framesInfo: [ {frameId: 'f1id'}, {frameId: 'f2id'}, {frameId: 'f3id'} ] }]
+    }
+    expect(await resolveMutation(test, 'saveMapFrame', [maps, 'm1', 'f2id', 'nmf'])).toEqual(result)
   })
   test('deleteUnusedMaps', async() => {
     const database = {
