@@ -40,9 +40,9 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'toggleColorMode', [users, 'u1'])).toEqual(result)
   })
   test('resetSessions', async() => {
-    const database = { users: [ {_id: 'u1', session: ['a', 'b'] } ] }
-    const modified = await resolveMutation(database, 'resetSessions', [users, 'u1'])
-    expect(getElemById(modified.users, 'u1').sessions).toEqual([])
+    const test = { users: [ {_id: 'u1', sessions: ['s1', 's2'] } ] }
+    const result = { users: [ {_id: 'u1', sessions: [] } ] }
+    expect(await resolveMutation(test, 'resetSessions', [users, 'u1'])).toEqual(result)
   })
   test('selectMap', async() => {
     const database = { users: [ {_id: 'u1', sessions: [ { sessionId: 's1' }, { sessionId: 's2' } ] } ] }
