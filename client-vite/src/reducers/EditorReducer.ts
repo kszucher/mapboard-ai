@@ -20,20 +20,20 @@ export const editorSlice = createSlice({
   reducers: {
     setToken(state, action: PayloadAction<string>) { state.token = action.payload },
     resetState() {return JSON.parse(editorStateDefault)},
-    setIsLoading(state, action: PayloadAction<boolean>) { state.isLoading = action.payload},
-    setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) { state.leftMouseMode = action.payload},
-    setMidMouseMode(state, action: PayloadAction<MidMouseMode>) { state.midMouseMode = action.payload},
+    setIsLoading(state, action: PayloadAction<boolean>) { state.isLoading = action.payload },
+    setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) { state.leftMouseMode = action.payload },
+    setMidMouseMode(state, action: PayloadAction<MidMouseMode>) { state.midMouseMode = action.payload },
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
     setDialogState(state, action: PayloadAction<DialogState>) { state.dialogState = action.payload },
     setAlertDialogState(state, action: PayloadAction<AlertDialogState>) { state.alertDialogState = action.payload },
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
-    openFormatter(state) { state.formatterVisible = true},
-    closeFormatter(state) { state.formatterVisible = false},
-    setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload},
+    openFormatter(state) { state.formatterVisible = true },
+    closeFormatter(state) { state.formatterVisible = false },
+    setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload },
     showConnectionHelpers(state) { state.connectionHelpersVisible = true },
     hideConnectionHelpers(state) { state.connectionHelpersVisible = false },
-    setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload},
-    clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R}},
+    setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload },
+    clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R} },
     mapAction(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {

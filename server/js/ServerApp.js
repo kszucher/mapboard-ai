@@ -126,7 +126,7 @@ app.post('/create-map-in-map', checkJwt, async (req, res) => {
   const userId = user._id
   const sessionId = req.auth.token.slice(-8)
   const mapId = ObjectId(req.body.mapId)
-  const { nodeId, content } = req.body.payload
+  const { nodeId, content } = req.body
   const map = await maps.findOne({ _id: mapId })
   const { path } = map
   const newMap = getDefaultMap(content, userId, [...path, mapId])
@@ -244,7 +244,7 @@ app.post('/save-map', checkJwt, async (req, res) => {
   const userId = user._id
   const sessionId = req.auth.token.slice(-8)
   const mapId = ObjectId(req.body.mapId)
-  const { frameId, mapData } = req.body.payload
+  const { frameId, mapData } = req.body
   const map = await maps.findOne({ _id: mapId })
   const { ownerUser } = map
   const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
@@ -268,7 +268,7 @@ app.post('/create-share', checkJwt, async (req, res) => {
   const user = await users.findOne({ sub: req.auth.payload.sub })
   const userId = user._id
   const mapId = ObjectId(req.body.mapId)
-  const { shareEmail, shareAccess } = req.body.payload
+  const { shareEmail, shareAccess } = req.body
   const shareUser = await users.findOne({ email: shareEmail })
   if (shareUser === null) {
     return res.status(400).send({message: 'Create Share Failed: Not A Valid User'})
