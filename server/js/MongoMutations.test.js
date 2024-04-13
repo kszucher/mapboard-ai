@@ -58,6 +58,11 @@ describe("MongoMutationsTests", async() => {
     const result = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
     expect(await resolveMutation(test, 'moveUpMapInTab', [users, 'u1', 'm1'])).toEqual(result)
   })
+  test('moveUpMapInTab.notIncluded', async() => {
+    const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    const result = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    expect(await resolveMutation(test, 'moveUpMapInTab', [users, 'u1', 'm4'])).toEqual(result)
+  })
   test('moveDownMapInTab.canMove', async() => {
     const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
     const result = { users: [ {_id: 'u1', tabMapIdList: ['m2', 'm1', 'm3'] } ] }
@@ -67,6 +72,11 @@ describe("MongoMutationsTests", async() => {
     const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
     const result = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
     expect(await resolveMutation(test, 'moveDownMapInTab', [users, 'u1', 'm3'])).toEqual(result)
+  })
+  test('moveDownMapInTab.notIncluded', async() => {
+    const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    const result = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
+    expect(await resolveMutation(test, 'moveDownMapInTab', [users, 'u1', 'm4'])).toEqual(result)
   })
   test('appendMapInTab', async() => {
     const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2'] } ] }
@@ -106,7 +116,7 @@ describe("MongoMutationsTests", async() => {
     }
     expect(await resolveMutation(test, 'createMapFrameDuplicate', [maps, 'm1', 'f2id', 'f_id'])).toEqual(result)
   })
-  test('deleteMap.owned', async() => {
+  test('deleteMap', async() => {
     const test = {
       users: [
         { _id: 'u1', sessions: [{sessionId: 'su1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm2'] },
@@ -141,41 +151,34 @@ describe("MongoMutationsTests", async() => {
     }
     expect(await resolveMutation(test, 'deleteMap', [users, shares, 'u1', 'm1'])).toEqual(result)
   })
-  test('deleteMap.notOwned', async() => {
+  test('deleteShare', async() => {
     const test = {
       users: [
         { _id: 'u1', sessions: [{sessionId: 'su1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm2'] },
         { _id: 'u2', sessions: [{sessionId: 'su2', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm3'] },
-        { _id: 'u3', sessions: [{sessionId: 'su3', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm4'] },
       ],
       maps: [
         { _id: 'm1', ownerUser: 'u2' },
         { _id: 'm2', ownerUser: 'u1' },
         { _id: 'm3', ownerUser: 'u2' },
-        { _id: 'm4', ownerUser: 'u3' },
       ],
       shares: [
-        { _id: 's1', ownerUser: 'u2', shareUser: 'u1', sharedMap: 'm1' },
-        { _id: 's2', ownerUser: 'u2', shareUser: 'u3', sharedMap: 'm1' },
+        { _id: 's1', ownerUser: 'u1', shareUser: 'u2', sharedMap: 'm1' },
       ],
     }
     const result = {
       users: [
-        { _id: 'u1', sessions: [{sessionId: 'su1', mapId: 'm2', frameId: ''}], tabMapIdList: ['m2'] },
-        { _id: 'u2', sessions: [{sessionId: 'su2', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm3'] },
-        { _id: 'u3', sessions: [{sessionId: 'su3', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm4'] },
+        { _id: 'u1', sessions: [{sessionId: 'su1', mapId: 'm1', frameId: ''}], tabMapIdList: ['m1', 'm2'] },
+        { _id: 'u2', sessions: [{sessionId: 'su2', mapId: 'm3', frameId: ''}], tabMapIdList: ['m3'] },
       ],
       maps: [
         { _id: 'm1', ownerUser: 'u2' },
         { _id: 'm2', ownerUser: 'u1' },
         { _id: 'm3', ownerUser: 'u2' },
-        { _id: 'm4', ownerUser: 'u3' },
       ],
-      shares: [
-        { _id: 's2', ownerUser: 'u2', shareUser: 'u3', sharedMap: 'm1' },
-      ],
+      shares: [],
     }
-    expect(await resolveMutation(test, 'deleteMap', [users, shares, 'u1', 'm1'])).toEqual(result)
+    expect(await resolveMutation(test, 'deleteShare', [users, shares, 's1'])).toEqual(result)
   })
   test('deleteMapFrame.fromStart', async() => {
     const test = {

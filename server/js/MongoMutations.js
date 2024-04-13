@@ -1,4 +1,4 @@
-const { getLastElemField, getIndexOfFrameId, getFrameIdOfIndex, getSessionField, setSession } = require('./MongoHelpers')
+const { getLastElemField, getIndexOfFrameId, getFrameIdOfIndex, setSession } = require('./MongoHelpers')
 
 async function updateWorkspace(users, userId, sessionId) {
   await users.aggregate(
@@ -82,16 +82,16 @@ async function moveUpMapInTab (users, userId, mapId) {
       $set: {
         tabMapIdList: {
           $cond: {
-            if: { $eq: [ tabIndex, 0 ] },
-            then: "$tabMapIdList",
-            else: {
+            if: { $and: [ { $ne: [tabIndex, -1] }, { $gt: [tabIndex, 0] } ] },
+            then: {
               $concatArrays: [
-                { $slice: [ "$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] },
-                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
-                [ { $arrayElemAt: ["$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] } ],
-                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 1 ] }, { $size: "$tabMapIdList" } ] }
+                {$slice: ["$tabMapIdList", {$subtract: [tabIndex, 1]}]},
+                [{$arrayElemAt: ["$tabMapIdList", tabIndex]}],
+                [{$arrayElemAt: ["$tabMapIdList", {$subtract: [tabIndex, 1]}]}],
+                {$slice: ["$tabMapIdList", {$add: [tabIndex, 1]}, {$size: "$tabMapIdList"}]}
               ]
-            }
+            },
+            else: "$tabMapIdList",
           }
         }
       }
@@ -107,16 +107,16 @@ async function moveDownMapInTab (users, userId, mapId) {
       $set: {
         tabMapIdList: {
           $cond: {
-            if: { $eq: [ tabIndex, { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] },
-            then: "$tabMapIdList",
-            else: {
+            if: { $and: [ { $ne: [tabIndex, -1] }, { $lt: [ tabIndex, { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] } ] },
+            then: {
               $concatArrays: [
-                { $slice: [ "$tabMapIdList", tabIndex ] },
-                [ { $arrayElemAt: ["$tabMapIdList", { $add: [ tabIndex, 1 ] } ] } ],
-                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
-                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 2 ] }, { $size: "$tabMapIdList" } ] }
+                {$slice: ["$tabMapIdList", tabIndex]},
+                [{$arrayElemAt: ["$tabMapIdList", {$add: [tabIndex, 1]}]}],
+                [{$arrayElemAt: ["$tabMapIdList", tabIndex]}],
+                {$slice: ["$tabMapIdList", {$add: [tabIndex, 2]}, {$size: "$tabMapIdList"}]}
               ]
-            }
+            },
+            else: "$tabMapIdList",
           }
         }
       }
@@ -166,6 +166,69 @@ async function createMapFrameDuplicate (maps, mapId, frameId, newFrameId) {
   await createMapFrame (maps, mapId, frameId, newFrameId, { $arrayElemAt: [ '$frames', getIndexOfFrameId(frameId) ] })
 }
 
+const deleteMapFromAllUserSessionsPipelineStep = (mapId) => (
+  {
+    $set: {
+      sessions: {
+        $map: {
+          input: "$sessions",
+          as: "session",
+          in: {
+            sessionId: '$$session.sessionId',
+            mapId: {
+              $switch: {
+                branches: [
+                  {
+                    case: {
+                      $and: [
+                        { $ne: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, -1 ] },
+                        { $eq: [ { $size: "$tabMapIdList" }, 1 ] }
+                      ] },
+                    then: ''
+                  },
+                  {
+                    case: {
+                      $and: [
+                        { $ne: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, -1 ] },
+                        { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
+                        { $eq: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] }
+                      ] },
+                    then: { $arrayElemAt: [ '$tabMapIdList', 1 ] }
+                  },
+                  {
+                    case: {
+                      $and: [
+                        { $ne: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, -1 ] },
+                        { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
+                        { $gt: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] }
+                      ] },
+                    then: { $arrayElemAt: [ '$tabMapIdList', { $subtract: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 1 ] } ] }
+                  },
+                ],
+                default: '$$session.mapId'
+              }
+            },
+            frameId: '$$session.frameId'
+          }
+        }
+      }
+    }
+  }
+)
+
+const deleteMapFromAllUserTabMapIdListPipelineStep = (mapId) => (
+  {
+    $set: {
+      tabMapIdList : {
+        $filter : {
+          input: "$tabMapIdList",
+          as: "tabMapId",
+          cond: { $ne: [ "$$tabMapId", mapId ] } }
+      },
+    }
+  }
+)
+
 async function deleteMap (users, shares, userId, mapId) {
   await users.aggregate(
     [
@@ -177,7 +240,7 @@ async function deleteMap (users, shares, userId, mapId) {
               {
                 $and: [
                   { $eq: [ '$_id', userId ] },
-                  { $eq: [ '$_id', { $getField: { field: 'ownerUser', input: { $first: '$map' } } } ] },
+                  { $eq: [ userId, { $getField: { field: 'ownerUser', input: { $first: '$map' } } } ] },
                 ]
               },
               {
@@ -186,75 +249,14 @@ async function deleteMap (users, shares, userId, mapId) {
                   { $eq: [ userId, { $getField: { field: 'ownerUser', input: { $first: '$share' } } } ] },
                 ]
               },
-              {
-                $and: [
-                  { $eq: [ '$_id', userId ] },
-                  { $eq: [ '$_id', { $getField: { field: 'shareUser', input: { $first: '$share' } } } ] },
-                ]
-              }
             ]
           }
         }
       },
-      {
-        $set: {
-          sessions: {
-            $map: {
-              input: "$sessions",
-              as: "session",
-              in: {
-                sessionId: '$$session.sessionId',
-                mapId: {
-                  $switch: {
-                    branches: [
-                      {
-                        case: {
-                          $and: [
-                            { $ne: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, -1 ] },
-                            { $eq: [ { $size: "$tabMapIdList" }, 1 ] }
-                          ] },
-                        then: ''
-                      },
-                      {
-                        case: {
-                          $and: [
-                            { $ne: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, -1 ] },
-                            { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
-                            { $eq: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] }
-                          ] },
-                        then: { $arrayElemAt: [ '$tabMapIdList', 1 ] }
-                      },
-                      {
-                        case: {
-                          $and: [
-                            { $ne: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, -1 ] },
-                            { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
-                            { $gt: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] }
-                          ] },
-                        then: { $arrayElemAt: [ '$tabMapIdList', { $subtract: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 1 ] } ] }
-                      },
-                    ],
-                    default: '$$session.mapId'
-                  }
-                },
-                frameId: '$$session.frameId'
-              }
-            }
-          }
-        }
-      },
-      {
-        $set: {
-          tabMapIdList : {
-            $filter : {
-              input: "$tabMapIdList",
-              as: "tabMapId",
-              cond: { $ne: [ "$$tabMapId", mapId ] } }
-          },
-        }
-      },
       { $unset: 'map' },
       { $unset: 'share' },
+      deleteMapFromAllUserSessionsPipelineStep(mapId),
+      deleteMapFromAllUserTabMapIdListPipelineStep(mapId),
       { $merge: 'users' }
     ]
   ).toArray()
@@ -275,6 +277,21 @@ async function deleteMap (users, shares, userId, mapId) {
       { $out: 'shares' }
     ]
   ).toArray()
+}
+
+async function deleteShare (users, shares, shareId) {
+  const share = await shares.findOne({ _id: shareId })
+  const userId = share.shareUser
+  const mapId = share.sharedMap
+  await users.aggregate(
+    [
+      { $match: { $expr: { $eq: [ '$_id', userId ] } } },
+      deleteMapFromAllUserSessionsPipelineStep(mapId),
+      deleteMapFromAllUserTabMapIdListPipelineStep(mapId),
+      { $merge: 'users' }
+    ]
+  ).toArray()
+  await shares.deleteOne({ _id: shareId })
 }
 
 async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
@@ -573,6 +590,7 @@ module.exports = {
   createMapFrameImport,
   createMapFrameDuplicate,
   deleteMap,
+  deleteShare,
   deleteMapFrame,
   saveMap,
   saveMapFrame,

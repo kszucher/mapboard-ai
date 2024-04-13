@@ -10,21 +10,6 @@ const getFrameIdOfIndex = (index) => ({
   $getField: { field: 'frameId', input: { $arrayElemAt: ['$framesInfo', index] } }
 })
 
-const getSessionField = (sessionId, field) => ({
-  $getField: {
-    field,
-    input: {
-      $first: {
-        $filter: {
-          input: '$sessions',
-          as: 'session',
-          cond: { $eq: ["$$session.sessionId", sessionId] }
-        }
-      }
-    }
-  }
-})
-
 const setSession = (sessionId, mapId, frameId) => ({
   $set: {
     sessions: {
@@ -47,6 +32,5 @@ module.exports = {
   getLastElemField,
   getIndexOfFrameId,
   getFrameIdOfIndex,
-  getSessionField,
   setSession
 }

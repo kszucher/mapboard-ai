@@ -31,6 +31,7 @@ describe("MongoQueriesTests", async() => {
     const result = {
       name: 'user1',
       colorMode: 'dark',
+      isShared: false,
       access: ACCESS_TYPES.EDIT,
       tabId: 1,
       mapId: 'map2aaa',
@@ -57,6 +58,7 @@ describe("MongoQueriesTests", async() => {
     const result = {
       name: 'user1',
       colorMode: 'dark',
+      isShared: false,
       access: ACCESS_TYPES.EDIT,
       tabId: 1,
       mapId: 'map2',
@@ -86,6 +88,7 @@ describe("MongoQueriesTests", async() => {
     const result = {
       name: 'user1',
       colorMode: 'dark',
+      isShared: true,
       access: ACCESS_TYPES.VIEW,
       tabId: 0,
       mapId: 'map1',
@@ -114,6 +117,7 @@ describe("MongoQueriesTests", async() => {
     const result = {
       name: 'user1',
       colorMode: 'dark',
+      isShared: true,
       access: ACCESS_TYPES.EDIT,
       tabId: 0,
       mapId: 'map1',

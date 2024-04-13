@@ -118,6 +118,11 @@ export const api = createApi({
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: ['Workspace', 'Shares']
     }),
+    deleteShare: builder.mutation<void, { shareId: string }>({
+      query: ({ shareId }) => ({ url: 'delete-share', method: 'POST', body: { shareId } }),
+      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
+      invalidatesTags: ['Workspace', 'Shares']
+    }),
     toggleColorMode: builder.mutation<void, void>({
       query: () => ({ url: 'toggle-color-mode', method: 'POST' }),
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},

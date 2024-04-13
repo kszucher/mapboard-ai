@@ -4,6 +4,7 @@ import {M} from "./MapStateTypes"
 export interface DefaultUseOpenWorkspaceQueryState {
   name: string
   colorMode: string
+  isShared: boolean
   access: AccessType
   tabId: number
   mapId: string

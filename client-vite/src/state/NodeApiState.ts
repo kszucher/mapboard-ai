@@ -6,6 +6,7 @@ import {store} from "../reducers/EditorReducer"
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   name: '',
   colorMode: 'dark',
+  isShared: false,
   access: AccessType.UNAUTHORIZED,
   tabId: 0,
   mapId: '',

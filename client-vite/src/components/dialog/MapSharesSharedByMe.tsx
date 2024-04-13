@@ -1,9 +1,12 @@
 import {Button, Dialog, Flex, Table, TableBody} from "@radix-ui/themes"
-import {useGetSharesQuery} from "../../api/Api.ts"
+import {api, useGetSharesQuery} from "../../api/Api.ts"
+import {useDispatch} from "react-redux"
+import {AppDispatch} from "../../reducers/EditorReducer.ts"
 
 export const MapSharesSharedByMe = () => {
   const { data } = useGetSharesQuery()
   let { shareDataExport } = data || { shareDataExport: []}
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
       <Dialog.Title>{'Maps Shared By Me'}</Dialog.Title>
@@ -28,8 +31,8 @@ export const MapSharesSharedByMe = () => {
               <Table.Cell>{el.access}</Table.Cell>
               <Table.Cell>{el.status}</Table.Cell>
               <Table.Cell>
-                <Button size="1" variant="solid" onClick={() => window.alert('TODO: implement')/*dispatch(api.endpoints.withdrawShare.initiate({shareId: el._id}))*/}>
-                  {'Withdraw'}
+                <Button size="1" variant="solid" onClick={() => dispatch(api.endpoints.deleteShare.initiate({shareId: el._id}))}>
+                  {'Remove'}
                 </Button>
               </Table.Cell>
             </Table.Row>

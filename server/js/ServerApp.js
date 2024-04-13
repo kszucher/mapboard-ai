@@ -204,7 +204,6 @@ app.post('/create-map-frame-duplicate', checkJwt, async (req, res) => {
 app.post('/move-up-map-in-tab', checkJwt, async (req, res) => {
   const user = await users.findOne({ sub: req.auth.payload.sub })
   const userId = user._id
-  // TODO check of inclusion
   const mapId = ObjectId(req.body.mapId)
   await MongoMutations.moveUpMapInTab(users, userId, mapId)
   return res.json({})
@@ -213,7 +212,6 @@ app.post('/move-up-map-in-tab', checkJwt, async (req, res) => {
 app.post('/move-down-map-in-tab', checkJwt, async (req, res) => {
   const user = await users.findOne({ sub: req.auth.payload.sub })
   const userId = user._id
-  // TODO check of inclusion
   const mapId = ObjectId(req.body.mapId)
   await MongoMutations.moveDownMapInTab(users, userId, mapId)
   return res.json({})
@@ -271,19 +269,19 @@ app.post('/create-share', checkJwt, async (req, res) => {
   const shareUser = await users.findOne({ email: shareEmail })
   if (shareUser === null) {
     return res.status(400).send({message: 'Create Share Failed: Not A Valid User'})
-  } else if (isEqual(shareUser.id, userId)) {
+  } else if (isEqual(shareUser._id, userId)) {
     return res.status(400).send({message: 'Create Share Failed: You Are The Owner'})
   } else {
     const currShare = await shares.findOne({
       sharedMap: mapId,
       ownerUser: userId,
-      shareUser: shareUser.id
+      shareUser: shareUser._id
     })
     if (currShare === null) {
       const newShare = {
         sharedMap: mapId,
         ownerUser: userId,
-        shareUser: shareUser.id,
+        shareUser: shareUser._id,
         access: shareAccess,
         status: SHARE_STATUS.WAITING
       }
@@ -310,6 +308,12 @@ app.post('/accept-share', checkJwt, async (req, res) => {
   )).value
   const mapId = share.sharedMap
   await MongoMutations.appendMapInTab(users, userId, mapId)
+  return res.json({})
+})
+
+app.post('/delete-share', checkJwt, async (req, res) => {
+  const shareId = ObjectId(req.body.shareId)
+  await MongoMutations.deleteShare(users, shares, shareId)
   return res.json({})
 })
 

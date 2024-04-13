@@ -46,6 +46,17 @@ async function openWorkspace(users, userId, sessionId) {
         { $set: { 'share': { $first: "$shareList" } } },
         {
           $set: {
+            isShared: {
+              $cond: {
+                if: { $ne: [ '$map.ownerUser', userId ] },
+                then: true,
+                else: false
+              }
+            }
+          }
+        },
+        {
+          $set: {
             access: {
               $cond: {
                 if: { $eq: [ '$map.ownerUser', userId ] },
@@ -101,6 +112,7 @@ async function openWorkspace(users, userId, sessionId) {
           $replaceWith: {
             name: '$name',
             colorMode: '$colorMode',
+            isShared: '$isShared',
             access: "$access",
             tabId: '$tabId',
             mapId: '$mapId',

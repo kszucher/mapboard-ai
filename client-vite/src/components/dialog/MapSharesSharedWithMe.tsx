@@ -36,7 +36,12 @@ export const MapSharesSharedWithMe = () => {
                     {'Accept'}
                   </Button>
                 </Table.Cell>}
-              {el.status === 'accepted' && <Table.Cell>{''}</Table.Cell>}
+              {el.status === 'accepted' &&
+                <Table.Cell>
+                  <Button size="1" variant="solid" onClick={() => dispatch(api.endpoints.deleteShare.initiate({shareId: el._id}))}>
+                    {'Remove'}
+                  </Button>
+                </Table.Cell>}
             </Table.Row>
           )}
         </TableBody>
