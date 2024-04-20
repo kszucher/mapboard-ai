@@ -1,11 +1,7 @@
-async function updateSession (sessions, jwtId) {
-
-}
-
 async function toggleColorMode (users, userId) {
   await users.findOneAndUpdate(
     { _id: userId },
-    [{ $set: { colorMode: { $cond: { if: { $eq: [ '$colorMode', 'dark' ] }, then: 'light', else: 'dark' } } } }]
+    [ { $set: { colorMode: { $cond: { if: { $eq: [ '$colorMode', 'dark' ] }, then: 'light', else: 'dark' } } } } ]
   )
 }
 
@@ -20,7 +16,7 @@ async function resetSessions (sessions, userId) {
 
 async function selectMap (users, userId, sessions, jwtId, mapId, frameId) {
   await sessions.findOneAndUpdate(
-    { jwtId: jwtId },
+    { jwtId },
     [ { $set: { mapId, frameId } } ]
   )
   await users.findOneAndUpdate(
@@ -88,7 +84,7 @@ async function moveDownMapInTab (users, userId, mapId) {
 async function appendMapInTab (users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
-    [{ $set: { tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] } } }]
+    [ { $set: { tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] } } } ]
   )
 }
 
@@ -220,7 +216,7 @@ async function deleteMap (users, shares, sessions, userId, mapId) {
   ).toArray()
   await sessions.aggregate(
     [
-      { $match: { $expr: { $eq: [ mapId, '$mapId' ] } } },
+      { $match: { mapId } },
       { $set: { mapId: '' } },
       { $merge: 'sessions' }
     ]
@@ -258,7 +254,7 @@ async function deleteShare (users, shares, sessions, shareId) {
 async function deleteMapFrame (maps, sessions, mapId, frameId, jwtId) {
   await sessions.aggregate(
     [
-      { $match: { $expr: { $eq: [ '$jwtId', jwtId ] } } },
+      { $match: { jwtId } },
       { $lookup: { from: "maps", localField: 'mapId', foreignField: "_id", as: "mapList" } },
       { $set: { map: { $first: "$mapList" } } },
       {
@@ -560,7 +556,6 @@ async function deleteUnusedMaps(users, maps) {
 }
 
 module.exports = {
-  updateSession,
   toggleColorMode,
   resetSessions,
   selectMap,

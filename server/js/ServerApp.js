@@ -47,7 +47,7 @@ const getDefaultMap = (mapName, ownerUser, path) => ({
     modifierType: 'user',
     userId: ownerUser,
     jwtId: '',
-    versionId: 1,
+    versionId: 0,
   }],
   frames: [],
   framesInfo: [],
@@ -74,9 +74,9 @@ app.post('/sign-in', checkJwt, async (req, res) => {
       headers: {authorization: req.header('authorization')}
     })
     const newMap = await maps.insertOne(getDefaultMap('My First Map', userId, []))
-    await users.updateOne(
+    await users.findOneAndUpdate(
       { _id: userId },
-      {
+      [ {
         $set: {
           email: userInfo.data.email,
           name: capitalize(userInfo.data.nickname),
@@ -84,21 +84,17 @@ app.post('/sign-in', checkJwt, async (req, res) => {
           tabMapIdList: [newMap._id],
           signInCount: 1,
         }
-      }
+      } ]
     )
-    await sessions.insertOne({
-      userId,
-      mapId: newMap._id,
-      frameId: ''
-    })
+    await sessions.insertOne( {jwtId, userId, mapId: newMap._id, frameId: '' })
   } else {
-    await users.findOneAndUpdate(
-      { _id: userId },
-      { $set: { signInCount: { signInCount: { $add: [ '$signInCount', 1 ] } } } }
-    )
+    await users.findOneAndUpdate({ _id: userId }, [ { $set: { signInCount: { signInCount: { $add: [ '$signInCount', 1 ] } } } } ])
     const session = await sessions.findOne({ jwtId })
-    // TODO switch if there is a session update it, otherwise create session based on lastSelectedMap and lastSelectedFrame
-    await MongoMutations.updateSession(users, userId, jwtId)
+    if (session) {
+      await sessions.findOneAndUpdate({ jwtId }, [ { $set: { mapId: user.lastSelectedMap, frameId: user.lastSelectedFrame } } ])
+    } else {
+      await sessions.insertOne({ jwtId, userId, mapId: user.lastSelectedMap, frameId: user.lastSelectedFrame })
+    }
   }
   return res.json({})
 })
@@ -128,7 +124,7 @@ app.post('/select-map', checkJwt, async (req, res) => {
 app.post('/rename-map', checkJwt, async (req, res) => {
   const mapId = ObjectId(req.body.mapId)
   const name = req.body.name
-  await maps.findOneAndUpdate({ _id: mapId }, [{ $set: { name } }])
+  await maps.findOneAndUpdate({ _id: mapId }, [ { $set: { name } } ])
   return res.json({})
 })
 
@@ -299,7 +295,7 @@ app.post('/create-share', checkJwt, async (req, res) => {
       if (currShare.access === shareAccess) {
         return res.status(400).send({message: 'Create Share Failed: Already Shared'})
       } else {
-        await shares.updateOne({ _id: currShare._id }, { $set: { access: shareAccess } })
+        await shares.findOneAndUpdate({ _id: currShare._id }, [ { $set: { access: shareAccess } } ])
       }
     }
   }

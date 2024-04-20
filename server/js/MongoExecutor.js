@@ -10,6 +10,8 @@ async function mongoExecutorCommands (users, maps, shares, sessions) {
         lastSelectedMap: '',
         lastSelectedFrame: '',
       },
+    },
+    {
       $unset: 'sessions'
     }
   ])
@@ -17,7 +19,14 @@ async function mongoExecutorCommands (users, maps, shares, sessions) {
     {
       $set: {
         versions: [ {$last: '$versions'} ],
-        versionsInfo: [ {$last: '$versionsInfo'} ], // TODO rename sessionId to jwtId as well manually
+        versionsInfo: [
+          {
+            modifierType: 'user',
+            userId: {$getField: {field: 'userId', input: {$last: '$versionsInfo'}}},
+            jwtId: '',
+            versionId: 0,
+          }
+        ],
         frames: [],
         framesInfo: [],
       }
@@ -29,7 +38,7 @@ async function mongoExecutor() {
   const client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true })
   try {
     await client.connect()
-    const db = client.db("app_prod")
+    const db = client.db("app_dev") // DEV FIRST!!!
     const users = db.collection("users")
     const maps = db.collection("maps")
     const shares = db.collection("shares")
