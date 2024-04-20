@@ -20,14 +20,10 @@ async function openWorkspace(users, userId, sessionId) {
           }
         },
         {
-          $set: {
-            mapId: '$session.mapId'
-          }
+          $set: { mapId: '$session.mapId' }
         },
         {
-          $set: {
-            frameId: '$session.frameId'
-          }
+          $set: { frameId: '$session.frameId' }
         },
         {
           $lookup: {
@@ -38,16 +34,13 @@ async function openWorkspace(users, userId, sessionId) {
           }
         },
         {
-          $set: {
-            map: { $first: "$mapList" }
-          }
+          $set: { map: { $first: "$mapList" } }
         },
         {
           $set: { framesInfo: '$map.framesInfo' }
         },
         {
-          $set: { 'breadcrumbMapIdList': { $concatArrays: [ '$map.path', [ "$mapId" ] ] }
-          }
+          $set: { breadcrumbMapIdList: { $concatArrays: [ '$map.path', [ "$mapId" ] ] } }
         },
         {
           $lookup: {
@@ -57,7 +50,8 @@ async function openWorkspace(users, userId, sessionId) {
             as: "shareList"
           }
         },
-        { $set: { 'share': { $first: "$shareList" } } },
+        {
+          $set: { share: { $first: "$shareList" } } },
         {
           $set: {
             isShared: {
@@ -119,11 +113,7 @@ async function openWorkspace(users, userId, sessionId) {
           }
         },
         {
-          $set: {
-            frameIdList: {
-              $map: { input: "$framesInfo", as: "elem", in: "$$elem.frameId" }
-            }
-          }
+          $set: { frameIdList: { $map: { input: "$framesInfo", as: "elem", in: "$$elem.frameId" } } }
         },
         {
           $lookup: {
@@ -156,10 +146,7 @@ async function openWorkspace(users, userId, sessionId) {
           }
         },
         {
-          $set: {
-            tabId: {
-              $indexOfArray: [ '$tabMapIdList', { $first: '$breadcrumbMapIdList' } ] }
-          }
+          $set: { tabId: { $indexOfArray: [ '$tabMapIdList', { $first: '$breadcrumbMapIdList' } ] } }
         },
         {
           $replaceWith: {
