@@ -58,11 +58,12 @@ async function toggleColorMode(users, userId) {
   )
 }
 
-async function resetSessions(users, userId) {
-  await users.findOneAndUpdate(
-    { _id: userId },
-    [{ $set: { sessions: [] } }]
-  )
+async function resetSessions(sessions, userId) {
+  await sessions.aggregate([
+      { $match: { $expr: { $ne: [ '$userId', userId ] } } },
+      { $out: 'sessions' }
+    ]
+  ).toArray()
 }
 
 async function selectMap(users, userId, sessionId, mapId, frameId) {

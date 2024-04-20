@@ -1,7 +1,7 @@
 import { describe, expect, test,  beforeEach, afterEach } from 'vitest'
 import { mongoConnect, mongoDisconnect, resolveMutation } from './MongoTestUtils'
 
-let users, maps, shares
+let users, maps, shares, sessions
 
 describe("MongoMutationsTests", async() => {
   beforeEach(async () => {
@@ -9,6 +9,7 @@ describe("MongoMutationsTests", async() => {
     users = dbMutations.collection("users")
     maps = dbMutations.collection("maps")
     shares = dbMutations.collection("shares")
+    sessions = dbMutations.collection("sessions")
   })
   afterEach(async () => {
     await mongoDisconnect()
@@ -39,9 +40,9 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'toggleColorMode', [users, 'u1'])).toEqual(result)
   })
   test('resetSessions', async() => {
-    const test = { users: [ {_id: 'u1', sessions: ['s1', 's2'] } ] }
-    const result = { users: [ {_id: 'u1', sessions: [] } ] }
-    expect(await resolveMutation(test, 'resetSessions', [users, 'u1'])).toEqual(result)
+    const test = { sessions: [ {_id: 's1', userId: 'u1' }, {_id: 's2', userId: 'u1'}, {_id: 's3', userId: 'u2'} ] }
+    const result = { sessions: [ {_id: 's3', userId: 'u2'} ] }
+    expect(await resolveMutation(test, 'resetSessions', [sessions, 'u1'])).toEqual(result)
   })
   test('selectMap', async() => {
     const test = { users: [ {_id: 'u1', sessions: [ { sessionId: 's1' }, { sessionId: 's2' } ] } ] }

@@ -1,29 +1,35 @@
 const { ACCESS_TYPES } = require('./Types')
 const { getIndexOfFrameId } = require('./MongoHelpers')
 
-async function openWorkspace(users, userId, sessionId) {
+async function openWorkspace(sessions, sessionId) {
   return (
-    await users.aggregate(
+    await sessions.aggregate(
       [
-        { $match: { _id: userId } },
+        { $match: { _id: sessionId } },
         {
-          $set: {
-            session: {
-              $first: {
-                $filter: {
-                  input: '$sessions',
-                  as: 'session',
-                  cond: { $eq: [ "$$session.sessionId", sessionId ] }
-                }
-              }
-            }
+          $lookup: {
+            from: "users",
+            localField: "userId",
+            foreignField: "_id",
+            as: "userList"
           }
         },
         {
-          $set: { mapId: '$session.mapId' }
+          $set: { user: { $first: "$userList" } }
         },
         {
-          $set: { frameId: '$session.frameId' }
+          $set: { tabMapIdList: "$user.tabMapIdList" }
+        },
+        {
+          $set: {
+            mapId: {
+              $cond: {
+                if: { $eq: [ '$mapId', '' ] },
+                then: { $arrayElemAt: [ '$tabMapIdList', 0 ] },
+                else: '$mapId'
+              }
+            }
+          }
         },
         {
           $lookup: {
@@ -56,7 +62,7 @@ async function openWorkspace(users, userId, sessionId) {
           $set: {
             isShared: {
               $cond: {
-                if: { $ne: [ '$map.ownerUser', userId ] },
+                if: { $ne: [ '$map.ownerUser', '$user._id' ] },
                 then: true,
                 else: false
               }
@@ -67,7 +73,7 @@ async function openWorkspace(users, userId, sessionId) {
           $set: {
             access: {
               $cond: {
-                if: { $eq: [ '$map.ownerUser', userId ] },
+                if: { $eq: [ '$map.ownerUser', '$user._id' ] },
                 then: ACCESS_TYPES.EDIT,
                 else: '$share.access'
               }
@@ -89,7 +95,7 @@ async function openWorkspace(users, userId, sessionId) {
           $set: {
             breadcrumbMapIdList: {
               $cond: { // TODO cond tests-reducers
-                if: { $eq: [ '$map.ownerUser', userId ] },
+                if: { $eq: [ '$map.ownerUser', '$user._id' ] },
                 then: '$breadcrumbMapIdList',
                 else: {
                   $cond: {
@@ -150,8 +156,8 @@ async function openWorkspace(users, userId, sessionId) {
         },
         {
           $replaceWith: {
-            name: '$name',
-            colorMode: '$colorMode',
+            name: '$user.name',
+            colorMode: '$user.colorMode',
             isShared: '$isShared',
             access: "$access",
             tabId: '$tabId',

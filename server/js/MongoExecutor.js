@@ -2,7 +2,7 @@ const { baseUri } = require('./MongoSecret')
 const MongoMutations = require('./MongoMutations')
 const MongoClient = require('mongodb').MongoClient
 
-async function mongoExecutorCommands (users, maps, shares) {
+async function mongoExecutorCommands (users, maps, shares, sessions) {
   await MongoMutations.deleteUnusedMaps(users, maps)
   await users.updateMany({}, [
     {
@@ -31,7 +31,8 @@ async function mongoExecutor() {
     const users = db.collection("users")
     const maps = db.collection("maps")
     const shares = db.collection("shares")
-    await mongoExecutorCommands(users, maps, shares)
+    const sessions = db.collection("sessions")
+    await mongoExecutorCommands(users, maps, shares, sessions)
   }
   catch (err) {
     console.log('error')

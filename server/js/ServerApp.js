@@ -23,7 +23,7 @@ const isEqual = (obj1, obj2) => {
   return( JSON.stringify(obj1)===JSON.stringify(obj2))
 }
 
-let users, maps, shares, db
+let users, maps, shares, sessions, db
 
 const genHash = () => {
   const alphanumeric = '0123456789abcdefghijklmnopqrstuvwxyz'
@@ -87,21 +87,20 @@ app.post('/sign-in', checkJwt, async (req, res) => {
     )
   }
   await MongoMutations.updateWorkspace(users, userId, sessionId)
+  // I need to create a session separately, which also ensures that once I am signed in, a session exists
   return res.json({})
 })
 
 app.post('/sign-out-everywhere', checkJwt, async (req, res) => {
   const user = await users.findOne({ sub: req.auth.payload.sub })
   const userId = user._id
-  await MongoMutations.resetSessions(users, userId)
+  await MongoMutations.resetSessions(sessions, userId)
   return res.json({})
 })
 
 app.post('/open-workspace', checkJwt, async (req, res) => {
-  const user = await users.findOne({ sub: req.auth.payload.sub })
-  const userId = user._id
   const sessionId = req.auth.token.slice(-8)
-  return res.json(await MongoQueries.openWorkspace(users, userId, sessionId))
+  return res.json(await MongoQueries.openWorkspace(sessions, sessionId))
 })
 
 app.post('/select-map', checkJwt, async (req, res) => {
@@ -340,6 +339,7 @@ MongoClient.connect(baseUri, {useNewUrlParser: true, useUnifiedTopology: true}, 
     users = db.collection('users')
     maps = db.collection('maps')
     shares = db.collection('shares')
+    sessions = db.collection('sessions')
     app.listen(process.env.PORT || 8082, function () {
       console.log('CORS-enabled web server listening on port 8082')
     })
