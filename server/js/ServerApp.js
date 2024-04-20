@@ -91,6 +91,7 @@ app.post('/sign-in', checkJwt, async (req, res) => {
     await users.findOneAndUpdate({ _id: userId }, [ { $set: { signInCount: { $add: [ '$signInCount', 1 ] } } } ])
     const session = await sessions.findOne({ jwtId })
     if (session) {
+      console.log('probably unreachable')
       await sessions.findOneAndUpdate({ jwtId }, [ { $set: { mapId: user.lastSelectedMap, frameId: user.lastSelectedFrame } } ])
     } else {
       await sessions.insertOne({ jwtId, userId, mapId: user.lastSelectedMap, frameId: user.lastSelectedFrame })
