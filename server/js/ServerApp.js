@@ -88,7 +88,7 @@ app.post('/sign-in', checkJwt, async (req, res) => {
     )
     await sessions.insertOne( {jwtId, userId, mapId: newMap._id, frameId: '' })
   } else {
-    await users.findOneAndUpdate({ _id: userId }, [ { $set: { signInCount: { signInCount: { $add: [ '$signInCount', 1 ] } } } } ])
+    await users.findOneAndUpdate({ _id: userId }, [ { $set: { signInCount: { $add: [ '$signInCount', 1 ] } } } ])
     const session = await sessions.findOne({ jwtId })
     if (session) {
       await sessions.findOneAndUpdate({ jwtId }, [ { $set: { mapId: user.lastSelectedMap, frameId: user.lastSelectedFrame } } ])
