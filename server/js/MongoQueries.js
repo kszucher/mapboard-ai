@@ -1,10 +1,10 @@
 const { ACCESS_TYPES } = require('./Types')
 
-async function openWorkspace(sessions, sessionId) {
+async function openWorkspace(sessions, jwtId) {
   return (
     await sessions.aggregate(
       [
-        { $match: { _id: sessionId } },
+        { $match: { jwtId } },
         {
           $lookup: {
             from: "users",

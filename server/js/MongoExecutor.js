@@ -7,15 +7,17 @@ async function mongoExecutorCommands (users, maps, shares, sessions) {
   await users.updateMany({}, [
     {
       $set: {
-        sessions: [],
-      }
+        lastSelectedMap: '',
+        lastSelectedFrame: '',
+      },
+      $unset: 'sessions'
     }
   ])
   await maps.updateMany({}, [
     {
       $set: {
         versions: [ {$last: '$versions'} ],
-        versionsInfo: [ {$last: '$versionsInfo'} ],
+        versionsInfo: [ {$last: '$versionsInfo'} ], // TODO rename sessionId to jwtId as well manually
         frames: [],
         framesInfo: [],
       }

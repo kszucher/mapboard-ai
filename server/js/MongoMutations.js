@@ -1,66 +1,15 @@
-async function updateWorkspace(users, userId, sessionId) {
-  await users.aggregate(
-    [
-      { $match: {_id: userId } },
-      {
-        $set: {
-          sessions: {
-            $switch: {
-              branches: [
-                {
-                  case: { $eq: [ { $size: '$sessions' }, 0 ] },
-                  then: [{
-                    sessionId,
-                    mapId: { $arrayElemAt: [ '$tabMapIdList', 0 ] },
-                    frameId: ''
-                  }],
-                },
-                {
-                  case: {
-                    $eq: [ {
-                      $size: {
-                        $filter: {
-                          input: '$sessions',
-                          as: 'session',
-                          cond: { $eq: [ "$$session.sessionId", sessionId ] }
-                        }
-                      }
-                    }, 0 ]
-                  },
-                  then: {
-                    $concatArrays: [
-                      '$sessions',
-                      [{
-                        sessionId,
-                        mapId: {
-                          $getField: { field: 'mapId', input: { $last: '$sessions' } }
-                        },
-                        frameId: {
-                          $getField: { field: 'frameId', input: { $last: '$sessions' } }
-                        },
-                      }]
-                    ]
-                  }
-                }],
-              default: '$sessions'
-            }
-          }
-        }
-      },
-      { $set: { signInCount: { $add: [ '$signInCount', 1 ] } } },
-      { $merge: 'users' }
-    ]
-  ).toArray()
+async function updateSession (sessions, jwtId) {
+
 }
 
-async function toggleColorMode(users, userId) {
+async function toggleColorMode (users, userId) {
   await users.findOneAndUpdate(
     { _id: userId },
     [{ $set: { colorMode: { $cond: { if: { $eq: [ '$colorMode', 'dark' ] }, then: 'light', else: 'dark' } } } }]
   )
 }
 
-async function resetSessions(sessions, userId) {
+async function resetSessions (sessions, userId) {
   await sessions.aggregate(
     [
       { $match: { $expr: { $ne: [ '$userId', userId ] } } },
@@ -69,10 +18,14 @@ async function resetSessions(sessions, userId) {
   ).toArray()
 }
 
-async function selectMap(sessions, sessionId, mapId, frameId) {
+async function selectMap (users, userId, sessions, jwtId, mapId, frameId) {
   await sessions.findOneAndUpdate(
-    { _id: sessionId },
+    { jwtId: jwtId },
     [ { $set: { mapId, frameId } } ]
+  )
+  await users.findOneAndUpdate(
+    { _id: userId },
+    [ { $set: { lastSelectedMap: mapId, lastSelectedFrame: frameId } } ]
   )
 }
 
@@ -132,7 +85,7 @@ async function moveDownMapInTab (users, userId, mapId) {
   )
 }
 
-async function appendMapInTab(users, userId, mapId) {
+async function appendMapInTab (users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
     [{ $set: { tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] } } }]
@@ -302,10 +255,10 @@ async function deleteShare (users, shares, sessions, shareId) {
   await shares.deleteOne({ _id: shareId })
 }
 
-async function deleteMapFrame (maps, sessions, mapId, frameId, sessionId) {
+async function deleteMapFrame (maps, sessions, mapId, frameId, jwtId) {
   await sessions.aggregate(
     [
-      { $match: { $expr: { $eq: [ '$_id', sessionId ] } } },
+      { $match: { $expr: { $eq: [ '$jwtId', jwtId ] } } },
       { $lookup: { from: "maps", localField: 'mapId', foreignField: "_id", as: "mapList" } },
       { $set: { map: { $first: "$mapList" } } },
       {
@@ -368,7 +321,7 @@ async function deleteMapFrame (maps, sessions, mapId, frameId, sessionId) {
   ).toArray()
 }
 
-async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
+async function saveMap (maps, mapId, jwtId, mergeType, mergeData) {
   const newMap = mergeType === 'map' ?  mergeData : { $concatArrays: [ { $last: '$versions' }, [ mergeData ] ] }
   const shouldAppend = () => ({
     $or: [
@@ -376,7 +329,7 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
       { $and: [
           { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$versionsInfo' } } }, 'user' ] },
           { $eq: [ { $getField: { field: 'userId', input: { $last: '$versionsInfo' } } }, '$ownerUser' ] },
-          { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$versionsInfo' } } }, sessionId] }
+          { $eq: [ { $getField: { field: 'jwtId', input: { $last: '$versionsInfo' } } }, jwtId] }
         ]
       }
     ]
@@ -533,7 +486,7 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
               [{
                 modifierType: { map: 'user', node: 'server' }[mergeType],
                 userId: '$data.ownerUser',
-                sessionId,
+                jwtId,
                 versionId: { $add: [ { $getField: { field: 'versionId', input: { $last: '$data.versionsInfo' } } }, 1 ] }
               }]
             ]
@@ -607,7 +560,7 @@ async function deleteUnusedMaps(users, maps) {
 }
 
 module.exports = {
-  updateWorkspace,
+  updateSession,
   toggleColorMode,
   resetSessions,
   selectMap,

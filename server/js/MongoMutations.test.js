@@ -14,21 +14,7 @@ describe("MongoMutationsTests", async() => {
   afterEach(async () => {
     await mongoDisconnect()
   })
-  test('updateWorkspace.createUsingFirstTab', async() => {
-    const test = { users: [ {_id: 'u1', signInCount: 1, tabMapIdList: ['m1', 'm2'], sessions: [ ] } ] }
-    const result = { users: [ {_id: 'u1', signInCount: 2, tabMapIdList: ['m1', 'm2'], sessions: [ { sessionId: 's1', mapId: 'm1', frameId: '' } ] } ] }
-    expect(await resolveMutation(test, 'updateWorkspace', [users, 'u1', 's1'])).toEqual(result)
-  })
-  test('updateWorkspace.createUsingLastSession', async() => {
-    const test = { users: [ {_id: 'u1', signInCount: 1, sessions: [ { sessionId: 's1', mapId: 'm1', frameId: 'f1' } ] } ] }
-    const result = { users: [ {_id: 'u1', signInCount: 2, sessions: [ { sessionId: 's1', mapId: 'm1', frameId: 'f1'}, { sessionId: 's2', mapId: 'm1', frameId: 'f1'} ] } ] }
-    expect(await resolveMutation(test, 'updateWorkspace', [users, 'u1', 's2'])).toEqual(result)
-  })
-  test('updateWorkspace.keep', async() => {
-    const test = { users: [ {_id: 'u1', signInCount: 1, sessions: [ { sessionId: 's1', mapId: 'm1', frameId: 'f1' } ] } ] }
-    const result = { users: [ {_id: 'u1', signInCount: 2, sessions: [ { sessionId: 's1', mapId: 'm1', frameId: 'f1' } ] } ] }
-    expect(await resolveMutation(test, 'updateWorkspace', [users, 'u1', 's1'])).toEqual(result)
-  })
+
   test('toggleColorMode.l2d', async() => {
     const test = { users: [ {_id: 'u1', colorMode: 'light' } ] }
     const result = { users: [ {_id: 'u1', colorMode: 'dark' } ] }
@@ -40,20 +26,34 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'toggleColorMode', [users, 'u1'])).toEqual(result)
   })
   test('resetSessions', async() => {
-    const test = { sessions: [ {_id: 's1', userId: 'u1' }, {_id: 's2', userId: 'u1'}, {_id: 's3', userId: 'u2'} ] }
-    const result = { sessions: [ {_id: 's3', userId: 'u2'} ] }
+    const test = {
+      sessions: [
+        {_id: 's1', jwtId: 'js1', userId: 'u1' },
+        {_id: 's2', jwtId: 'js2', userId: 'u1'},
+        {_id: 's3', jwtId: 'js3', userId: 'u2'}
+      ] }
+    const result = {
+      sessions: [
+        {_id: 's3', jwtId: 'js3', userId: 'u2'}
+      ] }
     expect(await resolveMutation(test, 'resetSessions', [sessions, 'u1'])).toEqual(result)
   })
   test('selectMap', async() => {
     const test = {
       users: [ {_id: 'u1' } ],
-      sessions: [ { _id: 's1' }, { _id: 's2' } ]
+      sessions: [
+        { _id: 's1', jwtId: 'js1' },
+        { _id: 's2', jwtId: 'js2' }
+      ]
     }
     const result = {
-      users: [ {_id: 'u1' } ],
-      sessions: [ { _id: 's1' }, { _id: 's2', mapId: 'm1', frameId: 'f1' } ]
+      users: [ {_id: 'u1', lastSelectedMap: "m1", lastSelectedFrame: "f1" } ],
+      sessions: [
+        { _id: 's1', jwtId: 'js1' },
+        { _id: 's2', jwtId: 'js2', mapId: 'm1', frameId: 'f1' }
+      ]
     }
-    expect(await resolveMutation(test, 'selectMap', [sessions, 's2', 'm1', 'f1'])).toEqual(result)
+    expect(await resolveMutation(test, 'selectMap', [users, 'u1', sessions, 'js2', 'm1', 'f1'])).toEqual(result)
   })
   test('moveUpMapInTab.canMove', async() => {
     const test = { users: [ {_id: 'u1', tabMapIdList: ['m1', 'm2', 'm3'] } ] }
@@ -142,9 +142,9 @@ describe("MongoMutationsTests", async() => {
         { _id: 's2', ownerUser: 'u1', shareUser: 'u3', sharedMap: 'm1' },
       ],
       sessions: [
-        {_id: 's1', userId: 'u1', mapId: 'm1', frameId: ''},
-        {_id: 's2', userId: 'u2', mapId: 'm1', frameId: ''},
-        {_id: 's3', userId: 'u3', mapId: 'm1', frameId: ''},
+        {_id: 's1', jwtId: 'js1', userId: 'u1', mapId: 'm1', frameId: ''},
+        {_id: 's2', jwtId: 'js2', userId: 'u2', mapId: 'm1', frameId: ''},
+        {_id: 's3', jwtId: 'js3', userId: 'u3', mapId: 'm1', frameId: ''},
       ]
     }
     const result = {
@@ -161,9 +161,9 @@ describe("MongoMutationsTests", async() => {
       ],
       shares: [],
       sessions: [
-        {_id: 's1', userId: 'u1', mapId: '', frameId: ''},
-        {_id: 's2', userId: 'u2', mapId: '', frameId: ''},
-        {_id: 's3', userId: 'u3', mapId: '', frameId: ''},
+        {_id: 's1', jwtId: 'js1', userId: 'u1', mapId: '', frameId: ''},
+        {_id: 's2', jwtId: 'js2', userId: 'u2', mapId: '', frameId: ''},
+        {_id: 's3', jwtId: 'js3', userId: 'u3', mapId: '', frameId: ''},
       ]
     }
     expect(await resolveMutation(test, 'deleteMap', [users, shares, sessions, 'u1', 'm1'])).toEqual(result)
@@ -183,8 +183,8 @@ describe("MongoMutationsTests", async() => {
         { _id: 's1', ownerUser: 'u1', shareUser: 'u2', sharedMap: 'm1' },
       ],
       sessions: [
-        {_id: 's1', userId: 'u1', mapId: 'm1', frameId: ''},
-        {_id: 's2', userId: 'u2', mapId: 'm1', frameId: ''},
+        {_id: 's1', jwtId: 'js1', userId: 'u1', mapId: 'm1', frameId: ''},
+        {_id: 's2', jwtId: 'js2', userId: 'u2', mapId: 'm1', frameId: ''},
       ]
     }
     const result = {
@@ -199,8 +199,8 @@ describe("MongoMutationsTests", async() => {
       ],
       shares: [],
       sessions: [
-        {_id: 's1', userId: 'u1', mapId: 'm1', frameId: ''},
-        {_id: 's2', userId: 'u2', mapId: '', frameId: ''},
+        {_id: 's1', jwtId: 'js1', userId: 'u1', mapId: 'm1', frameId: ''},
+        {_id: 's2', jwtId: 'js2', userId: 'u2', mapId: '', frameId: ''},
       ]
     }
     expect(await resolveMutation(test, 'deleteShare', [users, shares, sessions, 's1'])).toEqual(result)
@@ -209,40 +209,40 @@ describe("MongoMutationsTests", async() => {
     const test = {
       users: [ { _id: 'u1' } ],
       maps: [ { _id: 'm1', frames: [ 'f1', 'f2' ], framesInfo: [ {frameId: 'f1'}, {frameId: 'f2'} ] } ],
-      sessions: [ { _id: 's1', userId: 'u1', mapId: 'm1', frameId: 'f1' } ]
+      sessions: [ { _id: 's1', jwtId: 'js1', userId: 'u1', mapId: 'm1', frameId: 'f1' } ]
     }
     const result = {
       users: [ { _id: 'u1' } ],
       maps: [ { _id: 'm1', frames: [ 'f2' ], framesInfo: [ {frameId: 'f2'} ] } ],
-      sessions: [ { _id: 's1', userId: 'u1', mapId: 'm1', frameId: 'f2' } ]
+      sessions: [ { _id: 's1', jwtId: 'js1', userId: 'u1', mapId: 'm1', frameId: 'f2' } ]
     }
-    expect(await resolveMutation(test, 'deleteMapFrame', [maps, sessions, 'm1', 'f1', 's1'])).toEqual(result)
+    expect(await resolveMutation(test, 'deleteMapFrame', [maps, sessions, 'm1', 'f1', 'js1'])).toEqual(result)
   })
   test('deleteMapFrame.fromEnd', async() => {
     const test = {
       users: [ { _id: 'u1' } ],
       maps: [ { _id: 'm1', frames: [ 'f1', 'f2' ], framesInfo: [ {frameId: 'f1'}, {frameId: 'f2'} ] } ],
-      sessions: [ { _id: 's1', userId: 'u1', mapId: 'm1', frameId: 'f2' } ]
+      sessions: [ { _id: 's1', jwtId: 'js1', userId: 'u1', mapId: 'm1', frameId: 'f2' } ]
     }
     const result = {
       users: [ { _id: 'u1' } ],
       maps: [ { _id: 'm1', frames: [ 'f1' ], framesInfo: [ {frameId: 'f1'} ] } ],
-      sessions: [ { _id: 's1', userId: 'u1', mapId: 'm1', frameId: 'f1' } ]
+      sessions: [ { _id: 's1', jwtId: 'js1', userId: 'u1', mapId: 'm1', frameId: 'f1' } ]
     }
-    expect(await resolveMutation(test, 'deleteMapFrame', [maps, sessions, 'm1', 'f2', 's1'])).toEqual(result)
+    expect(await resolveMutation(test, 'deleteMapFrame', [maps, sessions, 'm1', 'f2', 'js1'])).toEqual(result)
   })
   test('deleteMapFrame.last', async() => {
     const test = {
       users: [ { _id: 'u1' } ],
       maps: [ { _id: 'm1', frames: [ 'f1' ], framesInfo: [ {frameId: 'f1'} ] } ],
-      sessions: [ { _id: 's1', userId: 'u1', mapId: 'm1', frameId: 'f2' } ],
+      sessions: [ { _id: 's1', jwtId: 'js1', userId: 'u1', mapId: 'm1', frameId: 'f2' } ],
     }
     const result = {
       users: [ { _id: 'u1' } ],
       maps: [ { _id: 'm1', frames: [ ], framesInfo: [ ] } ],
-      sessions: [ { _id: 's1', userId: 'u1', mapId: 'm1', frameId: '' } ]
+      sessions: [ { _id: 's1', jwtId: 'js1', userId: 'u1', mapId: 'm1', frameId: '' } ]
     }
-    expect(await resolveMutation(test, 'deleteMapFrame', [maps, sessions, 'm1', 'f1', 's1'])).toEqual(result)
+    expect(await resolveMutation(test, 'deleteMapFrame', [maps, sessions, 'm1', 'f1', 'js1'])).toEqual(result)
   })
   test('saveMap', async() => {
     const original = [
@@ -267,7 +267,7 @@ describe("MongoMutationsTests", async() => {
         _id: 'm1',
         ownerUser:'u1',
         versionsInfo: [
-          { modifierType: "user", userId: "user0", sessionId: 's1', versionId: 1 }
+          { modifierType: "user", userId: "user0", jwtId: 's1', versionId: 1 }
         ],
         versions: [ original, mutationA ]
       } ]
@@ -279,8 +279,8 @@ describe("MongoMutationsTests", async() => {
           _id: 'm1',
           ownerUser:'u1',
           versionsInfo: [
-            { modifierType: "user", userId: "user0", sessionId: 's1', versionId: 1 },
-            { modifierType: "user", userId: "u1", sessionId: 's1', versionId: 2 }
+            { modifierType: "user", userId: "user0", jwtId: 's1', versionId: 1 },
+            { modifierType: "user", userId: "u1", jwtId: 's1', versionId: 2 }
           ],
           versions: [ original, mutationA, mergeAB ]
         }

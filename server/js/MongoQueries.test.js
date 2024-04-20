@@ -29,7 +29,7 @@ describe("MongoQueriesTests", async() => {
         { _id: 'map2aaa', name: 'mapName2aaa', ownerUser: 'user1', path: ['map2', 'map2a', 'map2aa'], frames: [], framesInfo: [], versions: [ 'map2aaav1' ] },
       ],
       sessions: [
-        { _id: 'session1', userId: 'user1', mapId: 'map2aaa', frameId: '' }
+        { _id: 's1', jwtId: 'js1', userId: 'user1', mapId: 'map2aaa', frameId: '' }
       ]
     }
     const result = {
@@ -47,7 +47,7 @@ describe("MongoQueriesTests", async() => {
       breadcrumbMapNameList: [ { name: 'mapName2' }, { name: 'mapName2a' }, { name: 'mapName2aa' }, { name: 'mapName2aaa' } ],
       frameIdList: []
     }
-    expect(await resolveQuery(test, 'openWorkspace', [sessions, 'session1'])).toEqual(result)
+    expect(await resolveQuery(test, 'openWorkspace', [sessions, 'js1'])).toEqual(result)
   })
   test('openWorkspace.frame', async() => {
     const test = {
@@ -59,7 +59,7 @@ describe("MongoQueriesTests", async() => {
         { _id: 'map2', name: 'mapName2', ownerUser: 'user1', path: [], frames: ['mf1', 'mf2'], framesInfo: [{ frameId: 'f1' }, { frameId: 'f2' }]},
       ],
       sessions: [
-        { _id: 'session1', userId: 'user1', mapId: 'map2', frameId: 'f2' }
+        { _id: 's1', jwtId: 'js1', userId: 'user1', mapId: 'map2', frameId: 'f2' }
       ]
     }
     const result = {
@@ -77,7 +77,7 @@ describe("MongoQueriesTests", async() => {
       breadcrumbMapNameList: [ { name: 'mapName2' } ],
       frameIdList: ['f1', 'f2']
     }
-    expect(await resolveQuery(test, 'openWorkspace', [sessions, 'session1'])).toEqual(result)
+    expect(await resolveQuery(test, 'openWorkspace', [sessions, 'js1'])).toEqual(result)
   })
   test('openWorkspace.foreignMapView', async() => {
     const test = {
@@ -92,7 +92,7 @@ describe("MongoQueriesTests", async() => {
         { _id: 'share1', access: 'view', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map1' },
       ],
       sessions: [
-        { _id: 'session1', userId: 'user1', mapId: 'map1', frameId: '' }
+        { _id: 's1', jwtId: 'js1', userId: 'user1', mapId: 'map1', frameId: '' }
       ]
     }
     const result = {
@@ -110,7 +110,7 @@ describe("MongoQueriesTests", async() => {
       breadcrumbMapNameList: [ { name: 'mapName1' } ],
       frameIdList: []
     }
-    expect(await resolveQuery(test, 'openWorkspace', [sessions, 'session1'])).toEqual(result)
+    expect(await resolveQuery(test, 'openWorkspace', [sessions, 'js1'])).toEqual(result)
   })
   test('openWorkspace.foreignMapEdit', async() => {
     const test = {
@@ -124,7 +124,7 @@ describe("MongoQueriesTests", async() => {
         { _id: 'share1', access: 'edit', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map1' },
       ],
       sessions: [
-        { _id: 'session1', userId: 'user1', mapId: 'map1', frameId: '' }
+        { _id: 's1', jwtId: 'js1', userId: 'user1', mapId: 'map1', frameId: '' }
       ]
     }
     const result = {
@@ -142,7 +142,7 @@ describe("MongoQueriesTests", async() => {
       breadcrumbMapNameList: [ { name: 'mapName1' } ],
       frameIdList: []
     }
-    expect(await resolveQuery(test, 'openWorkspace', [sessions, 'session1'])).toEqual(result)
+    expect(await resolveQuery(test, 'openWorkspace', [sessions, 'js1'])).toEqual(result)
   })
   test('getUserShares', async() => {
     const test = {
