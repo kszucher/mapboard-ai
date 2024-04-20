@@ -59,7 +59,8 @@ async function toggleColorMode(users, userId) {
 }
 
 async function resetSessions(sessions, userId) {
-  await sessions.aggregate([
+  await sessions.aggregate(
+    [
       { $match: { $expr: { $ne: [ '$userId', userId ] } } },
       { $out: 'sessions' }
     ]
@@ -67,7 +68,8 @@ async function resetSessions(sessions, userId) {
 }
 
 async function selectMap(users, userId, sessionId, mapId, frameId) {
-  await users.aggregate([
+  await users.aggregate(
+    [
       { $match: {_id: userId } },
       {...setSession(sessionId, mapId, frameId)},
       { $merge: 'users' }
@@ -236,7 +238,7 @@ const deleteMapFromAllUserTabMapIdListPipelineStep = (mapId) => (
   }
 )
 
-async function deleteMap (users, shares, userId, mapId) {
+async function deleteMap (users, shares, sessions, userId, mapId) {
   await users.aggregate(
     [
       { $lookup: { from: "maps", localField: '_id', foreignField: "ownerUser", pipeline: [ { $match: { _id: mapId } } ], as: "map" } },
@@ -262,8 +264,16 @@ async function deleteMap (users, shares, userId, mapId) {
       },
       { $unset: 'map' },
       { $unset: 'share' },
-      deleteMapFromAllUserSessionsPipelineStep(mapId),
-      deleteMapFromAllUserTabMapIdListPipelineStep(mapId),
+      {
+        $set: {
+          tabMapIdList : {
+            $filter : {
+              input: "$tabMapIdList",
+              as: "tabMapId",
+              cond: { $ne: [ "$$tabMapId", mapId ] } }
+          },
+        }
+      },
       { $merge: 'users' }
     ]
   ).toArray()
@@ -284,18 +294,38 @@ async function deleteMap (users, shares, userId, mapId) {
       { $out: 'shares' }
     ]
   ).toArray()
+  await sessions.aggregate(
+    [
+      { $match: { $expr: { $eq: [ mapId, '$mapId' ] } } },
+      { $set: { mapId: '' } },
+      { $merge: 'sessions' }
+    ]
+  ).toArray()
 }
 
-async function deleteShare (users, shares, shareId) {
+async function deleteShare (users, shares, sessions, shareId) {
   const share = await shares.findOne({ _id: shareId })
-  const userId = share.shareUser
-  const mapId = share.sharedMap
   await users.aggregate(
     [
-      { $match: { $expr: { $eq: [ '$_id', userId ] } } },
-      deleteMapFromAllUserSessionsPipelineStep(mapId),
-      deleteMapFromAllUserTabMapIdListPipelineStep(mapId),
+      { $match: { $expr: { $eq: [ '$_id', share.shareUser ] } } },
+      {
+        $set: {
+          tabMapIdList : {
+            $filter : {
+              input: "$tabMapIdList",
+              as: "tabMapId",
+              cond: { $ne: [ "$$tabMapId", share.sharedMap ] } }
+          },
+        }
+      },
       { $merge: 'users' }
+    ]
+  ).toArray()
+  await sessions.aggregate(
+    [
+      { $match: { $expr: { $and : [ { $eq: [ '$mapId', share.sharedMap ] }, { $eq: [ '$userId', share.shareUser ] } ] } } },
+      { $set: { mapId: '' } },
+      { $merge: 'sessions' }
     ]
   ).toArray()
   await shares.deleteOne({ _id: shareId })

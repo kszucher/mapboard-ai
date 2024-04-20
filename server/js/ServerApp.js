@@ -221,7 +221,7 @@ app.post('/delete-map', checkJwt, async (req, res) => {
   const userId = user._id
   // TODO prevent deleting the last map in tab
   const mapId = ObjectId(req.body.mapId)
-  await MongoMutations.deleteMap(users, shares, userId, mapId)
+  await MongoMutations.deleteMap(users, shares, sessions, userId, mapId)
   return res.json({})
 })
 
@@ -312,7 +312,7 @@ app.post('/accept-share', checkJwt, async (req, res) => {
 
 app.post('/delete-share', checkJwt, async (req, res) => {
   const shareId = ObjectId(req.body.shareId)
-  await MongoMutations.deleteShare(users, shares, shareId)
+  await MongoMutations.deleteShare(users, shares, sessions, shareId)
   return res.json({})
 })
 

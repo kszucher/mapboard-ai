@@ -25,7 +25,7 @@ async function openWorkspace(sessions, sessionId) {
             mapId: {
               $cond: {
                 if: { $eq: [ '$mapId', '' ] },
-                then: { $arrayElemAt: [ '$tabMapIdList', 0 ] },
+                then: { $arrayElemAt: [ '$tabMapIdList', 0 ] }, // TODO test
                 else: '$mapId'
               }
             }
