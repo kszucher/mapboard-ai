@@ -104,12 +104,10 @@ app.post('/open-workspace', checkJwt, async (req, res) => {
 })
 
 app.post('/select-map', checkJwt, async (req, res) => {
-  const user = await users.findOne({ sub: req.auth.payload.sub })
-  const userId = user._id
   const sessionId = req.auth.token.slice(-8)
   const mapId = ObjectId(req.body.mapId)
   const frameId = req.body.frameId
-  await MongoMutations.selectMap(users, userId, sessionId, mapId, frameId)
+  await MongoMutations.selectMap(sessions, sessionId, mapId, frameId)
   return res.json({})
 })
 
@@ -130,7 +128,7 @@ app.post('/create-map-in-map', checkJwt, async (req, res) => {
   const { path } = map
   const newMap = getDefaultMap(content, userId, [...path, mapId])
   const newMapId = (await maps.insertOne(newMap)).insertedId
-  await MongoMutations.selectMap(users, userId, sessionId, newMapId, '')
+  await MongoMutations.selectMap(sessions, sessionId, newMapId, '')
   await MongoMutations.saveMap(maps, mapId, sessionId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
   return res.json({})
 })
@@ -141,7 +139,7 @@ app.post('/create-map-in-tab', checkJwt, async (req, res) => {
   const sessionId = req.auth.token.slice(-8)
   const newMap = getDefaultMap('New Map', userId, [])
   const newMapId = (await maps.insertOne(newMap)).insertedId
-  await MongoMutations.selectMap(users, userId, sessionId, newMapId, '')
+  await MongoMutations.selectMap(sessions, sessionId, newMapId, '')
   await MongoMutations.appendMapInTab(users, userId, newMapId)
   return res.json({})
 })
@@ -171,32 +169,28 @@ app.post('/create-map-in-tab-duplicate', checkJwt, async (req, res) => {
     }
   })
   const newMapId = (await maps.insertOne(newMap)).insertedId
-  await MongoMutations.selectMap(users, userId, sessionId, newMapId, '')
+  await MongoMutations.selectMap(sessions, sessionId, newMapId, '')
   await MongoMutations.appendMapInTab(users, userId, newMapId)
   return res.json({})
 })
 
 app.post('/create-map-frame-import', checkJwt, async (req, res) => {
-  const user = await users.findOne({ sub: req.auth.payload.sub })
-  const userId = user._id
   const sessionId = req.auth.token.slice(-8)
   const mapId = ObjectId(req.body.mapId)
   const frameId = req.body.frameId
   const newFrameId = genHash()
   await MongoMutations.createMapFrameImport(maps, mapId, frameId, newFrameId)
-  await MongoMutations.selectMap(users, userId, sessionId, mapId, newFrameId)
+  await MongoMutations.selectMap(sessions, sessionId, mapId, newFrameId)
   return res.json({})
 })
 
 app.post('/create-map-frame-duplicate', checkJwt, async (req, res) => {
-  const user = await users.findOne({ sub: req.auth.payload.sub })
-  const userId = user._id
   const sessionId = req.auth.token.slice(-8)
   const mapId = ObjectId(req.body.mapId)
   const frameId = req.body.frameId
   const newFrameId = genHash()
   await MongoMutations.createMapFrameDuplicate(maps, mapId, frameId, newFrameId)
-  await MongoMutations.selectMap(users, userId, sessionId, mapId, newFrameId)
+  await MongoMutations.selectMap(sessions, sessionId, mapId, newFrameId)
   return res.json({})
 })
 

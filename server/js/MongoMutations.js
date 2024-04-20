@@ -71,14 +71,11 @@ async function resetSessions(sessions, userId) {
   ).toArray()
 }
 
-async function selectMap(users, userId, sessionId, mapId, frameId) {
-  await users.aggregate(
-    [
-      { $match: {_id: userId } },
-      {...setSession(sessionId, mapId, frameId)},
-      { $merge: 'users' }
-    ]
-  ).toArray()
+async function selectMap(sessions, sessionId, mapId, frameId) {
+  await sessions.findOneAndUpdate(
+    { _id: sessionId },
+    [ { $set: { mapId, frameId } } ]
+  )
 }
 
 async function moveUpMapInTab (users, userId, mapId) {
