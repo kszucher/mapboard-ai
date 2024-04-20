@@ -101,7 +101,7 @@ app.post('/open-workspace', checkJwt, async (req, res) => {
   const user = await users.findOne({ sub: req.auth.payload.sub })
   const userId = user._id
   const sessionId = req.auth.token.slice(-8)
-  return res.json((await MongoQueries.openWorkspace(users, userId, sessionId)).at(0))
+  return res.json(await MongoQueries.openWorkspace(users, userId, sessionId))
 })
 
 app.post('/select-map', checkJwt, async (req, res) => {

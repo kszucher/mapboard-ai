@@ -180,7 +180,7 @@ async function openWorkspace(users, userId, sessionId) {
         }
       ]
     ).toArray()
-  )
+  ).at(0)
 }
 
 async function getUserShares(shares, userId) {
