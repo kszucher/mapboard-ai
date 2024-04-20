@@ -75,52 +75,58 @@ async function selectMap(users, userId, sessionId, mapId, frameId) {
 }
 
 async function moveUpMapInTab (users, userId, mapId) {
-  const tabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   await users.findOneAndUpdate(
     { _id: userId },
-    [{
-      $set: {
-        tabMapIdList: {
-          $cond: {
-            if: { $and: [ { $ne: [tabIndex, -1] }, { $gt: [tabIndex, 0] } ] },
-            then: {
-              $concatArrays: [
-                {$slice: ["$tabMapIdList", {$subtract: [tabIndex, 1]}]},
-                [{$arrayElemAt: ["$tabMapIdList", tabIndex]}],
-                [{$arrayElemAt: ["$tabMapIdList", {$subtract: [tabIndex, 1]}]}],
-                {$slice: ["$tabMapIdList", {$add: [tabIndex, 1]}, {$size: "$tabMapIdList"}]}
-              ]
-            },
-            else: "$tabMapIdList",
+    [
+      { $set: { tabIndex: { $indexOfArray: [ "$tabMapIdList", mapId ] } } },
+      {
+        $set: {
+          tabMapIdList: {
+            $cond: {
+              if: { $gt: [ '$tabIndex', 0 ] },
+              then: {
+                $concatArrays: [
+                  { $slice: [ "$tabMapIdList", { $subtract: [ '$tabIndex', 1 ] } ] },
+                  [ { $arrayElemAt: [ "$tabMapIdList", '$tabIndex' ] } ],
+                  [ { $arrayElemAt: [ "$tabMapIdList", { $subtract: [ '$tabIndex', 1 ] } ] } ],
+                  { $slice: [ "$tabMapIdList", { $add: [ '$tabIndex', 1 ] }, { $size: "$tabMapIdList" } ] }
+                ]
+              },
+              else: "$tabMapIdList",
+            }
           }
         }
-      }
-    }]
+      },
+      { $unset: 'tabIndex' }
+    ]
   )
 }
 
 async function moveDownMapInTab (users, userId, mapId) {
-  const tabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   await users.findOneAndUpdate(
     { _id: userId },
-    [{
-      $set: {
-        tabMapIdList: {
-          $cond: {
-            if: { $and: [ { $ne: [tabIndex, -1] }, { $lt: [ tabIndex, { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] } ] },
-            then: {
-              $concatArrays: [
-                {$slice: ["$tabMapIdList", tabIndex]},
-                [{$arrayElemAt: ["$tabMapIdList", {$add: [tabIndex, 1]}]}],
-                [{$arrayElemAt: ["$tabMapIdList", tabIndex]}],
-                {$slice: ["$tabMapIdList", {$add: [tabIndex, 2]}, {$size: "$tabMapIdList"}]}
-              ]
-            },
-            else: "$tabMapIdList",
+    [
+      { $set: { tabIndex: { $indexOfArray: [ "$tabMapIdList", mapId ] } } },
+      {
+        $set: {
+          tabMapIdList: {
+            $cond: {
+              if: { $and: [ { $ne: ['$tabIndex', -1 ] }, { $lt: [ '$tabIndex', { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] } ] },
+              then: {
+                $concatArrays: [
+                  { $slice: [ "$tabMapIdList", '$tabIndex' ] },
+                  [ { $arrayElemAt: [ "$tabMapIdList", { $add: [ '$tabIndex', 1 ] } ] } ],
+                  [ { $arrayElemAt: [ "$tabMapIdList", '$tabIndex' ] } ],
+                  { $slice: [ "$tabMapIdList", { $add: [ '$tabIndex', 2 ] }, { $size: "$tabMapIdList" } ] }
+                ]
+              },
+              else: "$tabMapIdList",
+            }
           }
         }
-      }
-    }]
+      },
+      { $unset: 'tabIndex' }
+    ]
   )
 }
 
