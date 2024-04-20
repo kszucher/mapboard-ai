@@ -2,23 +2,6 @@ const { ACCESS_TYPES } = require('./Types')
 const { getIndexOfFrameId } = require('./MongoHelpers')
 
 async function openWorkspace(users, userId, sessionId) {
-  const getMapNameList = (mapIdList, mapNameList) => (
-    {
-      $lookup: {
-        from: "maps",
-        localField: mapIdList,
-        foreignField: "_id",
-        let: { originalArray: `$${mapIdList}` },
-        pipeline: [
-          { $set: { "order": { $indexOfArray: [ '$$originalArray', '$_id' ] } } },
-          { $replaceWith: { name: '$name', order: '$order' } },
-          { $sort: { "order": 1 } },
-          { $replaceWith: { name: '$name' } },
-        ],
-        as: mapNameList
-      }
-    }
-  )
   return (
     await users.aggregate(
       [
@@ -36,13 +19,44 @@ async function openWorkspace(users, userId, sessionId) {
             }
           }
         },
-        { $set: { mapId: '$session.mapId' } },
-        { $set: { frameId: '$session.frameId' } },
-        { $lookup: { from: "maps", localField: "mapId", foreignField: "_id", as: "mapList" }, },
-        { $set: { map: { $first: "$mapList" } } },
-        { $set: { framesInfo: '$map.framesInfo' } },
-        { $set: { 'breadcrumbMapIdList': { $concatArrays: [ '$map.path', [ "$mapId" ] ] } } },
-        { $lookup: { from: "shares", localField: "breadcrumbMapIdList", foreignField: "sharedMap", as: "shareList" } },
+        {
+          $set: {
+            mapId: '$session.mapId'
+          }
+        },
+        {
+          $set: {
+            frameId: '$session.frameId'
+          }
+        },
+        {
+          $lookup: {
+            from: "maps",
+            localField: "mapId",
+            foreignField: "_id",
+            as: "mapList"
+          }
+        },
+        {
+          $set: {
+            map: { $first: "$mapList" }
+          }
+        },
+        {
+          $set: { framesInfo: '$map.framesInfo' }
+        },
+        {
+          $set: { 'breadcrumbMapIdList': { $concatArrays: [ '$map.path', [ "$mapId" ] ] }
+          }
+        },
+        {
+          $lookup: {
+            from: "shares",
+            localField: "breadcrumbMapIdList",
+            foreignField: "sharedMap",
+            as: "shareList"
+          }
+        },
         { $set: { 'share': { $first: "$shareList" } } },
         {
           $set: {
@@ -104,10 +118,49 @@ async function openWorkspace(users, userId, sessionId) {
             }
           }
         },
-        { $set: { frameIdList: { $map: { input: "$framesInfo", as: "elem", in: "$$elem.frameId" } } } },
-        getMapNameList('tabMapIdList', 'tabMapNameList'),
-        getMapNameList('breadcrumbMapIdList', 'breadcrumbMapNameList'),
-        { $set: { tabId: { $indexOfArray: [ '$tabMapIdList', { $first: '$breadcrumbMapIdList' } ] } } },
+        {
+          $set: {
+            frameIdList: {
+              $map: { input: "$framesInfo", as: "elem", in: "$$elem.frameId" }
+            }
+          }
+        },
+        {
+          $lookup: {
+            from: "maps",
+            localField: 'tabMapIdList',
+            foreignField: "_id",
+            let: { originalArray: '$tabMapIdList' },
+            pipeline: [
+              { $set: { "order": { $indexOfArray: [ '$$originalArray', '$_id' ] } } },
+              { $replaceWith: { name: '$name', order: '$order' } },
+              { $sort: { "order": 1 } },
+              { $replaceWith: { name: '$name' } },
+            ],
+            as: 'tabMapNameList'
+          }
+        },
+        {
+          $lookup: {
+            from: "maps",
+            localField: 'breadcrumbMapIdList',
+            foreignField: "_id",
+            let: { originalArray: '$breadcrumbMapIdList' },
+            pipeline: [
+              { $set: { "order": { $indexOfArray: [ '$$originalArray', '$_id' ] } } },
+              { $replaceWith: { name: '$name', order: '$order' } },
+              { $sort: { "order": 1 } },
+              { $replaceWith: { name: '$name' } },
+            ],
+            as: 'breadcrumbMapNameList'
+          }
+        },
+        {
+          $set: {
+            tabId: {
+              $indexOfArray: [ '$tabMapIdList', { $first: '$breadcrumbMapIdList' } ] }
+          }
+        },
         {
           $replaceWith: {
             name: '$name',
