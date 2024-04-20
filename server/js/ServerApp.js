@@ -220,12 +220,10 @@ app.post('/delete-map', checkJwt, async (req, res) => {
 })
 
 app.post('/delete-map-frame', checkJwt, async (req, res) => {
-  const user = await users.findOne({ sub: req.auth.payload.sub })
-  const userId = user._id
   const sessionId = req.auth.token.slice(-8)
   const mapId = ObjectId(req.body.mapId)
   const frameId = req.body.frameId
-  await MongoMutations.deleteMapFrame(users, maps, userId, sessionId, mapId, frameId)
+  await MongoMutations.deleteMapFrame(maps, sessions, mapId, frameId, sessionId)
   return res.json({})
 })
 
