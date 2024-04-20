@@ -1,4 +1,4 @@
-const { getLastElemField, getIndexOfFrameId, getFrameIdOfIndex, setSession } = require('./MongoHelpers')
+const { getIndexOfFrameId, getFrameIdOfIndex, setSession } = require('./MongoHelpers')
 
 async function updateWorkspace(users, userId, sessionId) {
   await users.aggregate(
@@ -34,8 +34,12 @@ async function updateWorkspace(users, userId, sessionId) {
                       '$sessions',
                       [{
                         sessionId,
-                        mapId: getLastElemField('mapId', '$sessions'),
-                        frameId: getLastElemField('frameId', '$sessions')
+                        mapId: {
+                          $getField: { field: 'mapId', input: { $last: '$sessions' } }
+                        },
+                        frameId: {
+                          $getField: { field: 'frameId', input: { $last: '$sessions' } }
+                        },
                       }]
                     ]
                   }

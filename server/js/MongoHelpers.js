@@ -1,7 +1,3 @@
-const getLastElemField = ( field, array ) => ({
-  $getField: { field, input: { $last: array } }
-})
-
 const getIndexOfFrameId = (frameId) => ({
   $indexOfArray: [ { $map: { input: '$framesInfo', as: 'elem', in: { $getField: { field: 'frameId', input: '$$elem' } } } }, frameId ]
 })
@@ -29,7 +25,6 @@ const setSession = (sessionId, mapId, frameId) => ({
 })
 
 module.exports = {
-  getLastElemField,
   getIndexOfFrameId,
   getFrameIdOfIndex,
   setSession
