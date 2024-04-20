@@ -1,5 +1,4 @@
 const { ACCESS_TYPES } = require('./Types')
-const { getIndexOfFrameId } = require('./MongoHelpers')
 
 async function openWorkspace(sessions, sessionId) {
   return (
@@ -86,7 +85,16 @@ async function openWorkspace(sessions, sessionId) {
               $cond: {
                 if: { $eq: [ '$frameId', '' ] },
                 then: [{ $last: '$map.versions' }],
-                else: [{ $arrayElemAt: [ '$map.frames', getIndexOfFrameId('$frameId') ] }]
+                else: [
+                  {
+                    $arrayElemAt: [
+                      '$map.frames',
+                      {
+                        $indexOfArray: [ { $map: { input: '$map.framesInfo', as: 'elem', in: { $getField: { field: 'frameId', input: '$$elem' } } } }, '$frameId' ]
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }

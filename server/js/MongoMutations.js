@@ -1,5 +1,3 @@
-const { getIndexOfFrameId, getFrameIdOfIndex, setSession } = require('./MongoHelpers')
-
 async function updateWorkspace(users, userId, sessionId) {
   await users.aggregate(
     [
@@ -141,39 +139,74 @@ async function appendMapInTab(users, userId, mapId) {
   )
 }
 
-async function createMapFrame (maps, mapId, frameId, newFrameId, source) {
+async function createMapFrameImport (maps, mapId, frameId, newFrameId) {
   await maps.aggregate(
     [
       { $match: { _id: mapId } },
       {
         $set: {
+          frameIndex: {
+            $indexOfArray: [ { $map: { input: '$framesInfo', as: 'elem', in: { $getField: { field: 'frameId', input: '$$elem' } } } }, frameId ]
+          }
+        }
+      },
+      {
+        $set: {
           frames: {
             $concatArrays: [
-              { $slice: [ "$frames", { $sum: [ getIndexOfFrameId(frameId), 1 ] } ] },
-              [ source ],
-              { $slice: [ "$frames", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$frames" } ] } ] } ] }
+              { $slice: [ "$frames", { $sum: [ '$frameIndex', 1 ] } ] },
+              [ { $last: '$versions' } ],
+              { $slice: [ "$frames", { $sum: [ '$frameIndex', 1, { $multiply: [ -1, { $size: "$frames" } ] } ] } ] }
             ]
           },
           framesInfo: {
             $concatArrays: [
-              { $slice: [ "$framesInfo", { $sum: [ getIndexOfFrameId(frameId), 1 ] } ] },
+              { $slice: [ "$framesInfo", { $sum: [ '$frameIndex', 1 ] } ] },
               [ { frameId: newFrameId } ],
-              { $slice: [ "$framesInfo", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$framesInfo" } ] } ] } ] }
+              { $slice: [ "$framesInfo", { $sum: [ '$frameIndex', 1, { $multiply: [ -1, { $size: "$framesInfo" } ] } ] } ] }
             ]
           }
         }
       },
+      { $unset: 'frameIndex' },
       { $merge: 'maps' }
     ]
   ).toArray()
 }
 
-async function createMapFrameImport (maps, mapId, frameId, newFrameId) {
-  await createMapFrame (maps, mapId, frameId, newFrameId, { $last: '$versions' })
-}
-
 async function createMapFrameDuplicate (maps, mapId, frameId, newFrameId) {
-  await createMapFrame (maps, mapId, frameId, newFrameId, { $arrayElemAt: [ '$frames', getIndexOfFrameId(frameId) ] })
+  await maps.aggregate(
+    [
+      { $match: { _id: mapId } },
+      {
+        $set: {
+          frameIndex: {
+            $indexOfArray: [ { $map: { input: '$framesInfo', as: 'elem', in: { $getField: { field: 'frameId', input: '$$elem' } } } }, frameId ]
+          }
+        }
+      },
+      {
+        $set: {
+          frames: {
+            $concatArrays: [
+              { $slice: [ "$frames", { $sum: [ '$frameIndex', 1 ] } ] },
+              [ { $arrayElemAt: [ '$frames', '$frameIndex' ] } ],
+              { $slice: [ "$frames", { $sum: [ '$frameIndex', 1, { $multiply: [ -1, { $size: "$frames" } ] } ] } ] }
+            ]
+          },
+          framesInfo: {
+            $concatArrays: [
+              { $slice: [ "$framesInfo", { $sum: [ '$frameIndex', 1 ] } ] },
+              [ { frameId: newFrameId } ],
+              { $slice: [ "$framesInfo", { $sum: [ '$frameIndex', 1, { $multiply: [ -1, { $size: "$framesInfo" } ] } ] } ] }
+            ]
+          }
+        }
+      },
+      { $unset: 'frameIndex' },
+      { $merge: 'maps' }
+    ]
+  ).toArray()
 }
 
 async function deleteMap (users, shares, sessions, userId, mapId) {
@@ -519,14 +552,21 @@ async function saveMapFrame (maps, mapId, frameId, mapData) {
       { $match: { _id: mapId } },
       {
         $set: {
+          frameIndex: {
+            $indexOfArray: [ { $map: { input: '$framesInfo', as: 'elem', in: { $getField: { field: 'frameId', input: '$$elem' } } } }, frameId ]
+          }
+        }
+      },
+      {
+        $set: {
           frames: {
             $cond: {
               if: { $ne: [ frameId, '' ] },
               then: {
                 $concatArrays: [
-                  { $slice: [ "$frames", getIndexOfFrameId(frameId) ] },
+                  { $slice: [ "$frames", '$frameIndex' ] },
                   [ mapData ],
-                  { $slice: [ "$frames", { $add: [ 1, getIndexOfFrameId(frameId) ] }, { $size: "$frames" } ] }
+                  { $slice: [ "$frames", { $add: [ 1, '$frameIndex' ] }, { $size: "$frames" } ] }
                 ]
               },
               else: "$frames"
@@ -534,6 +574,7 @@ async function saveMapFrame (maps, mapId, frameId, mapData) {
           }
         }
       },
+      { $unset: 'frameIndex' },
       { $merge: 'maps' }
     ]
   ).toArray()
