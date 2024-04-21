@@ -20,7 +20,7 @@ export const NodeEditCreateSubMap = () => {
           <Text as="div" size="2" mb="1" weight="bold">
             {'New Map Name'}
           </Text>
-          <TextField.Input
+          <TextField.Root
             disabled={true}
             radius="large"
             value={getXS(m).content}

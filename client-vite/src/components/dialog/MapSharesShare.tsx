@@ -1,5 +1,4 @@
 import {Button, Dialog, Flex, Grid, Select, Text, TextField} from "@radix-ui/themes"
-import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes"
 import {useState} from "react"
 import {useCreateShareMutation} from "../../api/Api.ts"
 import {AccessType} from "../../state/Enums.ts"
@@ -8,7 +7,7 @@ import {Spinner} from "../assets/Spinner.tsx"
 
 export const MapSharesShare = () => {
   const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()
-  const errorMessage = (error as BaseQueryError<any>)?.data?.message
+  const errorMessage = (error as any)?.data?.message
   const [shareEmail, setShareEmail] = useState('')
   const [shareAccess, setShareAccess] = useState<AccessType>(AccessType.VIEW)
   return (
@@ -31,7 +30,7 @@ export const MapSharesShare = () => {
           </Select.Content>
         </Select.Root>
         <Text as="div" size="2" weight="bold">{'Email'}</Text>
-        <TextField.Input
+        <TextField.Root
           disabled={isLoading || isSuccess}
           radius="large"
           value={shareEmail}

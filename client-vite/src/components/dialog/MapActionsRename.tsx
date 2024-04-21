@@ -21,7 +21,7 @@ export const MapActionsRename = () => {
           <Text as="div" size="2" mb="1" weight="bold">
             {'Name'}
           </Text>
-          <TextField.Input
+          <TextField.Root
             radius="large"
             value={mapName}
             placeholder="Map name"
