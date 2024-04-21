@@ -10,9 +10,6 @@ async function mongoExecutorCommands (users, maps, shares, sessions) {
         lastSelectedMap: '',
         lastSelectedFrame: '',
       },
-    },
-    {
-      $unset: 'sessions'
     }
   ])
   await maps.updateMany({}, [
