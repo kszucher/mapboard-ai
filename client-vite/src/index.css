@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
 }
@@ -10,13 +14,9 @@ html, body, div, table, td, tr {
   outline: none;
 }
 
-/*https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript*/
 #Test {
   position: absolute;
   visibility: hidden;
-  /*height: auto;*/
-  /*width: auto;*/
-  /*white-space: nowrap;*/
   line-height: 1.5;
 }
 
@@ -31,11 +31,3 @@ img {
 ::-webkit-scrollbar {
   display: none;
 }
-
-/*https://stackoverflow.com/questions/71074/how-to-remove-firefoxs-dotted-outline-on-buttons-as-well-as-links*/
-:focus {outline:none;}
-::-moz-focus-inner {border:0;}
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
