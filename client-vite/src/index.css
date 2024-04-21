@@ -11,3 +11,40 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html, body, div, table, td, tr {
+  user-select: none;
+}
+
+[contenteditable="true"]:focus {
+  outline: none;
+}
+
+/*https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript*/
+#Test {
+  position: absolute;
+  visibility: hidden;
+  height: auto;
+  width: auto;
+  white-space: nowrap;
+}
+
+.katex {
+  display: inline-block
+}
+
+img {
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/*https://stackoverflow.com/questions/71074/how-to-remove-firefoxs-dotted-outline-on-buttons-as-well-as-links*/
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

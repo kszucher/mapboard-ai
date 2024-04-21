@@ -24,7 +24,6 @@ import {Formatter} from "./Formatter"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
-import {setColors} from "../colors/Colors.ts"
 import {UserAccountDelete} from "../dialog/UserAccountDelete.tsx"
 
 export const Editor: FC = () => {
@@ -44,17 +43,8 @@ export const Editor: FC = () => {
     mermaid.initialize({startOnLoad: false, theme: "dark", flowchart: {useMaxWidth: false}})
   }, [])
 
-  useEffect(() => {
-    setColors(colorMode)
-    if (colorMode === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }, [colorMode])
-
   return (
-    <Theme accentColor="violet" panelBackground="solid" scaling="100%" radius="full">
+    <Theme appearance={colorMode === 'dark' ? 'dark' : 'light'} accentColor="violet" panelBackground="solid" scaling="100%" radius="full">
       {mExists &&
         <Dialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setDialogState(DialogState.NONE))}>
           <AlertDialog.Root onOpenChange={(isOpen) => !isOpen && dispatch(actions.setAlertDialogState(AlertDialogState.NONE))}>

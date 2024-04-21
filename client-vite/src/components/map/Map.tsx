@@ -12,6 +12,7 @@ import {setScrollLeftAnimated} from "./MapDivUtils"
 import {MapSvg} from "./MapSvg"
 import {MapDivR} from "./MapDivR.tsx"
 import {MapDivC} from "./MapDivC.tsx"
+import {getColors} from "../colors/Colors.ts"
 
 export const Map: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
@@ -22,7 +23,7 @@ export const Map: FC = () => {
   const g = getG(m)
   const { density } = g
   const { data } = useOpenWorkspaceQuery()
-  const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState
+  const { mapId, frameId, colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
@@ -62,6 +63,7 @@ export const Map: FC = () => {
       style={{
         overflow: 'auto',
         display: 'grid',
+        backgroundColor: getColors(colorMode).PAGE_BACKGROUND,
         gridTemplateRows: `100vh ${g.selfH}px 100vh`,
         gridTemplateColumns: `100vw ${g.selfW}px 100vw`,
       }}

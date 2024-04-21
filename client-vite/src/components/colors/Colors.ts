@@ -66,11 +66,4 @@ const COLOR_DARK = {
 
 export const getColors = (colorMode: string) => (colorMode === 'light' ? COLOR_LIGHT : COLOR_DARK)
 
-export const setColors = (colorMode: string) => {
-  const root = document.querySelector(':root') as HTMLElement
-  root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
-  root.style.setProperty('--app-background-color', getColors(colorMode).PAGE_BACKGROUND)
-  root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
-}
-
 export const shortcutColors = ['#222222', '#999999', '#bbbbbb', '#dddddd', '#d5802a', '#1c8e1c', '#8e1c8e', '#990000', '#000099', '#ffffff']
