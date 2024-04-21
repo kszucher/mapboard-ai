@@ -1,7 +1,6 @@
-import {Button, Dialog, Flex, Text} from "@radix-ui/themes"
+import {Button, Dialog, Flex, Spinner, Text} from "@radix-ui/themes"
 import {useEffect, useRef, useState} from "react"
 import {useGetIngestionQuery, useUploadFileMutation} from "../../api/Api.ts"
-import {Spinner} from "../assets/Spinner.tsx"
 import {defaultGetIngestionQueryState} from "../../state/NodeApiState.ts"
 
 export const RootIngestion = () => {
@@ -63,7 +62,7 @@ export const RootIngestion = () => {
           </Button>
         }
         {isUploading &&
-          <Spinner/>
+          <Spinner size="3"/>
         }
         {ingestionResult &&
           <div>

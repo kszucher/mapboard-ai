@@ -12,7 +12,7 @@ import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
 import {S} from "../../state/MapStateTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {adjust, getLatexString} from "../../utils/Utils"
-import {getColors} from "../assets/Colors"
+import {getColors} from "../colors/Colors.ts"
 import {setEndOfContentEditable} from "./MapDivUtils"
 
 const getInnerHtml = (s: S) => {

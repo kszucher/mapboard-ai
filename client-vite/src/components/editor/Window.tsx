@@ -10,7 +10,7 @@ import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../../sta
 import {getMap, mSelector} from "../../state/EditorState"
 import {mapDeInit} from "../../reducers/MapDeInit"
 import {M, N} from "../../state/MapStateTypes"
-import {shortcutColors} from "../assets/Colors"
+import {shortcutColors} from "../colors/Colors.ts"
 import {getRR, getRL, getRD, getRU} from "../../queries/MapFindNearestR.ts"
 
 export let timeoutId: NodeJS.Timeout

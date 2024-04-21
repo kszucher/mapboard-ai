@@ -5,9 +5,8 @@ import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {DialogState, AlertDialogState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
-import {Theme, AlertDialog, Dialog} from "@radix-ui/themes"
+import {Theme, AlertDialog, Dialog, Spinner} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
-import {Spinner} from "../assets/Spinner"
 import {RootExtraction} from "../dialog/RootExtraction.tsx"
 import {RootIngestion} from "../dialog/RootIngestion.tsx"
 import {MapActionsRename} from "../dialog/MapActionsRename.tsx"
@@ -25,8 +24,8 @@ import {Formatter} from "./Formatter"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
-import {setColors} from "../assets/Colors"
-import {UserAccountDelete} from "../dialog/UserAccountDelete.tsx";
+import {setColors} from "../colors/Colors.ts"
+import {UserAccountDelete} from "../dialog/UserAccountDelete.tsx"
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
@@ -95,7 +94,7 @@ export const Editor: FC = () => {
         }}
         className="fixed top-0 left-0 w-screen h-screen bg-zinc-900  flex items-center justify-center z-50"
       >
-        <Spinner/>
+        <Spinner size="3"/>
       </div>
     </Theme>
   )

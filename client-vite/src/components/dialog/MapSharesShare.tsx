@@ -1,9 +1,8 @@
-import {Button, Dialog, Flex, Grid, Select, Text, TextField} from "@radix-ui/themes"
+import {Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField} from "@radix-ui/themes"
 import {useState} from "react"
 import {useCreateShareMutation} from "../../api/Api.ts"
 import {AccessType} from "../../state/Enums.ts"
 import {getMapId} from "../../state/NodeApiState.ts"
-import {Spinner} from "../assets/Spinner.tsx"
 
 export const MapSharesShare = () => {
   const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()
@@ -63,7 +62,7 @@ export const MapSharesShare = () => {
             </Dialog.Close>
           </Flex>
         }
-        {isLoading && <Spinner/>}
+        {isLoading && <Spinner size="3"/>}
       </Flex>
     </Dialog.Content>
   )
