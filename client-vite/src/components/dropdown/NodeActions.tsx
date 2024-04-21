@@ -91,19 +91,13 @@ export const NodeActions = () => {
             <DropdownMenu.SubContent>
               {!formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.openFormatter())}>{'Open Formatter'}</DropdownMenu.Item>}
               {formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.closeFormatter())}>{'Close Formatter'}</DropdownMenu.Item>}
-              <Dialog.Trigger>
-                {getXS(m).co1.length === 0 && getXS(m).linkType === '' && <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_MAP_IN_MAP))}>{'Create Sub Map'}</DropdownMenu.Item>}
-              </Dialog.Trigger>
+              {getXS(m).co1.length === 0 && getXS(m).linkType === '' && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_MAP_IN_MAP))}>{'Create Sub Map'}</DropdownMenu.Item></Dialog.Trigger>}
               {getXAS(m).length ===  1 && getXS(m).co1.length > 0 && <DropdownMenu.Item onClick={() => md(MR.transpose)}>{'Transpose'}</DropdownMenu.Item>}
               {getXAS(m).length ===  1 && getXS(m).co.length === 0 && [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).map(ti => ti.taskStatus).includes(0) && <DropdownMenu.Item onClick={() => md(MR.setTaskModeOn)}>{'Task Mode On'}</DropdownMenu.Item>}
               {getXAS(m).length ===  1 && getXS(m).co.length === 0 && [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => md(MR.setTaskModeOff)}>{'Task Mode Off'}</DropdownMenu.Item>}
               {getXAS(m).length ===  1 && getXS(m).co.length === 0 && [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => md(MR.setTaskModeReset)}>{'Task Mode Reset'}</DropdownMenu.Item>}
-              <Dialog.Trigger>
-                {getXS(m).contentType === 'equation' && getXS(m).co1.length === 0 && <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</DropdownMenu.Item>}
-              </Dialog.Trigger>
-              <Dialog.Trigger>
-                {getXS(m).contentType === 'mermaid' && getXS(m).co1.length === 0 && <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_MERMAID))}>{'Edit Mermaid'}</DropdownMenu.Item>}
-              </Dialog.Trigger>
+              {getXS(m).contentType === 'equation' && getXS(m).co1.length === 0 && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</DropdownMenu.Item></Dialog.Trigger>}
+              {getXS(m).contentType === 'mermaid' && getXS(m).co1.length === 0 && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_MERMAID))}>{'Edit Mermaid'}</DropdownMenu.Item> </Dialog.Trigger>}
               {<DropdownMenu.Item onClick={() => md(MR.setBlur)}>{'set blur'}</DropdownMenu.Item>}
               {<DropdownMenu.Item onClick={() => md(MR.clearBlur)}>{'clear blur'}</DropdownMenu.Item>}
             </DropdownMenu.SubContent>

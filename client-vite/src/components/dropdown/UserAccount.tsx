@@ -18,10 +18,14 @@ export const UserAccount = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="bg-red-300" onCloseAutoFocus={e => e.preventDefault()}>
         <Dialog.Trigger>
-          {<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_BY_ME))}>{'Maps Shared By Me'}</DropdownMenu.Item>}
+          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_BY_ME))}>
+            {'Maps Shared By Me'}
+          </DropdownMenu.Item>
         </Dialog.Trigger>
         <Dialog.Trigger>
-          {<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_WITH_ME))}>{'Maps Shared With Me'}</DropdownMenu.Item>}
+          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_WITH_ME))}>
+            {'Maps Shared With Me'}
+          </DropdownMenu.Item>
         </Dialog.Trigger>
         <DropdownMenu.Separator/>
         <DropdownMenu.Item onClick={()=>{

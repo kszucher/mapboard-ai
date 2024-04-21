@@ -10,6 +10,8 @@ import {AccessType, FormatMode, LineType, TextType, WidthType} from "../../state
 import {FBorderIcon, FFillIcon, SFillIcon, SBorderIcon} from "../../assetsCustom/CustomIcons.tsx"
 import LetterT from "../../assets/letter-t.svg?react"
 import VectorSpline from "../../assets/vector-spline.svg?react"
+import {useOpenWorkspaceQuery} from "../../api/Api.ts";
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState.ts"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 
@@ -22,7 +24,8 @@ export const Formatter: FC = () => {
   const height = o * colorList.length
   const formatMode = useSelector((state: RootState) => state.editor.formatMode)
   const m = useSelector((state:RootState) => mSelector(state))
-  const access = useSelector((state: RootState) => state.editor.access)
+  const { data } = useOpenWorkspaceQuery()
+  const { access } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessType.UNAUTHORIZED, AccessType.VIEW].includes(access)
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
