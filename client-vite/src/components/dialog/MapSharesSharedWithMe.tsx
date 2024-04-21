@@ -1,4 +1,4 @@
-import {Button, Dialog, Flex, Table, TableBody} from "@radix-ui/themes"
+import {Button, Dialog, Flex, Table} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import {api, useGetSharesQuery} from "../../api/Api.ts"
 import {AppDispatch} from "../../reducers/EditorReducer.ts"
@@ -23,7 +23,7 @@ export const MapSharesSharedWithMe = () => {
             <Table.ColumnHeaderCell>{'Action'}</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
-        <TableBody>
+        <Table.Body>
           {shareDataImport.map((el: { _id: string, sharedMapName: string, ownerUserEmail: string, access: string, status: string  }) =>
             <Table.Row key={el._id}>
               <Table.RowHeaderCell>{el.sharedMapName}</Table.RowHeaderCell>
@@ -44,7 +44,7 @@ export const MapSharesSharedWithMe = () => {
                 </Table.Cell>}
             </Table.Row>
           )}
-        </TableBody>
+        </Table.Body>
       </Table.Root>
       <Flex gap="3" mt="4" justify="end">
         <Dialog.Close>
