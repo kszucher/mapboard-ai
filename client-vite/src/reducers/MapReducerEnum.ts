@@ -149,7 +149,6 @@ export enum MR {
 
   setContentText = 'setContentText',
   setContentEquation = 'setContentEquation',
-  setContentMermaid = 'setContentMermaid',
 
   setLineWidth = 'setLineWidth',
   setLineType = 'setLineType',

@@ -1,6 +1,5 @@
 import {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import mermaid from "mermaid"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {DialogState, AlertDialogState} from "../../state/Enums"
@@ -14,7 +13,6 @@ import {MapSharesShare} from "../dialog/MapSharesShare.tsx"
 import {MapSharesSharedByMe} from "../dialog/MapSharesSharedByMe.tsx"
 import {MapSharesSharedWithMe} from "../dialog/MapSharesSharedWithMe.tsx"
 import {NodeEditContentEquation} from "../dialog/NodeEditContentEquation.tsx"
-import {NodeEditContentMermaid} from "../dialog/NodeEditContentMermaid.tsx"
 import {NodeEditCreateSubMap} from "../dialog/NodeEditCreateSubMap.tsx"
 import {NodeInsertTable} from "../dialog/NodeInsertTable.tsx"
 import {EditorAppBarLeft} from "./EditorAppBarLeft.tsx"
@@ -40,7 +38,6 @@ export const Editor: FC = () => {
   useEffect(()=> {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
-    mermaid.initialize({startOnLoad: false, theme: "dark", flowchart: {useMaxWidth: false}})
   }, [])
 
   return (
@@ -64,7 +61,6 @@ export const Editor: FC = () => {
           {dialogState === DialogState.SHARED_WITH_ME && <MapSharesSharedWithMe/>}
           {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeEditCreateSubMap/>}
           {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeEditContentEquation/>}
-          {dialogState === DialogState.EDIT_CONTENT_MERMAID && <NodeEditContentMermaid/>}
           {dialogState === DialogState.CREATE_TABLE_U && <NodeInsertTable/>}
           {dialogState === DialogState.CREATE_TABLE_D && <NodeInsertTable/>}
           {dialogState === DialogState.CREATE_TABLE_O && <NodeInsertTable/>}

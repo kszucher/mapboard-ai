@@ -156,7 +156,6 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
 
     case 'setContentText': Object.assign(getXS(m), { contentType: 'text', content: payload.content }); break
     case 'setContentEquation': Object.assign(getXS(m), { contentType: 'equation', content: payload.content }); break
-    case 'setContentMermaid': Object.assign(getXS(m), { contentType: 'mermaid', content: payload.content }); break
 
     case 'setLineWidth': getXAS(m).forEach(si => Object.assign(si, { lineWidth: payload })); break
     case 'setLineType': getXAS(m).forEach(si => Object.assign(si, { lineType: payload })); break

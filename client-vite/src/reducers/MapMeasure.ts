@@ -80,12 +80,6 @@ export const mapMeasure = (pm: M, m: M) => {
               const dim = getTextDim(si.content, si.textFontSize)
               si.dimW = dim[0]
               si.dimH = dim[1]
-            } else if (si.contentType === 'mermaid') {
-              const currDiv = document.getElementById(si.nodeId) as HTMLDivElement
-              if (currDiv) {
-                si.dimW = currDiv.offsetWidth
-                si.dimH = currDiv.offsetHeight
-              }
             } else if (si.contentType === 'equation') {
               const dim = getEquationDim(si.content)
               si.dimW = dim[0]

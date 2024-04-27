@@ -1,7 +1,6 @@
 // @ts-ignore
 import katex from "katex/dist/katex.mjs"
-import mermaid from "mermaid"
-import {FC, useEffect} from "react"
+import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
@@ -17,8 +16,6 @@ import {setEndOfContentEditable} from "./MapDivUtils"
 
 const getInnerHtml = (s: S) => {
   if (s.contentType === 'text') {
-    return s.content
-  } else if (s.contentType === 'mermaid') {
     return s.content
   } else if (s.contentType === 'equation') {
     return katex.renderToString(getLatexString(s.content), {throwOnError: false})
@@ -41,27 +38,17 @@ export const MapDivS: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
-  useEffect(() => {
-    mermaid.run({
-      nodes: document.querySelectorAll('.mermaidNode'),
-      postRenderCallback: () => {
-        md(MR.clearDimensions)
-      }
-    })
-  }, [m])
-
   return (
     mS(m).map(si => (
       <div
         key={si.nodeId}
         id={si.nodeId}
         ref={ref => ref && ref.focus()}
-        className={si.contentType === 'mermaid' ? 'mermaidNode' : ''}
         style={{
           left: adjust(si.nodeStartX),
           top: adjust( si.nodeStartY),
-          minWidth: si.contentType === 'mermaid' ? 'inherit' : si.selfW + (g.density === 'large'? -10 : -8),
-          minHeight: si.contentType === 'mermaid' ? 'inherit' : si.selfH + (g.density === 'large'? -10 : 0),
+          minWidth: si.selfW + (g.density === 'large'? -10 : -8),
+          minHeight: si.selfH + (g.density === 'large'? -10 : 0),
           paddingLeft: g.density === 'large'? 8 : 8,
           paddingTop: g.density === 'large'? 4 : 2,
           position: 'absolute',

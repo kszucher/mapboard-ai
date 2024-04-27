@@ -97,7 +97,6 @@ export const NodeActions = () => {
               {getXAS(m).length ===  1 && getXS(m).co.length === 0 && [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => md(MR.setTaskModeOff)}>{'Task Mode Off'}</DropdownMenu.Item>}
               {getXAS(m).length ===  1 && getXS(m).co.length === 0 && [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => md(MR.setTaskModeReset)}>{'Task Mode Reset'}</DropdownMenu.Item>}
               {getXS(m).contentType === 'equation' && getXS(m).co1.length === 0 && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</DropdownMenu.Item></Dialog.Trigger>}
-              {getXS(m).contentType === 'mermaid' && getXS(m).co1.length === 0 && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_MERMAID))}>{'Edit Mermaid'}</DropdownMenu.Item> </Dialog.Trigger>}
               {<DropdownMenu.Item onClick={() => md(MR.setBlur)}>{'set blur'}</DropdownMenu.Item>}
               {<DropdownMenu.Item onClick={() => md(MR.clearBlur)}>{'clear blur'}</DropdownMenu.Item>}
             </DropdownMenu.SubContent>
