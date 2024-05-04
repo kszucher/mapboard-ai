@@ -7,8 +7,8 @@ import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiSt
 
 export const MapActionsRename = () => {
   const { data } = useOpenWorkspaceQuery()
-  const { tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
-  const [mapName, setMapName] = useState(tabMapNameList[tabId].name)
+  const { breadcrumbMapNameList } = data || defaultUseOpenWorkspaceQueryState
+  const [mapName, setMapName] = useState(breadcrumbMapNameList.at(-1)!.name)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
