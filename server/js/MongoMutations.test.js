@@ -245,48 +245,45 @@ describe("MongoMutationsTests", async() => {
     expect(await resolveMutation(test, 'deleteMapFrame', [maps, sessions, 'm1', 'f1', 'js1'])).toEqual(result)
   })
   test('saveMap', async() => {
-    const original = [
-      {nodeId: 's', a: 'vo'},
-      {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'vo', e: 'vo', f: 'vo', g: 'vo', h: 'vo', i: 'vo'},
-    ]
-    const mutationA = [
-      {nodeId: 's', a: 'vo'},
-      {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'va', e: 'va', f: 'va', j: 'va', l: 'vab'}
-    ]
-    const mutationB = [
-      {nodeId: 's', a: 'vo'},
-      {nodeId: 't', a: 'vo', b: 'vb', d: 'vo', e: 'vb', g: 'vo', h: 'vb', k: 'vb', l: 'vab'}
-    ]
-    const mergeAB = [
-      {nodeId: 's', a: 'vo'},
-      {nodeId: 't', a: 'vo', b: 'vb', d: 'va', e: 'va', j: 'va', k: 'vb', l: 'vab'}
-    ]
     const test = {
-      users: [ { _id: 'u1'} ],
-      maps: [ {
-        _id: 'm1',
-        ownerUser:'u1',
-        versionsInfo: [
-          { modifierType: "user", userId: "user0", jwtId: 's1', versionId: 1 }
-        ],
-        versions: [ original, mutationA ]
-      } ]
-    }
-    const result = {
-      users: [ { _id: 'u1'} ],
+      users: [ { _id: 'u1'}, { _id: 'u2'}, { _id: 'u3'} ],
       maps: [
         {
           _id: 'm1',
           ownerUser:'u1',
-          versionsInfo: [
-            { modifierType: "user", userId: "user0", jwtId: 's1', versionId: 1 },
-            { modifierType: "user", userId: "u1", jwtId: 's1', versionId: 2 }
+          versions: [
+            [{nodeId: 's', a: 'vo'}, {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'vo', e: 'vo', f: 'vo', g: 'vo', h: 'vo', i: 'vo'}],
+            [{nodeId: 's', a: 'vo'}, {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'va', e: 'va', f: 'va', j: 'va', l: 'vab'}],
           ],
-          versions: [ original, mutationA, mergeAB ]
+          versionsInfo: [
+            { modifierType: "user", userId: "u1", jwtId: 'j1', versionId: 0 },
+            { modifierType: "user", userId: "u1", jwtId: 'j2', versionId: 1 }
+          ],
         }
       ]
     }
-    expect(await resolveMutation(test, 'saveMap', [maps, 'm1', 's1', 'map', mutationB])).toEqual(result)
+    const result = {
+      users: [ { _id: 'u1'}, { _id: 'u2'}, { _id: 'u3'} ],
+      maps: [
+        {
+          _id: 'm1',
+          ownerUser:'u1',
+          versions: [
+            [{nodeId: 's', a: 'vo'}, {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'vo', e: 'vo', f: 'vo', g: 'vo', h: 'vo', i: 'vo'}],
+            [{nodeId: 's', a: 'vo'}, {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'va', e: 'va', f: 'va', j: 'va', l: 'vab'}],
+            [{nodeId: 's', a: 'vo'}, {nodeId: 't', a: 'vo', b: 'vb', d: 'va', e: 'va', j: 'va', k: 'vb', l: 'vab'}],
+          ],
+          versionsInfo: [
+            { modifierType: "user", userId: "u1", jwtId: 'j1', versionId: 0 },
+            { modifierType: "user", userId: "u1", jwtId: 'j2', versionId: 1 },
+            { modifierType: "user", userId: "u1", jwtId: 'j3', versionId: 2 }
+          ],
+        }
+      ]
+    }
+    expect(await resolveMutation(test, 'saveMap', [maps, 'm1', 'j3', 'map',
+      [{nodeId: 's', a: 'vo'}, {nodeId: 't', a: 'vo', b: 'vb', d: 'vo', e: 'vb', g: 'vo', h: 'vb', k: 'vb', l: 'vab'}]
+    ])).toEqual(result)
   })
   test('saveMapFrame', async() => {
     const test = {
