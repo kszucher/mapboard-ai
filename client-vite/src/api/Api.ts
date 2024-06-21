@@ -138,6 +138,10 @@ export const api = createApi({
       invalidatesTags: []
     }),
     // PYTHON API
+    saveMapDiff: builder.mutation<void, { mapId: string, frameId: string, mapDiffData: any }>({
+      query: ({ mapId, frameId, mapDiffData }) => ({ url: 'save-map-diff', method: 'POST', body: { mapId, frameId, mapDiffData } }),
+      invalidatesTags: []
+    }),
     uploadFile: builder.mutation<void, { bodyFormData: FormData }>({
       query: ({ bodyFormData }) => ({ url: pythonBackendUrl + '/upload-file', method: 'POST', body: bodyFormData, formData: true }),
       invalidatesTags: ['IngestionData']
