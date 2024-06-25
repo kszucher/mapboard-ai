@@ -5,16 +5,18 @@ describe("MapDiffTests", () => {
   test('mapDiff', () => {
       const version0 = [
         {nodeId: 's', a: 'vo'},
-        {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'vo', e: 'vo', f: 'vo', g: 'vo', h: 'vo', i: 'vo'},
+        {nodeId: 't', a: 'vo', b: 'vo', c: 'vo'},
         {nodeId: 'u', a: 'vo'}
       ] as any as MPartial
       const version1 = [
         {nodeId: 's', a: 'vo'},
-        {nodeId: 't', a: 'vo', b: 'vo', c: 'vo', d: 'va', e: 'va', f: 'va', j: 'va', l: 'vab'},
-        {nodeId: 'v', a: 'va'}
+        {nodeId: 't', a: 'vo', b: 'vd', d: 'vd'},
+        {nodeId: 'v', a: 'vd'}
       ] as any as MPartial
       const result = {
-        t: {d: "va", e: "va", f: "va", g: null, h: null, i: null, j: "va", l: "vab"}, u: null, v: {"a": "va"}
+        t: {b: 'vd', c: null, d: 'vd'},
+        u: null,
+        v: {a: 'vd'}
       }
       expect(mapDiff(version0, version1)).toEqual(result)
     }
