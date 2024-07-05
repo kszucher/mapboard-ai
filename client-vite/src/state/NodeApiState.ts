@@ -15,6 +15,8 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
   tabMapNameList: [],
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
+  sharedMapIdList: [],
+  sharedMapNameList: [],
 }
 
 export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {

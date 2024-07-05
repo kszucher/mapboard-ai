@@ -13,6 +13,8 @@ export interface DefaultUseOpenWorkspaceQueryState {
   breadcrumbMapNameList: {name: string}[]
   tabMapIdList: string[]
   tabMapNameList: {name: string}[]
+  sharedMapIdList: string[]
+  sharedMapNameList: {name: string}[]
 }
 
 export interface DefaultGetIngestionQueryState {
