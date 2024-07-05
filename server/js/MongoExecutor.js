@@ -9,12 +9,7 @@ async function mongoExecutorCommands (users, maps, shares, sessions) {
       $set: {
         lastSelectedMap: ''
       }
-    },
-    {
-      $unset: [
-        'lastSelectedFrame'
-      ]
-    },
+    }
   ])
   await maps.updateMany({}, [
     {
@@ -29,12 +24,6 @@ async function mongoExecutorCommands (users, maps, shares, sessions) {
           }
         ]
       }
-    },
-    {
-      $unset: [
-        'frames',
-        'framesInfo'
-      ]
     }
   ])
 }
