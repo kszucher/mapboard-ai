@@ -8,23 +8,13 @@ export interface DefaultUseOpenWorkspaceQueryState {
   access: AccessType
   tabId: number
   mapId: string
-  frameId: string
   mapDataList: M[]
   breadcrumbMapIdList: string[]
   breadcrumbMapNameList: {name: string}[]
   tabMapIdList: string[]
   tabMapNameList: {name: string}[]
-  frameIdList: string[]
 }
 
 export interface DefaultGetIngestionQueryState {
   ingestionResult: any[]
-}
-
-export type GptData = {
-  promptId: string
-  promptJson: any[] // TODO define
-  prompt: string
-  maxToken: number
-  timestamp: number
 }

@@ -42,9 +42,6 @@ async function openWorkspace(sessions, jwtId) {
           $set: { map: { $first: "$mapList" } }
         },
         {
-          $set: { framesInfo: '$map.framesInfo' }
-        },
-        {
           $set: { breadcrumbMapIdList: { $concatArrays: [ '$map.path', [ "$mapId" ] ] } }
         },
         {
@@ -81,22 +78,7 @@ async function openWorkspace(sessions, jwtId) {
         },
         {
           $set: {
-            mapDataList: {
-              $cond: {
-                if: { $eq: [ '$frameId', '' ] },
-                then: [{ $last: '$map.versions' }],
-                else: [
-                  {
-                    $arrayElemAt: [
-                      '$map.frames',
-                      {
-                        $indexOfArray: [ { $map: { input: '$map.framesInfo', as: 'elem', in: { $getField: { field: 'frameId', input: '$$elem' } } } }, '$frameId' ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
+            mapDataList: [{ $last: '$map.versions' }]
           }
         },
         {
@@ -125,9 +107,6 @@ async function openWorkspace(sessions, jwtId) {
               }
             }
           }
-        },
-        {
-          $set: { frameIdList: { $map: { input: "$framesInfo", as: "elem", in: "$$elem.frameId" } } }
         },
         {
           $lookup: {
@@ -170,13 +149,11 @@ async function openWorkspace(sessions, jwtId) {
             access: "$access",
             tabId: '$tabId',
             mapId: '$mapId',
-            frameId: '$frameId',
             mapDataList: '$mapDataList',
             tabMapIdList: "$tabMapIdList",
             tabMapNameList: "$tabMapNameList",
             breadcrumbMapIdList: "$breadcrumbMapIdList",
             breadcrumbMapNameList: "$breadcrumbMapNameList",
-            frameIdList: "$frameIdList",
           }
         }
       ]

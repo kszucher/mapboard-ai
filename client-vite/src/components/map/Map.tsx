@@ -23,7 +23,7 @@ export const Map: FC = () => {
   const g = getG(m)
   const { density } = g
   const { data } = useOpenWorkspaceQuery()
-  const { mapId, frameId, colorMode } = data || defaultUseOpenWorkspaceQueryState
+  const { mapId, colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
 
@@ -49,7 +49,7 @@ export const Map: FC = () => {
   useEffect(() => {
     if (mainMapDiv.current) {
       resetView()
-    }}, [mapId, frameId]
+    }}, [mapId]
   )
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {timeoutId} from "../components/editor/Window"
-import {getFrameId, getMapId} from "../state/NodeApiState"
+import {getMapId} from "../state/NodeApiState"
 import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "../state/NodeApiStateTypes"
 import {getMap} from "../state/EditorState"
 import {N} from "../state/MapStateTypes"
@@ -39,15 +39,14 @@ export const api = createApi({
           clearTimeout(timeoutId)
           dispatch(api.endpoints.saveMap.initiate({
             mapId: getMapId(),
-            frameId: getFrameId(),
             mapData: mapDeInit(getMap().filter((n: N) => (n.hasOwnProperty('path') && n.hasOwnProperty('nodeId'))))
           }))
         }
       },
       providesTags: ['Workspace']
     }),
-    selectMap: builder.mutation<void, { mapId: string, frameId: string }>({
-      query: ({ mapId, frameId }) => ({ url: 'select-map', method: 'POST', body: { mapId, frameId } }),
+    selectMap: builder.mutation<void, { mapId: string }>({
+      query: ({ mapId }) => ({ url: 'select-map', method: 'POST', body: { mapId } }),
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: ['Workspace']
     }),
@@ -71,16 +70,6 @@ export const api = createApi({
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: ['Workspace']
     }),
-    createMapFrameImport: builder.mutation<void, { mapId: string, frameId: string }>({
-      query: ({ mapId, frameId }) => ({ url: 'create-map-frame-import', method: 'POST', body: { mapId, frameId } }),
-      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
-      invalidatesTags: ['Workspace']
-    }),
-    createMapFrameDuplicate: builder.mutation<void, { mapId: string, frameId: string }>({
-      query: ({ mapId, frameId }) => ({ url: 'create-map-frame-duplicate', method: 'POST', body: { mapId, frameId } }),
-      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
-      invalidatesTags: ['Workspace']
-    }),
     moveUpMapInTab: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ({ url: 'move-up-map-in-tab', method: 'POST', body: { mapId } }),
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
@@ -96,13 +85,8 @@ export const api = createApi({
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: ['Workspace', 'Shares']
     }),
-    deleteMapFrame: builder.mutation<void, { mapId: string, frameId: string }>({
-      query: ({ mapId, frameId }) => ({ url: 'delete-map-frame', method: 'POST', body: { mapId, frameId } }),
-      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
-      invalidatesTags: ['Workspace']
-    }),
-    saveMap: builder.mutation<void, { mapId: string, frameId: string, mapData: any }>({
-      query: ({ mapId, frameId, mapData }) => ({ url: 'save-map', method: 'POST', body: { mapId, frameId, mapData } }),
+    saveMap: builder.mutation<void, { mapId: string, mapData: any }>({
+      query: ({ mapId, mapData }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapData } }),
       invalidatesTags: []
     }),
     getShares: builder.query<any, void>({
@@ -138,8 +122,8 @@ export const api = createApi({
       invalidatesTags: []
     }),
     // PYTHON API
-    saveMapDiff: builder.mutation<void, { mapId: string, frameId: string, mapDiffData: any }>({
-      query: ({ mapId, frameId, mapDiffData }) => ({ url: 'save-map-diff', method: 'POST', body: { mapId, frameId, mapDiffData } }),
+    saveMapDiff: builder.mutation<void, { mapId: string, mapDiffData: any }>({
+      query: ({ mapId, mapDiffData }) => ({ url: 'save-map-diff', method: 'POST', body: { mapId, mapDiffData } }),
       invalidatesTags: []
     }),
     uploadFile: builder.mutation<void, { bodyFormData: FormData }>({

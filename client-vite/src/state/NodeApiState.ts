@@ -10,13 +10,11 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
   access: AccessType.UNAUTHORIZED,
   tabId: 0,
   mapId: '',
-  frameId: '',
   mapDataList: [],
   tabMapIdList: [],
   tabMapNameList: [],
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
-  frameIdList: []
 }
 
 export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {
@@ -28,11 +26,4 @@ export const getMapId = () => {
   const {data} = result
   const {mapId} = data || defaultUseOpenWorkspaceQueryState
   return mapId
-}
-
-export const getFrameId = () => {
-  const result = api.endpoints.openWorkspace.select()(store.getState())
-  const {data} = result
-  const {frameId} = data || defaultUseOpenWorkspaceQueryState
-  return frameId
 }

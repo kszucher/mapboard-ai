@@ -92,7 +92,7 @@ export const MapDivS: FC = () => {
           if (e.buttons === 1) {
             if (nodeMode === NodeMode.VIEW) {
               if (si.linkType === 'internal') {
-                dispatch(api.endpoints.selectMap.initiate({mapId: si.link, frameId: ''}))
+                dispatch(api.endpoints.selectMap.initiate({mapId: si.link}))
               } else if (si.linkType === 'external') {
                 window.open(si.link, '_blank')
                 window.focus()

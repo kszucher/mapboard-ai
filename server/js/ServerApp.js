@@ -49,10 +49,7 @@ const getDefaultMap = (mapName, ownerUser, path) => ({
     jwtId: '',
     versionId: 0,
   }],
-  frames: [],
-  framesInfo: [],
-  lastSelectedMap: '',
-  lastSelectedFrame: '',
+  lastSelectedMap: ''
 })
 
 app.use(cors())
@@ -86,16 +83,10 @@ app.post('/sign-in', checkJwt, async (req, res) => {
         }
       } ]
     )
-    await sessions.insertOne( {jwtId, userId, mapId: newMap._id, frameId: '' })
+    await sessions.insertOne( {jwtId, userId, mapId: newMap._id })
   } else {
     await users.findOneAndUpdate({ _id: userId }, [ { $set: { signInCount: { $add: [ '$signInCount', 1 ] } } } ])
-    const session = await sessions.findOne({ jwtId })
-    if (session) {
-      console.log('probably unreachable')
-      await sessions.findOneAndUpdate({ jwtId }, [ { $set: { mapId: user.lastSelectedMap, frameId: user.lastSelectedFrame } } ])
-    } else {
-      await sessions.insertOne({ jwtId, userId, mapId: user.lastSelectedMap, frameId: user.lastSelectedFrame })
-    }
+    await sessions.insertOne({ jwtId, userId, mapId: user.lastSelectedMap })
   }
   return res.json({})
 })
@@ -117,8 +108,7 @@ app.post('/select-map', checkJwt, async (req, res) => {
   const user = await users.findOne({ sub: req.auth.payload.sub })
   const userId = user._id
   const mapId = ObjectId(req.body.mapId)
-  const frameId = req.body.frameId
-  await MongoMutations.selectMap(users, userId, sessions, jwtId, mapId, frameId)
+  await MongoMutations.selectMap(users, userId, sessions, jwtId, mapId)
   return res.json({})
 })
 
@@ -185,30 +175,6 @@ app.post('/create-map-in-tab-duplicate', checkJwt, async (req, res) => {
   return res.json({})
 })
 
-app.post('/create-map-frame-import', checkJwt, async (req, res) => {
-  const jwtId = req.auth.token.slice(-8)
-  const user = await users.findOne({ sub: req.auth.payload.sub })
-  const userId = user._id
-  const mapId = ObjectId(req.body.mapId)
-  const frameId = req.body.frameId
-  const newFrameId = genHash()
-  await MongoMutations.createMapFrameImport(maps, mapId, frameId, newFrameId)
-  await MongoMutations.selectMap(users, userId, sessions, jwtId, mapId, newFrameId)
-  return res.json({})
-})
-
-app.post('/create-map-frame-duplicate', checkJwt, async (req, res) => {
-  const jwtId = req.auth.token.slice(-8)
-  const user = await users.findOne({ sub: req.auth.payload.sub })
-  const userId = user._id
-  const mapId = ObjectId(req.body.mapId)
-  const frameId = req.body.frameId
-  const newFrameId = genHash()
-  await MongoMutations.createMapFrameDuplicate(maps, mapId, frameId, newFrameId)
-  await MongoMutations.selectMap(users, userId, sessions, jwtId, mapId, newFrameId)
-  return res.json({})
-})
-
 app.post('/move-up-map-in-tab', checkJwt, async (req, res) => {
   const user = await users.findOne({ sub: req.auth.payload.sub })
   const userId = user._id
@@ -234,29 +200,17 @@ app.post('/delete-map', checkJwt, async (req, res) => {
   return res.json({})
 })
 
-app.post('/delete-map-frame', checkJwt, async (req, res) => {
-  const jwtId = req.auth.token.slice(-8)
-  const mapId = ObjectId(req.body.mapId)
-  const frameId = req.body.frameId
-  await MongoMutations.deleteMapFrame(maps, sessions, mapId, frameId, jwtId)
-  return res.json({})
-})
-
 app.post('/save-map', checkJwt, async (req, res) => {
   const jwtId = req.auth.token.slice(-8)
   const user = await users.findOne({ sub: req.auth.payload.sub })
   const userId = user._id
   const mapId = ObjectId(req.body.mapId)
-  const { frameId, mapData } = req.body
+  const { mapData } = req.body
   const map = await maps.findOne({ _id: mapId })
   const { ownerUser } = map
   const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
   if (isEqual(userId, ownerUser) || shareToEdit !== null) {
-    if (frameId === '') {
-      await MongoMutations.saveMap(maps, mapId, jwtId, 'map', mapData)
-    } else {
-      await MongoMutations.saveMapFrame(maps, mapId, frameId, mapData)
-    }
+    await MongoMutations.saveMap(maps, mapId, jwtId, 'map', mapData)
   }
   return res.json({})
 })
