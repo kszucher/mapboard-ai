@@ -17,7 +17,7 @@ export const MapSharesSharedByMe = () => {
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeaderCell>{'Map Name'}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{'Shared By'}</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>{'Shared With'}</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>{'Access'}</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>{'Status'}</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>{'Action'}</Table.ColumnHeaderCell>
