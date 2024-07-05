@@ -10,7 +10,7 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
   access: AccessType.UNAUTHORIZED,
   tabId: 0,
   mapId: '',
-  mapDataList: [],
+  mapData: [],
   tabMapIdList: [],
   tabMapNameList: [],
   breadcrumbMapIdList: [],

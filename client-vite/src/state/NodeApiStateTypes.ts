@@ -8,7 +8,7 @@ export interface DefaultUseOpenWorkspaceQueryState {
   access: AccessType
   tabId: number
   mapId: string
-  mapDataList: M[]
+  mapData: M
   breadcrumbMapIdList: string[]
   breadcrumbMapNameList: {name: string}[]
   tabMapIdList: string[]

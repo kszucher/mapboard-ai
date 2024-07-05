@@ -78,7 +78,7 @@ async function openWorkspace(sessions, jwtId) {
         },
         {
           $set: {
-            mapDataList: [{ $last: '$map.versions' }]
+            mapData: { $last: '$map.versions' }
           }
         },
         {
@@ -149,7 +149,7 @@ async function openWorkspace(sessions, jwtId) {
             access: "$access",
             tabId: '$tabId',
             mapId: '$mapId',
-            mapDataList: '$mapDataList',
+            mapData: '$mapData',
             tabMapIdList: "$tabMapIdList",
             tabMapNameList: "$tabMapNameList",
             breadcrumbMapIdList: "$breadcrumbMapIdList",

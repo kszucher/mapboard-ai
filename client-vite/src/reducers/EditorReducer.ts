@@ -4,7 +4,6 @@ import {getMapX, getMapY} from "../components/map/MapDivUtils"
 import {mapFindIntersecting} from "../queries/MapFindIntersecting"
 import {editorState} from "../state/EditorState"
 import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../state/Enums"
-import {M} from "../state/MapStateTypes"
 import {api} from "../api/Api.ts"
 import {mapFindNearestS} from "../queries/MapFindNearestS.ts"
 import {mapReducer} from "./MapReducer"
@@ -191,8 +190,8 @@ export const editorSlice = createSlice({
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
         console.log(payload)
-        const { mapDataList } = structuredClone(payload)
-        state.mapList = mapDataList.map((el: M) => mapReducer(filterEmpty(el), MR.load, {}))
+        const { mapData } = structuredClone(payload)
+        state.mapList = [ mapReducer(filterEmpty(mapData), MR.load, {}) ]
         state.mapListIndex = 0
         state.editedNodeId = ''
         state.isLoading = false
