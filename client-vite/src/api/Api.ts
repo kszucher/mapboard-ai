@@ -6,11 +6,11 @@ import {getMap} from "../state/EditorState"
 import {N} from "../state/MapStateTypes"
 import {actions, RootState} from "../reducers/EditorReducer"
 import {mapDeInit} from "../reducers/MapDeInit"
-import {nodeBackendUrl, pythonBackendUrl} from "./Urls"
+import {pythonBackendUrl} from "./Urls"
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: nodeBackendUrl,
+    baseUrl: pythonBackendUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).editor.token
       if (token) {
@@ -21,7 +21,6 @@ export const api = createApi({
   }),
   tagTypes: ['Workspace', 'Shares', 'IngestionData'],
   endpoints: (builder) => ({
-    // NODE API
     signIn: builder.mutation<void, void>({
       query: () => ({ url: '/sign-in', method: 'POST' }),
       invalidatesTags: ['Workspace']
@@ -89,6 +88,10 @@ export const api = createApi({
       query: ({ mapId, mapData }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapData } }),
       invalidatesTags: []
     }),
+    saveMapDiff: builder.mutation<void, { mapId: string, mapDiffData: any }>({
+      query: ({ mapId, mapDiffData }) => ({ url: 'save-map-diff', method: 'POST', body: { mapId, mapDiffData } }),
+      invalidatesTags: []
+    }),
     getShares: builder.query<any, void>({
       query: () => ({ url: 'get-shares', method: 'POST' }),
       providesTags: ['Shares']
@@ -119,11 +122,6 @@ export const api = createApi({
         dispatch(actions.resetState())
         dispatch(api.util.resetApiState()
         )},
-      invalidatesTags: []
-    }),
-    // PYTHON API
-    saveMapDiff: builder.mutation<void, { mapId: string, mapDiffData: any }>({
-      query: ({ mapId, mapDiffData }) => ({ url: 'save-map-diff', method: 'POST', body: { mapId, mapDiffData } }),
       invalidatesTags: []
     }),
     uploadFile: builder.mutation<void, { bodyFormData: FormData }>({
