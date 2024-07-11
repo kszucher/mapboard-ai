@@ -80,6 +80,7 @@ app.post('/sign-in', checkJwt, async (req, res) => {
           colorMode: 'dark',
           tabMapIdList: [newMap._id],
           signInCount: 1,
+          lastSelectedMap: newMap._id
         }
       } ]
     )
