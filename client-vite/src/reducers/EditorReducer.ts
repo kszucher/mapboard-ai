@@ -18,6 +18,7 @@ export const editorSlice = createSlice({
   initialState: editorState,
   reducers: {
     setToken(state, action: PayloadAction<string>) { state.token = action.payload },
+    setSessionId(state, action: PayloadAction<string>) { state.sessionId = action.payload },
     resetState() {return JSON.parse(editorStateDefault)},
     setIsLoading(state, action: PayloadAction<boolean>) { state.isLoading = action.payload },
     setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) { state.leftMouseMode = action.payload },

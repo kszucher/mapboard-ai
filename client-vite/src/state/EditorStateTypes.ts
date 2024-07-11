@@ -3,6 +3,7 @@ import {M, S} from "./MapStateTypes"
 
 export interface EditorState {
   token: string
+  sessionId: string
   isLoading: boolean
   leftMouseMode: LeftMouseMode
   midMouseMode: MidMouseMode

@@ -13,8 +13,10 @@ export const api = createApi({
     baseUrl: pythonBackendUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).editor.token
+      const sessionId = (getState() as RootState).editor.sessionId
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
+        headers.set('SessionId', sessionId)
       }
       return headers
     },
@@ -23,6 +25,13 @@ export const api = createApi({
   endpoints: (builder) => ({
     signIn: builder.mutation<void, void>({
       query: () => ({ url: '/sign-in', method: 'POST' }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          dispatch(actions.setSessionId((data as any).sessionId))
+        } catch (err) {
+        }
+      },
       invalidatesTags: ['Workspace']
     }),
     signOutEverywhere: builder.mutation<void, void>({
