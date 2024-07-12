@@ -48,8 +48,7 @@ const getDefaultMap = (mapName, ownerUser, path) => ({
     userId: ownerUser,
     jwtId: '',
     versionId: 0,
-  }],
-  lastSelectedMap: ''
+  }]
 })
 
 app.use(cors())
