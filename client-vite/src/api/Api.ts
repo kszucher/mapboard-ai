@@ -53,6 +53,11 @@ export const api = createApi({
       },
       providesTags: ['Workspace']
     }),
+    toggleColorMode: builder.mutation<void, void>({
+      query: () => ({ url: 'toggle-color-mode', method: 'POST' }),
+      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
+      invalidatesTags: ['Workspace']
+    }),
     selectMap: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ({ url: 'select-map', method: 'POST', body: { mapId } }),
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
@@ -119,11 +124,6 @@ export const api = createApi({
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: ['Workspace', 'Shares']
     }),
-    toggleColorMode: builder.mutation<void, void>({
-      query: () => ({ url: 'toggle-color-mode', method: 'POST' }),
-      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
-      invalidatesTags: ['Workspace']
-    }),
     deleteAccount: builder.mutation<void, void>({
       query: () => ({ url: 'delete-account', method: 'POST' }),
       async onQueryStarted(_, { dispatch }) {
@@ -134,11 +134,11 @@ export const api = createApi({
       invalidatesTags: []
     }),
     uploadFile: builder.mutation<void, { bodyFormData: FormData }>({
-      query: ({ bodyFormData }) => ({ url: pythonBackendUrl + '/upload-file', method: 'POST', body: bodyFormData, formData: true }),
+      query: ({ bodyFormData }) => ({ url: '/upload-file', method: 'POST', body: bodyFormData, formData: true }),
       invalidatesTags: ['IngestionData']
     }),
     getIngestion: builder.query<DefaultGetIngestionQueryState, void>({
-      query: () => ({ url: pythonBackendUrl + '/get-ingestion', method: 'POST', body: {} }),
+      query: () => ({ url: '/get-ingestion', method: 'POST', body: {} }),
       providesTags: ['IngestionData']
     })
   })
