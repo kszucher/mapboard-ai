@@ -104,6 +104,13 @@ app.post('/open-workspace', checkJwt, async (req, res) => {
   return res.json(await MongoQueries.openWorkspace(sessions, jwtId))
 })
 
+app.post('/toggle-color-mode', checkJwt, async (req, res) => {
+  const user = await users.findOne({ sub: req.auth.payload.sub })
+  const userId = user._id
+  await MongoMutations.toggleColorMode(users, userId)
+  return res.json({})
+})
+
 app.post('/select-map', checkJwt, async (req, res) => {
   const jwtId = req.auth.token.slice(-8)
   const user = await users.findOne({ sub: req.auth.payload.sub })
@@ -275,13 +282,6 @@ app.post('/accept-share', checkJwt, async (req, res) => {
 app.post('/delete-share', checkJwt, async (req, res) => {
   const shareId = ObjectId(req.body.shareId)
   await MongoMutations.deleteShare(users, shares, sessions, shareId)
-  return res.json({})
-})
-
-app.post('/toggle-color-mode', checkJwt, async (req, res) => {
-  const user = await users.findOne({ sub: req.auth.payload.sub })
-  const userId = user._id
-  await MongoMutations.toggleColorMode(users, userId)
   return res.json({})
 })
 
