@@ -4,15 +4,13 @@ import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getLastIndexR, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU, getXR} from "../../queries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../../state/Enums"
-import {actions, AppDispatch, RootState, store} from "../../reducers/EditorReducer"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
 import {getMap, mSelector} from "../../state/EditorState"
-import {mapDeInit} from "../../reducers/MapDeInit"
 import {M} from "../../state/MapStateTypes"
 import {shortcutColors} from "../colors/Colors.ts"
 import {getRR, getRL, getRD, getRU} from "../../queries/MapFindNearestR.ts"
-import {mapDiff} from "../../queries/MapDiff.ts"
 
 export let timeoutId: NodeJS.Timeout
 let mapListener: AbortController
@@ -276,18 +274,12 @@ export const Window: FC = () => {
       }
     }
   }, [midMouseMode])
-  
-  const timeoutFun = () => {
-    const editor = store.getState().editor
-    dispatch(api.endpoints.saveMap.initiate({mapId: getMapId(), mapDelta: mapDiff(mapDeInit(editor.mapList[0]), mapDeInit(editor.mapList[editor.mapListIndex]))}))
-    console.log('save by timeout')
-  }
 
   useEffect(() => {
     if (mExists) {
       if (mapList.length > 1) {
         clearTimeout(timeoutId)
-        timeoutId = setTimeout(timeoutFun, 1000)
+        timeoutId = setTimeout(() => dispatch(api.endpoints.saveMapAssembler.initiate()), 1000)
       }
     }
   }, [m])

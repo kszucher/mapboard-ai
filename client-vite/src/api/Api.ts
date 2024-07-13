@@ -39,14 +39,6 @@ export const api = createApi({
     }),
     openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({
       query: () => ({ url: 'open-workspace', method: 'POST' }),
-      async onQueryStarted(_, { dispatch, getState }) {
-        const editor = (getState() as RootState).editor
-        if (editor.mapList.length > 1) {
-          console.log('save by listener')
-          clearTimeout(timeoutId)
-          dispatch(api.endpoints.saveMap.initiate({mapId: getMapId(), mapDelta: mapDiff(mapDeInit(editor.mapList[0]), mapDeInit(editor.mapList[editor.mapListIndex]))}))
-        }
-      },
       providesTags: ['Workspace']
     }),
     toggleColorMode: builder.mutation<void, void>({
@@ -56,7 +48,10 @@ export const api = createApi({
     }),
     selectMap: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ({ url: 'select-map', method: 'POST', body: { mapId } }),
-      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
+      async onQueryStarted(_, { dispatch }) {
+        dispatch(actions.setIsLoading(true))
+        dispatch(api.endpoints.saveMapAssembler.initiate())
+      },
       invalidatesTags: ['Workspace']
     }),
     renameMap: builder.mutation<void, { mapId: string, name: string }>({
@@ -66,7 +61,10 @@ export const api = createApi({
     }),
     createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({
       query: ({ mapId, nodeId, content }) => ({ url: 'create-map-in-map', method: 'POST', body: { mapId, nodeId, content} }),
-      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
+      async onQueryStarted(_, { dispatch }) {
+        dispatch(actions.setIsLoading(true))
+        dispatch(api.endpoints.saveMapAssembler.initiate())
+      },
       invalidatesTags: ['Workspace']
     }),
     createMapInTab: builder.mutation<void, void>({
@@ -93,6 +91,22 @@ export const api = createApi({
       query: ({ mapId }) => ({ url: 'delete-map', method: 'POST', body: { mapId } }),
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: ['Workspace', 'Shares']
+    }),
+    saveMapAssembler: builder.mutation<void, void>({
+      queryFn: (): any => ({ data: [] }),
+      async onQueryStarted(_, { dispatch, getState }) {
+        const editor = (getState() as RootState).editor
+        if (editor.mapList.length > 1) {
+          clearTimeout(timeoutId)
+          dispatch(api.endpoints.saveMap.initiate({
+            mapId: getMapId(),
+            mapDelta: mapDiff(
+              mapDeInit(editor.mapList[0]),
+              mapDeInit(editor.mapList[editor.mapListIndex])
+            )
+          }))
+        }
+      }
     }),
     saveMap: builder.mutation<void, { mapId: string, mapDelta: any }>({
       query: ({ mapId, mapDelta }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapDelta } }),
