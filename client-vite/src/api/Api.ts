@@ -1,8 +1,8 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {timeoutId} from "../components/editor/Window"
-import {getMapId} from "../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../state/NodeApiState"
 import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "../state/NodeApiStateTypes"
-import {actions, RootState} from "../reducers/EditorReducer"
+import {actions, RootState, store} from "../reducers/EditorReducer"
 import {mapDeInit} from "../reducers/MapDeInit"
 import {pythonBackendUrl} from "./Urls"
 import {mapDiff} from "../queries/MapDiff.ts"
@@ -97,10 +97,11 @@ export const api = createApi({
       async onQueryStarted(_, { dispatch, getState }) {
         const editor = (getState() as RootState).editor
         if (editor.mapList.length > 1) {
-          console.log('saving...')
+          const ws = (api.endpoints.openWorkspace.select()(store.getState())?.data || defaultUseOpenWorkspaceQueryState)
+          console.log('saving ' + ws.breadcrumbMapNameList.at(-1)!.name)
           clearTimeout(timeoutId)
           dispatch(api.endpoints.saveMap.initiate({
-            mapId: getMapId(),
+            mapId: ws.mapId,
             mapDelta: mapDiff(
               mapDeInit(editor.mapList[0]),
               mapDeInit(editor.mapList[editor.mapListIndex])

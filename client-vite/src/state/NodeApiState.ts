@@ -23,9 +23,11 @@ export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {
   ingestionResult: []
 }
 
-export const getMapId = () => {
-  const result = api.endpoints.openWorkspace.select()(store.getState())
-  const {data} = result
-  const {mapId} = data || defaultUseOpenWorkspaceQueryState
-  return mapId
-}
+export const getMapId = () => (api.endpoints.openWorkspace.select()(store.getState())?.data || defaultUseOpenWorkspaceQueryState).mapId
+
+
+
+
+
+
+
