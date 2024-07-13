@@ -9,7 +9,7 @@ import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState"
 import {getMap, mSelector} from "../../state/EditorState"
 import {mapDeInit} from "../../reducers/MapDeInit"
-import {M, N} from "../../state/MapStateTypes"
+import {M} from "../../state/MapStateTypes"
 import {shortcutColors} from "../colors/Colors.ts"
 import {getRR, getRL, getRD, getRU} from "../../queries/MapFindNearestR.ts"
 import {mapDiff} from "../../queries/MapDiff.ts"
@@ -278,17 +278,8 @@ export const Window: FC = () => {
   }, [midMouseMode])
   
   const timeoutFun = () => {
-    dispatch(api.endpoints.saveMap.initiate({
-      mapId: getMapId(),
-      mapData: mapDeInit(getMap().filter((n: N) => (n.hasOwnProperty('path') && n.hasOwnProperty('nodeId'))))
-    }))
-    dispatch(api.endpoints.saveMapDiff.initiate({
-      mapId: getMapId(),
-      mapDiffData: mapDiff(
-        mapDeInit(store.getState().editor.mapList[0].filter((n: N) => (n.hasOwnProperty('path') && n.hasOwnProperty('nodeId')))),
-        mapDeInit(store.getState().editor.mapList[store.getState().editor.mapListIndex].filter((n: N) => (n.hasOwnProperty('path') && n.hasOwnProperty('nodeId')))),
-      )
-    }))
+    const editor = store.getState().editor
+    dispatch(api.endpoints.saveMap.initiate({mapId: getMapId(), mapDelta: mapDiff(mapDeInit(editor.mapList[0]), mapDeInit(editor.mapList[editor.mapListIndex]))}))
     console.log('save by timeout')
   }
 

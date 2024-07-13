@@ -2,11 +2,10 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {timeoutId} from "../components/editor/Window"
 import {getMapId} from "../state/NodeApiState"
 import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "../state/NodeApiStateTypes"
-import {getMap} from "../state/EditorState"
-import {N} from "../state/MapStateTypes"
 import {actions, RootState} from "../reducers/EditorReducer"
 import {mapDeInit} from "../reducers/MapDeInit"
 import {pythonBackendUrl} from "./Urls"
+import {mapDiff} from "../queries/MapDiff.ts"
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -45,10 +44,7 @@ export const api = createApi({
         if (editor.mapList.length > 1) {
           console.log('save by listener')
           clearTimeout(timeoutId)
-          dispatch(api.endpoints.saveMap.initiate({
-            mapId: getMapId(),
-            mapData: mapDeInit(getMap().filter((n: N) => (n.hasOwnProperty('path') && n.hasOwnProperty('nodeId'))))
-          }))
+          dispatch(api.endpoints.saveMap.initiate({mapId: getMapId(), mapDelta: mapDiff(mapDeInit(editor.mapList[0]), mapDeInit(editor.mapList[editor.mapListIndex]))}))
         }
       },
       providesTags: ['Workspace']
@@ -98,12 +94,8 @@ export const api = createApi({
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: ['Workspace', 'Shares']
     }),
-    saveMap: builder.mutation<void, { mapId: string, mapData: any }>({
-      query: ({ mapId, mapData }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapData } }),
-      invalidatesTags: []
-    }),
-    saveMapDiff: builder.mutation<void, { mapId: string, mapDiffData: any }>({
-      query: ({ mapId, mapDiffData }) => ({ url: 'save-map-diff', method: 'POST', body: { mapId, mapDiffData } }),
+    saveMap: builder.mutation<void, { mapId: string, mapDelta: any }>({
+      query: ({ mapId, mapDelta }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapDelta } }),
       invalidatesTags: []
     }),
     getShares: builder.query<any, void>({
