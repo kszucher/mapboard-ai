@@ -11,7 +11,6 @@ export default defineConfig({
     environment: 'jsdom',
   },
   server: {
-    host: 'local.mapboard',
-    https: true,
+    host: 'local.mapboard'
   },
 })
