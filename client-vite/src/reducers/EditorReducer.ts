@@ -204,7 +204,6 @@ export const editorSlice = createSlice({
       api.endpoints.saveMap.matchFulfilled,
       () => {
         console.log('save completed')
-        // TODO update lastSavedMapIndex, as this will return the hash of the final value of map (later this will be replaced with a pubsub)
       }
     )
   }
