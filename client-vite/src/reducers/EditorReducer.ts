@@ -34,6 +34,7 @@ export const editorSlice = createSlice({
     hideConnectionHelpers(state) { state.connectionHelpersVisible = false },
     setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload },
     clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R} },
+    updateMapListIndexSaved(state) {state.mapListIndexSaved = state.mapListIndex},
     mapAction(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
@@ -194,6 +195,7 @@ export const editorSlice = createSlice({
         const { mapData } = structuredClone(payload)
         state.mapList = [ mapReducer(filterEmpty(mapData), MR.load, {}) ]
         state.mapListIndex = 0
+        state.mapListIndexSaved = 0
         state.editedNodeId = ''
         state.isLoading = false
       }

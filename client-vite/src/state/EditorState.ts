@@ -14,6 +14,7 @@ export const editorState: EditorState = {
   formatMode: FormatMode.sFill,
   mapList: [],
   mapListIndex: 0,
+  mapListIndexSaved: 0,
   editedNodeId: '',
   editType: '',
   editStartMapListIndex: Infinity,
