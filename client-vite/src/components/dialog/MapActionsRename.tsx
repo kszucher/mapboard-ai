@@ -3,12 +3,12 @@ import {useState} from "react"
 import {useDispatch} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {AppDispatch} from "../../reducers/EditorReducer.ts"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/NodeApiState.ts"
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/ApiState.ts"
 
 export const MapActionsRename = () => {
   const { data } = useOpenWorkspaceQuery()
-  const { breadcrumbMapNameList } = data || defaultUseOpenWorkspaceQueryState
-  const [mapName, setMapName] = useState(breadcrumbMapNameList.at(-1)!.name)
+  const { mapName } = data || defaultUseOpenWorkspaceQueryState
+  const [newMapName, setNewMapName] = useState(mapName)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
@@ -25,7 +25,7 @@ export const MapActionsRename = () => {
             radius="large"
             value={mapName}
             placeholder="Map name"
-            onChange={(e) => setMapName(e.target.value)}
+            onChange={(e) => setNewMapName(e.target.value)}
           />
         </label>
       </Flex>
@@ -36,7 +36,7 @@ export const MapActionsRename = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({mapId: getMapId(), name: mapName}))}>
+          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({mapId: getMapId(), name: newMapName}))}>
             {'Save'}
           </Button>
         </Dialog.Close>

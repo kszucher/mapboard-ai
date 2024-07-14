@@ -1,22 +1,23 @@
 import {AccessType} from "./Enums"
-import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "./NodeApiStateTypes"
+import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "./ApiStateTypes.ts"
 import {api} from "../api/Api.ts"
 import {store} from "../reducers/EditorReducer"
 
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
-  name: '',
+  userName: '',
   colorMode: 'dark',
   isShared: false,
   access: AccessType.UNAUTHORIZED,
-  tabId: 0,
-  mapId: '',
-  mapData: [],
   tabMapIdList: [],
   tabMapNameList: [],
+  tabId: 0,
+  // sharedMapIdList: [],
+  // sharedMapNameList: [],
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
-  sharedMapIdList: [],
-  sharedMapNameList: [],
+  mapId: '',
+  mapName: '',
+  mapData: [],
 }
 
 export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {

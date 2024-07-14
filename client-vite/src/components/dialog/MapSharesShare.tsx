@@ -2,7 +2,7 @@ import {Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField} from "@rad
 import {useState} from "react"
 import {useCreateShareMutation} from "../../api/Api.ts"
 import {AccessType} from "../../state/Enums.ts"
-import {getMapId} from "../../state/NodeApiState.ts"
+import {getMapId} from "../../state/ApiState.ts"
 
 export const MapSharesShare = () => {
   const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()

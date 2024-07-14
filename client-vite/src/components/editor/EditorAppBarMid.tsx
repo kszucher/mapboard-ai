@@ -2,7 +2,7 @@ import {FC, Fragment} from 'react'
 import {useDispatch} from "react-redux"
 import {AppDispatch} from "../../reducers/EditorReducer"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {IconButton, DropdownMenu, Button} from "@radix-ui/themes"
 import {MapActions} from "../dropdown/MapActions.tsx"
 import ChevronDown from "../../assets/chevron-down.svg?react"
@@ -23,19 +23,19 @@ export const EditorAppBarMid: FC = () => {
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           {tabMapIdList.map((el: string, index) => (
             <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: el}))}>
-              {tabMapNameList[index]?.name}
+              {tabMapNameList[index]}
             </DropdownMenu.Item>
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
       <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0]}))}>
-        {breadcrumbMapNameList[0].name}
+        {breadcrumbMapNameList[0]}
       </Button>
       {breadcrumbMapNameList.slice(1).map((el, index) => (
         <Fragment key={index}>
           <ChevronRight/>
           <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], }))}>
-            {el.name}
+            {el}
           </Button>
         </Fragment>
       ))}

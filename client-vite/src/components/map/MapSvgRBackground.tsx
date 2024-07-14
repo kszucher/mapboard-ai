@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {RootState} from "../../reducers/EditorReducer"
 import {mR} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 
 export const MapSvgRBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

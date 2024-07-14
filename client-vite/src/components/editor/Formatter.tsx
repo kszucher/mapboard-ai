@@ -11,7 +11,7 @@ import {FBorderIcon, FFillIcon, SFillIcon, SBorderIcon} from "../../assetsCustom
 import LetterT from "../../assets/letter-t.svg?react"
 import VectorSpline from "../../assets/vector-spline.svg?react"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts";
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 

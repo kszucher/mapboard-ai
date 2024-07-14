@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../colors/Colors.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {RootState} from "../../reducers/EditorReducer"
 
 export const MapSvgRMove: FC = () => {

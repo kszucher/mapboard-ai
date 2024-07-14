@@ -9,7 +9,7 @@ import {getG, getNodeMode, getXAS, getXS, idToS, isXAS, mS} from "../../queries/
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
 import {S} from "../../state/MapStateTypes"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {adjust, getLatexString} from "../../utils/Utils"
 import {getColors} from "../colors/Colors.ts"
 import {setEndOfContentEditable} from "./MapDivUtils"

@@ -3,7 +3,7 @@ import {useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../colors/Colors.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../../state/NodeApiState"
+import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {RootState} from "../../reducers/EditorReducer"
 import {getBezierLinePath, getBezierLinePoints} from "./MapSvgUtils"
 
