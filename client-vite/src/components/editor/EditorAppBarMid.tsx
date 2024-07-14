@@ -34,7 +34,7 @@ export const EditorAppBarMid: FC = () => {
       {breadcrumbMapNameList.slice(1).map((el, index) => (
         <Fragment key={index}>
           <ChevronRight/>
-          <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1], }))}>
+          <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1]}))}>
             {el}
           </Button>
         </Fragment>
