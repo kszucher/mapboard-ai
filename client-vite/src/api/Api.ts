@@ -15,7 +15,7 @@ export const api = createApi({
       const sessionId = (getState() as RootState).editor.sessionId
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
-        headers.set('Session-Id', sessionId)
+        headers.set('Server-Session-Id', sessionId)
       }
       return headers
     },
