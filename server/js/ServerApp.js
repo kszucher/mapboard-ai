@@ -167,8 +167,8 @@ app.post('/create-map-in-tab-duplicate', checkJwt, async (req, res) => {
   newMap.versions.at(-1).forEach((ni, i) => {
     if (ni.path.at(0) === 'l') {
       Object.assign(ni, {
-        fromNodeId : nodeIdMapping.find(el => el.oldNodeId === ni.fromNodeId)?.newNodeId || ni.fromNodeSide,
-        toNodeId: nodeIdMapping.find(el => el.oldNodeId === ni.toNodeId)?.newNodeId || ni.nodeId
+        fromNodeId : nodeIdMapping.find(el => el.oldNodeId === ni.fromNodeId)?.newNodeId,
+        toNodeId: nodeIdMapping.find(el => el.oldNodeId === ni.toNodeId)?.newNodeId
       })
     } else if (ni.path.at(0) === 'r') {
       Object.assign(ni, {

@@ -79,8 +79,8 @@ const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR:
   cbL.forEach(li => Object.assign(li, {
     nodeId: IS_TESTING ? ['l', (li.path.at(1) as number) + (ipL.at(1) as number)].join('') : genNodeId(),
     path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
-    fromNodeId : nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId || li.fromNodeSide,
-    toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId || li.nodeId
+    fromNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId,
+    toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId
   }))
   cbRR.forEach((ri, i) => Object.assign(ri, {
     nodeId: nodeIdMappingR[i].newNodeId,
