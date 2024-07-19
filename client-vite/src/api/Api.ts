@@ -39,6 +39,13 @@ export const api = createApi({
     }),
     openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({
       query: () => ({ url: 'open-workspace', method: 'POST' }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+        } catch {
+            dispatch(api.endpoints.selectMapAvailable.initiate())
+        }
+      },
       providesTags: ['Workspace']
     }),
     toggleColorMode: builder.mutation<void, void>({
@@ -52,6 +59,11 @@ export const api = createApi({
         dispatch(actions.setIsLoading(true))
         dispatch(api.endpoints.saveMapAssembler.initiate())
       },
+      invalidatesTags: ['Workspace']
+    }),
+    selectMapAvailable: builder.mutation<void, void>({
+      query: () => ({ url: 'select-map-available', method: 'POST' }),
+      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: ['Workspace']
     }),
     renameMap: builder.mutation<void, { mapId: string, name: string }>({
