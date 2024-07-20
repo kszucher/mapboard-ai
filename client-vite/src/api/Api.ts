@@ -99,11 +99,6 @@ export const api = createApi({
       async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
       invalidatesTags: ['Workspace']
     }),
-    deleteMap: builder.mutation<void, { mapId: string }>({
-      query: ({ mapId }) => ({ url: 'delete-map', method: 'POST', body: { mapId } }),
-      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
-      invalidatesTags: ['Workspace', 'Shares']
-    }),
     saveMapAssembler: builder.mutation<void, void>({
       queryFn: (): any => ({ data: [] }),
       async onQueryStarted(_, { dispatch, getState }) {
@@ -126,6 +121,11 @@ export const api = createApi({
     saveMap: builder.mutation<void, { mapId: string, mapDelta: any }>({
       query: ({ mapId, mapDelta }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapDelta } }),
       invalidatesTags: []
+    }),
+    deleteMap: builder.mutation<void, { mapId: string }>({
+      query: ({ mapId }) => ({ url: 'delete-map', method: 'POST', body: { mapId } }),
+      async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
+      invalidatesTags: ['Workspace', 'Shares']
     }),
     getShares: builder.query<any, void>({
       query: () => ({ url: 'get-shares', method: 'POST' }),
