@@ -94,6 +94,7 @@ export enum MR {
   deleteSJumpSU = 'deleteSJumpSU',
   deleteSJumpSD = 'deleteSJumpSD',
   deleteSJumpSI = 'deleteSJumpSI',
+  deleteSJumpCI = 'deleteSJumpCI',
   deleteSJumpR = 'deleteSJumpR',
   deleteCRJumpU = 'deleteCRJumpU',
   deleteCRJumpD = 'deleteCRJumpD',

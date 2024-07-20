@@ -103,6 +103,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'deleteSJumpSU': { const reselect = getXFS(m).su.at(-1)!; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
     case 'deleteSJumpSD': { const reselect = getXLS(m).sd.at(-1)!; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
     case 'deleteSJumpSI': { const reselect = getXS(m).si1; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'deleteSJumpCI': { const reselect = getXS(m).ci1; deleteS(m); selectC(m, idToC(m, reselect)); break }
     case 'deleteSJumpR': { const reselect = getXR(m).nodeId; deleteS(m); selectR(m, idToR(m, reselect)); break }
     case 'deleteCRJumpU': { const reselectList = getXAC(m).map(ci => ci.cu.at(-1)!); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCRJumpD': { const reselectList = getXAC(m).map(ci => ci.cd.at(-1)!); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
