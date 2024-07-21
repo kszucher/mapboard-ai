@@ -7,3 +7,4 @@
 /cypress/cypress/fixtures/example.json
 /cypress/cypress/support/commands.js
 /cypress/cypress/support/e2e.js
+/mock-auth0/.env

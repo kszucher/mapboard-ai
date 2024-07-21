@@ -1,5 +1,14 @@
-onExecutePostUserRegistration = async (event, api) => {
-  console.log(event)
+const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '../.env') })
+
+const myVariable = process.env.MAPBOARD_SERVER_KEY;
+
+console.log(myVariable)
+
+const onExecutePostUserRegistration = async (event, api) => {
+  console.log(event.user)
+  console.log(event.secrets.MAPBOARD_SERVER_KEY)
+
 };
 
 const event = {
@@ -71,4 +80,4 @@ const event = {
   }
 }
 
-onExecutePostUserRegistration(Object.assign(event, {secrets: {'MAPBOARD_SERVER_KEY': ''}}), null).then(() => {});
+onExecutePostUserRegistration(Object.assign(event, {secrets: {'MAPBOARD_SERVER_KEY': process.env.MAPBOARD_SERVER_KEY}}), null).then(() => {});
