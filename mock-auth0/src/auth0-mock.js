@@ -1,15 +1,21 @@
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../.env') })
 
-const myVariable = process.env.MAPBOARD_SERVER_KEY;
-
-console.log(myVariable)
-
-const onExecutePostUserRegistration = async (event, api) => {
-  console.log(event.user)
-  console.log(event.secrets.MAPBOARD_SERVER_KEY)
-
-};
+onExecutePostUserRegistration = async (event, api) => {
+  await fetch(event.secrets.MAPBOARD_SERVER_URL + '/registration', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'MAPBOARD-SERVER-KEY': event.secrets.MAPBOARD_SERVER_KEY,
+    },
+    body: JSON.stringify({
+      user: {
+        email: event.user.email,
+        name: event.user.name
+      }
+    }),
+  })
+}
 
 const event = {
   "request": {
@@ -80,4 +86,7 @@ const event = {
   }
 }
 
-onExecutePostUserRegistration(Object.assign(event, {secrets: {'MAPBOARD_SERVER_KEY': process.env.MAPBOARD_SERVER_KEY}}), null).then(() => {});
+onExecutePostUserRegistration(Object.assign(event, {secrets: {
+  'MAPBOARD_SERVER_URL': process.env.MAPBOARD_SERVER_URL,
+  'MAPBOARD_SERVER_KEY': process.env.MAPBOARD_SERVER_KEY
+}}), null).then(() => {})
