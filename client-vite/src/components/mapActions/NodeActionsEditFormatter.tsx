@@ -15,7 +15,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 
-export const Formatter: FC = () => {
+export const NodeActionsEditFormatter: FC = () => {
   const o = 32
   const r = 12
   const {gray, neutral, red, amber, lime, emerald, cyan, blue, violet, fuchsia, rose} = colors

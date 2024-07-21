@@ -90,7 +90,7 @@ export const NodeActions = () => {
             <DropdownMenu.SubTrigger>{'Edit'}</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
               {!formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.openFormatter())}>{'Open Formatter'}</DropdownMenu.Item>}
-              {formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.closeFormatter())}>{'Close Formatter'}</DropdownMenu.Item>}
+              {formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.closeFormatter())}>{'Close NodeActionsEditFormatter'}</DropdownMenu.Item>}
               {getXS(m).co1.length === 0 && getXS(m).linkType === '' && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_MAP_IN_MAP))}>{'Create Sub Map'}</DropdownMenu.Item></Dialog.Trigger>}
               {getXAS(m).length ===  1 && getXS(m).co1.length > 0 && <DropdownMenu.Item onClick={() => md(MR.transpose)}>{'Transpose'}</DropdownMenu.Item>}
               {getXAS(m).length ===  1 && getXS(m).co.length === 0 && [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).map(ti => ti.taskStatus).includes(0) && <DropdownMenu.Item onClick={() => md(MR.setTaskModeOn)}>{'Task Mode On'}</DropdownMenu.Item>}

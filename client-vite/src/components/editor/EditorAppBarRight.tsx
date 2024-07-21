@@ -11,7 +11,7 @@ import {UserAccount} from "../userActions/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {MouseConfig} from "./MouseConfig.tsx"
-import {NodeSelectModeConfig} from "../mapActions/NodeSelectModeConfig.tsx"
+import {NodeActionsSelectModeConfig} from "../mapActions/NodeActionsSelectModeConfig.tsx"
 import {NodeActions} from "../mapActions/NodeActions.tsx";
 
 export const EditorAppBarRight: FC = () => {
@@ -28,7 +28,7 @@ export const EditorAppBarRight: FC = () => {
     <div className="fixed flex right-1 gap-6 h-[40px]">
 
       <div className="flex items-center gap-1">
-        <NodeSelectModeConfig/>
+        <NodeActionsSelectModeConfig/>
         <NodeActions/>
       </div>
       <div className="flex items-center gap-1">

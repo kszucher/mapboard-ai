@@ -6,7 +6,7 @@ import {MR} from "../../reducers/MapReducerEnum.ts"
 import {getXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
-export const NodeEditContentEquation = () => {
+export const NodeActionsEditContentEquation = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const [content, setContent] = useState(getXS(m).content)
   const dispatch = useDispatch<AppDispatch>()

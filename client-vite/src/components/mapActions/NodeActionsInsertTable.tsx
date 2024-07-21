@@ -7,7 +7,7 @@ import {isXAS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState} from "../../state/Enums.ts"
 
-export const NodeInsertTable = () => {
+export const NodeActionsInsertTable = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const [row, setRow] = useState<number>(1)

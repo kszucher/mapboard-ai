@@ -10,7 +10,7 @@ import {getNodeMode, mC, mS} from "../../queries/MapQueries.ts"
 import {MR} from "../../reducers/MapReducerEnum.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
-export const NodeSelectModeConfig = () => {
+export const NodeActionsSelectModeConfig = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()

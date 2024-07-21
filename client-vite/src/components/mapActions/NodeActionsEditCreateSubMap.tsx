@@ -6,7 +6,7 @@ import {getXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {getMapId} from "../../state/ApiState.ts"
 
-export const NodeEditCreateSubMap = () => {
+export const NodeActionsEditCreateSubMap = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const dispatch = useDispatch<AppDispatch>()
   return (

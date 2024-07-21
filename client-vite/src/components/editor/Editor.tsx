@@ -12,13 +12,13 @@ import {MapActionsRename} from "../mapActions/MapActionsRename.tsx"
 import {Share} from "../shareActions/Share.tsx"
 import {SharedByMe} from "../shareActions/SharedByMe.tsx"
 import {SharedWithMe} from "../shareActions/SharedWithMe.tsx"
-import {NodeEditContentEquation} from "../mapActions/NodeEditContentEquation.tsx"
-import {NodeEditCreateSubMap} from "../mapActions/NodeEditCreateSubMap.tsx"
-import {NodeInsertTable} from "../mapActions/NodeInsertTable.tsx"
+import {NodeActionsEditContentEquation} from "../mapActions/NodeActionsEditContentEquation.tsx"
+import {NodeActionsEditCreateSubMap} from "../mapActions/NodeActionsEditCreateSubMap.tsx"
+import {NodeActionsInsertTable} from "../mapActions/NodeActionsInsertTable.tsx"
 import {EditorAppBarLeft} from "./EditorAppBarLeft.tsx"
 import {EditorAppBarMid} from "./EditorAppBarMid.tsx"
 import {EditorAppBarRight} from "./EditorAppBarRight.tsx"
-import {Formatter} from "../mapActions/Formatter.tsx"
+import {NodeActionsEditFormatter} from "../mapActions/NodeActionsEditFormatter.tsx"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
@@ -51,7 +51,7 @@ export const Editor: FC = () => {
               <EditorAppBarMid/>
               <EditorAppBarRight/>
             </div>
-            {formatterVisible && <Formatter/>}
+            {formatterVisible && <NodeActionsEditFormatter/>}
             <Window/>
             {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <UserAccountDelete/>}
           </AlertDialog.Root>
@@ -59,11 +59,11 @@ export const Editor: FC = () => {
           {dialogState === DialogState.SHARE_THIS_MAP && <Share/>}
           {dialogState === DialogState.SHARED_BY_ME && <SharedByMe/>}
           {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMe/>}
-          {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeEditCreateSubMap/>}
-          {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeEditContentEquation/>}
-          {dialogState === DialogState.CREATE_TABLE_U && <NodeInsertTable/>}
-          {dialogState === DialogState.CREATE_TABLE_D && <NodeInsertTable/>}
-          {dialogState === DialogState.CREATE_TABLE_O && <NodeInsertTable/>}
+          {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeActionsEditCreateSubMap/>}
+          {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeActionsEditContentEquation/>}
+          {dialogState === DialogState.CREATE_TABLE_U && <NodeActionsInsertTable/>}
+          {dialogState === DialogState.CREATE_TABLE_D && <NodeActionsInsertTable/>}
+          {dialogState === DialogState.CREATE_TABLE_O && <NodeActionsInsertTable/>}
           {dialogState === DialogState.ROOT_INGESTION && <RootIngestion/>}
           {dialogState === DialogState.ROOT_EXTRACTION && <RootExtraction/>}
         </Dialog.Root>
