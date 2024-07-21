@@ -23,7 +23,7 @@ export const MapActionsRename = () => {
           </Text>
           <TextField.Root
             radius="large"
-            value={mapName}
+            value={newMapName}
             placeholder="Map name"
             onChange={(e) => setNewMapName(e.target.value)}
           />
