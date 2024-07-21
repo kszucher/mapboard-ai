@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux"
 import {api, useGetSharesQuery} from "../../api/Api.ts"
 import {AppDispatch} from "../../reducers/EditorReducer.ts"
 
-export const MapSharesSharedWithMe = () => {
+export const SharedWithMe = () => {
   const { data } = useGetSharesQuery()
   let { shareDataImport } = data || { shareDataImport: [] }
   const dispatch = useDispatch<AppDispatch>()

@@ -6,13 +6,13 @@ import {MR} from "../../reducers/MapReducerEnum.ts"
 import {AccessType} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {IconButton} from "@radix-ui/themes"
-import {UserSettings} from "../dropdown/UserSettings.tsx"
-import {UserAccount} from "../dropdown/UserAccount.tsx"
+import {UserSettings} from "../userActions/UserSettings.tsx"
+import {UserAccount} from "../userActions/UserAccount.tsx"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
-import {MouseConfig} from "../dropdown/MouseConfig.tsx"
-import {NodeModeConfig} from "../dropdown/NodeModeConfig.tsx"
-import {NodeActions} from "../dropdown/NodeActions.tsx";
+import {MouseConfig} from "./MouseConfig.tsx"
+import {NodeSelectModeConfig} from "../mapActions/NodeSelectModeConfig.tsx"
+import {NodeActions} from "../mapActions/NodeActions.tsx";
 
 export const EditorAppBarRight: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)
@@ -28,7 +28,7 @@ export const EditorAppBarRight: FC = () => {
     <div className="fixed flex right-1 gap-6 h-[40px]">
 
       <div className="flex items-center gap-1">
-        <NodeModeConfig/>
+        <NodeSelectModeConfig/>
         <NodeActions/>
       </div>
       <div className="flex items-center gap-1">

@@ -4,7 +4,7 @@ import {AppDispatch} from "../../reducers/EditorReducer"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {IconButton, DropdownMenu, Button} from "@radix-ui/themes"
-import {MapActions} from "../dropdown/MapActions.tsx"
+import {MapActions} from "../mapActions/MapActions.tsx"
 import ChevronDown from "../../assets/chevron-down.svg?react"
 import ChevronRight from "../../assets/chevron-right.svg?react"
 

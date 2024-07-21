@@ -4,7 +4,7 @@ import {useCreateShareMutation} from "../../api/Api.ts"
 import {AccessType} from "../../state/Enums.ts"
 import {getMapId} from "../../state/ApiState.ts"
 
-export const MapSharesShare = () => {
+export const Share = () => {
   const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()
   const errorMessage = (error as any)?.data?.message
   const [shareEmail, setShareEmail] = useState('')

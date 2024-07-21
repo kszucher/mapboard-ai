@@ -6,23 +6,23 @@ import {DialogState, AlertDialogState} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {Theme, AlertDialog, Dialog, Spinner} from "@radix-ui/themes"
 import {mSelector} from "../../state/EditorState"
-import {RootExtraction} from "../dialog/RootExtraction.tsx"
-import {RootIngestion} from "../dialog/RootIngestion.tsx"
-import {MapActionsRename} from "../dialog/MapActionsRename.tsx"
-import {MapSharesShare} from "../dialog/MapSharesShare.tsx"
-import {MapSharesSharedByMe} from "../dialog/MapSharesSharedByMe.tsx"
-import {MapSharesSharedWithMe} from "../dialog/MapSharesSharedWithMe.tsx"
-import {NodeEditContentEquation} from "../dialog/NodeEditContentEquation.tsx"
-import {NodeEditCreateSubMap} from "../dialog/NodeEditCreateSubMap.tsx"
-import {NodeInsertTable} from "../dialog/NodeInsertTable.tsx"
+import {RootExtraction} from "../mapActions/RootExtraction.tsx"
+import {RootIngestion} from "../mapActions/RootIngestion.tsx"
+import {MapActionsRename} from "../mapActions/MapActionsRename.tsx"
+import {Share} from "../shareActions/Share.tsx"
+import {SharedByMe} from "../shareActions/SharedByMe.tsx"
+import {SharedWithMe} from "../shareActions/SharedWithMe.tsx"
+import {NodeEditContentEquation} from "../mapActions/NodeEditContentEquation.tsx"
+import {NodeEditCreateSubMap} from "../mapActions/NodeEditCreateSubMap.tsx"
+import {NodeInsertTable} from "../mapActions/NodeInsertTable.tsx"
 import {EditorAppBarLeft} from "./EditorAppBarLeft.tsx"
 import {EditorAppBarMid} from "./EditorAppBarMid.tsx"
 import {EditorAppBarRight} from "./EditorAppBarRight.tsx"
-import {Formatter} from "./Formatter"
+import {Formatter} from "../mapActions/Formatter.tsx"
 import {Map} from "../map/Map"
 import {getEquationDim, getTextDim} from "../map/MapDivUtils"
 import {Window} from "./Window"
-import {UserAccountDelete} from "../dialog/UserAccountDelete.tsx"
+import {UserAccountDelete} from "../userActions/UserAccountDelete.tsx"
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
@@ -56,9 +56,9 @@ export const Editor: FC = () => {
             {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <UserAccountDelete/>}
           </AlertDialog.Root>
           {dialogState === DialogState.RENAME_MAP && <MapActionsRename/>}
-          {dialogState === DialogState.SHARE_THIS_MAP && <MapSharesShare/>}
-          {dialogState === DialogState.SHARED_BY_ME && <MapSharesSharedByMe/>}
-          {dialogState === DialogState.SHARED_WITH_ME && <MapSharesSharedWithMe/>}
+          {dialogState === DialogState.SHARE_THIS_MAP && <Share/>}
+          {dialogState === DialogState.SHARED_BY_ME && <SharedByMe/>}
+          {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMe/>}
           {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeEditCreateSubMap/>}
           {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeEditContentEquation/>}
           {dialogState === DialogState.CREATE_TABLE_U && <NodeInsertTable/>}
