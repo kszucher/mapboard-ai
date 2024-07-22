@@ -107,10 +107,12 @@ export const api = createApi({
           const ws = (api.endpoints.openWorkspace.select()(store.getState())?.data || defaultUseOpenWorkspaceQueryState)
           console.log('saving ' + ws.mapName)
           clearTimeout(timeoutId)
+          const commitIdIndex = editor.mapList.findIndex(el => el.commitId === editor.lastMergedCommitId)
+          const mapListIndexFrom = commitIdIndex === -1 ? 0 : commitIdIndex
           dispatch(api.endpoints.saveMap.initiate({
             mapId: ws.mapId,
             mapDelta: mapDiff(
-              mapDeInit(editor.mapList[editor.mapListIndexSaved].data),
+              mapDeInit(editor.mapList[mapListIndexFrom].data),
               mapDeInit(editor.mapList[editor.mapListIndex].data)
             ),
             commitId: editor.mapList[editor.mapListIndex].commitId
