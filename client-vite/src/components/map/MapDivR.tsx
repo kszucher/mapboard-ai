@@ -45,7 +45,7 @@ export const MapDivR: FC = () => {
               e.ctrlKey && ri.selected && getXAR(m).length > 1 && dm(MR.unselectR, {path: ri.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_ROOT) {
               !e.ctrlKey && dm(MR.selectR, {path: ri.path})
-              dm(MR.saveFromCoordinates, {e})
+              dispatch(actions.saveFromCoordinates({e}))
               const abortController = new AbortController()
               const {signal} = abortController
               window.addEventListener('mousemove', (e) => {

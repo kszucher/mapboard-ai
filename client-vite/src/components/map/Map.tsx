@@ -75,7 +75,7 @@ export const Map: FC = () => {
         }
         if (e.button === 0) {
           if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-            dm(MR.saveFromCoordinates, {e})
+            dispatch(actions.saveFromCoordinates({e}))
           }
         }
         let didMove = false

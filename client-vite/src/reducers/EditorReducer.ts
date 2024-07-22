@@ -16,24 +16,60 @@ export const editorSlice = createSlice({
   name: 'editor',
   initialState: editorState,
   reducers: {
-    setToken(state, action: PayloadAction<string>) { state.token = action.payload },
-    setSessionId(state, action: PayloadAction<string>) { state.sessionId = action.payload },
-    resetState() {return JSON.parse(editorStateDefault)},
-    setIsLoading(state, action: PayloadAction<boolean>) { state.isLoading = action.payload },
-    setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) { state.leftMouseMode = action.payload },
-    setMidMouseMode(state, action: PayloadAction<MidMouseMode>) { state.midMouseMode = action.payload },
-    setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
-    setDialogState(state, action: PayloadAction<DialogState>) { state.dialogState = action.payload },
-    setAlertDialogState(state, action: PayloadAction<AlertDialogState>) { state.alertDialogState = action.payload },
-    setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
-    openFormatter(state) { state.formatterVisible = true },
-    closeFormatter(state) { state.formatterVisible = false },
-    setZoomInfo(state, action: PayloadAction<any>) {state.zoomInfo = action.payload },
-    showConnectionHelpers(state) { state.connectionHelpersVisible = true },
-    hideConnectionHelpers(state) { state.connectionHelpersVisible = false },
-    setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload },
-    clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R} },
-    updateMapListIndexSaved(state) {state.mapListIndexSaved = state.mapListIndex},
+    setToken(state, action: PayloadAction<string>) {
+      state.token = action.payload
+    },
+    setSessionId(state, action: PayloadAction<string>) {
+      state.sessionId = action.payload
+    },
+    resetState() {
+      return JSON.parse(editorStateDefault)
+    },
+    setIsLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload
+    },
+    setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) {
+      state.leftMouseMode = action.payload
+    },
+    setMidMouseMode(state, action: PayloadAction<MidMouseMode>) {
+      state.midMouseMode = action.payload
+    },
+    setPageState(state, action: PayloadAction<PageState>) {
+      state.pageState = action.payload
+    },
+    setDialogState(state, action: PayloadAction<DialogState>) {
+      state.dialogState = action.payload
+    },
+    setAlertDialogState(state, action: PayloadAction<AlertDialogState>) {
+      state.alertDialogState = action.payload
+    },
+    setFormatMode(state, action: PayloadAction<FormatMode>) {
+      state.formatMode = action.payload
+    },
+    openFormatter(state) {
+      state.formatterVisible = true
+    },
+    closeFormatter(state) {
+      state.formatterVisible = false
+    },
+    setZoomInfo(state, action: PayloadAction<any>) {
+      state.zoomInfo = action.payload
+    },
+    showConnectionHelpers(state) {
+      state.connectionHelpersVisible = true
+    },
+    hideConnectionHelpers(state) {
+      state.connectionHelpersVisible = false
+    },
+    setConnectionStart(state, action: PayloadAction<any>) {
+      state.connectionStart = action.payload
+    },
+    clearConnectionStart(state) {
+      state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R}
+    },
+    updateMapListIndexSaved(state) {
+      state.mapListIndexSaved = state.mapListIndex
+    },
     undo(state) {
       state.editedNodeId = ''
       state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
@@ -42,7 +78,7 @@ export const editorSlice = createSlice({
       state.editedNodeId = ''
       state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
     },
-    saveView(state, action: PayloadAction<{e: any}>) {
+    saveView(state, action: PayloadAction<{ e: any }>) {
       const {e} = action.payload
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const mapX = getMapX(e)
@@ -51,8 +87,12 @@ export const editorSlice = createSlice({
       const y = originY + ((mapY - prevMapY) / scale)
       const ZOOM_INTENSITY = 0.2
       let newScale = scale * Math.exp((e.deltaY < 0 ? 1 : -1) * ZOOM_INTENSITY)
-      if (newScale > 20) {newScale = 20}
-      if (newScale < 0.2) {newScale = 0.2}
+      if (newScale > 20) {
+        newScale = 20
+      }
+      if (newScale < 0.2) {
+        newScale = 0.2
+      }
       state.zoomInfo.scale = newScale
       state.zoomInfo.prevMapX = mapX
       state.zoomInfo.prevMapY = mapY
@@ -61,16 +101,15 @@ export const editorSlice = createSlice({
       state.zoomInfo.originX = x
       state.zoomInfo.originY = y
     },
+    saveFromCoordinates(state, action: PayloadAction<{e: any}>) {
+      const {e} = action.payload
+      const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+      state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
+      state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
+    },
     mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
-        case 'saveFromCoordinates': {
-          const {e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
-          state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
-          break
-        }
         case 'selectSByRectanglePreview': {
           const {e} = action.payload.payload
           const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
