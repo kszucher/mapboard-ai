@@ -113,9 +113,7 @@ export const api = createApi({
               mapDeInit(editor.mapList[editor.mapListIndexSaved]),
               mapDeInit(editor.mapList[editor.mapListIndex])
             ),
-
           }))
-          // dispatch(actions.updateMapListIndexSaved())
         }
       }
     }),
