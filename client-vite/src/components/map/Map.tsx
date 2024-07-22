@@ -106,7 +106,7 @@ export const Map: FC = () => {
       }}
       onWheel={(e) => {
         if (midMouseMode === MidMouseMode.ZOOM) {
-          dm(MR.saveView, {e})
+          dispatch(actions.saveView({e}))
         }
       }}
     >

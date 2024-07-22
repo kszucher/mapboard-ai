@@ -42,39 +42,28 @@ export const editorSlice = createSlice({
       state.editedNodeId = ''
       state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
     },
+    saveView(state, action: PayloadAction<{e: any}>) {
+      const {e} = action.payload
+      const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+      const mapX = getMapX(e)
+      const mapY = getMapY(e)
+      const x = originX + ((mapX - prevMapX) / scale)
+      const y = originY + ((mapY - prevMapY) / scale)
+      const ZOOM_INTENSITY = 0.2
+      let newScale = scale * Math.exp((e.deltaY < 0 ? 1 : -1) * ZOOM_INTENSITY)
+      if (newScale > 20) {newScale = 20}
+      if (newScale < 0.2) {newScale = 0.2}
+      state.zoomInfo.scale = newScale
+      state.zoomInfo.prevMapX = mapX
+      state.zoomInfo.prevMapY = mapY
+      state.zoomInfo.translateX = (mapX - x) / newScale
+      state.zoomInfo.translateY = (mapY - y) / newScale
+      state.zoomInfo.originX = x
+      state.zoomInfo.originY = y
+    },
     mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
-        case 'undo': {
-          state.editedNodeId = ''
-          state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
-          break
-        }
-        case 'redo': {
-          state.editedNodeId = ''
-          state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
-          break
-        }
-        case 'saveView': {
-          const {e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const mapX = getMapX(e)
-          const mapY = getMapY(e)
-          const x = originX + ((mapX - prevMapX) / scale)
-          const y = originY + ((mapY - prevMapY) / scale)
-          const ZOOM_INTENSITY = 0.2
-          let newScale = scale * Math.exp((e.deltaY < 0 ? 1 : -1) * ZOOM_INTENSITY)
-          if (newScale > 20) {newScale = 20}
-          if (newScale < 0.2) {newScale = 0.2}
-          state.zoomInfo.scale = newScale
-          state.zoomInfo.prevMapX = mapX
-          state.zoomInfo.prevMapY = mapY
-          state.zoomInfo.translateX = (mapX - x) / newScale
-          state.zoomInfo.translateY = (mapY - y) / newScale
-          state.zoomInfo.originX = x
-          state.zoomInfo.originY = y
-          break
-        }
         case 'saveFromCoordinates': {
           const {e} = action.payload.payload
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
