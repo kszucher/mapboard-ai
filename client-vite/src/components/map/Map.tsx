@@ -85,7 +85,7 @@ export const Map: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-            dm(MR.selectSByRectanglePreview, {e})
+            dispatch(actions.selectSByRectanglePreview({e}))
           } else if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
             setScrollTop(document.documentElement.scrollTop - e.movementY)

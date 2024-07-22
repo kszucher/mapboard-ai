@@ -101,18 +101,19 @@ export const editorSlice = createSlice({
       state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
       state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
     },
+    selectSByRectanglePreview(state, action: PayloadAction<{e: any}>) {
+      const {e} = action.payload
+      const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+      const pm = current(state.mapList[state.mapListIndex])
+      const toX = originX + ((getMapX(e) - prevMapX) / scale)
+      const toY = originY + ((getMapY(e) - prevMapY) / scale)
+      state.selectionRectCoords = [Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]
+      state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
+    },
     mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
-        case 'selectSByRectanglePreview': {
-          const {e} = action.payload.payload
-          const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const toX = originX + ((getMapX(e) - prevMapX) / scale)
-          const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          state.selectionRectCoords = [Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]
-          state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
-          break
-        }
+
         case 'selectSByRectangle': {
           const m = mapReducer(pm, MR.selectSByRectangle, {pathList: state.intersectingNodes.map(si => si.path)})
           if (!isEqual(pm, m)) {
