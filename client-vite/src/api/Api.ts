@@ -110,15 +110,16 @@ export const api = createApi({
           dispatch(api.endpoints.saveMap.initiate({
             mapId: ws.mapId,
             mapDelta: mapDiff(
-              mapDeInit(editor.mapList[0].data),
+              mapDeInit(editor.mapList[editor.mapListIndexSaved].data),
               mapDeInit(editor.mapList[editor.mapListIndex].data)
             ),
+            commitId: editor.mapList[editor.mapListIndex].commitId
           }))
         }
       }
     }),
-    saveMap: builder.mutation<void, { mapId: string, mapDelta: any }>({
-      query: ({ mapId, mapDelta }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapDelta } }),
+    saveMap: builder.mutation<{ commitId: string }, { mapId: string, mapDelta: any, commitId: string }>({
+      query: ({ mapId, mapDelta, commitId }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapDelta, commitId } }),
       invalidatesTags: []
     }),
     deleteMap: builder.mutation<void, { mapId: string }>({

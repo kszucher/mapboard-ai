@@ -202,8 +202,9 @@ export const editorSlice = createSlice({
     )
     builder.addMatcher(
       api.endpoints.saveMap.matchFulfilled,
-      () => {
-        console.log('save completed')
+      (state, {payload}) => {
+        state.mapListIndexSaved = state.mapList.findIndex(el => el.commitId === payload.commitId) || 0
+        console.log('commit ' + payload.commitId + ' saved')
       }
     )
   }
