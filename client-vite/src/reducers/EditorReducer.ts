@@ -8,7 +8,6 @@ import {api} from "../api/Api.ts"
 import {mapFindNearestS} from "../queries/MapFindNearestS.ts"
 import {mapReducer} from "./MapReducer"
 import {getXS} from "../queries/MapQueries.ts"
-import {filterEmpty} from "../utils/Utils"
 import {MR} from "./MapReducerEnum.ts"
 
 const editorStateDefault = JSON.stringify(editorState)
@@ -193,7 +192,12 @@ export const editorSlice = createSlice({
       (state, { payload }) => {
         console.log(payload)
         const { mapData } = structuredClone(payload)
-        state.mapList = [ mapReducer(filterEmpty(mapData), MR.load, {}) ]
+        const validatedMapData = mapData.filter(el =>
+          Object.keys(el).length !== 0 &&
+          el.hasOwnProperty('nodeId') &&
+          el.hasOwnProperty('path')
+        )
+        state.mapList = [ mapReducer(validatedMapData, MR.load, {}) ]
         state.mapListIndex = 0
         state.mapListIndexSaved = 0
         state.editedNodeId = ''
