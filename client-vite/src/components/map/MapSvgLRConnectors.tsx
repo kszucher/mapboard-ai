@@ -14,7 +14,7 @@ export const MapSvgLRConnectors: FC = () => {
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)
   const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
+  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <Fragment>
       {mL(m).map((li: L) => (
@@ -47,7 +47,7 @@ export const MapSvgLRConnectors: FC = () => {
                 <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  md(MR.deleteL, li)
+                  dm(MR.deleteL, li)
                 }}/>
               </g>
             }
@@ -89,7 +89,7 @@ export const MapSvgLRConnectors: FC = () => {
                         connectionStart.fromNodeId !== ri.nodeId &&
                         !isExistingLink(m, newLink)
                       ) {
-                        md(MR.insertL, newLink)
+                        dm(MR.insertL, newLink)
                       }
                     }}
                   />

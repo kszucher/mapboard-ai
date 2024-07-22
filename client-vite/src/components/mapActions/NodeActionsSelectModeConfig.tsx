@@ -14,7 +14,7 @@ export const NodeActionsSelectModeConfig = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
+  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
@@ -32,12 +32,12 @@ export const NodeActionsSelectModeConfig = () => {
         <DropdownMenu.RadioGroup
           value={nodeMode}
           onValueChange={(value) => {
-            value === NodeMode.VIEW && md(MR.unselect)
-            value === NodeMode.EDIT_ROOT && md(MR.selectFirstR)
-            value === NodeMode.EDIT_STRUCT && md(MR.selectFirstS)
-            value === NodeMode.EDIT_CELL && md(MR.selectFirstC)
-            value === NodeMode.EDIT_CELL_ROW && md(MR.selectFirstCR)
-            value === NodeMode.EDIT_CELL_COLUMN && md(MR.selectFirstCC)
+            value === NodeMode.VIEW && dm(MR.unselect)
+            value === NodeMode.EDIT_ROOT && dm(MR.selectFirstR)
+            value === NodeMode.EDIT_STRUCT && dm(MR.selectFirstS)
+            value === NodeMode.EDIT_CELL && dm(MR.selectFirstC)
+            value === NodeMode.EDIT_CELL_ROW && dm(MR.selectFirstCR)
+            value === NodeMode.EDIT_CELL_COLUMN && dm(MR.selectFirstCC)
           }}
         >
           <DropdownMenu.RadioItem value={NodeMode.VIEW}>{NodeMode.VIEW}</DropdownMenu.RadioItem>

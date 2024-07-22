@@ -10,7 +10,7 @@ export const NodeActionsEditContentEquation = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const [content, setContent] = useState(getXS(m).content)
   const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
+  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Edit Equation'}</Dialog.Title>
@@ -30,7 +30,7 @@ export const NodeActionsEditContentEquation = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => md(MR.setContentEquation, {content})}>
+          <Button onClick={() => dm(MR.setContentEquation, {content})}>
             {'OK'}
           </Button>
         </Dialog.Close>

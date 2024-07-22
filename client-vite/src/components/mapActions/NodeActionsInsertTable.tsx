@@ -13,7 +13,7 @@ export const NodeActionsInsertTable = () => {
   const [row, setRow] = useState<number>(1)
   const [col, setCol] = useState<number>(1)
   const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
+  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Insert Table'}</Dialog.Title>
@@ -48,9 +48,9 @@ export const NodeActionsInsertTable = () => {
         </Dialog.Close>
         <Dialog.Close>
           <Button onClick={() => {
-            dialogState === DialogState.CREATE_TABLE_U && isXAS(m) && md(MR.insertSUTable, {rowLen: row, colLen: col})
-            dialogState === DialogState.CREATE_TABLE_D && isXAS(m) && md(MR.insertSDTable, {rowLen: row, colLen: col})
-            dialogState === DialogState.CREATE_TABLE_O && isXAS(m) && md(MR.insertSOTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_U && isXAS(m) && dm(MR.insertSUTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_D && isXAS(m) && dm(MR.insertSDTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_O && isXAS(m) && dm(MR.insertSOTable, {rowLen: row, colLen: col})
           }}>
             {'OK'}
           </Button>

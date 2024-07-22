@@ -25,7 +25,7 @@ export const Map: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { mapId, colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
+  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
 
   const resetView = () => {
     dispatch(actions.setZoomInfo({scale: 1, prevMapX: 0, prevMapY: 0, translateX: 0, translateY: 0, originX: 0, originY: 0}))
@@ -75,7 +75,7 @@ export const Map: FC = () => {
         }
         if (e.button === 0) {
           if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-            md(MR.saveFromCoordinates, {e})
+            dm(MR.saveFromCoordinates, {e})
           }
         }
         let didMove = false
@@ -85,7 +85,7 @@ export const Map: FC = () => {
           e.preventDefault()
           didMove = true
           if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-            md(MR.selectSByRectanglePreview, {e})
+            dm(MR.selectSByRectanglePreview, {e})
           } else if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
             setScrollTop(document.documentElement.scrollTop - e.movementY)
@@ -95,7 +95,7 @@ export const Map: FC = () => {
           e.preventDefault()
           abortController.abort()
           if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-            md(MR.selectSByRectangle, {e})
+            dm(MR.selectSByRectangle, {e})
           }
         }, { signal })
       }}
@@ -106,7 +106,7 @@ export const Map: FC = () => {
       }}
       onWheel={(e) => {
         if (midMouseMode === MidMouseMode.ZOOM) {
-          md(MR.saveView, {e})
+          dm(MR.saveView, {e})
         }
       }}
     >

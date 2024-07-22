@@ -12,7 +12,7 @@ export const MapDivR: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
+  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     mR(m).map(ri => (
       <div
@@ -40,24 +40,24 @@ export const MapDivR: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT) {
-              !e.ctrlKey && md(MR.selectR, {path: ri.path})
-              e.ctrlKey && isXAR(m) && !ri.selected && md(MR.selectAddR, {path: ri.path})
-              e.ctrlKey && ri.selected && getXAR(m).length > 1 && md(MR.unselectR, {path: ri.path})
+              !e.ctrlKey && dm(MR.selectR, {path: ri.path})
+              e.ctrlKey && isXAR(m) && !ri.selected && dm(MR.selectAddR, {path: ri.path})
+              e.ctrlKey && ri.selected && getXAR(m).length > 1 && dm(MR.unselectR, {path: ri.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_ROOT) {
-              !e.ctrlKey && md(MR.selectR, {path: ri.path})
-              md(MR.saveFromCoordinates, {e})
+              !e.ctrlKey && dm(MR.selectR, {path: ri.path})
+              dm(MR.saveFromCoordinates, {e})
               const abortController = new AbortController()
               const {signal} = abortController
               window.addEventListener('mousemove', (e) => {
                 e.preventDefault()
                 didMove = true
-                md(MR.offsetRByDragPreview, {t: ri, e})
+                dm(MR.offsetRByDragPreview, {t: ri, e})
               }, {signal})
               window.addEventListener('mouseup', (e) => {
                 abortController.abort()
                 e.preventDefault()
                 if (didMove) {
-                  md(MR.offsetRByDrag, {t: ri, e})
+                  dm(MR.offsetRByDrag, {t: ri, e})
                 }
               }, {signal})
             }

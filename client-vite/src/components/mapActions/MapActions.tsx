@@ -14,7 +14,7 @@ export const MapActions = () => {
   const { data } = useOpenWorkspaceQuery()
   const { breadcrumbMapIdList, isShared } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
+  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <>
       <DropdownMenu.Root>
@@ -31,10 +31,10 @@ export const MapActions = () => {
           {breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}>{'Move Down'}</DropdownMenu.Item>}
           {breadcrumbMapIdList.length === 1 && !isShared && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))}>{'Remove'}</DropdownMenu.Item>}
           <DropdownMenu.Separator/>
-          {getG(m).density === 'small' && <DropdownMenu.Item onClick={() => md(MR.setDensityLarge)}>{'Density - Cozy'}</DropdownMenu.Item>}
-          {getG(m).density === 'large' && <DropdownMenu.Item onClick={() => md(MR.setDensitySmall)}>{'Density - Compact'}</DropdownMenu.Item>}
-          {getG(m).flow === Flow.EXPLODED && <DropdownMenu.Item onClick={() => md(MR.setPlaceTypeIndented)}>{'Flow - Indented'}</DropdownMenu.Item>}
-          {getG(m).flow === Flow.INDENTED && <DropdownMenu.Item onClick={() => md(MR.setPlaceTypeExploded)}>{'Flow - Exploded'}</DropdownMenu.Item>}
+          {getG(m).density === 'small' && <DropdownMenu.Item onClick={() => dm(MR.setDensityLarge)}>{'Density - Cozy'}</DropdownMenu.Item>}
+          {getG(m).density === 'large' && <DropdownMenu.Item onClick={() => dm(MR.setDensitySmall)}>{'Density - Compact'}</DropdownMenu.Item>}
+          {getG(m).flow === Flow.EXPLODED && <DropdownMenu.Item onClick={() => dm(MR.setPlaceTypeIndented)}>{'Flow - Indented'}</DropdownMenu.Item>}
+          {getG(m).flow === Flow.INDENTED && <DropdownMenu.Item onClick={() => dm(MR.setPlaceTypeExploded)}>{'Flow - Exploded'}</DropdownMenu.Item>}
           <DropdownMenu.Separator/>
           <Dialog.Trigger>{<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARE_THIS_MAP))}>{'Share'}</DropdownMenu.Item>}</Dialog.Trigger>
         </DropdownMenu.Content>

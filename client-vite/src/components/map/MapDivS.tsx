@@ -36,7 +36,7 @@ export const MapDivS: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
+  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
 
   return (
     mS(m).map(si => (
@@ -84,7 +84,7 @@ export const MapDivS: FC = () => {
           setEndOfContentEditable(e.currentTarget)
         }}
         onBlur={() => {
-          md(MR.removeMapListEntriesOfEdit)
+          dm(MR.removeMapListEntriesOfEdit)
         }}
         onMouseDown={(e) => {
           e.stopPropagation()
@@ -98,23 +98,23 @@ export const MapDivS: FC = () => {
                 window.focus()
               }
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-              !e.ctrlKey && md(MR.selectS, {path: si.path})
-              e.ctrlKey && !si.selected && isXAS(m) && md(MR.selectAddS, {path: si.path})
-              e.ctrlKey && si.selected && getXAS(m).length > 1 && md(MR.unselectS, {path: si.path})
+              !e.ctrlKey && dm(MR.selectS, {path: si.path})
+              e.ctrlKey && !si.selected && isXAS(m) && dm(MR.selectAddS, {path: si.path})
+              e.ctrlKey && si.selected && getXAS(m).length > 1 && dm(MR.unselectS, {path: si.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_STRUCT) {
-              !e.ctrlKey && md(MR.selectS, {path: si.path})
+              !e.ctrlKey && dm(MR.selectS, {path: si.path})
               const abortController = new AbortController()
               const {signal} = abortController
               window.addEventListener('mousemove', (e) => {
                 e.preventDefault()
                 didMove = true
-                md(MR.moveSByDragPreview, {s: si, e})
+                dm(MR.moveSByDragPreview, {s: si, e})
               }, {signal})
               window.addEventListener('mouseup', (e) => {
                 abortController.abort()
                 e.preventDefault()
                 if (didMove) {
-                  md(MR.moveSByDrag, {s: si, e})
+                  dm(MR.moveSByDrag, {s: si, e})
                 }
               }, {signal})
             }
@@ -131,27 +131,27 @@ export const MapDivS: FC = () => {
             leftMouseMode === LeftMouseMode.CLICK_SELECT &&
             nodeMode === NodeMode.EDIT_STRUCT
           ) {
-            md(MR.startEditAppend)
+            dm(MR.startEditAppend)
           }
         }}
         onKeyDown={(e) => {
           e.stopPropagation()
           if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
-            md(MR.removeMapListEntriesOfEdit)
+            dm(MR.removeMapListEntriesOfEdit)
           }
           if (['Insert','Tab'].includes(e.key)) {
-            isXAS(m) && md(MR.insertSSO)
+            isXAS(m) && dm(MR.insertSSO)
           }
         }}
         onInput={(e) => {
-          md(MR.setContentText, {content: e.currentTarget.innerHTML})
+          dm(MR.setContentText, {content: e.currentTarget.innerHTML})
         }}
         onPaste={(e) => {
           e.preventDefault()
           const pasted = e.clipboardData.getData('Text')
           e.currentTarget.innerHTML += pasted
           setEndOfContentEditable(e.currentTarget)
-          md(MR.setContentText, {content: e.currentTarget.innerHTML})
+          dm(MR.setContentText, {content: e.currentTarget.innerHTML})
         }}
       >
       </div>

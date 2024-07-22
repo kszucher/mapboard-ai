@@ -28,7 +28,7 @@ export const NodeActionsEditFormatter: FC = () => {
   const { access } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessType.UNAUTHORIZED, AccessType.VIEW].includes(access)
   const dispatch = useDispatch<AppDispatch>()
-  const md = (type: MR, payload? : any) => dispatch(actions.mapAction({type, payload}))
+  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <div className="dark:bg-zinc-800 bg-zinc-50 border-r-0 border-2 dark:border-neutral-700 fixed w-[240px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
       <Flex gap="3" align="center" justify="center">
@@ -88,13 +88,13 @@ export const NodeActionsEditFormatter: FC = () => {
                       strokeWidth={"2%"}
                       onClick={() => {
                         const color = colorList[i][j]
-                        formatMode === FormatMode.text && md(MR.setTextColor, color)
-                        formatMode === FormatMode.sBorder && md(MR.setSBorderColor, color)
-                        formatMode === FormatMode.fBorder && isXAR(m) && md(MR.setFBorderColor, color)
-                        formatMode === FormatMode.fBorder && isXAS(m) && md(MR.setFBorderColor, color)
-                        formatMode === FormatMode.sFill && md(MR.setSFillColor, color)
-                        formatMode === FormatMode.fFill && md(MR.setFFillColor, color)
-                        formatMode === FormatMode.line && md(MR.setLineColor, color)
+                        formatMode === FormatMode.text && dm(MR.setTextColor, color)
+                        formatMode === FormatMode.sBorder && dm(MR.setSBorderColor, color)
+                        formatMode === FormatMode.fBorder && isXAR(m) && dm(MR.setFBorderColor, color)
+                        formatMode === FormatMode.fBorder && isXAS(m) && dm(MR.setFBorderColor, color)
+                        formatMode === FormatMode.sFill && dm(MR.setSFillColor, color)
+                        formatMode === FormatMode.fFill && dm(MR.setFFillColor, color)
+                        formatMode === FormatMode.line && dm(MR.setLineColor, color)
                       }}
                     />
                   )
@@ -110,7 +110,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={TextType[getTextFontSize(m)]}
-            onValueChange={(value) => md(MR.setTextFontSize, TextType[value as keyof typeof TextType])}
+            onValueChange={(value) => dm(MR.setTextFontSize, TextType[value as keyof typeof TextType])}
           >
             <Select.Trigger />
             <Select.Content>
@@ -124,7 +124,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={WidthType[getSBorderWidth(m)]}
-            onValueChange={(value) => md(MR.setSBorderWidth, WidthType[value as keyof typeof WidthType])}
+            onValueChange={(value) => dm(MR.setSBorderWidth, WidthType[value as keyof typeof WidthType])}
           >
             <Select.Trigger />
             <Select.Content>
@@ -138,7 +138,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={WidthType[getFBorderWidth(m)]}
-            onValueChange={(value) => md(MR.setFBorderWidth, WidthType[value as keyof typeof WidthType])}
+            onValueChange={(value) => dm(MR.setFBorderWidth, WidthType[value as keyof typeof WidthType])}
           >
             <Select.Trigger />
             <Select.Content>
@@ -152,7 +152,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={WidthType[getLineWidth(m)]}
-            onValueChange={(value) => md(MR.setLineWidth, WidthType[value as keyof typeof WidthType])}
+            onValueChange={(value) => dm(MR.setLineWidth, WidthType[value as keyof typeof WidthType])}
           >
             <Select.Trigger />
             <Select.Content>
@@ -166,7 +166,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={LineType[getLineType(m)]}
-            onValueChange={(value) => md(MR.setLineType, LineType[value as keyof typeof LineType])}
+            onValueChange={(value) => dm(MR.setLineType, LineType[value as keyof typeof LineType])}
           >
             <Select.Trigger />
             <Select.Content>
@@ -181,12 +181,12 @@ export const NodeActionsEditFormatter: FC = () => {
         <Button
           variant="outline"
           onClick={() => {
-            formatMode === FormatMode.text && md(MR.clearText)
-            formatMode === FormatMode.sBorder && md(MR.clearSBorder)
-            formatMode === FormatMode.fBorder && md(MR.clearFBorder)
-            formatMode === FormatMode.sFill && md(MR.clearSFill)
-            formatMode === FormatMode.fFill && md(MR.clearFFill)
-            formatMode === FormatMode.line && md(MR.clearLine)
+            formatMode === FormatMode.text && dm(MR.clearText)
+            formatMode === FormatMode.sBorder && dm(MR.clearSBorder)
+            formatMode === FormatMode.fBorder && dm(MR.clearFBorder)
+            formatMode === FormatMode.sFill && dm(MR.clearSFill)
+            formatMode === FormatMode.fFill && dm(MR.clearFFill)
+            formatMode === FormatMode.line && dm(MR.clearLine)
           }}>
           {'RESET'}
         </Button>

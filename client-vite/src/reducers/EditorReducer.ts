@@ -34,7 +34,7 @@ export const editorSlice = createSlice({
     setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload },
     clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R} },
     updateMapListIndexSaved(state) {state.mapListIndexSaved = state.mapListIndex},
-    mapAction(state, action: PayloadAction<{ type: MR, payload?: any }>) {
+    mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
         case 'undo': {
