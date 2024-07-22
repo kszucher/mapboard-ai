@@ -159,6 +159,8 @@ export const editorSlice = createSlice({
             state.mapListIndex = state.mapListIndex + 1
           }
           state.sMoveCoords = []
+          state.sMoveInsertParentNodeId = ''
+          state.sMoveTargetIndex = 0
           break
         }
         case 'startEditReplace': {
