@@ -129,65 +129,45 @@ export const editorSlice = createSlice({
       state.sMoveInsertParentNodeId = sMoveInsertParentNodeId
       state.sMoveTargetIndex = sMoveTargetIndex
     },
+    startEditReplace(state) {
+      const pm = current(state.mapList[state.mapListIndex])
+      state.editStartMapListIndex = state.mapListIndex
+      state.editedNodeId = getXS(pm).nodeId
+      state.editType = 'replace'
+    },
+    startEditAppend(state) {
+      const pm = current(state.mapList[state.mapListIndex])
+      state.editStartMapListIndex = state.mapListIndex
+      state.editedNodeId = getXS(pm).nodeId
+      state.editType = 'append'
+    },
+    removeMapListEntriesOfEdit(state) {
+      state.editedNodeId = ''
+      state.editType = ''
+      state.mapList = [...state.mapList.slice(0, state.editStartMapListIndex + 1), ...state.mapList.slice(-1)]
+      state.mapListIndex = state.editStartMapListIndex + 1
+    },
     mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
+      const m = mapReducer(pm, action.payload.type, action.payload.payload)
+      if (!isEqual(pm, m)) {
+        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+        state.mapListIndex = state.mapListIndex + 1
+      }
       switch (action.payload.type) {
         case 'selectSByRectangle': {
-          const m = mapReducer(pm, MR.selectSByRectangle, {pathList: state.intersectingNodes.map(si => si.path)})
-          if (!isEqual(pm, m)) {
-            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            state.mapListIndex = state.mapListIndex + 1
-          }
           state.selectionRectCoords = []
           state.intersectingNodes = []
           break
         }
         case 'offsetRByDrag': {
-          const m = mapReducer(pm, MR.offsetRByDrag, {toX: state.rOffsetCoords[0], toY: state.rOffsetCoords[1]})
-          if (!isEqual(pm, m)) {
-            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            state.mapListIndex = state.mapListIndex + 1
-          }
           state.rOffsetCoords = []
           break
         }
         case 'moveSByDrag': {
-          const {sMoveInsertParentNodeId, sMoveTargetIndex} = state
-          const m = mapReducer(pm, MR.moveSByDrag, {sMoveInsertParentNodeId, sMoveTargetIndex})
-          if (!isEqual(pm, m)) {
-            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            state.mapListIndex = state.mapListIndex + 1
-          }
           state.sMoveCoords = []
           state.sMoveInsertParentNodeId = ''
           state.sMoveTargetIndex = 0
-          break
-        }
-        case 'startEditReplace': {
-          state.editStartMapListIndex = state.mapListIndex
-          state.editedNodeId = getXS(pm).nodeId
-          state.editType = 'replace'
-          break
-        }
-        case 'startEditAppend': {
-          state.editStartMapListIndex = state.mapListIndex
-          state.editedNodeId = getXS(pm).nodeId
-          state.editType = 'append'
-          break
-        }
-        case 'removeMapListEntriesOfEdit': {
-          state.editedNodeId = ''
-          state.editType = ''
-          state.mapList = [...state.mapList.slice(0, state.editStartMapListIndex + 1), ...state.mapList.slice(-1)]
-          state.mapListIndex = state.editStartMapListIndex + 1
-          break
-        }
-        default: {
-          const m = mapReducer(pm, action.payload.type, action.payload.payload)
-          if (!isEqual(pm, m)) {
-            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            state.mapListIndex = state.mapListIndex + 1
-          }
           break
         }
       }

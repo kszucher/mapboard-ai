@@ -1,14 +1,6 @@
 export enum MR {
   load = 'load',
 
-  undo = 'undo',
-  redo = 'redo',
-  saveView = 'saveView',
-  saveFromCoordinates = 'saveFromCoordinates',
-  startEditReplace = 'startEditReplace',
-  startEditAppend = 'startEditAppend',
-  removeMapListEntriesOfEdit = 'removeMapListEntriesOfEdit',
-
   setDensitySmall = 'setDensitySmall',
   setDensityLarge = 'setDensityLarge',
   setPlaceTypeExploded = 'setPlaceTypeExploded',
@@ -59,7 +51,6 @@ export enum MR {
   selectCU = 'selectCU',
   selectCR = 'selectCR',
   selectCL = 'selectCL',
-  selectSByRectanglePreview = 'selectSByRectanglePreview',
   selectSByRectangle = 'selectSByRectangle',
 
   unselect = 'unselect',
@@ -127,7 +118,6 @@ export enum MR {
   moveSB = 'moveSB',
   moveSO = 'moveSO',
   moveSI = 'moveSI',
-  moveSByDragPreview = 'moveSByDragPreview',
   moveSByDrag = 'moveSByDrag',
   moveCRD = 'moveCRD',
   moveCRU = 'moveCRU',
@@ -141,7 +131,6 @@ export enum MR {
   offsetU = 'offsetU',
   offsetR = 'offsetR',
   offsetL = 'offsetL',
-  offsetRByDragPreview = 'offsetRByDragPreview',
   offsetRByDrag = 'offsetRByDrag',
 
   setControlTypeNone = 'setControlTypeNone',

@@ -47,7 +47,7 @@ export const Window: FC = () => {
       +e.shiftKey ? 's' : '-',
       +e.altKey ? 'a' : '-'
     ].join('')
-    ckm === '---' && e.key === 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 && dm(MR.startEditAppend)
+    ckm === '---' && e.key === 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 && dispatch(actions.startEditAppend())
     ckm === '---' && e.key === 'Enter' && isXAS(m) && dm(MR.insertSD)
     ckm === '---' && e.key === 'Enter' && isXC(m) && dm(MR.selectCD)
     ckm === '-s-' && e.key === 'Enter' && isXAS(m) && dm(MR.insertSU)
@@ -146,8 +146,8 @@ export const Window: FC = () => {
     ckm === '--a' && e.code === 'ArrowLeft' && isXACC(m) && dm(MR.insertCCL)
 
     ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXAS(m) && dm(MR.setTextColor, shortcutColors[e.which - 96])
-    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m) && dm(MR.startEditReplace)
-    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m) && dm(MR.startEditReplace)
+    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m) && dispatch(actions.startEditReplace())
+    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m) && dispatch(actions.startEditReplace())
   }
 
   const paste = (e: Event) => {

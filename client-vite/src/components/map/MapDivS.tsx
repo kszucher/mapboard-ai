@@ -84,7 +84,7 @@ export const MapDivS: FC = () => {
           setEndOfContentEditable(e.currentTarget)
         }}
         onBlur={() => {
-          dm(MR.removeMapListEntriesOfEdit)
+          dispatch(actions.removeMapListEntriesOfEdit())
         }}
         onMouseDown={(e) => {
           e.stopPropagation()
@@ -131,13 +131,13 @@ export const MapDivS: FC = () => {
             leftMouseMode === LeftMouseMode.CLICK_SELECT &&
             nodeMode === NodeMode.EDIT_STRUCT
           ) {
-            dm(MR.startEditAppend)
+            dispatch(actions.startEditAppend())
           }
         }}
         onKeyDown={(e) => {
           e.stopPropagation()
           if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
-            dm(MR.removeMapListEntriesOfEdit)
+            dispatch(actions.removeMapListEntriesOfEdit())
           }
           if (['Insert','Tab'].includes(e.key)) {
             isXAS(m) && dm(MR.insertSSO)
