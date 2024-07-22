@@ -42,6 +42,6 @@ export const editorState: EditorState = {
   }
 }
 
-export const getMap = () => store.getState().editor.mapList[store.getState().editor.mapListIndex]
-export const mSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex]
-export const pmSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex > 0 ? state.editor.mapListIndex - 1 : 0]
+export const getMap = () => store.getState().editor.mapList[store.getState().editor.mapListIndex]?.data || []
+export const mSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex]?.data || []
+export const pmSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex > 0 ? state.editor.mapListIndex - 1 : 0]?.data || []

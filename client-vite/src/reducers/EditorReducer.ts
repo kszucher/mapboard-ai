@@ -10,6 +10,7 @@ import {mapReducer} from "./MapReducer"
 import {getXS} from "../queries/MapQueries.ts"
 import {MR} from "./MapReducerEnum.ts"
 import {R, S} from "../state/MapStateTypes.ts"
+import {genId} from "../utils/Utils.ts"
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -104,7 +105,7 @@ export const editorSlice = createSlice({
     },
     selectSByRectanglePreview(state, action: PayloadAction<{e: any}>) {
       const {e} = action.payload
-      const pm = current(state.mapList[state.mapListIndex])
+      const pm = current(state.mapList[state.mapListIndex].data)
       const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
@@ -120,7 +121,7 @@ export const editorSlice = createSlice({
     },
     moveSByDragPreview(state, action: PayloadAction<{s: S, e: any}>) {
       const {s, e} = action.payload
-      const pm = current(state.mapList[state.mapListIndex])
+      const pm = current(state.mapList[state.mapListIndex].data)
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
@@ -130,13 +131,13 @@ export const editorSlice = createSlice({
       state.sMoveTargetIndex = sMoveTargetIndex
     },
     startEditReplace(state) {
-      const pm = current(state.mapList[state.mapListIndex])
+      const pm = current(state.mapList[state.mapListIndex].data)
       state.editStartMapListIndex = state.mapListIndex
       state.editedNodeId = getXS(pm).nodeId
       state.editType = 'replace'
     },
     startEditAppend(state) {
-      const pm = current(state.mapList[state.mapListIndex])
+      const pm = current(state.mapList[state.mapListIndex].data)
       state.editStartMapListIndex = state.mapListIndex
       state.editedNodeId = getXS(pm).nodeId
       state.editType = 'append'
@@ -148,10 +149,10 @@ export const editorSlice = createSlice({
       state.mapListIndex = state.editStartMapListIndex + 1
     },
     mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
-      const pm = current(state.mapList[state.mapListIndex])
+      const pm = current(state.mapList[state.mapListIndex].data)
       const m = mapReducer(pm, action.payload.type, action.payload.payload)
       if (!isEqual(pm, m)) {
-        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), {commitId: genId(), data: m}]
         state.mapListIndex = state.mapListIndex + 1
       }
       switch (action.payload.type) {
@@ -193,7 +194,7 @@ export const editorSlice = createSlice({
           el.hasOwnProperty('nodeId') &&
           el.hasOwnProperty('path')
         )
-        state.mapList = [ mapReducer(validatedMapData, MR.load, {}) ]
+        state.mapList = [{commitId: genId(), data: mapReducer(validatedMapData, MR.load, {})}]
         state.mapListIndex = 0
         state.editedNodeId = ''
         state.isLoading = false
