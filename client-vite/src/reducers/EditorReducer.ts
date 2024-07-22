@@ -122,13 +122,11 @@ export const editorSlice = createSlice({
           break
         }
         case 'moveSByDrag': {
-          if (state.sMoveInsertParentNodeId.length) {
-            const {sMoveInsertParentNodeId, sMoveTargetIndex} = state
-            const m = mapReducer(pm, MR.moveSByDrag, {sMoveInsertParentNodeId, sMoveTargetIndex})
-            if (!isEqual(pm, m)) {
-              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-              state.mapListIndex = state.mapListIndex + 1
-            }
+          const {sMoveInsertParentNodeId, sMoveTargetIndex} = state
+          const m = mapReducer(pm, MR.moveSByDrag, {sMoveInsertParentNodeId, sMoveTargetIndex})
+          if (!isEqual(pm, m)) {
+            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+            state.mapListIndex = state.mapListIndex + 1
           }
           state.sMoveCoords = []
           break
