@@ -115,18 +115,16 @@ export const editorSlice = createSlice({
           const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
           const toX = originX + ((getMapX(e) - prevMapX) / scale)
           const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const {sMoveCoords} = mapFindNearestS(pm, s, toX, toY)
+          const {sMoveCoords, sMoveInsertParentNodeId, sMoveTargetIndex} = mapFindNearestS(pm, s, toX, toY)
           state.sMoveCoords = sMoveCoords
+          state.sMoveInsertParentNodeId = sMoveInsertParentNodeId
+          state.sMoveTargetIndex = sMoveTargetIndex
           break
         }
         case 'moveSByDrag': {
-          const {s, e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const toX = originX + ((getMapX(e) - prevMapX) / scale)
-          const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const {moveInsertParentNodeId, moveTargetIndex} = mapFindNearestS(pm, s, toX, toY)
-          if (moveInsertParentNodeId.length) {
-            const m = mapReducer(pm, MR.moveSByDrag, {moveInsertParentNodeId, moveTargetIndex})
+          if (state.sMoveInsertParentNodeId.length) {
+            const {sMoveInsertParentNodeId, sMoveTargetIndex} = state
+            const m = mapReducer(pm, MR.moveSByDrag, {sMoveInsertParentNodeId, sMoveTargetIndex})
             if (!isEqual(pm, m)) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
               state.mapListIndex = state.mapListIndex + 1

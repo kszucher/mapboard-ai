@@ -136,7 +136,7 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'moveSB': moveSC(m, getXS(m).path.with(-1, getXLS(m).sd.length) as PS); break
     case 'moveSO': moveSC(m, [...idToS(m, getXFS(m).su.at(-1) as string).path, 's', idToS(m, getXFS(m).su.at(-1) as string).so1.length] as PS); break
     case 'moveSI': moveSC(m, idToS(m, getXS(m).si1).path.with(-1, idToS(m, getXS(m).si1).su.length + 1) as PS); break
-    case 'moveSByDrag': moveSC(m, [...idToS(m, payload.moveInsertParentNodeId).path, 's', payload.moveTargetIndex]); break
+    case 'moveSByDrag': moveSC(m, [...idToS(m, payload.sMoveInsertParentNodeId).path, 's', payload.sMoveTargetIndex]); break
     case 'moveCRD': moveCRD(m); break
     case 'moveCRU': moveCRU(m); break
     case 'moveCCR': moveCCR(m); break

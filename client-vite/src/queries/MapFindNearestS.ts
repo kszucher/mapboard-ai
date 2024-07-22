@@ -57,5 +57,5 @@ export const mapFindNearestS = (pm: M, moveNode: S, toX: number, toY: number) =>
     moveTargetIndex = 0
     sMoveCoords = []
   }
-  return { sMoveCoords, moveInsertParentNodeId: moveInsertParentNode.nodeId || '', moveTargetIndex }
+  return { sMoveCoords, sMoveInsertParentNodeId: moveInsertParentNode.nodeId || '', sMoveTargetIndex: moveTargetIndex }
 }
