@@ -34,6 +34,14 @@ export const editorSlice = createSlice({
     setConnectionStart(state, action: PayloadAction<any>) {state.connectionStart = action.payload },
     clearConnectionStart(state) {state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R} },
     updateMapListIndexSaved(state) {state.mapListIndexSaved = state.mapListIndex},
+    undo(state) {
+      state.editedNodeId = ''
+      state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
+    },
+    redo(state) {
+      state.editedNodeId = ''
+      state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
+    },
     mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {

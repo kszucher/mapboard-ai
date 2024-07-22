@@ -91,8 +91,8 @@ export const Window: FC = () => {
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXACS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && dm(MR.cutSJumpCI)
     ckm === 'c--' && e.code === 'KeyD' && isXAR(m) && dm(MR.duplicateR)
     ckm === 'c--' && e.code === 'KeyD' && isXAS(m) && dm(MR.duplicateS)
-    ckm === 'c--' && e.code === 'KeyZ' && dm(MR.redo)
-    ckm === 'c--' && e.code === 'KeyY' && dm(MR.undo)
+    ckm === 'c--' && e.code === 'KeyZ' && dispatch(actions.redo())
+    ckm === 'c--' && e.code === 'KeyY' && dispatch(actions.undo())
 
     ckm === '---' && e.code === 'ArrowDown' && isXAR(m) && getRD(m, getXR(m)) && dm(MR.selectRD)
     ckm === '---' && e.code === 'ArrowDown' && isXAS(m) && getQuasiSD(m) && dm(MR.selectSD)

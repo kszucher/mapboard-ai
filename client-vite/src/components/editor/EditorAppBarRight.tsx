@@ -2,7 +2,6 @@ import {FC} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
-import {MR} from "../../reducers/MapReducerEnum.ts"
 import {AccessType} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {IconButton} from "@radix-ui/themes"
@@ -12,7 +11,7 @@ import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {MouseConfig} from "./MouseConfig.tsx"
 import {NodeActionsSelectModeConfig} from "../mapActions/NodeActionsSelectModeConfig.tsx"
-import {NodeActions} from "../mapActions/NodeActions.tsx";
+import {NodeActions} from "../mapActions/NodeActions.tsx"
 
 export const EditorAppBarRight: FC = () => {
   const mapList = useSelector((state: RootState) => state.editor.mapList)
@@ -23,7 +22,6 @@ export const EditorAppBarRight: FC = () => {
   const undoDisabled = disabled || mapListIndex === 0
   const redoDisabled = disabled || mapListIndex === mapList.length - 1
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <div className="fixed flex right-1 gap-6 h-[40px]">
 
@@ -39,14 +37,14 @@ export const EditorAppBarRight: FC = () => {
           variant="solid"
           color="gray"
           disabled={undoDisabled}
-          onClick={() => dm(MR.undo)}>
+          onClick={() => dispatch(actions.undo())}>
           <ArrowBackUp/>
         </IconButton>
         <IconButton
           variant="solid"
           color="gray"
           disabled={redoDisabled}
-          onClick={() => dm(MR.redo)}>
+          onClick={() => dispatch(actions.redo())}>
           <ArrowForwardUp/>
         </IconButton>
       </div>
