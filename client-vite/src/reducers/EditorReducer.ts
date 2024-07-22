@@ -9,7 +9,7 @@ import {mapFindNearestS} from "../queries/MapFindNearestS.ts"
 import {mapReducer} from "./MapReducer"
 import {getXS} from "../queries/MapQueries.ts"
 import {MR} from "./MapReducerEnum.ts"
-import {R} from "../state/MapStateTypes.ts"
+import {R, S} from "../state/MapStateTypes.ts"
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -118,7 +118,17 @@ export const editorSlice = createSlice({
       const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + r.offsetH
       state.rOffsetCoords = [toX, toY, r.selfW, r.selfH]
     },
-
+    moveSByDragPreview(state, action: PayloadAction<{s: S, e: any}>) {
+      const {s, e} = action.payload
+      const pm = current(state.mapList[state.mapListIndex])
+      const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+      const toX = originX + ((getMapX(e) - prevMapX) / scale)
+      const toY = originY + ((getMapY(e) - prevMapY) / scale)
+      const {sMoveCoords, sMoveInsertParentNodeId, sMoveTargetIndex} = mapFindNearestS(pm, s, toX, toY)
+      state.sMoveCoords = sMoveCoords
+      state.sMoveInsertParentNodeId = sMoveInsertParentNodeId
+      state.sMoveTargetIndex = sMoveTargetIndex
+    },
     mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
@@ -139,17 +149,6 @@ export const editorSlice = createSlice({
             state.mapListIndex = state.mapListIndex + 1
           }
           state.rOffsetCoords = []
-          break
-        }
-        case 'moveSByDragPreview': {
-          const {s, e} = action.payload.payload
-          const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const toX = originX + ((getMapX(e) - prevMapX) / scale)
-          const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const {sMoveCoords, sMoveInsertParentNodeId, sMoveTargetIndex} = mapFindNearestS(pm, s, toX, toY)
-          state.sMoveCoords = sMoveCoords
-          state.sMoveInsertParentNodeId = sMoveInsertParentNodeId
-          state.sMoveTargetIndex = sMoveTargetIndex
           break
         }
         case 'moveSByDrag': {
