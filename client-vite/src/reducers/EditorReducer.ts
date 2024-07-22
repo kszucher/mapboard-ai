@@ -84,12 +84,7 @@ export const editorSlice = createSlice({
           break
         }
         case 'selectSByRectangle': {
-          const {e} = action.payload.payload
-          const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const toX = originX + ((getMapX(e) - prevMapX) / scale)
-          const toY = originY + ((getMapY(e) - prevMapY) / scale)
-          const sList = mapFindIntersecting(pm, fromX, fromY, toX, toY)
-          const m = mapReducer(pm, MR.selectSByRectangle, {pathList: sList.map(si => si.path)})
+          const m = mapReducer(pm, MR.selectSByRectangle, {pathList: state.intersectingNodes.map(si => si.path)})
           if (!isEqual(pm, m)) {
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
             state.mapListIndex = state.mapListIndex + 1
@@ -107,17 +102,10 @@ export const editorSlice = createSlice({
           break
         }
         case 'offsetRByDrag': {
-          const {t, e} = action.payload.payload
-          const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const toX = originX + ((getMapX(e) - prevMapX) / scale) - fromX + t.offsetW
-          const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + t.offsetH
-          const moveCondition = true // this should check for collisions
-          if (moveCondition) {
-            const m = mapReducer(pm, MR.offsetRByDrag, {toX, toY})
-            if (!isEqual(pm, m)) {
-              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-              state.mapListIndex = state.mapListIndex + 1
-            }
+          const m = mapReducer(pm, MR.offsetRByDrag, {toX: state.rOffsetCoords[0], toY: state.rOffsetCoords[1]})
+          if (!isEqual(pm, m)) {
+            state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+            state.mapListIndex = state.mapListIndex + 1
           }
           state.rOffsetCoords = []
           break
