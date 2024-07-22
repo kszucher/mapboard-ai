@@ -51,7 +51,7 @@ export const MapDivR: FC = () => {
               window.addEventListener('mousemove', (e) => {
                 e.preventDefault()
                 didMove = true
-                dm(MR.offsetRByDragPreview, {t: ri, e})
+                dispatch(actions.offsetRByDragPreview({r: ri, e}))
               }, {signal})
               window.addEventListener('mouseup', (e) => {
                 abortController.abort()

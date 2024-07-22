@@ -9,6 +9,7 @@ import {mapFindNearestS} from "../queries/MapFindNearestS.ts"
 import {mapReducer} from "./MapReducer"
 import {getXS} from "../queries/MapQueries.ts"
 import {MR} from "./MapReducerEnum.ts"
+import {R} from "../state/MapStateTypes.ts"
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -103,17 +104,24 @@ export const editorSlice = createSlice({
     },
     selectSByRectanglePreview(state, action: PayloadAction<{e: any}>) {
       const {e} = action.payload
-      const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const pm = current(state.mapList[state.mapListIndex])
+      const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
       state.selectionRectCoords = [Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]
       state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
     },
+    offsetRByDragPreview(state, action: PayloadAction<{r: R, e: any}>) {
+      const {r, e} = action.payload
+      const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+      const toX = originX + ((getMapX(e) - prevMapX) / scale) - fromX + r.offsetW
+      const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + r.offsetH
+      state.rOffsetCoords = [toX, toY, r.selfW, r.selfH]
+    },
+
     mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       switch (action.payload.type) {
-
         case 'selectSByRectangle': {
           const m = mapReducer(pm, MR.selectSByRectangle, {pathList: state.intersectingNodes.map(si => si.path)})
           if (!isEqual(pm, m)) {
@@ -122,14 +130,6 @@ export const editorSlice = createSlice({
           }
           state.selectionRectCoords = []
           state.intersectingNodes = []
-          break
-        }
-        case 'offsetRByDragPreview': {
-          const {t, e} = action.payload.payload
-          const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-          const toX = originX + ((getMapX(e) - prevMapX) / scale) - fromX + t.offsetW
-          const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + t.offsetH
-          state.rOffsetCoords = [toX, toY, t.selfW, t.selfH]
           break
         }
         case 'offsetRByDrag': {
