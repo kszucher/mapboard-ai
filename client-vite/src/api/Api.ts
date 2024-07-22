@@ -112,9 +112,10 @@ export const api = createApi({
             mapDelta: mapDiff(
               mapDeInit(editor.mapList[editor.mapListIndexSaved]),
               mapDeInit(editor.mapList[editor.mapListIndex])
-            )
+            ),
+
           }))
-          dispatch(actions.updateMapListIndexSaved())
+          // dispatch(actions.updateMapListIndexSaved())
         }
       }
     }),
