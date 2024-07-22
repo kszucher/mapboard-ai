@@ -34,9 +34,6 @@ export const editorSlice = createSlice({
     setMidMouseMode(state, action: PayloadAction<MidMouseMode>) {
       state.midMouseMode = action.payload
     },
-    setPageState(state, action: PayloadAction<PageState>) {
-      state.pageState = action.payload
-    },
     setDialogState(state, action: PayloadAction<DialogState>) {
       state.dialogState = action.payload
     },
@@ -66,9 +63,6 @@ export const editorSlice = createSlice({
     },
     clearConnectionStart(state) {
       state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R}
-    },
-    updateMapListIndexSaved(state) {
-      state.mapListIndexSaved = state.mapListIndex
     },
     undo(state) {
       state.editedNodeId = ''
@@ -219,7 +213,6 @@ export const editorSlice = createSlice({
         )
         state.mapList = [ mapReducer(validatedMapData, MR.load, {}) ]
         state.mapListIndex = 0
-        state.mapListIndexSaved = 0
         state.editedNodeId = ''
         state.isLoading = false
       }

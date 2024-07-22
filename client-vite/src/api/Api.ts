@@ -110,7 +110,7 @@ export const api = createApi({
           dispatch(api.endpoints.saveMap.initiate({
             mapId: ws.mapId,
             mapDelta: mapDiff(
-              mapDeInit(editor.mapList[editor.mapListIndexSaved]),
+              mapDeInit(editor.mapList[0]),
               mapDeInit(editor.mapList[editor.mapListIndex])
             ),
           }))

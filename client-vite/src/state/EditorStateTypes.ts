@@ -13,7 +13,6 @@ export interface EditorState {
   formatMode: FormatMode
   mapList: M[]
   mapListIndex: number
-  mapListIndexSaved: number
   editedNodeId: string
   editType: '' | 'append' | 'replace'
   editStartMapListIndex: number
