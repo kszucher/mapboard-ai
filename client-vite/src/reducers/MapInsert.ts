@@ -49,52 +49,60 @@ export const insertS = (m: M, ip: PS, attributes: object) => {
 export const insertCRD = (m: M) => {
   const crIndex = getXC(m).path.indexOf('c') + 1
   const crValue = getXC(m).path.at(crIndex)
+  const colPathListC = getXAC(m).map(ci => ci.path.with(crIndex, crValue + 1))
+  const colPathListCS = getXAC(m).map(ci => [...ci.path.with(crIndex, crValue + 1), 's', 0])
   const cd = getXAC(m).flatMap(ci => ci.cd).map(nid => idToC(m, nid))
   cd.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) + 1))
   cd.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) + 1))
-  m.push(...getXAC(m).map(ci => ({
-    nodeId: IS_TESTING ? '_' + ci.path.with(crIndex, crValue + 1).join('') : genNodeId(),
-    path: ci.path.with(crIndex, crValue + 1)
-  } as CPartial)) as M)
+  m.push(...[
+    ...colPathListC.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as CPartial)),
+    ...colPathListCS.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as SPartial))
+  ] as M)
   m.sort(sortPath)
 }
 
 export const insertCRU = (m: M) => {
   const crIndex = getXC(m).path.indexOf('c') + 1
   const crValue = getXC(m).path.at(crIndex)
+  const colPathListC = getXAC(m).map(ci => ci.path.with(crIndex, crValue))
+  const colPathListCS = getXAC(m).map(ci => [...ci.path.with(crIndex, crValue), 's', 0])
   const ced = getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cd]).map(nid => idToC(m, nid))
   ced.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) + 1))
   ced.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) + 1))
-  m.push(...getXAC(m).map(ci => ({
-    nodeId: IS_TESTING ? '_' + ci.path.with(crIndex, crValue).join('') : genNodeId(),
-    path: ci.path.with(crIndex, crValue)
-  } as CPartial)) as M)
+  m.push(...[
+    ...colPathListC.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as CPartial)),
+    ...colPathListCS.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as SPartial))
+  ] as M)
   m.sort(sortPath)
 }
 
 export const insertCCR = (m: M) => {
   const ccIndex = getXC(m).path.indexOf('c') + 2
   const ccValue = getXC(m).path.at(ccIndex)
+  const rowPathListC = getXAC(m).map(ci => ci.path.with(ccIndex, ccValue + 1))
+  const rowPathListCS = getXAC(m).map(ci => [...ci.path.with(ccIndex, ccValue + 1), 's', 0])
   const cr = getXAC(m).flatMap(ci => ci.cr).map(nid => idToC(m, nid))
   cr.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(ccIndex, 1, si.path.at(ccIndex) + 1))
   cr.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(ccIndex, 1, ci.path.at(ccIndex) + 1))
-  m.push(...getXAC(m).map(ci => ({
-    nodeId: IS_TESTING ? '_' + ci.path.with(ccIndex, ccValue + 1).join('') : genNodeId(),
-    path: ci.path.with(ccIndex, ccValue + 1)
-  } as CPartial)) as M)
+  m.push(...[
+    ...rowPathListC.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as CPartial)),
+    ...rowPathListCS.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as SPartial))
+  ] as M)
   m.sort(sortPath)
 }
 
 export const insertCCL = (m: M) => {
   const ccIndex = getXC(m).path.indexOf('c') + 2
   const ccValue = getXC(m).path.at(ccIndex)
+  const rowPathListC = getXAC(m).map(ci => ci.path.with(ccIndex, ccValue))
+  const rowPathListCS = getXAC(m).map(ci => [...ci.path.with(ccIndex, ccValue), 's', 0])
   const cer = getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cr]).map(nid => idToC(m, nid))
   cer.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(ccIndex, 1, si.path.at(ccIndex) + 1))
   cer.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(ccIndex, 1, ci.path.at(ccIndex) + 1))
-  m.push(...getXAC(m).map(ci => ({
-    nodeId: IS_TESTING ? '_' + ci.path.with(ccIndex, ccValue).join('') : genNodeId(),
-    path: ci.path.with(ccIndex, ccValue)
-  } as CPartial)) as M)
+  m.push(...[
+    ...rowPathListC.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as CPartial)),
+    ...rowPathListCS.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as SPartial))
+  ] as M)
   m.sort(sortPath)
 }
 
