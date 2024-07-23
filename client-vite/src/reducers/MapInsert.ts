@@ -142,15 +142,9 @@ export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: numb
   mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + 1))
   unselectNodes(m)
   m.push(...[
-    {
-      selected: 1,
-      nodeId: IS_TESTING ? '_' + ip.join('') : genNodeId(),
-      path: ip
-    } as SPartial,
-    ...tableIndices.map(el => ({
-      nodeId: IS_TESTING ? '_' + [...ip, 'c', ...el].join('') : genNodeId(),
-      path: [...ip, 'c', ...el]
-    } as CPartial))
+    {selected: 1, nodeId: IS_TESTING ? '_' + ip.join('') : genNodeId(), path: ip} as SPartial,
+    ...tableIndices.map(el => ({nodeId: IS_TESTING ? '_' + [...ip, 'c', ...el].join('') : genNodeId(), path: [...ip, 'c', ...el]} as CPartial)),
+    ...tableIndices.map(el => ({nodeId: IS_TESTING ? '_' + [...ip, 'c', ...el, 's', 0].join('') : genNodeId(), path: [...ip, 'c', ...el, 's', 0]} as SPartial)),
   ] as M)
   m.sort(sortPath)
 }
