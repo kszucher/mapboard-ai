@@ -9,6 +9,19 @@ import {MR} from "./MapReducerEnum.ts"
 
 describe("MapInsertTests", () => {
   beforeEach(() => setIsTesting() as any)
+  test('insertR', () => {
+    const test = [
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+    ] as MPartial
+    const result = [
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: '_r1', path: ['r', 1], selected: 1},
+      {nodeId: '_r1s0', path: ['r', 1, 's', 0], content: 'New Root'},
+    ] as MPartial
+    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.insertR, {})).sort(sortNode)).toEqual((result).sort(sortNode))
+  })
   test('insertSD', () => {
     const test = [
       {nodeId: 'g', path: ['g']},

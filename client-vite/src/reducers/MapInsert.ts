@@ -1,11 +1,12 @@
-import {M, LPartial, R, S, C, PS, PC, SPartial} from "../state/MapStateTypes"
+import {M, LPartial, R, S, C, PR, PS, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {sortPath, isSEODO, getLastIndexL, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getXC, idToC, idToS, isCEODO} from "../queries/MapQueries.ts"
 import {genNodeId, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 
-const genNodeS = (el: PS) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as S)
-const genNodeC = (el: PC) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as C)
+const genNodeR = (el: PR, attributes?: object) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el, ...attributes} as R)
+const genNodeS = (el: PS, attributes?: object) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el, ...attributes} as S)
+const genNodeC = (el: PC, attributes?: object) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el, ...attributes} as C)
 
 export const insertL = (m: M, lPartial: LPartial) => {
   m.push(...[{...lPartial, nodeId: IS_TESTING ? 't' : genNodeId(), path: ['l', getLastIndexL(m) + 1]} as LPartial] as M)
@@ -14,8 +15,8 @@ export const insertL = (m: M, lPartial: LPartial) => {
 export const insertR = (m: M) => {
   const lastIndexR = getLastIndexR(m)
   unselectNodes(m)
-  m.push({nodeId: IS_TESTING ? 't' : genNodeId(), path: ['r', lastIndexR + 1], selected: 1, offsetW: getG(m).selfW, offsetH: getG(m).selfH} as R)
-  m.push({nodeId: IS_TESTING ? 'u' : genNodeId(), path: ['r', lastIndexR + 1, 's', 0], content: 'New Root'} as SPartial as S)
+  m.push(genNodeR(['r', lastIndexR + 1] as PR, {selected: 1, offsetW: getG(m).selfW, offsetH: getG(m).selfH}))
+  m.push(genNodeS(['r', lastIndexR + 1, 's', 0] as PS, {content: 'New Root'}))
   m.sort(sortPath)
 }
 
@@ -24,7 +25,7 @@ export const insertS = (m: M, ip: PS, attributes: object) => {
   mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + 1))
   const parentTaskStatus = isXAS(m) ? getXS(m).taskStatus : sSaveOptional.taskStatus
   unselectNodes(m)
-  m.push({selected: 1, nodeId: IS_TESTING ? '_' + ip.join('') : genNodeId(), path: ip, taskStatus: parentTaskStatus, ...attributes} as S)
+  m.push(genNodeS(ip, {selected: 1, taskStatus: parentTaskStatus, ...attributes}))
   m.sort(sortPath)
 }
 
@@ -111,7 +112,7 @@ export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: numb
   mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + 1))
   mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + 1))
   unselectNodes(m)
-  m.push({selected: 1, nodeId: IS_TESTING ? '_' + ip.join('') : genNodeId(), path: ip} as S)
+  m.push(genNodeS(ip, {selected: 1}))
   m.push(...tableIndices.map(el => [...ip, 'c', ...el] as PC).map(el => genNodeC(el)))
   m.push(...tableIndices.map(el => [...ip, 'c', ...el, 's', 0] as PS).map(el => genNodeS(el)))
   m.sort(sortPath)
