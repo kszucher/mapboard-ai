@@ -1,4 +1,4 @@
-import {M, LPartial, RPartial, SPartial, CPartial, PS, PC} from "../state/MapStateTypes"
+import {M, LPartial, RPartial, SPartial, CPartial, PS} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {sortPath, isSEODO, getLastIndexL, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getXC, idToC, idToS, isCEODO} from "../queries/MapQueries.ts"
 import {genNodeId, getTableIndices, IS_TESTING} from "../utils/Utils"
@@ -99,52 +99,66 @@ export const insertCCL = (m: M) => {
 }
 
 export const insertSCRD = (m: M) => {
-  m.push(...Array.from({length: getXS(m).colCount}, (_, i) =>({
-    nodeId: IS_TESTING ? '_' + [...getXS(m).path, 'c', getXS(m).rowCount, i].join('') : genNodeId(),
-    path: [...getXS(m).path, 'c', getXS(m).rowCount, i] as PC
-  } as CPartial)) as M)
+  const colIndices = Array.from({length: getXS(m).colCount}, (_, i) => i)
+  const colPathListC = colIndices.map(i => [...getXS(m).path, 'c', getXS(m).rowCount, i])
+  const colPathListCS = colIndices.map(i => [...getXS(m).path, 'c', getXS(m).rowCount, i, 's', 0])
+  m.push(...[
+    ...colPathListC.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as CPartial)),
+    ...colPathListCS.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as SPartial))
+  ] as M)
   m.sort(sortPath)
 }
 
 export const insertSCRU = (m: M) => {
   const crIndex = getXS(m).path.length + 1
+  const colIndices = Array.from({length: getXS(m).colCount}, (_, i) => i)
+  const colPathListC = colIndices.map(i => [...getXS(m).path, 'c', 0, i])
+  const colPathListCS = colIndices.map(i => [...getXS(m).path, 'c', 0, i, 's', 0])
   getXS(m).co1.map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) + 1))
   getXS(m).co1.map(nid => idToC(m, nid)).flatMap(el => el.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) + 1))
-  m.push(...Array.from({length: getXS(m).colCount}, (_, i) =>({
-    nodeId: IS_TESTING ? '_' + [...getXS(m).path, 'c', 0, i].join('') : genNodeId(),
-    path: [...getXS(m).path, 'c', 0, i] as PC
-  } as CPartial)) as M)
+  m.push(...[
+    ...colPathListC.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as CPartial)),
+    ...colPathListCS.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as SPartial))
+  ] as M)
   m.sort(sortPath)
 }
 
 export const insertSCCR = (m: M) => {
-  m.push(...Array.from({length: getXS(m).rowCount}, (_, i) =>({
-    nodeId: IS_TESTING ? '_' + [...getXS(m).path, 'c', i, getXS(m).colCount].join('') : genNodeId(),
-    path: [...getXS(m).path, 'c', i, getXS(m).colCount] as PC
-  } as CPartial)) as M)
+  const rowIndices = Array.from({length: getXS(m).rowCount}, (_, i) => i)
+  const rowPathListC = rowIndices.map(i => [...getXS(m).path, 'c', i, getXS(m).colCount])
+  const rowPathListCS = rowIndices.map(i => [...getXS(m).path, 'c', i, getXS(m).colCount, 's', 0])
+  m.push(...[
+    ...rowPathListC.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as CPartial)),
+    ...rowPathListCS.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as SPartial))
+  ] as M)
   m.sort(sortPath)
 }
 
 export const insertSCCL = (m: M) => {
   const ccIndex = getXS(m).path.length + 2
+  const rowIndices = Array.from({length: getXS(m).rowCount}, (_, i) => i)
+  const rowPathListC = rowIndices.map(i => [...getXS(m).path, 'c', i, 0])
+  const rowPathListCS = rowIndices.map(i => [...getXS(m).path, 'c', i, 0, 's', 0])
   getXS(m).co1.map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(ccIndex, 1, ci.path.at(ccIndex) + 1))
   getXS(m).co1.map(nid => idToC(m, nid)).flatMap(el => el.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(ccIndex, 1, si.path.at(ccIndex) + 1))
-  m.push(...Array.from({length: getXS(m).rowCount}, (_, i) =>({
-    nodeId: IS_TESTING ? '_' + [...getXS(m).path, 'c', i, 0].join('') : genNodeId(),
-    path: [...getXS(m).path, 'c', i, 0] as PC
-  } as CPartial)) as M)
+  m.push(...[
+    ...rowPathListC.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as CPartial)),
+    ...rowPathListCS.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as SPartial))
+  ] as M)
   m.sort(sortPath)
 }
 
 export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: number}) => {
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
+  const cellPathListC = tableIndices.map(el => [...ip, 'c', ...el])
+  const cellPathListCS = tableIndices.map(el => [...ip, 'c', ...el, 's', 0])
   mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + 1))
   mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + 1))
   unselectNodes(m)
   m.push(...[
     {selected: 1, nodeId: IS_TESTING ? '_' + ip.join('') : genNodeId(), path: ip} as SPartial,
-    ...tableIndices.map(el => ({nodeId: IS_TESTING ? '_' + [...ip, 'c', ...el].join('') : genNodeId(), path: [...ip, 'c', ...el]} as CPartial)),
-    ...tableIndices.map(el => ({nodeId: IS_TESTING ? '_' + [...ip, 'c', ...el, 's', 0].join('') : genNodeId(), path: [...ip, 'c', ...el, 's', 0]} as SPartial)),
+    ...cellPathListC.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as CPartial)),
+    ...cellPathListCS.map(el => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el} as SPartial))
   ] as M)
   m.sort(sortPath)
 }
