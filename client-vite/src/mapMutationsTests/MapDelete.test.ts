@@ -1,10 +1,6 @@
 import {MPartial} from "../state/MapStateTypes.ts"
-import {mapDeInit} from "../mapMutations/MapDeInit.ts"
-import {mapInit} from "../mapMutations/MapInit.ts"
-import {mapMutations} from "../mapMutations/MapMutations.ts"
 import {MM} from "../mapMutations/MapMutationsEnum.ts"
-import {mapChain} from "../mapMutations/MapChain.ts"
-import {sortNode} from "../mapMutations/MapSort.ts"
+import {_assert} from "./_assert.ts"
 
 describe("MapDeleteTests", () => {
   test('deleteLR', () => {
@@ -28,7 +24,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r2', path: ['r', 1], offsetW: 440, offsetH: 550},
       {nodeId: 'r2s0', path: ['r', 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.deleteLR)).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.deleteLR)
   })
   test('deleteS', () => {
     const test = [
@@ -55,7 +51,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'r0s0s2s2', path: ['r', 0, 's', 0, 's', 0, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.deleteSJumpR)).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.deleteSJumpR)
   })
   test('deleteCR', () => {
     const test = [
@@ -80,7 +76,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 2},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.deleteCRJumpD)).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.deleteCRJumpD)
   })
   test('deleteCC', () => {
     const test = [
@@ -105,6 +101,6 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 2},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.deleteCCJumpR)).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.deleteCCJumpR)
   })
 })

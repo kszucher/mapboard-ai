@@ -1,11 +1,7 @@
-import {setIsTesting} from "../utils/Utils.ts"
 import {MPartial} from "../state/MapStateTypes.ts"
-import {mapDeInit} from "../mapMutations/MapDeInit.ts"
-import {mapInit} from "../mapMutations/MapInit.ts"
-import {mapChain} from "../mapMutations/MapChain.ts"
-import {mapMutations} from "../mapMutations/MapMutations.ts"
 import {MM} from "../mapMutations/MapMutationsEnum.ts"
-import {sortNode} from "../mapMutations/MapSort.ts"
+import {setIsTesting} from "../utils/Utils.ts"
+import {_assert} from "./_assert.ts"
 
 describe("MapInsertTests", () => {
   beforeEach(() => setIsTesting() as any)
@@ -20,7 +16,7 @@ describe("MapInsertTests", () => {
       {nodeId: '_r1', path: ['r', 1], selected: 1},
       {nodeId: '_r1s0', path: ['r', 1, 's', 0], content: 'New Root'},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertR, {})).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertR)
   })
   test('insertSD', () => {
     const test = [
@@ -42,7 +38,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 3]},
       {nodeId: 'r0s0s3', path: ['r', 0, 's', 0, 's', 4]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertSD, {})).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertSD)
   })
   test('insertSU', () => {
     const test = [
@@ -64,7 +60,7 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0s3', path: ['r', 0, 's', 0, 's', 3], selected: 1},
       {nodeId: 'r0s0s3', path: ['r', 0, 's', 0, 's', 4]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertSU, {})).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertSU)
   })
   test('insertSSO', () => {
     const test = [
@@ -80,7 +76,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: '_r0s0s1', path: ['r', 0, 's', 0, 's', 1], selected: 1},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertSSO, {})).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertSSO)
   })
   test('insertCRD', () => {
     const test = [
@@ -113,7 +109,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 2, 1]},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertCRD, {})).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertCRD)
   })
   test('insertCRU', () => {
     const test = [
@@ -146,7 +142,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 2, 1], selected: 1},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertCRU, {})).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertCRU)
   })
   test('insertCCR', () => {
     const test = [
@@ -179,7 +175,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 2]},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertCCR, {})).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertCCR)
   })
   test('insertCCL', () => {
     const test = [
@@ -212,7 +208,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 2], selected: 1},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertCCL)).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertCCL)
   })
   test('insertSCRD', () => {
     const test = [
@@ -237,7 +233,7 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0c21', path: ['r', 0, 's', 0, 'c', 2, 1]},
       {nodeId: '_r0s0c21s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertSCRD)).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertSCRD)
   })
   test('insertSCRU', () => {
     const test = [
@@ -262,7 +258,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 2, 1]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertSCRU)).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertSCRU)
   })
   test('insertSCCR', () => {
     const test = [
@@ -287,7 +283,7 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0c12', path: ['r', 0, 's', 0, 'c', 1, 2]},
       {nodeId: '_r0s0c12s0', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertSCCR)).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertSCCR)
   })
   test('insertSCCL', () => {
     const test = [
@@ -312,7 +308,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 2]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertSCCL)).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertSCCL)
   })
   test('insertTable', () => {
     const test = [
@@ -338,6 +334,6 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0s0c21', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 1]},
       {nodeId: '_r0s0s0c21s0', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapMutations(mapChain(mapInit(test)), MM.insertSOTable, {rowLen: 3, colLen: 2})).sort(sortNode)).toEqual((result).sort(sortNode))
+    _assert(test, result, MM.insertSOTable, {rowLen: 3, colLen: 2})
   })
 })
