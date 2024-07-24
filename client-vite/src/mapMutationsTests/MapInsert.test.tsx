@@ -1,5 +1,5 @@
 import {MPartial} from "../state/MapStateTypes.ts"
-import {MM} from "../mapMutations/MapMutationsEnum.ts"
+import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {setIsTesting} from "../utils/Utils.ts"
 import {_assert} from "./_assert.ts"
 

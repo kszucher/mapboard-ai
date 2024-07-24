@@ -7,7 +7,7 @@ import {mSelector} from "../../state/EditorState.ts"
 import {DialogState, Flow} from "../../state/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../../state/ApiState.ts"
 import Dots from "../../assets/dots.svg?react"
-import { MM } from "../../mapMutations/MapMutationsEnum.ts"
+import { MM } from "../../mapMutations/MapMutationEnum.ts"
 
 export const MapActions = () => {
   const m = useSelector((state:RootState) => mSelector(state))

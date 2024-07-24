@@ -6,9 +6,9 @@ import {editorState, editorStateDefault} from "../state/EditorState.ts"
 import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../state/Enums.ts"
 import {api} from "../api/Api.ts"
 import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
-import {mapMutations} from "../mapMutations/MapMutations.ts"
+import {mapMutation} from "../mapMutations/MapMutation.ts"
 import {getXS} from "../mapQueries/MapQueries.ts"
-import {MM} from "../mapMutations/MapMutationsEnum.ts"
+import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {R, S} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
 import {mapInit} from "../mapMutations/MapInit.ts"
@@ -176,7 +176,7 @@ export const editorSlice = createSlice({
       }
       const pm = current(state.mapList[state.mapListIndex].data)
       const m = structuredClone(pm).sort(sortPath)
-      mapMutations(m, action.payload.type, action.payload.payload)
+      mapMutation(m, action.payload.type, action.payload.payload)
       mapInit(m)
       mapChain(m)
       mapCalcOrientation(m)

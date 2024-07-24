@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
-import {MM} from "../../mapMutations/MapMutationsEnum.ts"
+import {MM} from "../../mapMutations/MapMutationEnum.ts"
 import {getNodeMode, getXAR, isXAR, mR} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
