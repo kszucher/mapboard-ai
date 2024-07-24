@@ -57,7 +57,7 @@ export const MapDivR: FC = () => {
                 abortController.abort()
                 e.preventDefault()
                 if (didMove) {
-                  dm(MM.offsetRByDrag, {t: ri, e})
+                  dm(MM.offsetRByDrag)
                 }
               }, {signal})
             }

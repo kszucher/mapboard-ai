@@ -152,18 +152,18 @@ export const editorSlice = createSlice({
       state.mapList = [...state.mapList.slice(0, state.editStartMapListIndex + 1), ...state.mapList.slice(-1)]
       state.mapListIndex = state.editStartMapListIndex + 1
     },
-    mapReducer(state, action: PayloadAction<{ type: MM, payload?: any }>) {
+    mapReducer(state, action: PayloadAction<{ type: MM, payload?: any}>) {
       switch (action.payload.type) {
         case 'selectSByRectangle': {
-          action.payload.payload.intersectingNodes = state.intersectingNodes
+          action.payload.payload = {intersectingNodes: state.intersectingNodes}
           break
         }
         case 'offsetRByDrag': {
-
+          action.payload.payload = {toX: state.rOffsetCoords[0], toY: state.rOffsetCoords[1]}
           break
         }
         case 'moveSByDrag': {
-          
+
           break
         }
       }
