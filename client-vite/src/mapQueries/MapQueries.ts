@@ -1,25 +1,12 @@
 import isEqual from "react-fast-compare"
 import {sSaveOptional} from "../state/MapState"
-import {C, G, L, M, N, P, PC, PR, PS, PT, R, S, SSaveOptional} from "../state/MapStateTypes"
-import {isArrayOfEqualValues} from "../utils/Utils"
+import {C, G, L, M, N, PC, PR, PS, R, S, SSaveOptional} from "../state/MapStateTypes"
 import {NodeMode} from "../state/Enums.ts"
-import {sortablePath} from "../mapMutations/MapSort.ts"
+import {isArrayOfEqualValues} from "../utils/Utils"
+import {getPathPattern, isC, isCS, isG, isL, isQuasiSD, isQuasiSU, isR, isRS, isS, isSS} from "./PathQueries.ts"
 
 export const getHN = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.nodeId, ni as N]))
 export const getHP = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.path.join(''), ni as N]))
-
-const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
-
-export const isG = (p: P): boolean => p.at(0) === 'g'
-export const isL = (p: P): boolean => p.at(0) === 'l'
-export const isR = (p: P): boolean => p.at(-2) === 'r'
-export const isS = (p: P): boolean => p.at(-2) === 's'
-export const isRS = (p: P): boolean => p.at(-4) === 'r' && p.at(-2) === 's'
-export const isSS = (p: P): boolean => p.at(-4) === 's' && p.at(-2) === 's'
-export const isCS = (p: P): boolean => p.at(-5) === 'c' && p.at(-2) === 's'
-export const isC = (p: P): boolean => p.at(-3) === 'c'
-export const isRSC = (p: P): boolean => p.at(-7) === 'r' && p.at(-5) === 's' && p.at(-3) === 'c'
-export const isSSC = (p: P): boolean => p.at(-7) === 's' && p.at(-5) === 's' && p.at(-3) === 'c'
 
 export const mG = (m: M): G[] => m.filter(n => isG(n.path)) as G[]
 export const mL = (m: M): L[] => m.filter(n => isL(n.path)) as L[]
@@ -71,23 +58,8 @@ export const getRCS = (m: M): S => pathToS(m, [...getXS(m).path.slice(0, -5), 'c
 export const getDCS = (m: M): S => pathToS(m, [...getXS(m).path.slice(0, -5), 'c', getXS(m).path.at(-4) + 1, getXS(m).path.at(-3), 's', 0])
 export const getUCS = (m: M): S => pathToS(m, [...getXS(m).path.slice(0, -5), 'c', getXS(m).path.at(-4) - 1, getXS(m).path.at(-3), 's', 0])
 
-const isOfSameR = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1)
-const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex(pi => pi === 'c') + 3), pt.slice(0, pt.findLastIndex(pti => pti === 'c') + 3))
-
-const isQuasiSD = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) > sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
-const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) < sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
-
 export const getQuasiSD = (m: M): S => mS(m).find(si => !si.selected && isQuasiSD(getXS(m).path, si.path))!
 export const getQuasiSU = (m: M): S => mS(m).findLast(si => !si.selected && isQuasiSU(getXS(m).path, si.path))!
-
-export const isREO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
-export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
-export const isCEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
-export const isRDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
-export const isSEODO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) >= p.at(-1)
-export const isCEODO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) >= p.at(-1)
-export const isCD = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) > p.at(-2)! && pt.at(p.length - 1) === p.at(-1)
-export const isCR = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2) === p.at(-2)! && pt.at(p.length - 1) > p.at(-1)
 
 export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineWidth)) ? getXS(m).lineWidth : sSaveOptional.lineWidth
 export const getLineType = (m: M): SSaveOptional['lineType'] => isArrayOfEqualValues(getXAS(m).map(ti => ti.lineType)) ? getXS(m).lineType : sSaveOptional.lineType

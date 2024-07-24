@@ -2,12 +2,13 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../colors/Colors.ts"
-import {mS, getG, getHN, isSS} from "../../mapQueries/MapQueries.ts"
+import {mS, getG, getHN} from "../../mapQueries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer.ts"
 import {getGridPath, getNodeLinePath, pathCommonProps} from "./MapSvgUtils"
 import {M, S} from "../../state/MapStateTypes.ts"
+import {isSS} from "../../mapQueries/PathQueries.ts";
 
 export const MapSvgSAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state)) as M

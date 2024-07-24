@@ -1,7 +1,8 @@
-import {getG, getHN, isC, isCS, isR, isRS, isRSC, isS, isSS, isSSC} from "../mapQueries/MapQueries.ts"
+import {getG, getHN} from "../mapQueries/MapQueries.ts"
 import {INDENT, MARGIN_X, S_SPACING} from "../state/Consts.ts"
 import {C, M, R, S} from "../state/MapStateTypes"
 import {Flow} from "../state/Enums.ts"
+import {isC, isCS, isR, isRS, isRSC, isS, isSS, isSSC} from "../mapQueries/PathQueries.ts";
 
 export const mapPlace = (m: M) => {
   const g = getG(m)

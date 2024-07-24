@@ -1,4 +1,4 @@
-import {getG, mL, mR, getXFS, getXAC, getXC, isSEODO, getXAS, mS, mC, getXS, mG, idToC, idToS, idToR, getXAR, isCEODO} from "../mapQueries/MapQueries.ts"
+import {getG, mL, mR, getXFS, getXAC, getXC, getXAS, mS, mC, getXS, mG, idToC, idToS, idToR, getXAR} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {M, L, PL, PR, PC, PS, S, R, C} from "../state/MapStateTypes"
 import {genNodeId, IS_TESTING} from "../utils/Utils"
@@ -6,6 +6,7 @@ import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
+import {isCEODO, isSEODO} from "../mapQueries/PathQueries.ts";
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
