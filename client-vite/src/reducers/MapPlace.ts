@@ -1,4 +1,4 @@
-import {getG, getHN, isC, isCS, isR, isRS, isRSC, isS, isSS, isSSC} from "../queries/MapQueries.ts"
+import {getG, getHN, isC, isCS, isR, isRS, isRSC, isS, isSS, isSSC} from "../mapQueries/MapQueries.ts"
 import {INDENT, MARGIN_X, S_SPACING} from "../state/Consts.ts"
 import {C, M, R, S} from "../state/MapStateTypes"
 import {Flow} from "../state/Enums.ts"

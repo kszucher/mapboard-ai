@@ -1,5 +1,5 @@
 import {M, R, S, C} from "../state/MapStateTypes"
-import {getXR, getXS, mR, mS, mC} from "../queries/MapQueries.ts"
+import {getXR, getXS, mR, mS, mC} from "../mapQueries/MapQueries.ts"
 
 export const selectR = (m: M, ri: R) => {
   unselectNodes(m)

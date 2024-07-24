@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer.ts'
 import {MM} from "../../reducers/MapMutationEnum.ts"
-import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXAR, isXAS} from "../../queries/MapQueries.ts"
+import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXAR, isXAS} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {AccessType, FormatMode, LineType, TextType, WidthType} from "../../state/Enums.ts"
 import {FBorderIcon, FFillIcon, SFillIcon, SBorderIcon} from "../../assetsCustom/CustomIcons.tsx"

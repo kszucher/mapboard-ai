@@ -1,5 +1,5 @@
 import {M, R, S, C} from "../state/MapStateTypes.ts"
-import {isS, isC, isSS, isCS, getHP, isRS, isRSC, isSSC} from "../queries/MapQueries.ts"
+import {isS, isC, isSS, isCS, getHP, isRS, isRSC, isSSC} from "../mapQueries/MapQueries.ts"
 
 export const mapChain = (m: M) => {
   const hp = getHP(m)

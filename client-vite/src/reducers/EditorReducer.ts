@@ -1,24 +1,22 @@
 import {combineReducers, configureStore, createSlice, current, isAction, PayloadAction} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../components/map/MapDivUtils"
-import {mapFindIntersecting} from "../queries/MapFindIntersecting"
-import {editorState} from "../state/EditorState"
+import {mapFindIntersecting} from "../mapQueries/MapFindIntersecting"
+import {editorState, editorStateDefault} from "../state/EditorState"
 import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../state/Enums"
 import {api} from "../api/Api.ts"
-import {mapFindNearestS} from "../queries/MapFindNearestS.ts"
+import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
 import {mapMutation} from "./MapMutation.ts"
-import {getXS, sortNode, sortPath} from "../queries/MapQueries.ts"
+import {getXS, sortNode, sortPath} from "../mapQueries/MapQueries.ts"
 import {MM} from "./MapMutationEnum.ts"
 import {R, S} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
-import {mapInit} from "./MapInit.ts";
-import {mapChain} from "./MapChain.ts";
-import {mapCalcOrientation} from "./MapCalcOrientation.ts";
-import {mapCalcTask} from "./MapCalcTask.ts";
-import {mapMeasure} from "./MapMeasure.ts";
-import {mapPlace} from "./MapPlace.ts";
-
-const editorStateDefault = JSON.stringify(editorState)
+import {mapInit} from "./MapInit.ts"
+import {mapChain} from "./MapChain.ts"
+import {mapCalcOrientation} from "./MapCalcOrientation.ts"
+import {mapCalcTask} from "./MapCalcTask.ts"
+import {mapMeasure} from "./MapMeasure.ts"
+import {mapPlace} from "./MapPlace.ts"
 
 export const editorSlice = createSlice({
   name: 'editor',

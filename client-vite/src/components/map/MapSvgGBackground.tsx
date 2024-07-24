@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
 import {RootState} from "../../reducers/EditorReducer"
-import {getG} from "../../queries/MapQueries.ts"
+import {getG} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 
 export const MapSvgGBackground: FC = () => {

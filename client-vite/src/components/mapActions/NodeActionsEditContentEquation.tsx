@@ -3,7 +3,7 @@ import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MM} from "../../reducers/MapMutationEnum.ts"
-import {getXS} from "../../queries/MapQueries.ts"
+import {getXS} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
 export const NodeActionsEditContentEquation = () => {

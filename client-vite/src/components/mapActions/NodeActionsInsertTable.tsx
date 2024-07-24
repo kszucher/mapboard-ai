@@ -3,7 +3,7 @@ import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MM} from "../../reducers/MapMutationEnum.ts"
-import {isXAS} from "../../queries/MapQueries.ts"
+import {isXAS} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState} from "../../state/Enums.ts"
 

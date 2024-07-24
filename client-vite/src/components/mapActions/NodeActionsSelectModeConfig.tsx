@@ -6,7 +6,7 @@ import Eye from "../../assets/eye.svg?react"
 import LetterR from "../../assets/letter-r.svg?react"
 import LetterS from "../../assets/letter-s.svg?react"
 import LetterC from "../../assets/letter-c.svg?react"
-import {getNodeMode, mC, mS} from "../../queries/MapQueries.ts"
+import {getNodeMode, mC, mS} from "../../mapQueries/MapQueries.ts"
 import {MM} from "../../reducers/MapMutationEnum.ts"
 import {mSelector} from "../../state/EditorState.ts"
 

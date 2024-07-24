@@ -1,6 +1,6 @@
 import {M, LPartial, RPartial, SPartial, CPartial, L, R, S, C, PL, PR, PS, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {sortPath, isSEODO, getLastIndexL, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getXC, idToC, idToS, isCEODO} from "../queries/MapQueries.ts"
+import {sortPath, isSEODO, getLastIndexL, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getXC, idToC, idToS, isCEODO} from "../mapQueries/MapQueries.ts"
 import {genNodeId, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 

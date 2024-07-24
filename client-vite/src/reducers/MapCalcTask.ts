@@ -1,4 +1,4 @@
-import {getHP, mS} from "../queries/MapQueries.ts"
+import {getHP, mS} from "../mapQueries/MapQueries.ts"
 import {M, S} from "../state/MapStateTypes"
 
 export const mapCalcTask = (m: M) => {

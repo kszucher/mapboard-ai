@@ -1,4 +1,4 @@
-import {getG, getHN, isXACC, isXACR, sortPath, getXAC, getXC, pathToC, pathToR, idToR} from "../../queries/MapQueries.ts"
+import {getG, getHN, isXACC, isXACR, sortPath, getXAC, getXC, pathToC, pathToR, idToR} from "../../mapQueries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
 import {C, G, L, M, PR, S, T} from "../../state/MapStateTypes"

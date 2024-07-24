@@ -1,6 +1,6 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {isSSC, mC, getG, getHN} from "../../queries/MapQueries.ts"
+import {isSSC, mC, getG, getHN} from "../../mapQueries/MapQueries.ts"
 import {mSelector, pmSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer"
 import {getNodeLinePath, pathCommonProps} from "./MapSvgUtils"

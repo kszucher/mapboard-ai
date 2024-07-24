@@ -3,7 +3,7 @@ import {useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {RootState} from "../../reducers/EditorReducer"
-import {mR} from "../../queries/MapQueries.ts"
+import {mR} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 

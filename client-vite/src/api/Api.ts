@@ -5,7 +5,7 @@ import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "
 import {actions, RootState, store} from "../reducers/EditorReducer"
 import {mapDeInit} from "../reducers/MapDeInit"
 import {pythonBackendUrl} from "./Urls"
-import {mapDiff} from "../queries/MapDiff.ts"
+import {mapDiff} from "../mapQueries/MapDiff.ts"
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({

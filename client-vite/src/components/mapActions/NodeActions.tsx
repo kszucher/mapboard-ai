@@ -1,7 +1,7 @@
 import {DropdownMenu, Dialog, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
-import {getNodeMode, getXAS, getXFS, getXLS, getXR, getXS, idToS, isXARS, isXASVN} from "../../queries/MapQueries.ts"
+import {getNodeMode, getXAS, getXFS, getXLS, getXR, getXS, idToS, isXARS, isXASVN} from "../../mapQueries/MapQueries.ts"
 import {MM} from "../../reducers/MapMutationEnum.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import Dots from "../../assets/dots.svg?react"

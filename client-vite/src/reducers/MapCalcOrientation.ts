@@ -1,5 +1,5 @@
 import {M, S} from "../state/MapStateTypes.ts"
-import {getHN, mS} from "../queries/MapQueries.ts"
+import {getHN, mS} from "../mapQueries/MapQueries.ts"
 
 export const mapCalcOrientation = (m: M) => {
   const hn = getHN(m)

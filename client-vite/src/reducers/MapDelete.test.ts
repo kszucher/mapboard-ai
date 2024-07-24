@@ -1,4 +1,4 @@
-import {sortNode} from "../queries/MapQueries.ts"
+import {sortNode} from "../mapQueries/MapQueries.ts"
 import {MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
