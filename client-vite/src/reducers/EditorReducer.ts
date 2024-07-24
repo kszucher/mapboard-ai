@@ -6,11 +6,17 @@ import {editorState} from "../state/EditorState"
 import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../state/Enums"
 import {api} from "../api/Api.ts"
 import {mapFindNearestS} from "../queries/MapFindNearestS.ts"
-import {mapReducer} from "./MapReducer"
-import {getXS} from "../queries/MapQueries.ts"
+import {mapReducerAtomic} from "./MapReducer"
+import {getXS, sortNode, sortPath} from "../queries/MapQueries.ts"
 import {MR} from "./MapReducerEnum.ts"
 import {R, S} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
+import {mapInit} from "./MapInit.ts";
+import {mapChain} from "./MapChain.ts";
+import {mapCalcOrientation} from "./MapCalcOrientation.ts";
+import {mapCalcTask} from "./MapCalcTask.ts";
+import {mapMeasure} from "./MapMeasure.ts";
+import {mapPlace} from "./MapPlace.ts";
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -150,7 +156,15 @@ export const editorSlice = createSlice({
     },
     mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex].data)
-      const m = mapReducer(pm, action.payload.type, action.payload.payload)
+      const m = structuredClone(pm).sort(sortPath)
+      mapReducerAtomic(m, action.payload.type, action.payload.payload)
+      mapInit(m)
+      mapChain(m)
+      mapCalcOrientation(m)
+      mapCalcTask(m)
+      mapMeasure(pm, m)
+      mapPlace(m)
+      m.sort(sortNode)
       if (!isEqual(pm, m)) {
         state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), {commitId: genId(), data: m}]
         state.mapListIndex = state.mapListIndex + 1
@@ -189,12 +203,20 @@ export const editorSlice = createSlice({
       (state, { payload }) => {
         console.log(payload)
         const { mapData } = structuredClone(payload)
-        const validatedMapData = mapData.filter(el =>
+        const pm = mapData.filter(el =>
           Object.keys(el).length !== 0 &&
           el.hasOwnProperty('nodeId') &&
           el.hasOwnProperty('path')
         )
-        state.mapList = [{commitId: genId(), data: mapReducer(validatedMapData, MR.load, {})}]
+        const m = structuredClone(pm).sort(sortPath)
+        mapInit(m)
+        mapChain(m)
+        mapCalcOrientation(m)
+        mapCalcTask(m)
+        mapMeasure(pm, m)
+        mapPlace(m)
+        m.sort(sortNode)
+        state.mapList = [{commitId: genId(), data: m}]
         state.mapListIndex = 0
         state.editedNodeId = ''
         state.isLoading = false

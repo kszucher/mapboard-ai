@@ -1,6 +1,4 @@
 export enum MR {
-  load = 'load',
-
   setDensitySmall = 'setDensitySmall',
   setDensityLarge = 'setDensityLarge',
   setPlaceTypeExploded = 'setPlaceTypeExploded',

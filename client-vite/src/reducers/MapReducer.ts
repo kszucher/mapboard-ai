@@ -1,24 +1,16 @@
-import {getG, getQuasiSD, getQuasiSU, mR, sortNode, sortPath, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, idToC} from "../queries/MapQueries.ts"
+import {getG, getQuasiSD, getQuasiSU, mR, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, idToC} from "../queries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {M, PC, PR, PS, R, S} from "../state/MapStateTypes"
-import {mapCalcTask} from "./MapCalcTask"
 import {deleteCC, deleteCR, deleteL, deleteLR, deleteS,} from "./MapDelete"
-import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertL, insertR, insertS, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertTable} from "./MapInsert"
-import {mapMeasure} from "./MapMeasure"
 import {copyLRSC, copySC, cutLRSC, duplicateRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, cutSC, moveCRD, moveCRU, moveCCR, moveCCL, transpose, moveSC} from "./MapMove"
 import {MR} from "./MapReducerEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
-import {mapChain} from "./MapChain.ts"
-import {mapPlace} from "./MapPlace.ts"
-import {mapCalcOrientation} from "./MapCalcOrientation.ts"
 import {getRD, getRL, getRR, getRU} from "../queries/MapFindNearestR.ts"
 
 export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
   switch (action) {
-    case 'load': break
-
     case 'setDensitySmall': getG(m).density = 'small'; break
     case 'setDensityLarge': getG(m).density = 'large'; break
     case 'setPlaceTypeExploded': getG(m).flow = Flow.EXPLODED; break
@@ -186,17 +178,4 @@ export const mapReducerAtomic = (m: M, action: MR, payload?: any) => {
     case 'clearBlur': getXAS(m).forEach(si => Object.assign(si, { blur: sSaveOptional.blur })); break
   }
   return m
-}
-
-export const mapReducer = (pm: M, action: MR, payload: any) => {
-  console.log('MAP_MUTATION: ' + action, payload)
-  const m = structuredClone(pm).sort(sortPath)
-  mapReducerAtomic(m, action, payload)
-  mapInit(m)
-  mapChain(m)
-  mapCalcOrientation(m)
-  mapCalcTask(m)
-  mapMeasure(pm, m)
-  mapPlace(m)
-  return m.sort(sortNode)
 }
