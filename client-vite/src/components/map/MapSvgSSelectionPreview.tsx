@@ -1,7 +1,7 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {mSelector} from "../../state/EditorState"
-import {RootState} from "../../reducers/EditorReducer"
+import {RootState} from "../../reducers/EditorReducer.ts"
 import {S} from "../../state/MapStateTypes.ts"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 

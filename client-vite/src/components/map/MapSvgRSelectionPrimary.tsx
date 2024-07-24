@@ -5,7 +5,7 @@ import {getColors} from "../colors/Colors.ts"
 import {getG, getXAR, getXR, isXAR,} from "../../mapQueries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {mSelector} from "../../state/EditorState"
-import {RootState} from "../../reducers/EditorReducer"
+import {RootState} from "../../reducers/EditorReducer.ts"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgRSelectionPrimary: FC = () => {

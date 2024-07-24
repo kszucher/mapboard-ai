@@ -84,7 +84,7 @@ async function openWorkspace(sessions, jwtId) {
         {
           $set: {
             breadcrumbMapIdList: {
-              $cond: { // TODO cond tests-reducers
+              $cond: { // TODO cond tests-mapMutations
                 if: { $eq: [ '$map.ownerUser', '$user._id' ] },
                 then: '$breadcrumbMapIdList',
                 else: {

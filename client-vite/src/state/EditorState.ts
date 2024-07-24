@@ -1,4 +1,4 @@
-import {RootState, store} from "../reducers/EditorReducer"
+import {RootState, store} from "../reducers/EditorReducer.ts"
 import {EditorState} from "./EditorStateTypes"
 import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MidMouseMode, PageState, Side} from "./Enums"
 

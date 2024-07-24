@@ -1,7 +1,7 @@
 import {Dialog} from "@radix-ui/themes"
 import {FC, Fragment, ReactNode} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {mR} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {ControlType, DialogState} from "../../state/Enums"

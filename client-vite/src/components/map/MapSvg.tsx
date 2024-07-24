@@ -1,6 +1,6 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../../reducers/EditorReducer"
+import {RootState} from "../../reducers/EditorReducer.ts"
 import {getG} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {MapSvgGBackground} from "./MapSvgGBackground.tsx"

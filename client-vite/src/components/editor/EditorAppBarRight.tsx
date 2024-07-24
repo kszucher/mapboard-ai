@@ -1,6 +1,6 @@
 import {FC} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
+import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {AccessType} from "../../state/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"

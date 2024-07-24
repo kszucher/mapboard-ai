@@ -5,7 +5,7 @@ import {mS} from "../../mapQueries/MapQueries.ts"
 import {getColors} from "../colors/Colors.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {mSelector} from "../../state/EditorState"
-import {RootState} from "../../reducers/EditorReducer"
+import {RootState} from "../../reducers/EditorReducer.ts"
 import {getArcPath} from "./MapSvgUtils"
 
 export const MapSvgSelfBackgroundS: FC = () => {

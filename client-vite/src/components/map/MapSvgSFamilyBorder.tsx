@@ -2,7 +2,7 @@ import {FC} from "react"
 import {useSelector} from "react-redux"
 import {mS} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
-import {RootState} from "../../reducers/EditorReducer"
+import {RootState} from "../../reducers/EditorReducer.ts"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
 
 export const MapSvgSFamilyBorder: FC = () => {

@@ -1,4 +1,4 @@
-import {mapInit} from "../reducers/MapInit"
+import {mapInit} from "../mapMutations/MapInit"
 import {ControlType, Side, SubProcessType} from "../state/Enums"
 import {MPartial} from "../state/MapStateTypes"
 import {getSubProcessList} from "./MapProcess"

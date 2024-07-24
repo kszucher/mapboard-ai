@@ -5,7 +5,7 @@ import {getColors} from "../colors/Colors.ts"
 import {mS, getG, getHN, isSS} from "../../mapQueries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {mSelector, pmSelector} from "../../state/EditorState"
-import {RootState} from "../../reducers/EditorReducer"
+import {RootState} from "../../reducers/EditorReducer.ts"
 import {getGridPath, getNodeLinePath, pathCommonProps} from "./MapSvgUtils"
 import {M, S} from "../../state/MapStateTypes.ts"
 
