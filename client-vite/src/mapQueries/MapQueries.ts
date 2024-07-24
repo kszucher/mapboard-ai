@@ -1,13 +1,9 @@
 import isEqual from "react-fast-compare"
 import {sSaveOptional} from "../state/MapState"
-import {G, L, M, N, P, PT, SSaveOptional, S, R, C, NPartial, PR, PS, PC} from "../state/MapStateTypes"
+import {C, G, L, M, N, P, PC, PR, PS, PT, R, S, SSaveOptional} from "../state/MapStateTypes"
 import {isArrayOfEqualValues} from "../utils/Utils"
 import {NodeMode} from "../state/Enums.ts"
-
-export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('')
-
-export const sortPath = (a: N, b: N) => sortablePath(a.path) > sortablePath(b.path) ? 1 : -1
-export const sortNode = (a: NPartial, b: NPartial) => a.nodeId > b.nodeId ? 1 : -1
+import {sortablePath} from "../mapMutations/MapSort.ts"
 
 export const getHN = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.nodeId, ni as N]))
 export const getHP = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.path.join(''), ni as N]))

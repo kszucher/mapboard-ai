@@ -1,6 +1,7 @@
 import {M, S, T, PR} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
-import {sortPath, isSEO, mS, idToS, pathToS, pathToR} from "./MapQueries.ts"
+import {isSEO, mS, idToS, pathToS, pathToR} from "./MapQueries.ts"
+import {sortPath} from "../mapMutations/MapSort.ts"
 
 export const mapFindNearestS = (pm: M, moveNode: S, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)

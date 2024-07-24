@@ -7,7 +7,7 @@ import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMod
 import {api} from "../api/Api.ts"
 import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
 import {mapMutation} from "../mapMutations/MapMutation.ts"
-import {getXS, sortNode, sortPath} from "../mapQueries/MapQueries.ts"
+import {getXS} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {R, S} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
@@ -17,6 +17,7 @@ import {mapCalcOrientation} from "../mapMutations/MapCalcOrientation.ts"
 import {mapCalcTask} from "../mapMutations/MapCalcTask.ts"
 import {mapMeasure} from "../mapMutations/MapMeasure.ts"
 import {mapPlace} from "../mapMutations/MapPlace.ts"
+import {sortNode, sortPath} from "../mapMutations/MapSort.ts"
 
 export const editorSlice = createSlice({
   name: 'editor',

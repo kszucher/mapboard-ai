@@ -1,10 +1,10 @@
-import {sortNode} from "../mapQueries/MapQueries.ts"
 import {MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
 import {mapMutation} from "./MapMutation.ts"
 import {MM} from "./MapMutationEnum.ts"
 import {mapChain} from "./MapChain.ts"
+import {sortNode} from "./MapSort.ts"
 
 describe("MapDeleteTests", () => {
   test('deleteLR', () => {

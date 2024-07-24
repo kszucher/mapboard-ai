@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
-import {getLastIndexR, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, sortPath, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU, getXR} from "../../mapQueries/MapQueries.ts"
+import {getLastIndexR, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU, getXR} from "../../mapQueries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
@@ -11,6 +11,7 @@ import {getMap, mSelector} from "../../state/EditorState"
 import {M} from "../../state/MapStateTypes"
 import {shortcutColors} from "../colors/Colors.ts"
 import {getRR, getRL, getRD, getRU} from "../../mapQueries/MapFindNearestR.ts"
+import {sortPath} from "../../mapMutations/MapSort.ts"
 
 export let timeoutId: NodeJS.Timeout
 let mapListener: AbortController

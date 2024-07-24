@@ -1,8 +1,9 @@
 import {M, LPartial, RPartial, SPartial, CPartial, L, R, S, C, PL, PR, PS, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {sortPath, isSEODO, getLastIndexL, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getXC, idToC, idToS, isCEODO} from "../mapQueries/MapQueries.ts"
+import {isSEODO, getLastIndexL, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getXC, idToC, idToS, isCEODO} from "../mapQueries/MapQueries.ts"
 import {genNodeId, getTableIndices, IS_TESTING} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
+import {sortPath} from "./MapSort.ts"
 
 const genNodeL = (el: PL, attributes?: Omit<LPartial, 'path' | 'nodeId'>) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el, ...attributes} as L)
 const genNodeR = (el: PR, attributes?: Omit<RPartial, 'path' | 'nodeId'>) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el, ...attributes} as R)

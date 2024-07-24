@@ -1,4 +1,3 @@
-import {sortNode} from "../mapQueries/MapQueries.ts"
 import {setIsTesting} from "../utils/Utils"
 import {MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
@@ -6,6 +5,7 @@ import {mapInit} from "./MapInit"
 import {mapChain} from "./MapChain.ts"
 import {mapMutation} from "./MapMutation.ts"
 import {MM} from "./MapMutationEnum.ts"
+import {sortNode} from "./MapSort.ts"
 
 describe("MapInsertTests", () => {
   beforeEach(() => setIsTesting() as any)

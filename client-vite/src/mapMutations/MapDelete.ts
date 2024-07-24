@@ -1,5 +1,6 @@
 import {L, M, PL, PR, PS, PC} from "../state/MapStateTypes"
-import {isRDO, mG, mL, mR, mS, mC, isREO, pathToS, idToS, sortPath, getXAS, getXAC, getXAR, getXC, isSEO, isCD, isCEO, isCR} from "../mapQueries/MapQueries.ts"
+import {isRDO, mG, mL, mR, mS, mC, isREO, pathToS, idToS, getXAS, getXAC, getXAR, getXC, isSEO, isCD, isCEO, isCR} from "../mapQueries/MapQueries.ts"
+import {sortPath} from "./MapSort.ts"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[

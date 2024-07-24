@@ -1,7 +1,8 @@
 import isEqual from "react-fast-compare"
 import {M, GSaveNever, GSaveOptional, LSaveOptional, LSaveNever, G, L, R, RSaveOptional, RSaveNever, S, SSaveOptional, SSaveNever, C, CSaveOptional, CSaveNever, MPartial} from "../state/MapStateTypes"
 import {cSaveAlways, cSaveOptional, gSaveAlways, gSaveOptional, lSaveAlways, lSaveOptional, rSaveAlways, rSaveOptional, sSaveAlways, sSaveOptional} from "../state/MapState"
-import {isC, isG, isL, isR, isS, sortPath} from "../mapQueries/MapQueries.ts"
+import {isC, isG, isL, isR, isS} from "../mapQueries/MapQueries.ts"
+import {sortPath} from "./MapSort.ts"
 
 export const mapDeInit = (m: M) => {
   const mPartial = structuredClone(m).sort(sortPath)
