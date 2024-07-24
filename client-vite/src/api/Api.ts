@@ -4,7 +4,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
 import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "../state/ApiStateTypes.ts"
 import {actions, RootState, store} from "../reducers/EditorReducer.ts"
 import {mapDeInit} from "../mapMutations/MapDeInit"
-import {pythonBackendUrl} from "./Urls"
+import {pythonBackendUrl} from "../urls/Urls.ts"
 import {mapDiff} from "../mapQueries/MapDiff.ts"
 
 export const api = createApi({
