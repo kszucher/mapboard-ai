@@ -159,11 +159,17 @@ export const editorSlice = createSlice({
           break
         }
         case 'offsetRByDrag': {
-          action.payload.payload = {toX: state.rOffsetCoords[0], toY: state.rOffsetCoords[1]}
+          action.payload.payload = {
+            toX: state.rOffsetCoords[0],
+            toY: state.rOffsetCoords[1]
+          }
           break
         }
         case 'moveSByDrag': {
-
+          action.payload.payload = {
+            sMoveInsertParentNodeId: state.sMoveInsertParentNodeId,
+            sMoveTargetIndex: state.sMoveTargetIndex
+          }
           break
         }
       }
