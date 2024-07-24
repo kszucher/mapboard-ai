@@ -1,5 +1,5 @@
 import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MidMouseMode, PageState, Side} from "./Enums"
-import {M, S} from "./MapStateTypes"
+import {M} from "./MapStateTypes"
 
 export interface EditorState {
   token: string
@@ -23,7 +23,7 @@ export interface EditorState {
   sMoveInsertParentNodeId: string
   sMoveTargetIndex: number
   selectionRectCoords: number[]
-  intersectingNodes: S[]
+  intersectingNodes: string[]
   zoomInfo: {
     fromX: number
     fromY: number

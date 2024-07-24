@@ -10,7 +10,7 @@ export const rectanglesIntersect = (input: number[]) => {
     maxAy >= minBy
   )
 }
-export const mapFindIntersecting = (m: M, fromX: number, fromY: number, toX: number, toY: number ) => (
+export const mapFindIntersecting = (m: M, fromX: number, fromY: number, toX: number, toY: number ): string[] => (
   mS(m).filter(si =>
     si.co1.length === 0 && si.content !== '' &&
     +rectanglesIntersect([
@@ -23,5 +23,5 @@ export const mapFindIntersecting = (m: M, fromX: number, fromY: number, toX: num
       si.nodeStartX + si.selfW,
       si.nodeStartY + si.selfH
     ])
-  )
+  ).map(si => si.nodeId)
 )

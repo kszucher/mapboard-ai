@@ -153,6 +153,20 @@ export const editorSlice = createSlice({
       state.mapListIndex = state.editStartMapListIndex + 1
     },
     mapReducer(state, action: PayloadAction<{ type: MM, payload?: any }>) {
+      switch (action.payload.type) {
+        case 'selectSByRectangle': {
+          action.payload.payload.intersectingNodes = state.intersectingNodes
+          break
+        }
+        case 'offsetRByDrag': {
+
+          break
+        }
+        case 'moveSByDrag': {
+          
+          break
+        }
+      }
       const pm = current(state.mapList[state.mapListIndex].data)
       const m = structuredClone(pm).sort(sortPath)
       mapMutation(m, action.payload.type, action.payload.payload)

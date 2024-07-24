@@ -61,7 +61,7 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'selectCU': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-2, ci.path.at(-2) - 1) as PC))); break
     case 'selectCR': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) + 1) as PC))); break
     case 'selectCL': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) - 1) as PC))); break
-    case 'selectSByRectangle': selectSL(m, (payload.pathList as PS[]).map(p => pathToS(m, p))); break
+    case 'selectSByRectangle': selectSL(m, payload.intersectingNodes.map((nid: string) => idToS(m, nid))); break
 
     case 'unselect': unselectNodes(m); break
     case 'unselectR': unselectR(pathToR(m, payload.path)); break
