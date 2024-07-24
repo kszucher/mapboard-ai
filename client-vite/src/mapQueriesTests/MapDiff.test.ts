@@ -1,4 +1,4 @@
-import {mapDiff} from "./MapDiff.ts"
+import {mapDiff} from "../mapQueries/MapDiff.ts"
 import {MPartial} from "../state/MapStateTypes.ts"
 
 describe("MapDiffTests", () => {

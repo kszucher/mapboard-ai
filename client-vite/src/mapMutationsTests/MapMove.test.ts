@@ -1,11 +1,11 @@
-import {setIsTesting} from "../utils/Utils"
-import {MPartial} from "../state/MapStateTypes"
-import {mapDeInit} from "./MapDeInit"
-import {mapInit} from "./MapInit"
-import {mapMutations} from "./MapMutations.ts"
-import {MM} from "./MapMutationsEnum.ts"
-import {mapChain} from "./MapChain.ts"
-import {sortNode} from "./MapSort.ts"
+import {setIsTesting} from "../utils/Utils.ts"
+import {MPartial} from "../state/MapStateTypes.ts"
+import {mapDeInit} from "../mapMutations/MapDeInit.ts"
+import {mapInit} from "../mapMutations/MapInit.ts"
+import {mapMutations} from "../mapMutations/MapMutations.ts"
+import {MM} from "../mapMutations/MapMutationsEnum.ts"
+import {mapChain} from "../mapMutations/MapChain.ts"
+import {sortNode} from "../mapMutations/MapSort.ts"
 
 describe("MapMoveTests", () => {
   beforeEach(() => setIsTesting() as any)
