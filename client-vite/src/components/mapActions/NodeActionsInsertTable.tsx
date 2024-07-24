@@ -2,7 +2,7 @@ import {Button, Dialog, Flex, Grid, Select, Text} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
-import {MR} from "../../reducers/MapReducerEnum.ts"
+import {MM} from "../../reducers/MapMutationEnum.ts"
 import {isXAS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState} from "../../state/Enums.ts"
@@ -13,7 +13,7 @@ export const NodeActionsInsertTable = () => {
   const [row, setRow] = useState<number>(1)
   const [col, setCol] = useState<number>(1)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
+  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Insert Table'}</Dialog.Title>
@@ -48,9 +48,9 @@ export const NodeActionsInsertTable = () => {
         </Dialog.Close>
         <Dialog.Close>
           <Button onClick={() => {
-            dialogState === DialogState.CREATE_TABLE_U && isXAS(m) && dm(MR.insertSUTable, {rowLen: row, colLen: col})
-            dialogState === DialogState.CREATE_TABLE_D && isXAS(m) && dm(MR.insertSDTable, {rowLen: row, colLen: col})
-            dialogState === DialogState.CREATE_TABLE_O && isXAS(m) && dm(MR.insertSOTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_U && isXAS(m) && dm(MM.insertSUTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_D && isXAS(m) && dm(MM.insertSDTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_O && isXAS(m) && dm(MM.insertSOTable, {rowLen: row, colLen: col})
           }}>
             {'OK'}
           </Button>

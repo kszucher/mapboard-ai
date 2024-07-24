@@ -3,8 +3,8 @@ import {setIsTesting} from "../utils/Utils"
 import {MPartial} from "../state/MapStateTypes"
 import {mapDeInit} from "./MapDeInit"
 import {mapInit} from "./MapInit"
-import {mapReducerAtomic} from "./MapReducer"
-import {MR} from "./MapReducerEnum.ts"
+import {mapMutation} from "./MapMutation.ts"
+import {MM} from "./MapMutationEnum.ts"
 import {mapChain} from "./MapChain.ts"
 
 describe("MapMoveTests", () => {
@@ -45,7 +45,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r5', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20},
       {nodeId: 'r5s0', path: ['r', 5, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.duplicateR)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.duplicateR)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('duplicateS', () => {
     const test = [
@@ -79,7 +79,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s3', path: ['r', 0, 's', 5]},
       {nodeId: 'r0s3s0', path: ['r', 0, 's', 5, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.duplicateS)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.duplicateS)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveSD', () => {
     const test = [
@@ -110,7 +110,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s4', path: ['r', 0, 's', 4]},
       {nodeId: 'r0s4s0', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveSD)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveSD)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveST', () => {
     const test = [
@@ -141,7 +141,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2', path: ['r', 0, 's', 4]},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveST)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveST)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveSU', () => {
     const test = [
@@ -172,7 +172,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s4', path: ['r', 0, 's', 4]},
       {nodeId: 'r0s4s0', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveSU)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveSU)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveSB', () => {
     const test = [
@@ -203,7 +203,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s1', path: ['r', 0, 's', 4], selected: 2},
       {nodeId: 'r0s1s0', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveSB)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveSB)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveSO', () => {
     const test = [
@@ -232,7 +232,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 0, 's', 3, 's', 0]},
       {nodeId: 'r0s2s1', path: ['r', 0, 's', 0, 's', 3, 's', 1]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveSO)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveSO)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveSI', () => {
     const test = [
@@ -261,7 +261,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s1', path: ['r', 0, 's', 3]},
       {nodeId: 'r0s1s0', path: ['r', 0, 's', 3, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveSI)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveSI)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveCRD', () => {
     const test = [
@@ -290,7 +290,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 2},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveCRD)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveCRD)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveCRU', () => {
     const test = [
@@ -319,7 +319,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveCRU)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveCRU)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveCCR', () => {
     const test = [
@@ -348,7 +348,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 2},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveCCR)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveCCR)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveCCL', () => {
     const test = [
@@ -377,7 +377,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveCCL)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveCCL)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('moveS2T', () => {
     const test = [
@@ -400,7 +400,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0s0c20', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.moveS2T)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.moveS2T)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
   test('transpose', () => {
     const test = [
@@ -437,6 +437,6 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c12', path: ['r', 0, 's', 0, 'c', 2, 1]},
       {nodeId: 'r0s0c12s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    expect(mapDeInit(mapReducerAtomic(mapChain(mapInit(test)), MR.transpose)).sort(sortNode)).toEqual((result).sort(sortNode))
+    expect(mapDeInit(mapMutation(mapChain(mapInit(test)), MM.transpose)).sort(sortNode)).toEqual((result).sort(sortNode))
   })
 })

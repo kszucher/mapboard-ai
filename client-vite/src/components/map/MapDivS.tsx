@@ -4,7 +4,7 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {MR} from "../../reducers/MapReducerEnum.ts"
+import {MM} from "../../reducers/MapMutationEnum.ts"
 import {getG, getNodeMode, getXAS, getXS, idToS, isXAS, mS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
@@ -36,7 +36,7 @@ export const MapDivS: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
+  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
 
   return (
     mS(m).map(si => (
@@ -98,11 +98,11 @@ export const MapDivS: FC = () => {
                 window.focus()
               }
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-              !e.ctrlKey && dm(MR.selectS, {path: si.path})
-              e.ctrlKey && !si.selected && isXAS(m) && dm(MR.selectAddS, {path: si.path})
-              e.ctrlKey && si.selected && getXAS(m).length > 1 && dm(MR.unselectS, {path: si.path})
+              !e.ctrlKey && dm(MM.selectS, {path: si.path})
+              e.ctrlKey && !si.selected && isXAS(m) && dm(MM.selectAddS, {path: si.path})
+              e.ctrlKey && si.selected && getXAS(m).length > 1 && dm(MM.unselectS, {path: si.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_STRUCT) {
-              !e.ctrlKey && dm(MR.selectS, {path: si.path})
+              !e.ctrlKey && dm(MM.selectS, {path: si.path})
               const abortController = new AbortController()
               const {signal} = abortController
               window.addEventListener('mousemove', (e) => {
@@ -114,7 +114,7 @@ export const MapDivS: FC = () => {
                 abortController.abort()
                 e.preventDefault()
                 if (didMove) {
-                  dm(MR.moveSByDrag, {s: si, e})
+                  dm(MM.moveSByDrag, {s: si, e})
                 }
               }, {signal})
             }
@@ -140,18 +140,18 @@ export const MapDivS: FC = () => {
             dispatch(actions.removeMapListEntriesOfEdit())
           }
           if (['Insert','Tab'].includes(e.key)) {
-            isXAS(m) && dm(MR.insertSSO)
+            isXAS(m) && dm(MM.insertSSO)
           }
         }}
         onInput={(e) => {
-          dm(MR.setContentText, {content: e.currentTarget.innerHTML})
+          dm(MM.setContentText, {content: e.currentTarget.innerHTML})
         }}
         onPaste={(e) => {
           e.preventDefault()
           const pasted = e.clipboardData.getData('Text')
           e.currentTarget.innerHTML += pasted
           setEndOfContentEditable(e.currentTarget)
-          dm(MR.setContentText, {content: e.currentTarget.innerHTML})
+          dm(MM.setContentText, {content: e.currentTarget.innerHTML})
         }}
       >
       </div>

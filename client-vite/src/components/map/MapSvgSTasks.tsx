@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
-import {MR} from "../../reducers/MapReducerEnum.ts"
+import {MM} from "../../reducers/MapMutationEnum.ts"
 import {adjust} from "../../utils/Utils"
 import {TASK_CIRCLES_GAP} from "../../state/Consts"
 import {getColors} from "../colors/Colors.ts"
@@ -20,7 +20,7 @@ export const MapSvgSTasks: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
+  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     mS(m).map(si => (
       <Fragment key={si.nodeId}>
@@ -55,7 +55,7 @@ export const MapSvgSTasks: FC = () => {
             onMouseDown={(e) => {
               e.preventDefault()
               e.stopPropagation()
-              dm(MR.setTaskStatus, {taskStatus: i + 1, nodeId: si.nodeId})
+              dm(MM.setTaskStatus, {taskStatus: i + 1, nodeId: si.nodeId})
             }}
           />
         ))}

@@ -7,14 +7,14 @@ import LetterR from "../../assets/letter-r.svg?react"
 import LetterS from "../../assets/letter-s.svg?react"
 import LetterC from "../../assets/letter-c.svg?react"
 import {getNodeMode, mC, mS} from "../../queries/MapQueries.ts"
-import {MR} from "../../reducers/MapReducerEnum.ts"
+import {MM} from "../../reducers/MapMutationEnum.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
 export const NodeActionsSelectModeConfig = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
+  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
@@ -32,12 +32,12 @@ export const NodeActionsSelectModeConfig = () => {
         <DropdownMenu.RadioGroup
           value={nodeMode}
           onValueChange={(value) => {
-            value === NodeMode.VIEW && dm(MR.unselect)
-            value === NodeMode.EDIT_ROOT && dm(MR.selectFirstR)
-            value === NodeMode.EDIT_STRUCT && dm(MR.selectFirstS)
-            value === NodeMode.EDIT_CELL && dm(MR.selectFirstC)
-            value === NodeMode.EDIT_CELL_ROW && dm(MR.selectFirstCR)
-            value === NodeMode.EDIT_CELL_COLUMN && dm(MR.selectFirstCC)
+            value === NodeMode.VIEW && dm(MM.unselect)
+            value === NodeMode.EDIT_ROOT && dm(MM.selectFirstR)
+            value === NodeMode.EDIT_STRUCT && dm(MM.selectFirstS)
+            value === NodeMode.EDIT_CELL && dm(MM.selectFirstC)
+            value === NodeMode.EDIT_CELL_ROW && dm(MM.selectFirstCR)
+            value === NodeMode.EDIT_CELL_COLUMN && dm(MM.selectFirstCC)
           }}
         >
           <DropdownMenu.RadioItem value={NodeMode.VIEW}>{NodeMode.VIEW}</DropdownMenu.RadioItem>

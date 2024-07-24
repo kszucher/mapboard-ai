@@ -1,4 +1,4 @@
-export enum MR {
+export enum MM {
   setDensitySmall = 'setDensitySmall',
   setDensityLarge = 'setDensityLarge',
   setPlaceTypeExploded = 'setPlaceTypeExploded',

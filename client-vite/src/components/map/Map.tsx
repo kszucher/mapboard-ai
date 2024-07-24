@@ -2,7 +2,7 @@ import {FC, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {MR} from "../../reducers/MapReducerEnum.ts"
+import {MM} from "../../reducers/MapMutationEnum.ts"
 import {getG, getNodeMode} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, NodeMode, MidMouseMode} from "../../state/Enums.ts"
@@ -25,7 +25,7 @@ export const Map: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { mapId, colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
+  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
 
   const resetView = () => {
     dispatch(actions.setZoomInfo({scale: 1, prevMapX: 0, prevMapY: 0, translateX: 0, translateY: 0, originX: 0, originY: 0}))
@@ -95,7 +95,7 @@ export const Map: FC = () => {
           e.preventDefault()
           abortController.abort()
           if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-            dm(MR.selectSByRectangle, {e})
+            dm(MM.selectSByRectangle, {e})
           }
         }, { signal })
       }}

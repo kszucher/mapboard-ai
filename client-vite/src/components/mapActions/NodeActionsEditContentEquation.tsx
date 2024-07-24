@@ -2,7 +2,7 @@ import {Button, Dialog, Flex, TextArea} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
-import {MR} from "../../reducers/MapReducerEnum.ts"
+import {MM} from "../../reducers/MapMutationEnum.ts"
 import {getXS} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 
@@ -10,7 +10,7 @@ export const NodeActionsEditContentEquation = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const [content, setContent] = useState(getXS(m).content)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
+  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Edit Equation'}</Dialog.Title>
@@ -30,7 +30,7 @@ export const NodeActionsEditContentEquation = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dm(MR.setContentEquation, {content})}>
+          <Button onClick={() => dm(MM.setContentEquation, {content})}>
             {'OK'}
           </Button>
         </Dialog.Close>

@@ -6,9 +6,9 @@ import {editorState} from "../state/EditorState"
 import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../state/Enums"
 import {api} from "../api/Api.ts"
 import {mapFindNearestS} from "../queries/MapFindNearestS.ts"
-import {mapReducerAtomic} from "./MapReducer"
+import {mapMutation} from "./MapMutation.ts"
 import {getXS, sortNode, sortPath} from "../queries/MapQueries.ts"
-import {MR} from "./MapReducerEnum.ts"
+import {MM} from "./MapMutationEnum.ts"
 import {R, S} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
 import {mapInit} from "./MapInit.ts";
@@ -154,10 +154,10 @@ export const editorSlice = createSlice({
       state.mapList = [...state.mapList.slice(0, state.editStartMapListIndex + 1), ...state.mapList.slice(-1)]
       state.mapListIndex = state.editStartMapListIndex + 1
     },
-    mapReducer(state, action: PayloadAction<{ type: MR, payload?: any }>) {
+    mapReducer(state, action: PayloadAction<{ type: MM, payload?: any }>) {
       const pm = current(state.mapList[state.mapListIndex].data)
       const m = structuredClone(pm).sort(sortPath)
-      mapReducerAtomic(m, action.payload.type, action.payload.payload)
+      mapMutation(m, action.payload.type, action.payload.payload)
       mapInit(m)
       mapChain(m)
       mapCalcOrientation(m)

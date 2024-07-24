@@ -1,7 +1,7 @@
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {MR} from "../../reducers/MapReducerEnum.ts"
+import {MM} from "../../reducers/MapMutationEnum.ts"
 import {mR, isExistingLink, mL} from "../../queries/MapQueries.ts"
 import {adjustIcon} from "../../utils/Utils"
 import {mSelector} from "../../state/EditorState"
@@ -14,7 +14,7 @@ export const MapSvgLRConnectors: FC = () => {
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
+  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <Fragment>
       {mL(m).map((li: L) => (
@@ -47,7 +47,7 @@ export const MapSvgLRConnectors: FC = () => {
                 <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  dm(MR.deleteL, li)
+                  dm(MM.deleteL, li)
                 }}/>
               </g>
             }
@@ -89,7 +89,7 @@ export const MapSvgLRConnectors: FC = () => {
                         connectionStart.fromNodeId !== ri.nodeId &&
                         !isExistingLink(m, newLink)
                       ) {
-                        dm(MR.insertL, newLink)
+                        dm(MM.insertL, newLink)
                       }
                     }}
                   />

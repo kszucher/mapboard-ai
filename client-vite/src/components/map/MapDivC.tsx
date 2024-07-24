@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer"
-import {MR} from "../../reducers/MapReducerEnum.ts"
+import {MM} from "../../reducers/MapMutationEnum.ts"
 import {getNodeMode, mC} from "../../queries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
@@ -12,7 +12,7 @@ export const MapDivC: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MR, payload? : any) => dispatch(actions.mapReducer({type, payload}))
+  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     mC(m).map(ci => (
       <div
@@ -39,7 +39,7 @@ export const MapDivC: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_CELL) {
-              !e.ctrlKey && dm(MR.selectC, {path: ci.path})
+              !e.ctrlKey && dm(MM.selectC, {path: ci.path})
             }
           } else if (e.buttons === 4) {
             e.preventDefault()
