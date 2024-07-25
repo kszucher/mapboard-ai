@@ -1,5 +1,6 @@
 import {C, M, PR, R, S} from "../state/MapStateTypes"
 import {getXR, getXS, mC, mR, mS, pathToR} from "../mapQueries/MapQueries.ts"
+import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts";
 
 export const selectR = (m: M, ri: R) => {
   unselectNodes(m)
@@ -72,7 +73,13 @@ function clearSelection(_target: Object, _propertyKey: string, descriptor: Typed
 }
 
 class MapSelect {
-  @clearSelection selectR (m: M, p: PR) { const r = pathToR(m, p); r.selected = 1 }
+  @clearSelection selectR (m: M, p: PR) { pathToR(m, p).selected = 1 }
+  @clearSelection selectRR (m: M) { getRR(m, getXR(m))!.selected = 1 }
+  @clearSelection selectRL (m: M) { getRL(m, getXR(m))!.selected = 1 }
+  @clearSelection selectRD (m: M) { getRD(m, getXR(m))!.selected = 1 }
+  @clearSelection selectRU (m: M) { getRU(m, getXR(m))!.selected = 1 }
 }
+
+
 
 export const mapSelect = new MapSelect()
