@@ -4,7 +4,7 @@ import {sSaveOptional} from "../state/MapState"
 import {M, PC, PR, PS, R, S} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertL, insertR, insertS, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertTable} from "./MapInsert"
-import {copyLRSC, copySC, cutLRSC, duplicateRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, cutSC, moveCRD, moveCRU, moveCCR, moveCCL, transpose, moveSC} from "./MapMove"
+import {copyLRSC, copySC, cutLRSC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, cutSC, moveCRD, moveCRU, moveCCR, moveCCL, transpose, moveSC} from "./MapMove"
 import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
@@ -119,7 +119,7 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'pasteSSO': pasteSC(m, [...getXS(m).path, 's',  getXS(m).so1.length], payload); break
     case 'pasteCSO': pasteSC(m, [...getXC(m).path, 's',  getXC(m).so1.length], payload); break
 
-    case 'duplicateR': duplicateRSC(m); break;
+    case 'duplicateR': duplicateLRSC(m); break;
     case 'duplicateS': duplicateSC(m); break;
 
     case 'moveSD': moveSC(m, getXS(m).path.with(-1, getXFS(m).su.length + 1) as PS); break

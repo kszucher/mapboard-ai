@@ -117,7 +117,7 @@ export const pasteSC = (m: M, ip: PS, payload: any) => {
   cbToSC(m, cbSS, cbSC, ip, xasLength)
 }
 
-export const duplicateRSC = (m: M) => {
+export const duplicateLRSC = (m: M) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
   const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
   const cbL = getClipboardL(m)
