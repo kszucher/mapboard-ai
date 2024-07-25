@@ -5,7 +5,7 @@ import {getTableIndices} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 import {sortPath} from "./MapSort.ts"
 import {isCEODO, isSEODO} from "../mapQueries/PathQueries.ts";
-import {genNodeC, genNodeL, genNodeR, genNodeS} from "./NodeGen.ts";
+import {genNodeC, genNodeL, genNodeR, genNodeS} from "./PathGen.ts";
 
 export const insertL = (m: M, lPartial: LPartial) => {
   m.push(genNodeL(['l', getLastIndexL(m) + 1] as PL, {...lPartial}))
