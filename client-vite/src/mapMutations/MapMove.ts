@@ -1,12 +1,13 @@
-import {getG, mL, mR, getXFS, getXAC, getXC, getXAS, mS, mC, getXS, mG, idToC, idToS, idToR, getXAR} from "../mapQueries/MapQueries.ts"
-import {rSaveOptional, sSaveOptional} from "../state/MapState"
-import {M, L, PL, PR, PC, PS, S, R, C} from "../state/MapStateTypes"
+import {getG, getXAC, getXAS, getXC, getXFS, getXS, idToC, idToS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {rSaveOptional} from "../state/MapState"
+import {C, L, M, PC, PL, PR, PS, R, S} from "../state/MapStateTypes"
 import {genNodeId, IS_TESTING} from "../utils/Utils"
 import {deleteLR, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 import {isCEODO, isSEODO} from "../mapQueries/PathQueries.ts";
+import {getClipboardL, getClipboardRC, getClipboardRR, getClipboardRS, getClipboardSC, getClipboardSS} from "../mapQueries/MapExtract.ts"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -23,54 +24,6 @@ const cbSave = (cb: any) => {
         })
     }
   })
-}
-
-const getClipboardL = (m: M): L[] => {
-  return structuredClone(mL(m)
-    .filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected)
-    .map((li, i) => ({...li, path: ['l', i]}))
-  )
-}
-
-const getClipboardRR = (m: M): R[] => {
-  const nonSelectedMinOffsetW = Math.min(...getXAR(m).map(ri => ri.offsetW || rSaveOptional.offsetW))
-  const nonSelectedMinOffsetH = Math.min(...getXAR(m).map(ri => ri.offsetH || rSaveOptional.offsetH))
-  const xarIndices = getXAR(m).map(ri => ri.path.at(1))
-  return structuredClone(getXAR(m).map(ri => ({...ri,
-    path: ri.path.with(1, xarIndices.indexOf(ri.path.at(1))) as PR,
-    offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW,
-    offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH
-  })))
-}
-
-const getClipboardRS = (m: M): S[] => {
-  const xarIndices = getXAR(m).map(ri => ri.path.at(1))
-  return structuredClone(getXAR(m).flatMap(ri => ri.so).map(nid => idToS(m, nid)).map(si => ({...si,
-    path: si.path.with(1, xarIndices.indexOf(si.path.at(1))) as PS,
-    linkType: sSaveOptional.linkType,
-    link: sSaveOptional.link
-  })))
-}
-
-const getClipboardRC = (m: M): C[] => {
-  const xarIndices = getXAR(m).map(ri => ri.path.at(1))
-  return structuredClone(getXAR(m).flatMap(ri => ri.co).map(nid => idToC(m, nid)).map(ci => ({...ci,
-    path: ci.path.with(1, xarIndices.indexOf(ci.path.at(1))) as PC
-  })))
-}
-
-const getClipboardSS = (m: M): S[] => {
-  return structuredClone(getXAS(m).flatMap(si => [si.nodeId, ...si.so]).map(nid => idToS(m, nid)).map(si => ({...si,
-    path: ['s', si.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...si.path.slice(getXS(m).path.length) as PS],
-    linkType: sSaveOptional.linkType,
-    link: sSaveOptional.link
-  })))
-}
-
-const getClipboardSC = (m: M): C[] => {
-  return structuredClone(getXAS(m).flatMap(si => si.co).map(nid => idToC(m, nid)).map(ci => ({...ci,
-    path: ['s', ci.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ci.path.slice(getXS(m).path.length) as PC],
-  })))
 }
 
 const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
