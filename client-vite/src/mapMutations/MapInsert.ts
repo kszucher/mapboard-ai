@@ -1,15 +1,11 @@
-import {M, LPartial, RPartial, SPartial, CPartial, L, R, S, C, PL, PR, PS, PC} from "../state/MapStateTypes"
+import {LPartial, M, PC, PL, PR, PS} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {getLastIndexL, mS, mC, getLastIndexR, getG, getXS, isXAS, getXAC, getXC, idToC, idToS} from "../mapQueries/MapQueries.ts"
-import {genNodeId, getTableIndices, IS_TESTING} from "../utils/Utils"
+import {getG, getLastIndexL, getLastIndexR, getXAC, getXC, getXS, idToC, idToS, isXAS, mC, mS} from "../mapQueries/MapQueries.ts"
+import {getTableIndices} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 import {sortPath} from "./MapSort.ts"
 import {isCEODO, isSEODO} from "../mapQueries/PathQueries.ts";
-
-const genNodeL = (el: PL, attributes?: Omit<LPartial, 'path' | 'nodeId'>) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el, ...attributes} as L)
-const genNodeR = (el: PR, attributes?: Omit<RPartial, 'path' | 'nodeId'>) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el, ...attributes} as R)
-const genNodeS = (el: PS, attributes?: Omit<SPartial, 'path' | 'nodeId'>) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el, ...attributes} as S)
-const genNodeC = (el: PC, attributes?: Omit<CPartial, 'path' | 'nodeId'>) => ({nodeId: IS_TESTING ? '_' + el.join('') : genNodeId(), path: el, ...attributes} as C)
+import {genNodeC, genNodeL, genNodeR, genNodeS} from "./NodeGen.ts";
 
 export const insertL = (m: M, lPartial: LPartial) => {
   m.push(genNodeL(['l', getLastIndexL(m) + 1] as PL, {...lPartial}))
