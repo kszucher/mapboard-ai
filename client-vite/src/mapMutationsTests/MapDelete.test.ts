@@ -3,7 +3,7 @@ import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {_assert} from "./_assert.ts"
 
 describe("MapDeleteTests", () => {
-  test('deleteLR', () => {
+  test('deleteLRSC', () => {
     const test = [
       {nodeId: 'g', path: ['g']},
       {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', toNodeId: 'r1'},
@@ -24,7 +24,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r2', path: ['r', 1], offsetW: 440, offsetH: 550},
       {nodeId: 'r2s0', path: ['r', 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, MM.deleteLR)
+    _assert(test, result, MM.deleteLRSC)
   })
   test('deleteS', () => {
     const test = [

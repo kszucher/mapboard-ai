@@ -2,7 +2,7 @@ import {getG, getXAC, getXAS, getXC, getXFS, getXS, idToC, idToS, mC, mG, mL, mR
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PL, PR, PS, R, S} from "../state/MapStateTypes"
 import {genNodeId, IS_TESTING} from "../utils/Utils"
-import {deleteLR, deleteS} from "./MapDelete"
+import {deleteLRSC, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
@@ -74,7 +74,7 @@ export const cutLRSC = (m: M) => {
   const cbRS = getClipboardRS(m)
   const cbRC = getClipboardRC(m)
   cbSave(mapDeInit([...cbL, ...cbRR, ...cbRS, ...cbRC]))
-  deleteLR(m)
+  deleteLRSC(m)
 }
 
 export const cutSC = (m: M) => {

@@ -79,7 +79,7 @@ export enum MM {
   insertSOTable = 'insertSSOTable',
 
   deleteL = 'deleteL',
-  deleteLR = 'deleteLR',
+  deleteLRSC = 'deleteLRSC',
   deleteSJumpSU = 'deleteSJumpSU',
   deleteSJumpSD = 'deleteSJumpSD',
   deleteSJumpSI = 'deleteSJumpSI',

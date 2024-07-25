@@ -63,7 +63,7 @@ export const Window: FC = () => {
     ckm === '---' && e.key === 'Delete' && isXASVN(m) && isXASS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && dm(MM.deleteSJumpSI)
     ckm === '---' && e.key === 'Delete' && isXASVN(m) && isXACS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && dm(MM.deleteSJumpCI)
     ckm === '---' && e.key === 'Delete' && isXAS(m) && !isXASVN(m) && dm(MM.deleteSJumpR)
-    ckm === '---' && e.key === 'Delete' && isXAR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected) && dm(MM.deleteLR)
+    ckm === '---' && e.key === 'Delete' && isXAR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected) && dm(MM.deleteLRSC)
     ckm === '---' && e.key === 'Delete' && isXACR(m) && getXC(m).cu.length > 0 && dm(MM.deleteCRJumpU)
     ckm === '---' && e.key === 'Delete' && isXACR(m) && getXC(m).cu.length === 0 && getXC(m).cd.length > 0 && dm(MM.deleteCRJumpD)
     ckm === '---' && e.key === 'Delete' && isXACR(m) && getXC(m).cu.length === 0 && getXC(m).cd.length === 0 && dm(MM.deleteCRJumpSI)

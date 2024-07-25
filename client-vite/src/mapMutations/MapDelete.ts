@@ -16,7 +16,7 @@ export const deleteL = (m: M, l: L) => {
   )
 }
 
-export const deleteLR = (m: M) => {
+export const deleteLRSC = (m: M) => {
   const xac = getXAR(m)
   const nonSelectedMinOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))
   const nonSelectedMinOffsetH = Math.min(...mR(m).map(ri => ri.offsetH))
