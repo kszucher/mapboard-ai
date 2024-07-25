@@ -6,12 +6,14 @@ import {getNodeMode, getXAR, isXAR, mR} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils"
+import {MapSelect} from "../../mapMutations/MapSelect.ts"
 
 export const MapDivR: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const m = useSelector((state:RootState) => mSelector(state))
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
+  const dme = (func: Function, funcPayload? : any) => dispatch(actions.mapReducerExperimental({func, funcPayload}))
   const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     mR(m).map(ri => (
@@ -40,11 +42,11 @@ export const MapDivR: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT) {
-              !e.ctrlKey && dm(MM.selectR, {path: ri.path})
+              !e.ctrlKey && dme(MapSelect.selectR, ri.path)
               e.ctrlKey && isXAR(m) && !ri.selected && dm(MM.selectAddR, {path: ri.path})
               e.ctrlKey && ri.selected && getXAR(m).length > 1 && dm(MM.unselectR, {path: ri.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_ROOT) {
-              !e.ctrlKey && dm(MM.selectR, {path: ri.path})
+              !e.ctrlKey && dme(MapSelect.selectR, ri.path)
               dispatch(actions.saveFromCoordinates({e}))
               const abortController = new AbortController()
               const {signal} = abortController
