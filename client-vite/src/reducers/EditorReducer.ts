@@ -153,23 +153,6 @@ export const editorSlice = createSlice({
       state.mapList = [...state.mapList.slice(0, state.editStartMapListIndex + 1), ...state.mapList.slice(-1)]
       state.mapListIndex = state.editStartMapListIndex + 1
     },
-    mapReducerExperimental(state, action: PayloadAction<{ func: Function, funcPayload?: any}>) {
-      const pm = current(state.mapList[state.mapListIndex].data)
-      const m = structuredClone(pm).sort(sortPath)
-      console.log(action.payload.funcPayload)
-      action.payload.func(m, action.payload.funcPayload)
-      mapInit(m)
-      mapChain(m)
-      mapCalcOrientation(m)
-      mapCalcTask(m)
-      mapMeasure(pm, m)
-      mapPlace(m)
-      m.sort(sortNode)
-      if (!isEqual(pm, m)) {
-        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), {commitId: genId(), data: m}]
-        state.mapListIndex = state.mapListIndex + 1
-      }
-    },
     mapReducer(state, action: PayloadAction<{ type: MM, payload?: any}>) {
       switch (action.payload.type) {
         case 'selectSByRectangle': {
