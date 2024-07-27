@@ -1,4 +1,4 @@
-import {LPartial, M, PC, PL, PR, PS} from "../state/MapStateTypes"
+import {C, LPartial, M, PC, PL, PR, PS} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {getG, getLastIndexL, getLastIndexR, getXAC, getXC, getXS, idToC, idToS, isXAS, mC, mS} from "../mapQueries/MapQueries.ts"
 import {getTableIndices} from "../utils/Utils"
@@ -6,6 +6,8 @@ import {sSaveOptional} from "../state/MapState.ts"
 import {sortPath} from "./MapSort.ts"
 import {isCEODO, isSEODO} from "../mapQueries/PathQueries.ts";
 import {genNodeC, genNodeL, genNodeR, genNodeS} from "./PathGen.ts";
+
+const offsetAt = (array: any[], k: number, n: number) => array.map((num, index) => index === k ? num + n : num)
 
 export const insertL = (m: M, lPartial: LPartial) => {
   m.push(genNodeL(['l', getLastIndexL(m) + 1] as PL, {...lPartial}))
@@ -28,16 +30,24 @@ export const insertS = (m: M, ip: PS, attributes: object) => {
   m.sort(sortPath)
 }
 
-export const insertCRD = (m: M) => {
-  const crIndex = getXC(m).path.indexOf('c') + 1
-  const crValue = getXC(m).path.at(crIndex)
-  const cd = getXAC(m).flatMap(ci => ci.cd).map(nid => idToC(m, nid))
-  cd.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) + 1))
-  cd.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) + 1))
-  m.push(...getXAC(m).map(ci => genNodeC(ci.path.with(crIndex, crValue + 1) as PC)))
-  m.push(...getXAC(m).map(ci => genNodeS([...ci.path.with(crIndex, crValue + 1), 's', 0] as PS)))
+const insertCL = (m: M, offsetIndex: number, offset: number, baseCL: C[]) => {
+  baseCL.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(offsetIndex, 1, si.path.at(offsetIndex) + 1))
+  baseCL.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(offsetIndex, 1, ci.path.at(offsetIndex) + 1))
+  m.push(...getXAC(m).map(ci => genNodeC(offsetAt(ci.path, offsetIndex, offset) as PC)))
+  m.push(...getXAC(m).map(ci => genNodeS([...offsetAt(ci.path, offsetIndex, offset), 's', 0] as PS)))
   m.sort(sortPath)
 }
+
+export const insertCRD = (m: M) => insertCL(m, getXC(m).path.indexOf('c') + 1, 1, getXAC(m).flatMap(ci => ci.cd).map(nid => idToC(m, nid)))
+  // const crIndex = getXC(m).path.indexOf('c') + 1
+  // const crValue = getXC(m).path.at(crIndex)
+  // const cd = getXAC(m).flatMap(ci => ci.cd).map(nid => idToC(m, nid))
+  // cd.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) + 1))
+  // cd.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) + 1))
+  // m.push(...getXAC(m).map(ci => genNodeC(offsetAt(ci.path, crIndex, 1) as PC)))
+  // m.push(...getXAC(m).map(ci => genNodeS([...ci.path.with(crIndex, crValue + 1), 's', 0] as PS)))
+  // m.sort(sortPath)
+
 
 export const insertCRU = (m: M) => {
   const crIndex = getXC(m).path.indexOf('c') + 1
