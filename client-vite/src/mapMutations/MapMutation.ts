@@ -166,5 +166,4 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'clearText': getXAS(m).forEach(si => Object.assign(si, { textColor: sSaveOptional.textColor, textFontSize: sSaveOptional.textFontSize })); break
     case 'clearBlur': getXAS(m).forEach(si => Object.assign(si, { blur: sSaveOptional.blur })); break
   }
-  return m
 }
