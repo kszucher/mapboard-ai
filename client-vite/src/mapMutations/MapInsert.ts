@@ -4,8 +4,8 @@ import {getFirstXSCC, getFirstXSCR, getG, getLastIndexL, getLastIndexR, getLastX
 import {getTableIndices} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 import {sortPath} from "./MapSort.ts"
-import {isCEODO, isSEODO} from "../mapQueries/PathQueries.ts";
-import {genNodeC, genNodeL, genNodeR, genNodeS} from "./PathGen.ts";
+import {isCEODO, isSEODO} from "../mapQueries/PathQueries.ts"
+import {genNodeC, genNodeL, genNodeR, genNodeS} from "./PathGen.ts"
 
 export const insertL = (m: M, lPartial: LPartial) => {
   m.push(genNodeL(['l', getLastIndexL(m) + 1] as PL, {...lPartial}))
@@ -28,25 +28,23 @@ export const insertS = (m: M, ip: PS, attributes: object) => {
   m.sort(sortPath)
 }
 
-const insertCL = (m: M, basePath: PC, basePathAt: number, delta: number, baseCL: C[], offsetCL: C[]) => {
-  const index = basePath.length + basePathAt
-  const value = basePath[index] + delta
-  offsetCL.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(index, 1, si.path.at(index) + 1))
-  offsetCL.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) + 1))
-  m.push(...baseCL.map(ci => genNodeC(ci.path.with(index, value) as PC)))
-  m.push(...baseCL.map(ci => genNodeS([...ci.path.with(index, value), 's', 0] as PS)))
+const insertCL = (m: M, index: number, newValue: number, insertBaseCL: C[], offsetBaseCL: C[]) => {
+  offsetBaseCL.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(index, 1, si.path.at(index) + 1))
+  offsetBaseCL.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) + 1))
+  m.push(...insertBaseCL.map(ci => genNodeC(ci.path.with(index, newValue) as PC)))
+  m.push(...insertBaseCL.map(ci => genNodeS([...ci.path.with(index, newValue), 's', 0] as PS)))
   m.sort(sortPath)
 }
 
-export const insertCRD = (m: M) => insertCL(m, getXC(m).path, -2, 1, getXAC(m), getXAC(m).flatMap(ci => ci.cd).map(nid => idToC(m, nid)))
-export const insertCRU = (m: M) => insertCL(m, getXC(m).path, -2, 0, getXAC(m), getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cd]).map(nid => idToC(m, nid)))
-export const insertCCR = (m: M) => insertCL(m, getXC(m).path, -1, 1, getXAC(m), getXAC(m).flatMap(ci => ci.cr).map(nid => idToC(m, nid)))
-export const insertCCL = (m: M) => insertCL(m, getXC(m).path, -1, 0, getXAC(m), getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cr]).map(nid => idToC(m, nid)))
+export const insertCRD = (m: M) => insertCL(m, getXC(m).path.length - 2, getXC(m).path.at(-2) + 1, getXAC(m), getXAC(m).flatMap(ci => ci.cd).map(nid => idToC(m, nid)))
+export const insertCRU = (m: M) => insertCL(m, getXC(m).path.length - 2, getXC(m).path.at(-2), getXAC(m), getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cd]).map(nid => idToC(m, nid)))
+export const insertCCR = (m: M) => insertCL(m, getXC(m).path.length - 1, getXC(m).path.at(-1) + 1, getXAC(m), getXAC(m).flatMap(ci => ci.cr).map(nid => idToC(m, nid)))
+export const insertCCL = (m: M) => insertCL(m, getXC(m).path.length - 1, getXC(m).path.at(-1), getXAC(m), getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cr]).map(nid => idToC(m, nid)))
 
-export const insertSCRD = (m: M) => insertCL(m, [...getXS(m).path, 'c', getXS(m).rowCount - 1, 0], -2, 1, getLastXSCR(m), [])
-export const insertSCRU = (m: M) => insertCL(m, [...getXS(m).path, 'c', 0, 0], -2, 0, getFirstXSCR(m), getFirstXSCR(m).flatMap(ci => [ci.nodeId, ...ci.cd]).map(nid => idToC(m, nid)))
-export const insertSCCR = (m: M) => insertCL(m, [...getXS(m).path, 'c', 0, getXS(m).colCount - 1], -1, 1, getLastXSCC(m), [])
-export const insertSCCL = (m: M) => insertCL(m, [...getXS(m).path, 'c', 0, 0], -1, 0, getFirstXSCC(m), getFirstXSCC(m).flatMap(ci => [ci.nodeId, ...ci.cr]).map(nid => idToC(m, nid)))
+export const insertSCRD = (m: M) => insertCL(m, getXS(m).path.length + 1, getXS(m).rowCount, getLastXSCR(m), [])
+export const insertSCRU = (m: M) => insertCL(m, getXS(m).path.length + 1, 0, getFirstXSCR(m), getFirstXSCR(m).flatMap(ci => [ci.nodeId, ...ci.cd]).map(nid => idToC(m, nid)))
+export const insertSCCR = (m: M) => insertCL(m, getXS(m).path.length + 2, getXS(m).colCount, getLastXSCC(m), [])
+export const insertSCCL = (m: M) => insertCL(m, getXS(m).path.length + 2, 0, getFirstXSCC(m), getFirstXSCC(m).flatMap(ci => [ci.nodeId, ...ci.cr]).map(nid => idToC(m, nid)))
 
 export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: number}) => {
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
