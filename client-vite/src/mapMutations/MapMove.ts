@@ -150,41 +150,18 @@ export const moveSC = (m: M, ip: PS) => {
   m.sort(sortPath)
 }
 
-export const moveCRD = (m: M) => {
-  const crIndex = getXC(m).path.indexOf('c') + 1
-  getXAC(m).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) + 1))
-  getXAC(m).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) + 1))
-  getXAC(m).map(ci => idToC(m, ci.cd.at(-1)!)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) - 1))
-  getXAC(m).map(ci => idToC(m, ci.cd.at(-1)!)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) - 1))
+const moveCL = (m: M, index: number, offset: number, dir: 'cd' | 'cu' | 'cr' | 'cl') => {
+  getXAC(m).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(index, 1, si.path.at(index) + offset))
+  getXAC(m).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) + offset))
+  getXAC(m).map(ci => idToC(m, ci[dir].at(-1)!)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(index, 1, si.path.at(index) - offset))
+  getXAC(m).map(ci => idToC(m, ci[dir].at(-1)!)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) - offset))
   m.sort(sortPath)
 }
 
-export const moveCRU = (m: M) => {
-  const crIndex = getXC(m).path.indexOf('c') + 1
-  getXAC(m).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) - 1))
-  getXAC(m).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) - 1))
-  getXAC(m).map(ci => idToC(m, ci.cu.at(-1)!)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(crIndex, 1, si.path.at(crIndex) + 1))
-  getXAC(m).map(ci => idToC(m, ci.cu.at(-1)!)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(crIndex, 1, ci.path.at(crIndex) + 1))
-  m.sort(sortPath)
-}
-
-export const moveCCR = (m: M) => {
-  const ccIndex = getXC(m).path.indexOf('c') + 2
-  getXAC(m).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(ccIndex, 1, si.path.at(ccIndex) + 1))
-  getXAC(m).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(ccIndex, 1, ci.path.at(ccIndex) + 1))
-  getXAC(m).map(ci => idToC(m, ci.cr.at(-1)!)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(ccIndex, 1, si.path.at(ccIndex) - 1))
-  getXAC(m).map(ci => idToC(m, ci.cr.at(-1)!)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(ccIndex, 1, ci.path.at(ccIndex) - 1))
-  m.sort(sortPath)
-}
-
-export const moveCCL = (m: M) => {
-  const ccIndex = getXC(m).path.indexOf('c') + 2
-  getXAC(m).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(ccIndex, 1, si.path.at(ccIndex) - 1))
-  getXAC(m).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(ccIndex, 1, ci.path.at(ccIndex) - 1))
-  getXAC(m).map(ci => idToC(m, ci.cl.at(-1)!)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(ccIndex, 1, si.path.at(ccIndex) + 1))
-  getXAC(m).map(ci => idToC(m, ci.cl.at(-1)!)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(ccIndex, 1, ci.path.at(ccIndex) + 1))
-  m.sort(sortPath)
-}
+export const moveCRD = (m: M) => moveCL(m, getXC(m).path.indexOf('c') + 1, 1, 'cd')
+export const moveCRU = (m: M) => moveCL(m, getXC(m).path.indexOf('c') + 1, - 1, 'cu')
+export const moveCCR = (m: M) => moveCL(m, getXC(m).path.indexOf('c') + 2, 1, 'cr')
+export const moveCCL = (m: M) => moveCL(m, getXC(m).path.indexOf('c') + 2,  - 1, 'cl')
 
 export const moveS2T = (m: M) => {
   const pos = getXS(m).path.length
