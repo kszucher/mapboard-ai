@@ -11,8 +11,8 @@ export interface EditorState {
   dialogState: DialogState
   alertDialogState: AlertDialogState
   formatMode: FormatMode
-  mapList: {commitId: string, data: M}[]
-  mapListIndex: number
+  commitList: {commitId: string, data: M}[]
+  commitIndex: number
   lastMergedCommitId: string
   editedNodeId: string
   editType: '' | 'append' | 'replace'

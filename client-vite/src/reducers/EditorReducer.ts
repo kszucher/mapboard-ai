@@ -73,11 +73,11 @@ export const editorSlice = createSlice({
     },
     undo(state) {
       state.editedNodeId = ''
-      state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
+      state.commitIndex = state.commitIndex > 0 ? state.commitIndex - 1 : state.commitIndex
     },
     redo(state) {
       state.editedNodeId = ''
-      state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
+      state.commitIndex = state.commitIndex < state.commitList.length - 1 ? state.commitIndex + 1 : state.commitIndex
     },
     saveView(state, action: PayloadAction<{ e: any }>) {
       const {e} = action.payload
@@ -110,7 +110,7 @@ export const editorSlice = createSlice({
     },
     selectSByRectanglePreview(state, action: PayloadAction<{e: any}>) {
       const {e} = action.payload
-      const pm = current(state.mapList[state.mapListIndex].data)
+      const pm = current(state.commitList[state.commitIndex].data)
       const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
@@ -126,7 +126,7 @@ export const editorSlice = createSlice({
     },
     moveSByDragPreview(state, action: PayloadAction<{s: S, e: any}>) {
       const {s, e} = action.payload
-      const pm = current(state.mapList[state.mapListIndex].data)
+      const pm = current(state.commitList[state.commitIndex].data)
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
@@ -136,22 +136,22 @@ export const editorSlice = createSlice({
       state.sMoveTargetIndex = sMoveTargetIndex
     },
     startEditReplace(state) {
-      const pm = current(state.mapList[state.mapListIndex].data)
-      state.editStartMapListIndex = state.mapListIndex
+      const pm = current(state.commitList[state.commitIndex].data)
+      state.editStartMapListIndex = state.commitIndex
       state.editedNodeId = getXS(pm).nodeId
       state.editType = 'replace'
     },
     startEditAppend(state) {
-      const pm = current(state.mapList[state.mapListIndex].data)
-      state.editStartMapListIndex = state.mapListIndex
+      const pm = current(state.commitList[state.commitIndex].data)
+      state.editStartMapListIndex = state.commitIndex
       state.editedNodeId = getXS(pm).nodeId
       state.editType = 'append'
     },
     removeMapListEntriesOfEdit(state) {
       state.editedNodeId = ''
       state.editType = ''
-      state.mapList = [...state.mapList.slice(0, state.editStartMapListIndex + 1), ...state.mapList.slice(-1)]
-      state.mapListIndex = state.editStartMapListIndex + 1
+      state.commitList = [...state.commitList.slice(0, state.editStartMapListIndex + 1), ...state.commitList.slice(-1)]
+      state.commitIndex = state.editStartMapListIndex + 1
     },
     mapReducer(state, action: PayloadAction<{ type: MM, payload?: any}>) {
       switch (action.payload.type) {
@@ -174,7 +174,7 @@ export const editorSlice = createSlice({
           break
         }
       }
-      const pm = current(state.mapList[state.mapListIndex].data)
+      const pm = current(state.commitList[state.commitIndex].data)
       const m = structuredClone(pm).sort(sortPath)
       mapMutation(m, action.payload.type, action.payload.payload)
       mapInit(m)
@@ -185,8 +185,8 @@ export const editorSlice = createSlice({
       mapPlace(m)
       m.sort(sortNode)
       if (!isEqual(pm, m)) {
-        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), {commitId: genId(), data: m}]
-        state.mapListIndex = state.mapListIndex + 1
+        state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), {commitId: genId(), data: m}]
+        state.commitIndex = state.commitIndex + 1
       }
       switch (action.payload.type) {
         case 'selectSByRectangle': {
@@ -235,8 +235,8 @@ export const editorSlice = createSlice({
         mapMeasure(pm, m)
         mapPlace(m)
         m.sort(sortNode)
-        state.mapList = [{commitId: genId(), data: m}]
-        state.mapListIndex = 0
+        state.commitList = [{commitId: genId(), data: m}]
+        state.commitIndex = 0
         state.editedNodeId = ''
         state.isLoading = false
       }

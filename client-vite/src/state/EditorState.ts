@@ -12,8 +12,8 @@ export const editorState: EditorState = {
   dialogState: DialogState.NONE,
   alertDialogState: AlertDialogState.NONE,
   formatMode: FormatMode.sFill,
-  mapList: [],
-  mapListIndex: 0,
+  commitList: [],
+  commitIndex: 0,
   lastMergedCommitId: '',
   editedNodeId: '',
   editType: '',
@@ -45,6 +45,6 @@ export const editorState: EditorState = {
 
 export const editorStateDefault = JSON.stringify(editorState)
 
-export const getMap = () => store.getState().editor.mapList[store.getState().editor.mapListIndex]?.data
-export const mSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex]?.data
-export const pmSelector = (state: RootState) => state.editor.mapList[state.editor.mapListIndex > 0 ? state.editor.mapListIndex - 1 : 0]?.data
+export const getMap = () => store.getState().editor.commitList[store.getState().editor.commitIndex]?.data
+export const mSelector = (state: RootState) => state.editor.commitList[state.editor.commitIndex]?.data
+export const pmSelector = (state: RootState) => state.editor.commitList[state.editor.commitIndex > 0 ? state.editor.commitIndex - 1 : 0]?.data

@@ -14,13 +14,13 @@ import {NodeActionsSelectModeConfig} from "../mapActions/NodeActionsSelectModeCo
 import {NodeActions} from "../mapActions/NodeActions.tsx"
 
 export const EditorAppBarRight: FC = () => {
-  const mapList = useSelector((state: RootState) => state.editor.mapList)
-  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
+  const commitList = useSelector((state: RootState) => state.editor.commitList)
+  const commitIndex = useSelector((state: RootState) => state.editor.commitIndex)
   const { data } = useOpenWorkspaceQuery()
   const { access } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessType.VIEW, AccessType.UNAUTHORIZED].includes(access)
-  const undoDisabled = disabled || mapListIndex === 0
-  const redoDisabled = disabled || mapListIndex === mapList.length - 1
+  const undoDisabled = disabled || commitIndex === 0
+  const redoDisabled = disabled || commitIndex === commitList.length - 1
   const dispatch = useDispatch<AppDispatch>()
   return (
     <div className="fixed flex right-1 gap-6 h-[40px]">

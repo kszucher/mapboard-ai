@@ -103,19 +103,19 @@ export const api = createApi({
       queryFn: (): any => ({ data: [] }),
       async onQueryStarted(_, { dispatch, getState }) {
         const editor = (getState() as RootState).editor
-        if (editor.mapList.length > 1) {
+        if (editor.commitList.length > 1) {
           const ws = (api.endpoints.openWorkspace.select()(store.getState())?.data || defaultUseOpenWorkspaceQueryState)
           console.log('saving ' + ws.mapName)
           clearTimeout(timeoutId)
-          const commitIdIndex = editor.mapList.findIndex(el => el.commitId === editor.lastMergedCommitId)
-          const mapListIndexFrom = commitIdIndex === -1 ? 0 : commitIdIndex
+          const commitIndexSaved = editor.commitList.findIndex(el => el.commitId === editor.lastMergedCommitId)
+          const commitIndexBase = commitIndexSaved === -1 ? 0 : commitIndexSaved
           dispatch(api.endpoints.saveMap.initiate({
             mapId: ws.mapId,
             mapDelta: mapDiff(
-              mapDeInit(editor.mapList[mapListIndexFrom].data),
-              mapDeInit(editor.mapList[editor.mapListIndex].data)
+              mapDeInit(editor.commitList[commitIndexBase].data),
+              mapDeInit(editor.commitList[editor.commitIndex].data)
             ),
-            commitId: editor.mapList[editor.mapListIndex].commitId
+            commitId: editor.commitList[editor.commitIndex].commitId
           }))
         }
       }

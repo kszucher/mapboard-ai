@@ -22,7 +22,7 @@ export const Window: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
-  const mapList = useSelector((state: RootState) => state.editor.mapList)
+  const commitList = useSelector((state: RootState) => state.editor.commitList)
   const m = (useSelector((state:RootState) => mSelector(state)))
   const mExists = m && m.length
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
@@ -279,7 +279,7 @@ export const Window: FC = () => {
 
   useEffect(() => {
     if (mExists) {
-      if (mapList.length > 1) {
+      if (commitList.length > 1) {
         clearTimeout(timeoutId)
         timeoutId = setTimeout(() => dispatch(api.endpoints.saveMapAssembler.initiate()), 1000)
       }
