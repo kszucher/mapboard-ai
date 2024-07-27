@@ -1,4 +1,4 @@
-import {getG, getXAC, getXAS, getXC, getXFS, getXS, idToC, idToS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getXAC, getXAS, getXC, getXFS, getXLS, getXS, idToC, idToS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PL, PR, PS, R, S} from "../state/MapStateTypes"
 import {genNodeId, IS_TESTING} from "../utils/Utils"
@@ -157,6 +157,13 @@ const moveCL = (m: M, index: number, offset: number, dir: 'cd' | 'cu' | 'cr' | '
   getXAC(m).map(ci => idToC(m, ci[dir].at(-1)!)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) - offset))
   m.sort(sortPath)
 }
+
+export const moveSD = (m: M) => moveSC(m, getXS(m).path.with(-1, getXFS(m).su.length + 1) as PS)
+export const moveST = (m: M) => moveSC(m, getXS(m).path.with(-1, 0) as PS)
+export const moveSU = (m: M) => moveSC(m, getXS(m).path.with(-1, getXFS(m).su.length - 1) as PS)
+export const moveSB = (m: M) => moveSC(m, getXS(m).path.with(-1, getXLS(m).sd.length) as PS)
+export const moveSO = (m: M) => moveSC(m, [...idToS(m, getXFS(m).su.at(-1) as string).path, 's', idToS(m, getXFS(m).su.at(-1) as string).so1.length] as PS)
+export const moveSI = (m: M) => moveSC(m, idToS(m, getXS(m).si1).path.with(-1, idToS(m, getXS(m).si1).su.length + 1) as PS)
 
 export const moveCRD = (m: M) => moveCL(m, getXC(m).path.indexOf('c') + 1, 1, 'cd')
 export const moveCRU = (m: M) => moveCL(m, getXC(m).path.indexOf('c') + 1, - 1, 'cu')

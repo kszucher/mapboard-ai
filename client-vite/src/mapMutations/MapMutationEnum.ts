@@ -50,7 +50,6 @@ export enum MM {
   selectCR = 'selectCR',
   selectCL = 'selectCL',
   selectSByRectangle = 'selectSByRectangle',
-
   unselect = 'unselect',
   unselectR = 'unselectR',
   unselectS = 'unselectS',
@@ -98,18 +97,14 @@ export enum MM {
   cutSJumpSD = 'cutSJumpSD',
   cutSJumpSI = 'cutSJumpSI',
   cutSJumpCI = 'cutSJumpCI',
-
   copyLR = 'copyLR',
   copyS = 'copyS',
-
   pasteLR = 'pasteLR',
   pasteRSO = 'pasteRSO',
   pasteSSO = 'pasteSSO',
   pasteCSO = 'pasteCSO',
-
   duplicateR = 'duplicateR',
   duplicateS = 'duplicateS',
-
   moveSD = 'moveSD',
   moveST = 'moveST',
   moveSU = 'moveSU',
@@ -122,7 +117,6 @@ export enum MM {
   moveCCR = 'moveCCR',
   moveCCL = 'moveCCL',
   moveS2T = 'moveS2T',
-
   transpose = 'transpose',
 
   offsetD = 'offsetD',
@@ -130,14 +124,11 @@ export enum MM {
   offsetR = 'offsetR',
   offsetL = 'offsetL',
   offsetRByDrag = 'offsetRByDrag',
-
   setControlTypeNone = 'setControlTypeNone',
   setControlTypeIngestion = 'setControlTypeIngestion',
   setControlTypeExtraction = 'setControlTypeExtraction',
-
   setContentText = 'setContentText',
   setContentEquation = 'setContentEquation',
-
   setLineWidth = 'setLineWidth',
   setLineType = 'setLineType',
   setLineColor = 'setLineColor',
@@ -150,12 +141,10 @@ export enum MM {
   setTextFontSize = 'setTextFontSize',
   setTextColor = 'setTextColor',
   setBlur = 'setBlur',
-
   setTaskModeOn = 'setTaskModeOn',
   setTaskModeOff = 'setTaskModeOff',
   setTaskModeReset = 'setTaskModeReset',
   setTaskStatus = 'setTaskStatus',
-
   clearDimensions = 'clearDimensions',
   clearLine = 'clearLine',
   clearSBorder = 'clearSBorder',
