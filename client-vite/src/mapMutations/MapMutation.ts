@@ -1,10 +1,10 @@
-import {getG, getQuasiSD, getQuasiSU, mR, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, idToC} from "../mapQueries/MapQueries.ts"
+import {getG, getQuasiSD, getQuasiSU, mR, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, idToC, getFirstXSCR, getFirstXSCC, getLastXSCR, getLastXSCC} from "../mapQueries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {M, PC, PR, PS, R, S} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
-import {insertCCL, insertCCR, insertCRD, insertCRU, insertL, insertR, insertS, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertTable} from "./MapInsert"
-import {copyLRSC, copySC, cutLRSC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, cutSC, moveCRD, moveCRU, moveCCR, moveCCL, transpose, moveSC, moveSD, moveST, moveSU, moveSB, moveSO, moveSI} from "./MapMove"
+import {insertCL, insertL, insertR, insertS, insertTable} from "./MapInsert"
+import {copyLRSC, copySC, cutLRSC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, cutSC, transpose, moveSC, moveCL} from "./MapMove"
 import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
@@ -77,14 +77,14 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'insertSSOLink': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
     case 'insertSSOImage': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
     case 'insertCSO': insertS(m, [...getXC(m).path, 's', getXC(m).so1.length], payload); break
-    case 'insertCRD': insertCRD(m); break
-    case 'insertCRU': insertCRU(m); break
-    case 'insertCCR': insertCCR(m); break
-    case 'insertCCL': insertCCL(m); break
-    case 'insertSCRD': insertSCRD(m); break
-    case 'insertSCRU': insertSCRU(m); break
-    case 'insertSCCR': insertSCCR(m); break
-    case 'insertSCCL': insertSCCL(m); break
+    case 'insertCRD': insertCL(m, getXC(m).path.length - 2, getXC(m).path.at(-2) + 1, getXAC(m), getXAC(m).flatMap(ci => ci.cd).map(nid => idToC(m, nid))); break
+    case 'insertCRU': insertCL(m, getXC(m).path.length - 2, getXC(m).path.at(-2), getXAC(m), getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cd]).map(nid => idToC(m, nid))); break
+    case 'insertCCR': insertCL(m, getXC(m).path.length - 1, getXC(m).path.at(-1) + 1, getXAC(m), getXAC(m).flatMap(ci => ci.cr).map(nid => idToC(m, nid))); break
+    case 'insertCCL': insertCL(m, getXC(m).path.length - 1, getXC(m).path.at(-1), getXAC(m), getXAC(m).flatMap(ci => [ci.nodeId, ...ci.cr]).map(nid => idToC(m, nid))); break
+    case 'insertSCRD': insertCL(m, getXS(m).path.length + 1, getXS(m).rowCount, getLastXSCR(m), []); break
+    case 'insertSCRU': insertCL(m, getXS(m).path.length + 1, 0, getFirstXSCR(m), getFirstXSCR(m).flatMap(ci => [ci.nodeId, ...ci.cd]).map(nid => idToC(m, nid))); break
+    case 'insertSCCR': insertCL(m, getXS(m).path.length + 2, getXS(m).colCount, getLastXSCC(m), []); break
+    case 'insertSCCL': insertCL(m, getXS(m).path.length + 2, 0, getFirstXSCC(m), getFirstXSCC(m).flatMap(ci => [ci.nodeId, ...ci.cr]).map(nid => idToC(m, nid))); break
     case 'insertSDTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length + 1) as PS, payload); break
     case 'insertSUTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length) as PS, payload); break
     case 'insertSSOTable': insertTable(m, [...getXS(m).path, 's', getXS(m).so1.length] as PS, payload); break
@@ -117,17 +117,17 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'pasteCSO': pasteSC(m, [...getXC(m).path, 's',  getXC(m).so1.length], payload); break
     case 'duplicateR': duplicateLRSC(m); break;
     case 'duplicateS': duplicateSC(m); break;
-    case 'moveSD': moveSD(m); break
-    case 'moveST': moveST(m); break
-    case 'moveSU': moveSU(m); break
-    case 'moveSB': moveSB(m); break
-    case 'moveSO': moveSO(m); break
-    case 'moveSI': moveSI(m); break
+    case 'moveSD': moveSC(m, getXS(m).path.with(-1, getXFS(m).su.length + 1) as PS); break
+    case 'moveST': moveSC(m, getXS(m).path.with(-1, 0) as PS); break
+    case 'moveSU': moveSC(m, getXS(m).path.with(-1, getXFS(m).su.length - 1) as PS); break
+    case 'moveSB': moveSC(m, getXS(m).path.with(-1, getXLS(m).sd.length) as PS); break
+    case 'moveSO': moveSC(m, [...idToS(m, getXFS(m).su.at(-1) as string).path, 's', idToS(m, getXFS(m).su.at(-1) as string).so1.length] as PS); break
+    case 'moveSI': moveSC(m, idToS(m, getXS(m).si1).path.with(-1, idToS(m, getXS(m).si1).su.length + 1) as PS); break
     case 'moveSByDrag': payload.sMoveInsertParentNodeId.length && moveSC(m, [...idToS(m, payload.sMoveInsertParentNodeId).path, 's', payload.sMoveTargetIndex]); break
-    case 'moveCRD': moveCRD(m); break
-    case 'moveCRU': moveCRU(m); break
-    case 'moveCCR': moveCCR(m); break
-    case 'moveCCL': moveCCL(m); break
+    case 'moveCRD': moveCL(m, getXC(m).path.indexOf('c') + 1, 1, 'cd'); break
+    case 'moveCRU': moveCL(m, getXC(m).path.indexOf('c') + 1, - 1, 'cu'); break
+    case 'moveCCR': moveCL(m, getXC(m).path.indexOf('c') + 2, 1, 'cr'); break
+    case 'moveCCL': moveCL(m, getXC(m).path.indexOf('c') + 2,  - 1, 'cl'); break
     case 'moveS2T': moveS2T(m); break
     case 'transpose': transpose(m); break
 
