@@ -19,7 +19,7 @@ export const insertR = (m: M) => {
   m.sort(sortPath)
 }
 
-export const insertS = (m: M, ip: PS, attributes: object) => {
+export const insertS = (m: M, ip: PS, attributes?: object) => {
   mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + 1))
   mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + 1))
   const parentTaskStatus = isXAS(m) ? getXS(m).taskStatus : sSaveOptional.taskStatus
@@ -47,11 +47,8 @@ export const insertSCCR = (m: M) => insertCL(m, getXS(m).path.length + 2, getXS(
 export const insertSCCL = (m: M) => insertCL(m, getXS(m).path.length + 2, 0, getFirstXSCC(m), getFirstXSCC(m).flatMap(ci => [ci.nodeId, ...ci.cr]).map(nid => idToC(m, nid)))
 
 export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: number}) => {
+  insertS(m, ip)
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
-  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + 1))
-  mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + 1))
-  unselectNodes(m)
-  m.push(genNodeS(ip, {selected: 1}))
   m.push(...tableIndices.map(el => genNodeC([...ip, 'c', ...el] as PC)))
   m.push(...tableIndices.map(el => genNodeS([...ip, 'c', ...el, 's', 0] as PS)))
   m.sort(sortPath)
