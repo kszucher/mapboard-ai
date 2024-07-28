@@ -84,7 +84,7 @@ export const Window: FC = () => {
     ckm === '---' && e.code === 'Escape' && isXAS(m) && getXS(m).path.includes('c') && dm(MM.selectXSICS)
     ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && dm(MM.copyLR)
     ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && dm(MM.copyS)
-    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getLastIndexR(m) > 0 && dm(MM.cutLR)
+    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getLastIndexR(m) > 0 && dm(MM.cutLRJumpR)
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXARS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && dm(MM.cutSJumpRI)
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getXFS(m).su.length > 0 && dm(MM.cutSJumpSU)
     ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length > 0 && dm(MM.cutSJumpSD)
