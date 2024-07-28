@@ -6,7 +6,7 @@ import {deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
-import {getClipboardL, getClipboardRC, getClipboardRR, getClipboardRS, getClipboardSC, getClipboardSS} from "../mapQueries/MapExtract.ts"
+import {lToClipboard, rcToClipboard, rrToClipboard, rsToClipboard, scToClipboard, ssToClipboard} from "../mapQueries/MapExtract.ts"
 import {offsetSC} from "./MapOffset.ts"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
@@ -26,7 +26,7 @@ const cbSave = (cb: any) => {
   })
 }
 
-const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
+const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
   const nodeIdMappingR = cbRR.map(ri => ({
     oldNodeId: ri.nodeId,
     newNodeId: IS_TESTING ? ['r', (ri.path.at(1) as number) + (ipR.at(-1) as number), ...ri.path.slice(2)].join('') : genNodeId()
@@ -56,7 +56,7 @@ const cbToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR:
   m.sort(sortPath)
 }
 
-const cbToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS, xasLength: number) => {
+const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS, xasLength: number) => {
   const pathSS = cbSS.map(si => [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)])
   const pathSC = cbSC.map(ci => [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)])
   cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSS[i].join('') : genNodeId(), path: pathSS[i]}))
@@ -68,47 +68,47 @@ const cbToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS, xasLength: number) => {
 }
 
 export const copyLRSC = (m: M) => {
-  cbSave(mapDeInit([...getClipboardL(m), ...getClipboardRR(m), ...getClipboardRS(m), ...getClipboardRC(m)].sort(sortPath)))
+  cbSave(mapDeInit([...lToClipboard(m), ...rrToClipboard(m), ...rsToClipboard(m), ...rcToClipboard(m)].sort(sortPath)))
 }
 
 export const copySC = (m: M) => {
-  cbSave(mapDeInit([...getClipboardSS(m), ...getClipboardSC(m)].sort(sortPath)))
+  cbSave(mapDeInit([...ssToClipboard(m), ...scToClipboard(m)].sort(sortPath)))
 }
 
 export const pasteLRSC = (m: M, payload: any) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
   const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
-  const cbLRSC = JSON.parse(payload) as M
-  cbToLRSC(m, mL(cbLRSC), mR(cbLRSC), mS(cbLRSC), mC(cbLRSC), ipL, ipR)
+  const lrsc = JSON.parse(payload) as M
+  clipboardToLRSC(m, mL(lrsc), mR(lrsc), mS(lrsc), mC(lrsc), ipL, ipR)
 }
 
 export const pasteSC = (m: M, ip: PS, payload: any) => {
   const xas = JSON.parse(payload) as M
   const xasLength = xas.length
-  const cbSS = mS(xas)
-  const cbSC = mC(xas)
-  cbToSC(m, cbSS, cbSC, ip, xasLength)
+  const ss = mS(xas)
+  const sc = mC(xas)
+  clipboardToSC(m, ss, sc, ip, xasLength)
 }
 
 export const duplicateLRSC = (m: M) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
   const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
-  cbToLRSC(m, getClipboardL(m), getClipboardRR(m), getClipboardRS(m), getClipboardRC(m), ipL, ipR)
+  clipboardToLRSC(m, lToClipboard(m), rrToClipboard(m), rsToClipboard(m), rcToClipboard(m), ipL, ipR)
 }
 
 export const duplicateSC = (m: M) => {
   const ip = [...getXS(m).path.slice(0, -2), 's', getXFS(m).su.length + getXAS(m).length] as PS
   const xas = getXAS(m)
   const xasLength = xas.length
-  const cbSS = getClipboardSS(m)
-  const cbSC = getClipboardSC(m)
-  cbToSC(m, cbSS, cbSC, ip, xasLength)
+  const cbSS = ssToClipboard(m)
+  const cbSC = scToClipboard(m)
+  clipboardToSC(m, cbSS, cbSC, ip, xasLength)
 }
 
 export const moveSC = (m: M, ip: PS) => {
   const xas = getXAS(m)
-  const cbSS = getClipboardSS(m)
-  const cbSC = getClipboardSC(m)
+  const cbSS = ssToClipboard(m)
+  const cbSC = scToClipboard(m)
   deleteS(m)
   cbSS.forEach(si => Object.assign(si, {path: [...ip.with(-1, ip.at(-1) + si.path.at(1)), ...si.path.slice(2)]}))
   cbSC.forEach(ci => Object.assign(ci, {path: [...ip.with(-1, ip.at(-1) + ci.path.at(1)), ...ci.path.slice(2)]}))
