@@ -103,7 +103,7 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'deleteCCJumpR': { const reselectList = getXAC(m).map(ci => ci.cr.at(-1)!); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCCJumpSI': { const reselect = getXC(m).si1; deleteCC(m); selectS(m, idToS(m, reselect), 's'); break }
 
-    case 'cutLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; copyLRSC(m); deleteLRSC(m); selectR(m, idToR(m, reselect) as R); break }
+    case 'cutLRJumpR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; copyLRSC(m); deleteLRSC(m); selectR(m, idToR(m, reselect) as R); break }
     case 'cutSJumpRI': { const reselect = getXS(m).ri1; copySC(m); deleteS(m); selectR(m, idToR(m, reselect)); break }
     case 'cutSJumpSU': { const reselect = getXFS(m).su.at(-1)!; copySC(m); deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
     case 'cutSJumpSD': { const reselect = getXLS(m).sd.at(-1)!; copySC(m); deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
