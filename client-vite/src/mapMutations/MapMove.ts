@@ -34,8 +34,8 @@ const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
     newNodeId: IS_TESTING ? ['r', ri.path[1] + lastIndexR + 1].join('') : genNodeId()
   }))
   cbL.forEach(li => Object.assign(li, {
-    nodeId: IS_TESTING ? ['l', (li.path.at(1) as number) + lastIndexL + 1].join('') : genNodeId(),
-    path : ['l', (li.path.at(1) as number) + lastIndexL + 1],
+    nodeId: IS_TESTING ? ['l', li.path[1] + lastIndexL + 1].join('') : genNodeId(),
+    path : ['l', li.path[1] + lastIndexL + 1],
     fromNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId
   }))
