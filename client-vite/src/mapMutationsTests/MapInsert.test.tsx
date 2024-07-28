@@ -1,10 +1,9 @@
 import {MPartial} from "../state/MapStateTypes.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
-import {setIsTesting} from "../utils/Utils.ts"
 import {_assert} from "./_assert.ts"
 
 describe("MapInsertTests", () => {
-  beforeEach(() => setIsTesting() as any)
+  beforeEach(() => {})
   test('insertR', () => {
     const test = [
       {nodeId: 'g', path: ['g']},

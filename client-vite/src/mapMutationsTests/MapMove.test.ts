@@ -1,10 +1,9 @@
 import {MPartial} from "../state/MapStateTypes.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
-import {setIsTesting} from "../utils/Utils.ts"
 import {_assert} from "./_assert.ts"
 
 describe("MapMoveTests", () => {
-  beforeEach(() => setIsTesting() as any)
+  beforeEach(() => {})
   test('duplicateR', () => {
     const test = [
       {nodeId: 'g', path: ['g']},
@@ -67,11 +66,11 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s1s0c00', path: ['r', 0, 's', 1, 's', 0, 'c', 0, 0]},
       {nodeId: 'r0s2', path: ['r', 0, 's', 2]},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 2, 's', 0]},
-      {nodeId: 'r0s3', path: ['r', 0, 's', 3], selected: 1},
-      {nodeId: 'r0s3s0', path: ['r', 0, 's', 3, 's', 0]},
-      {nodeId: 'r0s3s0c00', path: ['r', 0, 's', 3, 's', 0, 'c', 0, 0]},
-      {nodeId: 'r0s4', path: ['r', 0, 's', 4], selected: 2},
-      {nodeId: 'r0s4s0', path: ['r', 0, 's', 4, 's', 0]},
+      {nodeId: '_r0s3', path: ['r', 0, 's', 3], selected: 1},
+      {nodeId: '_r0s3s0', path: ['r', 0, 's', 3, 's', 0]},
+      {nodeId: '_r0s3s0c00', path: ['r', 0, 's', 3, 's', 0, 'c', 0, 0]},
+      {nodeId: '_r0s4', path: ['r', 0, 's', 4], selected: 2},
+      {nodeId: '_r0s4s0', path: ['r', 0, 's', 4, 's', 0]},
       {nodeId: 'r0s3', path: ['r', 0, 's', 5]},
       {nodeId: 'r0s3s0', path: ['r', 0, 's', 5, 's', 0]},
     ] as MPartial
@@ -388,12 +387,12 @@ describe("MapMoveTests", () => {
       {nodeId: 'g', path: ['g']},
       {nodeId: 'r0', path: ['r', 0]},
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
-      {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0], selected: 1},
-      {nodeId: 'r0s0s0c00', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0]},
+      {nodeId: '_r0s0s0', path: ['r', 0, 's', 0, 's', 0], selected: 1},
+      {nodeId: '_r0s0s0c00', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0]},
       {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0, 'c', 0, 0, 's', 0]},
-      {nodeId: 'r0s0s0c10', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0]},
+      {nodeId: '_r0s0s0c10', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0]},
       {nodeId: 'r0s0s1', path: ['r', 0, 's', 0, 's', 0, 'c', 1, 0, 's', 0]},
-      {nodeId: 'r0s0s0c20', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0]},
+      {nodeId: '_r0s0s0c20', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0, 's', 0]},
     ] as MPartial
     _assert(test, result, MM.moveS2T)

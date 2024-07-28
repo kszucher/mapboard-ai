@@ -1,6 +1,4 @@
 import isEqual from "react-fast-compare"
-export let IS_TESTING = false
-export const setIsTesting = () => IS_TESTING = true
 export const isArrayOfEqualValues = (array: any[]) => array.every(el => isEqual(el, array[0]))
 export const isUrl = (string: string) => { try { return Boolean(new URL(string)) } catch(e) { return false } }
 export const genNodeId = () => 'node' + crypto.randomUUID().slice(-8)
