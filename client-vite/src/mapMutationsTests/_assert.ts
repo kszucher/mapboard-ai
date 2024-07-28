@@ -5,18 +5,22 @@ import {mapInit} from "../mapMutations/MapInit.ts"
 import {sortNode} from "../mapMutations/MapSort.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {M, MPartial} from "../state/MapStateTypes.ts"
+import {mL} from "../mapQueries/MapQueries.ts"
 
 export const _assert = (test: MPartial, result: MPartial, mmType: MM, mmPayload?: any) => {
   const m = test as M
-
-  const pathMapping = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('') as string]))
-
+  const pathMappingBefore = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('') as string]))
   mapInit(m)
   mapChain(m)
   mapMutation(m, mmType, mmPayload)
   const md = mapDeInit(m)
-
-  md.forEach(ni => Object.assign(ni, {nodeId: pathMapping.has(ni.nodeId) ? pathMapping.get(ni.nodeId) : '_' +  ni.path.join('')}))
-
+  md.forEach(ni => Object.assign(ni, {
+    nodeId: pathMappingBefore.has(ni.nodeId) ? pathMappingBefore.get(ni.nodeId) : '_' +  ni.path.join('')
+  }))
+  const pathMappingAfter = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('') as string]))
+  mL(md as M).forEach(li => Object.assign(li, {
+    fromNodeId: pathMappingBefore.has(li.fromNodeId) ? pathMappingBefore.get(li.fromNodeId) : '_' + pathMappingAfter.get(li.fromNodeId),
+    toNodeId: pathMappingBefore.has(li.toNodeId) ? pathMappingBefore.get(li.toNodeId) : '_' + pathMappingAfter.get(li.toNodeId)
+  }))
   return expect(md.sort(sortNode)).toEqual((result).sort(sortNode))
 }
