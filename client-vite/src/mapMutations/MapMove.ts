@@ -2,7 +2,7 @@ import {getG, getXAC, getXAS, getXFS, getXS, idToC, idToS, mC, mG, mL, mR, mS} f
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PL, PR, PS, R, S} from "../state/MapStateTypes"
 import {genNodeId, IS_TESTING} from "../utils/Utils"
-import {deleteLRSC, deleteS} from "./MapDelete"
+import {deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
@@ -67,45 +67,19 @@ const cbToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS, xasLength: number) => {
   m.sort(sortPath)
 }
 
-export const cutLRSC = (m: M) => {
-  const cbL = getClipboardL(m)
-  const cbRR = getClipboardRR(m)
-  const cbRS = getClipboardRS(m)
-  const cbRC = getClipboardRC(m)
-  cbSave(mapDeInit([...cbL, ...cbRR, ...cbRS, ...cbRC]))
-  deleteLRSC(m)
-}
-
-export const cutSC = (m: M) => {
-  const cbSS = getClipboardSS(m)
-  const cbSC = getClipboardSC(m)
-  cbSave(mapDeInit([...cbSS, ...cbSC].sort(sortPath)))
-  deleteS(m)
-}
-
 export const copyLRSC = (m: M) => {
-  const cbL = getClipboardL(m)
-  const cbRR = getClipboardRR(m)
-  const cbRS = getClipboardRS(m)
-  const cbRC = getClipboardRC(m)
-  cbSave(mapDeInit([...cbL, ...cbRR, ...cbRS, ...cbRC]))
+  cbSave(mapDeInit([...getClipboardL(m), ...getClipboardRR(m), ...getClipboardRS(m), ...getClipboardRC(m)].sort(sortPath)))
 }
 
 export const copySC = (m: M) => {
-  const cbSS = getClipboardSS(m)
-  const cbSC = getClipboardSC(m)
-  cbSave(mapDeInit([...cbSS, ...cbSC].sort(sortPath)))
+  cbSave(mapDeInit([...getClipboardSS(m), ...getClipboardSC(m)].sort(sortPath)))
 }
 
 export const pasteLRSC = (m: M, payload: any) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
   const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
   const cbLRSC = JSON.parse(payload) as M
-  const cbL = mL(cbLRSC)
-  const cbR = mR(cbLRSC)
-  const cbS = mS(cbLRSC)
-  const cbC = mC(cbLRSC)
-  cbToLRSC(m, cbL, cbR, cbS, cbC, ipL, ipR)
+  cbToLRSC(m, mL(cbLRSC), mR(cbLRSC), mS(cbLRSC), mC(cbLRSC), ipL, ipR)
 }
 
 export const pasteSC = (m: M, ip: PS, payload: any) => {
@@ -119,11 +93,7 @@ export const pasteSC = (m: M, ip: PS, payload: any) => {
 export const duplicateLRSC = (m: M) => {
   const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
   const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
-  const cbL = getClipboardL(m)
-  const cbRR = getClipboardRR(m)
-  const cbRS = getClipboardRS(m)
-  const cbRC = getClipboardRC(m)
-  cbToLRSC(m, cbL, cbRR, cbRS, cbRC, ipL, ipR)
+  cbToLRSC(m, getClipboardL(m), getClipboardRR(m), getClipboardRS(m), getClipboardRC(m), ipL, ipR)
 }
 
 export const duplicateSC = (m: M) => {

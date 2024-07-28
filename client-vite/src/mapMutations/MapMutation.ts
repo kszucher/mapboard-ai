@@ -4,7 +4,7 @@ import {sSaveOptional} from "../state/MapState"
 import {M, PC, PR, PS, R, S} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
 import {insertCL, insertL, insertR, insertS, insertTable} from "./MapInsert"
-import {copyLRSC, copySC, cutLRSC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, cutSC, transpose, moveSC, moveCL} from "./MapMove"
+import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, transpose, moveSC, moveCL} from "./MapMove"
 import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
@@ -103,12 +103,12 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'deleteCCJumpR': { const reselectList = getXAC(m).map(ci => ci.cr.at(-1)!); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCCJumpSI': { const reselect = getXC(m).si1; deleteCC(m); selectS(m, idToS(m, reselect), 's'); break }
 
-    case 'cutLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; cutLRSC(m); selectR(m, idToR(m, reselect) as R); break }
-    case 'cutSJumpRI': { const reselect = getXS(m).ri1; cutSC(m); selectR(m, idToR(m, reselect)); break }
-    case 'cutSJumpSU': { const reselect = getXFS(m).su.at(-1)!; cutSC(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'cutSJumpSD': { const reselect = getXLS(m).sd.at(-1)!; cutSC(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'cutSJumpSI': { const reselect = getXS(m).si1; cutSC(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'cutSJumpCI': { const reselect = getXS(m).ci1; cutSC(m); selectC(m, idToC(m, reselect)); break }
+    case 'cutLR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; copyLRSC(m); deleteLRSC(m); selectR(m, idToR(m, reselect) as R); break }
+    case 'cutSJumpRI': { const reselect = getXS(m).ri1; copySC(m); deleteS(m); selectR(m, idToR(m, reselect)); break }
+    case 'cutSJumpSU': { const reselect = getXFS(m).su.at(-1)!; copySC(m); deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'cutSJumpSD': { const reselect = getXLS(m).sd.at(-1)!; copySC(m); deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'cutSJumpSI': { const reselect = getXS(m).si1; copySC(m); deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'cutSJumpCI': { const reselect = getXS(m).ci1; copySC(m); deleteS(m); selectC(m, idToC(m, reselect)); break }
     case 'copyLR': copyLRSC(m); break
     case 'copyS': copySC(m); break
     case 'pasteLR': pasteLRSC(m, payload); break
