@@ -1,11 +1,11 @@
 import {C, LPartial, M, PC, PL, PR, PS} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {getG, getLastIndexL, getLastIndexR, getXS, idToC, idToS, isXAS, mC, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getXS, idToC, idToS, isXAS} from "../mapQueries/MapQueries.ts"
 import {getTableIndices} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 import {sortPath} from "./MapSort.ts"
-import {isCEODO, isSEODO} from "../mapQueries/PathQueries.ts"
 import {genNodeC, genNodeL, genNodeR, genNodeS} from "./PathGen.ts"
+import {offsetSC} from "./MapOffset.ts"
 
 export const insertL = (m: M, lPartial: LPartial) => {
   m.push(genNodeL(['l', getLastIndexL(m) + 1] as PL, {...lPartial}))
@@ -20,8 +20,7 @@ export const insertR = (m: M) => {
 }
 
 export const insertS = (m: M, ip: PS, attributes?: object) => {
-  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + 1))
-  mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + 1))
+  offsetSC(m, ip, 1)
   const parentTaskStatus = isXAS(m) ? getXS(m).taskStatus : sSaveOptional.taskStatus
   unselectNodes(m)
   m.push(genNodeS(ip, {selected: 1, taskStatus: parentTaskStatus, ...attributes}))

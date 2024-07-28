@@ -6,8 +6,8 @@ import {deleteLRSC, deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
-import {isCEODO, isSEODO} from "../mapQueries/PathQueries.ts";
 import {getClipboardL, getClipboardRC, getClipboardRR, getClipboardRS, getClipboardSC, getClipboardSS} from "../mapQueries/MapExtract.ts"
+import {offsetSC} from "./MapOffset.ts"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -61,8 +61,7 @@ const cbToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS, xasLength: number) => {
   const pathSC = cbSC.map(ci => [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)])
   cbSS.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSS[i].join('') : genNodeId(), path: pathSS[i]}))
   cbSC.forEach((si, i) => Object.assign(si, {nodeId: IS_TESTING ? pathSC[i].join('') : genNodeId(), path: pathSC[i]}))
-  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + xasLength))
-  mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + xasLength))
+  offsetSC(m, ip, xasLength)
   unselectNodes(m)
   m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
@@ -138,14 +137,12 @@ export const duplicateSC = (m: M) => {
 
 export const moveSC = (m: M, ip: PS) => {
   const xas = getXAS(m)
-  const xasLength = xas.length
   const cbSS = getClipboardSS(m)
   const cbSC = getClipboardSC(m)
   deleteS(m)
   cbSS.forEach(si => Object.assign(si, {path: [...ip.with(-1, ip.at(-1) + si.path.at(1)), ...si.path.slice(2)]}))
   cbSC.forEach(ci => Object.assign(ci, {path: [...ip.with(-1, ip.at(-1) + ci.path.at(1)), ...ci.path.slice(2)]}))
-  mS(m).forEach(si => isSEODO(ip, si.path) && si.path.splice(ip.length - 1, 1, si.path.at(ip.length - 1) + xasLength))
-  mC(m).forEach(ci => isCEODO(ip, ci.path) && ci.path.splice(ip.length - 1, 1, ci.path.at(ip.length - 1) + xasLength))
+  offsetSC(m, ip, xas.length)
   m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
 }
