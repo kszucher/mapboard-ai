@@ -1,6 +1,6 @@
-import {getG, getXAC, getXAS, getXFS, getXS, idToC, idToS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getXAC, getXAS, getXFS, getXS, idToC, idToS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
-import {C, L, M, PC, PL, PR, PS, R, S} from "../state/MapStateTypes"
+import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genNodeId, IS_TESTING} from "../utils/Utils"
 import {deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
@@ -26,30 +26,32 @@ const cbSave = (cb: any) => {
   })
 }
 
-const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[], ipL: PL, ipR: PR) => {
+const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
+  const lastIndexL = getLastIndexL(m)
+  const lastIndexR = getLastIndexR(m)
   const nodeIdMappingR = cbRR.map(ri => ({
     oldNodeId: ri.nodeId,
-    newNodeId: IS_TESTING ? ['r', (ri.path.at(1) as number) + (ipR.at(-1) as number), ...ri.path.slice(2)].join('') : genNodeId()
+    newNodeId: IS_TESTING ? ['r', ri.path[1] + lastIndexR + 1].join('') : genNodeId()
   }))
   cbL.forEach(li => Object.assign(li, {
-    nodeId: IS_TESTING ? ['l', (li.path.at(1) as number) + (ipL.at(1) as number)].join('') : genNodeId(),
-    path : ['l', (li.path.at(1) as number) + (ipL.at(1) as number)],
+    nodeId: IS_TESTING ? ['l', (li.path.at(1) as number) + lastIndexL + 1].join('') : genNodeId(),
+    path : ['l', (li.path.at(1) as number) + lastIndexL + 1],
     fromNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId,
     toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId
   }))
   cbRR.forEach((ri, i) => Object.assign(ri, {
     nodeId: nodeIdMappingR[i].newNodeId,
-    path: ['r', (ri.path.at(1) as number) + (ipR.at(-1) as number), ...ri.path.slice(2)],
+    path: ['r', ri.path[1] + lastIndexR + 1],
     offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) + getG(m).selfW,
     offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) + getG(m).selfH
   }))
   cbRS.forEach(si => Object.assign(si, {
-    nodeId: IS_TESTING ? ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)].join('') : genNodeId(),
-    path: ['r', si.path.at(1) + ipR.at(-1), ...si.path.slice(2)],
+    nodeId: IS_TESTING ? ['r', si.path.at(1) + lastIndexR + 1, ...si.path.slice(2)].join('') : genNodeId(),
+    path: ['r', si.path.at(1) + lastIndexR + 1, ...si.path.slice(2)],
   }))
   cbRC.forEach(ci => Object.assign(ci, {
-    nodeId: IS_TESTING ? ['r', ci.path.at(1) + ipR.at(-1), ...ci.path.slice(2)].join('') : genNodeId(),
-    path: ['r', ci.path.at(1) + ipR.at(-1), ...ci.path.slice(2)],
+    nodeId: IS_TESTING ? ['r', ci.path.at(1) + lastIndexR + 1, ...ci.path.slice(2)].join('') : genNodeId(),
+    path: ['r', ci.path.at(1) + lastIndexR + 1, ...ci.path.slice(2)],
   }))
   unselectNodes(m)
   m.push(...cbL, ...cbRR, ...cbRS, ...cbRC)
@@ -82,24 +84,17 @@ export const copySC = (m: M) => {
 }
 
 export const pasteLRSC = (m: M, payload: any) => {
-  const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
-  const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
   const lrsc = JSON.parse(payload) as M
-  clipboardToLRSC(m, mL(lrsc), mR(lrsc), mS(lrsc), mC(lrsc), ipL, ipR)
+  clipboardToLRSC(m, mL(lrsc), mR(lrsc), mS(lrsc), mC(lrsc))
 }
 
 export const pasteSC = (m: M, ip: PS, payload: any) => {
-  const xas = JSON.parse(payload) as M
-  const xasLength = xas.length
-  const ss = mS(xas)
-  const sc = mC(xas)
-  clipboardToSC(m, ss, sc, ip, xasLength)
+  const sc = JSON.parse(payload) as M
+  clipboardToSC(m, mS(sc), mC(sc), ip, sc.length)
 }
 
 export const duplicateLRSC = (m: M) => {
-  const ipL = ['l', (mL(m).at(-1)?.path.at(1) as number || 0) + 1] as PL
-  const ipR = ['r', mR(m).at(-1)!.path.at(1) as number + 1] as PR
-  clipboardToLRSC(m, lToClipboard(m), rrToClipboard(m), rsToClipboard(m), rcToClipboard(m), ipL, ipR)
+  clipboardToLRSC(m, lToClipboard(m), rrToClipboard(m), rsToClipboard(m), rcToClipboard(m))
 }
 
 export const duplicateSC = (m: M) => {
