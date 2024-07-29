@@ -1,4 +1,4 @@
-import {getG, getLastIndexL, getLastIndexR, getXAC, getXAS, getXFS, getXS, idToC, idToS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getXAC, getXAS, getXLS, getXS, idToC, idToS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genNodeId} from "../utils/Utils"
@@ -58,7 +58,8 @@ const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
   m.sort(sortPath)
 }
 
-const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS, xasLength: number) => {
+const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS) => {
+  const offset = getXAS(m).length
   const pathSS = cbSS.map(si => [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)])
   const pathSC = cbSC.map(ci => [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)])
   cbSS.forEach((si, i) => Object.assign(si, {
@@ -69,7 +70,7 @@ const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS, xasLength: number) =>
     nodeId: genNodeId(),
     path: pathSC[i]
   }))
-  offsetSC(m, ip, xasLength)
+  offsetSC(m, ip, offset)
   unselectNodes(m)
   m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
@@ -90,7 +91,7 @@ export const pasteLRSC = (m: M, payload: any) => {
 
 export const pasteSC = (m: M, ip: PS, payload: any) => {
   const sc = JSON.parse(payload) as M
-  clipboardToSC(m, mS(sc), mC(sc), ip, sc.length)
+  clipboardToSC(m, mS(sc), mC(sc), ip)
 }
 
 export const duplicateLRSC = (m: M) => {
@@ -98,12 +99,8 @@ export const duplicateLRSC = (m: M) => {
 }
 
 export const duplicateSC = (m: M) => {
-  const ip = [...getXS(m).path.slice(0, -2), 's', getXFS(m).su.length + getXAS(m).length] as PS
-  const xas = getXAS(m)
-  const xasLength = xas.length
-  const cbSS = ssToClipboard(m)
-  const cbSC = scToClipboard(m)
-  clipboardToSC(m, cbSS, cbSC, ip, xasLength)
+  const ip = getXLS(m).path.with(-1, getXLS(m).path.at(-1) + 1) as PS
+  clipboardToSC(m, ssToClipboard(m), scToClipboard(m), ip)
 }
 
 export const moveSC = (m: M, ip: PS) => {
