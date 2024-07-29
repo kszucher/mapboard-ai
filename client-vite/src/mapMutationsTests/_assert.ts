@@ -9,7 +9,7 @@ import {mL} from "../mapQueries/MapQueries.ts"
 
 export const _assert = (test: MPartial, result: MPartial, mmType: MM, mmPayload?: any) => {
   const m = test as M
-  const pathMappingBefore = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('') as string]))
+  const pathMappingBefore = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('')]))
   mapInit(m)
   mapChain(m)
   mapMutation(m, mmType, mmPayload)
@@ -17,7 +17,7 @@ export const _assert = (test: MPartial, result: MPartial, mmType: MM, mmPayload?
   md.forEach(ni => Object.assign(ni, {
     nodeId: pathMappingBefore.has(ni.nodeId) ? pathMappingBefore.get(ni.nodeId) : '_' +  ni.path.join('')
   }))
-  const pathMappingAfter = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('') as string]))
+  const pathMappingAfter = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('')]))
   mL(md as M).forEach(li => Object.assign(li, {
     fromNodeId: pathMappingBefore.has(li.fromNodeId) ? pathMappingBefore.get(li.fromNodeId) : '_' + pathMappingAfter.get(li.fromNodeId),
     toNodeId: pathMappingBefore.has(li.toNodeId) ? pathMappingBefore.get(li.toNodeId) : '_' + pathMappingAfter.get(li.toNodeId)

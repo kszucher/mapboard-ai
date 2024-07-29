@@ -29,18 +29,16 @@ const cbSave = (cb: any) => {
 const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
   const lastIndexL = getLastIndexL(m)
   const lastIndexR = getLastIndexR(m)
-  const nodeIdMappingR = cbRR.map(ri => ({
-    oldNodeId: ri.nodeId,
-    newNodeId: genNodeId()
-  }))
+  const nodeIdMappingR = new Map<string, string>(cbRR.map(ri => [ri.nodeId, genNodeId()]))
+  const nodeIdMappingRIterator = nodeIdMappingR[Symbol.iterator]()
   cbL.forEach(li => Object.assign(li, {
     nodeId: genNodeId(),
     path : ['l', li.path[1] + lastIndexL + 1],
-    fromNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.fromNodeId)?.newNodeId,
-    toNodeId: nodeIdMappingR.find(el => el.oldNodeId === li.toNodeId)?.newNodeId
+    fromNodeId: nodeIdMappingR.get(li.fromNodeId),
+    toNodeId: nodeIdMappingR.get(li.toNodeId)
   }))
-  cbRR.forEach((ri, i) => Object.assign(ri, {
-    nodeId: nodeIdMappingR[i].newNodeId,
+  cbRR.forEach(ri => Object.assign(ri, {
+    nodeId: nodeIdMappingRIterator.next().value[1],
     path: ['r', ri.path[1] + lastIndexR + 1],
     offsetW: (ri.offsetW ?? rSaveOptional.offsetW) + getG(m).selfW,
     offsetH: (ri.offsetH ?? rSaveOptional.offsetH) + getG(m).selfH
