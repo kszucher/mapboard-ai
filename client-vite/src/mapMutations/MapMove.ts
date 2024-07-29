@@ -58,15 +58,13 @@ const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
 
 const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS) => {
   const offset = getXAS(m).length
-  const pathSS = cbSS.map(si => [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)])
-  const pathSC = cbSC.map(ci => [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)])
-  cbSS.forEach((si, i) => Object.assign(si, {
+  cbSS.forEach(si => Object.assign(si, {
     nodeId: genNodeId(),
-    path: pathSS[i]
+    path: [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]
   }))
-  cbSC.forEach((si, i) => Object.assign(si, {
+  cbSC.forEach(ci => Object.assign(ci, {
     nodeId: genNodeId(),
-    path: pathSC[i]
+    path: [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]
   }))
   offsetSC(m, ip, offset)
   unselectNodes(m)
