@@ -1,7 +1,7 @@
 import {getG, getHN, isXACC, isXACR, getXAC, getXC, pathToC, pathToR, idToR} from "../../mapQueries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
-import {C, G, L, M, PR, S, T} from "../../state/MapStateTypes"
+import {C, G, L, M, PR, R, S, T} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
 import {sortPath} from "../../mapMutations/MapSort.ts"
 
@@ -97,64 +97,23 @@ export const getNodeLinePath = (g: G, na: S | C, nb: S | C) => {
   return path
 }
 
+const getCoordinatesForSide = (node: R, side: Side) : {x: number, y: number, cx: number, cy: number} => {
+  const { nodeStartX, nodeStartY, selfW, selfH } = node
+  const offset = 100
+  switch (side) {
+    case Side.R: return { x: nodeStartX + selfW, y: nodeStartY + selfH / 2, cx: nodeStartX + selfW + offset, cy: nodeStartY + selfH / 2 }
+    case Side.L: return { x: nodeStartX, y: nodeStartY + selfH / 2, cx: nodeStartX - offset, cy: nodeStartY + selfH / 2 }
+    case Side.T: return { x: nodeStartX + selfW / 2, y: nodeStartY, cx: nodeStartX + selfW / 2, cy: nodeStartY - offset }
+    case Side.B: return { x: nodeStartX + selfW / 2, y: nodeStartY + selfH, cx: nodeStartX + selfW / 2, cy: nodeStartY + selfH + offset }
+  }
+}
+
 export const getRootLinePath = (m: M, l: L) => {
   const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l
   const fromNode = idToR(m, fromNodeId)
   const toNode = idToR(m, toNodeId)
-  let sx = 0, sy = 0, c1x = 0, c1y = 0
-  switch (fromNodeSide) {
-    case Side.R:
-      sx = fromNode.nodeStartX + fromNode.selfW
-      sy = fromNode.nodeStartY + fromNode.selfH / 2
-      c1x = sx + 100
-      c1y = sy
-      break
-    case Side.L:
-      sx = fromNode.nodeStartX
-      sy = fromNode.nodeStartY + fromNode.selfH / 2
-      c1x = sx - 100
-      c1y = sy
-      break
-    case Side.T:
-      sx = fromNode.nodeStartX + fromNode.selfW / 2
-      sy = fromNode.nodeStartY
-      c1x = sx
-      c1y = sy - 100
-      break
-    case Side.B:
-      sx = fromNode.nodeStartX + fromNode.selfW / 2
-      sy = fromNode.nodeStartY + fromNode.selfH
-      c1x = sx
-      c1y = sy + 100
-      break
-  }
-  let ex = 0, ey = 0, c2x = 0, c2y = 0
-  switch (toNodeSide) {
-    case Side.R:
-      ex = toNode.nodeStartX + toNode.selfW
-      ey = toNode.nodeStartY + toNode.selfH / 2
-      c2x = ex + 100
-      c2y = ey
-      break
-    case Side.L:
-      ex = toNode.nodeStartX
-      ey = toNode.nodeStartY + toNode.selfH / 2
-      c2x = ex - 100
-      c2y = ey
-      break
-    case Side.T:
-      ex = toNode.nodeStartX + toNode.selfW / 2
-      ey = toNode.nodeStartY
-      c2x = ex
-      c2y = ey - 100
-      break
-    case Side.B:
-      ex = toNode.nodeStartX + toNode.selfW / 2
-      ey = toNode.nodeStartY + toNode.selfH
-      c2x = ex
-      c2y = ey + 100
-      break
-  }
+  const { x: sx, y: sy, cx: c1x, cy: c1y } = getCoordinatesForSide(fromNode, fromNodeSide)
+  const { x: ex, y: ey, cx: c2x, cy: c2y } = getCoordinatesForSide(toNode, toNodeSide)
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
 
