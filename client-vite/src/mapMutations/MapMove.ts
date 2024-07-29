@@ -57,7 +57,6 @@ const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
 }
 
 const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS) => {
-  const offset = getXAS(m).length
   cbSS.forEach(si => Object.assign(si, {
     nodeId: genNodeId(),
     path: [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]
@@ -66,7 +65,7 @@ const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS) => {
     nodeId: genNodeId(),
     path: [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]
   }))
-  offsetSC(m, ip, offset)
+  offsetSC(m, ip, getXAS(m).length)
   unselectNodes(m)
   m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
@@ -100,13 +99,13 @@ export const duplicateSC = (m: M) => {
 }
 
 export const moveSC = (m: M, ip: PS) => {
-  const xas = getXAS(m)
+  const offset = getXAS(m).length
   const cbSS = ssToClipboard(m)
   const cbSC = scToClipboard(m)
   deleteS(m)
   cbSS.forEach(si => Object.assign(si, {path: [...ip.with(-1, ip.at(-1) + si.path.at(1)), ...si.path.slice(2)]}))
   cbSC.forEach(ci => Object.assign(ci, {path: [...ip.with(-1, ip.at(-1) + ci.path.at(1)), ...ci.path.slice(2)]}))
-  offsetSC(m, ip, xas.length)
+  offsetSC(m, ip, offset)
   m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
 }
