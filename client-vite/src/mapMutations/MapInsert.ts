@@ -1,6 +1,6 @@
 import {C, LPartial, M, PS, L, R, S} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {getG, getLastIndexL, getLastIndexR, getXS, idToC, idToS, isXAS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getXS, idToS, isXAS} from "../mapQueries/MapQueries.ts"
 import {genNodeId, getTableIndices} from "../utils/Utils"
 import {sSaveOptional} from "../state/MapState.ts"
 import {sortPath} from "./MapSort.ts"
@@ -27,8 +27,8 @@ export const insertS = (m: M, ip: PS, attributes?: object) => {
 }
 
 export const insertCL = (m: M, index: number, newValue: number, insertBaseCL: C[], offsetBaseCL: C[]) => {
+  offsetBaseCL.forEach(ci => ci.path.splice(index, 1, ci.path.at(index) + 1))
   offsetBaseCL.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(index, 1, si.path.at(index) + 1))
-  offsetBaseCL.map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) + 1))
   m.push(...insertBaseCL.map(ci => ({nodeId: genNodeId(), path: ci.path.with(index, newValue)} as C)))
   m.push(...insertBaseCL.map(ci => ({nodeId: genNodeId(), path: [...ci.path.with(index, newValue), 's', 0]} as S)))
   m.sort(sortPath)

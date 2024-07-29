@@ -112,10 +112,10 @@ export const moveSC = (m: M, ip: PS) => {
 }
 
 export const moveCL = (m: M, index: number, offset: number, dir: 'cd' | 'cu' | 'cr' | 'cl') => {
+  getXAC(m).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) + offset))
   getXAC(m).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(index, 1, si.path.at(index) + offset))
-  getXAC(m).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) + offset))
+  getXAC(m).map(ci => idToC(m, ci[dir].at(-1)!)).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) - offset))
   getXAC(m).map(ci => idToC(m, ci[dir].at(-1)!)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(index, 1, si.path.at(index) - offset))
-  getXAC(m).map(ci => idToC(m, ci[dir].at(-1)!)).map(ci => ci.nodeId).map(nid => idToC(m, nid)).forEach(ci => ci.path.splice(index, 1, ci.path.at(index) - offset))
   m.sort(sortPath)
 }
 
