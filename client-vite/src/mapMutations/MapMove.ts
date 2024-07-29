@@ -42,8 +42,8 @@ const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
   cbRR.forEach((ri, i) => Object.assign(ri, {
     nodeId: nodeIdMappingR[i].newNodeId,
     path: ['r', ri.path[1] + lastIndexR + 1],
-    offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) + getG(m).selfW,
-    offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) + getG(m).selfH
+    offsetW: (ri.offsetW ?? rSaveOptional.offsetW) + getG(m).selfW,
+    offsetH: (ri.offsetH ?? rSaveOptional.offsetH) + getG(m).selfH
   }))
   cbRS.forEach(si => Object.assign(si, {
     nodeId: genNodeId(),
