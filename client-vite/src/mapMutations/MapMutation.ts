@@ -57,10 +57,10 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'selectFirstCC': selectCL(m, mC(m).at(0)!.cv.map(nid => idToC(m, nid))); break
     case 'selectSameCR': selectCL(m, getXC(m).ch.map(nid => idToC(m, nid))); break
     case 'selectSameCC': selectCL(m, getXC(m).cv.map(nid => idToC(m, nid))); break
-    case 'selectCD': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-2, ci.path.at(-2) + 1) as PC))); break
-    case 'selectCU': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-2, ci.path.at(-2) - 1) as PC))); break
-    case 'selectCR': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) + 1) as PC))); break
-    case 'selectCL': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) - 1) as PC))); break
+    case 'selectDC': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-2, ci.path.at(-2) + 1) as PC))); break
+    case 'selectUC': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-2, ci.path.at(-2) - 1) as PC))); break
+    case 'selectRC': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) + 1) as PC))); break
+    case 'selectLC': selectCL(m, getXAC(m).map(ci => pathToC(m, ci.path.with(-1, ci.path.at(-1) - 1) as PC))); break
     case 'selectSByRectangle': selectSL(m, payload.intersectingNodes.map((nid: string) => idToS(m, nid))); break
     case 'unselect': unselectNodes(m); break
     case 'unselectR': unselectR(pathToR(m, payload.path)); break
