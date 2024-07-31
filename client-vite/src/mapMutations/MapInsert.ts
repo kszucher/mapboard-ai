@@ -27,8 +27,8 @@ export const insertS = (m: M, ip: PS, attributes?: object) => {
 }
 
 export const insertCL = (m: M, index: number, newValue: number, insertBaseCL: C[], offsetBaseCL: C[]) => {
-  offsetBaseCL.forEach(ci => ci.path.splice(index, 1, ci.path.at(index) + 1))
-  offsetBaseCL.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path.splice(index, 1, si.path.at(index) + 1))
+  offsetBaseCL.forEach(ci => ci.path[index] +=  1)
+  offsetBaseCL.flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path[index] += 1)
   m.push(...insertBaseCL.map(ci => ({nodeId: genNodeId(), path: ci.path.with(index, newValue)} as C)))
   m.push(...insertBaseCL.map(ci => ({nodeId: genNodeId(), path: [...ci.path.with(index, newValue), 's', 0]} as S)))
   m.sort(sortPath)
