@@ -109,6 +109,10 @@ export const api = createApi({
           clearTimeout(timeoutId)
           const commitIndexSaved = editor.commitList.findIndex(el => el.commitId === editor.lastMergedCommitId)
           const commitIndexBase = commitIndexSaved === -1 ? 0 : commitIndexSaved
+          if (editor.lastMergedCommitId !== '' && commitIndexSaved === -1) {
+            window.alert('save issue')
+            console.warn('save issue', 'commitList:', editor.commitList, 'lastMergedCommitId', editor.lastMergedCommitId)
+          }
           dispatch(api.endpoints.saveMap.initiate({
             mapId: ws.mapId,
             mapDelta: mapDiff(
