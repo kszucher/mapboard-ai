@@ -153,9 +153,9 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'setTextFontSize': getXAS(m).forEach(si => Object.assign(si, { textFontSize: payload })); break
     case 'setTextColor': getXAS(m).forEach(si => Object.assign(si, { textColor: payload })); break
     case 'setBlur': getXAS(m).forEach(si => Object.assign(si, { blur: 1 })); break
-    case 'setTaskModeOn': getXS(m).so.map(nid => idToS(m, nid)).forEach(si => !si.path.includes('c') && Object.assign(si, { taskStatus: si.taskStatus === 0 ? 1 : si.taskStatus })); break
-    case 'setTaskModeOff': getXS(m).so.map(nid => idToS(m, nid)).forEach(si => Object.assign(si, { taskStatus: 0 })); break
-    case 'setTaskModeReset': getXS(m).so.map(nid => idToS(m, nid)).forEach(si => Object.assign(si, { taskStatus: si.taskStatus > 0 ? 1 : si.taskStatus })); break
+    case 'setTaskModeOn': [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).forEach(si => Object.assign(si, { taskStatus: si.taskStatus === 0 ? 1 : si.taskStatus })); break
+    case 'setTaskModeOff': [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).forEach(si => Object.assign(si, { taskStatus: 0 })); break
+    case 'setTaskModeReset': [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).forEach(si => Object.assign(si, { taskStatus: si.taskStatus > 0 ? 1 : si.taskStatus })); break
     case 'setTaskStatus': Object.assign(idToS(m, payload.nodeId), { taskStatus: payload.taskStatus }); break
     case 'clearDimensions': Object.assign(getXS(m), { dimW: sSaveOptional.dimW, dimH: sSaveOptional.dimH }); break
     case 'clearLine': getXAS(m).forEach(si => Object.assign(si, { lineWidth: sSaveOptional.lineWidth, lineType: sSaveOptional.lineType, lineColor: sSaveOptional.lineColor })); break
