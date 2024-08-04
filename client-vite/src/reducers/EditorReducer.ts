@@ -235,8 +235,10 @@ export const editorSlice = createSlice({
         mapMeasure(pm, m)
         mapPlace(m)
         m.sort(sortNode)
-        state.commitList = [{commitId: genId(), data: m}]
+        const commitId = genId()
+        state.commitList = [{commitId, data: m}]
         state.commitIndex = 0
+        state.lastMergedCommitId = commitId
         state.editedNodeId = ''
         state.isLoading = false
       }
