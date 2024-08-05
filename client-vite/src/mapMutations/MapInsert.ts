@@ -1,8 +1,7 @@
 import {C, LPartial, M, PS, L, R, S, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
-import {getG, getLastIndexL, getLastIndexR, getXS, idToS, isXAS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, idToS} from "../mapQueries/MapQueries.ts"
 import {genNodeId, getTableIndices} from "../utils/Utils"
-import {sSaveOptional} from "../state/MapState.ts"
 import {sortPath} from "./MapSort.ts"
 import {offsetSC} from "./MapOffset.ts"
 
@@ -20,9 +19,8 @@ export const insertR = (m: M) => {
 
 export const insertS = (m: M, ip: PS, attributes?: object) => {
   offsetSC(m, ip, 1)
-  const parentTaskStatus = isXAS(m) ? getXS(m).taskStatus : sSaveOptional.taskStatus
   unselectNodes(m)
-  m.push({nodeId: genNodeId(), path: ip, selected: 1, taskStatus: parentTaskStatus, ...attributes} as S)
+  m.push({nodeId: genNodeId(), path: ip, selected: 1, ...attributes} as S)
   m.sort(sortPath)
 }
 

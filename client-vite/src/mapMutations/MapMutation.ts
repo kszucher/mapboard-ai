@@ -69,10 +69,10 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
-    case 'insertSD': insertS(m, getXLS(m).path.with(-1, getXLS(m).su.length + 1) as PS, payload); break
-    case 'insertSU': insertS(m, getXFS(m).path.with(-1, getXFS(m).su.length) as PS, payload); break
-    case 'insertRSO': insertS(m, [...getXR(m).path, 's', getXR(m).so1.length], payload); break
-    case 'insertSSO': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], payload); break
+    case 'insertSD': insertS(m, getXLS(m).path.with(-1, getXLS(m).su.length + 1) as PS, {taskStatus: getXLS(m).taskStatus}); break
+    case 'insertSU': insertS(m, getXFS(m).path.with(-1, getXFS(m).su.length) as PS, {taskStatus: getXFS(m).taskStatus}); break
+    case 'insertRSO': insertS(m, [...getXR(m).path, 's', getXR(m).so1.length]); break
+    case 'insertSSO': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], {taskStatus: getXS(m).taskStatus}); break
     case 'insertSSOText': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload }); break
     case 'insertSSOLink': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
     case 'insertSSOImage': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
