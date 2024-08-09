@@ -34,10 +34,10 @@ export const getXASS = (m: M): S[] => mSS(m).filter(si => si.selected)
 export const getXACS = (m: M): S[] => mCS(m).filter(si => si.selected)
 export const getXAS = (m: M): S[] => mS(m).filter(si => si.selected)
 export const getXAC = (m: M): C[] => mC(m).filter(ci => ci.selected)
-export const getFirstXSCR = (m: M): C[] => getXS(m).co1.map(nid => idToC(m, nid)).filter(ci => ci.path.at(-2) === 0)
-export const getLastXSCR = (m: M): C[] => getXS(m).co1.map(nid => idToC(m, nid)).filter(ci => ci.path.at(-2) === getXS(m).rowCount - 1)
-export const getFirstXSCC = (m: M): C[] => getXS(m).co1.map(nid => idToC(m, nid)).filter(ci => ci.path.at(-1) === 0)
-export const getLastXSCC = (m: M): C[] => getXS(m).co1.map(nid => idToC(m, nid)).filter(ci => ci.path.at(-1) === getXS(m).colCount - 1)
+export const getFirstXSCR = (m: M): C[] => getXS(m).co1.filter(ci => ci.path.at(-2) === 0)
+export const getLastXSCR = (m: M): C[] => getXS(m).co1.filter(ci => ci.path.at(-2) === getXS(m).rowCount - 1)
+export const getFirstXSCC = (m: M): C[] => getXS(m).co1.filter(ci => ci.path.at(-1) === 0)
+export const getLastXSCC = (m: M): C[] => getXS(m).co1.filter(ci => ci.path.at(-1) === getXS(m).colCount - 1)
 
 export const isXAR = (m: M): boolean => getXAR(m).length > 0
 export const isXAS = (m: M): boolean => getXAS(m).length > 0

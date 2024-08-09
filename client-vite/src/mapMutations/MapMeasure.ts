@@ -4,10 +4,9 @@ import {getG, getHN, hasTask, mR} from "../mapQueries/MapQueries.ts"
 import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M, G, R, S, C} from "../state/MapStateTypes"
-import {isC, isG, isR, isS} from "../mapQueries/PathQueries.ts";
+import {isC, isG, isR, isS} from "../mapQueries/PathQueries.ts"
 
 export const mapMeasure = (pm: M, m: M) => {
-  const hn = getHN(m)
   const phn = getHN(pm)
   const g = getG(m)
   const minOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))
@@ -27,7 +26,7 @@ export const mapMeasure = (pm: M, m: M) => {
       case isR(ni.path): {
         const ri = ni as R
         if (ri.so1.length) {
-          const so1 = ri.so1//.map(nid => hn.get(nid)) as S[]
+          const so1 = ri.so1
           if (g.flow === Flow.EXPLODED) {
             ri.familyW = Math.max(...so1.map(si => si.maxW))
             ri.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.so.length > ri.so1.length || ri.co.length)
@@ -43,7 +42,7 @@ export const mapMeasure = (pm: M, m: M) => {
       case isS(ni.path): {
         const si = ni as S
         if (si.so1.length) {
-          const so1 = si.so1//.map(nid => hn.get(nid)) as S[]
+          const so1 = si.so1
           if (g.flow === Flow.EXPLODED) {
             si.familyW = Math.max(...so1.map(si => si.maxW)) + g.sLineDeltaXDefault
             si.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (si.so1.length - 1) * +Boolean(si.so.length > si.so1.length || si.co.length)
@@ -53,13 +52,13 @@ export const mapMeasure = (pm: M, m: M) => {
           }
         }
         if (si.co1.length) {
-          const co1 = si.co1.map(nid => hn.get(nid)) as C[]
+          const co1 = si.co1
           co1.forEach(ci => {
-            ci.selfW = Math.max(...ci.cv.map(ni => (hn.get(ni) as C).familyW + C_SPACING))
-            ci.selfH = Math.max(...ci.ch.map(ni => (hn.get(ni) as C).familyH + C_SPACING))
+            ci.selfW = Math.max(...ci.cv.map(ci => ci.familyW + C_SPACING))
+            ci.selfH = Math.max(...ci.ch.map(ci => ci.familyH + C_SPACING))
           })
-          si.selfW = co1.at(0)!.ch.map(nid => hn.get(nid) as S).reduce((a, b) => a + b.selfW, 0)
-          si.selfH = co1.at(0)!.cv.map(nid => hn.get(nid) as S).reduce((a, b) => a + b.selfH, 0)
+          si.selfW = co1.at(0)!.ch.reduce((a, b) => a + b.selfW, 0)
+          si.selfH = co1.at(0)!.cv.reduce((a, b) => a + b.selfH, 0)
         }
         if (!si.co1.length) {
           const psi = phn.get(si.nodeId) as S
@@ -102,7 +101,7 @@ export const mapMeasure = (pm: M, m: M) => {
       case isC(ni.path): {
         const ci = ni as C
         if (ci.so1.length) {
-          const so1 = ci.so1//.map(nid => hn.get(nid)) as S[]
+          const so1 = ci.so1
           if (g.flow === Flow.EXPLODED) {
             ci.familyW = Math.max(...so1.map(si => si.maxW)) + g.sLineDeltaXDefault
             ci.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ci.so1.length - 1) * +Boolean(ci.so.length > ci.so1.length)

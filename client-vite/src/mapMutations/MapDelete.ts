@@ -1,7 +1,7 @@
 import {L, M, PL, PR, PS, PC} from "../state/MapStateTypes"
-import {mG, mL, mR, mS, mC, pathToS, idToS, getXAS, getXAC, getXAR, getXC} from "../mapQueries/MapQueries.ts"
+import {mG, mL, mR, mS, mC, pathToS, getXAS, getXAC, getXAR, getXC} from "../mapQueries/MapQueries.ts"
 import {sortPath} from "./MapSort.ts"
-import {isCD, isCEO, isCR, isRDO, isREO, isSEO} from "../mapQueries/PathQueries.ts";
+import {isCD, isCEO, isCR, isRDO, isREO, isSEO} from "../mapQueries/PathQueries.ts"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[
@@ -48,10 +48,10 @@ export const deleteS = (m: M) => {
       ...mR(m),
       ...mS(m)
         .filter(si => xa.every(xti => !isSEO(xti.path, si.path)))
-        .map(si => ({...si, path: si.path.map((pi, i) => si.path.at(i - 1) === 's' ? pi - pathToS(m, si.path.slice(0, i + 1) as PS).su.map(nid => idToS(m, nid)).filter(si => si.selected).length : pi) as PS})),
+        .map(si => ({...si, path: si.path.map((pi, i) => si.path.at(i - 1) === 's' ? pi - pathToS(m, si.path.slice(0, i + 1) as PS).su.filter(si => si.selected).length : pi) as PS})),
       ...mC(m)
         .filter(ci => xa.every(xti => !isSEO(xti.path, ci.path)))
-        .map(ci => ({...ci, path: ci.path.map((pi, i) => ci.path.at(i - 1) === 's' ? pi - pathToS(m, ci.path.slice(0, i + 1) as PS).su.map(nid => idToS(m, nid)).filter(si => si.selected).length : pi) as PC})),
+        .map(ci => ({...ci, path: ci.path.map((pi, i) => ci.path.at(i - 1) === 's' ? pi - pathToS(m, ci.path.slice(0, i + 1) as PS).su.filter(si => si.selected).length : pi) as PC})),
     ].sort(sortPath)
   )
 }

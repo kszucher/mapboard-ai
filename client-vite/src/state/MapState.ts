@@ -1,5 +1,5 @@
 import {ControlType, LineType, Flow, Side} from "./Enums"
-import {PG, PL, PR, PS, PC, GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, RSaveAlways, RSaveNever, RSaveOptional, SSaveAlways, SSaveNever, SSaveOptional, CSaveAlways, CSaveNever, CSaveOptional, R,} from "./MapStateTypes"
+import {PG, PL, PR, PS, PC, GSaveAlways, GSaveNever, GSaveOptional, LSaveAlways, LSaveNever, LSaveOptional, RSaveAlways, RSaveNever, RSaveOptional, SSaveAlways, SSaveNever, SSaveOptional, CSaveAlways, CSaveNever, CSaveOptional, R, S, C,} from "./MapStateTypes"
 
 export const gSaveAlways = {
   path: ['g'] as PG,
@@ -99,8 +99,8 @@ export const sSaveOptional = {
 
 export const sSaveNever = {
   ri1: {} as R,
-  si1: '',
-  ci1: '',
+  si1: {} as S,
+  ci1: {} as C,
   so1: [],
   so: [],
   co1: [],
@@ -137,9 +137,9 @@ export const cSaveOptional = {
 } as CSaveOptional
 
 export const cSaveNever = {
-  ri2: '',
-  si1: '',
-  si2: '',
+  ri2: {} as R,
+  si1: {} as S,
+  si2: {} as S,
   so1: [],
   so: [],
   cu: [],

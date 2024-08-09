@@ -1,6 +1,6 @@
 import {M, R, S, C} from "../state/MapStateTypes.ts"
 import {getHP} from "../mapQueries/MapQueries.ts"
-import {isC, isCS, isRS, isRSC, isS, isSS, isSSC} from "../mapQueries/PathQueries.ts";
+import {isC, isCS, isRS, isRSC, isS, isSS, isSSC} from "../mapQueries/PathQueries.ts"
 
 export const mapChain = (m: M) => {
   const hp = getHP(m)
@@ -12,43 +12,38 @@ export const mapChain = (m: M) => {
           si.ri1 = hp.get(si.path.slice(0, -2).join('')) as R
           si.ri1.so1.push(si)
         } else if (isSS(si.path)) {
-          const si1 = hp.get(si.path.slice(0, -2).join('')) as S
-          si.si1 = si1.nodeId
-          si1.so1.push(si)
+          si.si1 = hp.get(si.path.slice(0, -2).join('')) as S
+          si.si1.so1.push(si)
         } else if (isCS(si.path)) {
-          const ci1 = hp.get(si.path.slice(0, -2).join('')) as S
-          si.ci1 = ci1.nodeId
-          ci1.so1.push(si)
+          si.ci1 = hp.get(si.path.slice(0, -2).join('')) as C
+          si.ci1.so1.push(si)
         }
         for (let i = 0; i < si.path.at(-1); i++) {
           const sui = hp.get([...si.path.slice(0, -1), i].join('')) as S
-          si.su.push(sui.nodeId)
+          si.su.push(sui)
         }
         break
       }
       case isC(ni.path): {
         const ci = ni as C
-        const si1 = hp.get(ci.path.slice(0, -3).join('')) as S
-        ci.si1 = si1.nodeId
-        si1.co1.push(ci.nodeId)
-        ci.cv.push(ci.nodeId)
-        ci.ch.push(ci.nodeId)
+        ci.si1 = hp.get(ci.path.slice(0, -3).join('')) as S
+        ci.si1.co1.push(ci)
+        ci.cv.push(ci)
+        ci.ch.push(ci)
         for (let i = 0; i < ci.path.at(-2); i++) {
           const cdi = hp.get([...ci.path.slice(0, -2), i, ci.path.at(-1)].join('')) as C
-          ci.cu.push(cdi.nodeId)
-          ci.cv.push(cdi.nodeId)
+          ci.cu.push(cdi)
+          ci.cv.push(cdi)
         }
         for (let i = 0; i < ci.path.at(-1); i++) {
           const cri = hp.get([...ci.path.slice(0, -2), ci.path.at(-2), i].join('')) as C
-          ci.cl.push(cri.nodeId)
-          ci.ch.push(cri.nodeId)
+          ci.cl.push(cri)
+          ci.ch.push(cri)
         }
         if (isRSC(ni.path)) {
-          const ri2 = hp.get(ci.path.slice(0, -5).join('')) as R
-          ci.ri2 = ri2.nodeId
+          ci.ri2 = hp.get(ci.path.slice(0, -5).join('')) as R
         } else if (isSSC(ni.path)) {
-          const si2 = hp.get(ci.path.slice(0, -5).join('')) as S
-          ci.si2 = si2.nodeId
+          ci.si2 = hp.get(ci.path.slice(0, -5).join('')) as S
         }
         break
       }
@@ -64,19 +59,19 @@ export const mapChain = (m: M) => {
         const siListC = tiList.filter(pi => pi.at(-3) === 'c')
         for (let i = 0; i < siListR.length; i++) {
           const rix = hp.get(siListR[i].join('')) as R
-          rix.so.push(si.nodeId)
+          rix.so.push(si)
         }
         for (let i = 0; i < siListS.length; i++) {
           const six = hp.get(siListS[i].join('')) as S
-          six.so.push(si.nodeId)
+          six.so.push(si)
         }
         for (let i = 0; i < siListC.length; i++) {
           const cix = hp.get(siListC[i].join('')) as C
-          cix.so.push(si.nodeId)
+          cix.so.push(si)
         }
         for (let i = 0; i < si.path.at(-1); i++) {
           const sdi = hp.get([...si.path.slice(0, -1), i].join('')) as S
-          sdi.sd.push(si.nodeId)
+          sdi.sd.push(si)
         }
         break
       }
@@ -87,21 +82,21 @@ export const mapChain = (m: M) => {
         const siListS = niList.filter(pi => pi.at(-2) === 's')
         for (let i = 0; i < siListR.length; i++) {
           const rix = hp.get(siListR[i].join('')) as R
-          rix.co.push(ci.nodeId)
+          rix.co.push(ci)
         }
         for (let i = 0; i < siListS.length; i++) {
           const six = hp.get(siListS[i].join('')) as S
-          six.co.push(ci.nodeId)
+          six.co.push(ci)
         }
         for (let i = 0; i < ci.path.at(-2); i++) {
           const cdi = hp.get([...ci.path.slice(0, -2), i, ci.path.at(-1)].join('')) as C
-          cdi.cd.push(ci.nodeId)
-          cdi.cv.push(ci.nodeId)
+          cdi.cd.push(ci)
+          cdi.cv.push(ci)
         }
         for (let i = 0; i < ci.path.at(-1); i++) {
           const cri = hp.get([...ci.path.slice(0, -2), ci.path.at(-2), i].join('')) as C
-          cri.cr.push(ci.nodeId)
-          cri.ch.push(ci.nodeId)
+          cri.cr.push(ci)
+          cri.ch.push(ci)
         }
         if (ci.path.at(-1) === 0) {
           const si1 = hp.get(ci.path.slice(0, -3).join('')) as S

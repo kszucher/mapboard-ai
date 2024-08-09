@@ -60,8 +60,8 @@ export interface RSaveOptional {
 
 export interface RSaveNever {
   so1: S[]
-  so: string[]
-  co: string[]
+  so: S[]
+  co: C[]
   selfW: number
   selfH: number
   familyW: number
@@ -106,14 +106,14 @@ export interface SSaveOptional {
 
 export interface SSaveNever {
   ri1: R
-  si1: string
-  ci1: string
+  si1: S
+  ci1: C
   so1: S[]
-  so: string[]
-  co1: string[]
-  co: string[]
-  su: string[]
-  sd: string[]
+  so: S[]
+  co1: C[]
+  co: C[]
+  su: S[]
+  sd: S[]
   rowCount: number
   colCount: number
   isTop: number
@@ -144,17 +144,17 @@ export interface CSaveOptional {
 }
 
 export interface CSaveNever {
-  ri2: string
-  si1: string
-  si2: string
+  ri2: R
+  si1: S
+  si2: S
   so1: S[]
-  so: string[]
-  cu: string[]
-  cd: string[]
-  cv: string[]
-  cl: string[]
-  cr: string[]
-  ch: string[]
+  so: S[]
+  cu: C[]
+  cd: C[]
+  cv: C[]
+  cl: C[]
+  cr: C[]
+  ch: C[]
   selfW: number
   selfH: number
   familyW: number

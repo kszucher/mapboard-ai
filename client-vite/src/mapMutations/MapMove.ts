@@ -1,4 +1,4 @@
-import {getG, getLastIndexL, getLastIndexR, getXAC, getXAS, getXLS, getXS, idToC, idToS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getXAC, getXAS, getXLS, getXS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genNodeId} from "../utils/Utils"
@@ -112,9 +112,9 @@ export const moveSC = (m: M, ip: PS) => {
 
 export const moveCL = (m: M, index: number, offset: number, dir: 'cd' | 'cu' | 'cr' | 'cl') => {
   getXAC(m).forEach(ci => ci.path[index] += offset)
-  getXAC(m).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path[index] += offset)
-  getXAC(m).map(ci => idToC(m, ci[dir].at(-1)!)).forEach(ci => ci.path[index] -= offset)
-  getXAC(m).map(ci => idToC(m, ci[dir].at(-1)!)).flatMap(ci => ci.so).map(nid => idToS(m, nid)).forEach(si => si.path[index] -= offset)
+  getXAC(m).flatMap(ci => ci.so).forEach(si => si.path[index] += offset)
+  getXAC(m).map(ci => ci[dir].at(-1)!).forEach(ci => ci.path[index] -= offset)
+  getXAC(m).map(ci => ci[dir].at(-1)!).flatMap(ci => ci.so).forEach(si => si.path[index] -= offset)
   m.sort(sortPath)
 }
 
@@ -126,8 +126,8 @@ export const moveS2T = (m: M) => {
       ...mG(m),
       ...mL(m),
       ...mR(m),
-      ...mS(m).filter(si => !so.includes(si.nodeId)).map(si => ({...si, selected: 0})),
-      ...mS(m).filter(si => so.includes(si.nodeId)).map(si => ({...si, path: [...si.path.slice(0, pos), 's', 0, 'c', si.path.at(pos + 1), 0, 's', 0, ...si.path.slice(pos + 2)] as PS})),
+      ...mS(m).filter(si => !so.includes(si)).map(si => ({...si, selected: 0})),
+      ...mS(m).filter(si => so.includes(si)).map(si => ({...si, path: [...si.path.slice(0, pos), 's', 0, 'c', si.path.at(pos + 1), 0, 's', 0, ...si.path.slice(pos + 2)] as PS})),
       ...[{nodeId: genNodeId(), path: [...getXS(m).path, 's', 0] as PS, selected: 1} as S],
       ...Array.from({length: getXS(m).so1.length}, (_, i) => ({nodeId: genNodeId(), path: [...getXS(m).path, 's', 0, 'c', i, 0] as PC, selected: 0} as C)),
       ...mC(m)
@@ -137,6 +137,6 @@ export const moveS2T = (m: M) => {
 
 export const transpose = (m: M) => {
   const pos = getXS(m).path.length
-  getXS(m).co.map(nid => idToC(m, nid)).forEach(ci => ci.path = [...ci.path.slice(0, pos), 'c', ci.path.at(pos + 2), ci.path.at(pos + 1), ...ci.path.slice(pos + 3)] as PC)
-  getXS(m).so.map(nid => idToS(m, nid)).forEach(si => si.path = [...si.path.slice(0, pos), 'c', si.path.at(pos + 2), si.path.at(pos + 1), ...si.path.slice(pos + 3)] as PS)
+  getXS(m).co.forEach(ci => ci.path = [...ci.path.slice(0, pos), 'c', ci.path.at(pos + 2), ci.path.at(pos + 1), ...ci.path.slice(pos + 3)] as PC)
+  getXS(m).so.forEach(si => si.path = [...si.path.slice(0, pos), 'c', si.path.at(pos + 2), si.path.at(pos + 1), ...si.path.slice(pos + 3)] as PS)
 }

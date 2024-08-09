@@ -1,4 +1,4 @@
-import {getG, getHN, isXACC, isXACR, getXAC, getXC, pathToC, pathToR, idToR} from "../../mapQueries/MapQueries.ts"
+import {getG, isXACC, isXACR, getXAC, getXC, pathToC, pathToR, idToR} from "../../mapQueries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
 import {C, G, L, M, PR, R, S, T} from "../../state/MapStateTypes"
@@ -227,7 +227,6 @@ export const getArcPath = (t: S, margin: number, closed: boolean) => {
 }
 
 export const getGridPath = (m: M, s: S) => {
-  const hn = getHN(m)
   const xi = s.nodeStartX
   const yu = s.nodeStartY
   const yd = s.nodeStartY + s.selfH
@@ -236,14 +235,14 @@ export const getGridPath = (m: M, s: S) => {
     const ci = pathToC(m, [...s.path, 'c', i, 0])
     const x1 = adjust(s.nodeStartX)
     const x2 = adjust(s.nodeStartX + s.selfW)
-    const cu = ci.cu.map(nid => hn.get(nid)) as C[]
+    const cu = ci.cu
     const calcOffsetY = cu.reduce((a, b) => a + b.selfH, 0)
     const y = adjust(yu + calcOffsetY)
     path += `M${x1},${y} L${x2},${y}`
   }
   for (let j = 1; j < s.colCount; j++) {
     const ci = pathToC(m, [...s.path, 'c', 0, j])
-    const cl = ci.cl.map(nid => hn.get(nid)) as C[]
+    const cl = ci.cl
     const calcOffsetX = cl.reduce((a, b) => a + b.selfW, 0)
     const x = adjust(xi + calcOffsetX)
     path += `M${x},${yu} L${x},${yd}`

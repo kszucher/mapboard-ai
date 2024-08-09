@@ -1,7 +1,7 @@
 import {DropdownMenu, Dialog, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
-import {getNodeMode, getXAS, getXFS, getXLS, getXR, getXS, idToS, isXARS, isXASVN} from "../../mapQueries/MapQueries.ts"
+import {getNodeMode, getXAS, getXFS, getXLS, getXR, getXS, isXARS, isXASVN} from "../../mapQueries/MapQueries.ts"
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import Dots from "../../assets/dots.svg?react"
@@ -93,9 +93,9 @@ export const NodeActions = () => {
               {formatterVisible && <DropdownMenu.Item onClick={() => dispatch(actions.closeFormatter())}>{'Close NodeActionsEditFormatter'}</DropdownMenu.Item>}
               {getXS(m).co1.length === 0 && getXS(m).linkType === '' && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_MAP_IN_MAP))}>{'Create Sub Map'}</DropdownMenu.Item></Dialog.Trigger>}
               {getXAS(m).length ===  1 && getXS(m).co1.length > 0 && <DropdownMenu.Item onClick={() => dm(MM.transpose)}>{'Transpose'}</DropdownMenu.Item>}
-              {getXAS(m).length ===  1 && getXS(m).co.length === 0 && [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).map(ti => ti.taskStatus).includes(0) && <DropdownMenu.Item onClick={() => dm(MM.setTaskModeOn)}>{'Task Mode On'}</DropdownMenu.Item>}
-              {getXAS(m).length ===  1 && [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dm(MM.setTaskModeOff)}>{'Task Mode Off'}</DropdownMenu.Item>}
-              {getXAS(m).length ===  1 && [getXS(m).nodeId, ...getXS(m).so].map(nid => idToS(m, nid)).map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dm(MM.setTaskModeReset)}>{'Task Mode Reset'}</DropdownMenu.Item>}
+              {getXAS(m).length ===  1 && getXS(m).co.length === 0 && [getXS(m), ...getXS(m).so].map(ti => ti.taskStatus).includes(0) && <DropdownMenu.Item onClick={() => dm(MM.setTaskModeOn)}>{'Task Mode On'}</DropdownMenu.Item>}
+              {getXAS(m).length ===  1 && [getXS(m), ...getXS(m).so].map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dm(MM.setTaskModeOff)}>{'Task Mode Off'}</DropdownMenu.Item>}
+              {getXAS(m).length ===  1 && [getXS(m), ...getXS(m).so].map(ti => ti.taskStatus).some(el => el > 0) && <DropdownMenu.Item onClick={() => dm(MM.setTaskModeReset)}>{'Task Mode Reset'}</DropdownMenu.Item>}
               {getXS(m).contentType === 'equation' && getXS(m).co1.length === 0 && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDIT_CONTENT_EQUATION))}>{'Edit Equation'}</DropdownMenu.Item></Dialog.Trigger>}
               {<DropdownMenu.Item onClick={() => dm(MM.setBlur)}>{'set blur'}</DropdownMenu.Item>}
               {<DropdownMenu.Item onClick={() => dm(MM.clearBlur)}>{'clear blur'}</DropdownMenu.Item>}
