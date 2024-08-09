@@ -66,6 +66,7 @@ export const Map: FC = () => {
         backgroundColor: getColors(colorMode).PAGE_BACKGROUND,
         gridTemplateRows: `100vh ${g.selfH}px 100vh`,
         gridTemplateColumns: `100vw ${g.selfW}px 100vw`,
+        outline: 'none'
       }}
       ref={mainMapDiv}
       id={'mainMapDiv'}
