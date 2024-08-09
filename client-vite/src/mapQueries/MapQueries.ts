@@ -57,11 +57,6 @@ export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(t
 
 export const getG = (m: M): G => mG(m).at(0) as G
 
-export const getLCS = (m: M): S => getXS(m).ci1.cl.at(-1)?.so1.at(0) as S ?? undefined
-export const getRCS = (m: M): S => getXS(m).ci1.cr.at(-1)?.so1.at(0) as S ?? undefined
-export const getDCS = (m: M): S => getXS(m).ci1.cd.at(-1)?.so1.at(0) as S ?? undefined
-export const getUCS = (m: M): S => getXS(m).ci1.cu.at(-1)?.so1.at(0) as S ?? undefined
-
 export const getQuasiSD = (m: M): S => mS(m).find(si => !si.selected && isQuasiSD(getXS(m).path, si.path))!
 export const getQuasiSU = (m: M): S => mS(m).findLast(si => !si.selected && isQuasiSU(getXS(m).path, si.path))!
 

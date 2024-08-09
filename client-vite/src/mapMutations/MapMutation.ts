@@ -1,4 +1,4 @@
-import {getG, getQuasiSD, getQuasiSU, mR, mS, mC, getXR, getXC, getLCS, getRCS, getDCS, getUCS, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, getFirstXSCR, getFirstXSCC, getLastXSCR, getLastXSCC, idToC} from "../mapQueries/MapQueries.ts"
+import {getG, getQuasiSD, getQuasiSU, mR, mS, mC, getXR, getXC, getXS, getXFS, getXLS, getXAC, getXAS, pathToR, pathToS, pathToC, idToR, idToS, getFirstXSCR, getFirstXSCC, getLastXSCR, getLastXSCC, idToC} from "../mapQueries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
 import {M, PC, PR, PS, R, S} from "../state/MapStateTypes"
@@ -32,15 +32,15 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'selectFamilyX': selectS(m, getXS(m), 'f'); break
     case 'selectSD': selectS(m, getQuasiSD(m) as S, 's'); break
     case 'selectSU': selectS(m, getQuasiSU(m) as S, 's'); break
-    case 'selectRSO': selectS(m, pathToS(m, [...getXR(m).path, 's', 0] as PS), 's'); break
-    case 'selectSSO': selectS(m, pathToS(m, [...getXS(m).path, 's', 0] as PS), 's'); break
+    case 'selectRSO': selectS(m, getXR(m).so1.at(0)!, 's'); break
+    case 'selectSSO': selectS(m, getXS(m).so1.at(0)!, 's'); break
     case 'selectSSOLast': selectS(m, pathToS(m, [...getXS(m).path, 's', getXS(m).lastSelectedChild] as PS), 's'); break
-    case 'selectCSO': selectS(m, pathToS(m, [...getXC(m).path, 's', 0] as PS), 's'); break
+    case 'selectCSO': selectS(m, getXC(m).so1.at(0)!, 's'); break
     case 'selectSI': getXS(m).si1.lastSelectedChild = getXS(m).path.at(-1); selectS(m, getXS(m).si1, 's'); break
-    case 'selectLCS': selectS(m, getLCS(m), 's'); break
-    case 'selectRCS': selectS(m, getRCS(m), 's'); break
-    case 'selectDCS': selectS(m, getDCS(m), 's'); break
-    case 'selectUCS': selectS(m, getUCS(m), 's'); break
+    case 'selectLCS': selectS(m, getXS(m).ci1.cl.at(-1)?.so1.at(0)!, 's'); break
+    case 'selectRCS': selectS(m, getXS(m).ci1.cr.at(-1)?.so1.at(0)!, 's'); break
+    case 'selectDCS': selectS(m, getXS(m).ci1.cd.at(-1)?.so1.at(0)!, 's'); break
+    case 'selectUCS': selectS(m, getXS(m).ci1.cu.at(-1)?.so1.at(0)!, 's'); break
     case 'selectCFR0': selectC(m, pathToC(m, getXC(m).path.with(-2, 0) as PC)); break
     case 'selectCFC0': selectC(m, pathToC(m, getXC(m).path.with(-1, 0) as PC)); break
     case 'selectCFF': selectC(m, pathToC(m, [...getXS(m).path, 'c', 0, 0])); break

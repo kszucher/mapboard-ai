@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
-import {getLastIndexR, getXC, getXS, getLCS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, getRCS, getUCS, getDCS, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU, getXR} from "../../mapQueries/MapQueries.ts"
+import {getLastIndexR, getXC, getXS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU, getXR} from "../../mapQueries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
@@ -97,7 +97,7 @@ export const Window: FC = () => {
 
     ckm === '---' && e.code === 'ArrowDown' && isXAR(m) && getRD(m, getXR(m)) && dm(MM.selectRD)
     ckm === '---' && e.code === 'ArrowDown' && isXAS(m) && getQuasiSD(m) && dm(MM.selectSD)
-    ckm === '---' && e.code === 'ArrowDown' && isXACS(m) && getXLS(m).sd.length === 0 && getDCS(m) && dm(MM.selectDCS)
+    ckm === '---' && e.code === 'ArrowDown' && isXACS(m) && getXLS(m).sd.length === 0 && getXS(m).ci1.cd.at(-1)?.so1.length && dm(MM.selectDCS)
     ckm === '---' && e.code === 'ArrowDown' && isXC(m) && getXC(m).cd.length > 0 && dm(MM.selectDC)
     ckm === '---' && e.code === 'ArrowDown' && isXACR(m) && getXC(m).cd.length > 0 && dm(MM.selectDC)
     ckm === 'c--' && e.code === 'ArrowDown' && isXAR(m) && dm(MM.offsetD)
@@ -110,7 +110,7 @@ export const Window: FC = () => {
 
     ckm === '---' && e.code === 'ArrowUp' && isXAR(m) && getRU(m, getXR(m)) && dm(MM.selectRU)
     ckm === '---' && e.code === 'ArrowUp' && isXAS(m) && getQuasiSU(m) && dm(MM.selectSU)
-    ckm === '---' && e.code === 'ArrowUp' && isXACS(m) && getXFS(m).su.length === 0 && getUCS(m) && dm(MM.selectUCS)
+    ckm === '---' && e.code === 'ArrowUp' && isXACS(m) && getXFS(m).su.length === 0 && getXS(m).ci1.cu.at(-1)?.so1.length && dm(MM.selectUCS)
     ckm === '---' && e.code === 'ArrowUp' && isXC(m) && getXC(m).cu.length > 0 && dm(MM.selectUC)
     ckm === '---' && e.code === 'ArrowUp' && isXACR(m) && getXC(m).cu.length > 0 && dm(MM.selectUC)
     ckm === 'c--' && e.code === 'ArrowUp' && isXAR(m) && dm(MM.offsetU)
@@ -124,7 +124,7 @@ export const Window: FC = () => {
     ckm === '---' && e.code === 'ArrowRight' && isXAR(m) && getRR(m, getXR(m)) && dm(MM.selectRR)
     ckm === '---' && e.code === 'ArrowRight' && isXAS(m) && getXS(m).so1.length > 0 && (getXS(m).lastSelectedChild < 0 || getXS(m).lastSelectedChild > getXS(m).so1.length) && dm(MM.selectSSO)
     ckm === '---' && e.code === 'ArrowRight' && isXAS(m) && getXS(m).so1.length > 0 && getXS(m).lastSelectedChild >= 0 && getXS(m).lastSelectedChild < getXS(m).so1.length && dm(MM.selectSSOLast)
-    ckm === '---' && e.code === 'ArrowRight' && isXACS(m) && getXS(m).so1.length === 0 && getRCS(m) && dm(MM.selectRCS)
+    ckm === '---' && e.code === 'ArrowRight' && isXACS(m) && getXS(m).so1.length === 0 && getXS(m).ci1.cr.at(-1)?.so1.length && dm(MM.selectRCS)
     ckm === '---' && e.code === 'ArrowRight' && isXC(m) && getXC(m).cr.length > 0 && dm(MM.selectRC)
     ckm === '---' && e.code === 'ArrowRight' && isXACC(m) && getXC(m).cr.length > 0 && dm(MM.selectRC)
     ckm === 'c--' && e.code === 'ArrowRight' && isXAR(m) && dm(MM.offsetR)
@@ -136,7 +136,7 @@ export const Window: FC = () => {
 
     ckm === '---' && e.code === 'ArrowLeft' && isXAR(m) && getRL(m, getXR(m)) && dm(MM.selectRL)
     ckm === '---' && e.code === 'ArrowLeft' && isXASS(m) && dm(MM.selectSI)
-    ckm === '---' && e.code === 'ArrowLeft' && isXACS(m) && getLCS(m) && dm(MM.selectLCS)
+    ckm === '---' && e.code === 'ArrowLeft' && isXACS(m) && getXS(m).ci1.cl.at(-1)?.so1.length && dm(MM.selectLCS)
     ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && getXC(m).cl.length > 0 && dm(MM.selectLC)
     ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && getXC(m).cl.length > 0 && dm(MM.selectLC)
     ckm === 'c--' && e.code === 'ArrowLeft' && isXAR(m) && dm(MM.offsetL)
