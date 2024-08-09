@@ -129,7 +129,7 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'moveCRD': moveCL(m, getXC(m).path.indexOf('c') + 1, 1, 'cd'); break
     case 'moveCRU': moveCL(m, getXC(m).path.indexOf('c') + 1, - 1, 'cu'); break
     case 'moveCCR': moveCL(m, getXC(m).path.indexOf('c') + 2, 1, 'cr'); break
-    case 'moveCCL': moveCL(m, getXC(m).path.indexOf('c') + 2,  - 1, 'cl'); break
+    case 'moveCCL': moveCL(m, getXC(m).path.indexOf('c') + 2, - 1, 'cl'); break
     case 'moveS2T': moveS2T(m); break
     case 'transpose': transpose(m); break
 
