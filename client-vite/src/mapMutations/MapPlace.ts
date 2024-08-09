@@ -19,7 +19,7 @@ export const mapPlace = (m: M) => {
         const si = ni as S
         const i = si.path.at(-1)
         if (isRS(si.path)) {
-          const ri1 = hn.get(si.ri1) as R
+          const ri1 = si.ri1
           const su = si.su.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
             const elapsed = su.map(si => si.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(ri1.so.length > ri1.so1.length || ri1.co.length)

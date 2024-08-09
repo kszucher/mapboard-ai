@@ -9,9 +9,8 @@ export const mapChain = (m: M) => {
       case isS(ni.path): {
         const si = ni as S
         if (isRS(si.path)) {
-          const ri1 = hp.get(si.path.slice(0, -2).join('')) as R
-          si.ri1 = ri1.nodeId
-          ri1.so1.push(si.nodeId)
+          si.ri1 = hp.get(si.path.slice(0, -2).join('')) as R
+          si.ri1.so1.push(si.nodeId)
         } else if (isSS(si.path)) {
           const si1 = hp.get(si.path.slice(0, -2).join('')) as S
           si.si1 = si1.nodeId
