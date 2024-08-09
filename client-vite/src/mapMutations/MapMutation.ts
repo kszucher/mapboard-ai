@@ -8,8 +8,10 @@ import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteS
 import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
+import {getClosestC} from "../mapQueries/PathQueries.ts"
 
 export const mapMutation = (m: M, action: MM, payload?: any) => {
+  console.log(action)
   switch (action) {
     case 'setDensitySmall': getG(m).density = 'small'; break
     case 'setDensityLarge': getG(m).density = 'large'; break
@@ -44,8 +46,8 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'selectCFF': selectC(m, pathToC(m, [...getXS(m).path, 'c', 0, 0])); break
     case 'selectXSIR': selectR(m, pathToR(m, getXS(m).path.slice(0, 2) as PR)); break
     case 'selectXSIRS': selectS(m, pathToS(m, getXS(m).path.slice(0, 2).concat('s', 0) as PS), 's'); break
-    case 'selectXSIC': selectC(m, pathToC(m, getXS(m).path.slice(0, getXS(m).path.findLastIndex(pi => pi === 'c') + 3) as PC)); break
-    case 'selectXSICS': selectS(m, pathToS(m, getXS(m).path.slice(0, getXS(m).path.findLastIndex(pi => pi === 'c') + 3).concat('s', 0) as PS), 's'); break
+    case 'selectXSIC': selectC(m, pathToC(m, getClosestC(getXS(m).path))); break
+    case 'selectXSICS': selectS(m, pathToS(m, [...getClosestC(getXS(m).path), 's', 0]), 's'); break
     case 'selectXCIS': selectS(m, pathToS(m, getXC(m).path.slice(0, -3) as PS), 's'); break
     case 'selectAddR': selectAddR(m, pathToR(m, payload.path)); break
     case 'selectAddS': selectAddS(m, pathToS(m, payload.path), 's'); break

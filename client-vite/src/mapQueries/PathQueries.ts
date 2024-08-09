@@ -1,4 +1,4 @@
-import {P, PT} from "../state/MapStateTypes.ts"
+import {P, PC, PT} from "../state/MapStateTypes.ts"
 import isEqual from "react-fast-compare"
 
 export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi : 1000 + pi).join('')
@@ -21,6 +21,8 @@ const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex
 
 export const isQuasiSD = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) > sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
 export const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) < sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
+
+export const getClosestC = (p: P): PC => p.slice(0, p.findLastIndex(pi => pi === 'c') + 3) as PC
 
 export const isREO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
