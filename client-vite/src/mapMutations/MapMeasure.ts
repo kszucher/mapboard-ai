@@ -27,7 +27,7 @@ export const mapMeasure = (pm: M, m: M) => {
       case isR(ni.path): {
         const ri = ni as R
         if (ri.so1.length) {
-          const so1 = ri.so1.map(nid => hn.get(nid)) as S[]
+          const so1 = ri.so1//.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
             ri.familyW = Math.max(...so1.map(si => si.maxW))
             ri.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.so.length > ri.so1.length || ri.co.length)
@@ -43,7 +43,7 @@ export const mapMeasure = (pm: M, m: M) => {
       case isS(ni.path): {
         const si = ni as S
         if (si.so1.length) {
-          const so1 = si.so1.map(nid => hn.get(nid)) as S[]
+          const so1 = si.so1//.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
             si.familyW = Math.max(...so1.map(si => si.maxW)) + g.sLineDeltaXDefault
             si.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (si.so1.length - 1) * +Boolean(si.so.length > si.so1.length || si.co.length)
@@ -102,7 +102,7 @@ export const mapMeasure = (pm: M, m: M) => {
       case isC(ni.path): {
         const ci = ni as C
         if (ci.so1.length) {
-          const so1 = ci.so1.map(nid => hn.get(nid)) as S[]
+          const so1 = ci.so1//.map(nid => hn.get(nid)) as S[]
           if (g.flow === Flow.EXPLODED) {
             ci.familyW = Math.max(...so1.map(si => si.maxW)) + g.sLineDeltaXDefault
             ci.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ci.so1.length - 1) * +Boolean(ci.so.length > ci.so1.length)

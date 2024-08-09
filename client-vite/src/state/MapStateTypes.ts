@@ -59,7 +59,7 @@ export interface RSaveOptional {
 }
 
 export interface RSaveNever {
-  so1: string[]
+  so1: S[]
   so: string[]
   co: string[]
   selfW: number
@@ -108,7 +108,7 @@ export interface SSaveNever {
   ri1: R
   si1: string
   ci1: string
-  so1: string[]
+  so1: S[]
   so: string[]
   co1: string[]
   co: string[]
@@ -147,7 +147,7 @@ export interface CSaveNever {
   ri2: string
   si1: string
   si2: string
-  so1: string[]
+  so1: S[]
   so: string[]
   cu: string[]
   cd: string[]
