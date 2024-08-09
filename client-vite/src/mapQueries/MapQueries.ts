@@ -57,10 +57,10 @@ export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(t
 
 export const getG = (m: M): G => mG(m).at(0) as G
 
-export const getLCS = (m: M): S => pathToS(m, [...getXS(m).path.slice(0, -5), 'c', getXS(m).path.at(-4), getXS(m).path.at(-3) - 1, 's', 0])
-export const getRCS = (m: M): S => pathToS(m, [...getXS(m).path.slice(0, -5), 'c', getXS(m).path.at(-4), getXS(m).path.at(-3) + 1, 's', 0])
-export const getDCS = (m: M): S => pathToS(m, [...getXS(m).path.slice(0, -5), 'c', getXS(m).path.at(-4) + 1, getXS(m).path.at(-3), 's', 0])
-export const getUCS = (m: M): S => pathToS(m, [...getXS(m).path.slice(0, -5), 'c', getXS(m).path.at(-4) - 1, getXS(m).path.at(-3), 's', 0])
+export const getLCS = (m: M): S => getXS(m).ci1.cl.at(-1)?.so1.at(0) as S ?? undefined
+export const getRCS = (m: M): S => getXS(m).ci1.cr.at(-1)?.so1.at(0) as S ?? undefined
+export const getDCS = (m: M): S => getXS(m).ci1.cd.at(-1)?.so1.at(0) as S ?? undefined
+export const getUCS = (m: M): S => getXS(m).ci1.cu.at(-1)?.so1.at(0) as S ?? undefined
 
 export const getQuasiSD = (m: M): S => mS(m).find(si => !si.selected && isQuasiSD(getXS(m).path, si.path))!
 export const getQuasiSU = (m: M): S => mS(m).findLast(si => !si.selected && isQuasiSU(getXS(m).path, si.path))!
