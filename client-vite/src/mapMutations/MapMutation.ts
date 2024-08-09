@@ -126,10 +126,10 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'moveSO': moveSC(m, [...getXFS(m).su.at(-1)!.path, 's', getXFS(m).su.at(-1)!.so1.length] as PS); break
     case 'moveSI': moveSC(m, getXS(m).si1.path.with(-1, getXS(m).si1.su.length + 1) as PS); break
     case 'moveSByDrag': payload.sMoveInsertParentNodeId.length && moveSC(m, [...idToS(m, payload.sMoveInsertParentNodeId).path, 's', payload.sMoveTargetIndex]); break
-    case 'moveCRD': moveCL(m, getXC(m).path.indexOf('c') + 1, 1, 'cd'); break
-    case 'moveCRU': moveCL(m, getXC(m).path.indexOf('c') + 1, - 1, 'cu'); break
-    case 'moveCCR': moveCL(m, getXC(m).path.indexOf('c') + 2, 1, 'cr'); break
-    case 'moveCCL': moveCL(m, getXC(m).path.indexOf('c') + 2, - 1, 'cl'); break
+    case 'moveCRD': moveCL(m, getXAC(m), getXAC(m).map(ci => ci.cd.at(-1)!), getXC(m).path.indexOf('c') + 1, 1); break
+    case 'moveCRU': moveCL(m, getXAC(m), getXAC(m).map(ci => ci.cu.at(-1)!), getXC(m).path.indexOf('c') + 1, - 1); break
+    case 'moveCCR': moveCL(m, getXAC(m), getXAC(m).map(ci => ci.cr.at(-1)!), getXC(m).path.indexOf('c') + 2, 1); break
+    case 'moveCCL': moveCL(m, getXAC(m), getXAC(m).map(ci => ci.cl.at(-1)!), getXC(m).path.indexOf('c') + 2, - 1); break
     case 'moveS2T': moveS2T(m); break
     case 'transpose': transpose(m); break
 

@@ -1,4 +1,4 @@
-import {getG, getLastIndexL, getLastIndexR, getXAC, getXAS, getXLS, getXS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getXAS, getXLS, getXS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genNodeId} from "../utils/Utils"
@@ -110,11 +110,11 @@ export const moveSC = (m: M, ip: PS) => {
   m.sort(sortPath)
 }
 
-export const moveCL = (m: M, index: number, offset: number, dir: 'cd' | 'cu' | 'cr' | 'cl') => {
-  getXAC(m).forEach(ci => ci.path[index] += offset)
-  getXAC(m).flatMap(ci => ci.so).forEach(si => si.path[index] += offset)
-  getXAC(m).map(ci => ci[dir].at(-1)!).forEach(ci => ci.path[index] -= offset)
-  getXAC(m).map(ci => ci[dir].at(-1)!).flatMap(ci => ci.so).forEach(si => si.path[index] -= offset)
+export const moveCL = (m: M, orig: C[], swap: C[], index: number, offset: number) => {
+  orig.forEach(ci => ci.path[index] += offset)
+  orig.flatMap(ci => ci.so).forEach(si => si.path[index] += offset)
+  swap.forEach(ci => ci.path[index] -= offset)
+  swap.flatMap(ci => ci.so).forEach(si => si.path[index] -= offset)
   m.sort(sortPath)
 }
 
