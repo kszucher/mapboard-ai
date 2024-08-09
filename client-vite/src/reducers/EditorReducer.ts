@@ -9,7 +9,7 @@ import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
 import {mapMutation} from "../mapMutations/MapMutation.ts"
 import {getXS} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
-import {R, S} from "../state/MapStateTypes.ts"
+import {M, R, S} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
 import {mapInit} from "../mapMutations/MapInit.ts"
 import {mapChain} from "../mapMutations/MapChain.ts"
@@ -185,7 +185,7 @@ export const editorSlice = createSlice({
       mapPlace(m)
       m.sort(sortNode)
       if (!isEqual(pm, m)) {
-        state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), {commitId: genId(), data: m}]
+        state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), {commitId: genId(), data: Object.freeze(m) as M}]
         state.commitIndex = state.commitIndex + 1
       }
       switch (action.payload.type) {
@@ -236,7 +236,7 @@ export const editorSlice = createSlice({
         mapPlace(m)
         m.sort(sortNode)
         const commitId = genId()
-        state.commitList = [{commitId, data: m}]
+        state.commitList = [{commitId, data: Object.freeze(m) as M}]
         state.commitIndex = 0
         state.lastMergedCommitId = commitId
         state.editedNodeId = ''
