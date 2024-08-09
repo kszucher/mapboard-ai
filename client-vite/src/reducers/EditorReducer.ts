@@ -18,6 +18,7 @@ import {mapCalcTask} from "../mapMutations/MapCalcTask.ts"
 import {mapMeasure} from "../mapMutations/MapMeasure.ts"
 import {mapPlace} from "../mapMutations/MapPlace.ts"
 import {sortNode, sortPath} from "../mapMutations/MapSort.ts"
+import {mapDeInit} from "../mapMutations/MapDeInit.ts"
 
 export const editorSlice = createSlice({
   name: 'editor',
@@ -184,7 +185,7 @@ export const editorSlice = createSlice({
       mapMeasure(pm, m)
       mapPlace(m)
       m.sort(sortNode)
-      if (!isEqual(pm, m)) {
+      if (!isEqual(mapDeInit(pm), mapDeInit(m))) {
         state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), {commitId: genId(), data: Object.freeze(m) as M}]
         state.commitIndex = state.commitIndex + 1
       }
