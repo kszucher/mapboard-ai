@@ -110,5 +110,4 @@ export const mapChain = (m: M) => {
       }
     }
   })
-  return m
 }
