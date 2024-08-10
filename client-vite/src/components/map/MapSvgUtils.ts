@@ -208,14 +208,14 @@ export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
   return path + 'z'
 }
 
-export const getArcPath = (t: S, margin: number, closed: boolean) => {
+export const getArcPath = (s: S, margin: number, closed: boolean) => {
   const R = 8
-  const xi = t.nodeStartX
-  const yu = t.nodeStartY
+  const xi = s.nodeStartX
+  const yu = s.nodeStartY
   let x1 = adjust(xi - margin)
   let y1 = adjust(yu + R - margin)
-  let dx = t.selfW - 2 * R + 2 * margin
-  let dy = t.selfH - 2 * R + 2 * margin
+  let dx = s.selfW - 2 * R + 2 * margin
+  let dy = s.selfH - 2 * R + 2 * margin
   return (
     `M${x1},${y1} 
     a${+R},${+R} 0 0 1 ${+R},${-R} h${+dx}
