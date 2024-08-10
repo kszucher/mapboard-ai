@@ -1,7 +1,7 @@
 import {getG, getLastIndexL, getLastIndexR, getXAS, getXLS, getXS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
-import {genNodeId} from "../utils/Utils"
+import {genId} from "../utils/Utils"
 import {deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
@@ -29,10 +29,10 @@ const cbSave = (cb: any) => {
 const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
   const lastIndexL = getLastIndexL(m)
   const lastIndexR = getLastIndexR(m)
-  const nodeIdMappingR = new Map<string, string>(cbRR.map(ri => [ri.nodeId, genNodeId()]))
+  const nodeIdMappingR = new Map<string, string>(cbRR.map(ri => [ri.nodeId, genId()]))
   const nodeIdMappingRIterator = nodeIdMappingR[Symbol.iterator]()
   cbL.forEach(li => Object.assign(li, {
-    nodeId: genNodeId(),
+    nodeId: genId(),
     path : ['l', li.path[1] + lastIndexL + 1],
     fromNodeId: nodeIdMappingR.get(li.fromNodeId),
     toNodeId: nodeIdMappingR.get(li.toNodeId)
@@ -44,11 +44,11 @@ const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
     offsetH: (ri.offsetH ?? rSaveOptional.offsetH) + getG(m).selfH
   }))
   cbRS.forEach(si => Object.assign(si, {
-    nodeId: genNodeId(),
+    nodeId: genId(),
     path: ['r', si.path.at(1) + lastIndexR + 1, ...si.path.slice(2)],
   }))
   cbRC.forEach(ci => Object.assign(ci, {
-    nodeId: genNodeId(),
+    nodeId: genId(),
     path: ['r', ci.path.at(1) + lastIndexR + 1, ...ci.path.slice(2)],
   }))
   unselectNodes(m)
@@ -58,11 +58,11 @@ const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
 
 const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS) => {
   cbSS.forEach(si => Object.assign(si, {
-    nodeId: genNodeId(),
+    nodeId: genId(),
     path: [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]
   }))
   cbSC.forEach(ci => Object.assign(ci, {
-    nodeId: genNodeId(),
+    nodeId: genId(),
     path: [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]
   }))
   offsetSC(m, ip, getXAS(m).length)
@@ -128,8 +128,8 @@ export const moveS2T = (m: M) => {
       ...mR(m),
       ...mS(m).filter(si => !so.includes(si)).map(si => ({...si, selected: 0})),
       ...mS(m).filter(si => so.includes(si)).map(si => ({...si, path: [...si.path.slice(0, pos), 's', 0, 'c', si.path.at(pos + 1), 0, 's', 0, ...si.path.slice(pos + 2)] as PS})),
-      ...[{nodeId: genNodeId(), path: [...getXS(m).path, 's', 0] as PS, selected: 1} as S],
-      ...Array.from({length: getXS(m).so1.length}, (_, i) => ({nodeId: genNodeId(), path: [...getXS(m).path, 's', 0, 'c', i, 0] as PC, selected: 0} as C)),
+      ...[{nodeId: genId(), path: [...getXS(m).path, 's', 0] as PS, selected: 1} as S],
+      ...Array.from({length: getXS(m).so1.length}, (_, i) => ({nodeId: genId(), path: [...getXS(m).path, 's', 0, 'c', i, 0] as PC, selected: 0} as C)),
       ...mC(m)
     ].sort(sortPath)
   )
