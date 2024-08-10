@@ -61,8 +61,6 @@ export const Editor: FC = () => {
           {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMe/>}
           {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeActionsEditCreateSubMap/>}
           {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeActionsEditContentEquation/>}
-          {dialogState === DialogState.CREATE_TABLE_U && <NodeActionsInsertTable/>}
-          {dialogState === DialogState.CREATE_TABLE_D && <NodeActionsInsertTable/>}
           {dialogState === DialogState.CREATE_TABLE_O && <NodeActionsInsertTable/>}
           {dialogState === DialogState.ROOT_INGESTION && <RootIngestion/>}
           {dialogState === DialogState.ROOT_EXTRACTION && <RootExtraction/>}

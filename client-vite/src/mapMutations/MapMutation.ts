@@ -75,24 +75,22 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
-    case 'insertSD': insertS(m, getXLS(m).path.with(-1, getXLS(m).su.length + 1) as PS, {taskStatus: getXLS(m).taskStatus}); break
-    case 'insertSU': insertS(m, getXFS(m).path.with(-1, getXFS(m).su.length) as PS, {taskStatus: getXFS(m).taskStatus}); break
-    case 'insertRSO': insertS(m, [...getXR(m).path, 's', getXR(m).so1.length]); break
-    case 'insertSSO': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], {taskStatus: getXS(m).taskStatus}); break
-    case 'insertSSOText': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload }); break
-    case 'insertSSOLink': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
-    case 'insertSSOImage': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
-    case 'insertCSO': insertS(m, [...getXC(m).path, 's', getXC(m).so1.length], payload); break
+    case 'insertSD': insertS(m, getXLS(m).sd.at(-1)!, getXLS(m).path.length - 1, getXLS(m).path.with(-1, getXLS(m).su.length + 1) as PS, {taskStatus: getXLS(m).taskStatus}); break
+    case 'insertSU': insertS(m, getXFS(m), getXFS(m).path.length - 1, getXFS(m).path.with(-1, getXFS(m).su.length) as PS, {taskStatus: getXFS(m).taskStatus}); break
+    case 'insertRSO': insertS(m, null, 0, [...getXR(m).path, 's', getXR(m).so1.length]); break
+    case 'insertSSO': insertS(m, null, 0, [...getXS(m).path, 's', getXS(m).so1.length], {taskStatus: getXS(m).taskStatus}); break
+    case 'insertSSOText': insertS(m, null, 0, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload }); break
+    case 'insertSSOLink': insertS(m, null, 0, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
+    case 'insertSSOImage': insertS(m, null, 0, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
+    case 'insertCSO': insertS(m, {} as S, 0, [...getXC(m).path, 's', getXC(m).so1.length], payload); break
     case 'insertCRD': insertCL(m, getXAC(m).flatMap(ci => ci.cd), getXC(m).path.length - 2, getXAC(m).map(ci => ci.path.with(-2, ci.path.at(-2) + 1) as PC)); break
     case 'insertCRU': insertCL(m, getXAC(m).flatMap(ci => [ci, ...ci.cd]), getXC(m).path.length - 2, getXAC(m).map(ci => ci.path.slice() as PC)); break
     case 'insertCCR': insertCL(m, getXAC(m).flatMap(ci => ci.cr), getXC(m).path.length - 1, getXAC(m).map(ci => ci.path.with(-1, ci.path.at(-1) + 1) as PC)); break
     case 'insertCCL': insertCL(m, getXAC(m).flatMap(ci => [ci, ...ci.cr]), getXC(m).path.length - 1, getXAC(m).map(ci => ci.path.slice() as PC)); break
-    case 'insertSCRD': insertCL(m, [], 0, getXS(m).co1.at(-1)!.ch.map(ci => ci.path.with(-2, ci.path.at(-2) + 1) as PC)); break
+    case 'insertSCRD': insertCL(m, null, 0, getXS(m).co1.at(-1)!.ch.map(ci => ci.path.with(-2, ci.path.at(-2) + 1) as PC)); break
     case 'insertSCRU': insertCL(m, getXS(m).co1.at(0)!.ch.flatMap(ci => [ci, ...ci.cd]), getXS(m).path.length + 1, getXS(m).co1.at(0)!.ch.map(ci => ci.path.slice() as PC)); break
-    case 'insertSCCR': insertCL(m, [], 0, getXS(m).co1.at(-1)!.cv.map(ci => ci.path.with(-1, ci.path.at(-1) + 1) as PC)); break
+    case 'insertSCCR': insertCL(m, null, 0, getXS(m).co1.at(-1)!.cv.map(ci => ci.path.with(-1, ci.path.at(-1) + 1) as PC)); break
     case 'insertSCCL': insertCL(m, getXS(m).co1.at(0)!.cv.flatMap(ci => [ci, ...ci.cr]), getXS(m).path.length + 2, getXS(m).co1.at(0)!.cv.map(ci => ci.path.slice() as PC)); break
-    case 'insertSDTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length + 1) as PS, payload); break
-    case 'insertSUTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length) as PS, payload); break
     case 'insertSSOTable': insertTable(m, [...getXS(m).path, 's', getXS(m).so1.length] as PS, payload); break
 
     case 'deleteL': deleteL(m, payload); break

@@ -67,8 +67,6 @@ export const NodeActions = () => {
               <DropdownMenu.Item onClick={() => dm(MM.insertSU)}>{'Struct Above'}</DropdownMenu.Item>
               <DropdownMenu.Item onClick={() => dm(MM.insertSSO)}>{'Struct Out'}</DropdownMenu.Item>
               <DropdownMenu.Item onClick={() => dm(MM.insertSD)}>{'Struct Below'}</DropdownMenu.Item>
-              {!getXS(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_U))}>{'Table Above'}</DropdownMenu.Item></Dialog.Trigger>}
-              {!getXS(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_D))}>{'Table Below'}</DropdownMenu.Item></Dialog.Trigger>}
               {!getXS(m).path.includes('c') && <Dialog.Trigger><DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.CREATE_TABLE_O))}>{'Table Out'}</DropdownMenu.Item></Dialog.Trigger>}
               {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <DropdownMenu.Item onClick={() => dm(MM.insertSCRU)}>{'Table Row Above'}</DropdownMenu.Item>}
               {getXS(m).selection === 's' && getXS(m).co1.length > 0 && <DropdownMenu.Item onClick={() => dm(MM.insertSCRD)}>{'Table Row Below'}</DropdownMenu.Item>}

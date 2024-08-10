@@ -77,8 +77,6 @@ export enum MM {
   insertCCL = 'insertCCL',
   insertSCCR = 'insertSCCR',
   insertSCCL = 'insertSCCL',
-  insertSUTable = 'insertSUTable',
-  insertSDTable = 'insertSDTable',
   insertSOTable = 'insertSSOTable',
 
   deleteL = 'deleteL',

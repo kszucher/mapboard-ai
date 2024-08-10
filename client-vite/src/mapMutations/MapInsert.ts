@@ -3,7 +3,6 @@ import {unselectNodes} from "./MapSelect"
 import {getG, getLastIndexL, getLastIndexR} from "../mapQueries/MapQueries.ts"
 import {genId, getTableIndices} from "../utils/Utils"
 import {sortPath} from "./MapSort.ts"
-import {offsetSC} from "./MapOffset.ts"
 
 export const insertL = (m: M, lPartial: Omit<LPartial, 'nodeId' | 'path'>) => {
   m.push({nodeId: genId(), path: ['l', getLastIndexL(m) + 1], ...lPartial} as L)
@@ -17,23 +16,22 @@ export const insertR = (m: M) => {
   m.sort(sortPath)
 }
 
-export const insertS = (m: M, ip: PS, attributes?: object) => {
-  offsetSC(m, ip, 1)
+export const insertS = (m: M, offsetBaseS: S | null, offsetIndex: number, ip: PS, attributes?: object) => {
+  offsetBaseS && [offsetBaseS, ...offsetBaseS.sd].flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path[offsetIndex] += 1)
   unselectNodes(m)
   m.push({nodeId: genId(), path: ip, selected: 1, ...attributes} as S)
   m.sort(sortPath)
 }
 
-export const insertCL = (m: M, offsetBaseCL: C[],  offsetIndex: number, ipl: PC[]) => {
-  offsetBaseCL.forEach(ci => ci.path[offsetIndex] +=  1)
-  offsetBaseCL.flatMap(ci => ci.so).forEach(si => si.path[offsetIndex] += 1)
+export const insertCL = (m: M, offsetBaseCL: C[] | null,  offsetIndex: number, ipl: PC[]) => {
+  offsetBaseCL && offsetBaseCL.flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[offsetIndex] += 1)
   m.push(...ipl.map(ip => ({nodeId: genId(), path: ip} as C)))
   m.push(...ipl.map(ip => ({nodeId: genId(), path: [...ip, 's', 0] as PS} as S)))
   m.sort(sortPath)
 }
 
 export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: number}) => {
-  insertS(m, ip)
+  insertS(m, null, 0, ip)
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
   m.push(...tableIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el]} as C)))
   m.push(...tableIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el, 's', 0]} as S)))
