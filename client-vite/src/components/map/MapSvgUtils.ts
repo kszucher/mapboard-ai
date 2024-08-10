@@ -231,7 +231,9 @@ export const getGridPath = (m: M, s: S) => {
   const yu = s.nodeStartY
   const yd = s.nodeStartY + s.selfH
   let path = ''
-  for (let i = 1; i < s.rowCount; i++) {
+  let rowCount = s.co1.at(0)!.cv.length
+  let colCount = s.co1.at(0)!.ch.length
+  for (let i = 1; i < rowCount; i++) {
     const ci = pathToC(m, [...s.path, 'c', i, 0])
     const x1 = adjust(s.nodeStartX)
     const x2 = adjust(s.nodeStartX + s.selfW)
@@ -240,7 +242,7 @@ export const getGridPath = (m: M, s: S) => {
     const y = adjust(yu + calcOffsetY)
     path += `M${x1},${y} L${x2},${y}`
   }
-  for (let j = 1; j < s.colCount; j++) {
+  for (let j = 1; j < colCount; j++) {
     const ci = pathToC(m, [...s.path, 'c', 0, j])
     const cl = ci.cl
     const calcOffsetX = cl.reduce((a, b) => a + b.selfW, 0)

@@ -114,8 +114,6 @@ export interface SSaveNever {
   co: C[]
   su: S[]
   sd: S[]
-  rowCount: number
-  colCount: number
   isTop: number
   isBottom: number
   selfW: number
