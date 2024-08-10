@@ -83,14 +83,14 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'insertSSOLink': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
     case 'insertSSOImage': insertS(m, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
     case 'insertCSO': insertS(m, [...getXC(m).path, 's', getXC(m).so1.length], payload); break
-    case 'insertCRD': insertCL(m, getXC(m).path.length - 2, getXAC(m).map(ci => ci.path.with(-2, ci.path.at(-2) + 1) as PC), getXAC(m).flatMap(ci => ci.cd)); break
-    case 'insertCRU': insertCL(m, getXC(m).path.length - 2, getXAC(m).map(ci => ci.path.slice() as PC), getXAC(m).flatMap(ci => [ci, ...ci.cd])); break
-    case 'insertCCR': insertCL(m, getXC(m).path.length - 1, getXAC(m).map(ci => ci.path.with(-1, ci.path.at(-1) + 1) as PC), getXAC(m).flatMap(ci => ci.cr)); break
-    case 'insertCCL': insertCL(m, getXC(m).path.length - 1, getXAC(m).map(ci => ci.path.slice() as PC), getXAC(m).flatMap(ci => [ci, ...ci.cr])); break
-    case 'insertSCRD': insertCL(m, getXS(m).path.length + 1, getXS(m).co1.at(-1)!.ch.map(ci => ci.path.with(-2, ci.path.at(-2) + 1) as PC), []); break
-    case 'insertSCRU': insertCL(m, getXS(m).path.length + 1, getXS(m).co1.at(0)!.ch.map(ci => ci.path.slice() as PC), getXS(m).co1.at(0)!.ch.flatMap(ci => [ci, ...ci.cd])); break
-    case 'insertSCCR': insertCL(m, getXS(m).path.length + 2, getXS(m).co1.at(-1)!.cv.map(ci => ci.path.with(-1, ci.path.at(-1) + 1) as PC), []); break
-    case 'insertSCCL': insertCL(m, getXS(m).path.length + 2, getXS(m).co1.at(0)!.cv.map(ci => ci.path.slice() as PC), getXS(m).co1.at(0)!.cv.flatMap(ci => [ci, ...ci.cr])); break
+    case 'insertCRD': insertCL(m, getXAC(m).flatMap(ci => ci.cd), getXC(m).path.length - 2, getXAC(m).map(ci => ci.path.with(-2, ci.path.at(-2) + 1) as PC)); break
+    case 'insertCRU': insertCL(m, getXAC(m).flatMap(ci => [ci, ...ci.cd]), getXC(m).path.length - 2, getXAC(m).map(ci => ci.path.slice() as PC)); break
+    case 'insertCCR': insertCL(m, getXAC(m).flatMap(ci => ci.cr), getXC(m).path.length - 1, getXAC(m).map(ci => ci.path.with(-1, ci.path.at(-1) + 1) as PC)); break
+    case 'insertCCL': insertCL(m, getXAC(m).flatMap(ci => [ci, ...ci.cr]), getXC(m).path.length - 1, getXAC(m).map(ci => ci.path.slice() as PC)); break
+    case 'insertSCRD': insertCL(m, [], 0, getXS(m).co1.at(-1)!.ch.map(ci => ci.path.with(-2, ci.path.at(-2) + 1) as PC)); break
+    case 'insertSCRU': insertCL(m, getXS(m).co1.at(0)!.ch.flatMap(ci => [ci, ...ci.cd]), getXS(m).path.length + 1, getXS(m).co1.at(0)!.ch.map(ci => ci.path.slice() as PC)); break
+    case 'insertSCCR': insertCL(m, [], 0, getXS(m).co1.at(-1)!.cv.map(ci => ci.path.with(-1, ci.path.at(-1) + 1) as PC)); break
+    case 'insertSCCL': insertCL(m, getXS(m).co1.at(0)!.cv.flatMap(ci => [ci, ...ci.cr]), getXS(m).path.length + 2, getXS(m).co1.at(0)!.cv.map(ci => ci.path.slice() as PC)); break
     case 'insertSDTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length + 1) as PS, payload); break
     case 'insertSUTable': insertTable(m, getXS(m).path.with(-1, getXS(m).su.length) as PS, payload); break
     case 'insertSSOTable': insertTable(m, [...getXS(m).path, 's', getXS(m).so1.length] as PS, payload); break

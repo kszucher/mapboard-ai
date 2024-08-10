@@ -24,7 +24,7 @@ export const insertS = (m: M, ip: PS, attributes?: object) => {
   m.sort(sortPath)
 }
 
-export const insertCL = (m: M, offsetIndex: number, ipl: PC[], offsetBaseCL: C[]) => {
+export const insertCL = (m: M, offsetBaseCL: C[],  offsetIndex: number, ipl: PC[]) => {
   offsetBaseCL.forEach(ci => ci.path[offsetIndex] +=  1)
   offsetBaseCL.flatMap(ci => ci.so).forEach(si => si.path[offsetIndex] += 1)
   m.push(...ipl.map(ip => ({nodeId: genId(), path: ip} as C)))
