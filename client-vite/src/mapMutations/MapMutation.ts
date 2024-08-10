@@ -37,10 +37,6 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'selectSSOLast': selectS(m, pathToS(m, [...getXS(m).path, 's', getXS(m).lastSelectedChild] as PS), 's'); break
     case 'selectCSO': selectS(m, getXC(m).so1.at(0)!, 's'); break
     case 'selectSI': getXS(m).si1.lastSelectedChild = getXS(m).path.at(-1); selectS(m, getXS(m).si1, 's'); break
-    case 'selectLCS': selectS(m, getXS(m).ci1.cl.at(-1)?.so1.at(0)!, 's'); break
-    case 'selectRCS': selectS(m, getXS(m).ci1.cr.at(-1)?.so1.at(0)!, 's'); break
-    case 'selectDCS': selectS(m, getXS(m).ci1.cd.at(-1)?.so1.at(0)!, 's'); break
-    case 'selectUCS': selectS(m, getXS(m).ci1.cu.at(-1)?.so1.at(0)!, 's'); break
     case 'selectCFR0': selectC(m, pathToC(m, getXC(m).path.with(-2, 0) as PC)); break
     case 'selectCFC0': selectC(m, pathToC(m, getXC(m).path.with(-1, 0) as PC)); break
     case 'selectCFF': selectC(m, pathToC(m, [...getXS(m).path, 'c', 0, 0])); break
@@ -63,6 +59,10 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'selectUC': selectCL(m, getXAC(m).map(ci => ci.cu.at(-1)!)); break
     case 'selectRC': selectCL(m, getXAC(m).map(ci => ci.cr.at(-1)!)); break
     case 'selectLC': selectCL(m, getXAC(m).map(ci => ci.cl.at(-1)!)); break
+    case 'selectLCS': selectS(m, getXS(m).ci1.cl.at(-1)?.so1.at(0)!, 's'); break
+    case 'selectRCS': selectS(m, getXS(m).ci1.cr.at(-1)?.so1.at(0)!, 's'); break
+    case 'selectDCS': selectS(m, getXS(m).ci1.cd.at(-1)?.so1.at(0)!, 's'); break
+    case 'selectUCS': selectS(m, getXS(m).ci1.cu.at(-1)?.so1.at(0)!, 's'); break
     case 'selectSByRectangle': selectSL(m, payload.intersectingNodes.map((nid: string) => idToS(m, nid))); break
     case 'unselect': unselectNodes(m); break
     case 'unselectR': unselectR(pathToR(m, payload.path)); break
