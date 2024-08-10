@@ -16,8 +16,8 @@ export const insertR = (m: M) => {
   m.sort(sortPath)
 }
 
-export const insertS = (m: M, offsetBaseS: S | null, offsetIndex: number, ip: PS, attributes?: object) => {
-  offsetBaseS && [offsetBaseS, ...offsetBaseS.sd].flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path[offsetIndex] += 1)
+export const insertS = (m: M, offsetBaseS: S | null, ip: PS, attributes?: object) => {
+  offsetBaseS && [offsetBaseS, ...offsetBaseS.sd].flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path[ip.length - 1] += 1)
   unselectNodes(m)
   m.push({nodeId: genId(), path: ip, selected: 1, ...attributes} as S)
   m.sort(sortPath)
@@ -31,7 +31,7 @@ export const insertCL = (m: M, offsetBaseCL: C[] | null,  offsetIndex: number, i
 }
 
 export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: number}) => {
-  insertS(m, null, 0, ip)
+  insertS(m, null, ip)
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
   m.push(...tableIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el]} as C)))
   m.push(...tableIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el, 's', 0]} as S)))

@@ -75,14 +75,14 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
-    case 'insertSD': insertS(m, getXLS(m).sd.at(-1)!, getXLS(m).path.length - 1, getXLS(m).path.with(-1, getXLS(m).su.length + 1) as PS, {taskStatus: getXLS(m).taskStatus}); break
-    case 'insertSU': insertS(m, getXFS(m), getXFS(m).path.length - 1, getXFS(m).path.with(-1, getXFS(m).su.length) as PS, {taskStatus: getXFS(m).taskStatus}); break
-    case 'insertRSO': insertS(m, null, 0, [...getXR(m).path, 's', getXR(m).so1.length]); break
-    case 'insertSSO': insertS(m, null, 0, [...getXS(m).path, 's', getXS(m).so1.length], {taskStatus: getXS(m).taskStatus}); break
-    case 'insertSSOText': insertS(m, null, 0, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload }); break
-    case 'insertSSOLink': insertS(m, null, 0, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
-    case 'insertSSOImage': insertS(m, null, 0, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
-    case 'insertCSO': insertS(m, {} as S, 0, [...getXC(m).path, 's', getXC(m).so1.length], payload); break
+    case 'insertSD': insertS(m, getXLS(m).sd.at(-1)!, getXLS(m).path.with(-1, getXLS(m).su.length + 1) as PS, {taskStatus: getXLS(m).taskStatus}); break
+    case 'insertSU': insertS(m, getXFS(m), getXFS(m).path.with(-1, getXFS(m).su.length) as PS, {taskStatus: getXFS(m).taskStatus}); break
+    case 'insertRSO': insertS(m, null, [...getXR(m).path, 's', getXR(m).so1.length]); break
+    case 'insertSSO': insertS(m, null, [...getXS(m).path, 's', getXS(m).so1.length], {taskStatus: getXS(m).taskStatus}); break
+    case 'insertSSOText': insertS(m, null, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload }); break
+    case 'insertSSOLink': insertS(m, null, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
+    case 'insertSSOImage': insertS(m, null, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
+    case 'insertCSO': insertS(m, {} as S, [...getXC(m).path, 's', getXC(m).so1.length], payload); break
     case 'insertCRD': insertCL(m, getXAC(m).flatMap(ci => ci.cd), getXC(m).path.length - 2, getXAC(m).map(ci => ci.path.with(-2, ci.path.at(-2) + 1) as PC)); break
     case 'insertCRU': insertCL(m, getXAC(m).flatMap(ci => [ci, ...ci.cd]), getXC(m).path.length - 2, getXAC(m).map(ci => ci.path.slice() as PC)); break
     case 'insertCCR': insertCL(m, getXAC(m).flatMap(ci => ci.cr), getXC(m).path.length - 1, getXAC(m).map(ci => ci.path.with(-1, ci.path.at(-1) + 1) as PC)); break
