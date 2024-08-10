@@ -50,7 +50,6 @@ export const Window: FC = () => {
     ].join('')
     ckm === '---' && e.key === 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 && dispatch(actions.startEditAppend())
     ckm === '---' && e.key === 'Enter' && isXAS(m) && dm(MM.insertSD)
-    ckm === '---' && e.key === 'Enter' && isXC(m) && dm(MM.selectDC)
     ckm === '-s-' && e.key === 'Enter' && isXAS(m) && dm(MM.insertSU)
     ckm === '---' && e.key === 'Insert' && isXAR(m) && dm(MM.insertR)
     ckm === '---' && e.key === 'Insert' && isXAS(m) && dm(MM.insertSSO)
