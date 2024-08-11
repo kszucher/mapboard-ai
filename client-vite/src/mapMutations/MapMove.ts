@@ -130,6 +130,5 @@ export const moveS2T = (m: M) => {
 
 export const transpose = (m: M) => {
   const pos = getXS(m).path.length
-  getXS(m).co.forEach(ci => ci.path = [...ci.path.slice(0, pos), 'c', ci.path.at(pos + 2), ci.path.at(pos + 1), ...ci.path.slice(pos + 3)] as PC)
-  getXS(m).so.forEach(si => si.path = [...si.path.slice(0, pos), 'c', si.path.at(pos + 2), si.path.at(pos + 1), ...si.path.slice(pos + 3)] as PS)
+  getXS(m).co.flatMap(ci => [ci, ...ci.so]).forEach(ti => ti.path.splice(pos, 3, 'c', ti.path[pos + 2], ti.path[pos + 1]))
 }
