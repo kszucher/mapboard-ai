@@ -101,13 +101,11 @@ export const duplicateSC = (m: M) => {
 
 export const moveSC = (m: M, ip: PS) => {
   const offset = getXAS(m).length
-  const cbSS = ssToClipboard(m)
-  const cbSC = scToClipboard(m)
+  const cb = [...ssToClipboard(m), ...scToClipboard(m)]
   deleteS(m)
-  cbSS.forEach(si => Object.assign(si, {path: [...ip.with(-1, ip.at(-1) + si.path.at(1)), ...si.path.slice(2)]}))
-  cbSC.forEach(ci => Object.assign(ci, {path: [...ip.with(-1, ip.at(-1) + ci.path.at(1)), ...ci.path.slice(2)]}))
+  cb.forEach(ti => Object.assign(ti, {path: [...ip.with(-1, ip.at(-1) + ti.path.at(1)), ...ti.path.slice(2)]}))
   offsetSC(m, ip, offset)
-  m.push(...cbSS, ...cbSC)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
