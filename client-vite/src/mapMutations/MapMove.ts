@@ -103,7 +103,7 @@ export const moveSC = (m: M, ip: PS) => {
   const offset = getXAS(m).length
   const cb = [...ssToClipboard(m), ...scToClipboard(m)]
   deleteS(m)
-  cb.forEach(ti => Object.assign(ti, {path: [...ip.with(-1, ip.at(-1) + ti.path.at(1)), ...ti.path.slice(2)]}))
+  cb.forEach(ti => ti.path.splice(0, 2, ...ip.slice(0, -2), ti.path.at(0), ip.at(-1) + ti.path.at(1)))
   offsetSC(m, ip, offset)
   m.push(...cb)
   m.sort(sortPath)
