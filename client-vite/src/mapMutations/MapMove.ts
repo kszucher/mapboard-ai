@@ -118,7 +118,7 @@ export const moveCL = (m: M, orig: C[], swap: C[], index: number, offset: number
 }
 
 export const moveS2T = (m: M) => {
-  const pos = getXS(m).path.length - 1 + 1
+  const pos = getXS(m).path.length
   getXS(m).so1.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(pos, 2, 's', 0, 'c', ti.path[pos + 1], 0, 's', 0))
   const cellIndices = Array.from({length: getXS(m).so1.length}, (_, i) => ([i, 0]))
   const ip = [...getXS(m).path, 's', 0]
