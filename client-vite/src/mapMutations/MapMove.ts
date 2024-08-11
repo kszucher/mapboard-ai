@@ -112,10 +112,8 @@ export const moveSC = (m: M, ip: PS) => {
 }
 
 export const moveCL = (m: M, orig: C[], swap: C[], index: number, offset: number) => {
-  orig.forEach(ci => ci.path[index] += offset)
-  orig.flatMap(ci => ci.so).forEach(si => si.path[index] += offset)
-  swap.forEach(ci => ci.path[index] -= offset)
-  swap.flatMap(ci => ci.so).forEach(si => si.path[index] -= offset)
+  orig.flatMap(si => [si, ...si.so]).forEach(ti => ti.path[index] += offset)
+  swap.flatMap(si => [si, ...si.so]).forEach(ti => ti.path[index] -= offset)
   m.sort(sortPath)
 }
 
