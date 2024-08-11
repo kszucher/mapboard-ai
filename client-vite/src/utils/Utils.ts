@@ -5,4 +5,3 @@ export const genId = () => crypto.randomUUID().slice(-8)
 export const getLatexString = (s: string) => '\\Large ' + s.substring(2, s.length - 2).replace(/\s/g, '')
 export const adjust = (x: number) => Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5
 export const adjustIcon = (x: number) => !Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5
-export const getTableIndices = (r: number, c: number) => Array(r*c).fill(null).map((_, i) => [Math.floor(i/c), i%c])

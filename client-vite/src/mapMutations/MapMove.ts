@@ -1,4 +1,4 @@
-import {getG, getLastIndexL, getLastIndexR, getXAS, getXLS, getXS, mC, mG, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getXAS, getXLS, getXS, mC, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
@@ -118,20 +118,14 @@ export const moveCL = (m: M, orig: C[], swap: C[], index: number, offset: number
 }
 
 export const moveS2T = (m: M) => {
-  const pos = getXS(m).path.length
-  const so = getXS(m).so
-  m.splice(0, m.length,
-    ...[
-      ...mG(m),
-      ...mL(m),
-      ...mR(m),
-      ...mS(m).filter(si => !so.includes(si)).map(si => ({...si, selected: 0})),
-      ...mS(m).filter(si => so.includes(si)).map(si => ({...si, path: [...si.path.slice(0, pos), 's', 0, 'c', si.path.at(pos + 1), 0, 's', 0, ...si.path.slice(pos + 2)] as PS})),
-      ...[{nodeId: genId(), path: [...getXS(m).path, 's', 0] as PS, selected: 1} as S],
-      ...Array.from({length: getXS(m).so1.length}, (_, i) => ({nodeId: genId(), path: [...getXS(m).path, 's', 0, 'c', i, 0] as PC, selected: 0} as C)),
-      ...mC(m)
-    ].sort(sortPath)
-  )
+  const pos = getXS(m).path.length - 1 + 1
+  getXS(m).so1.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => Object.assign(ti, {path: [...ti.path.slice(0, pos), 's', 0, 'c', ti.path.at(pos + 1), 0, 's', 0, ...ti.path.slice(pos + 2)]}))
+  const cellIndices = Array.from({length: getXS(m).so1.length}, (_, i) => ([i, 0]))
+  const ip = [...getXS(m).path, 's', 0]
+  unselectNodes(m)
+  m.push(({nodeId: genId(), path: ip as PS, selected: 1} as S))
+  m.push(...cellIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el] as PC} as C)))
+  m.sort(sortPath)
 }
 
 export const transpose = (m: M) => {

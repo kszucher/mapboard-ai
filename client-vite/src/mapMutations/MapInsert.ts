@@ -1,7 +1,7 @@
 import {C, LPartial, M, PS, L, R, S, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {getG, getLastIndexL, getLastIndexR} from "../mapQueries/MapQueries.ts"
-import {genId, getTableIndices} from "../utils/Utils"
+import {genId} from "../utils/Utils"
 import {sortPath} from "./MapSort.ts"
 
 export const insertL = (m: M, lPartial: Omit<LPartial, 'nodeId' | 'path'>) => {
@@ -32,8 +32,9 @@ export const insertCL = (m: M, offsetBaseCL: C[] | null,  offsetIndex: number, i
 
 export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: number}) => {
   insertS(m, null, ip)
-  const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
-  m.push(...tableIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el]} as C)))
-  m.push(...tableIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el, 's', 0]} as S)))
+  const { rowLen: r, colLen: c } = payload
+  const cellIndices = Array.from({length: r*c}, (_, i) => ([Math.floor(i/c), i%c]))
+  m.push(...cellIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el]} as C)))
+  m.push(...cellIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el, 's', 0]} as S)))
   m.sort(sortPath)
 }
