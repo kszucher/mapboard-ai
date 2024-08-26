@@ -12,30 +12,29 @@ export const lToClipboard = (m: M): L[] => {
 export const rrToClipboard = (m: M): R[] => {
   const nonSelectedMinOffsetW = Math.min(...getXAR(m).map(ri => ri.offsetW || rSaveOptional.offsetW))
   const nonSelectedMinOffsetH = Math.min(...getXAR(m).map(ri => ri.offsetH || rSaveOptional.offsetH))
-  const xarIndices = getXAR(m).map(ri => ri.path.at(1))
-  return structuredClone(getXAR(m).map(ri => ({
+  return structuredClone(getXAR(m).map((ri, i) => ({
     ...ri,
-    path: ri.path.with(1, xarIndices.indexOf(ri.path.at(1))) as PR,
+    path: ri.path.with(1, i) as PR,
     offsetW: (ri.offsetW ?? rSaveOptional.offsetW) - nonSelectedMinOffsetW,
     offsetH: (ri.offsetH ?? rSaveOptional.offsetH) - nonSelectedMinOffsetH
   })))
 }
 
 export const rsToClipboard = (m: M): S[] => {
-  const xarIndices = getXAR(m).map(ri => ri.path.at(1))
+  const rMap = new Map(getXAR(m).map(((ri, i) => [ri.path.at(1), i])))
   return structuredClone(getXAR(m).flatMap(ri => ri.so).map(si => ({
     ...si,
-    path: si.path.with(1, xarIndices.indexOf(si.path.at(1))) as PS,
+    path: si.path.with(1, rMap.get(si.path.at(1))) as PS,
     linkType: sSaveOptional.linkType,
     link: sSaveOptional.link
   })))
 }
 
 export const rcToClipboard = (m: M): C[] => {
-  const xarIndices = getXAR(m).map(ri => ri.path.at(1))
+  const rMap = new Map(getXAR(m).map(((ri, i) => [ri.path.at(1), i])))
   return structuredClone(getXAR(m).flatMap(ri => ri.co).map(ci => ({
     ...ci,
-    path: ci.path.with(1, xarIndices.indexOf(ci.path.at(1))) as PC
+    path: ci.path.with(1, rMap.get(ci.path.at(1))) as PC
   })))
 }
 
