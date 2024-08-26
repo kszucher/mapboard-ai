@@ -1,32 +1,31 @@
 import {C, LPartial, M, PS, L, R, S, PC} from "../state/MapStateTypes"
 import {unselectNodes} from "./MapSelect"
 import {getG, getLastIndexL, getLastIndexR} from "../mapQueries/MapQueries.ts"
-import {genId} from "../utils/Utils"
 import {sortPath} from "./MapSort.ts"
 
 export const insertL = (m: M, lPartial: Omit<LPartial, 'nodeId' | 'path'>) => {
-  m.push({nodeId: genId(), path: ['l', getLastIndexL(m) + 1], ...lPartial} as L)
+  m.push({path: ['l', getLastIndexL(m) + 1], ...lPartial} as L)
 }
 
 export const insertR = (m: M) => {
   const lastIndexR = getLastIndexR(m)
   unselectNodes(m)
-  m.push({nodeId: genId(), path: ['r', lastIndexR + 1], selected: 1, offsetW: getG(m).selfW, offsetH: getG(m).selfH} as R)
-  m.push({nodeId: genId(), path: ['r', lastIndexR + 1, 's', 0] as PS, content: 'New Root'} as S)
+  m.push({path: ['r', lastIndexR + 1], selected: 1, offsetW: getG(m).selfW, offsetH: getG(m).selfH} as R)
+  m.push({path: ['r', lastIndexR + 1, 's', 0] as PS, content: 'New Root'} as S)
   m.sort(sortPath)
 }
 
 export const insertS = (m: M, offsetBaseS: S | null, ip: PS, attributes?: object) => {
   offsetBaseS && [offsetBaseS, ...offsetBaseS.sd].flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path[ip.length - 1] += 1)
   unselectNodes(m)
-  m.push({nodeId: genId(), path: ip, selected: 1, ...attributes} as S)
+  m.push({path: ip, selected: 1, ...attributes} as S)
   m.sort(sortPath)
 }
 
 export const insertCL = (m: M, offsetBaseCL: C[] | null,  offsetIndex: number, ipl: PC[]) => {
   offsetBaseCL && offsetBaseCL.flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[offsetIndex] += 1)
-  m.push(...ipl.map(ip => ({nodeId: genId(), path: ip} as C)))
-  m.push(...ipl.map(ip => ({nodeId: genId(), path: [...ip, 's', 0] as PS} as S)))
+  m.push(...ipl.map(ip => ({path: ip} as C)))
+  m.push(...ipl.map(ip => ({path: [...ip, 's', 0] as PS} as S)))
   m.sort(sortPath)
 }
 
@@ -34,7 +33,7 @@ export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: numb
   insertS(m, null, ip)
   const { rowLen: r, colLen: c } = payload
   const cellIndices = Array.from({length: r*c}, (_, i) => ([Math.floor(i/c), i%c]))
-  m.push(...cellIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el]} as C)))
-  m.push(...cellIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el, 's', 0]} as S)))
+  m.push(...cellIndices.map(el => ({path: [...ip, 'c', ...el]} as C)))
+  m.push(...cellIndices.map(el => ({path: [...ip, 'c', ...el, 's', 0]} as S)))
   m.sort(sortPath)
 }

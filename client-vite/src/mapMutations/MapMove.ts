@@ -121,8 +121,8 @@ export const moveS2T = (m: M) => {
   const cellIndices = Array.from({length: getXS(m).so1.length}, (_, i) => ([i, 0]))
   const ip = [...getXS(m).path, 's', 0]
   unselectNodes(m)
-  m.push(({nodeId: genId(), path: ip as PS, selected: 1} as S))
-  m.push(...cellIndices.map(el => ({nodeId: genId(), path: [...ip, 'c', ...el] as PC} as C)))
+  m.push(({path: ip as PS, selected: 1} as S))
+  m.push(...cellIndices.map(el => ({path: [...ip, 'c', ...el] as PC} as C)))
   m.sort(sortPath)
 }
 
