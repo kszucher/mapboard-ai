@@ -16,8 +16,8 @@ export const rrToClipboard = (m: M): R[] => {
   return structuredClone(getXAR(m).map(ri => ({
     ...ri,
     path: ri.path.with(1, xarIndices.indexOf(ri.path.at(1))) as PR,
-    offsetW: (ri.offsetW ? ri.offsetW : rSaveOptional.offsetW) - nonSelectedMinOffsetW,
-    offsetH: (ri.offsetH ? ri.offsetH : rSaveOptional.offsetH) - nonSelectedMinOffsetH
+    offsetW: (ri.offsetW ?? rSaveOptional.offsetW) - nonSelectedMinOffsetW,
+    offsetH: (ri.offsetH ?? rSaveOptional.offsetH) - nonSelectedMinOffsetH
   })))
 }
 
