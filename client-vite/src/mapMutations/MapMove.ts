@@ -1,4 +1,4 @@
-import {getG, getLastIndexL, getLastIndexR, getXAS, getXLS, getXS, mC, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getXAS, getXFS, getXLS, getXS, mC, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
@@ -101,8 +101,8 @@ export const duplicateSC = (m: M) => {
 export const moveSC = (m: M, ip: PS) => {
   const offset = getXAS(m).length
   const pos = getXS(m).path.length - 1
-  const tMap = new Map(getXAS(m).map(((si, i) => [si.path.at(pos), ip.at(-1) + i])))
-  getXAS(m).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.splice(0, pos + 1, ...ip.slice(0, -2), 's', tMap.get(ti.path[pos])))
+  const delta = ip.at(-1) - getXFS(m).path.at(-1)
+  getXAS(m).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.splice(0, pos + 1, ...ip.slice(0, -1), ti.path[pos] + delta))
   getXAS(m).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.unshift('x'))
   getXLS(m).sd.length && offsetSC(m, getXLS(m).sd.at(-1)!.path, -offset)
   offsetSC(m, ip, offset)
@@ -117,8 +117,8 @@ export const moveCL = (m: M, orig: C[], swap: C[], index: number, offset: number
 }
 
 export const moveS2T = (m: M) => {
-  const pos = getXS(m).path.length
-  getXS(m).so1.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(pos, 2, 's', 0, 'c', ti.path[pos + 1], 0, 's', 0))
+  const pos = getXS(m).path.length - 1
+  getXS(m).so1.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(pos + 1, 2, 's', 0, 'c', ti.path[pos + 2], 0, 's', 0))
   const cellIndices = Array.from({length: getXS(m).so1.length}, (_, i) => ([i, 0]))
   const ip = [...getXS(m).path, 's', 0]
   unselectNodes(m)
@@ -128,6 +128,6 @@ export const moveS2T = (m: M) => {
 }
 
 export const transpose = (m: M) => {
-  const pos = getXS(m).path.length
-  getXS(m).co.flatMap(ci => [ci, ...ci.so]).forEach(ti => ti.path.splice(pos, 3, 'c', ti.path[pos + 2], ti.path[pos + 1]))
+  const pos = getXS(m).path.length - 1
+  getXS(m).co.flatMap(ci => [ci, ...ci.so]).forEach(ti => ti.path.splice(pos + 2, 2, ti.path[pos + 3], ti.path[pos + 2]))
 }
