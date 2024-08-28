@@ -2,7 +2,6 @@ import {getG, getLastIndexL, getLastIndexR, getXAS, getXLS, getXS, mC, mL, mR, m
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
-import {deleteS} from "./MapDelete"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
@@ -101,11 +100,13 @@ export const duplicateSC = (m: M) => {
 
 export const moveSC = (m: M, ip: PS) => {
   const offset = getXAS(m).length
-  const cb = [...ssToClipboard(m), ...scToClipboard(m)]
-  deleteS(m)
-  cb.forEach(ti => ti.path.splice(0, 2, ...ip.slice(0, -2), ti.path.at(0), ip.at(-1) + ti.path.at(1)))
+  const pos = getXS(m).path.length - 1
+  const tMap = new Map(getXAS(m).map(((si, i) => [si.path.at(pos), ip.at(-1) + i])))
+  getXAS(m).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.splice(0, pos + 1, ...ip.slice(0, -2), 's', tMap.get(ti.path[pos])))
+  getXAS(m).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.unshift('x'))
+  getXLS(m).sd.length && offsetSC(m, getXLS(m).sd.at(-1)!.path, -offset)
   offsetSC(m, ip, offset)
-  m.push(...cb)
+  getXAS(m).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.shift())
   m.sort(sortPath)
 }
 
