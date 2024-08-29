@@ -6,7 +6,6 @@ import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 import {lToClipboard, rcToClipboard, rrToClipboard, rsToClipboard, scToClipboard, ssToClipboard} from "../mapQueries/MapExtract.ts"
-import {offsetSC} from "./MapOffset.ts"
 import isEqual from "react-fast-compare"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
@@ -95,7 +94,8 @@ export const duplicateLRSC = (m: M) => {
 export const duplicateSC = (m: M) => {
   const ip = getXLS(m).path.with(-1, getXLS(m).path.at(-1) + 1) as PS
   const offset = getXAS(m).length
-  offsetSC(m, ip, offset)
+  const offsetDown = getXLS(m).sd
+  offsetDown.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[ip.length - 1] += offset)
   clipboardToSC(m, ssToClipboard(m), scToClipboard(m), ip)
 }
 
