@@ -1,12 +1,13 @@
-import {getG, getLastIndexL, getLastIndexR, getXAS, getXFS, getXLS, getXS, mC, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getXAS, getXFS, getXLS, getXS, mC, mL, mR, mS, pathToR, pathToS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
-import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
+import {C, L, M, PC, PR, PS, R, S} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 import {lToClipboard, rcToClipboard, rrToClipboard, rsToClipboard, scToClipboard, ssToClipboard} from "../mapQueries/MapExtract.ts"
 import {offsetSC} from "./MapOffset.ts"
+import isEqual from "react-fast-compare"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -102,11 +103,13 @@ export const moveSC = (m: M, ip: PS) => {
   const offset = getXAS(m).length
   const pos = getXS(m).path.length - 1
   const delta = ip.at(-1) - getXFS(m).path.at(-1)
-  getXAS(m).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.splice(0, pos + 1, ...ip.slice(0, -1), ti.path[pos] + delta))
-  getXAS(m).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.unshift('x'))
-  getXLS(m).sd.length && offsetSC(m, getXLS(m).sd.at(-1)!.path, -offset)
-  offsetSC(m, ip, offset)
-  getXAS(m).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.shift())
+  const insertParent = pathToS(m, ip.slice(0,-2) as PS) || pathToR(m, ip.slice(0,-2) as PR)
+  const selected = getXAS(m)
+  const offsetUp = isEqual(ip.slice(0, -1), getXLS(m).path.slice(0, -1)) ? getXLS(m).sd.filter(el => el.path.at(-1) < ip.at(-1) + offset) : getXLS(m).sd
+  const offsetDown = insertParent.so1.filter(el => !el.selected && !getXLS(m).sd.includes(el) && el.path.at(-1) >= ip.at(-1))
+  selected.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.splice(0, pos + 1, ...ip.slice(0, -1), ti.path[pos] + delta))
+  offsetUp.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[pos] -= offset)
+  offsetDown.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[ip.length - 1] += offset)
   m.sort(sortPath)
 }
 
