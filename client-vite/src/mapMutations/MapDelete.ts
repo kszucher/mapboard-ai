@@ -31,7 +31,7 @@ export const deleteS = (m: M) => {
 
 export const deleteCR = (m: M) => {
   for (const x of getXAC(m).reverse()) {
-    deleteTL(m, [x, ... x.so.length ? x.so : []])
+    deleteTL(m, [x, ...x.so])
     x.cd.flatMap(ci => [ci, ...ci.so]).map(ti => ti.path[x.path.length - 2] -= 1)
   }
 }
