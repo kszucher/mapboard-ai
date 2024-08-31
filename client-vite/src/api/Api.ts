@@ -113,14 +113,14 @@ export const api = createApi({
             window.alert('save issue')
             console.warn('save issue', 'commitList:', editor.commitList, 'lastMergedCommitId', editor.lastMergedCommitId)
           }
-          dispatch(api.endpoints.saveMap.initiate({
-            mapId: ws.mapId,
-            mapDelta: mapDiff(
-              mapDeInit(editor.commitList[commitIndexBase].data),
-              mapDeInit(editor.commitList[editor.commitIndex].data)
-            ),
-            commitId: editor.commitList[editor.commitIndex].commitId
-          }))
+          // dispatch(api.endpoints.saveMap.initiate({
+          //   mapId: ws.mapId,
+          //   mapDelta: mapDiff(
+          //     mapDeInit(editor.commitList[commitIndexBase].data),
+          //     mapDeInit(editor.commitList[editor.commitIndex].data)
+          //   ),
+          //   commitId: editor.commitList[editor.commitIndex].commitId
+          // }))
         }
       }
     }),
