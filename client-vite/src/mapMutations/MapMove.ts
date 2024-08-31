@@ -6,7 +6,6 @@ import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 import {lToClipboard, rcToClipboard, rrToClipboard, rsToClipboard, scToClipboard, ssToClipboard} from "../mapQueries/MapExtract.ts"
-import isEqual from "react-fast-compare"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -105,7 +104,7 @@ export const moveSC = (m: M, ip: PS) => {
   const delta = ip.at(-1) - getXFS(m).path.at(-1)
   const insertParent = pathToS(m, ip.slice(0,-2) as PS) || pathToR(m, ip.slice(0,-2) as PR)
   const selected = getXAS(m)
-  const offsetUp = isEqual(ip.slice(0, -1), getXLS(m).path.slice(0, -1)) ? getXLS(m).sd.filter(el => el.path.at(-1) < ip.at(-1) + offset) : getXLS(m).sd
+  const offsetUp = insertParent.so1.includes(getXLS(m)) ? getXLS(m).sd.filter(el => el.path.at(-1) < ip.at(-1) + offset) : getXLS(m).sd
   const offsetDown = insertParent.so1.filter(el => !el.selected && !getXLS(m).sd.includes(el) && el.path.at(-1) >= ip.at(-1))
   selected.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.splice(0, pos + 1, ...ip.slice(0, -1), ti.path[pos] + delta))
   offsetUp.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[pos] -= offset)
