@@ -1,7 +1,7 @@
 import {L, M, PL, PR, PS, PC} from "../state/MapStateTypes"
 import {mG, mL, mR, mS, mC, pathToS, getXAS, getXAC, getXAR, getXC} from "../mapQueries/MapQueries.ts"
 import {sortPath} from "./MapSort.ts"
-import {isCD, isCEO, isCR, isRDO, isREO, isSEO} from "../mapQueries/PathQueries.ts"
+import {isRDO, isREO, isSEO} from "../mapQueries/PathQueries.ts"
 
 export const deleteL = (m: M, l: L) => {
   m.splice(0, m.length, ...[
@@ -57,33 +57,13 @@ export const deleteS = (m: M) => {
 }
 
 export const deleteCR = (m: M) => {
-  const xa = getXAC(m)
-  m.splice(0, m.length, ...[
-      ...mG(m),
-      ...mL(m),
-      ...mR(m),
-      ...mS(m)
-        .filter(si => xa.every(xti => !isCEO(xti.path, si.path)))
-        .map(si => xa.some(xti => isCD(xti.path, si.path)) ? {...si, path: si.path.with(getXC(m).path.length - 2, si.path.at(getXC(m).path.length - 2) - 1) as PS} : si),
-      ...mC(m)
-        .filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))
-        .map(ci => xa.some(xti => isCD(xti.path, ci.path)) ? {...ci, path: ci.path.with(getXC(m).path.length - 2, ci.path.at(getXC(m).path.length - 2) - 1) as PC} : ci)
-    ].sort(sortPath)
-  )
+  const pos = getXC(m).path.length - 2
+  getXAC(m).map(ci => ci.cd.at(-1)!).flatMap(ci => [ci, ...ci.so]).map(ti => ti.path[pos] -= 1)
+  getXAC(m).flatMap(ci => [ci, ...ci.so]).map(x => m.findIndex(ti => ti === x)).sort((a, b) => b - a).forEach(index => m.splice(index, 1))
 }
 
 export const deleteCC = (m: M) => {
-  const xa = getXAC(m)
-  m.splice(0, m.length, ...[
-      ...mG(m),
-      ...mL(m),
-      ...mR(m),
-      ...mS(m)
-        .filter(si => xa.every(xti => !isCEO(xti.path, si.path)))
-        .map(si => xa.some(xti => isCR(xti.path, si.path)) ? {...si, path: si.path.with(getXC(m).path.length - 1, si.path.at(getXC(m).path.length - 1) - 1) as PS} : si),
-      ...mC(m)
-        .filter(ci => xa.every(xti => !isCEO(xti.path, ci.path)))
-        .map(ci => xa.some(xti => isCR(xti.path, ci.path)) ? {...ci, path: ci.path.with(getXC(m).path.length - 1, ci.path.at(getXC(m).path.length - 1) - 1) as PC} : ci)
-    ].sort(sortPath)
-  )
+  const pos = getXC(m).path.length - 1
+  getXAC(m).map(ci => ci.cr.at(-1)!).flatMap(ci => [ci, ...ci.so]).map(ti => ti.path[pos] -= 1)
+  getXAC(m).flatMap(ci => [ci, ...ci.so]).map(x => m.findIndex(ti => ti === x)).sort((a, b) => b - a).forEach(index => m.splice(index, 1))
 }
