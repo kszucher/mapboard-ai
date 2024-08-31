@@ -18,8 +18,8 @@ export const deleteL = (m: M, l: L) => {
 
 export const deleteLRSC = (m: M) => {
   const xac = getXAR(m)
-  const nonSelectedMinOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))
-  const nonSelectedMinOffsetH = Math.min(...mR(m).map(ri => ri.offsetH))
+  const nonSelectedMinOffsetW = Math.min(...mR(m).filter(ri => !ri.selected).map(ri => ri.offsetW))
+  const nonSelectedMinOffsetH = Math.min(...mR(m).filter(ri => !ri.selected).map(ri => ri.offsetH))
   m.splice(0, m.length, ...[
       ...mG(m),
       ...mL(m)
