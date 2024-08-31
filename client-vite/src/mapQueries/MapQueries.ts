@@ -21,6 +21,7 @@ export const pathToR = (m: M, p: PR) => mR(m).find(ri => isEqual(ri.path, p)) as
 export const pathToS = (m: M, p: PS) => mS(m).find(si => isEqual(si.path, p)) as S
 export const pathToC = (m: M, p: PC) => mC(m).find(ci => isEqual(ci.path, p)) as C
 
+export const idToL = (m: M, nodeId: string) => mL(m).find(li => li.nodeId === nodeId) as L
 export const idToR = (m: M, nodeId: string) => mR(m).find(ri => ri.nodeId === nodeId) as R
 export const idToS = (m: M, nodeId: string) => mS(m).find(si => si.nodeId === nodeId) as S
 export const idToC = (m: M, nodeId: string) => mC(m).find(ci => ci.nodeId === nodeId) as C

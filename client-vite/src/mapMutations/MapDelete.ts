@@ -1,10 +1,10 @@
-import {L, M, T} from "../state/MapStateTypes"
-import {mL, mR, getXAS, getXAC} from "../mapQueries/MapQueries.ts"
+import {M, T} from "../state/MapStateTypes"
+import {mL, mR, getXAS, getXAC, idToL} from "../mapQueries/MapQueries.ts"
 
-const deleteTL = (m: M, tl: T[]) => tl.map(x => m.findIndex(ti => ti === x)).sort((a, b) => b - a).forEach(index => m.splice(index, 1))
+const deleteTL = (m: M, tl: T[]) => tl.map(x => m.findIndex(ti => ti === x)).sort((a, b) => b - a).forEach(index => index !== - 1 && m.splice(index, 1))
 
-export const deleteL = (m: M, l: L) => {
-  deleteTL(m, [l])
+export const deleteL = (m: M, lNodeId: string) => {
+  deleteTL(m, [idToL(m, lNodeId)])
 }
 
 export const deleteLRSC = (m: M) => {

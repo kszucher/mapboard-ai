@@ -47,7 +47,7 @@ export const MapSvgLRConnectors: FC = () => {
                 <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  dm(MM.deleteL, li)
+                  dm(MM.deleteL, li.nodeId)
                 }}/>
               </g>
             }
