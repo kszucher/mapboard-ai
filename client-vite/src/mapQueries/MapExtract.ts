@@ -10,13 +10,13 @@ export const lToClipboard = (m: M): L[] => {
 }
 
 export const rrToClipboard = (m: M): R[] => {
-  const nonSelectedMinOffsetW = Math.min(...getXAR(m).map(ri => ri.offsetW || rSaveOptional.offsetW))
-  const nonSelectedMinOffsetH = Math.min(...getXAR(m).map(ri => ri.offsetH || rSaveOptional.offsetH))
+  const minOffsetW = Math.min(...getXAR(m).map(ri => ri.offsetW || rSaveOptional.offsetW))
+  const minOffsetH = Math.min(...getXAR(m).map(ri => ri.offsetH || rSaveOptional.offsetH))
   return structuredClone(getXAR(m).map((ri, i) => ({
     ...ri,
     path: ri.path.with(1, i) as PR,
-    offsetW: (ri.offsetW ?? rSaveOptional.offsetW) - nonSelectedMinOffsetW,
-    offsetH: (ri.offsetH ?? rSaveOptional.offsetH) - nonSelectedMinOffsetH
+    offsetW: (ri.offsetW ?? rSaveOptional.offsetW) - minOffsetW,
+    offsetH: (ri.offsetH ?? rSaveOptional.offsetH) - minOffsetH
   })))
 }
 
