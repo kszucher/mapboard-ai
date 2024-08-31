@@ -1,4 +1,4 @@
-import {M, S, T, PR} from "../state/MapStateTypes"
+import {M, R, S, C, PR} from "../state/MapStateTypes"
 import isEqual from "react-fast-compare"
 import {mS, pathToS, pathToR} from "./MapQueries.ts"
 import {sortPath} from "../mapMutations/MapSort.ts"
@@ -7,7 +7,7 @@ import {isSEO} from "./PathQueries.ts"
 export const mapFindNearestS = (pm: M, moveNode: S, toX: number, toY: number) => {
   const m = pm.slice().sort(sortPath)
   let sMoveCoords = [] as number[]
-  let moveInsertParentNode = {nodeId: ''} as T
+  let moveInsertParentNode = {nodeId: ''} as R | S | C
   let moveTargetIndex = 0
   if (!(
     moveNode.nodeStartX < toX &&
@@ -55,7 +55,7 @@ export const mapFindNearestS = (pm: M, moveNode: S, toX: number, toY: number) =>
     }
   }
   if (isEqual(moveInsertParentNode.path, moveNode.si1.path) && moveNode.path.at(-1) === moveTargetIndex) {
-    moveInsertParentNode = {} as T
+    moveInsertParentNode = {} as R | S | C
     moveTargetIndex = 0
     sMoveCoords = []
   }

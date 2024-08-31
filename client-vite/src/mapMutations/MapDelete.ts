@@ -1,5 +1,5 @@
 import {L, M, PL, T} from "../state/MapStateTypes"
-import {mG, mL, mR, mS, mC, getXAS, getXAC, getXC} from "../mapQueries/MapQueries.ts"
+import {mG, mL, mR, mS, mC, getXAS, getXAC} from "../mapQueries/MapQueries.ts"
 import {sortPath} from "./MapSort.ts"
 
 const deleteTL = (m: M, tl: T[]) => tl.map(x => m.findIndex(ti => ti === x)).sort((a, b) => b - a).forEach(index => m.splice(index, 1))
@@ -40,13 +40,15 @@ export const deleteS = (m: M) => {
 }
 
 export const deleteCR = (m: M) => {
-  const pos = getXC(m).path.length - 2
-  getXAC(m).map(ci => ci.cd.at(-1)!).flatMap(ci => [ci, ...ci.so]).map(ti => ti.path[pos] -= 1)
-  deleteTL(m, getXAC(m).flatMap(ci => [ci, ...ci.so]))
+  for (const x of getXAC(m).reverse()) {
+    deleteTL(m, [x, ...x.so]);
+    [x.cd.at(-1)!, ...x.cd.at(-1)!.so].map(ti => ti.path[x.path.length - 2] -= 1)
+  }
 }
 
 export const deleteCC = (m: M) => {
-  const pos = getXC(m).path.length - 1
-  getXAC(m).map(ci => ci.cr.at(-1)!).flatMap(ci => [ci, ...ci.so]).map(ti => ti.path[pos] -= 1)
-  deleteTL(m, getXAC(m).flatMap(ci => [ci, ...ci.so]))
+  for (const x of getXAC(m).reverse()) {
+    deleteTL(m, [x, ...x.so]);
+    [x.cr.at(-1)!, ...x.cr.at(-1)!.so].map(ti => ti.path[x.path.length - 1] -= 1)
+  }
 }
