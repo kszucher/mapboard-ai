@@ -24,6 +24,4 @@ export const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSam
 
 export const getClosestC = (p: P): PC => p.slice(0, p.findLastIndex(pi => pi === 'c') + 3) as PC
 
-export const isREO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
 export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)
-export const isRDO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)

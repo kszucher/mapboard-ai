@@ -168,7 +168,7 @@ export type L = LSaveAlways & LSaveOptional & LSaveNever
 export type R = RSaveAlways & RSaveOptional & RSaveNever
 export type S = SSaveAlways & SSaveOptional & SSaveNever
 export type C = CSaveAlways & CSaveOptional & CSaveNever
-export type T = R | S | C
+export type T = L | R | S | C
 export type N = G | L | R | S | C
 export type M = N[]
 
