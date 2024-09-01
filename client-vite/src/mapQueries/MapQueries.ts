@@ -29,6 +29,7 @@ export const idToC = (m: M, nodeId: string) => mC(m).find(ci => ci.nodeId === no
 export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as R)
 export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as S)
 export const getXC = (m: M): C => mC(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as C)
+
 export const getXAR = (m: M): R[] => mR(m).filter(ri => ri.selected) // should be path sorted
 export const getXARS = (m: M): S[] => mRS(m).filter(si => si.selected) // should be path sorted
 export const getXASS = (m: M): S[] => mSS(m).filter(si => si.selected) // should be path sorted
@@ -46,11 +47,11 @@ export const isXC = (m: M): boolean => getXAC(m).length === 1
 export const isXACR = (m: M): boolean => getXAC(m).length > 1 && isArrayOfEqualValues(getXAC(m).map(ni => ni.path.with(-1, 0)))
 export const isXACC = (m: M): boolean => getXAC(m).length > 1 && isArrayOfEqualValues(getXAC(m).map(ni => ni.path.with(-2, 0)))
 
-export const getXFS = (m: M): S => mS(m).find(si => si.selected)! // should be path sorted
-export const getXLS = (m: M): S => mS(m).findLast(si => si.selected)! // should be path sorted
+export const getXFS = (m: M): S => mS(m).find(si => si.selected)! // should be path sorted (actually, once getXAS is path sorted, getXAS(m).at(0))
+export const getXLS = (m: M): S => mS(m).findLast(si => si.selected)! // should be path sorted (actually, once getXAS is path sorted, getXAS(m).at(-1))
 
-export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) ?? -1 // should use Math.max
-export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) ?? -1 // should use Math.max
+export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) ?? -1 // should use Math.max OR we can use getXAR(m).at(-1).path.at(-1) as that is sorted
+export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) ?? -1 // should use Math.max OR we can use getXAR(m).at(-1).path.at(-1) as that is sorted
 
 export const getG = (m: M): G => mG(m).at(0) as G
 
