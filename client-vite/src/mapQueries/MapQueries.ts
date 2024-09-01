@@ -26,6 +26,8 @@ export const idToR = (m: M, nodeId: string) => mR(m).find(ri => ri.nodeId === no
 export const idToS = (m: M, nodeId: string) => mS(m).find(si => si.nodeId === nodeId) as S
 export const idToC = (m: M, nodeId: string) => mC(m).find(ci => ci.nodeId === nodeId) as C
 
+export const getG = (m: M): G => mG(m).at(0) as G
+
 export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as R)
 export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as S)
 export const getXC = (m: M): C => mC(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as C)
@@ -37,6 +39,12 @@ export const getXACS = (m: M): S[] => mCS(m).filter(si => si.selected) // should
 export const getXAS = (m: M): S[] => mS(m).filter(si => si.selected) // should be path sorted
 export const getXAC = (m: M): C[] => mC(m).filter(ci => ci.selected) // should be path sorted
 
+export const getXFS = (m: M): S => mS(m).find(si => si.selected)! // should be path sorted (actually, once getXAS is path sorted, getXAS(m).at(0))
+export const getXLS = (m: M): S => mS(m).findLast(si => si.selected)! // should be path sorted (actually, once getXAS is path sorted, getXAS(m).at(-1))
+
+export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) ?? -1 // should use Math.max OR we can use getXAR(m).at(-1).path.at(-1) as that is sorted
+export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) ?? -1 // should use Math.max OR we can use getXAR(m).at(-1).path.at(-1) as that is sorted
+
 export const isXAR = (m: M): boolean => getXAR(m).length > 0
 export const isXAS = (m: M): boolean => getXAS(m).length > 0
 export const isXARS = (m: M): boolean => getXARS(m).length > 0
@@ -46,14 +54,6 @@ export const isXASVN = (m: M): boolean => getXAS(m).length > 0 && isArrayOfEqual
 export const isXC = (m: M): boolean => getXAC(m).length === 1
 export const isXACR = (m: M): boolean => getXAC(m).length > 1 && isArrayOfEqualValues(getXAC(m).map(ni => ni.path.with(-1, 0)))
 export const isXACC = (m: M): boolean => getXAC(m).length > 1 && isArrayOfEqualValues(getXAC(m).map(ni => ni.path.with(-2, 0)))
-
-export const getXFS = (m: M): S => mS(m).find(si => si.selected)! // should be path sorted (actually, once getXAS is path sorted, getXAS(m).at(0))
-export const getXLS = (m: M): S => mS(m).findLast(si => si.selected)! // should be path sorted (actually, once getXAS is path sorted, getXAS(m).at(-1))
-
-export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) ?? -1 // should use Math.max OR we can use getXAR(m).at(-1).path.at(-1) as that is sorted
-export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) ?? -1 // should use Math.max OR we can use getXAR(m).at(-1).path.at(-1) as that is sorted
-
-export const getG = (m: M): G => mG(m).at(0) as G
 
 export const getQuasiSD = (m: M): S => mS(m).find(si => !si.selected && isQuasiSD(getXS(m).path, si.path))!
 export const getQuasiSU = (m: M): S => mS(m).findLast(si => !si.selected && isQuasiSU(getXS(m).path, si.path))!
