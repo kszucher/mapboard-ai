@@ -1,7 +1,7 @@
 import {getG, isXACC, isXACR, getXAC, getXC, pathToC, pathToR, idToR} from "../../mapQueries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
-import {C, G, L, M, PR, R, S, T} from "../../state/MapStateTypes"
+import {C, G, L, M, PR, R, S} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
 import {sortPath} from "../../mapMutations/MapSort.ts"
 
@@ -117,7 +117,7 @@ export const getRootLinePath = (m: M, l: L) => {
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
 }
 
-export const getPolygonPath = (m: M, t: T, mode: string, margin: number) => {
+export const getPolygonPath = (m: M, t: R | S | C, mode: string, margin: number) => {
   let ax = 0, bx = 0, cx = 0, ayu = 0, ayd = 0, byu = 0, byd = 0, cyu = 0, cyd = 0
   switch (mode) {
     case 'sSelf': {
