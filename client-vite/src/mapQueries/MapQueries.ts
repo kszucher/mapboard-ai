@@ -49,8 +49,8 @@ export const isXACC = (m: M): boolean => getXAC(m).length > 1 && isArrayOfEqualV
 export const getXFS = (m: M): S => mS(m).find(si => si.selected)! // should be path sorted
 export const getXLS = (m: M): S => mS(m).findLast(si => si.selected)! // should be path sorted
 
-export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) ?? -1 // should use similar logic as getXL
-export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) ?? -1 // should use similar logic as getXR
+export const getLastIndexL = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'l')?.path.at(1) ?? -1 // should use Math.max
+export const getLastIndexR = (m: M): number => m.findLast(ti => getPathPattern(ti.path) === 'r')?.path.at(1) ?? -1 // should use Math.max
 
 export const getG = (m: M): G => mG(m).at(0) as G
 
