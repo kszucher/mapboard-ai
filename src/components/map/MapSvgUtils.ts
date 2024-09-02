@@ -1,4 +1,4 @@
-import {getG, isXACC, isXACR, getXAC, getXC, pathToC, pathToR, idToR} from "../../mapQueries/MapQueries.ts"
+import {getG, isAXCC, isAXCR, getAXC, getXC, pathToC, pathToR, idToR} from "../../mapQueries/MapQueries.ts"
 import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
 import {C, G, L, M, PR, R, S} from "../../state/MapStateTypes"
@@ -157,14 +157,14 @@ export const getPolygonPath = (m: M, t: R | S | C, mode: string, margin: number)
       break
     }
     case 'c': {
-      if (isXACR(m)) {
-        const xac = getXAC(m)
+      if (isAXCR(m)) {
+        const xac = getAXC(m)
         ax = xac.at(0)!.nodeStartX
         bx = cx = xac.at(-1)!.nodeStartX + xac.at(-1)!.selfW
         ayu = byu = cyu = xac.at(0)!.nodeStartY
         ayd = byd = cyd = xac.at(0)!.nodeStartY + xac.at(0)!.selfH
-      } else if (isXACC(m)) {
-        const xac = getXAC(m)
+      } else if (isAXCC(m)) {
+        const xac = getAXC(m)
         ax = xac.at(0)!.nodeStartX
         bx = cx = xac.at(0)!.nodeStartX + xac.at(0)!.selfW
         ayu = byu = cyu = xac.at(0)!.nodeStartY

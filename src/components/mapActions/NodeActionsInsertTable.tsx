@@ -3,7 +3,7 @@ import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
-import {isXAS} from "../../mapQueries/MapQueries.ts"
+import {isAXS} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {DialogState} from "../../state/Enums.ts"
 
@@ -48,7 +48,7 @@ export const NodeActionsInsertTable = () => {
         </Dialog.Close>
         <Dialog.Close>
           <Button onClick={() => {
-            dialogState === DialogState.CREATE_TABLE_O && isXAS(m) && dm(MM.insertSOTable, {rowLen: row, colLen: col})
+            dialogState === DialogState.CREATE_TABLE_O && isAXS(m) && dm(MM.insertSOTable, {rowLen: row, colLen: col})
           }}>
             {'OK'}
           </Button>

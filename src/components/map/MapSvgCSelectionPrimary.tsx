@@ -2,11 +2,12 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import { useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../colors/Colors.ts"
-import {getG, getXC, isXACC, isXACR, isXC} from "../../mapQueries/MapQueries.ts"
+import {getG, getXC, isAXC} from "../../mapQueries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer.ts"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils"
+
 
 export const MapSvgCSelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -17,7 +18,7 @@ export const MapSvgCSelectionPrimary: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    !selectionRectCoords.length && (isXC(m) || isXACR(m) || isXACC(m)) &&
+    !selectionRectCoords.length && isAXC(m) &&
     <Fragment>
       <path
         key={`${g.nodeId}_svg_selectionBorderPrimary`}

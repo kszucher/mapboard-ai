@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
-import {getLastIndexR, getXC, getXS, isXACC, isXACR, isXASVN, isXC, isXAS, mR, isXASS, getXFS, getXLS, isXAR, isXARS, isXACS, getQuasiSD, getQuasiSU, getXR} from "../../mapQueries/MapQueries.ts"
+import {getLastIndexR, getXC, getXS, isAXCC, isAXCR, isAXSVN, isAXC, isAXC1, isAXS, mR, isAXSS, getXFS, getXLS, isAXR, isAXRS, isAXCS, getQuasiSD, getQuasiSU, getXR} from "../../mapQueries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
@@ -48,106 +48,107 @@ export const Window: FC = () => {
       +e.shiftKey ? 's' : '-',
       +e.altKey ? 'a' : '-'
     ].join('')
-    ckm === '---' && e.key === 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 && dispatch(actions.startEditAppend())
-    ckm === '---' && e.key === 'Enter' && isXAS(m) && dm(MM.insertSD)
-    ckm === '-s-' && e.key === 'Enter' && isXAS(m) && dm(MM.insertSU)
-    ckm === '---' && e.key === 'Insert' && isXAR(m) && dm(MM.insertR)
-    ckm === '---' && e.key === 'Insert' && isXAS(m) && dm(MM.insertSSO)
-    ckm === '---' && e.key === 'Insert' && isXC(m) && dm(MM.insertCSO)
-    ckm === '---' && e.key === 'Tab' && isXAR(m) && dm(MM.insertR)
-    ckm === '---' && e.key === 'Tab' && isXAS(m) && dm(MM.insertSSO)
-    ckm === '---' && e.key === 'Tab' && isXC(m) && dm(MM.insertCSO)
-    ckm === '---' && e.key === 'Delete' && isXASVN(m) && getXFS(m).su.length > 0 && dm(MM.deleteSJumpSU)
-    ckm === '---' && e.key === 'Delete' && isXASVN(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length > 0 && dm(MM.deleteSJumpSD)
-    ckm === '---' && e.key === 'Delete' && isXASVN(m) && isXASS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && dm(MM.deleteSJumpSI)
-    ckm === '---' && e.key === 'Delete' && isXASVN(m) && isXACS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && dm(MM.deleteSJumpCI)
-    ckm === '---' && e.key === 'Delete' && isXAS(m) && !isXASVN(m) && dm(MM.deleteSJumpR)
-    ckm === '---' && e.key === 'Delete' && isXAR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected) && dm(MM.deleteLRSC)
-    ckm === '---' && e.key === 'Delete' && isXACR(m) && getXC(m).cu.length > 0 && dm(MM.deleteCRJumpU)
-    ckm === '---' && e.key === 'Delete' && isXACR(m) && getXC(m).cu.length === 0 && getXC(m).cd.length > 0 && dm(MM.deleteCRJumpD)
-    ckm === '---' && e.key === 'Delete' && isXACR(m) && getXC(m).cu.length === 0 && getXC(m).cd.length === 0 && dm(MM.deleteCRJumpSI)
-    ckm === '---' && e.key === 'Delete' && isXACC(m) && getXC(m).cl.length > 0 && dm(MM.deleteCCJumpL)
-    ckm === '---' && e.key === 'Delete' && isXACC(m) && getXC(m).cl.length === 0 && getXC(m).cr.length > 0 && dm(MM.deleteCCJumpR)
-    ckm === '---' && e.key === 'Delete' && isXACC(m) && getXC(m).cl.length === 0 && getXC(m).cr.length === 0 && dm(MM.deleteCCJumpSI)
-    ckm === '---' && e.code === 'Space' && !isXAR(m) && !isXAS(m) && !isXC(m) && !isXACR(m) && !isXACC(m) && dm(MM.selectFirstR)
-    ckm === '---' && e.code === 'Space' && isXAR(m) && dm(MM.selectRSO)
-    ckm === '---' && e.code === 'Space' && isXAS(m) && getXS(m).co1.length > 0 && dm(MM.selectCFF)
-    ckm === '---' && e.code === 'Space' && isXC(m) && getXC(m).so1.length > 0 && dm(MM.selectCSO)
-    ckm === '---' && e.code === 'Space' && isXACR(m) && dm(MM.selectCFC0)
-    ckm === '---' && e.code === 'Space' && isXACC(m) && dm(MM.selectCFR0)
-    ckm === '---' && e.code === 'Backspace' && isXAR(m) && dm(MM.unselect)
-    ckm === '---' && e.code === 'Backspace' && isXAS(m) && !getXS(m).path.includes('c') && dm(MM.selectXSIR)
-    ckm === '---' && e.code === 'Backspace' && isXAS(m) && getXS(m).path.includes('c') && dm(MM.selectXSIC)
-    ckm === '---' && e.code === 'Backspace' && (isXC(m) || isXACR(m) || isXACC(m)) && dm(MM.selectXCIS)
-    ckm === '---' && e.code === 'Escape' && isXAS(m) && !getXS(m).path.includes('c') && dm(MM.selectXSIRS)
-    ckm === '---' && e.code === 'Escape' && isXAS(m) && getXS(m).path.includes('c') && dm(MM.selectXSICS)
-    ckm === 'c--' && e.code === 'KeyC' && isXAR(m) && dm(MM.copyLR)
-    ckm === 'c--' && e.code === 'KeyC' && isXASVN(m) && dm(MM.copyS)
-    ckm === 'c--' && e.code === 'KeyX' && isXAR(m) && getLastIndexR(m) > 0 && dm(MM.cutLRJumpR)
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXARS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && dm(MM.cutSJumpRI)
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getXFS(m).su.length > 0 && dm(MM.cutSJumpSU)
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length > 0 && dm(MM.cutSJumpSD)
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXASS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && dm(MM.cutSJumpSI)
-    ckm === 'c--' && e.code === 'KeyX' && isXASVN(m) && isXACS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0 && dm(MM.cutSJumpCI)
-    ckm === 'c--' && e.code === 'KeyD' && isXAR(m) && dm(MM.duplicateR)
-    ckm === 'c--' && e.code === 'KeyD' && isXAS(m) && dm(MM.duplicateS)
-    ckm === 'c--' && e.code === 'KeyZ' && dispatch(actions.redo())
-    ckm === 'c--' && e.code === 'KeyY' && dispatch(actions.undo())
+    
+    if (ckm === '---' && e.key === 'F2' && isAXS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0) dispatch(actions.startEditAppend())
+    if (ckm === '---' && e.key === 'Enter' && isAXS(m)) dm(MM.insertSD)
+    if (ckm === '-s-' && e.key === 'Enter' && isAXS(m)) dm(MM.insertSU)
+    if (ckm === '---' && e.key === 'Insert' && isAXR(m)) dm(MM.insertR)
+    if (ckm === '---' && e.key === 'Insert' && isAXS(m)) dm(MM.insertSSO)
+    if (ckm === '---' && e.key === 'Insert' && isAXC1(m)) dm(MM.insertCSO)
+    if (ckm === '---' && e.key === 'Tab' && isAXR(m)) dm(MM.insertR)
+    if (ckm === '---' && e.key === 'Tab' && isAXS(m)) dm(MM.insertSSO)
+    if (ckm === '---' && e.key === 'Tab' && isAXC1(m)) dm(MM.insertCSO)
+    if (ckm === '---' && e.key === 'Delete' && isAXSVN(m) && getXFS(m).su.length > 0) dm(MM.deleteSJumpSU)
+    if (ckm === '---' && e.key === 'Delete' && isAXSVN(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length > 0) dm(MM.deleteSJumpSD)
+    if (ckm === '---' && e.key === 'Delete' && isAXSVN(m) && isAXSS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.deleteSJumpSI)
+    if (ckm === '---' && e.key === 'Delete' && isAXSVN(m) && isAXCS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.deleteSJumpCI)
+    if (ckm === '---' && e.key === 'Delete' && isAXS(m) && !isAXSVN(m)) dm(MM.deleteSJumpR)
+    if (ckm === '---' && e.key === 'Delete' && isAXR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected)) dm(MM.deleteLRSC)
+    if (ckm === '---' && e.key === 'Delete' && isAXCR(m) && getXC(m).cu.length > 0) dm(MM.deleteCRJumpU)
+    if (ckm === '---' && e.key === 'Delete' && isAXCR(m) && getXC(m).cu.length === 0 && getXC(m).cd.length > 0) dm(MM.deleteCRJumpD)
+    if (ckm === '---' && e.key === 'Delete' && isAXCR(m) && getXC(m).cu.length === 0 && getXC(m).cd.length === 0) dm(MM.deleteCRJumpSI)
+    if (ckm === '---' && e.key === 'Delete' && isAXCC(m) && getXC(m).cl.length > 0) dm(MM.deleteCCJumpL)
+    if (ckm === '---' && e.key === 'Delete' && isAXCC(m) && getXC(m).cl.length === 0 && getXC(m).cr.length > 0) dm(MM.deleteCCJumpR)
+    if (ckm === '---' && e.key === 'Delete' && isAXCC(m) && getXC(m).cl.length === 0 && getXC(m).cr.length === 0) dm(MM.deleteCCJumpSI)
+    if (ckm === '---' && e.code === 'Space' && !isAXR(m) && !isAXS(m) && !isAXC(m)) dm(MM.selectFirstR)
+    if (ckm === '---' && e.code === 'Space' && isAXR(m)) dm(MM.selectRSO)
+    if (ckm === '---' && e.code === 'Space' && isAXS(m) && getXS(m).co1.length > 0) dm(MM.selectCFF)
+    if (ckm === '---' && e.code === 'Space' && isAXC1(m) && getXC(m).so1.length > 0) dm(MM.selectCSO)
+    if (ckm === '---' && e.code === 'Space' && isAXCR(m)) dm(MM.selectCFC0)
+    if (ckm === '---' && e.code === 'Space' && isAXCC(m)) dm(MM.selectCFR0)
+    if (ckm === '---' && e.code === 'Backspace' && isAXR(m)) dm(MM.unselect)
+    if (ckm === '---' && e.code === 'Backspace' && isAXS(m) && !getXS(m).path.includes('c')) dm(MM.selectXSIR)
+    if (ckm === '---' && e.code === 'Backspace' && isAXS(m) && getXS(m).path.includes('c')) dm(MM.selectXSIC)
+    if (ckm === '---' && e.code === 'Backspace' && isAXC(m)) dm(MM.selectXCIS)
+    if (ckm === '---' && e.code === 'Escape' && isAXS(m) && !getXS(m).path.includes('c')) dm(MM.selectXSIRS)
+    if (ckm === '---' && e.code === 'Escape' && isAXS(m) && getXS(m).path.includes('c')) dm(MM.selectXSICS)
+    if (ckm === 'c--' && e.code === 'KeyC' && isAXR(m)) dm(MM.copyLR)
+    if (ckm === 'c--' && e.code === 'KeyC' && isAXSVN(m)) dm(MM.copyS)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXR(m) && getLastIndexR(m) > 0) dm(MM.cutLRJumpR)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSVN(m) && isAXRS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.cutSJumpRI)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSVN(m) && isAXSS(m) && getXFS(m).su.length > 0) dm(MM.cutSJumpSU)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSVN(m) && isAXSS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length > 0) dm(MM.cutSJumpSD)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSVN(m) && isAXSS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.cutSJumpSI)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSVN(m) && isAXCS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.cutSJumpCI)
+    if (ckm === 'c--' && e.code === 'KeyD' && isAXR(m)) dm(MM.duplicateR)
+    if (ckm === 'c--' && e.code === 'KeyD' && isAXS(m)) dm(MM.duplicateS)
+    if (ckm === 'c--' && e.code === 'KeyZ') dispatch(actions.redo())
+    if (ckm === 'c--' && e.code === 'KeyY') dispatch(actions.undo())
 
-    ckm === '---' && e.code === 'ArrowDown' && isXAR(m) && getRD(m, getXR(m)) && dm(MM.selectRD)
-    ckm === '---' && e.code === 'ArrowDown' && isXAS(m) && getQuasiSD(m) && dm(MM.selectSD)
-    ckm === '---' && e.code === 'ArrowDown' && isXACS(m) && getXLS(m).sd.length === 0 && getXS(m).ci1.cd.at(-1)?.so1.length && dm(MM.selectDCS)
-    ckm === '---' && e.code === 'ArrowDown' && isXC(m) && getXC(m).cd.length > 0 && dm(MM.selectDC)
-    ckm === '---' && e.code === 'ArrowDown' && isXACR(m) && getXC(m).cd.length > 0 && dm(MM.selectDCL)
-    ckm === 'c--' && e.code === 'ArrowDown' && isXAR(m) && dm(MM.offsetD)
-    ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getXLS(m).sd.length === 0 && dm(MM.moveST)
-    ckm === 'c--' && e.code === 'ArrowDown' && isXASVN(m) && getXLS(m).sd.length > 0 && dm(MM.moveSD)
-    ckm === 'c--' && e.code === 'ArrowDown' && isXACR(m) && getXC(m).cd.length > 0 && dm(MM.moveCRD)
-    ckm === '-s-' && e.code === 'ArrowDown' && isXAS(m) && getQuasiSD(m) && dm(MM.selectAddSD)
-    ckm === '-s-' && e.code === 'ArrowDown' && isXC(m) && dm(MM.selectSameCC)
-    ckm === '--a' && e.code === 'ArrowDown' && isXACR(m) && dm(MM.insertCRD)
-
-    ckm === '---' && e.code === 'ArrowUp' && isXAR(m) && getRU(m, getXR(m)) && dm(MM.selectRU)
-    ckm === '---' && e.code === 'ArrowUp' && isXAS(m) && getQuasiSU(m) && dm(MM.selectSU)
-    ckm === '---' && e.code === 'ArrowUp' && isXACS(m) && getXFS(m).su.length === 0 && getXS(m).ci1.cu.at(-1)?.so1.length && dm(MM.selectUCS)
-    ckm === '---' && e.code === 'ArrowUp' && isXC(m) && getXC(m).cu.length > 0 && dm(MM.selectUC)
-    ckm === '---' && e.code === 'ArrowUp' && isXACR(m) && getXC(m).cu.length > 0 && dm(MM.selectUCL)
-    ckm === 'c--' && e.code === 'ArrowUp' && isXAR(m) && dm(MM.offsetU)
-    ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getXFS(m).su.length === 0 && dm(MM.moveSB)
-    ckm === 'c--' && e.code === 'ArrowUp' && isXASVN(m) && getXFS(m).su.length > 0 && dm(MM.moveSU)
-    ckm === 'c--' && e.code === 'ArrowUp' && isXACR(m) && getXC(m).cu.length > 0 && dm(MM.moveCRU)
-    ckm === '-s-' && e.code === 'ArrowUp' && isXAS(m) && getQuasiSU(m) && dm(MM.selectAddSU)
-    ckm === '-s-' && e.code === 'ArrowUp' && isXC(m) && dm(MM.selectSameCC)
-    ckm === '--a' && e.code === 'ArrowUp' && isXACR(m) && dm(MM.insertCRU)
-
-    ckm === '---' && e.code === 'ArrowRight' && isXAR(m) && getRR(m, getXR(m)) && dm(MM.selectRR)
-    ckm === '---' && e.code === 'ArrowRight' && isXAS(m) && getXS(m).so1.length > 0 && (getXS(m).lastSelectedChild < 0 || getXS(m).lastSelectedChild > getXS(m).so1.length) && dm(MM.selectSSO)
-    ckm === '---' && e.code === 'ArrowRight' && isXAS(m) && getXS(m).so1.length > 0 && getXS(m).lastSelectedChild >= 0 && getXS(m).lastSelectedChild < getXS(m).so1.length && dm(MM.selectSSOLast)
-    ckm === '---' && e.code === 'ArrowRight' && isXACS(m) && getXS(m).so1.length === 0 && getXS(m).ci1.cr.at(-1)?.so1.length && dm(MM.selectRCS)
-    ckm === '---' && e.code === 'ArrowRight' && isXC(m) && getXC(m).cr.length > 0 && dm(MM.selectRC)
-    ckm === '---' && e.code === 'ArrowRight' && isXACC(m) && getXC(m).cr.length > 0 && dm(MM.selectRCL)
-    ckm === 'c--' && e.code === 'ArrowRight' && isXAR(m) && dm(MM.offsetR)
-    ckm === 'c--' && e.code === 'ArrowRight' && isXASVN(m) && getXFS(m).su.length > 0 && dm(MM.moveSO)
-    ckm === 'c--' && e.code === 'ArrowRight' && isXACC(m) && getXC(m).cr.length > 0 && dm(MM.moveCCR)
-    ckm === '-s-' && e.code === 'ArrowRight' && isXAS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's' && dm(MM.selectFamilyX)
-    ckm === '-s-' && e.code === 'ArrowRight' && isXC(m) && dm(MM.selectSameCR)
-    ckm === '--a' && e.code === 'ArrowRight' && isXACC(m) && dm(MM.insertCCR)
-
-    ckm === '---' && e.code === 'ArrowLeft' && isXAR(m) && getRL(m, getXR(m)) && dm(MM.selectRL)
-    ckm === '---' && e.code === 'ArrowLeft' && isXASS(m) && dm(MM.selectSI)
-    ckm === '---' && e.code === 'ArrowLeft' && isXACS(m) && getXS(m).ci1.cl.at(-1)?.so1.length && dm(MM.selectLCS)
-    ckm === '---' && e.code === 'ArrowLeft' && isXC(m) && getXC(m).cl.length > 0 && dm(MM.selectLC)
-    ckm === '---' && e.code === 'ArrowLeft' && isXACC(m) && getXC(m).cl.length > 0 && dm(MM.selectLCL)
-    ckm === 'c--' && e.code === 'ArrowLeft' && isXAR(m) && dm(MM.offsetL)
-    ckm === 'c--' && e.code === 'ArrowLeft' && isXASVN(m) && isXASS(m) && dm(MM.moveSI)
-    ckm === 'c--' && e.code === 'ArrowLeft' && isXACC(m) && getXC(m).cl.length > 0 && dm(MM.moveCCL)
-    ckm === '-s-' && e.code === 'ArrowLeft' && isXAS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's' && dm(MM.selectFamilyX)
-    ckm === '-s-' && e.code === 'ArrowLeft' && isXC(m) && dm(MM.selectSameCR)
-    ckm === '--a' && e.code === 'ArrowLeft' && isXACC(m) && dm(MM.insertCCL)
-
-    ckm === 'c--' && e.which >= 96 && e.which <= 105 && isXAS(m) && dm(MM.setTextColor, shortcutColors[e.which - 96])
-    ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m) && dispatch(actions.startEditReplace())
-    ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isXAS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m) && dispatch(actions.startEditReplace())
+    if (ckm === '---' && e.code === 'ArrowDown' && isAXR(m) && getRD(m, getXR(m))) dm(MM.selectRD)
+    if (ckm === '---' && e.code === 'ArrowDown' && isAXS(m) && getQuasiSD(m)) dm(MM.selectSD)
+    if (ckm === '---' && e.code === 'ArrowDown' && isAXCS(m) && getXLS(m).sd.length === 0 && getXS(m).ci1.cd.at(-1)?.so1.length) dm(MM.selectDCS)
+    if (ckm === '---' && e.code === 'ArrowDown' && isAXC1(m) && getXC(m).cd.length > 0) dm(MM.selectDC)
+    if (ckm === '---' && e.code === 'ArrowDown' && isAXCR(m) && getXC(m).cd.length > 0) dm(MM.selectDCL)
+    if (ckm === 'c--' && e.code === 'ArrowDown' && isAXR(m)) dm(MM.offsetD)
+    if (ckm === 'c--' && e.code === 'ArrowDown' && isAXSVN(m) && getXLS(m).sd.length === 0) dm(MM.moveST)
+    if (ckm === 'c--' && e.code === 'ArrowDown' && isAXSVN(m) && getXLS(m).sd.length > 0) dm(MM.moveSD)
+    if (ckm === 'c--' && e.code === 'ArrowDown' && isAXCR(m) && getXC(m).cd.length > 0) dm(MM.moveCRD)
+    if (ckm === '-s-' && e.code === 'ArrowDown' && isAXS(m) && getQuasiSD(m)) dm(MM.selectAddSD)
+    if (ckm === '-s-' && e.code === 'ArrowDown' && isAXC1(m)) dm(MM.selectSameCC)
+    if (ckm === '--a' && e.code === 'ArrowDown' && isAXCR(m)) dm(MM.insertCRD)
+    
+    if (ckm === '---' && e.code === 'ArrowUp' && isAXR(m) && getRU(m, getXR(m))) dm(MM.selectRU)
+    if (ckm === '---' && e.code === 'ArrowUp' && isAXS(m) && getQuasiSU(m)) dm(MM.selectSU)
+    if (ckm === '---' && e.code === 'ArrowUp' && isAXCS(m) && getXFS(m).su.length === 0 && getXS(m).ci1.cu.at(-1)?.so1.length) dm(MM.selectUCS)
+    if (ckm === '---' && e.code === 'ArrowUp' && isAXC1(m) && getXC(m).cu.length > 0) dm(MM.selectUC)
+    if (ckm === '---' && e.code === 'ArrowUp' && isAXCR(m) && getXC(m).cu.length > 0) dm(MM.selectUCL)
+    if (ckm === 'c--' && e.code === 'ArrowUp' && isAXR(m)) dm(MM.offsetU)
+    if (ckm === 'c--' && e.code === 'ArrowUp' && isAXSVN(m) && getXFS(m).su.length === 0) dm(MM.moveSB)
+    if (ckm === 'c--' && e.code === 'ArrowUp' && isAXSVN(m) && getXFS(m).su.length > 0) dm(MM.moveSU)
+    if (ckm === 'c--' && e.code === 'ArrowUp' && isAXCR(m) && getXC(m).cu.length > 0) dm(MM.moveCRU)
+    if (ckm === '-s-' && e.code === 'ArrowUp' && isAXS(m) && getQuasiSU(m)) dm(MM.selectAddSU)
+    if (ckm === '-s-' && e.code === 'ArrowUp' && isAXC1(m)) dm(MM.selectSameCC)
+    if (ckm === '--a' && e.code === 'ArrowUp' && isAXCR(m)) dm(MM.insertCRU)
+    
+    if (ckm === '---' && e.code === 'ArrowRight' && isAXR(m) && getRR(m, getXR(m))) dm(MM.selectRR)
+    if (ckm === '---' && e.code === 'ArrowRight' && isAXS(m) && getXS(m).so1.length > 0 && (getXS(m).lastSelectedChild < 0 || getXS(m).lastSelectedChild > getXS(m).so1.length)) dm(MM.selectSSO)
+    if (ckm === '---' && e.code === 'ArrowRight' && isAXS(m) && getXS(m).so1.length > 0 && getXS(m).lastSelectedChild >= 0 && getXS(m).lastSelectedChild < getXS(m).so1.length) dm(MM.selectSSOLast)
+    if (ckm === '---' && e.code === 'ArrowRight' && isAXCS(m) && getXS(m).so1.length === 0 && getXS(m).ci1.cr.at(-1)?.so1.length) dm(MM.selectRCS)
+    if (ckm === '---' && e.code === 'ArrowRight' && isAXC1(m) && getXC(m).cr.length > 0) dm(MM.selectRC)
+    if (ckm === '---' && e.code === 'ArrowRight' && isAXCC(m) && getXC(m).cr.length > 0) dm(MM.selectRCL)
+    if (ckm === 'c--' && e.code === 'ArrowRight' && isAXR(m)) dm(MM.offsetR)
+    if (ckm === 'c--' && e.code === 'ArrowRight' && isAXSVN(m) && getXFS(m).su.length > 0) dm(MM.moveSO)
+    if (ckm === 'c--' && e.code === 'ArrowRight' && isAXCC(m) && getXC(m).cr.length > 0) dm(MM.moveCCR)
+    if (ckm === '-s-' && e.code === 'ArrowRight' && isAXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's') dm(MM.selectFamilyX)
+    if (ckm === '-s-' && e.code === 'ArrowRight' && isAXC1(m)) dm(MM.selectSameCR)
+    if (ckm === '--a' && e.code === 'ArrowRight' && isAXCC(m)) dm(MM.insertCCR)
+    
+    if (ckm === '---' && e.code === 'ArrowLeft' && isAXR(m) && getRL(m, getXR(m))) dm(MM.selectRL)
+    if (ckm === '---' && e.code === 'ArrowLeft' && isAXSS(m)) dm(MM.selectSI)
+    if (ckm === '---' && e.code === 'ArrowLeft' && isAXCS(m) && getXS(m).ci1.cl.at(-1)?.so1.length) dm(MM.selectLCS)
+    if (ckm === '---' && e.code === 'ArrowLeft' && isAXC1(m) && getXC(m).cl.length > 0) dm(MM.selectLC)
+    if (ckm === '---' && e.code === 'ArrowLeft' && isAXCC(m) && getXC(m).cl.length > 0) dm(MM.selectLCL)
+    if (ckm === 'c--' && e.code === 'ArrowLeft' && isAXR(m)) dm(MM.offsetL)
+    if (ckm === 'c--' && e.code === 'ArrowLeft' && isAXSVN(m) && isAXSS(m)) dm(MM.moveSI)
+    if (ckm === 'c--' && e.code === 'ArrowLeft' && isAXCC(m) && getXC(m).cl.length > 0) dm(MM.moveCCL)
+    if (ckm === '-s-' && e.code === 'ArrowLeft' && isAXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's') dm(MM.selectFamilyX)
+    if (ckm === '-s-' && e.code === 'ArrowLeft' && isAXC1(m)) dm(MM.selectSameCR)
+    if (ckm === '--a' && e.code === 'ArrowLeft' && isAXCC(m)) dm(MM.insertCCL)
+    
+    if (ckm === 'c--' && e.which >= 96 && e.which <= 105 && isAXS(m)) dm(MM.setTextColor, shortcutColors[e.which - 96])
+    if (ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isAXS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m)) dispatch(actions.startEditReplace())
+    if (ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isAXS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m)) dispatch(actions.startEditReplace())
   }
 
   const paste = (e: Event) => {
@@ -164,38 +165,38 @@ export const Window: FC = () => {
                 try { JSON.parse(text) } catch { isValidJson = false }
                 if (isValidJson) {
                   const mapJson = JSON.parse(text)
-                  let isValidMap = Array.isArray(mapJson) && mapJson.every(el =>
-                    el.hasOwnProperty('path') && Array.isArray(el.path) &&
-                    el.hasOwnProperty('nodeId') && typeof el.nodeId === 'string'
+                  const isValidMap = Array.isArray(mapJson) && mapJson.length && mapJson.every(el =>
+                    Object.hasOwn(el, 'path') && Array.isArray(el.path) &&
+                    Object.hasOwn(el, 'nodeId') && typeof el.nodeId === 'string'
                   )
                   if (isValidMap) {
                     const isPastedLR = mapJson.at(-1).path.at(0) === 'r'
                     const isPastedS = mapJson.at(-1).path.at(0) === 's'
-                    if (isXAR(m)) {
-                      isPastedLR && dm(MM.pasteLR, text)
-                      isPastedS && dm(MM.pasteRSO, text)
-                    } else if (isXAS(m)) {
+                    if (isAXR(m)) {
+                      if (isPastedLR) dm(MM.pasteLR, text)
+                      if (isPastedS) dm(MM.pasteRSO, text)
+                    } else if (isAXS(m)) {
                       const hasCell = (mapJson as M).some(el => el.path.includes('c'))
                       if (hasCell && !getXS(m).path.includes('c') || !hasCell) {
-                        isPastedS && dm(MM.pasteSSO, text)
+                        if (isPastedS) dm(MM.pasteSSO, text)
                       }
-                    } else if (isXC(m)) {
-                      isPastedS && dm(MM.pasteCSO, text)
-                    } else if (isXACC(m)) {
+                    } else if (isAXC1(m)) {
+                      if (isPastedS) dm(MM.pasteCSO, text)
+                    } else if (isAXCC(m)) {
                       // do nothing
-                    } else if (isXACR(m)) {
+                    } else if (isAXCR(m)) {
                       // do nothing
                     } else {
-                      isPastedLR && dm(MM.pasteLR, text)
+                      if (isPastedLR) dm(MM.pasteLR, text)
                     }
                   } else {
                     window.alert('invalid map')
                   }
                 } else {
                   if (isUrl(text)) {
-                    isXAS(m) && dm(MM.insertSSOLink, text)
+                    if (isAXS(m)) dm(MM.insertSSOLink, text)
                   } else {
-                    isXAS(m) && dm(MM.insertSSOText, text)
+                    if( isAXS(m)) dm(MM.insertSSOText, text)
                   }
                 }
               })
@@ -203,12 +204,12 @@ export const Window: FC = () => {
             item[0].getType('image/png').then(image => {
               const formData = new FormData()
               formData.append('upl', image, 'image.png')
-              let address = process.env.NODE_ENV === 'development'
+              const address = process.env.NODE_ENV === 'development'
                 ? 'http://127.0.0.1:8082/feta'
                 : 'https://mapboard-server.herokuapp.com/feta'
               fetch(address, {method: 'post', body: formData})
                 .then(response => response.json().then(response => {
-                  isXAS(m) && dm(MM.insertSSOImage, response)
+                  if (isAXS(m)) dm(MM.insertSSOImage, response)
                 }))
             })
           }

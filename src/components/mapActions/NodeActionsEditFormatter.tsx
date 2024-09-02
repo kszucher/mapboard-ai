@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {actions, AppDispatch, RootState} from '../../reducers/EditorReducer.ts'
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
-import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isXAR, isXAS} from "../../mapQueries/MapQueries.ts"
+import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isAXR, isAXS} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import {AccessType, FormatMode, LineType, TextType, WidthType} from "../../state/Enums.ts"
 import {FBorderIcon, FFillIcon, SFillIcon, SBorderIcon} from "../../assetsCustom/CustomIcons.tsx"
@@ -90,8 +90,8 @@ export const NodeActionsEditFormatter: FC = () => {
                         const color = colorList[i][j]
                         formatMode === FormatMode.text && dm(MM.setTextColor, color)
                         formatMode === FormatMode.sBorder && dm(MM.setSBorderColor, color)
-                        formatMode === FormatMode.fBorder && isXAR(m) && dm(MM.setFBorderColor, color)
-                        formatMode === FormatMode.fBorder && isXAS(m) && dm(MM.setFBorderColor, color)
+                        formatMode === FormatMode.fBorder && isAXR(m) && dm(MM.setFBorderColor, color)
+                        formatMode === FormatMode.fBorder && isAXS(m) && dm(MM.setFBorderColor, color)
                         formatMode === FormatMode.sFill && dm(MM.setSFillColor, color)
                         formatMode === FormatMode.fFill && dm(MM.setFFillColor, color)
                         formatMode === FormatMode.line && dm(MM.setLineColor, color)

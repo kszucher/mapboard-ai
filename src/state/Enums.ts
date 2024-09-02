@@ -23,6 +23,7 @@ export enum AlertDialogState {
 
 export enum NodeMode {
   VIEW = 'View',
+  EDIT_LINE = 'Edit Line',
   EDIT_ROOT = 'Edit Root',
   EDIT_STRUCT = 'Edit Struct',
   EDIT_CELL = 'Edit Cell',

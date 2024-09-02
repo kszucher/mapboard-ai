@@ -2,7 +2,7 @@ import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import { useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {getColors} from "../colors/Colors.ts"
-import {getG, getXAR, getXR, isXAR,} from "../../mapQueries/MapQueries.ts"
+import {getG, getAXR, getXR, isAXR,} from "../../mapQueries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../../state/ApiState.ts"
 import {mSelector} from "../../state/EditorState"
 import {RootState} from "../../reducers/EditorReducer.ts"
@@ -16,7 +16,7 @@ export const MapSvgRSelectionPrimary: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   return (
-    isXAR(m) && getXAR(m).length === 1 && !selectionRectCoords.length &&
+    isAXR(m) && getAXR(m).length === 1 && !selectionRectCoords.length &&
     <Fragment>
       <path
         key={`${g.nodeId}_svg_selectionBorderPrimary`}

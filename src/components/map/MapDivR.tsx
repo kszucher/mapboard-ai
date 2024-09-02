@@ -2,7 +2,7 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
-import {getNodeMode, getXAR, isXAR, mR} from "../../mapQueries/MapQueries.ts"
+import {getNodeMode, getAXR, isAXR, mR} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
 import {adjust} from "../../utils/Utils"
@@ -41,8 +41,8 @@ export const MapDivR: FC = () => {
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT) {
               !e.ctrlKey && dm(MM.selectR, {path: ri.path})
-              e.ctrlKey && isXAR(m) && !ri.selected && dm(MM.selectAddR, {path: ri.path})
-              e.ctrlKey && ri.selected && getXAR(m).length > 1 && dm(MM.unselectR, {path: ri.path})
+              e.ctrlKey && isAXR(m) && !ri.selected && dm(MM.selectAddR, {path: ri.path})
+              e.ctrlKey && ri.selected && getAXR(m).length > 1 && dm(MM.unselectR, {path: ri.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_ROOT) {
               !e.ctrlKey && dm(MM.selectR, {path: ri.path})
               dispatch(actions.saveFromCoordinates({e}))

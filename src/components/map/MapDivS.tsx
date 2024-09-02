@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
-import {getG, getNodeMode, getXAS, getXS, idToS, isXAS, mS} from "../../mapQueries/MapQueries.ts"
+import {getG, getNodeMode, getAXS, getXS, idToS, isAXS, mS} from "../../mapQueries/MapQueries.ts"
 import {mSelector} from "../../state/EditorState"
 import {LeftMouseMode, NodeMode} from "../../state/Enums.ts"
 import {S} from "../../state/MapStateTypes"
@@ -20,7 +20,7 @@ const getInnerHtml = (s: S) => {
   } else if (s.contentType === 'equation') {
     return katex.renderToString(getLatexString(s.content), {throwOnError: false})
   } else if (s.contentType === 'image') {
-    let imageLink = 'https://mapboard.io/file/'
+    const imageLink = 'https://mapboard.io/file/'
     return '<img src="' + imageLink + s.content + '" alt="" id="img">'
   }
 }
@@ -98,11 +98,11 @@ export const MapDivS: FC = () => {
                 window.focus()
               }
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-              !e.ctrlKey && dm(MM.selectS, {path: si.path})
-              e.ctrlKey && !si.selected && isXAS(m) && dm(MM.selectAddS, {path: si.path})
-              e.ctrlKey && si.selected && getXAS(m).length > 1 && dm(MM.unselectS, {path: si.path})
+              if (!e.ctrlKey) dm(MM.selectS, {path: si.path})
+              if (e.ctrlKey && !si.selected && isAXS(m)) dm(MM.selectAddS, {path: si.path})
+              if (e.ctrlKey && si.selected && getAXS(m).length > 1) dm(MM.unselectS, {path: si.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_STRUCT) {
-              !e.ctrlKey && dm(MM.selectS, {path: si.path})
+              if (!e.ctrlKey) dm(MM.selectS, {path: si.path})
               const abortController = new AbortController()
               const {signal} = abortController
               window.addEventListener('mousemove', (e) => {
@@ -121,6 +121,7 @@ export const MapDivS: FC = () => {
           } else if (e.buttons === 4) {
             e.preventDefault()
           } else if (e.buttons === 2) {
+            // do nothing
           }
         }}
         onDoubleClick={(e) => {
@@ -136,11 +137,11 @@ export const MapDivS: FC = () => {
         }}
         onKeyDown={(e) => {
           e.stopPropagation()
-          if(['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
+          if (['Insert', 'Tab', 'Enter'].includes(e.key) && !e.shiftKey) {
             dispatch(actions.removeMapListEntriesOfEdit())
           }
           if (['Insert','Tab'].includes(e.key)) {
-            isXAS(m) && dm(MM.insertSSO)
+            if(isAXS(m)) dm(MM.insertSSO)
           }
         }}
         onInput={(e) => {

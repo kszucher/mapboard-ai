@@ -29,7 +29,7 @@ export const mapFindNearestS = (pm: M, moveNode: S, toX: number, toY: number) =>
         } else {
           vCondition = Math.abs(toY - si.nodeStartY - si.selfH / 2) <= si.maxH / 2 + overlap
         }
-        let hCondition = toX > (si.nodeStartX + si.selfW)
+        const hCondition = toX > (si.nodeStartX + si.selfW)
         if (vCondition && hCondition ) {
           moveInsertParentNode = si
         }

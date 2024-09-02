@@ -15,6 +15,7 @@ export const isCS = (p: P): boolean => p.at(-5) === 'c' && p.at(-2) === 's'
 export const isC = (p: P): boolean => p.at(-3) === 'c'
 export const isRSC = (p: P): boolean => p.at(-7) === 'r' && p.at(-5) === 's' && p.at(-3) === 'c'
 export const isSSC = (p: P): boolean => p.at(-7) === 's' && p.at(-5) === 's' && p.at(-3) === 'c'
+export const isT = (p: P): boolean => p.at(0) !== 'g'
 
 const isOfSameR = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1)
 const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex(pi => pi === 'c') + 3), pt.slice(0, pt.findLastIndex(pti => pti === 'c') + 3))
