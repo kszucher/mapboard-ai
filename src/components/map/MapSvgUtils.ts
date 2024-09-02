@@ -3,7 +3,8 @@ import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
 import {C, G, L, M, PR, R, S} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
-import {sortPath} from "../../mapMutations/MapSort.ts"
+
+type coordinates = [number, number]
 
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -14,7 +15,7 @@ export const pathCommonProps = {
   }
 }
 
-const getCoordsInLine = (a: any[], b: any[], dt: number) => {
+const getCoordsInLine = (a: coordinates, b: coordinates, dt: number) => {
   const [x0, y0] = a
   const [x1, y1] = b
   const d = Math.sqrt(Math.pow((x1 - x0), 2) + Math.pow((y1 - y0), 2))
@@ -157,13 +158,13 @@ export const getPolygonPath = (m: M, t: R | S | C, mode: string, margin: number)
     }
     case 'c': {
       if (isXACR(m)) {
-        const xac = getXAC(m).slice().sort(sortPath)
+        const xac = getXAC(m)
         ax = xac.at(0)!.nodeStartX
         bx = cx = xac.at(-1)!.nodeStartX + xac.at(-1)!.selfW
         ayu = byu = cyu = xac.at(0)!.nodeStartY
         ayd = byd = cyd = xac.at(0)!.nodeStartY + xac.at(0)!.selfH
       } else if (isXACC(m)) {
-        const xac = getXAC(m).slice().sort(sortPath)
+        const xac = getXAC(m)
         ax = xac.at(0)!.nodeStartX
         bx = cx = xac.at(0)!.nodeStartX + xac.at(0)!.selfW
         ayu = byu = cyu = xac.at(0)!.nodeStartY
@@ -187,7 +188,7 @@ export const getPolygonPath = (m: M, t: R | S | C, mode: string, margin: number)
   byd = adjust(byd + margin)
   cyu = adjust(cyu - margin)
   cyd = adjust(cyd + margin)
-  const points = [[ax, ayu], [bx, byu], [cx, cyu], [cx, cyd], [bx, byd], [ax, ayd]]
+  const points = [[ax, ayu], [bx, byu], [cx, cyu], [cx, cyd], [bx, byd], [ax, ayd]] as coordinates[]
   let path = ''
   for (let i = 0; i < points.length; i++) {
     const prevPoint = i === 0 ? points[points.length - 1] : points[i - 1]
@@ -212,10 +213,10 @@ export const getArcPath = (s: S, margin: number, closed: boolean) => {
   const R = 8
   const xi = s.nodeStartX
   const yu = s.nodeStartY
-  let x1 = adjust(xi - margin)
-  let y1 = adjust(yu + R - margin)
-  let dx = s.selfW - 2 * R + 2 * margin
-  let dy = s.selfH - 2 * R + 2 * margin
+  const x1 = adjust(xi - margin)
+  const y1 = adjust(yu + R - margin)
+  const dx = s.selfW - 2 * R + 2 * margin
+  const dy = s.selfH - 2 * R + 2 * margin
   return (
     `M${x1},${y1} 
     a${+R},${+R} 0 0 1 ${+R},${-R} h${+dx}
@@ -231,8 +232,8 @@ export const getGridPath = (m: M, s: S) => {
   const yu = s.nodeStartY
   const yd = s.nodeStartY + s.selfH
   let path = ''
-  let rowCount = s.co1.at(0)!.cv.length
-  let colCount = s.co1.at(0)!.ch.length
+  const rowCount = s.co1.at(0)!.cv.length
+  const colCount = s.co1.at(0)!.ch.length
   for (let i = 1; i < rowCount; i++) {
     const ci = pathToC(m, [...s.path, 'c', i, 0])
     const x1 = adjust(s.nodeStartX)

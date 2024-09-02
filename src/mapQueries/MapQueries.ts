@@ -4,6 +4,7 @@ import {C, G, L, M, N, PC, PR, PS, R, S, SSaveOptional} from "../state/MapStateT
 import {NodeMode} from "../state/Enums.ts"
 import {isArrayOfEqualValues} from "../utils/Utils"
 import {getPathPattern, isC, isCS, isG, isL, isQuasiSD, isQuasiSU, isR, isRS, isS, isSS} from "./PathQueries.ts"
+import {sortPath} from "../mapMutations/MapSort.ts";
 
 export const getHN = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.nodeId, ni as N]))
 export const getHP = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.path.join(''), ni as N]))
@@ -32,12 +33,12 @@ export const getXR = (m: M): R => mR(m).reduce((a, b) => a.selected > b.selected
 export const getXS = (m: M): S => mS(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as S)
 export const getXC = (m: M): C => mC(m).reduce((a, b) => a.selected > b.selected ? a : b, {} as C)
 
-export const getXAR = (m: M): R[] => mR(m).filter(ri => ri.selected) // should be path sorted
-export const getXARS = (m: M): S[] => mRS(m).filter(si => si.selected) // should be path sorted
-export const getXASS = (m: M): S[] => mSS(m).filter(si => si.selected) // should be path sorted
-export const getXACS = (m: M): S[] => mCS(m).filter(si => si.selected) // should be path sorted
-export const getXAS = (m: M): S[] => mS(m).filter(si => si.selected) // should be path sorted
-export const getXAC = (m: M): C[] => mC(m).filter(ci => ci.selected) // should be path sorted
+export const getXAR = (m: M): R[] => mR(m).filter(ri => ri.selected).sort(sortPath)
+export const getXARS = (m: M): S[] => mRS(m).filter(si => si.selected).sort(sortPath)
+export const getXASS = (m: M): S[] => mSS(m).filter(si => si.selected).sort(sortPath)
+export const getXACS = (m: M): S[] => mCS(m).filter(si => si.selected).sort(sortPath)
+export const getXAS = (m: M): S[] => mS(m).filter(si => si.selected).sort(sortPath)
+export const getXAC = (m: M): C[] => mC(m).filter(ci => ci.selected).sort(sortPath)
 
 export const getXFS = (m: M): S => mS(m).find(si => si.selected)! // should be path sorted (actually, once getXAS is path sorted, getXAS(m).at(0))
 export const getXLS = (m: M): S => mS(m).findLast(si => si.selected)! // should be path sorted (actually, once getXAS is path sorted, getXAS(m).at(-1))
