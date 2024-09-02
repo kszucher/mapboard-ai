@@ -40,11 +40,11 @@ export const MapDivR: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT) {
-              !e.ctrlKey && dm(MM.selectR, {path: ri.path})
-              e.ctrlKey && isAXR(m) && !ri.selected && dm(MM.selectAddR, {path: ri.path})
-              e.ctrlKey && ri.selected && getAXR(m).length > 1 && dm(MM.unselectR, {path: ri.path})
+              if (!e.ctrlKey) dm(MM.selectR, {path: ri.path})
+              if (e.ctrlKey && isAXR(m) && !ri.selected) dm(MM.selectAddR, {path: ri.path})
+              if (e.ctrlKey && ri.selected && getAXR(m).length > 1) dm(MM.unselectR, {path: ri.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_ROOT) {
-              !e.ctrlKey && dm(MM.selectR, {path: ri.path})
+              if (!e.ctrlKey) dm(MM.selectR, {path: ri.path})
               dispatch(actions.saveFromCoordinates({e}))
               const abortController = new AbortController()
               const {signal} = abortController
