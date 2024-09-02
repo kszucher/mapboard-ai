@@ -1,4 +1,4 @@
-export const isArrayOfEqualValues = (array: []) => new Set(array).size === 1
+export const isArrayOfEqualValues = (array: any[]) => new Set(array).size === 1
 export const isUrl = (string: string) => { try { return Boolean(new URL(string)) } catch(e) { return false } }
 export const genId = () => crypto.randomUUID().slice(-8)
 export const getLatexString = (s: string) => '\\Large ' + s.substring(2, s.length - 2).replace(/\s/g, '')
