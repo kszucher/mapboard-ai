@@ -1,7 +1,7 @@
 import {DropdownMenu, Dialog, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
-import {getNodeMode, getAXS, getXFS, getXLS, getXR, getXS, isAXRS, isAXSVN} from "../../mapQueries/MapQueries.ts"
+import {getNodeMode, getAXS, getXFS, getXLS, getXR, getXS, isAXRS, isAXSN} from "../../mapQueries/MapQueries.ts"
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
 import {mSelector} from "../../state/EditorState.ts"
 import Dots from "../../../assets/dots.svg?react"
@@ -77,10 +77,10 @@ export const NodeActions = () => {
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{'Move'}</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
-              {isAXSVN(m) && getXFS(m).su.length > 0 && <DropdownMenu.Item onClick={() => dm(MM.moveSU)}>{'Node Up'}</DropdownMenu.Item>}
-              {isAXSVN(m) && getXLS(m).sd.length > 0 && <DropdownMenu.Item onClick={() => dm(MM.moveSD)}>{'Node Down'}</DropdownMenu.Item>}
-              {isAXSVN(m) && getXFS(m).su.length > 0 && <DropdownMenu.Item onClick={() => dm(MM.moveSO)}>{'Node Out'}</DropdownMenu.Item>}
-              {!isAXRS(m) && isAXSVN(m) && <DropdownMenu.Item onClick={() => dm(MM.moveSI)}>{'Node In'}</DropdownMenu.Item>}
+              {isAXSN(m) && getXFS(m).su.length > 0 && <DropdownMenu.Item onClick={() => dm(MM.moveSU)}>{'Node Up'}</DropdownMenu.Item>}
+              {isAXSN(m) && getXLS(m).sd.length > 0 && <DropdownMenu.Item onClick={() => dm(MM.moveSD)}>{'Node Down'}</DropdownMenu.Item>}
+              {isAXSN(m) && getXFS(m).su.length > 0 && <DropdownMenu.Item onClick={() => dm(MM.moveSO)}>{'Node Out'}</DropdownMenu.Item>}
+              {!isAXRS(m) && isAXSN(m) && <DropdownMenu.Item onClick={() => dm(MM.moveSI)}>{'Node In'}</DropdownMenu.Item>}
               {getXS(m).so1.length > 0 && getXS(m).co.length === 0 && <DropdownMenu.Item onClick={() => dm(MM.moveS2T)}>{'Sub Nodes To Table'}</DropdownMenu.Item>}
             </DropdownMenu.SubContent>
           </DropdownMenu.Sub>

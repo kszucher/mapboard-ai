@@ -49,7 +49,7 @@ export const isAXSS = (m: M): boolean => hasTrues(mT(m).filter(ti => ti.selected
 export const isAXCS = (m: M): boolean => hasTrues(mT(m).filter(ti => ti.selected).map(el => isCS(el.path)))
 export const isAXC = (m: M): boolean => hasTrues(mT(m).filter(ti => ti.selected).map(el => isC(el.path)))
 
-export const isAXSVN = (m: M): boolean => isAXS(m) && hasEquals(getAXS(m).map((ni, i) => ni.path.with(-1, ni.path.at(-1) - i)))
+export const isAXSN = (m: M): boolean => isAXS(m) && hasEquals(getAXS(m).map((ni, i) => ni.path.with(-1, ni.path.at(-1) - i)))
 export const isAXC1 = (m: M): boolean => isAXC(m) && getAXC(m).length === 1
 export const isAXCR = (m: M): boolean => isAXC(m) && getAXC(m).length > 1 && hasEquals(getAXC(m).map(ni => ni.path.with(-1, 0)))
 export const isAXCC = (m: M): boolean => isAXC(m) && getAXC(m).length > 1 && hasEquals(getAXC(m).map(ni => ni.path.with(-2, 0)))
