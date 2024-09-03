@@ -109,20 +109,11 @@ export const duplicateSC = (m: M) => {
 
 export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
   const offset = getAXS(m).length
-  const cbSS = ssToClipboard(m)
-  const cbSC = scToClipboard(m)
-  deleteS(m) // must delete as we do not know elements after selected nodes but delete figures it out
-  if (sD) {
-    [sD, ...sD.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
-  }
-  if (sU) {
-    cbSS.forEach(si => Object.assign(si, {path: [...sL.path, 's', sU.path.at(-1) + 1 + si.path.at(1), ...si.path.slice(2)]}))
-    cbSC.forEach(ci => Object.assign(ci, {path: [...sL.path, 's', sU.path.at(-1) + 1 + ci.path.at(1), ...ci.path.slice(2)]}))
-  } else {
-    cbSS.forEach(si => Object.assign(si, {path: [...sL.path, 's', si.path.at(1), ...si.path.slice(2)]}))
-    cbSC.forEach(ci => Object.assign(ci, {path: [...sL.path, 's', ci.path.at(1), ...ci.path.slice(2)]}))
-  }
-  m.push(...cbSS, ...cbSC)
+  const cb = [...ssToClipboard(m), ...scToClipboard(m)]
+  deleteS(m)
+  if (sD) [sD, ...sD.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
+  cb.forEach(ti => Object.assign(ti, {path: [...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + ti.path.at(1), ...ti.path.slice(2)]}))
+  m.push(...cb)
   m.sort(sortPath)
 }
 
