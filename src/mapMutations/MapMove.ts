@@ -121,7 +121,7 @@ export const moveSC = (m: M, ip: PS) => {
   m.sort(sortPath)
 }
 
-export const _moveSC = (m: M, sL: S, sU: S | undefined, sD: S | undefined) => {
+export const _moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
   const offset = getAXS(m).length
   const cbSS = ssToClipboard(m)
   const cbSC = scToClipboard(m)

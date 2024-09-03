@@ -121,10 +121,10 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'pasteCSO': pasteSC(m, [...getXC(m).path, 's',  getXC(m).so1.length], payload); break
     case 'duplicateR': duplicateLRSC(m); break;
     case 'duplicateS': duplicateSC(m); break;
-    case 'moveSD': moveSC(m, getXS(m).path.with(-1, getFXS(m).su.length + 1) as PS); break
-    case 'moveST': moveSC(m, getXS(m).path.with(-1, 0) as PS); break
-    case 'moveSU': moveSC(m, getXS(m).path.with(-1, getFXS(m).su.length - 1) as PS); break
-    case 'moveSB': moveSC(m, getXS(m).path.with(-1, getLXS(m).sd.length) as PS); break
+    case 'moveSD': _moveSC(m, (getXS(m).ri1 || getXS(m).si1 || getXS(m).ci1)!, getLXS(m).sd.at(-1), getLXS(m).sd.at(-2)); break
+    case 'moveST': _moveSC(m, (getXS(m).ri1 || getXS(m).si1 || getXS(m).ci1)!, undefined, (getXS(m).ri1 || getXS(m).si1 || getXS(m).ci1)!.so1.at(0)); break
+    case 'moveSU': _moveSC(m, (getXS(m).ri1 || getXS(m).si1 || getXS(m).ci1)!, getFXS(m).su.at(-2), getFXS(m).su.at(-1)); break
+    case 'moveSB': _moveSC(m, (getXS(m).ri1 || getXS(m).si1 || getXS(m).ci1)!, (getXS(m).ri1 || getXS(m).si1 || getXS(m).ci1)!.so1.at(-1), undefined); break
     case 'moveSO': moveSC(m, [...getFXS(m).su.at(-1)!.path, 's', getFXS(m).su.at(-1)!.so1.length] as PS); break
     case 'moveSI': moveSC(m, getXS(m).si1!.path.with(-1, getXS(m).si1!.su.length + 1) as PS); break
     case 'moveSByDrag': if (payload.sL) _moveSC(m, idToS(m, payload.sL),  idToS(m, payload.sU), idToS(m, payload.sD)); break
