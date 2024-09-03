@@ -1,11 +1,12 @@
 import {getG, getLastIndexL, getLastIndexR, getAXS, getFXS, getLXS, getXS, mC, mL, mR, mS, pathToR, pathToS} from "../mapQueries/MapQueries.ts"
-import {rSaveOptional} from "../state/MapState"
+import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PR, PS, R, S} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 import {lToClipboard, rcToClipboard, rrToClipboard, rsToClipboard, scToClipboard, ssToClipboard} from "../mapQueries/MapExtract.ts"
+import {deleteS} from "./MapDelete.ts"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -69,11 +70,19 @@ const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS) => {
 }
 
 export const copyLRSC = (m: M) => {
-  cbSave(mapDeInit([...lToClipboard(m), ...rrToClipboard(m), ...rsToClipboard(m), ...rcToClipboard(m)].sort(sortPath)))
+  cbSave(mapDeInit([
+    ...lToClipboard(m),
+    ...rrToClipboard(m),
+    ...rsToClipboard(m).map(si => Object.assign(si, {linkType: sSaveOptional.linkType, link: sSaveOptional.link})),
+    ...rcToClipboard(m)
+  ].sort(sortPath)))
 }
 
 export const copySC = (m: M) => {
-  cbSave(mapDeInit([...ssToClipboard(m), ...scToClipboard(m)].sort(sortPath)))
+  cbSave(mapDeInit([
+    ...ssToClipboard(m).map(si => Object.assign(si, {linkType: sSaveOptional.linkType, link: sSaveOptional.link})),
+    ...scToClipboard(m)
+  ].sort(sortPath)))
 }
 
 export const pasteLRSC = (m: M, payload: any) => {
@@ -109,6 +118,25 @@ export const moveSC = (m: M, ip: PS) => {
   selected.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.splice(0, pos + 1, ...ip.slice(0, -1), ti.path[pos] + delta))
   offsetUp.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[pos] -= offset)
   offsetDown.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[ip.length - 1] += offset)
+  m.sort(sortPath)
+}
+
+export const _moveSC = (m: M, sL: S, sU: S | undefined, sD: S | undefined) => {
+  const offset = getAXS(m).length
+  const cbSS = ssToClipboard(m)
+  const cbSC = scToClipboard(m)
+  deleteS(m)
+  if (sD) {
+    [sD, ...sD.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
+  }
+  if (sU) {
+    cbSS.forEach(si => Object.assign(si, {path: [...sL.path, 's', sU.path.at(-1) + 1 + si.path.at(1), ...si.path.slice(2)]}))
+    cbSC.forEach(ci => Object.assign(ci, {path: [...sL.path, 's', sU.path.at(-1) + 1 + ci.path.at(1), ...ci.path.slice(2)]}))
+  } else {
+    cbSS.forEach(si => Object.assign(si, {path: [...sL.path, 's', si.path.at(1), ...si.path.slice(2)]}))
+    cbSC.forEach(ci => Object.assign(ci, {path: [...sL.path, 's', ci.path.at(1), ...ci.path.slice(2)]}))
+  }
+  m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
 }
 

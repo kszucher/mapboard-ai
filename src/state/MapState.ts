@@ -108,8 +108,6 @@ export const sSaveNever = {
   co: [],
   su: [],
   sd: [],
-  isTop: 0,
-  isBottom: 0,
   selfW: 0,
   selfH: 0,
   familyW: 0,

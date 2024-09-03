@@ -21,8 +21,9 @@ export const editorState: EditorState = {
   formatterVisible: false,
   rOffsetCoords: [],
   sMoveCoords: [],
-  sMoveInsertParentNodeId: '',
-  sMoveTargetIndex: 0,
+  sL: '',
+  sU: '',
+  sD: '',
   selectionRectCoords: [],
   intersectingNodes: [],
   zoomInfo: {

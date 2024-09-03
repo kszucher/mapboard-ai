@@ -108,7 +108,7 @@ export const MapDivS: FC = () => {
               window.addEventListener('mousemove', (e) => {
                 e.preventDefault()
                 didMove = true
-                dispatch(actions.moveSByDragPreview({s: si, e}))
+                dispatch(actions.moveSByDragPreview({e}))
               }, {signal})
               window.addEventListener('mouseup', (e) => {
                 abortController.abort()

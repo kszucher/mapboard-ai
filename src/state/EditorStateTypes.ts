@@ -20,8 +20,9 @@ export interface EditorState {
   formatterVisible: boolean
   rOffsetCoords: number[]
   sMoveCoords: number[]
-  sMoveInsertParentNodeId: string
-  sMoveTargetIndex: number
+  sL: string
+  sU: string
+  sD: string
   selectionRectCoords: number[]
   intersectingNodes: string[]
   zoomInfo: {

@@ -24,5 +24,3 @@ export const isQuasiSD = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSam
 export const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) < sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
 
 export const getClosestC = (p: P): PC => p.slice(0, p.findLastIndex(pi => pi === 'c') + 3) as PC
-
-export const isSEO = (p: PT, pt: PT): boolean => pt.length >= p.length && isEqual(pt.slice(0, p.length), p)

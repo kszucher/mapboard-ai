@@ -115,8 +115,6 @@ export interface SSaveNever {
   co: C[]
   su: S[]
   sd: S[]
-  isTop: number
-  isBottom: number
   selfW: number
   selfH: number
   familyW: number

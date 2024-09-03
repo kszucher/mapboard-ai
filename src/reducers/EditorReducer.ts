@@ -13,7 +13,6 @@ import {M, R, S} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
 import {mapInit} from "../mapMutations/MapInit.ts"
 import {mapChain} from "../mapMutations/MapChain.ts"
-import {mapCalcOrientation} from "../mapMutations/MapCalcOrientation.ts"
 import {mapCalcTask} from "../mapMutations/MapCalcTask.ts"
 import {mapMeasure} from "../mapMutations/MapMeasure.ts"
 import {mapPlace} from "../mapMutations/MapPlace.ts"
@@ -125,16 +124,17 @@ export const editorSlice = createSlice({
       const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + r.offsetH
       state.rOffsetCoords = [toX, toY, r.selfW, r.selfH]
     },
-    moveSByDragPreview(state, action: PayloadAction<{s: S, e: any}>) {
-      const {s, e} = action.payload
+    moveSByDragPreview(state, action: PayloadAction<{e: any}>) {
+      const {e} = action.payload
       const pm = current(state.commitList[state.commitIndex].data)
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
-      const {sMoveCoords, sMoveInsertParentNodeId, sMoveTargetIndex} = mapFindNearestS(pm, s, toX, toY)
+      const {sMoveCoords, sL, sU, sD} = mapFindNearestS(pm, toX, toY)
       state.sMoveCoords = sMoveCoords
-      state.sMoveInsertParentNodeId = sMoveInsertParentNodeId
-      state.sMoveTargetIndex = sMoveTargetIndex
+      state.sL = sL
+      state.sU = sU
+      state.sD = sD
     },
     startEditReplace(state) {
       const pm = current(state.commitList[state.commitIndex].data)
@@ -169,8 +169,9 @@ export const editorSlice = createSlice({
         }
         case 'moveSByDrag': {
           action.payload.payload = {
-            sMoveInsertParentNodeId: state.sMoveInsertParentNodeId,
-            sMoveTargetIndex: state.sMoveTargetIndex
+            sL: state.sL,
+            sU: state.sU,
+            sD: state.sD
           }
           break
         }
@@ -180,7 +181,6 @@ export const editorSlice = createSlice({
       mapMutation(m, action.payload.type, action.payload.payload)
       mapInit(m)
       mapChain(m)
-      mapCalcOrientation(m)
       mapCalcTask(m)
       mapMeasure(pm, m)
       mapPlace(m)
@@ -201,8 +201,9 @@ export const editorSlice = createSlice({
         }
         case 'moveSByDrag': {
           state.sMoveCoords = []
-          state.sMoveInsertParentNodeId = ''
-          state.sMoveTargetIndex = 0
+          state.sL = ''
+          state.sU = ''
+          state.sD = ''
           break
         }
       }
@@ -231,7 +232,6 @@ export const editorSlice = createSlice({
         const m = structuredClone(pm).sort(sortPath)
         mapInit(m)
         mapChain(m)
-        mapCalcOrientation(m)
         mapCalcTask(m)
         mapMeasure(pm, m)
         mapPlace(m)
