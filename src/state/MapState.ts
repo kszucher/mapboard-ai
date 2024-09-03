@@ -102,6 +102,7 @@ export const sSaveNever = {
   ri1: {} as R,
   si1: {} as S,
   ci1: {} as C,
+  ti1: {} as R | S | C,
   so1: [],
   so: [],
   co1: [],

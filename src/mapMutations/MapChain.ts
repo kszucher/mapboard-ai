@@ -10,12 +10,15 @@ export const mapChain = (m: M) => {
         const si = ni as S
         if (isRS(si.path)) {
           si.ri1 = hp.get(si.path.slice(0, -2).join('')) as R
+          si.ti1 = si.ri1
           si.ri1.so1.push(si)
         } else if (isSS(si.path)) {
           si.si1 = hp.get(si.path.slice(0, -2).join('')) as S
+          si.ti1 = si.si1
           si.si1.so1.push(si)
         } else if (isCS(si.path)) {
           si.ci1 = hp.get(si.path.slice(0, -2).join('')) as C
+          si.ti1 = si.ci1
           si.ci1.so1.push(si)
         }
         for (let i = 0; i < si.path.at(-1); i++) {

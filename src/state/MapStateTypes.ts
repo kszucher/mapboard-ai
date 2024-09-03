@@ -109,6 +109,7 @@ export interface SSaveNever {
   ri1: R | undefined
   si1: S | undefined
   ci1: C | undefined
+  ti1: R | S | C
   so1: S[]
   so: S[]
   co1: C[]
