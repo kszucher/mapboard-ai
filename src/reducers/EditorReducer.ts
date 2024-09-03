@@ -9,7 +9,7 @@ import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
 import {mapMutation} from "../mapMutations/MapMutation.ts"
 import {getXS} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
-import {M, R, S} from "../state/MapStateTypes.ts"
+import {M, R} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
 import {mapInit} from "../mapMutations/MapInit.ts"
 import {mapChain} from "../mapMutations/MapChain.ts"
@@ -18,6 +18,8 @@ import {mapMeasure} from "../mapMutations/MapMeasure.ts"
 import {mapPlace} from "../mapMutations/MapPlace.ts"
 import {sortNode, sortPath} from "../mapMutations/MapSort.ts"
 import {mapDeInit} from "../mapMutations/MapDeInit.ts"
+import {EditorState} from "../state/EditorStateTypes.ts"
+import React from "react"
 
 export const editorSlice = createSlice({
   name: 'editor',
@@ -56,8 +58,14 @@ export const editorSlice = createSlice({
     closeFormatter(state) {
       state.formatterVisible = false
     },
-    setZoomInfo(state, action: PayloadAction<any>) {
-      state.zoomInfo = action.payload
+    setZoomInfo(state, action: PayloadAction<Omit<EditorState['zoomInfo'], 'fromX' | 'fromY'>>) {
+      state.zoomInfo.scale = action.payload.scale
+      state.zoomInfo.prevMapX = action.payload.prevMapX
+      state.zoomInfo.prevMapY = action.payload.prevMapY
+      state.zoomInfo.translateX = action.payload.translateX
+      state.zoomInfo.translateY = action.payload.translateY
+      state.zoomInfo.originX = action.payload.originX
+      state.zoomInfo.originY = action.payload.originY
     },
     showConnectionHelpers(state) {
       state.connectionHelpersVisible = true
@@ -65,7 +73,7 @@ export const editorSlice = createSlice({
     hideConnectionHelpers(state) {
       state.connectionHelpersVisible = false
     },
-    setConnectionStart(state, action: PayloadAction<any>) {
+    setConnectionStart(state, action: PayloadAction<EditorState['connectionStart']>) {
       state.connectionStart = action.payload
     },
     clearConnectionStart(state) {
@@ -79,7 +87,7 @@ export const editorSlice = createSlice({
       state.editedNodeId = ''
       state.commitIndex = state.commitIndex < state.commitList.length - 1 ? state.commitIndex + 1 : state.commitIndex
     },
-    saveView(state, action: PayloadAction<{ e: any }>) {
+    saveView(state, action: PayloadAction<{ e: React.WheelEvent }>) {
       const {e} = action.payload
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const mapX = getMapX(e)
@@ -154,7 +162,7 @@ export const editorSlice = createSlice({
       state.commitList = [...state.commitList.slice(0, state.editStartMapListIndex + 1), ...state.commitList.slice(-1)]
       state.commitIndex = state.editStartMapListIndex + 1
     },
-    mapReducer(state, action: PayloadAction<{ type: MM, payload?: any}>) {
+    mapReducer(state, action: PayloadAction<{ type: MM, payload?: object}>) {
       switch (action.payload.type) {
         case 'selectSByRectangle': {
           action.payload.payload = {intersectingNodes: state.intersectingNodes}
