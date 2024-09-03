@@ -226,8 +226,8 @@ export const editorSlice = createSlice({
         const { mapData } = structuredClone(payload)
         const pm = mapData.filter(el =>
           Object.keys(el).length !== 0 &&
-          el.hasOwnProperty('nodeId') &&
-          el.hasOwnProperty('path')
+          Object.hasOwn(el, 'nodeId') &&
+          Object.hasOwn(el, 'path')
         )
         const m = structuredClone(pm).sort(sortPath)
         mapInit(m)
