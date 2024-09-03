@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {MM} from "../../mapMutations/MapMutationEnum.ts"
-import {getLastIndexR, getXC, getXS, isAXCC, isAXCR, isAXSN, isAXC, isAXC1, isAXS, mR, isAXSS, getXFS, getXLS, isAXR, isAXRS, isAXCS, getQuasiSD, getQuasiSU, getXR} from "../../mapQueries/MapQueries.ts"
+import {getLastIndexR, getXC, getXS, isAXCC, isAXCR, isAXSN, isAXC, isAXC1, isAXS, mR, isAXSS, getFXS, getLXS, isAXR, isAXRS, isAXCS, getQuasiSD, getQuasiSU, getXR} from "../../mapQueries/MapQueries.ts"
 import {isUrl} from "../../utils/Utils"
 import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../../state/Enums"
 import {actions, AppDispatch, RootState} from "../../reducers/EditorReducer.ts"
@@ -11,7 +11,6 @@ import {getMap, mSelector} from "../../state/EditorState"
 import {M} from "../../state/MapStateTypes"
 import {shortcutColors} from "../colors/Colors.ts"
 import {getRR, getRL, getRD, getRU} from "../../mapQueries/MapFindNearestR.ts"
-import {sortPath} from "../../mapMutations/MapSort.ts"
 
 export let timeoutId: NodeJS.Timeout
 let mapListener: AbortController
@@ -42,7 +41,7 @@ export const Window: FC = () => {
       e.key === 'F3'
     ) {e.preventDefault()
     }
-    const m = getMap().slice().sort(sortPath)
+    const m = getMap()
     const ckm = [
       +e.ctrlKey ? 'c' : '-',
       +e.shiftKey ? 's' : '-',
@@ -58,10 +57,10 @@ export const Window: FC = () => {
     if (ckm === '---' && e.key === 'Tab' && isAXR(m)) dm(MM.insertR)
     if (ckm === '---' && e.key === 'Tab' && isAXS(m)) dm(MM.insertSSO)
     if (ckm === '---' && e.key === 'Tab' && isAXC1(m)) dm(MM.insertCSO)
-    if (ckm === '---' && e.key === 'Delete' && isAXSN(m) && getXFS(m).su.length > 0) dm(MM.deleteSJumpSU)
-    if (ckm === '---' && e.key === 'Delete' && isAXSN(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length > 0) dm(MM.deleteSJumpSD)
-    if (ckm === '---' && e.key === 'Delete' && isAXSN(m) && isAXSS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.deleteSJumpSI)
-    if (ckm === '---' && e.key === 'Delete' && isAXSN(m) && isAXCS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.deleteSJumpCI)
+    if (ckm === '---' && e.key === 'Delete' && isAXSN(m) && getFXS(m).su.length > 0) dm(MM.deleteSJumpSU)
+    if (ckm === '---' && e.key === 'Delete' && isAXSN(m) && getFXS(m).su.length === 0 && getLXS(m).sd.length > 0) dm(MM.deleteSJumpSD)
+    if (ckm === '---' && e.key === 'Delete' && isAXSN(m) && isAXSS(m) && getFXS(m).su.length === 0 && getLXS(m).sd.length === 0) dm(MM.deleteSJumpSI)
+    if (ckm === '---' && e.key === 'Delete' && isAXSN(m) && isAXCS(m) && getFXS(m).su.length === 0 && getLXS(m).sd.length === 0) dm(MM.deleteSJumpCI)
     if (ckm === '---' && e.key === 'Delete' && isAXS(m) && !isAXSN(m)) dm(MM.deleteSJumpR)
     if (ckm === '---' && e.key === 'Delete' && isAXR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected)) dm(MM.deleteLRSC)
     if (ckm === '---' && e.key === 'Delete' && isAXCR(m) && getXC(m).cu.length > 0) dm(MM.deleteCRJumpU)
@@ -85,11 +84,11 @@ export const Window: FC = () => {
     if (ckm === 'c--' && e.code === 'KeyC' && isAXR(m)) dm(MM.copyLR)
     if (ckm === 'c--' && e.code === 'KeyC' && isAXSN(m)) dm(MM.copyS)
     if (ckm === 'c--' && e.code === 'KeyX' && isAXR(m) && getLastIndexR(m) > 0) dm(MM.cutLRJumpR)
-    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXRS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.cutSJumpRI)
-    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXSS(m) && getXFS(m).su.length > 0) dm(MM.cutSJumpSU)
-    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXSS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length > 0) dm(MM.cutSJumpSD)
-    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXSS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.cutSJumpSI)
-    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXCS(m) && getXFS(m).su.length === 0 && getXLS(m).sd.length === 0) dm(MM.cutSJumpCI)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXRS(m) && getFXS(m).su.length === 0 && getLXS(m).sd.length === 0) dm(MM.cutSJumpRI)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXSS(m) && getFXS(m).su.length > 0) dm(MM.cutSJumpSU)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXSS(m) && getFXS(m).su.length === 0 && getLXS(m).sd.length > 0) dm(MM.cutSJumpSD)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXSS(m) && getFXS(m).su.length === 0 && getLXS(m).sd.length === 0) dm(MM.cutSJumpSI)
+    if (ckm === 'c--' && e.code === 'KeyX' && isAXSN(m) && isAXCS(m) && getFXS(m).su.length === 0 && getLXS(m).sd.length === 0) dm(MM.cutSJumpCI)
     if (ckm === 'c--' && e.code === 'KeyD' && isAXR(m)) dm(MM.duplicateR)
     if (ckm === 'c--' && e.code === 'KeyD' && isAXS(m)) dm(MM.duplicateS)
     if (ckm === 'c--' && e.code === 'KeyZ') dispatch(actions.redo())
@@ -97,12 +96,12 @@ export const Window: FC = () => {
 
     if (ckm === '---' && e.code === 'ArrowDown' && isAXR(m) && getRD(m, getXR(m))) dm(MM.selectRD)
     if (ckm === '---' && e.code === 'ArrowDown' && isAXS(m) && getQuasiSD(m)) dm(MM.selectSD)
-    if (ckm === '---' && e.code === 'ArrowDown' && isAXCS(m) && getXLS(m).sd.length === 0 && getXS(m).ci1.cd.at(-1)?.so1.length) dm(MM.selectDCS)
+    if (ckm === '---' && e.code === 'ArrowDown' && isAXCS(m) && getLXS(m).sd.length === 0 && getXS(m).ci1.cd.at(-1)?.so1.length) dm(MM.selectDCS)
     if (ckm === '---' && e.code === 'ArrowDown' && isAXC1(m) && getXC(m).cd.length > 0) dm(MM.selectDC)
     if (ckm === '---' && e.code === 'ArrowDown' && isAXCR(m) && getXC(m).cd.length > 0) dm(MM.selectDCL)
     if (ckm === 'c--' && e.code === 'ArrowDown' && isAXR(m)) dm(MM.offsetD)
-    if (ckm === 'c--' && e.code === 'ArrowDown' && isAXSN(m) && getXLS(m).sd.length === 0) dm(MM.moveST)
-    if (ckm === 'c--' && e.code === 'ArrowDown' && isAXSN(m) && getXLS(m).sd.length > 0) dm(MM.moveSD)
+    if (ckm === 'c--' && e.code === 'ArrowDown' && isAXSN(m) && getLXS(m).sd.length === 0) dm(MM.moveST)
+    if (ckm === 'c--' && e.code === 'ArrowDown' && isAXSN(m) && getLXS(m).sd.length > 0) dm(MM.moveSD)
     if (ckm === 'c--' && e.code === 'ArrowDown' && isAXCR(m) && getXC(m).cd.length > 0) dm(MM.moveCRD)
     if (ckm === '-s-' && e.code === 'ArrowDown' && isAXS(m) && getQuasiSD(m)) dm(MM.selectAddSD)
     if (ckm === '-s-' && e.code === 'ArrowDown' && isAXC1(m)) dm(MM.selectSameCC)
@@ -110,12 +109,12 @@ export const Window: FC = () => {
     
     if (ckm === '---' && e.code === 'ArrowUp' && isAXR(m) && getRU(m, getXR(m))) dm(MM.selectRU)
     if (ckm === '---' && e.code === 'ArrowUp' && isAXS(m) && getQuasiSU(m)) dm(MM.selectSU)
-    if (ckm === '---' && e.code === 'ArrowUp' && isAXCS(m) && getXFS(m).su.length === 0 && getXS(m).ci1.cu.at(-1)?.so1.length) dm(MM.selectUCS)
+    if (ckm === '---' && e.code === 'ArrowUp' && isAXCS(m) && getFXS(m).su.length === 0 && getXS(m).ci1.cu.at(-1)?.so1.length) dm(MM.selectUCS)
     if (ckm === '---' && e.code === 'ArrowUp' && isAXC1(m) && getXC(m).cu.length > 0) dm(MM.selectUC)
     if (ckm === '---' && e.code === 'ArrowUp' && isAXCR(m) && getXC(m).cu.length > 0) dm(MM.selectUCL)
     if (ckm === 'c--' && e.code === 'ArrowUp' && isAXR(m)) dm(MM.offsetU)
-    if (ckm === 'c--' && e.code === 'ArrowUp' && isAXSN(m) && getXFS(m).su.length === 0) dm(MM.moveSB)
-    if (ckm === 'c--' && e.code === 'ArrowUp' && isAXSN(m) && getXFS(m).su.length > 0) dm(MM.moveSU)
+    if (ckm === 'c--' && e.code === 'ArrowUp' && isAXSN(m) && getFXS(m).su.length === 0) dm(MM.moveSB)
+    if (ckm === 'c--' && e.code === 'ArrowUp' && isAXSN(m) && getFXS(m).su.length > 0) dm(MM.moveSU)
     if (ckm === 'c--' && e.code === 'ArrowUp' && isAXCR(m) && getXC(m).cu.length > 0) dm(MM.moveCRU)
     if (ckm === '-s-' && e.code === 'ArrowUp' && isAXS(m) && getQuasiSU(m)) dm(MM.selectAddSU)
     if (ckm === '-s-' && e.code === 'ArrowUp' && isAXC1(m)) dm(MM.selectSameCC)
@@ -128,7 +127,7 @@ export const Window: FC = () => {
     if (ckm === '---' && e.code === 'ArrowRight' && isAXC1(m) && getXC(m).cr.length > 0) dm(MM.selectRC)
     if (ckm === '---' && e.code === 'ArrowRight' && isAXCC(m) && getXC(m).cr.length > 0) dm(MM.selectRCL)
     if (ckm === 'c--' && e.code === 'ArrowRight' && isAXR(m)) dm(MM.offsetR)
-    if (ckm === 'c--' && e.code === 'ArrowRight' && isAXSN(m) && getXFS(m).su.length > 0) dm(MM.moveSO)
+    if (ckm === 'c--' && e.code === 'ArrowRight' && isAXSN(m) && getFXS(m).su.length > 0) dm(MM.moveSO)
     if (ckm === 'c--' && e.code === 'ArrowRight' && isAXCC(m) && getXC(m).cr.length > 0) dm(MM.moveCCR)
     if (ckm === '-s-' && e.code === 'ArrowRight' && isAXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's') dm(MM.selectFamilyX)
     if (ckm === '-s-' && e.code === 'ArrowRight' && isAXC1(m)) dm(MM.selectSameCR)
@@ -153,7 +152,7 @@ export const Window: FC = () => {
 
   const paste = (e: Event) => {
     e.preventDefault()
-    const m = getMap().slice().sort(sortPath)
+    const m = getMap()
     navigator.permissions.query({name: "clipboard-write" as PermissionName}).then(result => {
       if (result.state === "granted" || result.state === "prompt") {
         navigator.clipboard.read().then(item => {

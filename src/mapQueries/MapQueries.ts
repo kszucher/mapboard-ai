@@ -35,8 +35,8 @@ export const getAXR = (m: M): R[] => mR(m).filter(ri => ri.selected).sort(sortPa
 export const getAXS = (m: M): S[] => mS(m).filter(si => si.selected).sort(sortPath)
 export const getAXC = (m: M): C[] => mC(m).filter(ci => ci.selected).sort(sortPath)
 
-export const getXFS = (m: M): S => getAXS(m).sort(sortPath).at(0)!
-export const getXLS = (m: M): S => getAXS(m).sort(sortPath).at(-1)!
+export const getFXS = (m: M): S => getAXS(m).sort(sortPath).at(0)!
+export const getLXS = (m: M): S => getAXS(m).sort(sortPath).at(-1)!
 
 export const getLastIndexL = (m: M): number => Math.max(-1, ...mL(m).map(li => li.path.at(-1) as number))
 export const getLastIndexR = (m: M): number => Math.max(-1, ...mR(m).map(ri => ri.path.at(-1) as number))

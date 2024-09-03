@@ -1,5 +1,5 @@
 import {C, L, M, PC, PR, PS, R, S} from "../state/MapStateTypes.ts"
-import {getAXR, getAXS, getXFS, getXS, idToR, mL} from "./MapQueries.ts"
+import {getAXR, getAXS, getFXS, getXS, idToR, mL} from "./MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState.ts"
 
 // one function: lrscToClipboard
@@ -43,7 +43,7 @@ export const rcToClipboard = (m: M): C[] => {
 export const ssToClipboard = (m: M): S[] => {
   return structuredClone(getAXS(m).flatMap(si => [si, ...si.so]).map(si => ({
     ...si,
-    path: ['s', si.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...si.path.slice(getXS(m).path.length) as PS],
+    path: ['s', si.path.at(getXS(m).path.length - 1) - getFXS(m).su.length, ...si.path.slice(getXS(m).path.length) as PS],
     linkType: sSaveOptional.linkType,
     link: sSaveOptional.link
   })))
@@ -52,6 +52,6 @@ export const ssToClipboard = (m: M): S[] => {
 export const scToClipboard = (m: M): C[] => {
   return structuredClone(getAXS(m).flatMap(si => si.co).map(ci => ({
     ...ci,
-    path: ['s', ci.path.at(getXS(m).path.length - 1) - getXFS(m).su.length, ...ci.path.slice(getXS(m).path.length) as PC],
+    path: ['s', ci.path.at(getXS(m).path.length - 1) - getFXS(m).su.length, ...ci.path.slice(getXS(m).path.length) as PC],
   })))
 }

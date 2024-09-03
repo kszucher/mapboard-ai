@@ -1,4 +1,4 @@
-import {getG, getLastIndexL, getLastIndexR, getAXS, getXFS, getXLS, getXS, mC, mL, mR, mS, pathToR, pathToS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getAXS, getFXS, getLXS, getXS, mC, mL, mR, mS, pathToR, pathToS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PR, PS, R, S} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
@@ -91,9 +91,9 @@ export const duplicateLRSC = (m: M) => {
 }
 
 export const duplicateSC = (m: M) => {
-  const ip = getXLS(m).path.with(-1, getXLS(m).path.at(-1) + 1) as PS
+  const ip = getLXS(m).path.with(-1, getLXS(m).path.at(-1) + 1) as PS
   const offset = getAXS(m).length
-  const offsetDown = getXLS(m).sd
+  const offsetDown = getLXS(m).sd
   offsetDown.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[ip.length - 1] += offset)
   clipboardToSC(m, ssToClipboard(m), scToClipboard(m), ip)
 }
@@ -101,11 +101,11 @@ export const duplicateSC = (m: M) => {
 export const moveSC = (m: M, ip: PS) => {
   const offset = getAXS(m).length
   const pos = getXS(m).path.length - 1
-  const delta = ip.at(-1) - getXFS(m).path.at(-1)
+  const delta = ip.at(-1) - getFXS(m).path.at(-1)
   const insertParent = pathToS(m, ip.slice(0,-2) as PS) || pathToR(m, ip.slice(0,-2) as PR)
   const selected = getAXS(m)
-  const offsetUp = insertParent.so1.includes(getXLS(m)) ? getXLS(m).sd.filter(el => el.path.at(-1) < ip.at(-1) + offset) : getXLS(m).sd
-  const offsetDown = insertParent.so1.filter(el => !el.selected && !getXLS(m).sd.includes(el) && el.path.at(-1) >= ip.at(-1))
+  const offsetUp = insertParent.so1.includes(getLXS(m)) ? getLXS(m).sd.filter(el => el.path.at(-1) < ip.at(-1) + offset) : getLXS(m).sd
+  const offsetDown = insertParent.so1.filter(el => !el.selected && !getLXS(m).sd.includes(el) && el.path.at(-1) >= ip.at(-1))
   selected.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.splice(0, pos + 1, ...ip.slice(0, -1), ti.path[pos] + delta))
   offsetUp.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[pos] -= offset)
   offsetDown.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[ip.length - 1] += offset)
