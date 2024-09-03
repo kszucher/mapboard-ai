@@ -110,13 +110,13 @@ export const editorSlice = createSlice({
       state.zoomInfo.originX = x
       state.zoomInfo.originY = y
     },
-    saveFromCoordinates(state, action: PayloadAction<{e: any}>) {
+    saveFromCoordinates(state, action: PayloadAction<{e: React.MouseEvent}>) {
       const {e} = action.payload
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
       state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
     },
-    selectSByRectanglePreview(state, action: PayloadAction<{e: any}>) {
+    selectSByRectanglePreview(state, action: PayloadAction<{e: MouseEvent}>) {
       const {e} = action.payload
       const pm = current(state.commitList[state.commitIndex].data)
       const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
@@ -125,14 +125,14 @@ export const editorSlice = createSlice({
       state.selectionRectCoords = [Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]
       state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
     },
-    offsetRByDragPreview(state, action: PayloadAction<{r: R, e: any}>) {
+    offsetRByDragPreview(state, action: PayloadAction<{r: R, e: MouseEvent}>) {
       const {r, e} = action.payload
       const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale) - fromX + r.offsetW
       const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + r.offsetH
       state.rOffsetCoords = [toX, toY, r.selfW, r.selfH]
     },
-    moveSByDragPreview(state, action: PayloadAction<{e: any}>) {
+    moveSByDragPreview(state, action: PayloadAction<{e: MouseEvent}>) {
       const {e} = action.payload
       const pm = current(state.commitList[state.commitIndex].data)
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
