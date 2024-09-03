@@ -4,7 +4,7 @@ import {sSaveOptional} from "../state/MapState"
 import {M, PC, PR, PS, R, S} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
 import {insertCL, insertL, insertR, insertS, insertTable} from "./MapInsert"
-import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, transpose, moveSC, moveCL, _moveSC} from "./MapMove"
+import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, transpose, moveSC, moveCL} from "./MapMove"
 import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
@@ -121,13 +121,13 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'pasteCSO': pasteSC(m, [...getXC(m).path, 's',  getXC(m).so1.length], payload); break
     case 'duplicateR': duplicateLRSC(m); break;
     case 'duplicateS': duplicateSC(m); break;
-    case 'moveSD': _moveSC(m, getXS(m).ti1, getLXS(m).sd.at(-1), getLXS(m).sd.at(-2)); break
-    case 'moveST': _moveSC(m, getXS(m).ti1, undefined, getXS(m).ti1.so1.at(0)); break
-    case 'moveSU': _moveSC(m, getXS(m).ti1, getFXS(m).su.at(-2), getFXS(m).su.at(-1)); break
-    case 'moveSB': _moveSC(m, getXS(m).ti1, getXS(m).ti1.so1.at(-1), undefined); break
-    case 'moveSO': moveSC(m, [...getFXS(m).su.at(-1)!.path, 's', getFXS(m).su.at(-1)!.so1.length] as PS); break
-    case 'moveSI': moveSC(m, getXS(m).si1!.path.with(-1, getXS(m).si1!.su.length + 1) as PS); break
-    case 'moveSByDrag': if (payload.sL) _moveSC(m, idToS(m, payload.sL),  idToS(m, payload.sU), idToS(m, payload.sD)); break
+    case 'moveSD': moveSC(m, getXS(m).ti1, getLXS(m).sd.at(-1), getLXS(m).sd.at(-2)); break
+    case 'moveST': moveSC(m, getXS(m).ti1, undefined, getXS(m).ti1.so1.at(0)); break
+    case 'moveSU': moveSC(m, getXS(m).ti1, getFXS(m).su.at(-2), getFXS(m).su.at(-1)); break
+    case 'moveSB': moveSC(m, getXS(m).ti1, getXS(m).ti1.so1.at(-1), undefined); break
+    case 'moveSO': moveSC(m, getFXS(m).su.at(-1)!, getFXS(m).su.at(-1)!.so1.at(-1), undefined); break
+    case 'moveSI': moveSC(m, getXS(m).si1!.ti1, getXS(m).si1!, getXS(m).si1!.sd.at(-1)); break
+    case 'moveSByDrag': if (payload.sL) moveSC(m, idToS(m, payload.sL),  idToS(m, payload.sU), idToS(m, payload.sD)); break
     case 'moveCRD': moveCL(m, getAXC(m), getAXC(m).map(ci => ci.cd.at(-1)!), getXC(m).path.indexOf('c') + 1, 1); break
     case 'moveCRU': moveCL(m, getAXC(m), getAXC(m).map(ci => ci.cu.at(-1)!), getXC(m).path.indexOf('c') + 1, - 1); break
     case 'moveCCR': moveCL(m, getAXC(m), getAXC(m).map(ci => ci.cr.at(-1)!), getXC(m).path.indexOf('c') + 2, 1); break

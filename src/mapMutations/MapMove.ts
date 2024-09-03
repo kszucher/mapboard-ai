@@ -1,6 +1,6 @@
-import {getG, getLastIndexL, getLastIndexR, getAXS, getFXS, getLXS, getXS, mC, mL, mR, mS, pathToR, pathToS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
-import {C, L, M, PC, PR, PS, R, S} from "../state/MapStateTypes"
+import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
@@ -107,25 +107,11 @@ export const duplicateSC = (m: M) => {
   clipboardToSC(m, ssToClipboard(m), scToClipboard(m), ip)
 }
 
-export const moveSC = (m: M, ip: PS) => {
-  const offset = getAXS(m).length
-  const pos = getXS(m).path.length - 1
-  const delta = ip.at(-1) - getFXS(m).path.at(-1)
-  const insertParent = pathToS(m, ip.slice(0,-2) as PS) || pathToR(m, ip.slice(0,-2) as PR)
-  const selected = getAXS(m)
-  const offsetUp = insertParent.so1.includes(getLXS(m)) ? getLXS(m).sd.filter(el => el.path.at(-1) < ip.at(-1) + offset) : getLXS(m).sd
-  const offsetDown = insertParent.so1.filter(el => !el.selected && !getLXS(m).sd.includes(el) && el.path.at(-1) >= ip.at(-1))
-  selected.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path.splice(0, pos + 1, ...ip.slice(0, -1), ti.path[pos] + delta))
-  offsetUp.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[pos] -= offset)
-  offsetDown.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[ip.length - 1] += offset)
-  m.sort(sortPath)
-}
-
-export const _moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
+export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
   const offset = getAXS(m).length
   const cbSS = ssToClipboard(m)
   const cbSC = scToClipboard(m)
-  deleteS(m)
+  deleteS(m) // must delete as we do not know elements after selected nodes but delete figures it out
   if (sD) {
     [sD, ...sD.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
   }
