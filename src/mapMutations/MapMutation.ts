@@ -36,7 +36,7 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'selectSSO': selectS(m, getXS(m).so1.at(0)!, 's'); break
     case 'selectSSOLast': selectS(m, pathToS(m, [...getXS(m).path, 's', getXS(m).lastSelectedChild] as PS), 's'); break
     case 'selectCSO': selectS(m, getXC(m).so1.at(0)!, 's'); break
-    case 'selectSI': getXS(m).si1.lastSelectedChild = getXS(m).path.at(-1); selectS(m, getXS(m).si1, 's'); break
+    case 'selectSI': getXS(m).si1!.lastSelectedChild = getXS(m).path.at(-1); selectS(m, getXS(m).si1!, 's'); break
     case 'selectCFR0': selectC(m, pathToC(m, getXC(m).path.with(-2, 0) as PC)); break
     case 'selectCFC0': selectC(m, pathToC(m, getXC(m).path.with(-1, 0) as PC)); break
     case 'selectCFF': selectC(m, pathToC(m, [...getXS(m).path, 'c', 0, 0])); break
@@ -63,10 +63,10 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'selectUCL': selectCL(m, getAXC(m).map(ci => ci.cu.at(-1)!)); break
     case 'selectRCL': selectCL(m, getAXC(m).map(ci => ci.cr.at(-1)!)); break
     case 'selectLCL': selectCL(m, getAXC(m).map(ci => ci.cl.at(-1)!)); break
-    case 'selectDCS': selectS(m, getXS(m).ci1.cd.at(-1)!.so1.at(0)!, 's'); break
-    case 'selectUCS': selectS(m, getXS(m).ci1.cu.at(-1)!.so1.at(0)!, 's'); break
-    case 'selectRCS': selectS(m, getXS(m).ci1.cr.at(-1)!.so1.at(0)!, 's'); break
-    case 'selectLCS': selectS(m, getXS(m).ci1.cl.at(-1)!.so1.at(0)!, 's'); break
+    case 'selectDCS': selectS(m, getXS(m).ci1!.cd.at(-1)!.so1.at(0)!, 's'); break
+    case 'selectUCS': selectS(m, getXS(m).ci1!.cu.at(-1)!.so1.at(0)!, 's'); break
+    case 'selectRCS': selectS(m, getXS(m).ci1!.cr.at(-1)!.so1.at(0)!, 's'); break
+    case 'selectLCS': selectS(m, getXS(m).ci1!.cl.at(-1)!.so1.at(0)!, 's'); break
     case 'selectSByRectangle': selectSL(m, payload.intersectingNodes.map((nid: string) => idToS(m, nid))); break
     case 'unselect': unselectNodes(m); break
     case 'unselectR': unselectR(pathToR(m, payload.path)); break
@@ -97,22 +97,22 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'deleteLRSC': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; deleteLRSC(m); selectR(m, idToR(m, reselect )); break }
     case 'deleteSJumpSU': { const reselect = getFXS(m).su.at(-1)!.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
     case 'deleteSJumpSD': { const reselect = getLXS(m).sd.at(-1)!.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'deleteSJumpSI': { const reselect = getXS(m).si1.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'deleteSJumpCI': { const reselect = getXS(m).ci1.nodeId; deleteS(m); selectC(m, idToC(m, reselect)); break }
+    case 'deleteSJumpSI': { const reselect = getXS(m).si1!.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'deleteSJumpCI': { const reselect = getXS(m).ci1!.nodeId; deleteS(m); selectC(m, idToC(m, reselect)); break }
     case 'deleteSJumpR': { const reselect = getXR(m).nodeId; deleteS(m); selectR(m, idToR(m, reselect)); break }
     case 'deleteCRJumpU': { const reselectList = getAXC(m).map(ci => ci.cu.at(-1)!.nodeId); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCRJumpD': { const reselectList = getAXC(m).map(ci => ci.cd.at(-1)!.nodeId); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
-    case 'deleteCRJumpSI': { const reselect = getXC(m).si1.nodeId; deleteCR(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'deleteCRJumpSI': { const reselect = getXC(m).si1!.nodeId; deleteCR(m); selectS(m, idToS(m, reselect), 's'); break }
     case 'deleteCCJumpL': { const reselectList = getAXC(m).map(ci => ci.cl.at(-1)!.nodeId); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
     case 'deleteCCJumpR': { const reselectList = getAXC(m).map(ci => ci.cr.at(-1)!.nodeId); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
-    case 'deleteCCJumpSI': { const reselect = getXC(m).si1.nodeId; deleteCC(m); selectS(m, idToS(m, reselect), 's'); break }
+    case 'deleteCCJumpSI': { const reselect = getXC(m).si1!.nodeId; deleteCC(m); selectS(m, idToS(m, reselect), 's'); break }
 
     case 'cutLRJumpR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; copyLRSC(m); deleteLRSC(m); selectR(m, idToR(m, reselect) as R); break }
-    case 'cutSJumpRI': { const reselect = getXS(m).ri1; copySC(m); deleteS(m); selectR(m, reselect); break }
+    case 'cutSJumpRI': { const reselect = getXS(m).ri1!; copySC(m); deleteS(m); selectR(m, reselect); break }
     case 'cutSJumpSU': { const reselect = getFXS(m).su.at(-1)!; copySC(m); deleteS(m); selectS(m, reselect, 's'); break }
     case 'cutSJumpSD': { const reselect = getLXS(m).sd.at(-1)!; copySC(m); deleteS(m); selectS(m, reselect, 's'); break }
-    case 'cutSJumpSI': { const reselect = getXS(m).si1; copySC(m); deleteS(m); selectS(m, reselect, 's'); break }
-    case 'cutSJumpCI': { const reselect = getXS(m).ci1; copySC(m); deleteS(m); selectC(m, reselect); break }
+    case 'cutSJumpSI': { const reselect = getXS(m).si1!; copySC(m); deleteS(m); selectS(m, reselect, 's'); break }
+    case 'cutSJumpCI': { const reselect = getXS(m).ci1!; copySC(m); deleteS(m); selectC(m, reselect); break }
     case 'copyLR': copyLRSC(m); break
     case 'copyS': copySC(m); break
     case 'pasteLR': pasteLRSC(m, payload); break
@@ -126,7 +126,7 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'moveSU': moveSC(m, getXS(m).path.with(-1, getFXS(m).su.length - 1) as PS); break
     case 'moveSB': moveSC(m, getXS(m).path.with(-1, getLXS(m).sd.length) as PS); break
     case 'moveSO': moveSC(m, [...getFXS(m).su.at(-1)!.path, 's', getFXS(m).su.at(-1)!.so1.length] as PS); break
-    case 'moveSI': moveSC(m, getXS(m).si1.path.with(-1, getXS(m).si1.su.length + 1) as PS); break
+    case 'moveSI': moveSC(m, getXS(m).si1!.path.with(-1, getXS(m).si1!.su.length + 1) as PS); break
     case 'moveSByDrag': if (payload.sL) _moveSC(m, idToS(m, payload.sL),  idToS(m, payload.sU), idToS(m, payload.sD)); break
     case 'moveCRD': moveCL(m, getAXC(m), getAXC(m).map(ci => ci.cd.at(-1)!), getXC(m).path.indexOf('c') + 1, 1); break
     case 'moveCRU': moveCL(m, getAXC(m), getAXC(m).map(ci => ci.cu.at(-1)!), getXC(m).path.indexOf('c') + 1, - 1); break

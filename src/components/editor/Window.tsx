@@ -96,7 +96,7 @@ export const Window: FC = () => {
 
     if (ckm === '---' && e.code === 'ArrowDown' && isAXR(m) && getRD(m, getXR(m))) dm(MM.selectRD)
     if (ckm === '---' && e.code === 'ArrowDown' && isAXS(m) && getQuasiSD(m)) dm(MM.selectSD)
-    if (ckm === '---' && e.code === 'ArrowDown' && isAXCS(m) && getLXS(m).sd.length === 0 && getXS(m).ci1.cd.at(-1)?.so1.length) dm(MM.selectDCS)
+    if (ckm === '---' && e.code === 'ArrowDown' && isAXCS(m) && getLXS(m).sd.length === 0 && getXS(m).ci1!.cd.at(-1)?.so1.length) dm(MM.selectDCS)
     if (ckm === '---' && e.code === 'ArrowDown' && isAXC1(m) && getXC(m).cd.length > 0) dm(MM.selectDC)
     if (ckm === '---' && e.code === 'ArrowDown' && isAXCR(m) && getXC(m).cd.length > 0) dm(MM.selectDCL)
     if (ckm === 'c--' && e.code === 'ArrowDown' && isAXR(m)) dm(MM.offsetD)
@@ -109,7 +109,7 @@ export const Window: FC = () => {
     
     if (ckm === '---' && e.code === 'ArrowUp' && isAXR(m) && getRU(m, getXR(m))) dm(MM.selectRU)
     if (ckm === '---' && e.code === 'ArrowUp' && isAXS(m) && getQuasiSU(m)) dm(MM.selectSU)
-    if (ckm === '---' && e.code === 'ArrowUp' && isAXCS(m) && getFXS(m).su.length === 0 && getXS(m).ci1.cu.at(-1)?.so1.length) dm(MM.selectUCS)
+    if (ckm === '---' && e.code === 'ArrowUp' && isAXCS(m) && getFXS(m).su.length === 0 && getXS(m).ci1!.cu.at(-1)?.so1.length) dm(MM.selectUCS)
     if (ckm === '---' && e.code === 'ArrowUp' && isAXC1(m) && getXC(m).cu.length > 0) dm(MM.selectUC)
     if (ckm === '---' && e.code === 'ArrowUp' && isAXCR(m) && getXC(m).cu.length > 0) dm(MM.selectUCL)
     if (ckm === 'c--' && e.code === 'ArrowUp' && isAXR(m)) dm(MM.offsetU)
@@ -123,7 +123,7 @@ export const Window: FC = () => {
     if (ckm === '---' && e.code === 'ArrowRight' && isAXR(m) && getRR(m, getXR(m))) dm(MM.selectRR)
     if (ckm === '---' && e.code === 'ArrowRight' && isAXS(m) && getXS(m).so1.length > 0 && (getXS(m).lastSelectedChild < 0 || getXS(m).lastSelectedChild > getXS(m).so1.length)) dm(MM.selectSSO)
     if (ckm === '---' && e.code === 'ArrowRight' && isAXS(m) && getXS(m).so1.length > 0 && getXS(m).lastSelectedChild >= 0 && getXS(m).lastSelectedChild < getXS(m).so1.length) dm(MM.selectSSOLast)
-    if (ckm === '---' && e.code === 'ArrowRight' && isAXCS(m) && getXS(m).so1.length === 0 && getXS(m).ci1.cr.at(-1)?.so1.length) dm(MM.selectRCS)
+    if (ckm === '---' && e.code === 'ArrowRight' && isAXCS(m) && getXS(m).so1.length === 0 && getXS(m).ci1!.cr.at(-1)?.so1.length) dm(MM.selectRCS)
     if (ckm === '---' && e.code === 'ArrowRight' && isAXC1(m) && getXC(m).cr.length > 0) dm(MM.selectRC)
     if (ckm === '---' && e.code === 'ArrowRight' && isAXCC(m) && getXC(m).cr.length > 0) dm(MM.selectRCL)
     if (ckm === 'c--' && e.code === 'ArrowRight' && isAXR(m)) dm(MM.offsetR)
@@ -135,7 +135,7 @@ export const Window: FC = () => {
     
     if (ckm === '---' && e.code === 'ArrowLeft' && isAXR(m) && getRL(m, getXR(m))) dm(MM.selectRL)
     if (ckm === '---' && e.code === 'ArrowLeft' && isAXSS(m)) dm(MM.selectSI)
-    if (ckm === '---' && e.code === 'ArrowLeft' && isAXCS(m) && getXS(m).ci1.cl.at(-1)?.so1.length) dm(MM.selectLCS)
+    if (ckm === '---' && e.code === 'ArrowLeft' && isAXCS(m) && getXS(m).ci1!.cl.at(-1)?.so1.length) dm(MM.selectLCS)
     if (ckm === '---' && e.code === 'ArrowLeft' && isAXC1(m) && getXC(m).cl.length > 0) dm(MM.selectLC)
     if (ckm === '---' && e.code === 'ArrowLeft' && isAXCC(m) && getXC(m).cl.length > 0) dm(MM.selectLCL)
     if (ckm === 'c--' && e.code === 'ArrowLeft' && isAXR(m)) dm(MM.offsetL)
