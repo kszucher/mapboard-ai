@@ -112,7 +112,7 @@ export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined
   const cb = [...ssToClipboard(m), ...scToClipboard(m)]
   deleteS(m)
   if (sD) [sD, ...sD.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
-  cb.forEach(ti => Object.assign(ti, {path: [...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + ti.path.at(1), ...ti.path.slice(2)]}))
+  cb.forEach(ti => ti.path.splice(0, 2, ...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + ti.path.at(1)))
   m.push(...cb)
   m.sort(sortPath)
 }
