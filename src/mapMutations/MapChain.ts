@@ -1,6 +1,6 @@
 import {M, R, S, C} from "../state/MapStateTypes.ts"
 import {getHP} from "../mapQueries/MapQueries.ts"
-import {isC, isCS, isRS, isRSC, isS, isSS, isSSC} from "../mapQueries/PathQueries.ts"
+import {isC, isCS, isRS, isS, isSS} from "../mapQueries/PathQueries.ts"
 
 export const mapChain = (m: M) => {
   const hp = getHP(m)
@@ -42,11 +42,6 @@ export const mapChain = (m: M) => {
           const cri = hp.get([...ci.path.slice(0, -2), ci.path.at(-2), i].join('')) as C
           ci.cl.push(cri)
           ci.ch.push(cri)
-        }
-        if (isRSC(ni.path)) {
-          ci.ri2 = hp.get(ci.path.slice(0, -5).join('')) as R
-        } else if (isSSC(ni.path)) {
-          ci.si2 = hp.get(ci.path.slice(0, -5).join('')) as S
         }
         break
       }

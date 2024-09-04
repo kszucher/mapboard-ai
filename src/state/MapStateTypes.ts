@@ -142,9 +142,7 @@ export interface CSaveOptional {
 }
 
 export interface CSaveNever {
-  ri2: R
-  si1: S
-  si2: S
+  si1: S | undefined
   so1: S[]
   so: S[]
   cu: C[]

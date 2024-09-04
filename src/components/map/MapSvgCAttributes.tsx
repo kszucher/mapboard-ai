@@ -18,20 +18,20 @@ export const MapSvgCAttributes: FC = () => {
       <Fragment key={ci.nodeId}>
         {isSSC(ci.path) && ci.path.at(-2) > -1 && ci.path.at(-1) === 0 &&
           <path
-            d={!phn.has(ci.nodeId) && phn.has(ci.si2.nodeId)
-              ? getNodeLinePath(g, phn.get(ci.si2.nodeId)! as C, ci)
-              : getNodeLinePath(g, hn.get(ci.si2.nodeId)! as C, ci)
+            d={!phn.has(ci.nodeId) && phn.has(ci.si1!.si1!.nodeId)
+              ? getNodeLinePath(g, phn.get(ci.si1!.si1!.nodeId)! as C, ci)
+              : getNodeLinePath(g, hn.get(ci.si1!.si1!.nodeId)! as C, ci)
             }
             strokeWidth={ci.lineWidth}
             stroke={ci.lineColor}
             fill={'none'}
             {...pathCommonProps}
           >
-            {!phn.has(ci.nodeId) && phn.has(ci.si2.nodeId) &&
+            {!phn.has(ci.nodeId) && phn.has(ci.si1!.si1!.nodeId) &&
               <animate
                 attributeName='d'
-                from={getNodeLinePath(g, phn.get(ci.si2.nodeId)! as C, ci)}
-                to={getNodeLinePath(g, hn.get(ci.si2.nodeId)! as C, ci)}
+                from={getNodeLinePath(g, phn.get(ci.si1!.si1!.nodeId)! as C, ci)}
+                to={getNodeLinePath(g, hn.get(ci.si1!.si1!.nodeId)! as C, ci)}
                 dur={'0.3s'}
                 repeatCount={'once'}
                 fill={'freeze'}

@@ -99,9 +99,9 @@ export const sSaveOptional = {
 } as SSaveOptional
 
 export const sSaveNever = {
-  ri1: {} as R,
-  si1: {} as S,
-  ci1: {} as C,
+  ri1: undefined,
+  si1: undefined,
+  ci1: undefined,
   ti1: {} as R | S | C,
   so1: [],
   so: [],
@@ -135,9 +135,7 @@ export const cSaveOptional = {
 } as CSaveOptional
 
 export const cSaveNever = {
-  ri2: {} as R,
-  si1: {} as S,
-  si2: {} as S,
+  si1: undefined,
   so1: [],
   so: [],
   cu: [],
