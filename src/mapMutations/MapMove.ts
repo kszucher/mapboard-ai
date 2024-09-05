@@ -1,5 +1,5 @@
 import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS,} from "../mapQueries/MapQueries.ts"
-import {rSaveOptional, sSaveOptional} from "../state/MapState"
+import {rSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
@@ -7,9 +7,9 @@ import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 import {lToClipboard, rcToClipboard, rrToClipboard, rsToClipboard, scToClipboard, ssToClipboard} from "../mapQueries/MapExtract.ts"
 
-const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
+const formatCb = (m: M) => "[\n" + m.map((e) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
-const cbSave = (cb: any) => {
+const cbSave = (cb: M) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
     if (result.state === "granted" || result.state === "prompt") {
       navigator.clipboard
@@ -69,27 +69,19 @@ const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS) => {
 }
 
 export const copyLRSC = (m: M) => {
-  cbSave(mapDeInit([
-    ...lToClipboard(m),
-    ...rrToClipboard(m),
-    ...rsToClipboard(m).map(si => Object.assign(si, {linkType: sSaveOptional.linkType, link: sSaveOptional.link})),
-    ...rcToClipboard(m)
-  ].sort(sortPath)))
+  cbSave(mapDeInit([...lToClipboard(m), ...rrToClipboard(m), ...rsToClipboard(m), ...rcToClipboard(m)].sort(sortPath)))
 }
 
 export const copySC = (m: M) => {
-  cbSave(mapDeInit([
-    ...ssToClipboard(m).map(si => Object.assign(si, {linkType: sSaveOptional.linkType, link: sSaveOptional.link})),
-    ...scToClipboard(m)
-  ].sort(sortPath)))
+  cbSave(mapDeInit([...ssToClipboard(m), ...scToClipboard(m)].sort(sortPath)))
 }
 
-export const pasteLRSC = (m: M, payload: any) => {
+export const pasteLRSC = (m: M, payload: string) => {
   const lrsc = JSON.parse(payload) as M
   clipboardToLRSC(m, mL(lrsc), mR(lrsc), mS(lrsc), mC(lrsc))
 }
 
-export const pasteSC = (m: M, ip: PS, payload: any) => {
+export const pasteSC = (m: M, ip: PS, payload: string) => {
   const sc = JSON.parse(payload) as M
   clipboardToSC(m, mS(sc), mC(sc), ip)
 }
