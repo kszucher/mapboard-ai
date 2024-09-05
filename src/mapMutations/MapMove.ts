@@ -60,14 +60,14 @@ const clipboardToLRSC = (m: M, cb: M) => {
   return cb
 }
 
-const clipboardToSC = (cb: M, ip: PS) => {
+const clipboardToSC = (cb: M, sL: R | S | C, sU: S | undefined) => {
   mS(cb).forEach(si => Object.assign(si, {
     nodeId: genId(),
-    path: [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]
+    path: [...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + si.path.at(1), ...si.path.slice(2)]
   }))
   mC(cb).forEach(ci => Object.assign(ci, {
     nodeId: genId(),
-    path: [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]
+    path: [...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + ci.path.at(1), ...ci.path.slice(2)]
   }))
   return cb
 }
@@ -77,10 +77,10 @@ export const pasteLRSC = (m: M, payload: string) => {
   clipboardToLRSC(m, lrsc)
 }
 
-export const pasteSC = (m: M, ip: PS, payload: string) => {
+export const pasteSC = (m: M, sL: R | S | C, sU: S | undefined, payload: string) => {
   const sc = JSON.parse(payload) as M
   unselectNodes(m)
-  m.push(...clipboardToSC(sc, ip))
+  m.push(...clipboardToSC(sc, sL, sU))
 }
 
 export const duplicateLRSC = (m: M) => {
@@ -91,12 +91,13 @@ export const duplicateLRSC = (m: M) => {
 
 export const duplicateSC = (m: M) => {
   const sc = scToClipboard(m)
+  const sL = getXS(m).ti1
+  const sU = getLXS(m)
   const sDX = getLXS(m).sd.at(-1)
   const offset = getAXS(m).length
   if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] += offset)
-  const ip = getLXS(m).path.with(-1, getLXS(m).path.at(-1) + 1) as PS
   unselectNodes(m)
-  m.push(...clipboardToSC(sc, ip))
+  m.push(...clipboardToSC(sc, sL, sU))
 }
 
 export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {

@@ -116,9 +116,9 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'copyLR': copyLRSC(m); break
     case 'copyS': copySC(m); break
     case 'pasteLR': pasteLRSC(m, payload); break
-    case 'pasteRSO': pasteSC(m, [...getXR(m).path, 's',  getXR(m).so1.length], payload); break
-    case 'pasteSSO': pasteSC(m, [...getXS(m).path, 's',  getXS(m).so1.length], payload); break
-    case 'pasteCSO': pasteSC(m, [...getXC(m).path, 's',  getXC(m).so1.length], payload); break
+    case 'pasteRSO': pasteSC(m, getXR(m),  getXR(m).so1.at(-1), payload); break
+    case 'pasteSSO': pasteSC(m, getXS(m),  getXS(m).so1.at(-1), payload); break
+    case 'pasteCSO': pasteSC(m, getXC(m),  getXC(m).so1.at(-1), payload); break
     case 'duplicateR': duplicateLRSC(m); break;
     case 'duplicateS': duplicateSC(m); break;
     case 'moveSD': moveSC(m, getXS(m).ti1, getLXS(m).sd.at(-1), getLXS(m).sd.at(-2)); break
