@@ -93,8 +93,8 @@ export const duplicateLRSC = (m: M) => {
 export const duplicateSC = (m: M) => {
   const ip = getLXS(m).path.with(-1, getLXS(m).path.at(-1) + 1) as PS
   const offset = getAXS(m).length
-  const offsetDown = getLXS(m).sd
-  offsetDown.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[ip.length - 1] += offset)
+  const sDX = getLXS(m).sd.at(-1)
+  if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] += offset)
   clipboardToSC(m, scToClipboard(m), ip)
 }
 
