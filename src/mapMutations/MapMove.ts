@@ -1,4 +1,4 @@
-import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS,} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
 import {M, PC, PS, R, S, C} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
@@ -57,12 +57,10 @@ const clipboardToLRSC = (m: M, cb: M) => {
     nodeId: genId(),
     path: ['r', ci.path.at(1) + lastIndexR + 1, ...ci.path.slice(2)],
   }))
-  unselectNodes(m)
-  m.push(...cb)
-  m.sort(sortPath)
+  return cb
 }
 
-const clipboardToSC = (m: M, cb: M, ip: PS) => {
+const clipboardToSC = (cb: M, ip: PS) => {
   mS(cb).forEach(si => Object.assign(si, {
     nodeId: genId(),
     path: [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]
@@ -71,9 +69,7 @@ const clipboardToSC = (m: M, cb: M, ip: PS) => {
     nodeId: genId(),
     path: [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]
   }))
-  unselectNodes(m)
-  m.push(...cb)
-  m.sort(sortPath)
+  return cb
 }
 
 export const pasteLRSC = (m: M, payload: string) => {
@@ -83,19 +79,24 @@ export const pasteLRSC = (m: M, payload: string) => {
 
 export const pasteSC = (m: M, ip: PS, payload: string) => {
   const sc = JSON.parse(payload) as M
-  clipboardToSC(m, sc, ip)
+  unselectNodes(m)
+  m.push(...clipboardToSC(sc, ip))
 }
 
 export const duplicateLRSC = (m: M) => {
-  clipboardToLRSC(m, lrscToClipboard(m))
+  const lrsc = lrscToClipboard(m)
+  unselectNodes(m)
+  m.push(...clipboardToLRSC(m, lrsc))
 }
 
 export const duplicateSC = (m: M) => {
-  const ip = getLXS(m).path.with(-1, getLXS(m).path.at(-1) + 1) as PS
+  const sc = scToClipboard(m)
   const offset = getAXS(m).length
   const sDX = getLXS(m).sd.at(-1)
   if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] += offset)
-  clipboardToSC(m, scToClipboard(m), ip)
+  const ip = getLXS(m).path.with(-1, getLXS(m).path.at(-1) + 1) as PS
+  unselectNodes(m)
+  m.push(...clipboardToSC(sc, ip))
 }
 
 export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
@@ -107,13 +108,11 @@ export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined
   if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] -= offset)
   if (sD) [sD, ...sD.sd].filter(ti => !ti.selected).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
   axs.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(0, pos + 1, ...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + sMap.get(ti.path.at(pos))))
-  m.sort(sortPath)
 }
 
-export const moveCL = (m: M, orig: C[], swap: C[], index: number, offset: number) => {
+export const moveCL = (orig: C[], swap: C[], index: number, offset: number) => {
   orig.flatMap(si => [si, ...si.so]).forEach(ti => ti.path[index] += offset)
   swap.flatMap(si => [si, ...si.so]).forEach(ti => ti.path[index] -= offset)
-  m.sort(sortPath)
 }
 
 export const moveS2T = (m: M) => {
@@ -123,7 +122,6 @@ export const moveS2T = (m: M) => {
   m.push(({path: [...xs.path, 's', 0] as PS, selected: 1} as S))
   m.push(...Array.from({length: xs.so1.length}).map((_, i) => ({path: [...xs.path, 's', 0, 'c', i, 0] as PC} as C)))
   xs.so1.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(pos + 1, 2, 's', 0, 'c', ti.path[pos + 2], 0, 's', 0))
-  m.sort(sortPath)
 }
 
 export const transpose = (m: M) => {

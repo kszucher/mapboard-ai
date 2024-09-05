@@ -128,10 +128,10 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'moveSO': moveSC(m, getFXS(m).su.at(-1)!, getFXS(m).su.at(-1)!.so1.at(-1), undefined); break
     case 'moveSI': moveSC(m, getXS(m).si1!.ti1, getXS(m).si1!, getXS(m).si1!.sd.at(-1)); break
     case 'moveSByDrag': if (payload.sL) moveSC(m, idToS(m, payload.sL),  idToS(m, payload.sU), idToS(m, payload.sD)); break
-    case 'moveCRD': moveCL(m, getAXC(m), getAXC(m).map(ci => ci.cd.at(-1)!), getXC(m).path.indexOf('c') + 1, 1); break
-    case 'moveCRU': moveCL(m, getAXC(m), getAXC(m).map(ci => ci.cu.at(-1)!), getXC(m).path.indexOf('c') + 1, - 1); break
-    case 'moveCCR': moveCL(m, getAXC(m), getAXC(m).map(ci => ci.cr.at(-1)!), getXC(m).path.indexOf('c') + 2, 1); break
-    case 'moveCCL': moveCL(m, getAXC(m), getAXC(m).map(ci => ci.cl.at(-1)!), getXC(m).path.indexOf('c') + 2, - 1); break
+    case 'moveCRD': moveCL(getAXC(m), getAXC(m).map(ci => ci.cd.at(-1)!), getXC(m).path.indexOf('c') + 1, 1); break
+    case 'moveCRU': moveCL(getAXC(m), getAXC(m).map(ci => ci.cu.at(-1)!), getXC(m).path.indexOf('c') + 1, - 1); break
+    case 'moveCCR': moveCL(getAXC(m), getAXC(m).map(ci => ci.cr.at(-1)!), getXC(m).path.indexOf('c') + 2, 1); break
+    case 'moveCCL': moveCL(getAXC(m), getAXC(m).map(ci => ci.cl.at(-1)!), getXC(m).path.indexOf('c') + 2, - 1); break
     case 'moveS2T': moveS2T(m); break
     case 'transpose': transpose(m); break
 
