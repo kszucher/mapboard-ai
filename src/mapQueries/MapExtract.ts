@@ -4,8 +4,8 @@ import {rSaveOptional, sSaveOptional} from "../state/MapState.ts"
 
 export const lrscToClipboard = (m: M): M => {
   const rMap = new Map(getAXR(m).map(((ri, i) => [ri.path.at(1), i])))
-  const minOffsetW = Math.min(...getAXR(m).map(ri => ri.offsetW || rSaveOptional.offsetW))
-  const minOffsetH = Math.min(...getAXR(m).map(ri => ri.offsetH || rSaveOptional.offsetH))
+  const minOffsetW = Math.min(...getAXR(m).map(ri => ri.offsetW ?? rSaveOptional.offsetW))
+  const minOffsetH = Math.min(...getAXR(m).map(ri => ri.offsetH ?? rSaveOptional.offsetH))
   return structuredClone([
     ...mL(m)
       .filter(li => idToR(m, li.fromNodeId).selected && idToR(m, li.toNodeId).selected)
