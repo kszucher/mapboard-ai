@@ -24,6 +24,14 @@ const cbSave = (cb: M) => {
   })
 }
 
+export const copyLRSC = (m: M) => {
+  cbSave(mapDeInit([...lToClipboard(m), ...rrToClipboard(m), ...rsToClipboard(m), ...rcToClipboard(m)].sort(sortPath)))
+}
+
+export const copySC = (m: M) => {
+  cbSave(mapDeInit([...ssToClipboard(m), ...scToClipboard(m)].sort(sortPath)))
+}
+
 const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
   const lastIndexL = getLastIndexL(m)
   const lastIndexR = getLastIndexR(m)
@@ -66,14 +74,6 @@ const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS) => {
   unselectNodes(m)
   m.push(...cbSS, ...cbSC)
   m.sort(sortPath)
-}
-
-export const copyLRSC = (m: M) => {
-  cbSave(mapDeInit([...lToClipboard(m), ...rrToClipboard(m), ...rsToClipboard(m), ...rcToClipboard(m)].sort(sortPath)))
-}
-
-export const copySC = (m: M) => {
-  cbSave(mapDeInit([...ssToClipboard(m), ...scToClipboard(m)].sort(sortPath)))
 }
 
 export const pasteLRSC = (m: M, payload: string) => {
