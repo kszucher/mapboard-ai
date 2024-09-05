@@ -25,11 +25,11 @@ const cbSave = (cb: M) => {
 }
 
 export const copyLRSC = (m: M) => {
-  cbSave(mapDeInit([...lrscToClipboard(m)].sort(sortPath)))
+  cbSave(mapDeInit(lrscToClipboard(m).sort(sortPath)))
 }
 
 export const copySC = (m: M) => {
-  cbSave(mapDeInit([...scToClipboard(m)].sort(sortPath)))
+  cbSave(mapDeInit(scToClipboard(m).sort(sortPath)))
 }
 
 const clipboardToLRSC = (m: M, cb: M) => {
