@@ -117,13 +117,12 @@ export const moveCL = (m: M, orig: C[], swap: C[], index: number, offset: number
 }
 
 export const moveS2T = (m: M) => {
+  const xs = getXS(m)
   const pos = getXS(m).path.length - 1
-  getXS(m).so1.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(pos + 1, 2, 's', 0, 'c', ti.path[pos + 2], 0, 's', 0))
-  const cellIndices = Array.from({length: getXS(m).so1.length}, (_, i) => ([i, 0]))
-  const ip = [...getXS(m).path, 's', 0]
   unselectNodes(m)
-  m.push(({path: ip as PS, selected: 1} as S))
-  m.push(...cellIndices.map(el => ({path: [...ip, 'c', ...el] as PC} as C)))
+  m.push(({path: [...xs.path, 's', 0] as PS, selected: 1} as S))
+  m.push(...Array.from({length: xs.so1.length}).map((_, i) => ({path: [...xs.path, 's', 0, 'c', i, 0] as PC} as C)))
+  xs.so1.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(pos + 1, 2, 's', 0, 'c', ti.path[pos + 2], 0, 's', 0))
   m.sort(sortPath)
 }
 
