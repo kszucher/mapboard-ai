@@ -16,14 +16,14 @@ export const insertR = (m: M) => {
 }
 
 export const insertS = (m: M, offsetBaseS: S | null, ip: PS, attributes?: object) => {
-  offsetBaseS && [offsetBaseS, ...offsetBaseS.sd].flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path[ip.length - 1] += 1)
+  if (offsetBaseS) [offsetBaseS, ...offsetBaseS.sd].flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path[ip.length - 1] += 1)
   unselectNodes(m)
   m.push({path: ip, selected: 1, ...attributes} as S)
   m.sort(sortPath)
 }
 
 export const insertCL = (m: M, offsetBaseCL: C[] | null,  offsetIndex: number, ipl: PC[]) => {
-  offsetBaseCL && offsetBaseCL.flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[offsetIndex] += 1)
+  if (offsetBaseCL) offsetBaseCL.flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[offsetIndex] += 1)
   m.push(...ipl.map(ip => ({path: ip} as C)))
   m.push(...ipl.map(ip => ({path: [...ip, 's', 0] as PS} as S)))
   m.sort(sortPath)
