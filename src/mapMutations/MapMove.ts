@@ -1,11 +1,11 @@
 import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS,} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../state/MapState"
-import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
+import {M, PC, PS, R, S, C} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
 import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
-import {lToClipboard, rcToClipboard, rrToClipboard, rsToClipboard, scToClipboard, ssToClipboard} from "../mapQueries/MapExtract.ts"
+import {lrscToClipboard, scToClipboard} from "../mapQueries/MapExtract.ts"
 
 const formatCb = (m: M) => "[\n" + m.map((e) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -25,69 +25,69 @@ const cbSave = (cb: M) => {
 }
 
 export const copyLRSC = (m: M) => {
-  cbSave(mapDeInit([...lToClipboard(m), ...rrToClipboard(m), ...rsToClipboard(m), ...rcToClipboard(m)].sort(sortPath)))
+  cbSave(mapDeInit([...lrscToClipboard(m)].sort(sortPath)))
 }
 
 export const copySC = (m: M) => {
-  cbSave(mapDeInit([...ssToClipboard(m), ...scToClipboard(m)].sort(sortPath)))
+  cbSave(mapDeInit([...scToClipboard(m)].sort(sortPath)))
 }
 
-const clipboardToLRSC = (m: M, cbL: L[], cbRR: R[], cbRS: S[], cbRC: C[]) => {
+const clipboardToLRSC = (m: M, cb: M) => {
   const lastIndexL = getLastIndexL(m)
   const lastIndexR = getLastIndexR(m)
-  const nodeIdMappingR = new Map<string, string>(cbRR.map(ri => [ri.nodeId, genId()]))
+  const nodeIdMappingR = new Map<string, string>(mR(cb).map(ri => [ri.nodeId, genId()]))
   const nodeIdMappingRIterator = nodeIdMappingR[Symbol.iterator]()
-  cbL.forEach(li => Object.assign(li, {
+  mL(cb).forEach(li => Object.assign(li, {
     nodeId: genId(),
     path : ['l', li.path[1] + lastIndexL + 1],
     fromNodeId: nodeIdMappingR.get(li.fromNodeId),
     toNodeId: nodeIdMappingR.get(li.toNodeId)
   }))
-  cbRR.forEach(ri => Object.assign(ri, {
+  mR(cb).forEach(ri => Object.assign(ri, {
     nodeId: nodeIdMappingRIterator.next().value[1],
     path: ['r', ri.path[1] + lastIndexR + 1],
     offsetW: (ri.offsetW ?? rSaveOptional.offsetW) + getG(m).selfW,
     offsetH: (ri.offsetH ?? rSaveOptional.offsetH) + getG(m).selfH
   }))
-  cbRS.forEach(si => Object.assign(si, {
+  mS(cb).forEach(si => Object.assign(si, {
     nodeId: genId(),
     path: ['r', si.path.at(1) + lastIndexR + 1, ...si.path.slice(2)],
   }))
-  cbRC.forEach(ci => Object.assign(ci, {
+  mC(cb).forEach(ci => Object.assign(ci, {
     nodeId: genId(),
     path: ['r', ci.path.at(1) + lastIndexR + 1, ...ci.path.slice(2)],
   }))
   unselectNodes(m)
-  m.push(...cbL, ...cbRR, ...cbRS, ...cbRC)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
-const clipboardToSC = (m: M, cbSS: S[], cbSC: C[], ip: PS) => {
-  cbSS.forEach(si => Object.assign(si, {
+const clipboardToSC = (m: M, cb: M, ip: PS) => {
+  mS(cb).forEach(si => Object.assign(si, {
     nodeId: genId(),
     path: [...ip.slice(0, -2), 's', ip.at(-1) + si.path.at(1), ...si.path.slice(2)]
   }))
-  cbSC.forEach(ci => Object.assign(ci, {
+  mC(cb).forEach(ci => Object.assign(ci, {
     nodeId: genId(),
     path: [...ip.slice(0, -2), 's', ip.at(-1) + ci.path.at(1), ...ci.path.slice(2)]
   }))
   unselectNodes(m)
-  m.push(...cbSS, ...cbSC)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
 export const pasteLRSC = (m: M, payload: string) => {
   const lrsc = JSON.parse(payload) as M
-  clipboardToLRSC(m, mL(lrsc), mR(lrsc), mS(lrsc), mC(lrsc))
+  clipboardToLRSC(m, lrsc)
 }
 
 export const pasteSC = (m: M, ip: PS, payload: string) => {
   const sc = JSON.parse(payload) as M
-  clipboardToSC(m, mS(sc), mC(sc), ip)
+  clipboardToSC(m, sc, ip)
 }
 
 export const duplicateLRSC = (m: M) => {
-  clipboardToLRSC(m, lToClipboard(m), rrToClipboard(m), rsToClipboard(m), rcToClipboard(m))
+  clipboardToLRSC(m, lrscToClipboard(m))
 }
 
 export const duplicateSC = (m: M) => {
@@ -95,7 +95,7 @@ export const duplicateSC = (m: M) => {
   const offset = getAXS(m).length
   const offsetDown = getLXS(m).sd
   offsetDown.flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[ip.length - 1] += offset)
-  clipboardToSC(m, ssToClipboard(m), scToClipboard(m), ip)
+  clipboardToSC(m, scToClipboard(m), ip)
 }
 
 export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
