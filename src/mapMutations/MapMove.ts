@@ -1,4 +1,4 @@
-import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS,} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../state/MapState"
 import {C, L, M, PC, PS, R, S} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
@@ -6,7 +6,6 @@ import {mapDeInit} from "./MapDeInit"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 import {lToClipboard, rcToClipboard, rrToClipboard, rsToClipboard, scToClipboard, ssToClipboard} from "../mapQueries/MapExtract.ts"
-import {deleteS} from "./MapDelete.ts"
 
 const formatCb = (arr: any[]) => "[\n" + arr.map((e: any) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
@@ -108,12 +107,15 @@ export const duplicateSC = (m: M) => {
 }
 
 export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
-  const offset = getAXS(m).length
-  const cb = [...ssToClipboard(m), ...scToClipboard(m)]
-  deleteS(m)
-  if (sD) [sD, ...sD.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
-  cb.forEach(ti => ti.path.splice(0, 2, ...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + ti.path.at(1)))
-  m.push(...cb)
+  const axs = getAXS(m)
+  const sDX = getLXS(m).sd.at(-1)
+  const xsPathLength = getXS(m).path.length
+  const offset = axs.length
+  const sMap = new Map(axs.map(((si, i) => [si.path.at(-1), i])))
+  axs.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(0, xsPathLength, 's', sMap.get(ti.path.at(xsPathLength - 1))))
+  if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] -= offset)
+  if (sD) [sD, ...sD.sd].filter(ti => !ti.selected).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
+  axs.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(0, 2, ...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + ti.path.at(1)))
   m.sort(sortPath)
 }
 
