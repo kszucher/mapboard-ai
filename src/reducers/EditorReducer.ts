@@ -187,6 +187,7 @@ export const editorSlice = createSlice({
       const pm = current(state.commitList[state.commitIndex].data)
       const m = structuredClone(pm).sort(sortPath)
       mapMutation(m, action.payload.type, action.payload.payload)
+      m.sort(sortPath)
       mapInit(m)
       mapChain(m)
       mapCalcTask(m)
