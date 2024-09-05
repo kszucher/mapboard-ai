@@ -91,8 +91,8 @@ export const duplicateLRSC = (m: M) => {
 
 export const duplicateSC = (m: M) => {
   const sc = scToClipboard(m)
-  const offset = getAXS(m).length
   const sDX = getLXS(m).sd.at(-1)
+  const offset = getAXS(m).length
   if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] += offset)
   const ip = getLXS(m).path.with(-1, getLXS(m).path.at(-1) + 1) as PS
   unselectNodes(m)
@@ -102,8 +102,8 @@ export const duplicateSC = (m: M) => {
 export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
   const axs = getAXS(m)
   const sDX = getLXS(m).sd.at(-1)
-  const pos = getXS(m).path.length - 1
   const offset = axs.length
+  const pos = getXS(m).path.length - 1
   const sMap = new Map(axs.map(((si, i) => [si.path.at(-1), i])))
   if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] -= offset)
   if (sD) [sD, ...sD.sd].filter(ti => !ti.selected).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
