@@ -109,13 +109,12 @@ export const duplicateSC = (m: M) => {
 export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
   const axs = getAXS(m)
   const sDX = getLXS(m).sd.at(-1)
-  const xsPathLength = getXS(m).path.length
+  const pos = getXS(m).path.length - 1
   const offset = axs.length
   const sMap = new Map(axs.map(((si, i) => [si.path.at(-1), i])))
-  axs.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(0, xsPathLength, 's', sMap.get(ti.path.at(xsPathLength - 1))))
   if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] -= offset)
   if (sD) [sD, ...sD.sd].filter(ti => !ti.selected).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
-  axs.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(0, 2, ...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + ti.path.at(1)))
+  axs.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(0, pos + 1, ...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + sMap.get(ti.path.at(pos))))
   m.sort(sortPath)
 }
 
