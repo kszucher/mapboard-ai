@@ -1,14 +1,15 @@
 import {MPartial} from "../state/MapStateTypes.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {_assert} from "./_assert.ts"
+import {Side} from "../state/Enums.ts"
 
 describe("MapDeleteTests", () => {
   test('deleteLRSC', () => {
     const test = [
       {nodeId: 'g', path: ['g']},
-      {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', toNodeId: 'r1'},
-      {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r0', toNodeId: 'r2'},
-      {nodeId: 'l2', path: ['l', 2], fromNodeId: 'r1', toNodeId: 'r2'},
+      {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', fromNodeSide: Side.L, toNodeId: 'r1', toNodeSide: Side.R},
+      {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r0', fromNodeSide: Side.L, toNodeId: 'r2', toNodeSide: Side.R},
+      {nodeId: 'l2', path: ['l', 2], fromNodeId: 'r1', fromNodeSide: Side.L, toNodeId: 'r2', toNodeSide: Side.R},
       {nodeId: 'r0', path: ['r', 0], offsetW: 120, offsetH: 230},
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'r1', path: ['r', 1], offsetW: 340, offsetH: 450, selected: 1},
@@ -18,7 +19,7 @@ describe("MapDeleteTests", () => {
     ] as MPartial
     const result = [
       {nodeId: 'g', path: ['g']},
-      {nodeId: 'l1', path: ['l', 0], fromNodeId: 'r0', toNodeId: 'r2'},
+      {nodeId: 'l1', path: ['l', 0], fromNodeId: 'r0', fromNodeSide: Side.L, toNodeId: 'r2', toNodeSide: Side.R},
       {nodeId: 'r0', path: ['r', 0], selected: 1},
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: 'r2', path: ['r', 1], offsetW: 440, offsetH: 550},
