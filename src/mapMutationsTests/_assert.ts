@@ -13,14 +13,14 @@ export const _assert = (test: MPartial, result: MPartial, mmType: MM, mmPayload?
   mapInit(m)
   mapChain(m)
   mapMutation(m, mmType, mmPayload)
-  const md = mapPrune(m)
-  md.forEach(ni => Object.assign(ni, {
+  const mp = mapPrune(m)
+  mp.forEach(ni => Object.assign(ni, {
     nodeId: pathMappingBefore.has(ni.nodeId) ? pathMappingBefore.get(ni.nodeId) : '_' +  ni.path.join('')
   }))
   const pathMappingAfter = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('')]))
-  mL(md as M).forEach(li => Object.assign(li, {
+  mL(mp as M).forEach(li => Object.assign(li, {
     fromNodeId: pathMappingBefore.has(li.fromNodeId) ? pathMappingBefore.get(li.fromNodeId) : '_' + pathMappingAfter.get(li.fromNodeId),
     toNodeId: pathMappingBefore.has(li.toNodeId) ? pathMappingBefore.get(li.toNodeId) : '_' + pathMappingAfter.get(li.toNodeId)
   }))
-  return expect(md.sort(sortNode)).toEqual((result).sort(sortNode))
+  return expect(mp.sort(sortNode)).toEqual((result).sort(sortNode))
 }
