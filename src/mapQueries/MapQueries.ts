@@ -54,8 +54,11 @@ export const isAXC1 = (m: M): boolean => isAXC(m) && getAXC(m).length === 1
 export const isAXCR = (m: M): boolean => isAXC(m) && getAXC(m).length > 1 && hasEquals(getAXC(m).map(ni => ni.path.with(-1, 0)))
 export const isAXCC = (m: M): boolean => isAXC(m) && getAXC(m).length > 1 && hasEquals(getAXC(m).map(ni => ni.path.with(-2, 0)))
 
-export const getQuasiSD = (m: M): S => mS(m).sort(sortPath).find(si => !si.selected && isQuasiSD(getXS(m).path, si.path))!
-export const getQuasiSU = (m: M): S => mS(m).sort(sortPath).findLast(si => !si.selected && isQuasiSU(getXS(m).path, si.path))!
+export const hasQuasiSD = (m: M): boolean => {const xs = getXS(m); return (xs.ci ?? xs.ri).so.filter(si => !si.selected && isQuasiSD(xs.path, si.path)).length > 0}
+export const hasQuasiSU = (m: M): boolean => {const xs = getXS(m); return (xs.ci ?? xs.ri).so.filter(si => !si.selected && isQuasiSU(xs.path, si.path)).length > 0}
+
+export const getQuasiSD = (m: M): S => {const xs = getXS(m); return (xs.ci ?? xs.ri).so.reverse().find(si => !si.selected && isQuasiSD(xs.path, si.path))!}
+export const getQuasiSU = (m: M): S => {const xs = getXS(m); return (xs.ci ?? xs.ri).so.reverse().findLast(si => !si.selected && isQuasiSU(xs.path, si.path))!}
 
 export const getLineWidth = (m: M): SSaveOptional['lineWidth'] => getEquals(getAXS(m).map(ti => ti.lineWidth)) ?? sSaveOptional.lineWidth
 export const getLineType = (m: M): SSaveOptional['lineType'] => getEquals(getAXS(m).map(ti => ti.lineType)) ?? sSaveOptional.lineType

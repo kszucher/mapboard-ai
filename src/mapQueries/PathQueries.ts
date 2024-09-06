@@ -1,9 +1,5 @@
 import {P, PT} from "../state/MapStateTypes.ts"
-import isEqual from "react-fast-compare"
-
-export const sortablePath = (p: P): string => p.map((pi: any) => isNaN(pi) ? pi : 1000 + pi).join('')
-
-export const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
+import {sortablePath} from "../mapMutations/MapSort.ts"
 
 export const isG = (p: P): boolean => p.at(0) === 'g'
 export const isL = (p: P): boolean => p.at(0) === 'l'
@@ -17,8 +13,5 @@ export const isRSC = (p: P): boolean => p.at(-7) === 'r' && p.at(-5) === 's' && 
 export const isSSC = (p: P): boolean => p.at(-7) === 's' && p.at(-5) === 's' && p.at(-3) === 'c'
 export const isT = (p: P): boolean => p.at(0) !== 'g'
 
-const isOfSameR = (p: PT, pt: PT): boolean => pt.at(1) === p.at(1)
-const isOfSameC = (p: PT, pt: PT): boolean => isEqual(p.slice(0, p.findLastIndex(pi => pi === 'c') + 3), pt.slice(0, pt.findLastIndex(pti => pti === 'c') + 3))
-
-export const isQuasiSD = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) > sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
-export const isQuasiSU = (p: PT, pt: PT): boolean => isOfSameR(p, pt) && isOfSameC(p, pt) && sortablePath(pt) < sortablePath(p) && getPathPattern(pt) === getPathPattern(p)
+export const isQuasiSD = (p: PT, pt: PT): boolean => p.length === pt.length && sortablePath(pt) > sortablePath(p)
+export const isQuasiSU = (p: PT, pt: PT): boolean => p.length === pt.length && sortablePath(pt) < sortablePath(p)
