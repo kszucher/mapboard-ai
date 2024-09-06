@@ -1,5 +1,5 @@
 import {getG, isAXCC, isAXCR, getAXC, getXC, pathToC, pathToR, idToR} from "../../mapQueries/MapQueries.ts"
-import {INDENT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
+import {INDENT, S_LINE_DELTA_X_DEFAULT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../../state/Consts"
 import {LineType, Flow, Side} from "../../state/Enums"
 import {C, G, L, M, PR, R, S} from "../../state/MapStateTypes"
 import {adjust} from "../../utils/Utils"
@@ -135,7 +135,7 @@ export const getPolygonPath = (m: M, t: R | S | C, mode: string, margin: number)
       if (g.flow === Flow.EXPLODED) {
         const g = getG(m)
         ax = t.nodeStartX
-        bx = t.nodeStartX + t.selfW + g.sLineDeltaXDefault
+        bx = t.nodeStartX + t.selfW + S_LINE_DELTA_X_DEFAULT[g.density]
         cx = t.nodeStartX + t.maxW
         ayu = t.nodeStartY
         ayd = t.nodeStartY + t.selfH

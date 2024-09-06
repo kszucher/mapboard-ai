@@ -14,7 +14,6 @@ export const mapInit = (m: MPartial) => {
           }
         }
         Object.assign(g, structuredClone(gSaveNever))
-        g.sLineDeltaXDefault = g.density === 'large' ? 30 : 20 // 30 = 14 + 2*8, 20 = 14 + 2*3
         break
       }
       case isL(ni.path): {

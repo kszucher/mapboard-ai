@@ -1,5 +1,5 @@
 import {getG} from "../mapQueries/MapQueries.ts"
-import {INDENT, MARGIN_X, S_SPACING} from "../state/Consts.ts"
+import {INDENT, MARGIN_X, S_LINE_DELTA_X_DEFAULT, S_SPACING} from "../state/Consts.ts"
 import {C, M, R, S} from "../state/MapStateTypes"
 import {Flow} from "../state/Enums.ts"
 import {isC, isCS, isR, isRS, isRSC, isS, isSS, isSSC} from "../mapQueries/PathQueries.ts"
@@ -32,7 +32,7 @@ export const mapPlace = (m: M) => {
           const si1 = si.si1!
           if (g.flow === Flow.EXPLODED) {
             const elapsed = si.su.map(si => si.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.so.length > si1.so1.length || si1.co.length)
-            si.nodeStartX = si1.nodeStartX + si1.selfW + g.sLineDeltaXDefault
+            si.nodeStartX = si1.nodeStartX + si1.selfW + S_LINE_DELTA_X_DEFAULT[g.density]
             si.nodeStartY = si1.nodeStartY + si1.selfH / 2 - si1.familyH / 2 + si.maxH / 2 - si.selfH / 2 + elapsed
           } else {
             const elapsed = si.su.map(si => si.maxH).reduce((a, b) => a + b, 0) + i * S_SPACING * +Boolean(si1.co.length)
@@ -73,7 +73,7 @@ export const mapPlace = (m: M) => {
           const si2 = ci.si1!.si1!
           const si1 = ci.si1!
           if (g.flow === Flow.EXPLODED) {
-            ci.nodeStartX = si2.nodeStartX + si2.selfW + g.sLineDeltaXDefault + calcOffsetX
+            ci.nodeStartX = si2.nodeStartX + si2.selfW + S_LINE_DELTA_X_DEFAULT[g.density] + calcOffsetX
             ci.nodeStartY = si1.nodeStartY + calcOffsetY
           } else {
             ci.nodeStartX = si2.nodeStartX + INDENT + 2 + calcOffsetX

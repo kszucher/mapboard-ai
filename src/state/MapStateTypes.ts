@@ -14,14 +14,13 @@ export interface GSaveAlways {
 }
 
 export interface GSaveOptional {
-  density: string
+  density: 'large' | 'small'
   flow: Flow
 }
 
 export interface GSaveNever {
   selfW: number
   selfH: number
-  sLineDeltaXDefault: number
 }
 
 export interface LSaveAlways {

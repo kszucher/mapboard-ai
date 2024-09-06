@@ -1,7 +1,7 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
 import {getG, getHN, hasTask, mR} from "../mapQueries/MapQueries.ts"
-import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_SPACING} from "../state/Consts"
+import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_LINE_DELTA_X_DEFAULT, S_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M, G, R, S, C} from "../state/MapStateTypes"
 import {isC, isG, isR, isS} from "../mapQueries/PathQueries.ts"
@@ -44,7 +44,7 @@ export const mapMeasure = (pm: M, m: M) => {
         if (si.so1.length) {
           const so1 = si.so1
           if (g.flow === Flow.EXPLODED) {
-            si.familyW = Math.max(...so1.map(si => si.maxW)) + g.sLineDeltaXDefault
+            si.familyW = Math.max(...so1.map(si => si.maxW)) + S_LINE_DELTA_X_DEFAULT[g.density]
             si.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (si.so1.length - 1) * +Boolean(si.so.length > si.so1.length || si.co.length)
           } else if (g.flow === Flow.INDENTED) {
             si.familyW = Math.max(...so1.map(si => si.maxW)) + INDENT
@@ -103,7 +103,7 @@ export const mapMeasure = (pm: M, m: M) => {
         if (ci.so1.length) {
           const so1 = ci.so1
           if (g.flow === Flow.EXPLODED) {
-            ci.familyW = Math.max(...so1.map(si => si.maxW)) + g.sLineDeltaXDefault
+            ci.familyW = Math.max(...so1.map(si => si.maxW)) + S_LINE_DELTA_X_DEFAULT[g.density]
             ci.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ci.so1.length - 1) * +Boolean(ci.so.length > ci.so1.length)
           } else {
             ci.familyW = Math.max(...so1.map(si => si.maxW)) + INDENT
