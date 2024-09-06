@@ -1,6 +1,6 @@
 import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
 import {getTaskWidth} from "../components/map/MapSvgUtils"
-import {getG, getHN, hasTask, mR} from "../mapQueries/MapQueries.ts"
+import {getG, getHN, mR} from "../mapQueries/MapQueries.ts"
 import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_LINE_DELTA_X_DEFAULT, S_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"
 import {M, G, R, S, C} from "../state/MapStateTypes"
@@ -35,7 +35,7 @@ export const mapMeasure = (pm: M, m: M) => {
             ri.familyH = so1.reduce((a, b) => a + b.maxH, 0) + S_SPACING * (ri.so1.length - 1) * +Boolean(ri.co.length)
           }
         }
-        ri.selfW = ri.familyW + 2 * MARGIN_X + getTaskWidth(g) * hasTask(m, ri)
+        ri.selfW = ri.familyW + 2 * MARGIN_X + getTaskWidth(g) * +ri.so.some(ti => ti.taskStatus !== 0)
         ri.selfH = ri.familyH + 2 * MARGIN_Y
         break
       }

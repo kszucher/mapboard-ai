@@ -72,8 +72,6 @@ export const getFFillColor = (m: M): SSaveOptional['fFillColor'] => getEquals(ge
 export const getTextFontSize = (m: M): SSaveOptional['textFontSize'] => getEquals(getAXS(m).map(ti => ti.textFontSize)) ?? sSaveOptional.textFontSize
 export const getTextColor = (m: M): SSaveOptional['textColor'] => getEquals(getAXS(m).map(ti => ti.textColor)) ?? sSaveOptional.textColor
 
-export const hasTask = (m: M, r: R): number => +mS(m).filter(ti => ti.path.at(1) === r.path.at(1) && ti.path.length > 2).some(ti => ti.taskStatus !== 0)
-
 export const isExistingLink = (m: M, l: L): boolean => mL(m).some(li =>
   l.fromNodeId === li.fromNodeId &&
   l.toNodeId === li.toNodeId &&
