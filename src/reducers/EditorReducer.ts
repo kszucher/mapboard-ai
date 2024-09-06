@@ -232,8 +232,7 @@ export const editorSlice = createSlice({
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
         console.log(payload)
-        const { mapData } = structuredClone(payload)
-        const pm = mapData.filter(el =>
+        const pm = payload.mapData.filter(el =>
           Object.keys(el).length !== 0 &&
           Object.hasOwn(el, 'nodeId') &&
           Object.hasOwn(el, 'path')
