@@ -2,9 +2,12 @@ import isEqual from "react-fast-compare"
 import {sSaveOptional} from "../state/MapState"
 import {C, G, L, M, N, PC, PR, PS, R, S, T, SSaveOptional} from "../state/MapStateTypes"
 import {NodeMode} from "../state/Enums.ts"
-import {getEquals, hasEquals, hasTrues} from "../utils/Utils"
+import {excludeKeys, getEquals, hasEquals, hasTrues} from "../utils/Utils"
 import {isC, isCS, isG, isT, isL, isQuasiSD, isQuasiSU, isR, isRS, isS, isSS} from "./PathQueries.ts"
 import {sortPath} from "../mapMutations/MapSort.ts"
+
+export const mapArrayToObject = (m: M): object => Object.fromEntries(m.map(n => [n.nodeId, excludeKeys(n, ['nodeId'])]))
+export const mapObjectToArray = (obj: object): M => Object.entries(obj).map(el => ({nodeId: el[0], ...el[1]} as N))
 
 export const getHN = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.nodeId, ni as N]))
 export const getHP = (m: M): Map<string, N> => new Map<string, N>(m.map(ni => [ni.path.join(''), ni as N]))

@@ -17,7 +17,7 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
   breadcrumbMapNameList: [],
   mapId: '',
   mapName: '',
-  mapData: [],
+  mapVersion: {merge_id: '', data: []},
 }
 
 export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {

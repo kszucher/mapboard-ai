@@ -107,21 +107,19 @@ export const api = createApi({
           const ws = (api.endpoints.openWorkspace.select()(store.getState())?.data || defaultUseOpenWorkspaceQueryState)
           console.log('saving ' + ws.mapName)
           clearTimeout(timeoutId)
-          const commitIndexSaved = editor.commitList.findIndex(el => el.commitId === editor.lastMergedCommitId)
-          const commitIndexBase = commitIndexSaved === -1 ? 0 : commitIndexSaved
-          if (editor.lastMergedCommitId !== '' && commitIndexSaved === -1) {
-            window.alert('save issue')
-            console.warn('save issue', 'commitList:', editor.commitList, 'lastMergedCommitId', editor.lastMergedCommitId)
-          }
-          const enabled = false
-          if (enabled) {
+          const SAVE_ENABLED = true
+          if (SAVE_ENABLED) {
+            const saveCommitData = mapDeInit(editor.commitList[editor.commitIndex].data)
+            const saveCommitId = editor.commitList[editor.commitIndex].commitId
+            const diff = mapDiff(editor.lastSavedCommit.data, saveCommitData)
+            dispatch(actions.saveCommit({
+              data: structuredClone(saveCommitData),
+              commitId: saveCommitId
+            }))
             dispatch(api.endpoints.saveMap.initiate({
               mapId: ws.mapId,
-              mapDelta: mapDiff(
-                mapDeInit(editor.commitList[commitIndexBase].data),
-                mapDeInit(editor.commitList[editor.commitIndex].data)
-              ),
-              commitId: editor.commitList[editor.commitIndex].commitId
+              mapDelta: diff,
+              commitId: saveCommitId
             }))
           }
         }

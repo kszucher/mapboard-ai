@@ -14,7 +14,7 @@ export const editorState: EditorState = {
   formatMode: FormatMode.sFill,
   commitList: [],
   commitIndex: 0,
-  lastMergedCommitId: '',
+  lastSavedCommit: {commitId: '', data: []},
   editedNodeId: '',
   editType: '',
   editStartMapListIndex: Infinity,

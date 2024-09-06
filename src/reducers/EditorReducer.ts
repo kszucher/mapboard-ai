@@ -7,7 +7,7 @@ import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMod
 import {api} from "../api/Api.ts"
 import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
 import {mapMutation} from "../mapMutations/MapMutation.ts"
-import {getXS} from "../mapQueries/MapQueries.ts"
+import {getXS, mapObjectToArray} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {M, R} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
@@ -86,6 +86,9 @@ export const editorSlice = createSlice({
     redo(state) {
       state.editedNodeId = ''
       state.commitIndex = state.commitIndex < state.commitList.length - 1 ? state.commitIndex + 1 : state.commitIndex
+    },
+    saveCommit(state, action: PayloadAction<{commitId: string, data: M}>) {
+      state.lastSavedCommit = action.payload
     },
     saveView(state, action: PayloadAction<{ e: React.WheelEvent }>) {
       const {e} = action.payload
@@ -232,31 +235,35 @@ export const editorSlice = createSlice({
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
         console.log(payload)
-        const pm = payload.mapData.filter(el =>
-          Object.keys(el).length !== 0 &&
-          Object.hasOwn(el, 'nodeId') &&
-          Object.hasOwn(el, 'path')
-        )
-        const m = structuredClone(pm)
-        m.sort(sortPath)
-        mapInit(m)
-        mapChain(m)
-        mapCalcTask(m)
-        mapMeasure(pm, m)
-        mapPlace(m)
-        m.sort(sortNode)
-        const commitId = genId()
-        state.commitList = [{commitId, data: Object.freeze(m) as M}]
-        state.commitIndex = 0
-        state.lastMergedCommitId = commitId
-        state.editedNodeId = ''
-        state.isLoading = false
+        const isValid = Object.values(payload.mapVersion.data).every(obj => Object.keys(obj).includes('path'))
+        if (isValid) {
+          const data = mapObjectToArray(payload.mapVersion.data)
+          const commitId = payload.mapVersion.merge_id
+          const m = structuredClone(data)
+          m.sort(sortPath)
+          mapInit(m)
+          mapChain(m)
+          mapCalcTask(m)
+          mapMeasure(m, m)
+          mapPlace(m)
+          m.sort(sortNode)
+          Object.freeze(m)
+          state.commitList = [{commitId, data: m}]
+          state.commitIndex = 0
+          state.lastSavedCommit = structuredClone({commitId, data})
+          state.editedNodeId = ''
+          state.isLoading = false
+        } else {
+          window.alert('invalid map')
+        }
       }
     )
     builder.addMatcher(
       api.endpoints.saveMap.matchFulfilled,
       (state, {payload}) => {
-        state.lastMergedCommitId = payload.commitId
+        if (payload.commitId !== state.lastSavedCommit.commitId) {
+          window.alert('commitId mismatch')
+        }
         console.log('commit ' + payload.commitId + ' saved')
       }
     )

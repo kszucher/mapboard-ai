@@ -1,5 +1,4 @@
 import {AccessType} from "./Enums"
-import {M} from "./MapStateTypes"
 
 export interface DefaultUseOpenWorkspaceQueryState {
   userName: string
@@ -15,7 +14,7 @@ export interface DefaultUseOpenWorkspaceQueryState {
   breadcrumbMapNameList: string[]
   mapId: string
   mapName: string
-  mapData: M
+  mapVersion: {merge_id: string, data: []},
 }
 
 export interface DefaultGetIngestionQueryState {

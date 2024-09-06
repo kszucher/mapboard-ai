@@ -13,7 +13,7 @@ export interface EditorState {
   formatMode: FormatMode
   commitList: {commitId: string, data: M}[]
   commitIndex: number
-  lastMergedCommitId: string
+  lastSavedCommit: {commitId: string, data: M}
   editedNodeId: string
   editType: '' | 'append' | 'replace'
   editStartMapListIndex: number
