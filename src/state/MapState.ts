@@ -98,6 +98,8 @@ export const sSaveOptional = {
 } as SSaveOptional
 
 export const sSaveNever = {
+  ri: {} as R,
+  ci: undefined,
   ri1: undefined,
   si1: undefined,
   ci1: undefined,

@@ -105,6 +105,8 @@ export interface SSaveOptional {
 }
 
 export interface SSaveNever {
+  ri: R
+  ci: C | undefined
   ri1: R | undefined
   si1: S | undefined
   ci1: C | undefined

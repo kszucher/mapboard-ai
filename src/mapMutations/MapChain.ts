@@ -52,20 +52,20 @@ export const mapChain = (m: M) => {
       case isS(ni.path): {
         const si = ni as S
         const tiList = si.path.map((_, i) => si.path.slice(0, i))
-        const siListR = tiList.filter(pi => pi.at(-2) === 'r')
-        const siListS = tiList.filter(pi => pi.at(-2) === 's')
-        const siListC = tiList.filter(pi => pi.at(-3) === 'c')
-        for (let i = 0; i < siListR.length; i++) {
-          const rix = hp.get(siListR[i].join('')) as R
-          rix.so.push(si)
-        }
-        for (let i = 0; i < siListS.length; i++) {
-          const six = hp.get(siListS[i].join('')) as S
+        const siR = tiList.find(pi => pi.at(-2) === 'r')!
+        const siS = tiList.filter(pi => pi.at(-2) === 's')
+        const siC = tiList.find(pi => pi.at(-3) === 'c')
+        const ri = hp.get(siR.join('')) as R
+        ri.so.push(si)
+        si.ri = ri
+        for (let i = 0; i < siS.length; i++) {
+          const six = hp.get(siS[i].join('')) as S
           six.so.push(si)
         }
-        for (let i = 0; i < siListC.length; i++) {
-          const cix = hp.get(siListC[i].join('')) as C
-          cix.so.push(si)
+        if (siC) {
+          const ci = hp.get(siC.join('')) as C
+          si.ci = ci
+          ci.so.push(si)
         }
         for (let i = 0; i < si.path.at(-1); i++) {
           const sdi = hp.get([...si.path.slice(0, -1), i].join('')) as S
@@ -76,14 +76,14 @@ export const mapChain = (m: M) => {
       case isC(ni.path): {
         const ci = ni as C
         const niList = ci.path.map((_, i) => ci.path.slice(0, i))
-        const siListR = niList.filter(pi => pi.at(-2) === 'r')
-        const siListS = niList.filter(pi => pi.at(-2) === 's')
-        for (let i = 0; i < siListR.length; i++) {
-          const rix = hp.get(siListR[i].join('')) as R
+        const siR = niList.filter(pi => pi.at(-2) === 'r')
+        const siS = niList.filter(pi => pi.at(-2) === 's')
+        for (let i = 0; i < siR.length; i++) {
+          const rix = hp.get(siR[i].join('')) as R
           rix.co.push(ci)
         }
-        for (let i = 0; i < siListS.length; i++) {
-          const six = hp.get(siListS[i].join('')) as S
+        for (let i = 0; i < siS.length; i++) {
+          const six = hp.get(siS[i].join('')) as S
           six.co.push(ci)
         }
         for (let i = 0; i < ci.path.at(-2); i++) {
