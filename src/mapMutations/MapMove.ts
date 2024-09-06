@@ -2,7 +2,7 @@ import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, m
 import {rSaveOptional} from "../state/MapState"
 import {M, PC, PS, R, S, C} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
-import {mapPrune} from "./MapPrune.ts"
+import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 import {lrscToClipboard, scToClipboard} from "../mapQueries/MapExtract.ts"

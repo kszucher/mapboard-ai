@@ -1,4 +1,4 @@
-import {mapPrune} from "../mapMutations/MapPrune.ts"
+import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {mapMutation} from "../mapMutations/MapMutation.ts"
 import {mapChain} from "../mapMutations/MapChain.ts"
 import {mapInit} from "../mapMutations/MapInit.ts"

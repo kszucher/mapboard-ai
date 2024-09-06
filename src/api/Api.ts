@@ -3,7 +3,7 @@ import {timeoutId} from "../components/editor/Window"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
 import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "../state/ApiStateTypes.ts"
 import {actions, RootState, store} from "../reducers/EditorReducer.ts"
-import {mapPrune} from "../mapMutations/MapPrune.ts"
+import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {pythonBackendUrl} from "../urls/Urls.ts"
 import {mapDiff} from "../mapQueries/MapDiff.ts"
 
