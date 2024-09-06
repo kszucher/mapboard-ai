@@ -109,24 +109,27 @@ export const api = createApi({
           clearTimeout(timeoutId)
           const SAVE_ENABLED = true
           if (SAVE_ENABLED) {
-            const saveCommitData = mapPrune(editor.commitList[editor.commitIndex].data)
-            const saveCommitId = editor.commitList[editor.commitIndex].commitId
-            const diff = mapDiff(editor.lastSavedCommit.data, saveCommitData)
+            const lastSavedCommitData = editor.lastSavedCommit.data
+            const lastSavedCommitId = editor.lastSavedCommit.commitId
+            const commitData = mapPrune(editor.commitList[editor.commitIndex].data)
+            const commitId = editor.commitList[editor.commitIndex].commitId
+            const diff = mapDiff(lastSavedCommitData, commitData)
             dispatch(actions.saveCommit({
-              data: structuredClone(saveCommitData),
-              commitId: saveCommitId
+              data: structuredClone(commitData),
+              commitId
             }))
             dispatch(api.endpoints.saveMap.initiate({
               mapId: ws.mapId,
               mapDelta: diff,
-              commitId: saveCommitId
+              lastSavedCommitId,
+              commitId,
             }))
           }
         }
       }
     }),
-    saveMap: builder.mutation<{ commitId: string }, { mapId: string, mapDelta: any, commitId: string }>({
-      query: ({ mapId, mapDelta, commitId }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapDelta, commitId } }),
+    saveMap: builder.mutation<{ commitId: string }, { mapId: string, mapDelta: any, lastSavedCommitId: string, commitId: string }>({
+      query: ({ mapId, mapDelta, lastSavedCommitId, commitId }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapDelta, lastSavedCommitId, commitId } }),
       invalidatesTags: []
     }),
     deleteMap: builder.mutation<void, { mapId: string }>({
