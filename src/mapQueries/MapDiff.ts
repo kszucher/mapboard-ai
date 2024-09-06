@@ -1,7 +1,6 @@
 import {MPartial} from "../state/MapStateTypes.ts"
 import isEqual from "react-fast-compare"
-
-const remProp = (obj: any, prop: any) => Object.fromEntries(Object.entries(obj).filter(([key]) => key !== prop))
+import {excludeKeys} from "../utils/Utils.ts"
 
 const recursiveMerge = (current: any, updates: any): {V0?: any, V1?: any} => {
   for (const key of Object.keys(updates)) {
@@ -15,8 +14,8 @@ export const mapDiff = (arr0: MPartial, arr1: MPartial) => (
   Object.fromEntries(
     Object.entries(
       recursiveMerge(
-        Object.fromEntries(arr0.map(n => [n.nodeId, {V0: remProp(n, 'nodeId')}])),
-        Object.fromEntries(arr1.map(n => [n.nodeId, {V1: remProp(n, 'nodeId')}])))
+        Object.fromEntries(arr0.map(n => [n.nodeId, {V0: excludeKeys(n, ['nodeId'])}])),
+        Object.fromEntries(arr1.map(n => [n.nodeId, {V1: excludeKeys(n, ['nodeId'])}])))
     ).map(el => (
         el[1].hasOwnProperty('V0') && !el[1].hasOwnProperty('V1') && [el[0], null] ||
         !el[1].hasOwnProperty('V0') && el[1].hasOwnProperty('V1') && [el[0], el[1].V1] ||
