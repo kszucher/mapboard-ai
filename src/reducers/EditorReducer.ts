@@ -11,7 +11,7 @@ import {getXS, mapObjectToArray} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {M, R} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
-import {mapDeInit} from "../mapMutations/MapDeInit.ts"
+import {mapPrune} from "../mapMutations/MapPrune.ts"
 import {EditorState} from "../state/EditorStateTypes.ts"
 import React from "react"
 import {mapBuild} from "../mapMutations/MapBuild.ts"
@@ -186,7 +186,7 @@ export const editorSlice = createSlice({
       const m = structuredClone(pm)
       mapMutation(m, action.payload.type, action.payload.payload)
       mapBuild(pm, m)
-      if (!isEqual(mapDeInit(pm), mapDeInit(m))) {
+      if (!isEqual(mapPrune(pm), mapPrune(m))) {
         state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), {commitId: genId(), data: m}]
         state.commitIndex = state.commitIndex + 1
       }

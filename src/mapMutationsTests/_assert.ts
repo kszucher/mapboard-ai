@@ -1,4 +1,4 @@
-import {mapDeInit} from "../mapMutations/MapDeInit.ts"
+import {mapPrune} from "../mapMutations/MapPrune.ts"
 import {mapMutation} from "../mapMutations/MapMutation.ts"
 import {mapChain} from "../mapMutations/MapChain.ts"
 import {mapInit} from "../mapMutations/MapInit.ts"
@@ -13,7 +13,7 @@ export const _assert = (test: MPartial, result: MPartial, mmType: MM, mmPayload?
   mapInit(m)
   mapChain(m)
   mapMutation(m, mmType, mmPayload)
-  const md = mapDeInit(m)
+  const md = mapPrune(m)
   md.forEach(ni => Object.assign(ni, {
     nodeId: pathMappingBefore.has(ni.nodeId) ? pathMappingBefore.get(ni.nodeId) : '_' +  ni.path.join('')
   }))

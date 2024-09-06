@@ -2,7 +2,7 @@ import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, m
 import {rSaveOptional} from "../state/MapState"
 import {M, PC, PS, R, S, C} from "../state/MapStateTypes"
 import {genId} from "../utils/Utils"
-import {mapDeInit} from "./MapDeInit"
+import {mapPrune} from "./MapPrune.ts"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 import {lrscToClipboard, scToClipboard} from "../mapQueries/MapExtract.ts"
@@ -25,11 +25,11 @@ const cbSave = (cb: M) => {
 }
 
 export const copyLRSC = (m: M) => {
-  cbSave(mapDeInit(lrscToClipboard(m).sort(sortPath)))
+  cbSave(mapPrune(lrscToClipboard(m).sort(sortPath)))
 }
 
 export const copySC = (m: M) => {
-  cbSave(mapDeInit(scToClipboard(m).sort(sortPath)))
+  cbSave(mapPrune(scToClipboard(m).sort(sortPath)))
 }
 
 const clipboardToLRSC = (m: M, cb: M) => {

@@ -3,7 +3,7 @@ import {timeoutId} from "../components/editor/Window"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
 import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "../state/ApiStateTypes.ts"
 import {actions, RootState, store} from "../reducers/EditorReducer.ts"
-import {mapDeInit} from "../mapMutations/MapDeInit"
+import {mapPrune} from "../mapMutations/MapPrune.ts"
 import {pythonBackendUrl} from "../urls/Urls.ts"
 import {mapDiff} from "../mapQueries/MapDiff.ts"
 
@@ -109,7 +109,7 @@ export const api = createApi({
           clearTimeout(timeoutId)
           const SAVE_ENABLED = true
           if (SAVE_ENABLED) {
-            const saveCommitData = mapDeInit(editor.commitList[editor.commitIndex].data)
+            const saveCommitData = mapPrune(editor.commitList[editor.commitIndex].data)
             const saveCommitId = editor.commitList[editor.commitIndex].commitId
             const diff = mapDiff(editor.lastSavedCommit.data, saveCommitData)
             dispatch(actions.saveCommit({

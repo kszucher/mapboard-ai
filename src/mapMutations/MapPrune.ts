@@ -4,7 +4,7 @@ import {sortNode} from "./MapSort.ts"
 import {mG, mL, mR, mS, mC} from "../mapQueries/MapQueries.ts"
 import {includeKeys, getNonDefaultObjectKeys} from "../utils/Utils.ts"
 
-export const mapDeInit = (m: M) => {
+export const mapPrune = (m: M) => {
   return ([
     ...mG(m).map(gi => ({...includeKeys(gi, [...Object.keys(gSaveAlways), ...getNonDefaultObjectKeys(includeKeys(gi, Object.keys(gSaveOptional)), gSaveOptional)])})),
     ...mL(m).map(li => ({...includeKeys(li, [...Object.keys(lSaveAlways), ...getNonDefaultObjectKeys(includeKeys(li, Object.keys(lSaveOptional)), lSaveOptional)])})),
