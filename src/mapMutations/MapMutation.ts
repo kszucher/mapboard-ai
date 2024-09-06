@@ -1,14 +1,13 @@
 import {getG, getQuasiSD, getQuasiSU, mR, mS, mC, getXR, getXC, getXS, getFXS, getLXS, getAXC, getAXS, pathToR, pathToS, pathToC, idToR, idToS, idToC} from "../mapQueries/MapQueries.ts"
 import {ControlType, Flow} from "../state/Enums"
 import {sSaveOptional} from "../state/MapState"
-import {M, PC, PR, PS, R, S} from "../state/MapStateTypes"
+import {M, PC, PS, R, S} from "../state/MapStateTypes"
 import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
 import {insertCL, insertL, insertR, insertS, insertTable} from "./MapInsert"
 import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, transpose, moveSC, moveCL} from "./MapMove"
 import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
-import {getClosestC} from "../mapQueries/PathQueries.ts"
 
 export const mapMutation = (m: M, action: MM, payload?: any) => {
   console.log(action)
@@ -40,10 +39,10 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'selectCFR0': selectC(m, pathToC(m, getXC(m).path.with(-2, 0) as PC)); break
     case 'selectCFC0': selectC(m, pathToC(m, getXC(m).path.with(-1, 0) as PC)); break
     case 'selectCFF': selectC(m, pathToC(m, [...getXS(m).path, 'c', 0, 0])); break
-    case 'selectXSIR': selectR(m, pathToR(m, getXS(m).path.slice(0, 2) as PR)); break
-    case 'selectXSIRS': selectS(m, pathToS(m, getXS(m).path.slice(0, 2).concat('s', 0) as PS), 's'); break
-    case 'selectXSIC': selectC(m, pathToC(m, getClosestC(getXS(m).path))); break
-    case 'selectXSICS': selectS(m, pathToS(m, [...getClosestC(getXS(m).path), 's', 0]), 's'); break
+    case 'selectXSIR': selectR(m, getXS(m).ri); break
+    case 'selectXSIRS': selectS(m, getXS(m).ri.so1.at(0)!, 's'); break
+    case 'selectXSIC': selectC(m, getXS(m).ci!); break
+    case 'selectXSICS': selectS(m, getXS(m).ci!.so1.at(0)!, 's'); break
     case 'selectXCIS': selectS(m, pathToS(m, getXC(m).path.slice(0, -3) as PS), 's'); break
     case 'selectAddR': selectAddR(m, pathToR(m, payload.path)); break
     case 'selectAddS': selectAddS(m, pathToS(m, payload.path), 's'); break
