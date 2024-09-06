@@ -11,15 +11,10 @@ import {getXS, mapObjectToArray} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {M, R} from "../state/MapStateTypes.ts"
 import {genId} from "../utils/Utils.ts"
-import {mapInit} from "../mapMutations/MapInit.ts"
-import {mapChain} from "../mapMutations/MapChain.ts"
-import {mapCalcTask} from "../mapMutations/MapCalcTask.ts"
-import {mapMeasure} from "../mapMutations/MapMeasure.ts"
-import {mapPlace} from "../mapMutations/MapPlace.ts"
-import {sortNode, sortPath} from "../mapMutations/MapSort.ts"
 import {mapDeInit} from "../mapMutations/MapDeInit.ts"
 import {EditorState} from "../state/EditorStateTypes.ts"
 import React from "react"
+import {mapBuild} from "../mapMutations/MapBuild.ts"
 
 export const editorSlice = createSlice({
   name: 'editor',
@@ -190,15 +185,9 @@ export const editorSlice = createSlice({
       const pm = current(state.commitList[state.commitIndex].data)
       const m = structuredClone(pm)
       mapMutation(m, action.payload.type, action.payload.payload)
-      m.sort(sortPath)
-      mapInit(m)
-      mapChain(m)
-      mapCalcTask(m)
-      mapMeasure(pm, m)
-      mapPlace(m)
-      m.sort(sortNode)
+      mapBuild(pm, m)
       if (!isEqual(mapDeInit(pm), mapDeInit(m))) {
-        state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), {commitId: genId(), data: Object.freeze(m) as M}]
+        state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), {commitId: genId(), data: m}]
         state.commitIndex = state.commitIndex + 1
       }
       switch (action.payload.type) {
@@ -240,14 +229,7 @@ export const editorSlice = createSlice({
           const data = mapObjectToArray(payload.mapVersion.data)
           const commitId = payload.mapVersion.merge_id
           const m = structuredClone(data)
-          m.sort(sortPath)
-          mapInit(m)
-          mapChain(m)
-          mapCalcTask(m)
-          mapMeasure(m, m)
-          mapPlace(m)
-          m.sort(sortNode)
-          Object.freeze(m)
+          mapBuild(m, m)
           state.commitList = [{commitId, data: m}]
           state.commitIndex = 0
           state.lastSavedCommit = structuredClone({commitId, data})
