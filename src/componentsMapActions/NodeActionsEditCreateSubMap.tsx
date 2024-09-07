@@ -3,8 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {api} from "../api/Api.ts"
 import {AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {getXS} from "../mapQueries/MapQueries.ts"
-import {getMapId} from "../apiState/ApiState.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const NodeActionsEditCreateSubMap = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -36,7 +35,7 @@ export const NodeActionsEditCreateSubMap = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(api.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getXS(m).nodeId, content: getXS(m).content}))}>
+          <Button onClick={() => dispatch(api.endpoints.createMapInMap.initiate({nodeId: getXS(m).nodeId, content: getXS(m).content}))}>
             {'OK'}
           </Button>
         </Dialog.Close>

@@ -2,7 +2,6 @@ import {Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField} from "@rad
 import {useState} from "react"
 import {useCreateShareMutation} from "../api/Api.ts"
 import {AccessType} from "../consts/Enums.ts"
-import {getMapId} from "../apiState/ApiState.ts"
 
 export const Share = () => {
   const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()
@@ -46,7 +45,7 @@ export const Share = () => {
                 {'Cancel'}
               </Button>
             </Dialog.Close>
-            <Button disabled={shareEmail === ''} onClick={() => createShare({mapId: getMapId(), shareEmail, shareAccess})}>
+            <Button disabled={shareEmail === ''} onClick={() => createShare({shareEmail, shareAccess})}>
               {'Share'}
             </Button>
           </Flex>

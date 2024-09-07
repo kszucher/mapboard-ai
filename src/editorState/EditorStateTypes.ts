@@ -11,6 +11,7 @@ export interface EditorState {
   dialogState: DialogState
   alertDialogState: AlertDialogState
   formatMode: FormatMode
+  mapId: string
   commitList: {commitId: string, data: M}[]
   commitIndex: number
   lastSavedCommit: {commitId: string, data: M}

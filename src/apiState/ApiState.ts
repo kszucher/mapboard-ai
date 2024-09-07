@@ -1,7 +1,5 @@
 import {AccessType} from "../consts/Enums.ts"
 import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "./ApiStateTypes.ts"
-import {api} from "../api/Api.ts"
-import {store} from "../editorMutations/EditorReducer.ts"
 
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   userName: '',
@@ -23,5 +21,3 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
 export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {
   ingestionResult: []
 }
-
-export const getMapId = () => (api.endpoints.openWorkspace.select()(store.getState())?.data || defaultUseOpenWorkspaceQueryState).mapId

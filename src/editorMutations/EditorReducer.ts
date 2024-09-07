@@ -230,6 +230,7 @@ export const editorSlice = createSlice({
           const commitId = payload.mapVersion.merge_id
           const m = structuredClone(data)
           mapBuild(m, m)
+          state.mapId = payload.mapId
           state.commitList = [{commitId, data: m}]
           state.commitIndex = 0
           state.lastSavedCommit = structuredClone({commitId, data})

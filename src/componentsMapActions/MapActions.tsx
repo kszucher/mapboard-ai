@@ -4,10 +4,10 @@ import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {getG} from "../mapQueries/MapQueries.ts"
 import {DialogState, Flow} from "../consts/Enums.ts"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../apiState/ApiState.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import Dots from "../../assets/dots.svg?react"
 import { MM } from "../mapMutations/MapMutationEnum.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapActions = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -26,10 +26,10 @@ export const MapActions = () => {
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           {<Dialog.Trigger>{<DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.RENAME_MAP))}>{'Rename'}</DropdownMenu.Item>}</Dialog.Trigger>}
           {breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTab.initiate())}>{'Create'}</DropdownMenu.Item>}
-          {breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTabDuplicate.initiate({mapId: getMapId()}))}>{'Duplicate'}</DropdownMenu.Item>}
-          {breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}>{'Move Up'}</DropdownMenu.Item>}
-          {breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}>{'Move Down'}</DropdownMenu.Item>}
-          {breadcrumbMapIdList.length === 1 && !isShared && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))}>{'Remove'}</DropdownMenu.Item>}
+          {breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTabDuplicate.initiate())}>{'Duplicate'}</DropdownMenu.Item>}
+          {breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate())}>{'Move Up'}</DropdownMenu.Item>}
+          {breadcrumbMapIdList.length === 1 && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate())}>{'Move Down'}</DropdownMenu.Item>}
+          {breadcrumbMapIdList.length === 1 && !isShared && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate())}>{'Remove'}</DropdownMenu.Item>}
           <DropdownMenu.Separator/>
           {getG(m).density === 'small' && <DropdownMenu.Item onClick={() => dm(MM.setDensityLarge)}>{'Density - Cozy'}</DropdownMenu.Item>}
           {getG(m).density === 'large' && <DropdownMenu.Item onClick={() => dm(MM.setDensitySmall)}>{'Density - Compact'}</DropdownMenu.Item>}

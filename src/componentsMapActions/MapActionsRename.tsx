@@ -3,7 +3,7 @@ import {useState} from "react"
 import {useDispatch} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
 import {AppDispatch} from "../editorMutations/EditorReducer.ts"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../apiState/ApiState.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 
 export const MapActionsRename = () => {
   const { data } = useOpenWorkspaceQuery()
@@ -36,7 +36,7 @@ export const MapActionsRename = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({mapId: getMapId(), name: newMapName}))}>
+          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({name: newMapName}))}>
             {'Save'}
           </Button>
         </Dialog.Close>

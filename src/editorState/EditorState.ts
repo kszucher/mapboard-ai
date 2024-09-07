@@ -11,6 +11,7 @@ export const editorState: EditorState = {
   dialogState: DialogState.NONE,
   alertDialogState: AlertDialogState.NONE,
   formatMode: FormatMode.sFill,
+  mapId: '',
   commitList: [],
   commitIndex: 0,
   lastSavedCommit: {commitId: '', data: []},
