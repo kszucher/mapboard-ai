@@ -17,7 +17,7 @@ export const MapSvgLRConnectors: FC = () => {
   const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <Fragment>
-      {mL(m).map((li: L) => (
+      {mL(m).map(li => (
         <Fragment key={`${li.nodeId}_inter_root_bezier`}>
           <path
             d={getBezierLinePath('M', getRootLinePath(m, li))}
