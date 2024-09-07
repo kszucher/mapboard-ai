@@ -1,9 +1,9 @@
 import {FC} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
-import {AccessType} from "../state/Enums.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
+import {AccessType} from "../consts/Enums.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {IconButton} from "@radix-ui/themes"
 import {UserSettings} from "../componentsUserActions/UserSettings.tsx"
 import {UserAccount} from "../componentsUserActions/UserAccount.tsx"

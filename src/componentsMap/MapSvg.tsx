@@ -1,8 +1,7 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../reducers/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorReducer.ts"
 import {getG} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../state/EditorState.ts"
 import {MapSvgGBackground} from "./MapSvgGBackground.tsx"
 import {MapSvgSFamilyBorder} from "./MapSvgSFamilyBorder.tsx"
 import {MapSvgSSelfBorder} from "./MapSvgSSelfBorder.tsx"
@@ -24,6 +23,7 @@ import {MapSvgSSelectionPreview} from "./MapSvgSSelectionPreview.tsx"
 import {MapSvgSSelectionArea} from "./MapSvgSSelectionArea.tsx"
 import {MapSvgSMove} from "./MapSvgSMove.tsx"
 import {MapSvgRIcons} from "./MapSvgRIcons.tsx"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

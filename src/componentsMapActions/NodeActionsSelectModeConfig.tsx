@@ -1,14 +1,15 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
-import {NodeMode} from "../state/Enums.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {NodeMode} from "../consts/Enums.ts"
 import Eye from "../../assets/eye.svg?react"
 import LetterR from "../../assets/letter-r.svg?react"
 import LetterS from "../../assets/letter-s.svg?react"
 import LetterC from "../../assets/letter-c.svg?react"
 import {getNodeMode, mC, mS} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
-import {mSelector} from "../state/EditorState.ts"
+
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const NodeActionsSelectModeConfig = () => {
   const m = useSelector((state:RootState) => mSelector(state))

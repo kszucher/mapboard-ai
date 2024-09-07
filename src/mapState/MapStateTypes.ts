@@ -1,4 +1,4 @@
-import {LineType, ControlType, Side, Flow} from "./Enums"
+import {LineType, ControlType, Side, Flow} from "../consts/Enums.ts"
 
 export type PG = ['g']
 export type PL = ['l', number]

@@ -1,5 +1,5 @@
 import {mapDiff} from "../mapQueries/MapDiff.ts"
-import {MPartial} from "../state/MapStateTypes.ts"
+import {MPartial} from "../mapState/MapStateTypes.ts"
 
 describe("MapDiffTests", () => {
   test('mapDiff', () => {

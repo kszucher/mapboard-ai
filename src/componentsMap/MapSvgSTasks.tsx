@@ -4,13 +4,13 @@ import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {adjust} from "../utils/Utils.ts"
-import {TASK_CIRCLES_GAP} from "../state/Consts.ts"
-import {getColors} from "../state/Colors.ts"
+import {TASK_CIRCLES_GAP} from "../consts/Dimensions.ts"
+import {getColors} from "../consts/Colors.ts"
 import {getG, mS} from "../mapQueries/MapQueries.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {getLinearLinePath, getTaskRadius, getTaskStartPoint, pathCommonProps} from "./MapSvgUtils.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapSvgSTasks: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

@@ -1,10 +1,10 @@
 import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../api/Api.ts"
-import {AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {getXS} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {getMapId} from "../state/ApiState.ts"
+import {getMapId} from "../apiState/ApiState.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const NodeActionsEditCreateSubMap = () => {
   const m = useSelector((state:RootState) => mSelector(state))

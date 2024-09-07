@@ -1,5 +1,5 @@
-import {G, L, R, S, C, MPartial} from "../state/MapStateTypes"
-import {gSaveAlways, gSaveNever, gSaveOptional, lSaveAlways, lSaveNever, lSaveOptional, rSaveAlways, rSaveNever, rSaveOptional, sSaveAlways, sSaveNever, sSaveOptional, cSaveAlways, cSaveNever, cSaveOptional,} from "../state/MapState"
+import {G, L, R, S, C, MPartial} from "../mapState/MapStateTypes.ts"
+import {gSaveAlways, gSaveNever, gSaveOptional, lSaveAlways, lSaveNever, lSaveOptional, rSaveAlways, rSaveNever, rSaveOptional, sSaveAlways, sSaveNever, sSaveOptional, cSaveAlways, cSaveNever, cSaveOptional,} from "../mapState/MapState.ts"
 import {excludeKeys, genId} from "../utils/Utils"
 import {isC, isG, isL, isR, isS} from "../mapQueries/PathQueries.ts"
 

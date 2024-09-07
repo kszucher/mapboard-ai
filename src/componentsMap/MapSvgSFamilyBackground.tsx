@@ -1,9 +1,9 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
 import {mS} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {RootState} from "../reducers/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorReducer.ts"
 import {getPolygonPath} from "./MapSvgUtils.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapSvgSFamilyBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

@@ -1,7 +1,7 @@
-import {AccessType} from "./Enums"
+import {AccessType} from "../consts/Enums.ts"
 import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "./ApiStateTypes.ts"
 import {api} from "../api/Api.ts"
-import {store} from "../reducers/EditorReducer.ts"
+import {store} from "../editorMutations/EditorReducer.ts"
 
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   userName: '',

@@ -1,12 +1,12 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
-import {getColors} from "../state/Colors.ts"
+import {getColors} from "../consts/Colors.ts"
 import {getAXR, mR} from "../mapQueries/MapQueries.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {RootState} from "../reducers/EditorReducer.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
+import {RootState} from "../editorMutations/EditorReducer.ts"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapSvgRSelectionSecondary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

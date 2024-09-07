@@ -2,8 +2,8 @@ import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
-import {AppDispatch} from "../reducers/EditorReducer.ts"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../state/ApiState.ts"
+import {AppDispatch} from "../editorMutations/EditorReducer.ts"
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../apiState/ApiState.ts"
 
 export const MapActionsRename = () => {
   const { data } = useOpenWorkspaceQuery()

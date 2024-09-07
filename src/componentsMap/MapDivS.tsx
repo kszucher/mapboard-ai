@@ -3,16 +3,16 @@ import katex from "katex/dist/katex.mjs"
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {getG, getNodeMode, getAXS, getXS, idToS, isAXS, mS} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {LeftMouseMode, NodeMode} from "../state/Enums.ts"
-import {S} from "../state/MapStateTypes.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
+import {LeftMouseMode, NodeMode} from "../consts/Enums.ts"
+import {S} from "../mapState/MapStateTypes.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {adjust, getLatexString} from "../utils/Utils.ts"
-import {getColors} from "../state/Colors.ts"
+import {getColors} from "../consts/Colors.ts"
 import {setEndOfContentEditable} from "./MapDivUtils.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 const getInnerHtml = (s: S) => {
   if (s.contentType === 'text') {

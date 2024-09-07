@@ -1,6 +1,6 @@
 import {mapInit} from "../mapMutations/MapInit.ts"
-import {ControlType, Side, SubProcessType} from "../state/Enums.ts"
-import {M, MPartial} from "../state/MapStateTypes.ts"
+import {ControlType, Side, SubProcessType} from "../consts/Enums.ts"
+import {M, MPartial} from "../mapState/MapStateTypes.ts"
 import {getSubProcessList} from "../mapQueries/MapProcess.ts"
 import {ReadableTree, SubProcess} from "../mapQueries/MapProcessTypes.ts"
 

@@ -1,9 +1,9 @@
 import {Auth0Provider} from "@auth0/auth0-react"
 import {FC} from 'react'
 import {useSelector} from "react-redux"
-import {RootState} from "../reducers/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorReducer.ts"
 import {Landing} from "../componentsLanding/Landing.tsx"
-import {PageState} from "../state/Enums.ts"
+import {PageState} from "../consts/Enums.ts"
 import {Editor} from "../componentsEditor/Editor.tsx"
 
 export const App: FC = () => {

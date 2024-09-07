@@ -1,18 +1,18 @@
 import {FC, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {getG, getNodeMode} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {LeftMouseMode, NodeMode, MidMouseMode} from "../state/Enums.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
+import {LeftMouseMode, NodeMode, MidMouseMode} from "../consts/Enums.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {MapDivS} from "./MapDivS.tsx"
 import {setScrollLeftAnimated} from "./MapDivUtils.ts"
 import {MapSvg} from "./MapSvg.tsx"
 import {MapDivR} from "./MapDivR.tsx"
 import {MapDivC} from "./MapDivC.tsx"
-import {getColors} from "../state/Colors.ts"
+import {getColors} from "../consts/Colors.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const Map: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)

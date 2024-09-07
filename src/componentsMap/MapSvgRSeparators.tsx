@@ -1,11 +1,11 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../reducers/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorReducer.ts"
 import {mR} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {ControlType} from "../state/Enums.ts"
+import {ControlType} from "../consts/Enums.ts"
 import {adjust} from "../utils/Utils.ts"
 import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapSvgRSeparators: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

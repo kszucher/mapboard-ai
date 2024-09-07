@@ -1,11 +1,11 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {getNodeMode, getAXR, isAXR, mR} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {LeftMouseMode, NodeMode} from "../state/Enums.ts"
+import {LeftMouseMode, NodeMode} from "../consts/Enums.ts"
 import {adjust} from "../utils/Utils.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapDivR: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)

@@ -1,8 +1,8 @@
 import {FC, Fragment} from 'react'
 import {useDispatch} from "react-redux"
-import {AppDispatch} from "../reducers/EditorReducer.ts"
+import {AppDispatch} from "../editorMutations/EditorReducer.ts"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {IconButton, DropdownMenu, Button} from "@radix-ui/themes"
 import {MapActions} from "../componentsMapActions/MapActions.tsx"
 import ChevronDown from "../../assets/chevron-down.svg?react"

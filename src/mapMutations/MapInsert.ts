@@ -1,4 +1,4 @@
-import {C, LPartial, M, PS, L, R, S, PC} from "../state/MapStateTypes"
+import {C, LPartial, M, PS, L, R, S, PC} from "../mapState/MapStateTypes.ts"
 import {unselectNodes} from "./MapSelect"
 import {getG, getLastIndexL, getLastIndexR} from "../mapQueries/MapQueries.ts"
 import {sortPath} from "./MapSort.ts"

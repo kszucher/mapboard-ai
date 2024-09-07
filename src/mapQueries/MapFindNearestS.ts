@@ -1,4 +1,4 @@
-import {M} from "../state/MapStateTypes"
+import {M} from "../mapState/MapStateTypes.ts"
 import {getXS, mS} from "./MapQueries.ts"
 
 export const mapFindNearestS = (pm: M, toX: number, toY: number): {sMoveCoords: number[], sL: string, sU: string, sD: string} => {

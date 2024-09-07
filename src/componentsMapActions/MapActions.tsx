@@ -1,13 +1,13 @@
 import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {getG} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {DialogState, Flow} from "../state/Enums.ts"
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../state/ApiState.ts"
+import {DialogState, Flow} from "../consts/Enums.ts"
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../apiState/ApiState.ts"
 import Dots from "../../assets/dots.svg?react"
 import { MM } from "../mapMutations/MapMutationEnum.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapActions = () => {
   const m = useSelector((state:RootState) => mSelector(state))

@@ -1,7 +1,7 @@
 import {Button, Dialog, Flex, Spinner, Text} from "@radix-ui/themes"
 import {useEffect, useRef, useState} from "react"
 import {useGetIngestionQuery, useUploadFileMutation} from "../api/Api.ts"
-import {defaultGetIngestionQueryState} from "../state/ApiState.ts"
+import {defaultGetIngestionQueryState} from "../apiState/ApiState.ts"
 
 export const RootIngestion = () => {
   const hiddenFileInput = useRef<HTMLInputElement>(null)

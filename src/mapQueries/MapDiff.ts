@@ -1,4 +1,4 @@
-import {MPartial} from "../state/MapStateTypes.ts"
+import {MPartial} from "../mapState/MapStateTypes.ts"
 import isEqual from "react-fast-compare"
 import {excludeKeys} from "../utils/Utils.ts"
 

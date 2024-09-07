@@ -1,4 +1,4 @@
-import {P, PT} from "../state/MapStateTypes.ts"
+import {P, PT} from "../mapState/MapStateTypes.ts"
 import {sortablePath} from "../mapMutations/MapSort.ts"
 
 export const isG = (p: P): boolean => p.at(0) === 'g'

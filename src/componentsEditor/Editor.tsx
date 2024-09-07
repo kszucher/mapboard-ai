@@ -1,11 +1,10 @@
 import {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
-import {DialogState, AlertDialogState} from "../state/Enums.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
+import {DialogState, AlertDialogState} from "../consts/Enums.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {Theme, AlertDialog, Dialog, Spinner} from "@radix-ui/themes"
-import {mSelector} from "../state/EditorState.ts"
 import {RootExtraction} from "../componentsMapActions/RootExtraction.tsx"
 import {RootIngestion} from "../componentsMapActions/RootIngestion.tsx"
 import {MapActionsRename} from "../componentsMapActions/MapActionsRename.tsx"
@@ -23,6 +22,7 @@ import {Map} from "../componentsMap/Map.tsx"
 import {getEquationDim, getTextDim} from "../componentsMap/MapDivUtils.ts"
 import {Window} from "./Window.tsx"
 import {UserAccountDelete} from "../componentsUserActions/UserAccountDelete.tsx"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)

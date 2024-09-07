@@ -1,4 +1,4 @@
-import {MPartial} from "../state/MapStateTypes.ts"
+import {MPartial} from "../mapState/MapStateTypes.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {_assert} from "./_assert.ts"
 

@@ -1,4 +1,4 @@
-import {AccessType} from "./Enums"
+import {AccessType} from "../consts/Enums.ts"
 
 export interface DefaultUseOpenWorkspaceQueryState {
   userName: string

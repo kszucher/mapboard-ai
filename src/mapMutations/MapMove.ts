@@ -1,6 +1,6 @@
 import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS} from "../mapQueries/MapQueries.ts"
-import {rSaveOptional} from "../state/MapState"
-import {M, PC, PS, R, S, C} from "../state/MapStateTypes"
+import {rSaveOptional} from "../mapState/MapState.ts"
+import {M, PC, PS, R, S, C} from "../mapState/MapStateTypes.ts"
 import {genId} from "../utils/Utils"
 import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {unselectNodes} from "./MapSelect"

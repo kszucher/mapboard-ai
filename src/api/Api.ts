@@ -1,8 +1,8 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {timeoutId} from "../componentsEditor/Window"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
-import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "../state/ApiStateTypes.ts"
-import {actions, RootState, store} from "../reducers/EditorReducer.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
+import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "../apiState/ApiStateTypes.ts"
+import {actions, RootState, store} from "../editorMutations/EditorReducer.ts"
 import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {pythonBackendUrl} from "../urls/Urls.ts"
 import {mapDiff} from "../mapQueries/MapDiff.ts"

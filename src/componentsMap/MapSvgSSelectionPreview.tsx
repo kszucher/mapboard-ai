@@ -1,9 +1,9 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {mSelector} from "../state/EditorState.ts"
-import {RootState} from "../reducers/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorReducer.ts"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils.ts"
 import {mS} from "../mapQueries/MapQueries.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapSvgSSelectionPreview: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

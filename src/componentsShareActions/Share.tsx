@@ -1,8 +1,8 @@
 import {Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField} from "@radix-ui/themes"
 import {useState} from "react"
 import {useCreateShareMutation} from "../api/Api.ts"
-import {AccessType} from "../state/Enums.ts"
-import {getMapId} from "../state/ApiState.ts"
+import {AccessType} from "../consts/Enums.ts"
+import {getMapId} from "../apiState/ApiState.ts"
 
 export const Share = () => {
   const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()

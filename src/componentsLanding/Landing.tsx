@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {FC, useEffect, useState} from "react"
 import {useAuth0} from "@auth0/auth0-react"
 import {api} from "../api/Api.ts"

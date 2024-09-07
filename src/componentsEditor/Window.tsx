@@ -3,14 +3,14 @@ import {useDispatch, useSelector} from "react-redux"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {getLastIndexR, getXC, getXS, isAXCC, isAXCR, isAXSN, isAXC, isAXC1, isAXS, mR, isAXSS, getFXS, getLXS, isAXR, isAXRS, isAXCS, hasQuasiSD, hasQuasiSU, getXR} from "../mapQueries/MapQueries.ts"
 import {isUrl} from "../utils/Utils.ts"
-import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../state/Enums.ts"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../consts/Enums.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
-import {getMap, mSelector} from "../state/EditorState.ts"
-import {M} from "../state/MapStateTypes.ts"
-import {shortcutColors} from "../state/Colors.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
+import {M} from "../mapState/MapStateTypes.ts"
+import {shortcutColors} from "../consts/Colors.ts"
 import {getRR, getRL, getRD, getRU} from "../mapQueries/MapFindNearestR.ts"
+import {getMap, mSelector} from "../editorQueries/EditorQueries.ts";
 
 export let timeoutId: NodeJS.Timeout
 let mapListener: AbortController

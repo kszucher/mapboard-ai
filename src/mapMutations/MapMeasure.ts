@@ -1,9 +1,9 @@
 import {getEquationDim, getTextDim} from "../componentsMap/MapDivUtils.ts"
 import {getTaskWidth} from "../componentsMap/MapSvgUtils"
 import {getG, getHN, mR} from "../mapQueries/MapQueries.ts"
-import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_LINE_DELTA_X_DEFAULT, S_SPACING} from "../state/Consts"
-import {Flow} from "../state/Enums.ts"
-import {M, G, R, S, C} from "../state/MapStateTypes"
+import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_LINE_DELTA_X_DEFAULT, S_SPACING} from "../consts/Dimensions.ts"
+import {Flow} from "../consts/Enums.ts"
+import {M, G, R, S, C} from "../mapState/MapStateTypes.ts"
 import {isC, isG, isR, isS} from "../mapQueries/PathQueries.ts"
 
 export const mapMeasure = (pm: M, m: M) => {

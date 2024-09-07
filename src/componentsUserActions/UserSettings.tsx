@@ -1,8 +1,8 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import Settings2 from "../../assets/settings-2.svg?react"
 
 export const UserSettings = () => {

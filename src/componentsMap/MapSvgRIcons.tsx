@@ -1,12 +1,12 @@
 import {Dialog} from "@radix-ui/themes"
 import {FC, Fragment, ReactNode} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {mR} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {ControlType, DialogState} from "../state/Enums.ts"
+import {ControlType, DialogState} from "../consts/Enums.ts"
 import CircleLetterI from "../../assets/circle-letter-i.svg?react"
 import CircleLetterE from "../../assets/circle-letter-e.svg?react"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 const DecorationIcon = ({x, y, children, onClick} : {x: number, y: number, children: ReactNode, onClick: Function}) => (
   <g

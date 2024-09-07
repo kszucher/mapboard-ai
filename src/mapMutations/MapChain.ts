@@ -1,4 +1,4 @@
-import {M, R, S, C} from "../state/MapStateTypes.ts"
+import {M, R, S, C} from "../mapState/MapStateTypes.ts"
 import {getHP} from "../mapQueries/MapQueries.ts"
 import {isC, isCS, isRS, isS, isSS} from "../mapQueries/PathQueries.ts"
 

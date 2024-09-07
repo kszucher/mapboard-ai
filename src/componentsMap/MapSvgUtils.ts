@@ -1,7 +1,7 @@
 import {getG, isAXCC, isAXCR, getAXC, getXC, pathToC, pathToR, idToR} from "../mapQueries/MapQueries.ts"
-import {INDENT, S_LINE_DELTA_X_DEFAULT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../state/Consts.ts"
-import {LineType, Flow, Side} from "../state/Enums.ts"
-import {C, G, L, M, PR, R, S} from "../state/MapStateTypes.ts"
+import {INDENT, S_LINE_DELTA_X_DEFAULT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../consts/Dimensions.ts"
+import {LineType, Flow, Side} from "../consts/Enums.ts"
+import {C, G, L, M, PR, R, S} from "../mapState/MapStateTypes.ts"
 import {adjust} from "../utils/Utils.ts"
 
 type coordinates = [number, number]

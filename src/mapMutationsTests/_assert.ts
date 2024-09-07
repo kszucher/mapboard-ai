@@ -4,7 +4,7 @@ import {mapChain} from "../mapMutations/MapChain.ts"
 import {mapInit} from "../mapMutations/MapInit.ts"
 import {sortNode} from "../mapMutations/MapSort.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
-import {M, MPartial} from "../state/MapStateTypes.ts"
+import {M, MPartial} from "../mapState/MapStateTypes.ts"
 import {mL} from "../mapQueries/MapQueries.ts"
 
 export const _assert = (test: MPartial, result: MPartial, mmType: MM, mmPayload?: any) => {

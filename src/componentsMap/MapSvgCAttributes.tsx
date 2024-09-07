@@ -1,11 +1,11 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import {mC, getG, getHN} from "../mapQueries/MapQueries.ts"
-import {mSelector, pmSelector} from "../state/EditorState.ts"
-import {RootState} from "../reducers/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorReducer.ts"
 import {getNodeLinePath, pathCommonProps} from "./MapSvgUtils.ts"
-import {M, C} from "../state/MapStateTypes.ts"
+import {M, C} from "../mapState/MapStateTypes.ts"
 import {isSSC} from "../mapQueries/PathQueries.ts"
+import {mSelector, pmSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapSvgCAttributes: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state)) as M

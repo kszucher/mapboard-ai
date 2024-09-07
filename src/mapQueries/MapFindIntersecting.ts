@@ -1,4 +1,4 @@
-import {M} from "../state/MapStateTypes"
+import {M} from "../mapState/MapStateTypes.ts"
 import {mS} from "./MapQueries.ts"
 
 export const rectanglesIntersect = (input: number[]) => {

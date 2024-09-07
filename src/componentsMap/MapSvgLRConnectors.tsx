@@ -1,13 +1,13 @@
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {mR, isExistingLink, mL} from "../mapQueries/MapQueries.ts"
 import {adjustIcon} from "../utils/Utils.ts"
-import {mSelector} from "../state/EditorState.ts"
-import {Side} from "../state/Enums.ts"
-import {L} from "../state/MapStateTypes.ts"
+import {Side} from "../consts/Enums.ts"
+import {L} from "../mapState/MapStateTypes.ts"
 import {getCoordsMidBezier, getBezierLinePath, getRootLinePath, pathCommonProps} from "./MapSvgUtils.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts";
 
 export const MapSvgLRConnectors: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
