@@ -1,0 +1,134 @@
+import {FC, useEffect, useRef} from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {useOpenWorkspaceQuery} from "../api/Api.ts"
+import {actions, AppDispatch, RootState} from "../reducers/EditorReducer.ts"
+import {MM} from "../mapMutations/MapMutationEnum.ts"
+import {getG, getNodeMode} from "../mapQueries/MapQueries.ts"
+import {mSelector} from "../state/EditorState.ts"
+import {LeftMouseMode, NodeMode, MidMouseMode} from "../state/Enums.ts"
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
+import {MapDivS} from "./MapDivS.tsx"
+import {setScrollLeftAnimated} from "./MapDivUtils.ts"
+import {MapSvg} from "./MapSvg.tsx"
+import {MapDivR} from "./MapDivR.tsx"
+import {MapDivC} from "./MapDivC.tsx"
+import {getColors} from "../componentsColors/Colors.ts"
+
+export const Map: FC = () => {
+  const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
+  const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
+  const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
+  const m = useSelector((state:RootState) => mSelector(state))
+  const nodeMode = getNodeMode(m)
+  const g = getG(m)
+  const { density } = g
+  const { data } = useOpenWorkspaceQuery()
+  const { mapId, colorMode } = data || defaultUseOpenWorkspaceQueryState
+  const dispatch = useDispatch<AppDispatch>()
+  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
+
+  const resetView = () => {
+    dispatch(actions.setZoomInfo({scale: 1, prevMapX: 0, prevMapY: 0, translateX: 0, translateY: 0, originX: 0, originY: 0}))
+    setScrollLeft((window.innerWidth + g.selfW) / 2)
+    setScrollTop(window.innerHeight - 40 * 2)
+  }
+
+  const mainMapDiv = useRef<HTMLDivElement>(null)
+  const setScrollLeft = (x: number) => mainMapDiv.current!.scrollLeft = x
+  const setScrollTop = (y: number) => window.scrollTo(0, y)
+
+  useEffect(() => {
+    const abortController = new AbortController()
+    const { signal } = abortController
+    window.addEventListener('resize', () => {
+      setScrollLeft((window.innerWidth + g.selfW) / 2)
+    }, { signal })
+    return () => abortController.abort()
+  }, [])
+
+  useEffect(() => {
+    if (mainMapDiv.current) {
+      resetView()
+    }}, [mapId]
+  )
+
+  useEffect(() => {
+    if (mainMapDiv.current) {
+      setScrollLeftAnimated((window.innerWidth + g.selfW) / 2, 500)
+    }}, [density]
+  )
+
+  return (
+    <div
+      style={{
+        overflow: 'auto',
+        display: 'grid',
+        backgroundColor: getColors(colorMode).PAGE_BACKGROUND,
+        gridTemplateRows: `100vh ${g.selfH}px 100vh`,
+        gridTemplateColumns: `100vw ${g.selfW}px 100vw`,
+        outline: 'none'
+      }}
+      ref={mainMapDiv}
+      id={'mainMapDiv'}
+      onMouseDown={(e) => {
+        if (e.button === 1 && e.buttons === 4) {
+          e.preventDefault()
+        }
+        if (e.button === 0) {
+          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
+            dispatch(actions.saveFromCoordinates({e}))
+          }
+        }
+        let didMove = false
+        const abortController = new AbortController()
+        const { signal } = abortController
+        window.addEventListener('mousemove', (e) => {
+          e.preventDefault()
+          didMove = true
+          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
+            dispatch(actions.selectSByRectanglePreview({e}))
+          } else if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
+            setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
+            setScrollTop(document.documentElement.scrollTop - e.movementY)
+          }
+        }, { signal })
+        window.addEventListener('mouseup', (e) => {
+          e.preventDefault()
+          abortController.abort()
+          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
+            dm(MM.selectSByRectangle, {e})
+          }
+        }, { signal })
+      }}
+      onDoubleClick={() => {
+        if (mainMapDiv.current) {
+          resetView()
+        }
+      }}
+      onWheel={(e) => {
+        if (midMouseMode === MidMouseMode.ZOOM) {
+          dispatch(actions.saveView({e}))
+        }
+      }}
+    >
+      <div/>
+      <div/>
+      <div/>
+      <div/>
+      <div style={{
+        position: 'relative',
+        display: 'flex',
+        transform: `scale(${zoomInfo.scale}) translate(${zoomInfo.translateX}px, ${zoomInfo.translateY}px)`,
+        transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`
+      }}>
+        <MapSvg/>
+        <MapDivR/>
+        <MapDivS/>
+        <MapDivC/>
+      </div>
+      <div/>
+      <div/>
+      <div/>
+    </div>
+  )
+}

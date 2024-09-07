@@ -1,5 +1,5 @@
-import {getEquationDim, getTextDim} from "../components/map/MapDivUtils.ts"
-import {getTaskWidth} from "../components/map/MapSvgUtils"
+import {getEquationDim, getTextDim} from "../componentsMap/MapDivUtils.ts"
+import {getTaskWidth} from "../componentsMap/MapSvgUtils"
 import {getG, getHN, mR} from "../mapQueries/MapQueries.ts"
 import {C_SPACING, INDENT, MARGIN_X, MARGIN_Y, MIN_NODE_H, MIN_NODE_W, NODE_MARGIN_X_LARGE, NODE_MARGIN_X_SMALL, NODE_MARGIN_Y_LARGE, NODE_MARGIN_Y_SMALL, S_LINE_DELTA_X_DEFAULT, S_SPACING} from "../state/Consts"
 import {Flow} from "../state/Enums.ts"

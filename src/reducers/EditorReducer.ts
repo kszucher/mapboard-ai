@@ -1,6 +1,6 @@
 import {combineReducers, configureStore, createSlice, current, isAction, PayloadAction} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
-import {getMapX, getMapY} from "../components/map/MapDivUtils.ts"
+import {getMapX, getMapY} from "../componentsMap/MapDivUtils.ts"
 import {mapFindIntersecting} from "../mapQueries/MapFindIntersecting.ts"
 import {editorState, editorStateDefault} from "../state/EditorState.ts"
 import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../state/Enums.ts"
@@ -236,7 +236,7 @@ export const editorSlice = createSlice({
           state.editedNodeId = ''
           state.isLoading = false
         } else {
-          window.alert('invalid map')
+          window.alert('invalid componentsMap')
         }
       }
     )

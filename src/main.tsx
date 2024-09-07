@@ -2,7 +2,7 @@ import './index.css'
 import ReactDOM from 'react-dom/client'
 import {Provider} from "react-redux"
 import {store} from "./reducers/EditorReducer.ts"
-import {App} from "./components/app/App"
+import {App} from "./componentsApp/App"
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import '@radix-ui/themes/styles.css'
 
