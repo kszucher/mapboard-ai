@@ -9,7 +9,7 @@ import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
 import {getMap, mSelector} from "../state/EditorState.ts"
 import {M} from "../state/MapStateTypes.ts"
-import {shortcutColors} from "../componentsColors/Colors.ts"
+import {shortcutColors} from "../state/Colors.ts"
 import {getRR, getRL, getRD, getRU} from "../mapQueries/MapFindNearestR.ts"
 
 export let timeoutId: NodeJS.Timeout

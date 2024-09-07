@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
-import {getColors} from "../componentsColors/Colors.ts"
+import {getColors} from "../state/Colors.ts"
 import {RootState} from "../reducers/EditorReducer.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
 

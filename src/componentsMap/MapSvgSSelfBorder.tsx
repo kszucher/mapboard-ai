@@ -5,7 +5,7 @@ import {mS} from "../mapQueries/MapQueries.ts"
 import {mSelector} from "../state/EditorState.ts"
 import {RootState} from "../reducers/EditorReducer.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
-import {getColors} from "../componentsColors/Colors.ts"
+import {getColors} from "../state/Colors.ts"
 import {getArcPath, pathCommonProps} from "./MapSvgUtils.ts"
 
 export const MapSvgSSelfBorder: FC = () => {

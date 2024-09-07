@@ -1,7 +1,7 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
 import { useOpenWorkspaceQuery} from "../api/Api.ts"
-import {getColors} from "../componentsColors/Colors.ts"
+import {getColors} from "../state/Colors.ts"
 import {getG, getAXR, getXR, isAXR,} from "../mapQueries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState.ts"
 import {mSelector} from "../state/EditorState.ts"

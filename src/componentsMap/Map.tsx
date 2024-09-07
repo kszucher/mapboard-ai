@@ -12,7 +12,7 @@ import {setScrollLeftAnimated} from "./MapDivUtils.ts"
 import {MapSvg} from "./MapSvg.tsx"
 import {MapDivR} from "./MapDivR.tsx"
 import {MapDivC} from "./MapDivC.tsx"
-import {getColors} from "../componentsColors/Colors.ts"
+import {getColors} from "../state/Colors.ts"
 
 export const Map: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
