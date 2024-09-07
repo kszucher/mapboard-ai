@@ -59,10 +59,10 @@ export const MapSvgLRConnectors: FC = () => {
           <Fragment key={`${ri.nodeId}_root_connector`}>
             {
               [
-                {side: 'L', x: ri.nodeStartX, y: ri.nodeStartY + ri.selfH / 2 - 12},
-                {side: 'R', x: ri.nodeStartX + ri.selfW - 24, y: ri.nodeStartY + ri.selfH / 2 - 12},
-                {side: 'T', x: ri.nodeStartX + ri.selfW / 2 - 12, y: ri.nodeStartY},
-                {side: 'B', x: ri.nodeStartX + ri.selfW / 2 - 12, y: ri.nodeStartY + ri.selfH - 24}
+                {side: Side.L, x: ri.nodeStartX, y: ri.nodeStartY + ri.selfH / 2 - 12},
+                {side: Side.R, x: ri.nodeStartX + ri.selfW - 24, y: ri.nodeStartY + ri.selfH / 2 - 12},
+                {side: Side.T, x: ri.nodeStartX + ri.selfW / 2 - 12, y: ri.nodeStartY},
+                {side: Side.B, x: ri.nodeStartX + ri.selfW / 2 - 12, y: ri.nodeStartY + ri.selfH - 24}
               ].map(el => (
                   <rect
                     key={`${ri.nodeId}_plus_${el.side}`}
@@ -78,12 +78,12 @@ export const MapSvgLRConnectors: FC = () => {
                     onMouseDown={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
-                      dispatch(actions.setConnectionStart({fromNodeId: ri.nodeId, fromNodeSide: Side[el.side as keyof typeof Side]}))
+                      dispatch(actions.setConnectionStart({fromNodeId: ri.nodeId, fromNodeSide: el.side}))
                     }}
                     onMouseUp={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
-                      const newLink = {...connectionStart, toNodeId: ri.nodeId, toNodeSide: Side[el.side as keyof typeof Side]} as L
+                      const newLink = {...connectionStart, toNodeId: ri.nodeId, toNodeSide: el.side} as L
                       if (
                         connectionStart.fromNodeId !== '' &&
                         connectionStart.fromNodeId !== ri.nodeId &&
