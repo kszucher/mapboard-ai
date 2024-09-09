@@ -1,7 +1,7 @@
 import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {getG} from "../mapQueries/MapQueries.ts"
 import {DialogState, Flow} from "../consts/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"

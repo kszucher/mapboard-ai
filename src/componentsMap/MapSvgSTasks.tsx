@@ -8,7 +8,7 @@ import {TASK_CIRCLES_GAP} from "../consts/Dimensions.ts"
 import {getColors} from "../consts/Colors.ts"
 import {getG, mS} from "../mapQueries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {getLinearLinePath, getTaskRadius, getTaskStartPoint, pathCommonProps} from "./MapSvgUtils.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts";
 

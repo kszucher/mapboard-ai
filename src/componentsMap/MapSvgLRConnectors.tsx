@@ -1,6 +1,6 @@
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {mR, isExistingLink, mL} from "../mapQueries/MapQueries.ts"
 import {adjustIcon} from "../utils/Utils.ts"

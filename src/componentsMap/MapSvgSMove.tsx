@@ -4,7 +4,7 @@ import colors from "tailwindcss/colors"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {getColors} from "../consts/Colors.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {RootState} from "../editorMutations/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorMutations.ts"
 import {getBezierLinePath, getBezierLinePoints} from "./MapSvgUtils.ts"
 
 export const MapSvgSMove: FC = () => {

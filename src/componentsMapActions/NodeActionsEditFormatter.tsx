@@ -2,7 +2,7 @@ import {Box, Button, Flex, IconButton, Select} from "@radix-ui/themes"
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
-import {actions, AppDispatch, RootState} from '../editorMutations/EditorReducer.ts'
+import {actions, AppDispatch, RootState} from '../editorMutations/EditorMutations.ts'
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isAXR, isAXS} from "../mapQueries/MapQueries.ts"
 import {AccessType, FormatMode, LineType, TextType, WidthType} from "../consts/Enums.ts"

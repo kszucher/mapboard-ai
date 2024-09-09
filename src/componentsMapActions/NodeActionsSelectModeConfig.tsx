@@ -1,6 +1,6 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {NodeMode} from "../consts/Enums.ts"
 import Eye from "../../assets/eye.svg?react"
 import LetterR from "../../assets/letter-r.svg?react"

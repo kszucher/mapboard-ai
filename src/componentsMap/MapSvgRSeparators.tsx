@@ -1,6 +1,6 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../editorMutations/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorMutations.ts"
 import {mR} from "../mapQueries/MapQueries.ts"
 import {ControlType} from "../consts/Enums.ts"
 import {adjust} from "../utils/Utils.ts"

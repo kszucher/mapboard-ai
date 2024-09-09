@@ -1,6 +1,6 @@
 import {FC, Fragment} from 'react'
 import {useDispatch} from "react-redux"
-import {AppDispatch} from "../editorMutations/EditorReducer.ts"
+import {AppDispatch} from "../editorMutations/EditorMutations.ts"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {IconButton, DropdownMenu, Button} from "@radix-ui/themes"

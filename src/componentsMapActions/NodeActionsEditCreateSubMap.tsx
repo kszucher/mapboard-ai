@@ -1,7 +1,7 @@
 import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import {api} from "../api/Api.ts"
-import {AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {getXS} from "../mapQueries/MapQueries.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
 

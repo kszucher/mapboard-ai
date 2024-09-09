@@ -4,7 +4,7 @@ import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {mS} from "../mapQueries/MapQueries.ts"
 import {getColors} from "../consts/Colors.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {RootState} from "../editorMutations/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorMutations.ts"
 import {getArcPath} from "./MapSvgUtils.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts";
 

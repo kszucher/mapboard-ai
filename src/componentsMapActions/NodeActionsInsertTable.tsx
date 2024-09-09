@@ -1,7 +1,7 @@
 import {Button, Dialog, Flex, Grid, Select, Text} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {isAXS} from "../mapQueries/MapQueries.ts"
 import {DialogState} from "../consts/Enums.ts"

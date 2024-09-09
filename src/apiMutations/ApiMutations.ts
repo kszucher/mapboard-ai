@@ -1,6 +1,6 @@
 import {api} from "../api/Api.ts"
 import {BaseQueryFn, EndpointBuilder} from "@reduxjs/toolkit/query"
-import {actions, RootState} from "../editorMutations/EditorReducer.ts"
+import {actions, RootState} from "../editorMutations/EditorMutations.ts"
 import {timeoutId} from "../componentsEditor/Window.tsx"
 import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {mapDiff} from "../mapQueries/MapDiff.ts"

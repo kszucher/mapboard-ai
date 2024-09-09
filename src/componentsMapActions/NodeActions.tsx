@@ -1,6 +1,6 @@
 import {DropdownMenu, Dialog, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {getNodeMode, getAXS, getFXS, getLXS, getXR, getXS, isAXRS, isAXSN} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import Dots from "../../assets/dots.svg?react"

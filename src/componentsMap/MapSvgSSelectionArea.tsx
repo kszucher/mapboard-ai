@@ -2,7 +2,7 @@ import {FC} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {getColors} from "../consts/Colors.ts"
-import {RootState} from "../editorMutations/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorMutations.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 
 export const MapSvgSSelectionArea: FC = () => {

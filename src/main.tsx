@@ -1,7 +1,7 @@
 import './index.css'
 import ReactDOM from 'react-dom/client'
 import {Provider} from "react-redux"
-import {store} from "./editorMutations/EditorReducer.ts"
+import {store} from "./editorMutations/EditorMutations.ts"
 import {App} from "./componentsApp/App"
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import '@radix-ui/themes/styles.css'

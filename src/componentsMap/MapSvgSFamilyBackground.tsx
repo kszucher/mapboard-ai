@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
 import {mS} from "../mapQueries/MapQueries.ts"
-import {RootState} from "../editorMutations/EditorReducer.ts"
+import {RootState} from "../editorMutations/EditorMutations.ts"
 import {getPolygonPath} from "./MapSvgUtils.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts";
 

@@ -1,6 +1,6 @@
 import {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {DialogState, AlertDialogState} from "../consts/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"

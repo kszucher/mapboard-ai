@@ -1,7 +1,7 @@
 import {FC, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorReducer.ts"
+import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {getG, getNodeMode} from "../mapQueries/MapQueries.ts"
 import {LeftMouseMode, NodeMode, MidMouseMode} from "../consts/Enums.ts"

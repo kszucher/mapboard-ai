@@ -1,4 +1,4 @@
-import {RootState, store} from "../editorMutations/EditorReducer.ts"
+import {RootState, store} from "../editorMutations/EditorMutations.ts"
 
 export const getMap = () => store.getState().editor.commitList[store.getState().editor.commitIndex]?.data
 export const getMapId = () => store.getState().editor.mapId
