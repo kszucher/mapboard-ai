@@ -31,8 +31,8 @@ export const idToC = (m: M, nodeId: string) => mC(m).find(ci => ci.nodeId === no
 export const getG = (m: M): G => mG(m).at(0) as G
 
 export const getXR = (m: M): R => mR(m).filter(ri => ri.selected).reduce((a, b) => a.selected > b.selected ? a : b, {} as R)
-export const getXS = (m: M): S => mS(m).filter(ri => ri.selected).reduce((a, b) => a.selected > b.selected ? a : b, {} as S)
-export const getXC = (m: M): C => mC(m).filter(ri => ri.selected).reduce((a, b) => a.selected > b.selected ? a : b, {} as C)
+export const getXS = (m: M): S => mS(m).filter(si => si.selected).reduce((a, b) => a.selected > b.selected ? a : b, {} as S)
+export const getXC = (m: M): C => mC(m).filter(ci => ci.selected).reduce((a, b) => a.selected > b.selected ? a : b, {} as C)
 
 export const getAXR = (m: M): R[] => mR(m).filter(ri => ri.selected).sort(sortPath)
 export const getAXS = (m: M): S[] => mS(m).filter(si => si.selected).sort(sortPath)
