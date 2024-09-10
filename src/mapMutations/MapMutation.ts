@@ -4,7 +4,7 @@ import {sSaveOptional} from "../mapState/MapState.ts"
 import {M, PC, PS, R, S} from "../mapState/MapStateTypes.ts"
 import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertCSO, insertL, insertR, insertRSO, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertSD, insertSSO, insertSU, insertTable} from "./MapInsert"
-import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, transpose, moveSC, moveCL} from "./MapMove"
+import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, transpose, moveSC, moveCRD, moveCRU, moveCCR, moveCCL} from "./MapMove"
 import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
@@ -124,10 +124,10 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'moveSO': moveSC(m, getFXS(m).su.at(-1)!, getFXS(m).su.at(-1)!.so1.at(-1), undefined); break
     case 'moveSI': moveSC(m, getXS(m).si1!.ti1, getXS(m).si1!, getXS(m).si1!.sd.at(-1)); break
     case 'moveSByDrag': if (payload.sl) moveSC(m, idToS(m, payload.sl),  idToS(m, payload.su), idToS(m, payload.sd)); break
-    case 'moveCRD': moveCL(getAXC(m), getAXC(m).map(ci => ci.cd.at(-1)!), getXC(m).path.indexOf('c') + 1, 1); break
-    case 'moveCRU': moveCL(getAXC(m), getAXC(m).map(ci => ci.cu.at(-1)!), getXC(m).path.indexOf('c') + 1, - 1); break
-    case 'moveCCR': moveCL(getAXC(m), getAXC(m).map(ci => ci.cr.at(-1)!), getXC(m).path.indexOf('c') + 2, 1); break
-    case 'moveCCL': moveCL(getAXC(m), getAXC(m).map(ci => ci.cl.at(-1)!), getXC(m).path.indexOf('c') + 2, - 1); break
+    case 'moveCRD': moveCRD(m); break
+    case 'moveCRU': moveCRU(m); break
+    case 'moveCCR': moveCCR(m); break
+    case 'moveCCL': moveCCL(m); break
     case 'moveS2T': moveS2T(m); break
     case 'transpose': transpose(m); break
 

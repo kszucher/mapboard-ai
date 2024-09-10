@@ -1,4 +1,4 @@
-import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS} from "../mapQueries/MapQueries.ts"
+import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS, getAXC, getXC} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../mapState/MapState.ts"
 import {M, PC, PS, R, S, C} from "../mapState/MapStateTypes.ts"
 import {genId} from "../utils/Utils"
@@ -111,9 +111,24 @@ export const moveSC = (m: M, sl: R | S | C, su: S | undefined, sd: S | undefined
   axs.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(0, pos + 1, ...sl.path, 's', (su ? su.path.at(-1) + 1 : 0) + sMap.get(ti.path.at(pos))))
 }
 
-export const moveCL = (orig: C[], swap: C[], index: number, offset: number) => {
-  orig.flatMap(si => [si, ...si.so]).forEach(ti => ti.path[index] += offset)
-  swap.flatMap(si => [si, ...si.so]).forEach(ti => ti.path[index] -= offset)
+export const moveCRD = (m: M) => {
+  getAXC(m).flatMap(si => [si, ...si.so]).forEach(ti => ti.path[getXC(m).path.length - 2] += 1)
+  getAXC(m).map(ci => ci.cd.at(-1)!).flatMap(si => [si, ...si.so]).forEach(ti => ti.path[getXC(m).path.length - 2] -= 1)
+}
+
+export const moveCRU = (m: M) => {
+  getAXC(m).flatMap(si => [si, ...si.so]).forEach(ti => ti.path[getXC(m).path.length - 2] -= 1)
+  getAXC(m).map(ci => ci.cu.at(-1)!).flatMap(si => [si, ...si.so]).forEach(ti => ti.path[getXC(m).path.length - 2] += 1)
+}
+
+export const moveCCR = (m: M) => {
+  getAXC(m).flatMap(si => [si, ...si.so]).forEach(ti => ti.path[getXC(m).path.length - 1] += 1)
+  getAXC(m).map(ci => ci.cr.at(-1)!).flatMap(si => [si, ...si.so]).forEach(ti => ti.path[getXC(m).path.length - 1] -= 1)
+}
+
+export const moveCCL = (m: M) => {
+  getAXC(m).flatMap(si => [si, ...si.so]).forEach(ti => ti.path[getXC(m).path.length - 1] -= 1)
+  getAXC(m).map(ci => ci.cl.at(-1)!).flatMap(si => [si, ...si.so]).forEach(ti => ti.path[getXC(m).path.length - 1] += 1)
 }
 
 export const moveS2T = (m: M) => {
