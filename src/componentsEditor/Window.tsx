@@ -47,7 +47,7 @@ export const Window: FC = () => {
       +e.shiftKey ? 's' : '-',
       +e.altKey ? 'a' : '-'
     ].join('')
-    
+
     if (ckm === '---' && e.key === 'F2' && isAXS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0) dispatch(actions.startEditAppend())
     if (ckm === '---' && e.key === 'Enter' && isAXS(m)) dm(MM.insertSD)
     if (ckm === '-s-' && e.key === 'Enter' && isAXS(m)) dm(MM.insertSU)
@@ -106,7 +106,7 @@ export const Window: FC = () => {
     if (ckm === '-s-' && e.code === 'ArrowDown' && isAXS(m) && hasQuasiSD(m)) dm(MM.selectAddSD)
     if (ckm === '-s-' && e.code === 'ArrowDown' && isAXC1(m)) dm(MM.selectSameCC)
     if (ckm === '--a' && e.code === 'ArrowDown' && isAXCR(m)) dm(MM.insertCRD)
-    
+
     if (ckm === '---' && e.code === 'ArrowUp' && isAXR(m) && getRU(m, getXR(m))) dm(MM.selectRU)
     if (ckm === '---' && e.code === 'ArrowUp' && isAXS(m) && hasQuasiSU(m)) dm(MM.selectSU)
     if (ckm === '---' && e.code === 'ArrowUp' && isAXCS(m) && getFXS(m).su.length === 0 && getXS(m).ci1!.cu.at(-1)?.so1.length) dm(MM.selectUCS)
@@ -119,7 +119,7 @@ export const Window: FC = () => {
     if (ckm === '-s-' && e.code === 'ArrowUp' && isAXS(m) && hasQuasiSU(m)) dm(MM.selectAddSU)
     if (ckm === '-s-' && e.code === 'ArrowUp' && isAXC1(m)) dm(MM.selectSameCC)
     if (ckm === '--a' && e.code === 'ArrowUp' && isAXCR(m)) dm(MM.insertCRU)
-    
+
     if (ckm === '---' && e.code === 'ArrowRight' && isAXR(m) && getRR(m, getXR(m))) dm(MM.selectRR)
     if (ckm === '---' && e.code === 'ArrowRight' && isAXS(m) && getXS(m).so1.length > 0 && (getXS(m).lastSelectedChild < 0 || getXS(m).lastSelectedChild > getXS(m).so1.length)) dm(MM.selectSSO)
     if (ckm === '---' && e.code === 'ArrowRight' && isAXS(m) && getXS(m).so1.length > 0 && getXS(m).lastSelectedChild >= 0 && getXS(m).lastSelectedChild < getXS(m).so1.length) dm(MM.selectSSOLast)
@@ -132,7 +132,7 @@ export const Window: FC = () => {
     if (ckm === '-s-' && e.code === 'ArrowRight' && isAXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's') dm(MM.selectFamilyX)
     if (ckm === '-s-' && e.code === 'ArrowRight' && isAXC1(m)) dm(MM.selectSameCR)
     if (ckm === '--a' && e.code === 'ArrowRight' && isAXCC(m)) dm(MM.insertCCR)
-    
+
     if (ckm === '---' && e.code === 'ArrowLeft' && isAXR(m) && getRL(m, getXR(m))) dm(MM.selectRL)
     if (ckm === '---' && e.code === 'ArrowLeft' && isAXSS(m)) dm(MM.selectSI)
     if (ckm === '---' && e.code === 'ArrowLeft' && isAXCS(m) && getXS(m).ci1!.cl.at(-1)?.so1.length) dm(MM.selectLCS)
@@ -144,7 +144,7 @@ export const Window: FC = () => {
     if (ckm === '-s-' && e.code === 'ArrowLeft' && isAXS(m) && getXS(m).so1.length > 0 && getXS(m).selection === 's') dm(MM.selectFamilyX)
     if (ckm === '-s-' && e.code === 'ArrowLeft' && isAXC1(m)) dm(MM.selectSameCR)
     if (ckm === '--a' && e.code === 'ArrowLeft' && isAXCC(m)) dm(MM.insertCCL)
-    
+
     if (ckm === 'c--' && e.which >= 96 && e.which <= 105 && isAXS(m)) dm(MM.setTextColor, shortcutColors[e.which - 96])
     if (ckm === '---' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isAXS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m)) dispatch(actions.startEditReplace())
     if (ckm === '-s-' && e.which >= 48 && ![91,92,93].includes(e.which) && e.key !== 'F2' && isAXS(m) && getXS(m).contentType === 'text' && getXS(m).co1.length === 0 &&(m)) dispatch(actions.startEditReplace())
@@ -193,9 +193,17 @@ export const Window: FC = () => {
                   }
                 } else {
                   if (isUrl(text)) {
-                    if (isAXS(m)) dm(MM.insertSSOLink, text)
+                    if (isAXS(m)) dm(MM.insertSSO, {
+                      contentType: 'text',
+                      content: text,
+                      linkType: 'external',
+                      link: text
+                    })
                   } else {
-                    if( isAXS(m)) dm(MM.insertSSOText, text)
+                    if( isAXS(m)) dm(MM.insertSSO, {
+                      contentType: 'text',
+                      content: text
+                    })
                   }
                 }
               })
@@ -208,7 +216,12 @@ export const Window: FC = () => {
                 : 'https://mapboard-server.herokuapp.com/feta'
               fetch(address, {method: 'post', body: formData})
                 .then(response => response.json().then(response => {
-                  if (isAXS(m)) dm(MM.insertSSOImage, response)
+                  if (isAXS(m)) dm(MM.insertSSO, {
+                    contentType: 'image',
+                    content: response.imageId,
+                    imageW: response.imageSize.width,
+                    imageH: response.imageSize.height
+                  })
                 }))
             })
           }

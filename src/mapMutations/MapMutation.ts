@@ -3,7 +3,7 @@ import {ControlType, Flow} from "../consts/Enums"
 import {sSaveOptional} from "../mapState/MapState.ts"
 import {M, PC, PS, R, S} from "../mapState/MapStateTypes.ts"
 import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
-import {insertCCL, insertCCR, insertCRD, insertCRU, insertL, insertR, insertS, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertTable} from "./MapInsert"
+import {insertCCL, insertCCR, insertCRD, insertCRU, insertCSO, insertL, insertR, insertRSO, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertSD, insertSSO, insertSU, insertTable} from "./MapInsert"
 import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveS2T, pasteLRSC, pasteSC, transpose, moveSC, moveCL} from "./MapMove"
 import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
@@ -74,14 +74,11 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
 
     case 'insertL': insertL(m, payload); break
     case 'insertR': insertR(m); break
-    case 'insertSD': insertS(m, getLXS(m).sd.at(-1)!, getLXS(m).path.with(-1, getLXS(m).su.length + 1) as PS, {taskStatus: getLXS(m).taskStatus}); break
-    case 'insertSU': insertS(m, getFXS(m), getFXS(m).path.with(-1, getFXS(m).su.length) as PS, {taskStatus: getFXS(m).taskStatus}); break
-    case 'insertRSO': insertS(m, null, [...getXR(m).path, 's', getXR(m).so1.length]); break
-    case 'insertSSO': insertS(m, null, [...getXS(m).path, 's', getXS(m).so1.length], {taskStatus: getXS(m).taskStatus}); break
-    case 'insertSSOText': insertS(m, null, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload }); break
-    case 'insertSSOLink': insertS(m, null, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'text', content: payload, linkType: 'external', link: payload }); break
-    case 'insertSSOImage': insertS(m, null, [...getXS(m).path, 's', getXS(m).so1.length], { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }); break
-    case 'insertCSO': insertS(m, {} as S, [...getXC(m).path, 's', getXC(m).so1.length], payload); break
+    case 'insertSD': insertSD(m, {taskStatus: getLXS(m).taskStatus}); break
+    case 'insertSU': insertSU(m, {taskStatus: getFXS(m).taskStatus}); break
+    case 'insertRSO': insertRSO(m); break
+    case 'insertSSO': insertSSO(m, {taskStatus: getXS(m).taskStatus}); break
+    case 'insertCSO': insertCSO(m); break
     case 'insertCRD': insertCRD(m); break
     case 'insertCRU': insertCRU(m); break
     case 'insertCCR': insertCCR(m); break

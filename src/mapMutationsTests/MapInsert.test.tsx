@@ -61,6 +61,20 @@ describe("MapInsertTests", () => {
     ] as MPartial
     _assert(test, result, MM.insertSU)
   })
+  test('insertRSO', () => {
+    const test = [
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0], selected: 1},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
+    ] as MPartial
+    const result = [
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
+      {nodeId: '_r0s1', path: ['r', 0, 's', 1], selected: 1},
+    ] as MPartial
+    _assert(test, result, MM.insertRSO)
+  })
   test('insertSSO', () => {
     const test = [
       {nodeId: 'g', path: ['g']},
@@ -76,6 +90,24 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0s1', path: ['r', 0, 's', 0, 's', 1], selected: 1},
     ] as MPartial
     _assert(test, result, MM.insertSSO)
+  })
+  test('insertCSO', () => {
+    const test = [
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
+      {nodeId: 'r0s0c00', path: ['r', 0, 's', 0, 'c', 0, 0], selected: 1},
+      {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
+    ] as MPartial
+    const result = [
+      {nodeId: 'g', path: ['g']},
+      {nodeId: 'r0', path: ['r', 0]},
+      {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
+      {nodeId: 'r0s0c00', path: ['r', 0, 's', 0, 'c', 0, 0]},
+      {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
+      {nodeId: '_r0s0c00s1', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 1], selected: 1},
+    ] as MPartial
+    _assert(test, result, MM.insertCSO)
   })
   test('insertCRD', () => {
     const test = [
