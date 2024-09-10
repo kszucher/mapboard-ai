@@ -60,14 +60,14 @@ const clipboardToLRSC = (m: M, cb: M) => {
   return cb
 }
 
-const clipboardToSC = (cb: M, sL: R | S | C, sU: S | undefined) => {
+const clipboardToSC = (cb: M, sl: R | S | C, su: S | undefined) => {
   mS(cb).forEach(si => Object.assign(si, {
     nodeId: genId(),
-    path: [...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + si.path.at(1), ...si.path.slice(2)]
+    path: [...sl.path, 's', (su ? su.path.at(-1) + 1 : 0) + si.path.at(1), ...si.path.slice(2)]
   }))
   mC(cb).forEach(ci => Object.assign(ci, {
     nodeId: genId(),
-    path: [...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + ci.path.at(1), ...ci.path.slice(2)]
+    path: [...sl.path, 's', (su ? su.path.at(-1) + 1 : 0) + ci.path.at(1), ...ci.path.slice(2)]
   }))
   return cb
 }
@@ -77,10 +77,10 @@ export const pasteLRSC = (m: M, payload: string) => {
   clipboardToLRSC(m, lrsc)
 }
 
-export const pasteSC = (m: M, sL: R | S | C, sU: S | undefined, payload: string) => {
+export const pasteSC = (m: M, sl: R | S | C, su: S | undefined, payload: string) => {
   const sc = JSON.parse(payload) as M
   unselectNodes(m)
-  m.push(...clipboardToSC(sc, sL, sU))
+  m.push(...clipboardToSC(sc, sl, su))
 }
 
 export const duplicateLRSC = (m: M) => {
@@ -91,24 +91,24 @@ export const duplicateLRSC = (m: M) => {
 
 export const duplicateSC = (m: M) => {
   const sc = scToClipboard(m)
-  const sL = getXS(m).ti1
-  const sU = getLXS(m)
-  const sDX = getLXS(m).sd.at(-1)
+  const sl = getXS(m).ti1
+  const su = getLXS(m)
+  const sdx = getLXS(m).sd.at(-1)
   const offset = getAXS(m).length
-  if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] += offset)
+  if (sdx) [sdx, ...sdx.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sdx.path.length - 1] += offset)
   unselectNodes(m)
-  m.push(...clipboardToSC(sc, sL, sU))
+  m.push(...clipboardToSC(sc, sl, su))
 }
 
-export const moveSC = (m: M, sL: R | S | C, sU: S | undefined, sD: S | undefined) => {
+export const moveSC = (m: M, sl: R | S | C, su: S | undefined, sd: S | undefined) => {
   const axs = getAXS(m)
-  const sDX = getLXS(m).sd.at(-1)
+  const sdx = getLXS(m).sd.at(-1)
   const offset = axs.length
   const pos = getXS(m).path.length - 1
   const sMap = new Map(axs.map(((si, i) => [si.path.at(-1), i])))
-  if (sDX) [sDX, ...sDX.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sDX.path.length - 1] -= offset)
-  if (sD) [sD, ...sD.sd].filter(ti => !ti.selected).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sD.path.length - 1] += offset)
-  axs.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(0, pos + 1, ...sL.path, 's', (sU ? sU.path.at(-1) + 1 : 0) + sMap.get(ti.path.at(pos))))
+  if (sdx) [sdx, ...sdx.sd].flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sdx.path.length - 1] -= offset)
+  if (sd) [sd, ...sd.sd].filter(ti => !ti.selected).flatMap(si => [si, ...si.so, ...si.co]).map(ti => ti.path[sd.path.length - 1] += offset)
+  axs.flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path.splice(0, pos + 1, ...sl.path, 's', (su ? su.path.at(-1) + 1 : 0) + sMap.get(ti.path.at(pos))))
 }
 
 export const moveCL = (orig: C[], swap: C[], index: number, offset: number) => {

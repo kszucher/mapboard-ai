@@ -136,11 +136,11 @@ export const editorSlice = createSlice({
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
-      const {sMoveCoords, sL, sU, sD} = mapFindNearestS(pm, toX, toY)
+      const {sMoveCoords, sl, su, sd} = mapFindNearestS(pm, toX, toY)
       state.sMoveCoords = sMoveCoords
-      state.sL = sL
-      state.sU = sU
-      state.sD = sD
+      state.sl = sl
+      state.su = su
+      state.sd = sd
     },
     startEditReplace(state) {
       const pm = current(state.commitList[state.commitIndex].data)
@@ -175,9 +175,9 @@ export const editorSlice = createSlice({
         }
         case 'moveSByDrag': {
           action.payload.payload = {
-            sL: state.sL,
-            sU: state.sU,
-            sD: state.sD
+            sl: state.sl,
+            su: state.su,
+            sd: state.sd
           }
           break
         }
@@ -202,9 +202,9 @@ export const editorSlice = createSlice({
         }
         case 'moveSByDrag': {
           state.sMoveCoords = []
-          state.sL = ''
-          state.sU = ''
-          state.sD = ''
+          state.sl = ''
+          state.su = ''
+          state.sd = ''
           break
         }
       }

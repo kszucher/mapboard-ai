@@ -1,12 +1,12 @@
 import {M} from "../mapState/MapStateTypes.ts"
 import {getXS, mS} from "./MapQueries.ts"
 
-export const mapFindNearestS = (pm: M, toX: number, toY: number): {sMoveCoords: number[], sL: string, sU: string, sD: string} => {
+export const mapFindNearestS = (pm: M, toX: number, toY: number): {sMoveCoords: number[], sl: string, su: string, sd: string} => {
   const xs = getXS(pm)
   let sMoveCoords = [] as number[]
-  let sL = ''
-  let sU = ''
-  let sD = ''
+  let sl = ''
+  let su = ''
+  let sd = ''
   if (xs.nodeStartX >= toX || toX >= xs.nodeStartX + xs.selfW || xs.nodeStartY >= toY || toY >= xs.nodeStartY + xs.selfH) {
     let nearestLeftS = null
     let nearestDistance = Infinity
@@ -25,10 +25,10 @@ export const mapFindNearestS = (pm: M, toX: number, toY: number): {sMoveCoords: 
     }
     if (nearestLeftS) {
       sMoveCoords = [nearestLeftS.nodeStartX + nearestLeftS.selfW, nearestLeftS.nodeStartY + nearestLeftS.selfH / 2, toX, toY]
-      sL = nearestLeftS.nodeId
-      sU = nearestLeftS.so1.filter(si => si !== xs)?.findLast(si => si.nodeStartY + si.selfH < toY)?.nodeId ?? ''
-      sD = nearestLeftS.so1.filter(si => si !== xs)?.find(si => si.nodeStartY > toY)?.nodeId ?? ''
+      sl = nearestLeftS.nodeId
+      su = nearestLeftS.so1.filter(si => si !== xs)?.findLast(si => si.nodeStartY + si.selfH < toY)?.nodeId ?? ''
+      sd = nearestLeftS.so1.filter(si => si !== xs)?.find(si => si.nodeStartY > toY)?.nodeId ?? ''
     }
   }
-  return {sMoveCoords, sL, sU, sD}
+  return {sMoveCoords, sl, su, sd}
 }
