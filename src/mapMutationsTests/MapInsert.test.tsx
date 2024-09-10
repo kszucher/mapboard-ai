@@ -365,6 +365,6 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0s0c21', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 1]},
       {nodeId: '_r0s0s0c21s0', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, MM.insertSOTable, {rowLen: 3, colLen: 2})
+    _assert(test, result, MM.insertSSOTable, {r: 3, c: 2})
   })
 })

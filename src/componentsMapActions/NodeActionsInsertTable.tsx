@@ -48,7 +48,7 @@ export const NodeActionsInsertTable = () => {
         </Dialog.Close>
         <Dialog.Close>
           <Button onClick={() => {
-            dialogState === DialogState.CREATE_TABLE_O && isAXS(m) && dm(MM.insertSOTable, {rowLen: row, colLen: col})
+            if (dialogState === DialogState.CREATE_TABLE_O && isAXS(m)) dm(MM.insertSSOTable, {r: row, c: col})
           }}>
             {'OK'}
           </Button>

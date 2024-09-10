@@ -87,7 +87,7 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'insertSCRU': insertSCRU(m); break
     case 'insertSCCR': insertSCCR(m); break
     case 'insertSCCL': insertSCCL(m); break
-    case 'insertSSOTable': insertTable(m, [...getXS(m).path, 's', getXS(m).so1.length] as PS, payload); break
+    case 'insertSSOTable': insertSSO(m); insertTable(m, payload); break
 
     case 'deleteL': deleteL(m, payload); break
     case 'deleteLRSC': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; deleteLRSC(m); selectR(m, idToR(m, reselect )); break }
