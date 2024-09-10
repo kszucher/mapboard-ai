@@ -1,7 +1,6 @@
-import {C, LPartial, M, PS, L, R, S, PC} from "../mapState/MapStateTypes.ts"
+import {C, LPartial, M, PS, L, R, S} from "../mapState/MapStateTypes.ts"
 import {unselectNodes} from "./MapSelect"
-import {getG, getLastIndexL, getLastIndexR} from "../mapQueries/MapQueries.ts"
-import {sortPath} from "./MapSort.ts"
+import {getAXC, getG, getLastIndexL, getLastIndexR, getXC, getXS} from "../mapQueries/MapQueries.ts"
 
 export const insertL = (m: M, lPartial: Omit<LPartial, 'nodeId' | 'path'>) => {
   m.push({path: ['l', getLastIndexL(m) + 1], ...lPartial} as L)
@@ -12,28 +11,54 @@ export const insertR = (m: M) => {
   unselectNodes(m)
   m.push({path: ['r', lastIndexR + 1], selected: 1, offsetW: getG(m).selfW, offsetH: getG(m).selfH} as R)
   m.push({path: ['r', lastIndexR + 1, 's', 0] as PS, content: 'New Root'} as S)
-  m.sort(sortPath)
 }
 
 export const insertS = (m: M, offsetBaseS: S | null, ip: PS, attributes?: object) => {
   if (offsetBaseS) [offsetBaseS, ...offsetBaseS.sd].flatMap(si => [si, ...si.so, ...si.co]).forEach(ti => ti.path[ip.length - 1] += 1)
   unselectNodes(m)
   m.push({path: ip, selected: 1, ...attributes} as S)
-  m.sort(sortPath)
 }
 
-export const insertCL = (m: M, offsetBaseCL: C[] | null,  offsetIndex: number, ipl: PC[]) => {
-  if (offsetBaseCL) offsetBaseCL.flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[offsetIndex] += 1)
-  m.push(...ipl.map(ip => ({path: ip} as C)))
-  m.push(...ipl.map(ip => ({path: [...ip, 's', 0] as PS} as S)))
-  m.sort(sortPath)
+export const insertCRD = (m: M) => {
+  getAXC(m).flatMap(ci => ci.cd).flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[getXC(m).path.length - 2] += 1)
+  m.push(...getAXC(m).map(ci => ci.path.with(-2, ci.path.at(-2) + 1)).flatMap(ip => [{path: ip} as C, {path: ip.concat('s', 0)} as S]))
+}
+
+export const insertCRU = (m: M) => {
+  getAXC(m).flatMap(ci => [ci, ...ci.cd]).flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[getXC(m).path.length - 2] += 1)
+  m.push(...getAXC(m).map(ci => ci.path.with(-2, ci.path.at(-2) - 1)).flatMap(ip => [{path: ip} as C, {path: ip.concat('s', 0)} as S]))
+}
+
+export const insertCCR = (m: M) => {
+  getAXC(m).flatMap(ci => ci.cr).flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[getXC(m).path.length - 1] += 1)
+  m.push(...getAXC(m).map(ci => ci.path.with(-1, ci.path.at(-1) + 1)).flatMap(ip => [{path: ip} as C, {path: ip.concat('s', 0)} as S]))
+}
+
+export const insertCCL = (m: M) => {
+  getAXC(m).flatMap(ci => [ci, ...ci.cr]).flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[getXC(m).path.length - 1] += 1)
+  m.push(...getAXC(m).map(ci => ci.path.with(-1, ci.path.at(-1) - 1)).flatMap(ip => [{path: ip} as C, {path: ip.concat('s', 0)} as S]))
+}
+
+export const insertSCRD = (m: M) => {
+  m.push(...getXS(m).co1.at(-1)!.ch.map(ci => ci.path.with(-2, ci.path.at(-2) + 1)).flatMap(ip => [{path: ip} as C, {path: ip.concat('s', 0)} as S]))
+}
+
+export const insertSCRU = (m: M) => {
+  getXS(m).co1.at(0)!.ch.flatMap(ci => [ci, ...ci.cd]).flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[getXS(m).path.length + 1] += 1)
+  m.push(...getXS(m).co1.at(0)!.ch.map(ci => ci.path.with( - 2, ci.path.at(-2) - 1)).flatMap(ip => [{path: ip} as C, {path: ip.concat('s', 0)} as S]))
+}
+
+export const insertSCCR = (m: M) => {
+  m.push(...getXS(m).co1.at(-1)!.cv.map(ci => ci.path.with(-1, ci.path.at(-1) + 1)).flatMap(ip => [{path: ip} as C, {path: ip.concat('s', 0)} as S]))
+}
+
+export const insertSCCL = (m: M) => {
+  getXS(m).co1.at(0)!.cv.flatMap(ci => [ci, ...ci.cr]).flatMap(ci => [ci, ...ci.so]).forEach(ci => ci.path[getXS(m).path.length + 2] += 1)
+  m.push(...getXS(m).co1.at(0)!.cv.map(ci => ci.path.with( - 1, ci.path.at(-1) - 1)).flatMap(ip => [{path: ip} as C, {path: ip.concat('s', 0)} as S]))
 }
 
 export const insertTable = (m: M, ip: PS, payload: {rowLen: number, colLen: number}) => {
   insertS(m, null, ip)
   const { rowLen: r, colLen: c } = payload
-  const cellIndices = Array.from({length: r*c}, (_, i) => ([Math.floor(i/c), i%c]))
-  m.push(...cellIndices.map(el => ({path: [...ip, 'c', ...el]} as C)))
-  m.push(...cellIndices.map(el => ({path: [...ip, 'c', ...el, 's', 0]} as S)))
-  m.sort(sortPath)
+  m.push(...Array.from({length: r*c}, (_, i) => ([...ip, 'c', Math.floor(i/c), i%c])).flatMap(ip => [{path: ip} as C, {path: ip.concat('s', 0)} as S]))
 }
