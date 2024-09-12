@@ -31,7 +31,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     query: ({ mapId }) => ({ url: 'select-map', method: 'POST', body: { mapId } }),
     async onQueryStarted(_, { dispatch }) {
       dispatch(actions.setIsLoading(true))
-      dispatch(api.endpoints.saveMapAssembler.initiate())
+      await dispatch(api.endpoints.saveMapAssembler.initiate())
     },
     invalidatesTags: ['Workspace']
   }),
@@ -91,7 +91,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
             data: structuredClone(commitData),
             commitId
           }))
-          dispatch(api.endpoints.saveMap.initiate({
+          await dispatch(api.endpoints.saveMap.initiate({
             mapId: editor.mapId,
             mapDelta: diff,
             lastSavedCommitId,
