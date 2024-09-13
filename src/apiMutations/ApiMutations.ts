@@ -13,6 +13,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
       try {
         const { data } = await queryFulfilled
         dispatch(actions.setSessionId((data as any).sessionId))
+        dispatch(api.endpoints.selectMap.initiate({ mapId: ''}))
       } catch (err) {
       }
     },
@@ -33,11 +34,6 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
       dispatch(actions.setIsLoading(true))
       await dispatch(api.endpoints.saveMapAssembler.initiate())
     },
-    invalidatesTags: ['Workspace']
-  }),
-  selectMapAvailable: builder.mutation<void, void>({
-    query: () => ({ url: 'select-map-available', method: 'POST' }),
-    async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
     invalidatesTags: ['Workspace']
   }),
   renameMap: builder.mutation<void, { name: string }>({
