@@ -14,7 +14,8 @@ export interface DefaultUseOpenWorkspaceQueryState {
   breadcrumbMapNameList: string[]
   mapId: string
   mapName: string
-  mapVersion: {merge_id: string, data: []},
+  mapData: object,
+  mapMergeId: string,
 }
 
 export interface DefaultGetIngestionQueryState {

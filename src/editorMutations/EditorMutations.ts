@@ -224,10 +224,10 @@ export const editorSlice = createSlice({
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
         console.log(payload)
-        const isValid = Object.values(payload.mapVersion.data).every(obj => Object.keys(obj).includes('path'))
+        const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'))
         if (isValid) {
-          const data = mapObjectToArray(payload.mapVersion.data)
-          const commitId = payload.mapVersion.merge_id
+          const data = mapObjectToArray(payload.mapData)
+          const commitId = payload.mapMergeId
           const m = structuredClone(data)
           mapBuild(m, m)
           state.mapId = payload.mapId
