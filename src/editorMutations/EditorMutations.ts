@@ -1,4 +1,4 @@
-import {combineReducers, configureStore, createSlice, current, isAction, PayloadAction} from "@reduxjs/toolkit"
+import {combineReducers, configureStore, createSlice, current, isAction, isAnyOf, PayloadAction} from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../componentsMap/MapDivUtils.ts"
 import {mapFindIntersecting} from "../mapQueries/MapFindIntersecting.ts"
@@ -28,9 +28,6 @@ export const editorSlice = createSlice({
     },
     resetState() {
       return JSON.parse(editorStateDefault)
-    },
-    setIsLoading(state, action: PayloadAction<boolean>) {
-      state.isLoading = action.payload
     },
     setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) {
       state.leftMouseMode = action.payload
@@ -213,6 +210,25 @@ export const editorSlice = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(
       isAction, () => {}
+    )
+    builder.addMatcher(
+      isAnyOf(
+        api.endpoints.toggleColorMode.matchPending,
+        api.endpoints.selectMap.matchPending,
+        api.endpoints.renameMap.matchPending,
+        api.endpoints.createMapInMap.matchPending,
+        api.endpoints.createMapInTab.matchPending,
+        api.endpoints.createMapInTabDuplicate.matchPending,
+        api.endpoints.moveUpMapInTab.matchPending,
+        api.endpoints.moveDownMapInTab.matchPending,
+        api.endpoints.deleteMap.matchPending,
+        api.endpoints.acceptShare.matchPending,
+        api.endpoints.deleteShare.matchPending,
+        api.endpoints.deleteAccount.matchPending,
+      ),
+      (state) => {
+        state.isLoading = true
+      }
     )
     builder.addMatcher(
       api.endpoints.signIn.matchFulfilled,
