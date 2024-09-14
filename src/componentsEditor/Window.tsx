@@ -293,7 +293,7 @@ export const Window: FC = () => {
     if (mExists) {
       if (commitList.length > 1) {
         clearTimeout(timeoutId)
-        timeoutId = setTimeout(() => dispatch(api.endpoints.saveMapAssembler.initiate()), 1000)
+        timeoutId = setTimeout(() => dispatch(api.endpoints.saveMap.initiate()), 1000)
       }
     }
   }, [m])

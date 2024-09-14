@@ -15,6 +15,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
         dispatch(actions.setSessionId((data as any).sessionId))
         dispatch(api.endpoints.selectMap.initiate({ mapId: ''}))
       } catch (err) {
+        console.warn(err)
       }
     },
     invalidatesTags: ['Workspace']
@@ -32,7 +33,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     query: ({ mapId }) => ({ url: 'select-map', method: 'POST', body: { mapId } }),
     async onQueryStarted(_, { dispatch }) {
       dispatch(actions.setIsLoading(true))
-      await dispatch(api.endpoints.saveMapAssembler.initiate())
+      await dispatch(api.endpoints.saveMap.initiate())
     },
     invalidatesTags: ['Workspace']
   }),
@@ -45,7 +46,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     query: ({ nodeId, content }) => ({ url: 'create-map-in-map', method: 'POST', body: { mapId: getMapId(), nodeId, content} }),
     async onQueryStarted(_, { dispatch }) {
       dispatch(actions.setIsLoading(true))
-      dispatch(api.endpoints.saveMapAssembler.initiate())
+      dispatch(api.endpoints.saveMap.initiate())
     },
     invalidatesTags: ['Workspace']
   }),
@@ -69,37 +70,31 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     async onQueryStarted(_, { dispatch }) {dispatch(actions.setIsLoading(true))},
     invalidatesTags: ['Workspace']
   }),
-  saveMapAssembler: builder.mutation<void, void>({
-    queryFn: (): any => ({ data: [] }),
-    async onQueryStarted(_, { dispatch, getState }) {
+  saveMap: builder.mutation<{commitId: string}, void>({
+    queryFn: async (_args, { dispatch, getState }, _extraOptions, baseQuery) => {
       const editor = (getState() as unknown as RootState).editor
       if (editor.commitList.length > 1) {
         console.log('saving')
         clearTimeout(timeoutId)
         const SAVE_ENABLED = true
         if (SAVE_ENABLED) {
+          const mapId = editor.mapId
           const lastSavedCommitData = editor.lastSavedCommit.data
           const lastSavedCommitId = editor.lastSavedCommit.commitId
           const commitData = mapPrune(editor.commitList[editor.commitIndex].data)
           const commitId = editor.commitList[editor.commitIndex].commitId
-          const diff = mapDiff(lastSavedCommitData, commitData)
-          dispatch(actions.saveCommit({
-            data: structuredClone(commitData),
-            commitId
-          }))
-          await dispatch(api.endpoints.saveMap.initiate({
-            mapId: editor.mapId,
-            mapDelta: diff,
-            lastSavedCommitId,
-            commitId,
-          }))
+          const mapDelta = mapDiff(lastSavedCommitData, commitData)
+          try {
+            dispatch(actions.saveCommit({data: structuredClone(commitData), commitId}))
+            const { data } = await baseQuery({url: 'save-map', method: 'POST', body: { mapId, mapDelta, lastSavedCommitId, commitId }})
+            return { data } as { data: { commitId: string} }
+          } catch (error) {
+            return { error }
+          }
         }
       }
+      return { error: 'no map' }
     }
-  }),
-  saveMap: builder.mutation<{ commitId: string }, { mapId: string, mapDelta: any, lastSavedCommitId: string, commitId: string }>({
-    query: ({ mapId, mapDelta, lastSavedCommitId, commitId }) => ({ url: 'save-map', method: 'POST', body: { mapId, mapDelta, lastSavedCommitId, commitId } }),
-    invalidatesTags: []
   }),
   deleteMap: builder.mutation<void, void>({
     query: () => ({ url: 'delete-map', method: 'POST', body: { mapId: getMapId() } }),
