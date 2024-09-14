@@ -1,4 +1,4 @@
-import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "../apiState/ApiStateTypes.ts"
+import {DefaultGetIngestionQueryState, DefaultGetLatestMergedQueryState, DefaultUseOpenWorkspaceQueryState} from "../apiState/ApiStateTypes.ts"
 import {BaseQueryFn, EndpointBuilder} from "@reduxjs/toolkit/query"
 
 export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
@@ -12,6 +12,10 @@ export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>
       }
     },
     providesTags: ['Workspace']
+  }),
+  getLatestMerged: builder.query<DefaultGetLatestMergedQueryState, void>({
+    query: () => ({ url: 'get-latest-merged', method: 'POST' }),
+    providesTags: ['LatestMerged']
   }),
   getShares: builder.query<any, void>({
     query: () => ({ url: 'get-shares', method: 'POST' }),

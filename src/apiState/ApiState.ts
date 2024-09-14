@@ -1,5 +1,9 @@
 import {AccessType} from "../consts/Enums.ts"
-import {DefaultGetIngestionQueryState, DefaultUseOpenWorkspaceQueryState} from "./ApiStateTypes.ts"
+import {
+  DefaultGetIngestionQueryState,
+  DefaultGetLatestMergedQueryState,
+  DefaultUseOpenWorkspaceQueryState
+} from "./ApiStateTypes.ts"
 
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   userName: '',
@@ -18,6 +22,12 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
   mapData: {},
   mapMergeId: ''
 }
+
+export const defaultGetLatestMergedQueryState: DefaultGetLatestMergedQueryState = {
+  mapData: {},
+  mapMergeId: ''
+}
+
 
 export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {
   ingestionResult: []

@@ -258,12 +258,21 @@ export const editorSlice = createSlice({
       }
     )
     builder.addMatcher(
-      api.endpoints.saveMap.matchFulfilled,
-      (state, {payload}) => {
-        if (payload.commitId !== state.lastSavedCommit.commitId) {
-          window.alert('commitId mismatch')
+      api.endpoints.getLatestMerged.matchFulfilled,
+      (state, { payload }) => {
+        console.log(payload)
+        const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'))
+        if (isValid) {
+          const data = mapObjectToArray(payload.mapData)
+          const commitId = payload.mapMergeId
+          state.lastSavedCommit = structuredClone({commitId, data})
+          if (payload.mapMergeId !== state.lastSavedCommit.commitId) {
+            window.alert('commitId mismatch')
+          }
+          console.log('new base map loaded')
+        } else {
+          window.alert('invalid originalMap')
         }
-        console.log('commit ' + payload.commitId + ' saved')
       }
     )
   }

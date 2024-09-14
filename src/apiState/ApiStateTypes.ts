@@ -18,6 +18,11 @@ export interface DefaultUseOpenWorkspaceQueryState {
   mapMergeId: string,
 }
 
+export interface DefaultGetLatestMergedQueryState {
+  mapData: object,
+  mapMergeId: string,
+}
+
 export interface DefaultGetIngestionQueryState {
   ingestionResult: any[]
 }
