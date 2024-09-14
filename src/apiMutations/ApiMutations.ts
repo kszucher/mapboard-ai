@@ -77,10 +77,8 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
           const commitId = editor.commitList[editor.commitIndex].commitId
           const mapDelta = mapDiff(lastSavedCommitData, commitData)
           try {
-            // dispatch(actions.saveCommit({data: structuredClone(commitData), commitId}))
             const { data } = await baseQuery({url: 'save-map', method: 'POST', body: { mapId, mapDelta, lastSavedCommitId, commitId }})
-            // dispatch(actions.saveCommit({data: structuredClone(commitData), commitId}))
-            // dispatch(api.endpoints.getLatestMerged.initiate())
+            dispatch(api.endpoints.getLatestMerged.initiate())
             return { data } as { data: { commitId: string} }
           } catch (error) {
             return { error }
@@ -89,7 +87,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
       }
       return { error: 'no map' }
     },
-    invalidatesTags: ['Workspace']
+    invalidatesTags: ['LatestMerged']
   }),
   deleteMap: builder.mutation<void, void>({
     query: () => ({ url: 'delete-map', method: 'POST', body: { mapId: getMapId() } }),

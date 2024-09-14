@@ -79,9 +79,6 @@ export const editorSlice = createSlice({
       state.editedNodeId = ''
       state.commitIndex = state.commitIndex < state.commitList.length - 1 ? state.commitIndex + 1 : state.commitIndex
     },
-    saveCommit(state, action: PayloadAction<{commitId: string, data: M}>) {
-      state.lastSavedCommit = action.payload
-    },
     saveView(state, action: PayloadAction<{ e: React.WheelEvent }>) {
       const {e} = action.payload
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
