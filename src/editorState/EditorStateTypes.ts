@@ -12,9 +12,10 @@ export interface EditorState {
   alertDialogState: AlertDialogState
   formatMode: FormatMode
   mapId: string
-  commitList: {commitId: string, data: M}[]
+  commitList: M[]
   commitIndex: number
-  lastSavedCommit: {commitId: string, data: M}
+  latestMapData: M
+  latestMapMergeId: string
   editedNodeId: string
   editType: '' | 'append' | 'replace'
   editStartMapListIndex: number

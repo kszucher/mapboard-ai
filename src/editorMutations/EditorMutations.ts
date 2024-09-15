@@ -10,7 +10,6 @@ import {mapMutation} from "../mapMutations/MapMutation.ts"
 import {getXS, mapObjectToArray} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {R} from "../mapState/MapStateTypes.ts"
-import {genId} from "../utils/Utils.ts"
 import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {EditorState} from "../editorState/EditorStateTypes.ts"
 import React from "react"
@@ -110,7 +109,7 @@ export const editorSlice = createSlice({
     },
     selectSByRectanglePreview(state, action: PayloadAction<{e: MouseEvent}>) {
       const {e} = action.payload
-      const pm = current(state.commitList[state.commitIndex].data)
+      const pm = current(state.commitList[state.commitIndex])
       const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
@@ -126,7 +125,7 @@ export const editorSlice = createSlice({
     },
     moveSByDragPreview(state, action: PayloadAction<{e: MouseEvent}>) {
       const {e} = action.payload
-      const pm = current(state.commitList[state.commitIndex].data)
+      const pm = current(state.commitList[state.commitIndex])
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
@@ -137,13 +136,13 @@ export const editorSlice = createSlice({
       state.sd = sd
     },
     startEditReplace(state) {
-      const pm = current(state.commitList[state.commitIndex].data)
+      const pm = current(state.commitList[state.commitIndex])
       state.editStartMapListIndex = state.commitIndex
       state.editedNodeId = getXS(pm).nodeId
       state.editType = 'replace'
     },
     startEditAppend(state) {
-      const pm = current(state.commitList[state.commitIndex].data)
+      const pm = current(state.commitList[state.commitIndex])
       state.editStartMapListIndex = state.commitIndex
       state.editedNodeId = getXS(pm).nodeId
       state.editType = 'append'
@@ -176,12 +175,12 @@ export const editorSlice = createSlice({
           break
         }
       }
-      const pm = current(state.commitList[state.commitIndex].data)
+      const pm = current(state.commitList[state.commitIndex])
       const m = structuredClone(pm)
       mapMutation(m, action.payload.type, action.payload.payload)
       mapBuild(pm, m)
       if (!isEqual(mapPrune(pm), mapPrune(m))) {
-        state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), {commitId: genId(), data: m}]
+        state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m]
         state.commitIndex = state.commitIndex + 1
       }
       switch (action.payload.type) {
@@ -240,17 +239,16 @@ export const editorSlice = createSlice({
         const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'))
         if (isValid) {
           const data = mapObjectToArray(payload.mapData)
-          const commitId = payload.mapMergeId
           const m = structuredClone(data)
           mapBuild(m, m)
           state.mapId = payload.mapId
-          state.commitList = [{commitId, data: m}]
+          state.commitList = [m]
           state.commitIndex = 0
-          state.lastSavedCommit = structuredClone({commitId, data})
+          state.latestMapData = structuredClone(data)
           state.editedNodeId = ''
           state.isLoading = false
         } else {
-          window.alert('invalid componentsMap')
+          window.alert('invalid openWorkspace map')
         }
       }
     )
@@ -261,14 +259,10 @@ export const editorSlice = createSlice({
         const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'))
         if (isValid) {
           const data = mapObjectToArray(payload.mapData)
-          const commitId = payload.mapMergeId
-          state.lastSavedCommit = structuredClone({commitId, data})
-          if (payload.mapMergeId !== state.lastSavedCommit.commitId) {
-            window.alert('commitId mismatch')
-          }
+          state.latestMapData = structuredClone(data)
           console.log('new base map loaded')
         } else {
-          window.alert('invalid originalMap')
+          window.alert('invalid getLatestMerged map')
         }
       }
     )

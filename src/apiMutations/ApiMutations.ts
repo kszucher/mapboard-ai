@@ -62,7 +62,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     query: () => ({ url: 'move-down-map-in-tab', method: 'POST', body: { mapId: getMapId() } }),
     invalidatesTags: ['Workspace']
   }),
-  saveMap: builder.mutation<{commitId: string}, void>({
+  saveMap: builder.mutation<void, void>({
     queryFn: async (_args, { dispatch, getState }, _extraOptions, baseQuery) => {
       const editor = (getState() as unknown as RootState).editor
       if (editor.commitList.length > 1) {
@@ -71,15 +71,11 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
         const SAVE_ENABLED = true
         if (SAVE_ENABLED) {
           const mapId = editor.mapId
-          const lastSavedCommitData = editor.lastSavedCommit.data
-          const lastSavedCommitId = editor.lastSavedCommit.commitId
-          const commitData = mapPrune(editor.commitList[editor.commitIndex].data)
-          const commitId = editor.commitList[editor.commitIndex].commitId
-          const mapDelta = mapDiff(lastSavedCommitData, commitData)
+          const mapDelta = mapDiff(editor.latestMapData, mapPrune(editor.commitList[editor.commitIndex]))
           try {
-            const { data } = await baseQuery({url: 'save-map', method: 'POST', body: { mapId, mapDelta, lastSavedCommitId, commitId }})
+            const { data } = await baseQuery({url: 'save-map', method: 'POST', body: { mapId, mapDelta }})
             dispatch(api.endpoints.getLatestMerged.initiate())
-            return { data } as { data: { commitId: string} }
+            return { data } as { data: void }
           } catch (error) {
             return { error }
           }
