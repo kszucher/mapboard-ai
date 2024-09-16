@@ -1,18 +1,23 @@
 import {getAXC, getAXS, getFXS, getG, getLXS, getQuasiSD, getQuasiSU, getXC, getXR, getXS, idToC, idToR, idToS, mC, mR, mS, pathToC, pathToR, pathToS} from "../mapQueries/MapQueries.ts"
 import {ControlType, Flow} from "../consts/Enums"
 import {sSaveOptional} from "../mapState/MapState.ts"
-import {M, PC, PS, R, S} from "../mapState/MapStateTypes.ts"
+import {M, PC, PR, PS, R, S} from "../mapState/MapStateTypes.ts"
 import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertCSO, insertL, insertR, insertRSO, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertSD, insertSSO, insertSU, insertTable} from "./MapInsert"
 import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveCCL, moveCCR, moveCRD, moveCRU, moveS2T, moveSC, pasteLRSC, pasteSC, transpose} from "./MapMove"
 import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
-import {EditorState} from "../editorState/EditorStateTypes.ts";
-import {current, PayloadAction} from "@reduxjs/toolkit";
-import {mapBuild} from "./MapBuild.ts";
-import isEqual from "react-fast-compare";
-import {mapPrune} from "../mapQueries/MapPrune.ts";
+import {EditorState} from "../editorState/EditorStateTypes.ts"
+import {current, PayloadAction} from "@reduxjs/toolkit"
+import {mapBuild} from "./MapBuild.ts"
+import isEqual from "react-fast-compare"
+import {mapPrune} from "../mapQueries/MapPrune.ts"
+
+export const functions = {
+  selectR: (m: M, path: PR) => selectR(m, pathToR(m, path)),
+  selectSD: (m: M) => selectS(m, getQuasiSD(m) as S, 's')
+}
 
 export const mapMutation = (m: M, action: MM, payload?: any) => {
   console.log(action)
@@ -171,19 +176,6 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
     case 'clearText': getAXS(m).forEach(si => Object.assign(si, { textColor: sSaveOptional.textColor, textFontSize: sSaveOptional.textFontSize })); break
     case 'clearBlur': getAXS(m).forEach(si => Object.assign(si, { blur: sSaveOptional.blur })); break
   }
-}
-
-export const functions = {
-  funA: (m: M, payload: { message: string }) => {
-    console.log("Executing funA with m:", m, "and payload:", payload);
-  },
-  funB: (m: M, payload: { value: number }) => {
-    console.log("Executing funB with m:", m, "and payload:", payload);
-  },
-  funC: (m: M) => {
-    console.log("Executing funB with m:", m, "and payload:");
-  },
-  selectSD: (m: M) => selectS(m, getQuasiSD(m) as S, 's')
 }
 
 export function wrapFunction<P>(fn: (m: M, payload: P) => void) {

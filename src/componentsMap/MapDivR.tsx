@@ -40,7 +40,7 @@ export const MapDivR: FC = () => {
           e.stopPropagation()
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT) {
-              if (!e.ctrlKey) dm(MM.selectR, {path: ri.path})
+              if (!e.ctrlKey) dispatch(actions.selectR(ri.path))
               if (e.ctrlKey && isAXR(m) && !ri.selected) dm(MM.selectAddR, {path: ri.path})
               if (e.ctrlKey && ri.selected && getAXR(m).length > 1) dm(MM.unselectR, {path: ri.path})
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_ROOT) {
