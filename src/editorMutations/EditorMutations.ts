@@ -3,10 +3,10 @@ import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../componentsMap/MapDivUtils.ts"
 import {mapFindIntersecting} from "../mapQueries/MapFindIntersecting.ts"
 import {editorState, editorStateDefault} from "../editorState/EditorState.ts"
-import {DialogState, AlertDialogState, FormatMode, PageState, Side, LeftMouseMode, MidMouseMode} from "../consts/Enums.ts"
+import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MidMouseMode, PageState, Side} from "../consts/Enums.ts"
 import {api} from "../api/Api.ts"
 import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
-import {mapMutation} from "../mapMutations/MapMutation.ts"
+import {mapMutation, wrappedFunctions} from "../mapMutations/MapMutation.ts"
 import {getXS, mapObjectToArray} from "../mapQueries/MapQueries.ts"
 import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {R} from "../mapState/MapStateTypes.ts"
@@ -19,6 +19,7 @@ export const editorSlice = createSlice({
   name: 'editor',
   initialState: editorState,
   reducers: {
+    ...wrappedFunctions,
     setToken(state, action: PayloadAction<string>) {
       state.token = action.payload
     },

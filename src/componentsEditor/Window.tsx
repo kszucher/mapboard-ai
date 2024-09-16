@@ -95,7 +95,7 @@ export const Window: FC = () => {
     if (ckm === 'c--' && e.code === 'KeyY') dispatch(actions.undo())
 
     if (ckm === '---' && e.code === 'ArrowDown' && isAXR(m) && getRD(m, getXR(m))) dm(MM.selectRD)
-    if (ckm === '---' && e.code === 'ArrowDown' && isAXS(m) && hasQuasiSD(m)) dm(MM.selectSD)
+    if (ckm === '---' && e.code === 'ArrowDown' && isAXS(m) && hasQuasiSD(m)) dispatch(actions.selectSD())
     if (ckm === '---' && e.code === 'ArrowDown' && isAXCS(m) && getLXS(m).sd.length === 0 && getXS(m).ci1!.cd.at(-1)?.so1.length) dm(MM.selectDCS)
     if (ckm === '---' && e.code === 'ArrowDown' && isAXC1(m) && getXC(m).cd.length > 0) dm(MM.selectDC)
     if (ckm === '---' && e.code === 'ArrowDown' && isAXCR(m) && getXC(m).cd.length > 0) dm(MM.selectDCL)
