@@ -3,7 +3,7 @@ import {useSelector} from "react-redux"
 import {RootState} from "../editorMutations/EditorMutations.ts"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils.ts"
 import {mS} from "../mapQueries/MapQueries.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvgSSelectionPreview: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

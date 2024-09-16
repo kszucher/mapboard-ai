@@ -6,7 +6,7 @@ import {getColors} from "../consts/Colors.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {RootState} from "../editorMutations/EditorMutations.ts"
 import {getArcPath} from "./MapSvgUtils.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvgSelfBackgroundS: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

@@ -1,11 +1,10 @@
 import {getAXC, getAXS, getFXS, getG, getLXS, getQuasiSD, getQuasiSU, getXC, getXR, getXS, idToC, idToR, idToS, mC, mR, mS, pathToC, pathToR, pathToS} from "../mapQueries/MapQueries.ts"
-import {ControlType, Flow} from "../consts/Enums"
+import {ControlType, Flow, LineType} from "../consts/Enums"
 import {sSaveOptional} from "../mapState/MapState.ts"
-import {M, PC, PR, PS, R, S} from "../mapState/MapStateTypes.ts"
+import {L, M, PC, PR, PS, R, S} from "../mapState/MapStateTypes.ts"
 import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertCSO, insertL, insertR, insertRSO, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertSD, insertSSO, insertSU, insertTable} from "./MapInsert"
 import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveCCL, moveCCR, moveCRD, moveCRU, moveS2T, moveSC, pasteLRSC, pasteSC, transpose} from "./MapMove"
-import {MM} from "./MapMutationEnum.ts"
 import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
 import {EditorState} from "../editorState/EditorStateTypes.ts"
@@ -15,167 +14,158 @@ import isEqual from "react-fast-compare"
 import {mapPrune} from "../mapQueries/MapPrune.ts"
 
 export const functions = {
+  setDensitySmall: (m: M) => getG(m).density = 'small',
+  setDensityLarge: (m: M) => getG(m).density = 'large',
+  setPlaceTypeExploded: (m: M) => getG(m).flow = Flow.EXPLODED,
+  setPlaceTypeIndented: (m: M) => getG(m).flow = Flow.INDENTED,
+  
   selectR: (m: M, path: PR) => selectR(m, pathToR(m, path)),
-  selectSD: (m: M) => selectS(m, getQuasiSD(m) as S, 's')
-}
+  selectS: (m: M, path: PS) => selectS(m, pathToS(m, path), 's'),
+  selectC: (m: M, path: PC) => selectC(m, pathToC(m, path)),
+  selectRR: (m: M) => selectR(m, getRR(m, getXR(m))!),
+  selectRL: (m: M) => selectR(m, getRL(m, getXR(m))!),
+  selectRD: (m: M) => selectR(m, getRD(m, getXR(m))!),
+  selectRU: (m: M) => selectR(m, getRU(m, getXR(m))!),
+  selectFirstR: (m: M) => selectR(m, mR(m).at(0)!),
+  selectFirstS: (m: M) => selectS(m, mS(m).at(0)!, 's'),
+  selectFirstC: (m: M) => selectC(m, mC(m).at(0)!),
+  selectSelfX: (m: M) => selectS(m, getXS(m), 's'),
+  selectFamilyX: (m: M) => selectS(m, getXS(m), 'f'),
+  selectSD: (m: M) => selectS(m, getQuasiSD(m) as S, 's'),
+  selectSU: (m: M) => selectS(m, getQuasiSU(m) as S, 's'),
+  selectRSO: (m: M) => selectS(m, getXR(m).so1.at(0)!, 's'),
+  selectSSO: (m: M) => selectS(m, getXS(m).so1.at(0)!, 's'),
+  selectSSOLast: (m: M) => selectS(m, pathToS(m, [...getXS(m).path, 's', getXS(m).lastSelectedChild] as PS), 's'),
+  selectCSO: (m: M) => selectS(m, getXC(m).so1.at(0)!, 's'),
+  selectSI: (m: M) => { getXS(m).si1!.lastSelectedChild = getXS(m).path.at(-1); selectS(m, getXS(m).si1!, 's') },
+  selectCFR0: (m: M) => selectC(m, pathToC(m, getXC(m).path.with(-2, 0) as PC)),
+  selectCFC0: (m: M) => selectC(m, pathToC(m, getXC(m).path.with(-1, 0) as PC)),
+  selectCFF: (m: M) => selectC(m, pathToC(m, [...getXS(m).path, 'c', 0, 0])),
+  selectXSIR: (m: M) => selectR(m, getXS(m).ri),
+  selectXSIRS: (m: M) => selectS(m, getXS(m).ri.so1.at(0)!, 's'),
+  selectXSIC: (m: M) => selectC(m, getXS(m).ci!),
+  selectXSICS: (m: M) => selectS(m, getXS(m).ci!.so1.at(0)!, 's'),
+  selectXCIS: (m: M) => selectS(m, pathToS(m, getXC(m).path.slice(0, -3) as PS), 's'),
+  selectAddR: (m: M, path: PR) => selectAddR(m, pathToR(m, path)),
+  selectAddS: (m: M, path: PS) => selectAddS(m, pathToS(m, path), 's'),
+  selectAddSD: (m: M) => selectAddS(m, getQuasiSD(m), 's'),
+  selectAddSU: (m: M) => selectAddS(m, getQuasiSU(m), 's'),
+  selectRA: (m: M) => selectRL(m, mR(m)),
+  selectSA: (m: M) => selectSL(m, mS(m)),
+  selectFirstCR: (m: M) => selectCL(m, mC(m).at(0)!.ch),
+  selectFirstCC: (m: M) => selectCL(m, mC(m).at(0)!.cv),
+  selectSameCR: (m: M) => selectCL(m, getXC(m).ch),
+  selectSameCC: (m: M) => selectCL(m, getXC(m).cv),
+  selectDC: (m: M) => selectC(m, getXC(m).cd.at(-1)!),
+  selectUC: (m: M) => selectC(m, getXC(m).cu.at(-1)!),
+  selectRC: (m: M) => selectC(m, getXC(m).cr.at(-1)!),
+  selectLC: (m: M) => selectC(m, getXC(m).cl.at(-1)!),
+  selectDCL: (m: M) => selectCL(m, getAXC(m).map(ci => ci.cd.at(-1)!)),
+  selectUCL: (m: M) => selectCL(m, getAXC(m).map(ci => ci.cu.at(-1)!)),
+  selectRCL: (m: M) => selectCL(m, getAXC(m).map(ci => ci.cr.at(-1)!)),
+  selectLCL: (m: M) => selectCL(m, getAXC(m).map(ci => ci.cl.at(-1)!)),
+  selectDCS: (m: M) => selectS(m, getXS(m).ci1!.cd.at(-1)!.so1.at(0)!, 's'),
+  selectUCS: (m: M) => selectS(m, getXS(m).ci1!.cu.at(-1)!.so1.at(0)!, 's'),
+  selectRCS: (m: M) => selectS(m, getXS(m).ci1!.cr.at(-1)!.so1.at(0)!, 's'),
+  selectLCS: (m: M) => selectS(m, getXS(m).ci1!.cl.at(-1)!.so1.at(0)!, 's'),
+  selectSByRectangle: (m: M, intersectingNodes: string[]) => selectSL(m, intersectingNodes.map((nid: string) => idToS(m, nid))),
+  unselect: (m: M) => unselectNodes(m),
+  unselectR: (m: M, path: PR) => unselectR(pathToR(m, path)),
+  unselectS: (m: M, path: PS) => unselectS(pathToS(m, path)),
+  unselectC: (m: M, path: PC) => unselectC(pathToC(m, path)),
 
-export const mapMutation = (m: M, action: MM, payload?: any) => {
-  console.log(action)
-  switch (action) {
-    case 'setDensitySmall': getG(m).density = 'small'; break
-    case 'setDensityLarge': getG(m).density = 'large'; break
-    case 'setPlaceTypeExploded': getG(m).flow = Flow.EXPLODED; break
-    case 'setPlaceTypeIndented': getG(m).flow = Flow.INDENTED; break
+  insertL: (m: M, l: L) => insertL(m, l),
+  insertR: (m: M) => insertR(m),
+  insertSD: (m: M) => insertSD(m, {taskStatus: getLXS(m).taskStatus}),
+  insertSU: (m: M) => insertSU(m, {taskStatus: getFXS(m).taskStatus}),
+  insertRSO: (m: M) => insertRSO(m),
+  insertSSO: (m: M) => insertSSO(m, {taskStatus: getXS(m).taskStatus}),
+  insertCSO: (m: M) => insertCSO(m),
+  insertCRD: (m: M) => insertCRD(m),
+  insertCRU: (m: M) => insertCRU(m),
+  insertCCR: (m: M) => insertCCR(m),
+  insertCCL: (m: M) => insertCCL(m),
+  insertSCRD: (m: M) => insertSCRD(m),
+  insertSCRU: (m: M) => insertSCRU(m),
+  insertSCCR: (m: M) => insertSCCR(m),
+  insertSCCL: (m: M) => insertSCCL(m),
+  insertSSOTable: (m: M, {r, c}: {r: number, c: number}) => { insertSSO(m); insertTable(m, {r, c}) },
 
-    case 'selectR': selectR(m, pathToR(m, payload.path)); break
-    case 'selectS': selectS(m, pathToS(m, payload.path), 's'); break
-    case 'selectC': selectC(m, pathToC(m, payload.path)); break
-    case 'selectRR': selectR(m, getRR(m, getXR(m))!); break
-    case 'selectRL': selectR(m, getRL(m, getXR(m))!); break
-    case 'selectRD': selectR(m, getRD(m, getXR(m))!); break
-    case 'selectRU': selectR(m, getRU(m, getXR(m))!); break
-    case 'selectFirstR': selectR(m, mR(m).at(0)!); break
-    case 'selectFirstS': selectS(m, mS(m).at(0)!, 's'); break
-    case 'selectFirstC': selectC(m, mC(m).at(0)!); break
-    case 'selectSelfX': selectS(m, getXS(m), 's'); break
-    case 'selectFamilyX': selectS(m, getXS(m), 'f'); break
-    case 'selectSD': selectS(m, getQuasiSD(m) as S, 's'); break
-    case 'selectSU': selectS(m, getQuasiSU(m) as S, 's'); break
-    case 'selectRSO': selectS(m, getXR(m).so1.at(0)!, 's'); break
-    case 'selectSSO': selectS(m, getXS(m).so1.at(0)!, 's'); break
-    case 'selectSSOLast': selectS(m, pathToS(m, [...getXS(m).path, 's', getXS(m).lastSelectedChild] as PS), 's'); break
-    case 'selectCSO': selectS(m, getXC(m).so1.at(0)!, 's'); break
-    case 'selectSI': getXS(m).si1!.lastSelectedChild = getXS(m).path.at(-1); selectS(m, getXS(m).si1!, 's'); break
-    case 'selectCFR0': selectC(m, pathToC(m, getXC(m).path.with(-2, 0) as PC)); break
-    case 'selectCFC0': selectC(m, pathToC(m, getXC(m).path.with(-1, 0) as PC)); break
-    case 'selectCFF': selectC(m, pathToC(m, [...getXS(m).path, 'c', 0, 0])); break
-    case 'selectXSIR': selectR(m, getXS(m).ri); break
-    case 'selectXSIRS': selectS(m, getXS(m).ri.so1.at(0)!, 's'); break
-    case 'selectXSIC': selectC(m, getXS(m).ci!); break
-    case 'selectXSICS': selectS(m, getXS(m).ci!.so1.at(0)!, 's'); break
-    case 'selectXCIS': selectS(m, pathToS(m, getXC(m).path.slice(0, -3) as PS), 's'); break
-    case 'selectAddR': selectAddR(m, pathToR(m, payload.path)); break
-    case 'selectAddS': selectAddS(m, pathToS(m, payload.path), 's'); break
-    case 'selectAddSD': selectAddS(m, getQuasiSD(m), 's'); break
-    case 'selectAddSU': selectAddS(m, getQuasiSU(m), 's'); break
-    case 'selectRA': selectRL(m, mR(m)); break
-    case 'selectSA': selectSL(m, mS(m)); break
-    case 'selectFirstCR': selectCL(m, mC(m).at(0)!.ch); break
-    case 'selectFirstCC': selectCL(m, mC(m).at(0)!.cv); break
-    case 'selectSameCR': selectCL(m, getXC(m).ch); break
-    case 'selectSameCC': selectCL(m, getXC(m).cv); break
-    case 'selectDC': selectC(m, getXC(m).cd.at(-1)!); break
-    case 'selectUC': selectC(m, getXC(m).cu.at(-1)!); break
-    case 'selectRC': selectC(m, getXC(m).cr.at(-1)!); break
-    case 'selectLC': selectC(m, getXC(m).cl.at(-1)!); break
-    case 'selectDCL': selectCL(m, getAXC(m).map(ci => ci.cd.at(-1)!)); break
-    case 'selectUCL': selectCL(m, getAXC(m).map(ci => ci.cu.at(-1)!)); break
-    case 'selectRCL': selectCL(m, getAXC(m).map(ci => ci.cr.at(-1)!)); break
-    case 'selectLCL': selectCL(m, getAXC(m).map(ci => ci.cl.at(-1)!)); break
-    case 'selectDCS': selectS(m, getXS(m).ci1!.cd.at(-1)!.so1.at(0)!, 's'); break
-    case 'selectUCS': selectS(m, getXS(m).ci1!.cu.at(-1)!.so1.at(0)!, 's'); break
-    case 'selectRCS': selectS(m, getXS(m).ci1!.cr.at(-1)!.so1.at(0)!, 's'); break
-    case 'selectLCS': selectS(m, getXS(m).ci1!.cl.at(-1)!.so1.at(0)!, 's'); break
-    case 'selectSByRectangle': selectSL(m, payload.intersectingNodes.map((nid: string) => idToS(m, nid))); break
-    case 'unselect': unselectNodes(m); break
-    case 'unselectR': unselectR(pathToR(m, payload.path)); break
-    case 'unselectS': unselectS(pathToS(m, payload.path)); break
-    case 'unselectC': unselectC(pathToC(m, payload.path)); break
+  deleteL: (m: M, nodeId: string) => deleteL(m, nodeId),
+  deleteLRSC: (m: M) => { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; deleteLRSC(m); selectR(m, idToR(m, reselect )) },
+  deleteSJumpSU: (m: M) => { const reselect = getFXS(m).su.at(-1)!.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's') },
+  deleteSJumpSD: (m: M) => { const reselect = getLXS(m).sd.at(-1)!.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's') },
+  deleteSJumpSI: (m: M) => { const reselect = getXS(m).si1!.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's') },
+  deleteSJumpCI: (m: M) => { const reselect = getXS(m).ci1!.nodeId; deleteS(m); selectC(m, idToC(m, reselect)) },
+  deleteSJumpR: (m: M) => { const reselect = getXS(m).ri.nodeId; deleteS(m); selectR(m, idToR(m, reselect)) },
+  deleteCRJumpU: (m: M) => { const reselectList = getAXC(m).map(ci => ci.cu.at(-1)!.nodeId); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))) },
+  deleteCRJumpD: (m: M) => { const reselectList = getAXC(m).map(ci => ci.cd.at(-1)!.nodeId); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))) },
+  deleteCRJumpSI: (m: M) => { const reselect = getXC(m).si1!.nodeId; deleteCR(m); selectS(m, idToS(m, reselect), 's') },
+  deleteCCJumpL: (m: M) => { const reselectList = getAXC(m).map(ci => ci.cl.at(-1)!.nodeId); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))) },
+  deleteCCJumpR: (m: M) => { const reselectList = getAXC(m).map(ci => ci.cr.at(-1)!.nodeId); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))) },
+  deleteCCJumpSI: (m: M) => { const reselect = getXC(m).si1!.nodeId; deleteCC(m); selectS(m, idToS(m, reselect), 's') },
 
-    case 'insertL': insertL(m, payload); break
-    case 'insertR': insertR(m); break
-    case 'insertSD': insertSD(m, {taskStatus: getLXS(m).taskStatus}); break
-    case 'insertSU': insertSU(m, {taskStatus: getFXS(m).taskStatus}); break
-    case 'insertRSO': insertRSO(m); break
-    case 'insertSSO': insertSSO(m, {taskStatus: getXS(m).taskStatus}); break
-    case 'insertCSO': insertCSO(m); break
-    case 'insertCRD': insertCRD(m); break
-    case 'insertCRU': insertCRU(m); break
-    case 'insertCCR': insertCCR(m); break
-    case 'insertCCL': insertCCL(m); break
-    case 'insertSCRD': insertSCRD(m); break
-    case 'insertSCRU': insertSCRU(m); break
-    case 'insertSCCR': insertSCCR(m); break
-    case 'insertSCCL': insertSCCL(m); break
-    case 'insertSSOTable': insertSSO(m); insertTable(m, payload); break
+  cutLRJumpR: (m: M) => { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; copyLRSC(m); deleteLRSC(m); selectR(m, idToR(m, reselect) as R) },
+  cutSJumpRI: (m: M) => { const reselect = getXS(m).ri1!; copySC(m); deleteS(m); selectR(m, reselect) },
+  cutSJumpSU: (m: M) => { const reselect = getFXS(m).su.at(-1)!; copySC(m); deleteS(m); selectS(m, reselect, 's') },
+  cutSJumpSD: (m: M) => { const reselect = getLXS(m).sd.at(-1)!; copySC(m); deleteS(m); selectS(m, reselect, 's') },
+  cutSJumpSI: (m: M) => { const reselect = getXS(m).si1!; copySC(m); deleteS(m); selectS(m, reselect, 's') },
+  cutSJumpCI: (m: M) => { const reselect = getXS(m).ci1!; copySC(m); deleteS(m); selectC(m, reselect) },
+  copyLR: (m: M) => copyLRSC(m),
+  copyS: (m: M) => copySC(m),
+  pasteLR: (m: M, mapAsString: string) => pasteLRSC(m, mapAsString),
+  pasteRSO: (m: M, mapAsString: string) => pasteSC(m, getXR(m),  getXR(m).so1.at(-1), mapAsString),
+  pasteSSO: (m: M, mapAsString: string) => pasteSC(m, getXS(m),  getXS(m).so1.at(-1), mapAsString),
+  pasteCSO: (m: M, mapAsString: string) => pasteSC(m, getXC(m),  getXC(m).so1.at(-1), mapAsString),
+  duplicateR: (m: M) => duplicateLRSC(m),
+  duplicateS: (m: M) => duplicateSC(m),
+  moveSD: (m: M) => moveSC(m, getXS(m).ti1, getLXS(m).sd.at(-1), getLXS(m).sd.at(-2)),
+  moveST: (m: M) => moveSC(m, getXS(m).ti1, undefined, getXS(m).ti1.so1.at(0)),
+  moveSU: (m: M) => moveSC(m, getXS(m).ti1, getFXS(m).su.at(-2), getFXS(m).su.at(-1)),
+  moveSB: (m: M) => moveSC(m, getXS(m).ti1, getXS(m).ti1.so1.at(-1), undefined),
+  moveSO: (m: M) => moveSC(m, getFXS(m).su.at(-1)!, getFXS(m).su.at(-1)!.so1.at(-1), undefined),
+  moveSI: (m: M) => moveSC(m, getXS(m).si1!.ti1, getXS(m).si1!, getXS(m).si1!.sd.at(-1)),
+  moveSByDrag: (m: M, {sl, su, sd}: {sl: string, su: string, sd: string}) => { if (sl) moveSC(m, idToS(m, sl),  idToS(m, su), idToS(m, sd)) },
+  moveCRD: (m: M) => moveCRD(m),
+  moveCRU: (m: M) => moveCRU(m),
+  moveCCR: (m: M) => moveCCR(m),
+  moveCCL: (m: M) => moveCCL(m),
+  moveS2T: (m: M) => moveS2T(m),
+  transpose: (m: M) => transpose(m),
 
-    case 'deleteL': deleteL(m, payload); break
-    case 'deleteLRSC': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; deleteLRSC(m); selectR(m, idToR(m, reselect )); break }
-    case 'deleteSJumpSU': { const reselect = getFXS(m).su.at(-1)!.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'deleteSJumpSD': { const reselect = getLXS(m).sd.at(-1)!.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'deleteSJumpSI': { const reselect = getXS(m).si1!.nodeId; deleteS(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'deleteSJumpCI': { const reselect = getXS(m).ci1!.nodeId; deleteS(m); selectC(m, idToC(m, reselect)); break }
-    case 'deleteSJumpR': { const reselect = getXS(m).ri.nodeId; deleteS(m); selectR(m, idToR(m, reselect)); break }
-    case 'deleteCRJumpU': { const reselectList = getAXC(m).map(ci => ci.cu.at(-1)!.nodeId); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
-    case 'deleteCRJumpD': { const reselectList = getAXC(m).map(ci => ci.cd.at(-1)!.nodeId); deleteCR(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
-    case 'deleteCRJumpSI': { const reselect = getXC(m).si1!.nodeId; deleteCR(m); selectS(m, idToS(m, reselect), 's'); break }
-    case 'deleteCCJumpL': { const reselectList = getAXC(m).map(ci => ci.cl.at(-1)!.nodeId); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
-    case 'deleteCCJumpR': { const reselectList = getAXC(m).map(ci => ci.cr.at(-1)!.nodeId); deleteCC(m); selectCL(m, reselectList.map(nid => idToC(m, nid))); break }
-    case 'deleteCCJumpSI': { const reselect = getXC(m).si1!.nodeId; deleteCC(m); selectS(m, idToS(m, reselect), 's'); break }
-
-    case 'cutLRJumpR': { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; copyLRSC(m); deleteLRSC(m); selectR(m, idToR(m, reselect) as R); break }
-    case 'cutSJumpRI': { const reselect = getXS(m).ri1!; copySC(m); deleteS(m); selectR(m, reselect); break }
-    case 'cutSJumpSU': { const reselect = getFXS(m).su.at(-1)!; copySC(m); deleteS(m); selectS(m, reselect, 's'); break }
-    case 'cutSJumpSD': { const reselect = getLXS(m).sd.at(-1)!; copySC(m); deleteS(m); selectS(m, reselect, 's'); break }
-    case 'cutSJumpSI': { const reselect = getXS(m).si1!; copySC(m); deleteS(m); selectS(m, reselect, 's'); break }
-    case 'cutSJumpCI': { const reselect = getXS(m).ci1!; copySC(m); deleteS(m); selectC(m, reselect); break }
-    case 'copyLR': copyLRSC(m); break
-    case 'copyS': copySC(m); break
-    case 'pasteLR': pasteLRSC(m, payload); break
-    case 'pasteRSO': pasteSC(m, getXR(m),  getXR(m).so1.at(-1), payload); break
-    case 'pasteSSO': pasteSC(m, getXS(m),  getXS(m).so1.at(-1), payload); break
-    case 'pasteCSO': pasteSC(m, getXC(m),  getXC(m).so1.at(-1), payload); break
-    case 'duplicateR': duplicateLRSC(m); break;
-    case 'duplicateS': duplicateSC(m); break;
-    case 'moveSD': moveSC(m, getXS(m).ti1, getLXS(m).sd.at(-1), getLXS(m).sd.at(-2)); break
-    case 'moveST': moveSC(m, getXS(m).ti1, undefined, getXS(m).ti1.so1.at(0)); break
-    case 'moveSU': moveSC(m, getXS(m).ti1, getFXS(m).su.at(-2), getFXS(m).su.at(-1)); break
-    case 'moveSB': moveSC(m, getXS(m).ti1, getXS(m).ti1.so1.at(-1), undefined); break
-    case 'moveSO': moveSC(m, getFXS(m).su.at(-1)!, getFXS(m).su.at(-1)!.so1.at(-1), undefined); break
-    case 'moveSI': moveSC(m, getXS(m).si1!.ti1, getXS(m).si1!, getXS(m).si1!.sd.at(-1)); break
-    case 'moveSByDrag': if (payload.sl) moveSC(m, idToS(m, payload.sl),  idToS(m, payload.su), idToS(m, payload.sd)); break
-    case 'moveCRD': moveCRD(m); break
-    case 'moveCRU': moveCRU(m); break
-    case 'moveCCR': moveCCR(m); break
-    case 'moveCCL': moveCCL(m); break
-    case 'moveS2T': moveS2T(m); break
-    case 'transpose': transpose(m); break
-
-    case 'offsetD': Object.assign(getXR(m), { offsetH: getXR(m).offsetH += 20 }); break
-    case 'offsetU': Object.assign(getXR(m), { offsetH: getXR(m).offsetH -= 20 }); break
-    case 'offsetR': Object.assign(getXR(m), { offsetW: getXR(m).offsetW += 20 }); break
-    case 'offsetL': Object.assign(getXR(m), { offsetW: getXR(m).offsetW -= 20 }); break
-    case 'offsetRByDrag': Object.assign(getXR(m), { offsetW: payload.toX, offsetH: payload.toY }); break
-    case 'setControlTypeNone': Object.assign(getXR(m), { controlType: ControlType.NONE }); break
-    case 'setControlTypeIngestion': Object.assign(getXR(m), { controlType: ControlType.INGESTION }); break
-    case 'setControlTypeExtraction': Object.assign(getXR(m), { controlType: ControlType.EXTRACTION }); break
-    case 'setContentText': Object.assign(getXS(m), { contentType: 'text', content: payload.content }); break
-    case 'setContentEquation': Object.assign(getXS(m), { contentType: 'equation', content: payload.content }); break
-    case 'setLineWidth': getAXS(m).forEach(si => Object.assign(si, { lineWidth: payload })); break
-    case 'setLineType': getAXS(m).forEach(si => Object.assign(si, { lineType: payload })); break
-    case 'setLineColor': getAXS(m).forEach(si => Object.assign(si, { lineColor: payload })); break
-    case 'setSBorderWidth': getAXS(m).forEach(si => Object.assign(si, { sBorderWidth: payload })); break
-    case 'setFBorderWidth': getAXS(m).forEach(si => Object.assign(si, { fBorderWidth: payload })); break
-    case 'setSBorderColor': getAXS(m).forEach(si => Object.assign(si, { sBorderColor: payload })); break
-    case 'setFBorderColor': getAXS(m).forEach(si => Object.assign(si, { fBorderColor: payload })); break
-    case 'setSFillColor': getAXS(m).forEach(si => Object.assign(si, { sFillColor: payload })); break
-    case 'setFFillColor': getAXS(m).forEach(si => Object.assign(si, { fFillColor: payload })); break
-    case 'setTextFontSize': getAXS(m).forEach(si => Object.assign(si, { textFontSize: payload })); break
-    case 'setTextColor': getAXS(m).forEach(si => Object.assign(si, { textColor: payload })); break
-    case 'setBlur': getAXS(m).forEach(si => Object.assign(si, { blur: 1 })); break
-    case 'setTaskModeOn': [getXS(m), ...getXS(m).so].forEach(si => Object.assign(si, { taskStatus: si.taskStatus === 0 ? 1 : si.taskStatus })); break
-    case 'setTaskModeOff': [getXS(m), ...getXS(m).so].forEach(si => Object.assign(si, { taskStatus: 0 })); break
-    case 'setTaskModeReset': [getXS(m), ...getXS(m).so].forEach(si => Object.assign(si, { taskStatus: si.taskStatus > 0 ? 1 : si.taskStatus })); break
-    case 'setTaskStatus': Object.assign(idToS(m, payload.nodeId), { taskStatus: payload.taskStatus }); break
-    case 'clearDimensions': Object.assign(getXS(m), { dimW: sSaveOptional.dimW, dimH: sSaveOptional.dimH }); break
-    case 'clearLine': getAXS(m).forEach(si => Object.assign(si, { lineWidth: sSaveOptional.lineWidth, lineType: sSaveOptional.lineType, lineColor: sSaveOptional.lineColor })); break
-    case 'clearSBorder': getAXS(m).forEach(si => Object.assign(si, { sBorderWidth: sSaveOptional.sBorderWidth, sBorderColor: sSaveOptional.sBorderColor })); break
-    case 'clearFBorder': getAXS(m).forEach(si => Object.assign(si, { fBorderWidth: sSaveOptional.fBorderWidth, fBorderColor: sSaveOptional.fBorderColor })); break
-    case 'clearSFill': getAXS(m).forEach(si => Object.assign(si, { sFillColor: sSaveOptional.sFillColor })); break
-    case 'clearFFill': getAXS(m).forEach(si => Object.assign(si, { fFillColor: sSaveOptional.fFillColor })); break
-    case 'clearText': getAXS(m).forEach(si => Object.assign(si, { textColor: sSaveOptional.textColor, textFontSize: sSaveOptional.textFontSize })); break
-    case 'clearBlur': getAXS(m).forEach(si => Object.assign(si, { blur: sSaveOptional.blur })); break
-  }
+  offsetD: (m: M) => Object.assign(getXR(m), { offsetH: getXR(m).offsetH += 20 }),
+  offsetU: (m: M) => Object.assign(getXR(m), { offsetH: getXR(m).offsetH -= 20 }),
+  offsetR: (m: M) => Object.assign(getXR(m), { offsetW: getXR(m).offsetW += 20 }),
+  offsetL: (m: M) => Object.assign(getXR(m), { offsetW: getXR(m).offsetW -= 20 }),
+  offsetRByDrag: (m: M, rOffsetCoords: number[]) => Object.assign(getXR(m), { offsetW: rOffsetCoords[0], offsetH: rOffsetCoords[1] }),
+  setControlTypeNone: (m: M) => Object.assign(getXR(m), { controlType: ControlType.NONE }),
+  setControlTypeIngestion: (m: M) => Object.assign(getXR(m), { controlType: ControlType.INGESTION }),
+  setControlTypeExtraction: (m: M) => Object.assign(getXR(m), { controlType: ControlType.EXTRACTION }),
+  setContentText: (m: M, content: string) => Object.assign(getXS(m), { contentType: 'text', content }),
+  setContentEquation: (m: M, content: string) => Object.assign(getXS(m), { contentType: 'equation', content }),
+  setLineWidth: (m: M, lineWidth: number) => getAXS(m).forEach(si => Object.assign(si, { lineWidth })),
+  setLineType: (m: M, lineType: LineType) => getAXS(m).forEach(si => Object.assign(si, { lineType })),
+  setLineColor: (m: M, lineColor: string) => getAXS(m).forEach(si => Object.assign(si, { lineColor })),
+  setSBorderWidth: (m: M, sBorderWidth: number) => getAXS(m).forEach(si => Object.assign(si, { sBorderWidth })),
+  setFBorderWidth: (m: M, fBorderWidth: number) => getAXS(m).forEach(si => Object.assign(si, { fBorderWidth })),
+  setSBorderColor: (m: M, sBorderColor: string) => getAXS(m).forEach(si => Object.assign(si, { sBorderColor })),
+  setFBorderColor: (m: M, fBorderColor: string) => getAXS(m).forEach(si => Object.assign(si, { fBorderColor })),
+  setSFillColor: (m: M, sFillColor: string) => getAXS(m).forEach(si => Object.assign(si, { sFillColor })),
+  setFFillColor: (m: M, fFillColor: string) => getAXS(m).forEach(si => Object.assign(si, { fFillColor })),
+  setTextFontSize: (m: M, textFontSize: number) => getAXS(m).forEach(si => Object.assign(si, { textFontSize })),
+  setTextColor: (m: M, textColor: string) => getAXS(m).forEach(si => Object.assign(si, { textColor })),
+  setBlur: (m: M) => getAXS(m).forEach(si => Object.assign(si, { blur: 1 })),
+  setTaskModeOn: (m: M) => [getXS(m), ...getXS(m).so].forEach(si => Object.assign(si, { taskStatus: si.taskStatus === 0 ? 1 : si.taskStatus })),
+  setTaskModeOff: (m: M) => [getXS(m), ...getXS(m).so].forEach(si => Object.assign(si, { taskStatus: 0 })),
+  setTaskModeReset: (m: M) => [getXS(m), ...getXS(m).so].forEach(si => Object.assign(si, { taskStatus: si.taskStatus > 0 ? 1 : si.taskStatus })),
+  setTaskStatus: (m: M, {nodeId, taskStatus}: {nodeId: string, taskStatus: number}) => Object.assign(idToS(m, nodeId), { taskStatus: taskStatus }),
+  clearLine: (m: M) => getAXS(m).forEach(si => Object.assign(si, { lineWidth: sSaveOptional.lineWidth, lineType: sSaveOptional.lineType, lineColor: sSaveOptional.lineColor })),
+  clearSBorder: (m: M) => getAXS(m).forEach(si => Object.assign(si, { sBorderWidth: sSaveOptional.sBorderWidth, sBorderColor: sSaveOptional.sBorderColor })),
+  clearFBorder: (m: M) => getAXS(m).forEach(si => Object.assign(si, { fBorderWidth: sSaveOptional.fBorderWidth, fBorderColor: sSaveOptional.fBorderColor })),
+  clearSFill: (m: M) => getAXS(m).forEach(si => Object.assign(si, { sFillColor: sSaveOptional.sFillColor })),
+  clearFFill: (m: M) => getAXS(m).forEach(si => Object.assign(si, { fFillColor: sSaveOptional.fFillColor })),
+  clearText: (m: M) => getAXS(m).forEach(si => Object.assign(si, { textColor: sSaveOptional.textColor, textFontSize: sSaveOptional.textFontSize })),
+  clearBlur: (m: M) => getAXS(m).forEach(si => Object.assign(si, { blur: sSaveOptional.blur })),
 }
 
 export function wrapFunction<P>(fn: (m: M, payload: P) => void) {

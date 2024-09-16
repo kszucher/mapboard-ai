@@ -2,10 +2,9 @@ import {Button, Dialog, Flex, Grid, Select, Text} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
-import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {isAXS} from "../mapQueries/MapQueries.ts"
 import {DialogState} from "../consts/Enums.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const NodeActionsInsertTable = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -13,7 +12,6 @@ export const NodeActionsInsertTable = () => {
   const [row, setRow] = useState<number>(1)
   const [col, setCol] = useState<number>(1)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Insert Table'}</Dialog.Title>
@@ -48,7 +46,7 @@ export const NodeActionsInsertTable = () => {
         </Dialog.Close>
         <Dialog.Close>
           <Button onClick={() => {
-            if (dialogState === DialogState.CREATE_TABLE_O && isAXS(m)) dm(MM.insertSSOTable, {r: row, c: col})
+            if (dialogState === DialogState.CREATE_TABLE_O && isAXS(m)) dispatch(actions.insertSSOTable({r: row, c: col}))
           }}>
             {'OK'}
           </Button>

@@ -6,7 +6,7 @@ import {mR} from "../mapQueries/MapQueries.ts"
 import {ControlType, DialogState} from "../consts/Enums.ts"
 import CircleLetterI from "../../assets/circle-letter-i.svg?react"
 import CircleLetterE from "../../assets/circle-letter-e.svg?react"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 const DecorationIcon = ({x, y, children, onClick} : {x: number, y: number, children: ReactNode, onClick: Function}) => (
   <g

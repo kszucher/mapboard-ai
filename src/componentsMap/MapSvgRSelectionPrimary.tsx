@@ -6,7 +6,7 @@ import {getG, getAXR, getXR, isAXR,} from "../mapQueries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {RootState} from "../editorMutations/EditorMutations.ts"
 import {getPolygonPath, pathCommonProps} from "./MapSvgUtils.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvgRSelectionPrimary: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

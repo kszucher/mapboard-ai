@@ -1,7 +1,7 @@
-import {MPartial} from "../mapState/MapStateTypes.ts"
-import {MM} from "../mapMutations/MapMutationEnum.ts"
+import {M, MPartial} from "../mapState/MapStateTypes.ts"
 import {_assert} from "./_assert.ts"
 import {Side} from "../consts/Enums.ts"
+import {functions} from "../mapMutations/MapMutation.ts"
 
 describe("MapDeleteTests", () => {
   test('deleteLRSC', () => {
@@ -25,7 +25,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r2', path: ['r', 1], offsetW: 440, offsetH: 550},
       {nodeId: 'r2s0', path: ['r', 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, MM.deleteLRSC)
+    _assert(test, result, (m: M) => functions.deleteLRSC(m))
   })
   test('deleteS', () => {
     const test = [
@@ -52,7 +52,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: 'r0s0s2s2', path: ['r', 0, 's', 0, 's', 0, 's', 0]},
     ] as MPartial
-    _assert(test, result, MM.deleteSJumpR)
+    _assert(test, result, (m: M) => functions.deleteSJumpR(m))
   })
   test('deleteCR', () => {
     const test = [
@@ -77,7 +77,7 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 0, 1], selected: 2},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 0, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, MM.deleteCRJumpD)
+    _assert(test, result, (m: M) => functions.deleteCRJumpD(m))
   })
   test('deleteCC', () => {
     const test = [
@@ -102,6 +102,6 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 0], selected: 2},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 0, 's', 0]},
     ] as MPartial
-    _assert(test, result, MM.deleteCCJumpR)
+    _assert(test, result, (m: M) => functions.deleteCCJumpR(m))
   })
 })

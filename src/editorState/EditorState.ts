@@ -22,9 +22,11 @@ export const editorState: EditorState = {
   formatterVisible: false,
   rOffsetCoords: [],
   sMoveCoords: [],
-  sl: '',
-  su: '',
-  sd: '',
+  insertLocation: {
+    sl: '',
+    su: '',
+    sd: ''
+  },
   selectionRectCoords: [],
   intersectingNodes: [],
   zoomInfo: {

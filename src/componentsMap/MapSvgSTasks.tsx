@@ -2,7 +2,6 @@ import {FC, Fragment} from "react"
 import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
-import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {adjust} from "../utils/Utils.ts"
 import {TASK_CIRCLES_GAP} from "../consts/Dimensions.ts"
 import {getColors} from "../consts/Colors.ts"
@@ -10,7 +9,7 @@ import {getG, mS} from "../mapQueries/MapQueries.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
 import {getLinearLinePath, getTaskRadius, getTaskStartPoint, pathCommonProps} from "./MapSvgUtils.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvgSTasks: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -20,7 +19,6 @@ export const MapSvgSTasks: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     mS(m).map(si => (
       <Fragment key={si.nodeId}>
@@ -55,7 +53,7 @@ export const MapSvgSTasks: FC = () => {
             onMouseDown={(e) => {
               e.preventDefault()
               e.stopPropagation()
-              dm(MM.setTaskStatus, {taskStatus: i + 1, nodeId: si.nodeId})
+              dispatch(actions.setTaskStatus({nodeId: si.nodeId, taskStatus: i + 1}))
             }}
           />
         ))}

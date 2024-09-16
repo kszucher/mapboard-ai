@@ -1,16 +1,13 @@
 import {combineReducers, configureStore, createSlice, current, isAction, isAnyOf, PayloadAction} from "@reduxjs/toolkit"
-import isEqual from "react-fast-compare"
 import {getMapX, getMapY} from "../componentsMap/MapDivUtils.ts"
 import {mapFindIntersecting} from "../mapQueries/MapFindIntersecting.ts"
 import {editorState, editorStateDefault} from "../editorState/EditorState.ts"
 import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MidMouseMode, PageState, Side} from "../consts/Enums.ts"
 import {api} from "../api/Api.ts"
 import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
-import {mapMutation, wrappedFunctions} from "../mapMutations/MapMutation.ts"
+import {wrappedFunctions} from "../mapMutations/MapMutation.ts"
 import {getXS, mapObjectToArray} from "../mapQueries/MapQueries.ts"
-import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {R} from "../mapState/MapStateTypes.ts"
-import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {EditorState} from "../editorState/EditorStateTypes.ts"
 import React from "react"
 import {mapBuild} from "../mapMutations/MapBuild.ts"
@@ -19,7 +16,6 @@ export const editorSlice = createSlice({
   name: 'editor',
   initialState: editorState,
   reducers: {
-    ...wrappedFunctions,
     setToken(state, action: PayloadAction<string>) {
       state.token = action.payload
     },
@@ -117,6 +113,10 @@ export const editorSlice = createSlice({
       state.selectionRectCoords = [Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]
       state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
     },
+    selectSByRectanglePreviewClear(state) {
+      state.selectionRectCoords = []
+      state.intersectingNodes = []
+    },
     offsetRByDragPreview(state, action: PayloadAction<{r: R, e: MouseEvent}>) {
       const {r, e} = action.payload
       const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
@@ -124,17 +124,22 @@ export const editorSlice = createSlice({
       const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + r.offsetH
       state.rOffsetCoords = [toX, toY, r.selfW, r.selfH]
     },
+    offsetRByDragPreviewClear(state) {
+      state.rOffsetCoords = []
+    },
     moveSByDragPreview(state, action: PayloadAction<{e: MouseEvent}>) {
       const {e} = action.payload
       const pm = current(state.commitList[state.commitIndex])
       const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale)
       const toY = originY + ((getMapY(e) - prevMapY) / scale)
-      const {sMoveCoords, sl, su, sd} = mapFindNearestS(pm, toX, toY)
+      const {sMoveCoords, insertLocation} = mapFindNearestS(pm, toX, toY)
       state.sMoveCoords = sMoveCoords
-      state.sl = sl
-      state.su = su
-      state.sd = sd
+      state.insertLocation = insertLocation
+    },
+    moveSByDragPreviewClear(state) {
+      state.sMoveCoords = []
+      state.insertLocation = {sl: '', su: '', sd: ''}
     },
     startEditReplace(state) {
       const pm = current(state.commitList[state.commitIndex])
@@ -154,55 +159,7 @@ export const editorSlice = createSlice({
       state.commitList = [...state.commitList.slice(0, state.editStartMapListIndex + 1), ...state.commitList.slice(-1)]
       state.commitIndex = state.editStartMapListIndex + 1
     },
-    mapReducer(state, action: PayloadAction<{ type: MM, payload?: object}>) {
-      switch (action.payload.type) {
-        case 'selectSByRectangle': {
-          action.payload.payload = {intersectingNodes: state.intersectingNodes}
-          break
-        }
-        case 'offsetRByDrag': {
-          action.payload.payload = {
-            toX: state.rOffsetCoords[0],
-            toY: state.rOffsetCoords[1]
-          }
-          break
-        }
-        case 'moveSByDrag': {
-          action.payload.payload = {
-            sl: state.sl,
-            su: state.su,
-            sd: state.sd
-          }
-          break
-        }
-      }
-      const pm = current(state.commitList[state.commitIndex])
-      const m = structuredClone(pm)
-      mapMutation(m, action.payload.type, action.payload.payload)
-      mapBuild(pm, m)
-      if (!isEqual(mapPrune(pm), mapPrune(m))) {
-        state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m]
-        state.commitIndex = state.commitIndex + 1
-      }
-      switch (action.payload.type) {
-        case 'selectSByRectangle': {
-          state.selectionRectCoords = []
-          state.intersectingNodes = []
-          break
-        }
-        case 'offsetRByDrag': {
-          state.rOffsetCoords = []
-          break
-        }
-        case 'moveSByDrag': {
-          state.sMoveCoords = []
-          state.sl = ''
-          state.su = ''
-          state.sd = ''
-          break
-        }
-      }
-    }
+    ...wrappedFunctions
   },
   extraReducers: (builder) => {
     builder.addMatcher(

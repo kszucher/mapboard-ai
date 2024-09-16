@@ -5,7 +5,7 @@ import {mR} from "../mapQueries/MapQueries.ts"
 import {ControlType} from "../consts/Enums.ts"
 import {adjust} from "../utils/Utils.ts"
 import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvgRSeparators: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

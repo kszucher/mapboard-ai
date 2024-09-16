@@ -1,7 +1,7 @@
 import {M} from "../mapState/MapStateTypes.ts"
 import {getXS, mS} from "./MapQueries.ts"
 
-export const mapFindNearestS = (pm: M, toX: number, toY: number): {sMoveCoords: number[], sl: string, su: string, sd: string} => {
+export const mapFindNearestS = (pm: M, toX: number, toY: number): {sMoveCoords: number[], insertLocation: {sl: string, su: string, sd: string}} => {
   const xs = getXS(pm)
   let sMoveCoords = [] as number[]
   let sl = ''
@@ -30,5 +30,5 @@ export const mapFindNearestS = (pm: M, toX: number, toY: number): {sMoveCoords: 
       sd = nearestLeftS.so1.filter(si => si !== xs)?.find(si => si.nodeStartY > toY)?.nodeId ?? ''
     }
   }
-  return {sMoveCoords, sl, su, sd}
+  return {sMoveCoords, insertLocation: {sl, su, sd}}
 }

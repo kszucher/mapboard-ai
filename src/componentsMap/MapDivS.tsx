@@ -4,7 +4,6 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
 import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
-import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {getG, getNodeMode, getAXS, getXS, idToS, isAXS, mS} from "../mapQueries/MapQueries.ts"
 import {LeftMouseMode, NodeMode} from "../consts/Enums.ts"
 import {S} from "../mapState/MapStateTypes.ts"
@@ -12,7 +11,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {adjust, getLatexString} from "../utils/Utils.ts"
 import {getColors} from "../consts/Colors.ts"
 import {setEndOfContentEditable} from "./MapDivUtils.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {getInsertLocation, mSelector} from "../editorQueries/EditorQueries.ts"
 
 const getInnerHtml = (s: S) => {
   if (s.contentType === 'text') {
@@ -36,8 +35,6 @@ export const MapDivS: FC = () => {
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
-
   return (
     mS(m).map(si => (
       <div
@@ -98,11 +95,11 @@ export const MapDivS: FC = () => {
                 window.focus()
               }
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-              if (!e.ctrlKey) dm(MM.selectS, {path: si.path})
-              if (e.ctrlKey && !si.selected && isAXS(m)) dm(MM.selectAddS, {path: si.path})
-              if (e.ctrlKey && si.selected && getAXS(m).length > 1) dm(MM.unselectS, {path: si.path})
+              if (!e.ctrlKey) dispatch(actions.selectS(si.path))
+              if (e.ctrlKey && !si.selected && isAXS(m)) dispatch(actions.selectAddS(si.path))
+              if (e.ctrlKey && si.selected && getAXS(m).length > 1) dispatch(actions.unselectS(si.path))
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_STRUCT) {
-              if (!e.ctrlKey) dm(MM.selectS, {path: si.path})
+              if (!e.ctrlKey) dispatch(actions.selectS(si.path))
               const abortController = new AbortController()
               const {signal} = abortController
               window.addEventListener('mousemove', (e) => {
@@ -114,7 +111,8 @@ export const MapDivS: FC = () => {
                 abortController.abort()
                 e.preventDefault()
                 if (didMove) {
-                  dm(MM.moveSByDrag, {s: si, e})
+                  dispatch(actions.moveSByDrag(getInsertLocation()))
+                  dispatch(actions.moveSByDragPreviewClear())
                 }
               }, {signal})
             }
@@ -141,18 +139,18 @@ export const MapDivS: FC = () => {
             dispatch(actions.removeMapListEntriesOfEdit())
           }
           if (['Insert','Tab'].includes(e.key)) {
-            if(isAXS(m)) dm(MM.insertSSO)
+            if(isAXS(m)) dispatch(actions.insertSSO())
           }
         }}
         onInput={(e) => {
-          dm(MM.setContentText, {content: e.currentTarget.innerHTML})
+          dispatch(actions.setContentText(e.currentTarget.innerHTML))
         }}
         onPaste={(e) => {
           e.preventDefault()
           const pasted = e.clipboardData.getData('Text')
           e.currentTarget.innerHTML += pasted
           setEndOfContentEditable(e.currentTarget)
-          dm(MM.setContentText, {content: e.currentTarget.innerHTML})
+          dispatch(actions.setContentText(e.currentTarget.innerHTML))
         }}
       >
       </div>

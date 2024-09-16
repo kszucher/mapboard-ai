@@ -1,20 +1,18 @@
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
-import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {mR, isExistingLink, mL} from "../mapQueries/MapQueries.ts"
 import {adjustIcon} from "../utils/Utils.ts"
 import {Side} from "../consts/Enums.ts"
 import {L} from "../mapState/MapStateTypes.ts"
 import {getCoordsMidBezier, getBezierLinePath, getRootLinePath, pathCommonProps} from "./MapSvgUtils.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvgLRConnectors: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <Fragment>
       {mL(m).map(li => (
@@ -47,7 +45,7 @@ export const MapSvgLRConnectors: FC = () => {
                 <rect width="24" height="24" style={{opacity: 0}} onMouseDown={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  dm(MM.deleteL, li.nodeId)
+                  dispatch(actions.deleteL(li.nodeId))
                 }}/>
               </g>
             }
@@ -89,7 +87,7 @@ export const MapSvgLRConnectors: FC = () => {
                         connectionStart.fromNodeId !== ri.nodeId &&
                         !isExistingLink(m, newLink)
                       ) {
-                        dm(MM.insertL, newLink)
+                        dispatch(actions.insertL(newLink))
                       }
                     }}
                   />

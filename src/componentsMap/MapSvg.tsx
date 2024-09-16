@@ -23,7 +23,7 @@ import {MapSvgSSelectionPreview} from "./MapSvgSSelectionPreview.tsx"
 import {MapSvgSSelectionArea} from "./MapSvgSSelectionArea.tsx"
 import {MapSvgSMove} from "./MapSvgSMove.tsx"
 import {MapSvgRIcons} from "./MapSvgRIcons.tsx"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

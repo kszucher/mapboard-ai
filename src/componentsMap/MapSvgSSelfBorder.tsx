@@ -6,7 +6,7 @@ import {RootState} from "../editorMutations/EditorMutations.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {getColors} from "../consts/Colors.ts"
 import {getArcPath, pathCommonProps} from "./MapSvgUtils.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvgSSelfBorder: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

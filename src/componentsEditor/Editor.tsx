@@ -22,7 +22,7 @@ import {Map} from "../componentsMap/Map.tsx"
 import {getEquationDim, getTextDim} from "../componentsMap/MapDivUtils.ts"
 import {Window} from "./Window.tsx"
 import {UserAccountDelete} from "../componentsUserActions/UserAccountDelete.tsx"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)

@@ -83,7 +83,6 @@ export const insertSCCL = (m: M) => {
   m.push(...getXS(m).co1.at(0)!.cv.map(ci => ci.path.with( - 1, ci.path.at(-1) - 1)).flatMap(p => [{path: p} as C, {path: p.concat('s', 0)} as S]))
 }
 
-export const insertTable = (m: M, payload: {r: number, c: number}) => {
-  const { r, c } = payload
+export const insertTable = (m: M, {r, c}: {r: number, c: number}) => {
   m.push(...Array.from({length: r*c}, (_, i) => ([...getXS(m).path, 'c', Math.floor(i/c), i%c])).flatMap(p => [{path: p} as C, {path: p.concat('s', 0)} as S]))
 }

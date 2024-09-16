@@ -3,7 +3,6 @@ import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
 import {actions, AppDispatch, RootState} from '../editorMutations/EditorMutations.ts'
-import {MM} from "../mapMutations/MapMutationEnum.ts"
 import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isAXR, isAXS} from "../mapQueries/MapQueries.ts"
 import {AccessType, FormatMode, LineType, TextType, WidthType} from "../consts/Enums.ts"
 import {FBorderIcon, FFillIcon, SFillIcon, SBorderIcon} from "../assetsCustom/CustomIcons.tsx"
@@ -11,7 +10,7 @@ import LetterT from "../../assets/letter-t.svg?react"
 import VectorSpline from "../../assets/vector-spline.svg?react"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts";
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 
@@ -28,7 +27,6 @@ export const NodeActionsEditFormatter: FC = () => {
   const { access } = data || defaultUseOpenWorkspaceQueryState
   const disabled = [AccessType.UNAUTHORIZED, AccessType.VIEW].includes(access)
   const dispatch = useDispatch<AppDispatch>()
-  const dm = (type: MM, payload? : any) => dispatch(actions.mapReducer({type, payload}))
   return (
     <div className="dark:bg-zinc-800 bg-zinc-50 border-r-0 border-2 dark:border-neutral-700 fixed w-[240px] top-[80px] right-0 flex flex-col gap-3 rounded-l-lg p-3 z-50">
       <Flex gap="3" align="center" justify="center">
@@ -88,13 +86,13 @@ export const NodeActionsEditFormatter: FC = () => {
                       strokeWidth={"2%"}
                       onClick={() => {
                         const color = colorList[i][j]
-                        formatMode === FormatMode.text && dm(MM.setTextColor, color)
-                        formatMode === FormatMode.sBorder && dm(MM.setSBorderColor, color)
-                        formatMode === FormatMode.fBorder && isAXR(m) && dm(MM.setFBorderColor, color)
-                        formatMode === FormatMode.fBorder && isAXS(m) && dm(MM.setFBorderColor, color)
-                        formatMode === FormatMode.sFill && dm(MM.setSFillColor, color)
-                        formatMode === FormatMode.fFill && dm(MM.setFFillColor, color)
-                        formatMode === FormatMode.line && dm(MM.setLineColor, color)
+                        if (formatMode === FormatMode.text) dispatch(actions.setTextColor(color))
+                        if (formatMode === FormatMode.sBorder) dispatch(actions.setSBorderColor(color))
+                        if (formatMode === FormatMode.fBorder && isAXR(m)) dispatch(actions.setFBorderColor(color))
+                        if (formatMode === FormatMode.fBorder && isAXS(m)) dispatch(actions.setFBorderColor(color))
+                        if (formatMode === FormatMode.sFill) dispatch(actions.setSFillColor(color))
+                        if (formatMode === FormatMode.fFill) dispatch(actions.setFFillColor(color))
+                        if (formatMode === FormatMode.line) dispatch(actions.setLineColor(color))
                       }}
                     />
                   )
@@ -110,7 +108,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={TextType[getTextFontSize(m)]}
-            onValueChange={(value) => dm(MM.setTextFontSize, TextType[value as keyof typeof TextType])}
+            onValueChange={(value) => dispatch(actions.setTextFontSize(TextType[value as keyof typeof TextType]))}
           >
             <Select.Trigger />
             <Select.Content>
@@ -124,7 +122,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={WidthType[getSBorderWidth(m)]}
-            onValueChange={(value) => dm(MM.setSBorderWidth, WidthType[value as keyof typeof WidthType])}
+            onValueChange={(value) => dispatch(actions.setSBorderWidth(WidthType[value as keyof typeof WidthType]))}
           >
             <Select.Trigger />
             <Select.Content>
@@ -138,7 +136,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={WidthType[getFBorderWidth(m)]}
-            onValueChange={(value) => dm(MM.setFBorderWidth, WidthType[value as keyof typeof WidthType])}
+            onValueChange={(value) => dispatch(actions.setFBorderWidth(WidthType[value as keyof typeof WidthType]))}
           >
             <Select.Trigger />
             <Select.Content>
@@ -152,7 +150,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={WidthType[getLineWidth(m)]}
-            onValueChange={(value) => dm(MM.setLineWidth, WidthType[value as keyof typeof WidthType])}
+            onValueChange={(value) => dispatch(actions.setLineWidth(WidthType[value as keyof typeof WidthType]))}
           >
             <Select.Trigger />
             <Select.Content>
@@ -166,7 +164,7 @@ export const NodeActionsEditFormatter: FC = () => {
           <Select.Root
             disabled={disabled}
             value={LineType[getLineType(m)]}
-            onValueChange={(value) => dm(MM.setLineType, LineType[value as keyof typeof LineType])}
+            onValueChange={(value) => dispatch(actions.setLineType(LineType[value as keyof typeof LineType]))}
           >
             <Select.Trigger />
             <Select.Content>
@@ -181,12 +179,12 @@ export const NodeActionsEditFormatter: FC = () => {
         <Button
           variant="outline"
           onClick={() => {
-            formatMode === FormatMode.text && dm(MM.clearText)
-            formatMode === FormatMode.sBorder && dm(MM.clearSBorder)
-            formatMode === FormatMode.fBorder && dm(MM.clearFBorder)
-            formatMode === FormatMode.sFill && dm(MM.clearSFill)
-            formatMode === FormatMode.fFill && dm(MM.clearFFill)
-            formatMode === FormatMode.line && dm(MM.clearLine)
+            if (formatMode === FormatMode.text) dispatch(actions.clearText())
+            if (formatMode === FormatMode.sBorder) dispatch(actions.clearSBorder())
+            if (formatMode === FormatMode.fBorder) dispatch(actions.clearFBorder())
+            if (formatMode === FormatMode.sFill) dispatch(actions.clearSFill())
+            if (formatMode === FormatMode.fFill) dispatch(actions.clearFFill())
+            if (formatMode === FormatMode.line) dispatch(actions.clearLine())
           }}>
           {'RESET'}
         </Button>
