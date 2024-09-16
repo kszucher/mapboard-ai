@@ -6,7 +6,7 @@ import {defaultGetIngestionQueryState} from "../apiState/ApiState.ts"
 export const RootIngestion = () => {
   const hiddenFileInput = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File | null>(null)
-  const [isUploading, setIsUploading] = useState<Boolean>(false)
+  const [isUploading, setIsUploading] = useState(false)
   const [uploadFile, {isSuccess, reset}] = useUploadFileMutation()
   const { data } = useGetIngestionQuery()
   const { ingestionResult } = data || defaultGetIngestionQueryState
