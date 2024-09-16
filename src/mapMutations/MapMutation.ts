@@ -180,6 +180,7 @@ export const mapMutation = (m: M, action: MM, payload?: any) => {
 
 export function wrapFunction<P>(fn: (m: M, payload: P) => void) {
   return function (state: EditorState, action: PayloadAction<P>) {
+    console.log(action.type)
     const pm = current(state.commitList[state.commitIndex])
     const m = structuredClone(pm)
     fn(m, action.payload)
