@@ -1,6 +1,6 @@
 import {M, MPartial} from "../mapState/MapStateTypes.ts"
 import {_assert} from "./_assert.ts"
-import {functions} from "../mapMutations/MapMutation.ts"
+import {mapMutations} from "../mapMutations/MapMutations.ts"
 
 describe("MapInsertTests", () => {
   beforeEach(() => {})
@@ -15,7 +15,7 @@ describe("MapInsertTests", () => {
       {nodeId: '_r1', path: ['r', 1], selected: 1},
       {nodeId: '_r1s0', path: ['r', 1, 's', 0], content: 'New Root'},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertR(m))
+    _assert(test, result, (m: M) => mapMutations.insertR(m))
   })
   test('insertSD', () => {
     const test = [
@@ -37,7 +37,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 3]},
       {nodeId: 'r0s0s3', path: ['r', 0, 's', 0, 's', 4]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertSD(m))
+    _assert(test, result, (m: M) => mapMutations.insertSD(m))
   })
   test('insertSU', () => {
     const test = [
@@ -59,7 +59,7 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0s3', path: ['r', 0, 's', 0, 's', 3], selected: 1},
       {nodeId: 'r0s0s3', path: ['r', 0, 's', 0, 's', 4]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertSU(m))
+    _assert(test, result, (m: M) => mapMutations.insertSU(m))
   })
   test('insertRSO', () => {
     const test = [
@@ -73,7 +73,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0', path: ['r', 0, 's', 0]},
       {nodeId: '_r0s1', path: ['r', 0, 's', 1], selected: 1},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertRSO(m))
+    _assert(test, result, (m: M) => mapMutations.insertRSO(m))
   })
   test('insertSSO', () => {
     const test = [
@@ -89,7 +89,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0s0', path: ['r', 0, 's', 0, 's', 0]},
       {nodeId: '_r0s0s1', path: ['r', 0, 's', 0, 's', 1], selected: 1},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertSSO(m))
+    _assert(test, result, (m: M) => mapMutations.insertSSO(m))
   })
   test('insertCSO', () => {
     const test = [
@@ -107,7 +107,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c00s0', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 0]},
       {nodeId: '_r0s0c00s1', path: ['r', 0, 's', 0, 'c', 0, 0, 's', 1], selected: 1},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertCSO(m))
+    _assert(test, result, (m: M) => mapMutations.insertCSO(m))
   })
   test('insertCRD', () => {
     const test = [
@@ -140,7 +140,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 2, 1]},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertCRD(m))
+    _assert(test, result, (m: M) => mapMutations.insertCRD(m))
   })
   test('insertCRU', () => {
     const test = [
@@ -173,7 +173,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 2, 1], selected: 1},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertCRU(m))
+    _assert(test, result, (m: M) => mapMutations.insertCRU(m))
   })
   test('insertCCR', () => {
     const test = [
@@ -206,7 +206,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 2]},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertCCR(m))
+    _assert(test, result, (m: M) => mapMutations.insertCCR(m))
   })
   test('insertCCL', () => {
     const test = [
@@ -239,7 +239,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 2], selected: 1},
       {nodeId: 'r0s0c11s0', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertCCL(m))
+    _assert(test, result, (m: M) => mapMutations.insertCCL(m))
   })
   test('insertSCRD', () => {
     const test = [
@@ -264,7 +264,7 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0c21', path: ['r', 0, 's', 0, 'c', 2, 1]},
       {nodeId: '_r0s0c21s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertSCRD(m))
+    _assert(test, result, (m: M) => mapMutations.insertSCRD(m))
   })
   test('insertSCRU', () => {
     const test = [
@@ -289,7 +289,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 2, 1]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertSCRU(m))
+    _assert(test, result, (m: M) => mapMutations.insertSCRU(m))
   })
   test('insertSCCR', () => {
     const test = [
@@ -314,7 +314,7 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0c12', path: ['r', 0, 's', 0, 'c', 1, 2]},
       {nodeId: '_r0s0c12s0', path: ['r', 0, 's', 0, 'c', 1, 2, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertSCCR(m))
+    _assert(test, result, (m: M) => mapMutations.insertSCCR(m))
   })
   test('insertSCCL', () => {
     const test = [
@@ -339,7 +339,7 @@ describe("MapInsertTests", () => {
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'r0s0c11', path: ['r', 0, 's', 0, 'c', 1, 2]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertSCCL(m))
+    _assert(test, result, (m: M) => mapMutations.insertSCCL(m))
   })
   test('insertTable', () => {
     const test = [
@@ -365,6 +365,6 @@ describe("MapInsertTests", () => {
       {nodeId: '_r0s0s0c21', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 1]},
       {nodeId: '_r0s0s0c21s0', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.insertSSOTable(m, {r: 3, c: 2}))
+    _assert(test, result, (m: M) => mapMutations.insertSSOTable(m, {r: 3, c: 2}))
   })
 })

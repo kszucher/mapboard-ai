@@ -13,7 +13,7 @@ import {mapBuild} from "./MapBuild.ts"
 import isEqual from "react-fast-compare"
 import {mapPrune} from "../mapQueries/MapPrune.ts"
 
-export const functions = {
+export const mapMutations = {
   setDensitySmall: (m: M) => getG(m).density = 'small',
   setDensityLarge: (m: M) => getG(m).density = 'large',
   setPlaceTypeExploded: (m: M) => getG(m).flow = Flow.EXPLODED,
@@ -186,12 +186,12 @@ export function wrapFunction<P>(fn: (m: M, payload: P) => void) {
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 export const wrappedFunctions: {
-  [K in keyof typeof functions]: (state: EditorState, action: PayloadAction<Parameters<typeof functions[K]>[1]>) => void
+  [K in keyof typeof mapMutations]: (state: EditorState, action: PayloadAction<Parameters<typeof mapMutations[K]>[1]>) => void
 } = {} as unknown
 
 
-for (const fnName of Object.keys(functions) as Array<keyof typeof functions>) {
-  const originalFunction = functions[fnName]
+for (const fnName of Object.keys(mapMutations) as Array<keyof typeof mapMutations>) {
+  const originalFunction = mapMutations[fnName]
   if (originalFunction) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error

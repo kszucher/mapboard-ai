@@ -1,7 +1,7 @@
 import {M, MPartial} from "../mapState/MapStateTypes.ts"
 import {_assert} from "./_assert.ts"
 import {Side} from "../consts/Enums.ts"
-import {functions} from "../mapMutations/MapMutation.ts"
+import {mapMutations} from "../mapMutations/MapMutations.ts"
 
 describe("MapMoveTests", () => {
   beforeEach(() => {})
@@ -41,7 +41,7 @@ describe("MapMoveTests", () => {
       {nodeId: '_r5', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20},
       {nodeId: '_r5s0', path: ['r', 5, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.duplicateR(m))
+    _assert(test, result, (m: M) => mapMutations.duplicateR(m))
   })
   test('duplicateS', () => {
     const test = [
@@ -75,7 +75,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s3', path: ['r', 0, 's', 5]},
       {nodeId: 'r0s3s0', path: ['r', 0, 's', 5, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.duplicateS(m))
+    _assert(test, result, (m: M) => mapMutations.duplicateS(m))
   })
   test('moveSD', () => {
     const test = [
@@ -106,7 +106,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s4', path: ['r', 0, 's', 4]},
       {nodeId: 'r0s4s0', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveSD(m))
+    _assert(test, result, (m: M) => mapMutations.moveSD(m))
   })
   test('moveST', () => {
     const test = [
@@ -137,7 +137,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2', path: ['r', 0, 's', 4]},
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveST(m))
+    _assert(test, result, (m: M) => mapMutations.moveST(m))
   })
   test('moveSU', () => {
     const test = [
@@ -168,7 +168,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s4', path: ['r', 0, 's', 4]},
       {nodeId: 'r0s4s0', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveSU(m))
+    _assert(test, result, (m: M) => mapMutations.moveSU(m))
   })
   test('moveSB', () => {
     const test = [
@@ -199,7 +199,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s1', path: ['r', 0, 's', 4], selected: 2},
       {nodeId: 'r0s1s0', path: ['r', 0, 's', 4, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveSB(m))
+    _assert(test, result, (m: M) => mapMutations.moveSB(m))
   })
   test('moveSO', () => {
     const test = [
@@ -228,7 +228,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s2s0', path: ['r', 0, 's', 0, 's', 3, 's', 0]},
       {nodeId: 'r0s2s1', path: ['r', 0, 's', 0, 's', 3, 's', 1]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveSO(m))
+    _assert(test, result, (m: M) => mapMutations.moveSO(m))
   })
   test('moveSI', () => {
     const test = [
@@ -257,7 +257,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s1', path: ['r', 0, 's', 3]},
       {nodeId: 'r0s1s0', path: ['r', 0, 's', 3, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveSI(m))
+    _assert(test, result, (m: M) => mapMutations.moveSI(m))
   })
   test('moveCRD', () => {
     const test = [
@@ -286,7 +286,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 2},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveCRD(m))
+    _assert(test, result, (m: M) => mapMutations.moveCRD(m))
   })
   test('moveCRU', () => {
     const test = [
@@ -315,7 +315,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c01', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'r0s0c01s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveCRU(m))
+    _assert(test, result, (m: M) => mapMutations.moveCRU(m))
   })
   test('moveCCR', () => {
     const test = [
@@ -344,7 +344,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 1], selected: 2},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveCCR(m))
+    _assert(test, result, (m: M) => mapMutations.moveCCR(m))
   })
   test('moveCCL', () => {
     const test = [
@@ -373,7 +373,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c10', path: ['r', 0, 's', 0, 'c', 1, 1]},
       {nodeId: 'r0s0c10s0', path: ['r', 0, 's', 0, 'c', 1, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveCCL(m))
+    _assert(test, result, (m: M) => mapMutations.moveCCL(m))
   })
   test('moveS2T', () => {
     const test = [
@@ -396,7 +396,7 @@ describe("MapMoveTests", () => {
       {nodeId: '_r0s0s0c20', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0]},
       {nodeId: 'r0s0s2', path: ['r', 0, 's', 0, 's', 0, 'c', 2, 0, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.moveS2T(m))
+    _assert(test, result, (m: M) => mapMutations.moveS2T(m))
   })
   test('transpose', () => {
     const test = [
@@ -433,6 +433,6 @@ describe("MapMoveTests", () => {
       {nodeId: 'r0s0c12', path: ['r', 0, 's', 0, 'c', 2, 1]},
       {nodeId: 'r0s0c12s0', path: ['r', 0, 's', 0, 'c', 2, 1, 's', 0]},
     ] as MPartial
-    _assert(test, result, (m: M) => functions.transpose(m))
+    _assert(test, result, (m: M) => mapMutations.transpose(m))
   })
 })
