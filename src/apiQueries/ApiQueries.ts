@@ -1,14 +1,15 @@
 import {DefaultGetIngestionQueryState, DefaultGetLatestMergedQueryState, DefaultUseOpenWorkspaceQueryState} from "../apiState/ApiStateTypes.ts"
 import {BaseQueryFn, EndpointBuilder} from "@reduxjs/toolkit/query"
+import {api} from "../api/Api.ts"
 
 export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({
     query: () => ({ url: 'open-workspace', method: 'POST' }),
-    async onQueryStarted(_, { queryFulfilled }) {
+    async onQueryStarted(_, { dispatch, queryFulfilled }) {
       try {
         await queryFulfilled
       } catch {
-        console.warn('openWorkspace fail')
+        dispatch(api.endpoints.selectMap.initiate({ mapId: ''}))
       }
     },
     providesTags: ['Workspace']
