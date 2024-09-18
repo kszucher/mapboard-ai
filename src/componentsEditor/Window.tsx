@@ -166,7 +166,7 @@ export const Window: FC = () => {
                     Object.hasOwn(el, 'nodeId') && typeof el.nodeId === 'string'
                   )
                   if (isValidMap) {
-                    const isPastedLR = mapJson.at(-1).path.at(0) === 'r'
+                    const isPastedLR = ['r', 'l'].includes(mapJson.at(-1).path.at(0))
                     const isPastedS = mapJson.at(-1).path.at(0) === 's'
                     if (isAXR(m)) {
                       if (isPastedLR) dispatch(actions.pasteLR(text))

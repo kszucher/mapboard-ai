@@ -9,6 +9,7 @@ export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>
       try {
         await queryFulfilled
       } catch {
+        // warning: in case of server error this runs infinitely
         dispatch(api.endpoints.selectMap.initiate({ mapId: ''}))
       }
     },

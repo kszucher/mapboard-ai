@@ -75,6 +75,7 @@ const clipboardToSC = (cb: M, sl: R | S | C, su: S | undefined) => {
 export const pasteLRSC = (m: M, payload: string) => {
   const lrsc = JSON.parse(payload) as M
   unselectNodes(m)
+  console.log('pushing',(lrsc))
   m.push(...clipboardToLRSC(m, lrsc))
 }
 
