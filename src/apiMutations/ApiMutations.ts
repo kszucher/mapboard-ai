@@ -87,6 +87,14 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
   deleteMap: builder.mutation<void, void>({
     query: () => ({ url: 'delete-map', method: 'POST', body: { mapId: getMapId() } }),
+    async onQueryStarted(_, { dispatch, queryFulfilled }) {
+      try {
+        await queryFulfilled
+        dispatch(api.endpoints.selectMap.initiate({ mapId: ''}))
+      } catch (err) {
+        console.warn(err)
+      }
+    },
     invalidatesTags: ['Workspace', 'Shares']
   }),
   createShare: builder.mutation<void, { shareEmail: string, shareAccess: string}>({
