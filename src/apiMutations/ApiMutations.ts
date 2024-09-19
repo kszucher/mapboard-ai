@@ -42,7 +42,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   createMapInMap: builder.mutation<void, { nodeId: string,  content: string }>({
     query: ({ nodeId, content }) => ({ url: 'create-map-in-map', method: 'POST', body: { mapId: getMapId(), nodeId, content} }),
     async onQueryStarted(_, { dispatch }) {
-      dispatch(api.endpoints.saveMap.initiate())
+      await dispatch(api.endpoints.saveMap.initiate())
     },
     invalidatesTags: ['Workspace']
   }),
