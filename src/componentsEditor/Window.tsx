@@ -22,7 +22,7 @@ export const Window: FC = () => {
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
   const commitList = useSelector((state: RootState) => state.editor.commitList)
   const m = (useSelector((state:RootState) => mSelector(state)))
-  const mExists = m && m.length
+  const mExists = m && Object.keys(m).length
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()
   const {access} = data || defaultUseOpenWorkspaceQueryState

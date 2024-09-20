@@ -28,7 +28,7 @@ export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
-  const mExists = m && m.length
+  const mExists = m && Object.keys(m).length
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
