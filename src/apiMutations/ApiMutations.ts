@@ -13,7 +13,6 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
       try {
         const { data } = await queryFulfilled
         dispatch(actions.setSessionId((data as any).sessionId))
-        dispatch(api.endpoints.selectMap.initiate({ mapId: ''}))
       } catch (err) {
         console.warn(err)
       }
