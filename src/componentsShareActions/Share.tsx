@@ -5,7 +5,7 @@ import {AccessType} from "../consts/Enums.ts"
 
 export const Share = () => {
   const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()
-  const errorMessage = (error as any)?.data?.message
+  const errorMessage = error && (error as { data: { detail: string } }).data.detail
   const [shareEmail, setShareEmail] = useState('')
   const [shareAccess, setShareAccess] = useState<AccessType>(AccessType.VIEW)
   return (
@@ -50,7 +50,7 @@ export const Share = () => {
             </Button>
           </Flex>
         }
-        {isError && <Text as="div" size="2" mt="4" color="crimson">{errorMessage}</Text>}
+        {isError && <Text as="div" size="2" mt="4" color="crimson">{errorMessage as string}</Text>}
         {isSuccess && <Text as="div" size="2" mt="4" color="grass">{'Successfully shared'}</Text>}
         {(isError || isSuccess) &&
           <Flex gap="3" mt="4" justify="end">
