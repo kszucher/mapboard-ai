@@ -19,9 +19,6 @@ export const editorSlice = createSlice({
     setToken(state, action: PayloadAction<string>) {
       state.token = action.payload
     },
-    setSessionId(state, action: PayloadAction<string>) {
-      state.sessionId = action.payload
-    },
     resetState() {
       return JSON.parse(editorStateDefault)
     },
@@ -186,8 +183,9 @@ export const editorSlice = createSlice({
     )
     builder.addMatcher(
       api.endpoints.signIn.matchFulfilled,
-      (state) => {
+      (state, { payload }) => {
         state.pageState = PageState.WS
+        state.sessionId = payload.sessionId
       }
     )
     builder.addMatcher(

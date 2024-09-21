@@ -7,16 +7,8 @@ import {mapDiff} from "../mapQueries/MapDiff.ts"
 import {getMapId} from "../editorQueries/EditorQueries.ts"
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
-  signIn: builder.mutation<void, void>({
+  signIn: builder.mutation<{ sessionId: string }, void>({
     query: () => ({ url: '/sign-in', method: 'POST' }),
-    async onQueryStarted(_, { dispatch, queryFulfilled }) {
-      try {
-        const { data } = await queryFulfilled
-        dispatch(actions.setSessionId((data as any).sessionId))
-      } catch (err) {
-        console.warn(err)
-      }
-    },
     invalidatesTags: ['Workspace']
   }),
   signOutEverywhere: builder.mutation<void, void>({
