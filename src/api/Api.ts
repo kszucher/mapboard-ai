@@ -9,10 +9,10 @@ export const api = createApi({
     baseUrl: pythonBackendUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).editor.token
-      const sessionId = (getState() as RootState).editor.sessionId
+      const connectionId = (getState() as RootState).editor.connectionId
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
-        headers.set('Server-Session-Id', sessionId)
+        headers.set('Connection-Id', connectionId)
       }
       return headers
     },

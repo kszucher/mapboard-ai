@@ -3,7 +3,7 @@ import {M} from "../mapState/MapStateTypes.ts"
 
 export interface EditorState {
   token: string
-  sessionId: string
+  connectionId: string
   isLoading: boolean
   leftMouseMode: LeftMouseMode
   midMouseMode: MidMouseMode

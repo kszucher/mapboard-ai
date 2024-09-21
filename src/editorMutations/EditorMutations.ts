@@ -185,7 +185,7 @@ export const editorSlice = createSlice({
       api.endpoints.signIn.matchFulfilled,
       (state, { payload }) => {
         state.pageState = PageState.WS
-        state.sessionId = payload.sessionId
+        state.connectionId = payload.connectionId
       }
     )
     builder.addMatcher(
