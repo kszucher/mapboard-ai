@@ -5,7 +5,7 @@ import {AppDispatch} from "../editorMutations/EditorMutations.ts"
 
 export const SharedWithMe = () => {
   const { data } = useGetSharesQuery()
-  let { shareDataImport } = data || { shareDataImport: [] }
+  const { shareDataImport } = data || { shareDataImport: [] }
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
@@ -38,7 +38,7 @@ export const SharedWithMe = () => {
                 </Table.Cell>}
               {el.status === 'accepted' &&
                 <Table.Cell>
-                  <Button size="1" variant="solid" onClick={() => dispatch(api.endpoints.deleteShare.initiate({shareId: el._id}))}>
+                  <Button size="1" variant="solid" onClick={() => dispatch(api.endpoints.rejectShare.initiate({shareId: el._id}))}>
                     {'Remove'}
                   </Button>
                 </Table.Cell>}

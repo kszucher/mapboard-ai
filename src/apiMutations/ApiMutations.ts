@@ -92,8 +92,12 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     query: ({ shareId }) => ({ url: 'update-share-status-accepted', method: 'POST', body: { shareId } }),
     invalidatesTags: ['Workspace', 'Shares']
   }),
-  deleteShare: builder.mutation<void, { shareId: string }>({
-    query: ({ shareId }) => ({ url: 'delete-share', method: 'POST', body: { shareId } }),
+  withdrawShare: builder.mutation<void, { shareId: string }>({
+    query: ({ shareId }) => ({ url: 'withdraw-share', method: 'POST', body: { shareId } }),
+    invalidatesTags: ['Workspace', 'Shares']
+  }),
+  rejectShare: builder.mutation<void, { shareId: string }>({
+    query: ({ shareId }) => ({ url: 'reject-share', method: 'POST', body: { shareId } }),
     invalidatesTags: ['Workspace', 'Shares']
   }),
   deleteAccount: builder.mutation<void, void>({
