@@ -174,7 +174,8 @@ export const editorSlice = createSlice({
         api.endpoints.moveDownMapInTab.matchPending,
         api.endpoints.deleteMap.matchPending,
         api.endpoints.updateShareStatusAccepted.matchPending,
-        api.endpoints.deleteShare.matchPending,
+        api.endpoints.withdrawShare.matchPending,
+        api.endpoints.rejectShare.matchPending,
         api.endpoints.deleteAccount.matchPending,
       ),
       (state) => {
