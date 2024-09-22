@@ -8,8 +8,8 @@ export interface DefaultUseOpenWorkspaceQueryState {
   tabMapIdList: string[]
   tabMapNameList: string[]
   tabId: number
-  // sharedMapIdList: string[]
-  // sharedMapNameList: {name: string}[]
+  sharedMapIdList: string[]
+  sharedMapNameList: string[]
   breadcrumbMapIdList: string[]
   breadcrumbMapNameList: string[]
   mapId: string

@@ -10,7 +10,7 @@ import ChevronRight from "../../assets/chevron-right.svg?react"
 
 export const EditorAppBarMid: FC = () => {
   const { data } = useOpenWorkspaceQuery()
-  const { breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList } = data || defaultUseOpenWorkspaceQueryState
+  const { breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList, sharedMapIdList, sharedMapNameList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">
@@ -21,9 +21,17 @@ export const EditorAppBarMid: FC = () => {
           </IconButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
+          <DropdownMenu.Label>{'My Maps'}</DropdownMenu.Label>
           {tabMapIdList.map((el: string, index) => (
             <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: el}))}>
               {tabMapNameList[index]}
+            </DropdownMenu.Item>
+          ))}
+          <DropdownMenu.Separator/>
+          <DropdownMenu.Label>{'Shared Maps'}</DropdownMenu.Label>
+          {sharedMapIdList.map((el: string, index) => (
+            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: el}))}>
+              {sharedMapNameList[index]}
             </DropdownMenu.Item>
           ))}
         </DropdownMenu.Content>
