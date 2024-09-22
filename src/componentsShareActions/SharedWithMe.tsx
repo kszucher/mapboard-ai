@@ -2,10 +2,11 @@ import {Button, Dialog, Flex, Table} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import {api, useGetSharesQuery} from "../api/Api.ts"
 import {AppDispatch} from "../editorMutations/EditorMutations.ts"
+import {defaultGetSharesQueryState} from "../apiState/ApiState.ts"
 
 export const SharedWithMe = () => {
   const { data } = useGetSharesQuery()
-  const { shareDataImport } = data || { shareDataImport: [] }
+  const { shareDataImport } = data || defaultGetSharesQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
@@ -24,7 +25,7 @@ export const SharedWithMe = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {shareDataImport.map((el: { _id: string, sharedMapName: string, ownerUserEmail: string, access: string, status: string  }) =>
+          {shareDataImport.map(el =>
             <Table.Row key={el._id}>
               <Table.RowHeaderCell>{el.sharedMapName}</Table.RowHeaderCell>
               <Table.Cell>{el.ownerUserEmail}</Table.Cell>

@@ -18,6 +18,23 @@ export interface DefaultUseOpenWorkspaceQueryState {
   mapMergeId: string,
 }
 
+export interface DefaultGetSharesQueryState {
+  shareDataImport: {
+    _id: string
+    sharedMapName: string
+    ownerUserEmail: string
+    access: string
+    status: string
+  }[]
+  shareDataExport: {
+    _id: string
+    sharedMapName: string
+    shareUserEmail: string
+    access: string
+    status: string
+  }[]
+}
+
 export interface DefaultGetLatestMergedQueryState {
   mapData: object,
   mapMergeId: string,
