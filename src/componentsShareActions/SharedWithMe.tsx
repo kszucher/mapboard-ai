@@ -32,7 +32,7 @@ export const SharedWithMe = () => {
               <Table.Cell>{el.status}</Table.Cell>
               {el.status === 'waiting' &&
                 <Table.Cell>
-                  <Button size="1" variant="solid" onClick={() => dispatch(api.endpoints.acceptShare.initiate({shareId: el._id}))}>
+                  <Button size="1" variant="solid" onClick={() => dispatch(api.endpoints.updateShareStatusAccepted.initiate({shareId: el._id}))}>
                     {'Accept'}
                   </Button>
                 </Table.Cell>}

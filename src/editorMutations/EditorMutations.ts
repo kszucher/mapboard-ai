@@ -173,7 +173,7 @@ export const editorSlice = createSlice({
         api.endpoints.moveUpMapInTab.matchPending,
         api.endpoints.moveDownMapInTab.matchPending,
         api.endpoints.deleteMap.matchPending,
-        api.endpoints.acceptShare.matchPending,
+        api.endpoints.updateShareStatusAccepted.matchPending,
         api.endpoints.deleteShare.matchPending,
         api.endpoints.deleteAccount.matchPending,
       ),
