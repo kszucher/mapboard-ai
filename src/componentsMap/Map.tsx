@@ -5,13 +5,14 @@ import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutation
 import {getG, getNodeMode} from "../mapQueries/MapQueries.ts"
 import {LeftMouseMode, NodeMode, MidMouseMode} from "../consts/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {MapDivS} from "./MapDivS.tsx"
+import {MapDivSText} from "./MapDivSText.tsx"
 import {setScrollLeftAnimated} from "./MapDivUtils.ts"
 import {MapSvg} from "./MapSvg.tsx"
 import {MapDivR} from "./MapDivR.tsx"
 import {MapDivC} from "./MapDivC.tsx"
 import {getColors} from "../consts/Colors.ts"
 import {getIntersectingNodes, mSelector} from "../editorQueries/EditorQueries.ts"
+import {MapDivSTextEdit} from "./MapDivSTextEdit.tsx"
 
 export const Map: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
@@ -122,7 +123,8 @@ export const Map: FC = () => {
       }}>
         <MapSvg/>
         <MapDivR/>
-        <MapDivS/>
+        <MapDivSText/>
+        <MapDivSTextEdit/>
         <MapDivC/>
       </div>
       <div/>
