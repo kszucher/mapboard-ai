@@ -1,5 +1,10 @@
-import {DefaultGetIngestionQueryState, DefaultGetLatestMergedQueryState, DefaultGetSharesQueryState, DefaultUseOpenWorkspaceQueryState} from "../apiState/ApiStateTypes.ts"
 import {BaseQueryFn, EndpointBuilder} from "@reduxjs/toolkit/query"
+import {
+  DefaultGetIngestionQueryState,
+  DefaultGetLatestMergedQueryState,
+  DefaultGetSharesQueryState,
+  DefaultUseOpenWorkspaceQueryState
+} from "../apiState/ApiStateTypes.ts"
 
 export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({

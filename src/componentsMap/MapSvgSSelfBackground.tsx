@@ -1,12 +1,12 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
-import {mS} from "../mapQueries/MapQueries.ts"
-import {getColors} from "../consts/Colors.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {RootState} from "../editorMutations/EditorMutations.ts"
-import {getArcPath} from "./MapSvgUtils.ts"
+import {RootState} from "../appStore/appStore.ts"
+import {getColors} from "../consts/Colors.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {mS} from "../mapQueries/MapQueries.ts"
+import {getArcPath} from "./MapSvgUtils.ts"
 
 export const MapSvgSelfBackgroundS: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

@@ -1,5 +1,5 @@
-import {MPartial} from "../mapState/MapStateTypes.ts"
 import isEqual from "react-fast-compare"
+import {MPartial} from "../mapState/MapStateTypes.ts"
 import {excludeEntries} from "../utils/Utils.ts"
 
 const recursiveMerge = (current: any, updates: any): {V0?: any, V1?: any} => {

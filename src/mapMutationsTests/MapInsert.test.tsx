@@ -1,6 +1,6 @@
+import {mapMutations} from "../mapMutations/MapMutations.ts"
 import {M, MPartial} from "../mapState/MapStateTypes.ts"
 import {_assert} from "./_assert.ts"
-import {mapMutations} from "../mapMutations/MapMutations.ts"
 
 describe("MapInsertTests", () => {
   beforeEach(() => {})

@@ -1,9 +1,9 @@
-import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {mapChain} from "../mapMutations/MapChain.ts"
 import {mapInit} from "../mapMutations/MapInit.ts"
 import {sortNode} from "../mapMutations/MapSort.ts"
-import {M, MPartial} from "../mapState/MapStateTypes.ts"
+import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {mL} from "../mapQueries/MapQueries.ts"
+import {M, MPartial} from "../mapState/MapStateTypes.ts"
 
 export const _assert = (test: MPartial, result: MPartial, fn: Function) => {
   const m = test as M

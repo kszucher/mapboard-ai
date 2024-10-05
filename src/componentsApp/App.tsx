@@ -1,10 +1,10 @@
 import {Auth0Provider} from "@auth0/auth0-react"
 import {FC} from 'react'
 import {useSelector} from "react-redux"
-import {RootState} from "../editorMutations/EditorMutations.ts"
+import {RootState} from "../appStore/appStore.ts"
+import {Editor} from "../componentsEditor/Editor.tsx"
 import {Landing} from "../componentsLanding/Landing.tsx"
 import {PageState} from "../consts/Enums.ts"
-import {Editor} from "../componentsEditor/Editor.tsx"
 
 export const App: FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)

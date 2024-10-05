@@ -1,7 +1,23 @@
-import {G, L, R, S, C, MPartial} from "../mapState/MapStateTypes.ts"
-import {gSaveAlways, gSaveNever, gSaveOptional, lSaveAlways, lSaveNever, lSaveOptional, rSaveAlways, rSaveNever, rSaveOptional, sSaveAlways, sSaveNever, sSaveOptional, cSaveAlways, cSaveNever, cSaveOptional,} from "../mapState/MapState.ts"
-import {excludeEntries, genId} from "../utils/Utils"
 import {isC, isG, isL, isR, isS} from "../mapQueries/PathQueries.ts"
+import {
+  cSaveAlways,
+  cSaveNever,
+  cSaveOptional,
+  gSaveAlways,
+  gSaveNever,
+  gSaveOptional,
+  lSaveAlways,
+  lSaveNever,
+  lSaveOptional,
+  rSaveAlways,
+  rSaveNever,
+  rSaveOptional,
+  sSaveAlways,
+  sSaveNever,
+  sSaveOptional,
+} from "../mapState/MapState.ts"
+import {C, G, L, MPartial, R, S} from "../mapState/MapStateTypes.ts"
+import {excludeEntries, genId} from "../utils/Utils"
 
 export const mapInit = (m: MPartial) => {
   m.forEach(ni => {

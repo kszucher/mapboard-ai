@@ -1,10 +1,10 @@
-import {sortNode, sortPath} from "./MapSort.ts"
-import {mapInit} from "./MapInit.ts"
-import {mapChain} from "./MapChain.ts"
+import {M} from "../mapState/MapStateTypes.ts"
 import {mapCalcTask} from "./MapCalcTask.ts"
+import {mapChain} from "./MapChain.ts"
+import {mapInit} from "./MapInit.ts"
 import {mapMeasure} from "./MapMeasure.ts"
 import {mapPlace} from "./MapPlace.ts"
-import {M} from "../mapState/MapStateTypes.ts"
+import {sortNode, sortPath} from "./MapSort.ts"
 
 export const mapBuild = (pm: M, m: M) => {
   m.sort(sortPath)

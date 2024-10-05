@@ -1,11 +1,24 @@
-import {getG, getLastIndexL, getLastIndexR, getAXS, getLXS, getXS, mC, mL, mR, mS, getAXC, getXC} from "../mapQueries/MapQueries.ts"
-import {rSaveOptional} from "../mapState/MapState.ts"
-import {M, PC, PS, R, S, C} from "../mapState/MapStateTypes.ts"
-import {genId} from "../utils/Utils"
+import {lrscToClipboard, scToClipboard} from "../mapQueries/MapExtract.ts"
 import {mapPrune} from "../mapQueries/MapPrune.ts"
+import {
+  getAXC,
+  getAXS,
+  getG,
+  getLastIndexL,
+  getLastIndexR,
+  getLXS,
+  getXC,
+  getXS,
+  mC,
+  mL,
+  mR,
+  mS
+} from "../mapQueries/MapQueries.ts"
+import {rSaveOptional} from "../mapState/MapState.ts"
+import {C, M, PC, PS, R, S} from "../mapState/MapStateTypes.ts"
+import {genId} from "../utils/Utils"
 import {unselectNodes} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
-import {lrscToClipboard, scToClipboard} from "../mapQueries/MapExtract.ts"
 
 const formatCb = (m: M) => "[\n" + m.map((e) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 

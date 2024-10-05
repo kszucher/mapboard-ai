@@ -1,16 +1,24 @@
-import {combineReducers, configureStore, createSlice, current, isAction, isAnyOf, PayloadAction} from "@reduxjs/toolkit"
-import {getMapX, getMapY} from "../componentsMap/MapDivUtils.ts"
-import {mapFindIntersecting} from "../mapQueries/MapFindIntersecting.ts"
-import {editorState, editorStateDefault} from "../editorState/EditorState.ts"
-import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MidMouseMode, PageState, Side} from "../consts/Enums.ts"
+import {createSlice, current, isAction, isAnyOf, PayloadAction} from "@reduxjs/toolkit"
+import React from "react"
 import {api} from "../api/Api.ts"
-import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
+import {getMapX, getMapY} from "../componentsMap/MapDivUtils.ts"
+import {
+  AlertDialogState,
+  DialogState,
+  FormatMode,
+  LeftMouseMode,
+  MidMouseMode,
+  PageState,
+  Side
+} from "../consts/Enums.ts"
+import {editorState, editorStateDefault} from "../editorState/EditorState.ts"
+import {EditorState} from "../editorState/EditorStateTypes.ts"
+import {mapBuild} from "../mapMutations/MapBuild.ts"
 import {wrappedFunctions} from "../mapMutations/MapMutations.ts"
+import {mapFindIntersecting} from "../mapQueries/MapFindIntersecting.ts"
+import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
 import {getXS, mapObjectToArray} from "../mapQueries/MapQueries.ts"
 import {R} from "../mapState/MapStateTypes.ts"
-import {EditorState} from "../editorState/EditorStateTypes.ts"
-import React from "react"
-import {mapBuild} from "../mapMutations/MapBuild.ts"
 
 export const editorSlice = createSlice({
   name: 'editor',
@@ -227,11 +235,3 @@ export const editorSlice = createSlice({
 })
 
 export const { actions } = editorSlice
-
-export const store = configureStore({
-  reducer: combineReducers({api: api.reducer, editor: editorSlice.reducer}),
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(api.middleware)
-})
-
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch

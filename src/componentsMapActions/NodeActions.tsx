@@ -1,10 +1,11 @@
-import {DropdownMenu, Dialog, IconButton} from "@radix-ui/themes"
+import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
-import {getNodeMode, getAXS, getFXS, getLXS, getXR, getXS, isAXRS, isAXSN} from "../mapQueries/MapQueries.ts"
 import Dots from "../../assets/dots.svg?react"
+import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {ControlType, DialogState, NodeMode} from "../consts/Enums.ts"
+import {actions} from "../editorMutations/EditorMutations.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {getAXS, getFXS, getLXS, getNodeMode, getXR, getXS, isAXRS, isAXSN} from "../mapQueries/MapQueries.ts"
 
 export const NodeActions = () => {
   const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)

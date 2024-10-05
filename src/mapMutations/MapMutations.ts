@@ -1,17 +1,81 @@
-import {getAXC, getAXS, getFXS, getG, getLXS, getQuasiSD, getQuasiSU, getXC, getXR, getXS, idToC, idToR, idToS, mC, mR, mS, pathToC, pathToR, pathToS} from "../mapQueries/MapQueries.ts"
+import {current, PayloadAction} from "@reduxjs/toolkit"
+import isEqual from "react-fast-compare"
 import {ControlType, Flow, LineType} from "../consts/Enums"
+import {EditorState} from "../editorState/EditorStateTypes.ts"
+import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
+import {mapPrune} from "../mapQueries/MapPrune.ts"
+import {
+  getAXC,
+  getAXS,
+  getFXS,
+  getG,
+  getLXS,
+  getQuasiSD,
+  getQuasiSU,
+  getXC,
+  getXR,
+  getXS,
+  idToC,
+  idToR,
+  idToS,
+  mC,
+  mR,
+  mS,
+  pathToC,
+  pathToR,
+  pathToS
+} from "../mapQueries/MapQueries.ts"
 import {sSaveOptional} from "../mapState/MapState.ts"
 import {L, M, PC, PR, PS, R, S} from "../mapState/MapStateTypes.ts"
-import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
-import {insertCCL, insertCCR, insertCRD, insertCRU, insertCSO, insertL, insertR, insertRSO, insertSCCL, insertSCCR, insertSCRD, insertSCRU, insertSD, insertSSO, insertSU, insertTable} from "./MapInsert"
-import {copyLRSC, copySC, duplicateLRSC, duplicateSC, moveCCL, moveCCR, moveCRD, moveCRU, moveS2T, moveSC, pasteLRSC, pasteSC, transpose} from "./MapMove"
-import {selectAddR, selectAddS, selectC, selectCL, selectR, selectRL, selectS, selectSL, unselectC, unselectNodes, unselectR, unselectS} from "./MapSelect"
-import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
-import {EditorState} from "../editorState/EditorStateTypes.ts"
-import {current, PayloadAction} from "@reduxjs/toolkit"
 import {mapBuild} from "./MapBuild.ts"
-import isEqual from "react-fast-compare"
-import {mapPrune} from "../mapQueries/MapPrune.ts"
+import {deleteCC, deleteCR, deleteL, deleteLRSC, deleteS,} from "./MapDelete"
+import {
+  insertCCL,
+  insertCCR,
+  insertCRD,
+  insertCRU,
+  insertCSO,
+  insertL,
+  insertR,
+  insertRSO,
+  insertSCCL,
+  insertSCCR,
+  insertSCRD,
+  insertSCRU,
+  insertSD,
+  insertSSO,
+  insertSU,
+  insertTable
+} from "./MapInsert"
+import {
+  copyLRSC,
+  copySC,
+  duplicateLRSC,
+  duplicateSC,
+  moveCCL,
+  moveCCR,
+  moveCRD,
+  moveCRU,
+  moveS2T,
+  moveSC,
+  pasteLRSC,
+  pasteSC,
+  transpose
+} from "./MapMove"
+import {
+  selectAddR,
+  selectAddS,
+  selectC,
+  selectCL,
+  selectR,
+  selectRL,
+  selectS,
+  selectSL,
+  unselectC,
+  unselectNodes,
+  unselectR,
+  unselectS
+} from "./MapSelect"
 
 export const mapMutations = {
   setDensitySmall: (m: M) => getG(m).density = 'small',
@@ -188,7 +252,6 @@ export function wrapFunction<P>(fn: (m: M, payload: P) => void) {
 export const wrappedFunctions: {
   [K in keyof typeof mapMutations]: (state: EditorState, action: PayloadAction<Parameters<typeof mapMutations[K]>[1]>) => void
 } = {} as unknown
-
 
 for (const fnName of Object.keys(mapMutations) as Array<keyof typeof mapMutations>) {
   const originalFunction = mapMutations[fnName]

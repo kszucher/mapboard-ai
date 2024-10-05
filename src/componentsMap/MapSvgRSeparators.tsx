@@ -1,17 +1,17 @@
 import {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../editorMutations/EditorMutations.ts"
-import {mR} from "../mapQueries/MapQueries.ts"
+import {RootState} from "../appStore/appStore.ts"
 import {ControlType} from "../consts/Enums.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {mR} from "../mapQueries/MapQueries.ts"
 import {adjust} from "../utils/Utils.ts"
 import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvgRSeparators: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   return (
-    connectionHelpersVisible &&
+    connectionHelpersVisible && // use flatMap
     mR(m).filter(ri => ri.controlType !== ControlType.NONE).map(ri => (
       <Fragment key={`${ri.nodeId}_separator`}>
         <path

@@ -1,5 +1,5 @@
+import {getAXC, getAXS, idToL, mL, mR} from "../mapQueries/MapQueries.ts"
 import {M, T} from "../mapState/MapStateTypes.ts"
-import {mL, mR, getAXS, getAXC, idToL} from "../mapQueries/MapQueries.ts"
 
 const deleteTL = (m: M, tl: T[]) => tl.map(x => m.findIndex(ti => ti === x)).sort((a, b) => b - a).forEach(index => index !== - 1 && m.splice(index, 1))
 

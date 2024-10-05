@@ -2,15 +2,30 @@ import {Box, Button, Flex, IconButton, Select} from "@radix-ui/themes"
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
-import {actions, AppDispatch, RootState} from '../editorMutations/EditorMutations.ts'
-import {getFBorderColor, getFBorderWidth, getFFillColor, getLineColor, getLineType, getLineWidth, getSBorderColor, getSBorderWidth, getSFillColor, getTextColor, getTextFontSize, isAXR, isAXS} from "../mapQueries/MapQueries.ts"
-import {AccessType, FormatMode, LineType, TextType, WidthType} from "../consts/Enums.ts"
-import {FBorderIcon, FFillIcon, SFillIcon, SBorderIcon} from "../assetsCustom/CustomIcons.tsx"
 import LetterT from "../../assets/letter-t.svg?react"
 import VectorSpline from "../../assets/vector-spline.svg?react"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
+import {AppDispatch, RootState} from "../appStore/appStore.ts"
+import {FBorderIcon, FFillIcon, SBorderIcon, SFillIcon} from "../assetsCustom/CustomIcons.tsx"
+import {AccessType, FormatMode, LineType, TextType, WidthType} from "../consts/Enums.ts"
+import {actions} from '../editorMutations/EditorMutations.ts'
 import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {
+  getFBorderColor,
+  getFBorderWidth,
+  getFFillColor,
+  getLineColor,
+  getLineType,
+  getLineWidth,
+  getSBorderColor,
+  getSBorderWidth,
+  getSFillColor,
+  getTextColor,
+  getTextFontSize,
+  isAXR,
+  isAXS
+} from "../mapQueries/MapQueries.ts"
 
 const getKeys = (type: object) => Object.keys(type).filter(xn => !(parseInt(xn) >= 0))
 

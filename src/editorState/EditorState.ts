@@ -1,5 +1,13 @@
+import {
+  AlertDialogState,
+  DialogState,
+  FormatMode,
+  LeftMouseMode,
+  MidMouseMode,
+  PageState,
+  Side
+} from "../consts/Enums.ts"
 import {EditorState} from "./EditorStateTypes.ts"
-import {AlertDialogState, DialogState, FormatMode, LeftMouseMode, MidMouseMode, PageState, Side} from "../consts/Enums.ts"
 
 export const editorState: EditorState = {
   token: '',

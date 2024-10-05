@@ -1,8 +1,19 @@
-import {M} from "../mapState/MapStateTypes.ts"
-import {gSaveAlways, gSaveOptional, lSaveAlways, lSaveOptional, rSaveAlways, rSaveOptional, sSaveAlways, sSaveOptional, cSaveAlways, cSaveOptional} from "../mapState/MapState.ts"
 import {sortNode} from "../mapMutations/MapSort.ts"
-import {mG, mL, mR, mS, mC} from "./MapQueries.ts"
-import {includeEntries, getNonDefaultEntries} from "../utils/Utils.ts"
+import {
+  cSaveAlways,
+  cSaveOptional,
+  gSaveAlways,
+  gSaveOptional,
+  lSaveAlways,
+  lSaveOptional,
+  rSaveAlways,
+  rSaveOptional,
+  sSaveAlways,
+  sSaveOptional
+} from "../mapState/MapState.ts"
+import {M} from "../mapState/MapStateTypes.ts"
+import {getNonDefaultEntries, includeEntries} from "../utils/Utils.ts"
+import {mC, mG, mL, mR, mS} from "./MapQueries.ts"
 
 export const mapPrune = (m: M) => {
   return ([

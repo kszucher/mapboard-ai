@@ -1,18 +1,20 @@
 import {FC, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
-import {getG, getNodeMode} from "../mapQueries/MapQueries.ts"
-import {LeftMouseMode, NodeMode, MidMouseMode} from "../consts/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
+import {AppDispatch, RootState} from "../appStore/appStore.ts"
+import {getColors} from "../consts/Colors.ts"
+import {LeftMouseMode, MidMouseMode, NodeMode} from "../consts/Enums.ts"
+import {actions} from "../editorMutations/EditorMutations.ts"
+import {getIntersectingNodes, mSelector} from "../editorQueries/EditorQueries.ts"
+import {getG, getNodeMode} from "../mapQueries/MapQueries.ts"
+import {MapDivC} from "./MapDivC.tsx"
+import {MapDivL} from "./MapDivL.tsx"
+import {MapDivR} from "./MapDivR.tsx"
 import {MapDivSText} from "./MapDivSText.tsx"
+import {MapDivSTextEdit} from "./MapDivSTextEdit.tsx"
 import {setScrollLeftAnimated} from "./MapDivUtils.ts"
 import {MapSvg} from "./MapSvg.tsx"
-import {MapDivR} from "./MapDivR.tsx"
-import {MapDivC} from "./MapDivC.tsx"
-import {getColors} from "../consts/Colors.ts"
-import {getIntersectingNodes, mSelector} from "../editorQueries/EditorQueries.ts"
-import {MapDivSTextEdit} from "./MapDivSTextEdit.tsx"
 
 export const Map: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
@@ -122,6 +124,7 @@ export const Map: FC = () => {
         transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`
       }}>
         <MapSvg/>
+        <MapDivL/>
         <MapDivR/>
         <MapDivSText/>
         <MapDivSTextEdit/>

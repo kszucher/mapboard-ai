@@ -1,6 +1,6 @@
-import {getG, isAXCC, isAXCR, getAXC, getXC, pathToC, pathToR, idToR} from "../mapQueries/MapQueries.ts"
 import {INDENT, S_LINE_DELTA_X_DEFAULT, TASK_CIRCLES_GAP, TASK_CIRCLES_NUM} from "../consts/Dimensions.ts"
-import {LineType, Flow, Side} from "../consts/Enums.ts"
+import {Flow, LineType, Side} from "../consts/Enums.ts"
+import {getAXC, getG, getXC, idToR, isAXCC, isAXCR, pathToC, pathToR} from "../mapQueries/MapQueries.ts"
 import {C, G, L, M, PR, R, S} from "../mapState/MapStateTypes.ts"
 import {adjust} from "../utils/Utils.ts"
 
@@ -133,7 +133,6 @@ export const getPolygonPath = (m: M, t: R | S | C, mode: string, margin: number)
     case 'sFamily': {
       const g = getG(m)
       if (g.flow === Flow.EXPLODED) {
-        const g = getG(m)
         ax = t.nodeStartX
         bx = t.nodeStartX + t.selfW + S_LINE_DELTA_X_DEFAULT[g.density]
         cx = t.nodeStartX + t.maxW

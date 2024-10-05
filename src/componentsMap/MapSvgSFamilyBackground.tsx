@@ -1,26 +1,20 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {mS} from "../mapQueries/MapQueries.ts"
-import {RootState} from "../editorMutations/EditorMutations.ts"
-import {getPolygonPath} from "./MapSvgUtils.ts"
+import {RootState} from "../appStore/appStore.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {mS} from "../mapQueries/MapQueries.ts"
+import {getPolygonPath, pathCommonProps} from "./MapSvgUtils.ts"
 
 export const MapSvgSFamilyBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   return (
-    mS(m).map(si => (
-      si.fFillColor &&
+    mS(m).filter(si => si.fFillColor).map(si =>
       <path
         key={`${si.nodeId}_fFillColor`}
         d={getPolygonPath(m, si, 'sFamily', 0)}
         fill={si.fFillColor}
-        {...{vectorEffect: 'non-scaling-stroke'}}
-        style={{
-          transition: 'all 0.3s',
-          transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-          transitionProperty: 'd, fill, stroke-width',
-        }}
+        {...pathCommonProps}
       />
-    ))
+    )
   )
 }

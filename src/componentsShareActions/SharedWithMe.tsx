@@ -1,8 +1,8 @@
 import {Button, Dialog, Flex, Table} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import {api, useGetSharesQuery} from "../api/Api.ts"
-import {AppDispatch} from "../editorMutations/EditorMutations.ts"
 import {defaultGetSharesQueryState} from "../apiState/ApiState.ts"
+import {AppDispatch} from "../appStore/appStore.ts"
 
 export const SharedWithMe = () => {
   const { data } = useGetSharesQuery()

@@ -1,9 +1,10 @@
 import {Button, Dialog, Flex, TextArea} from "@radix-ui/themes"
 import {useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
-import {getXS} from "../mapQueries/MapQueries.ts"
+import {AppDispatch, RootState} from "../appStore/appStore.ts"
+import {actions} from "../editorMutations/EditorMutations.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {getXS} from "../mapQueries/MapQueries.ts"
 
 export const NodeActionsEditContentEquation = () => {
   const m = useSelector((state:RootState) => mSelector(state))

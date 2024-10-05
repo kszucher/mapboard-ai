@@ -1,13 +1,13 @@
 import './index.css'
 import ReactDOM from 'react-dom/client'
 import {Provider} from "react-redux"
-import {store} from "./editorMutations/EditorMutations.ts"
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import {appStore} from "./appStore/appStore.ts"
 import {App} from "./componentsApp/App"
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import '@radix-ui/themes/styles.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <Provider store={store}>
+  <Provider store={appStore}>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}/>

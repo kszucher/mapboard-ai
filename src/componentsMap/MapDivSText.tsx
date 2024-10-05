@@ -1,15 +1,14 @@
-// @ts-ignore
-import katex from "katex/dist/katex.mjs"
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
-import {getG, getNodeMode, getAXS, getXS, isAXS, mS} from "../mapQueries/MapQueries.ts"
-import {LeftMouseMode, NodeMode} from "../consts/Enums.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {adjust} from "../utils/Utils.ts"
+import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {getColors} from "../consts/Colors.ts"
+import {LeftMouseMode, NodeMode} from "../consts/Enums.ts"
+import {actions} from "../editorMutations/EditorMutations.ts"
 import {getInsertLocation, mSelector} from "../editorQueries/EditorQueries.ts"
+import {getAXS, getG, getNodeMode, getXS, isAXS, mS} from "../mapQueries/MapQueries.ts"
+import {adjust} from "../utils/Utils.ts"
 
 // const getInnerHtml = (s: S) => {
 //   if (s.contentType === 'text') {
@@ -33,7 +32,7 @@ export const MapDivSText: FC = () => {
   const C = getColors(colorMode)
   const dispatch = useDispatch<AppDispatch>()
   return (
-    mS(m).filter(si => si.contentType === 'text' && si.nodeId !== editedNodeId).map(si => (
+    mS(m).filter(si => si.contentType === 'text' && si.nodeId !== editedNodeId).map(si =>
       <div
         key={si.nodeId}
         id={si.nodeId}
@@ -118,10 +117,21 @@ export const MapDivSText: FC = () => {
           }
         }}
       >
-        {si.content.split(/<br\s*\/?>/).map((line, index) => (
-          <div key={index}>{line}</div>
-        ))}
+        {si.content
+          .replace(/&nbsp;|&amp;|&gt;|&lt;/g, (match) => {
+            switch (match) {
+              case '&nbsp;': return ' ';
+              case '&amp;': return '&';
+              case '&gt;': return '>';
+              case '&lt;': return '<';
+              default: return match;
+            }
+          })
+          .split(/<br\s*\/?>/)
+          .map((line, index) => (
+            <div key={index}>{line}</div>
+          ))}
       </div>
-    ))
+    )
   )
 }

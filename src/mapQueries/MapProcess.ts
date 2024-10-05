@@ -1,7 +1,7 @@
 import {Side} from "../consts/Enums"
 import {M, PS} from "../mapState/MapStateTypes.ts"
 import {SubProcess} from "./MapProcessTypes.ts"
-import {mL, mS, mR, pathToS} from "./MapQueries.ts"
+import {mL, mR, mS, pathToS} from "./MapQueries.ts"
 
 const getAllDependencies = (subProcessId: string, subProcessList: SubProcess[]): string[] => {
   const process = subProcessList.find(el => el.subProcessId === subProcessId)

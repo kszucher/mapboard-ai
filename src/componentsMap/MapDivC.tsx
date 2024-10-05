@@ -1,10 +1,11 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {actions, AppDispatch, RootState} from "../editorMutations/EditorMutations.ts"
-import {getNodeMode, mC} from "../mapQueries/MapQueries.ts"
+import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {LeftMouseMode, NodeMode} from "../consts/Enums.ts"
-import {adjust} from "../utils/Utils.ts"
+import {actions} from "../editorMutations/EditorMutations.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {getNodeMode, mC} from "../mapQueries/MapQueries.ts"
+import {adjust} from "../utils/Utils.ts"
 
 export const MapDivC: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
@@ -43,8 +44,7 @@ export const MapDivC: FC = () => {
             e.preventDefault()
           }
         }}
-      >
-      </div>
+      />
     ))
   )
 }

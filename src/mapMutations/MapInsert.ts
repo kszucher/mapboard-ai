@@ -1,6 +1,16 @@
-import {C, LPartial, M, PS, L, R, S} from "../mapState/MapStateTypes.ts"
+import {
+  getAXC,
+  getFXS,
+  getG,
+  getLastIndexL,
+  getLastIndexR,
+  getLXS,
+  getXC,
+  getXR,
+  getXS
+} from "../mapQueries/MapQueries.ts"
+import {C, L, LPartial, M, PS, R, S} from "../mapState/MapStateTypes.ts"
 import {unselectNodes} from "./MapSelect"
-import {getAXC, getFXS, getG, getLastIndexL, getLastIndexR, getLXS, getXC, getXR, getXS} from "../mapQueries/MapQueries.ts"
 
 export const insertL = (m: M, lPartial: Omit<LPartial, 'nodeId' | 'path'>) => {
   m.push({path: ['l', getLastIndexL(m) + 1], ...lPartial} as L)

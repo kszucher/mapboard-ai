@@ -1,9 +1,8 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../editorMutations/EditorMutations.ts"
-import {getG} from "../mapQueries/MapQueries.ts"
-
+import {RootState} from "../appStore/appStore.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {getG} from "../mapQueries/MapQueries.ts"
 
 export const MapSvgGBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

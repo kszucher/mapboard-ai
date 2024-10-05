@@ -1,8 +1,8 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import {RootState} from "../editorMutations/EditorMutations.ts"
-import {pythonBackendUrl} from "../urls/Urls.ts"
-import {apiQueries} from "../apiQueries/ApiQueries.ts"
 import {apiMutations} from "../apiMutations/ApiMutations.ts"
+import {apiQueries} from "../apiQueries/ApiQueries.ts"
+import {RootState} from "../appStore/appStore.ts"
+import {pythonBackendUrl} from "../urls/Urls.ts"
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({

@@ -1,4 +1,5 @@
 import isEqual from "react-fast-compare"
+
 export const hasTrues = (array: any[]): boolean => array.length > 0 && array.every(el => el === true)
 export const hasEquals = (array: any[]): boolean => array.length > 0 && array.every(el => isEqual(el, array[0]))
 export const getEquals = (array: any[]): any => array.length > 0 && array.every(el => el === array[0]) ? array[0] : undefined

@@ -1,6 +1,6 @@
-import {M, PR, PS, PC} from "../mapState/MapStateTypes.ts"
-import {getAXR, getAXS, getFXS, getXS, idToR, mL} from "./MapQueries.ts"
 import {rSaveOptional, sSaveOptional} from "../mapState/MapState.ts"
+import {M, PC, PR, PS} from "../mapState/MapStateTypes.ts"
+import {getAXR, getAXS, getFXS, getXS, idToR, mL} from "./MapQueries.ts"
 
 export const lrscToClipboard = (m: M): M => {
   const rMap = new Map(getAXR(m).map(((ri, i) => [ri.path.at(1), i])))

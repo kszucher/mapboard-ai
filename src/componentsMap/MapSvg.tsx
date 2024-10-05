@@ -1,29 +1,28 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../editorMutations/EditorMutations.ts"
+import {RootState} from "../appStore/appStore.ts"
+import {mSelector} from "../editorQueries/EditorQueries.ts"
 import {getG} from "../mapQueries/MapQueries.ts"
+import {MapSvgCAttributes} from "./MapSvgCAttributes.tsx"
+import {MapSvgCSelection} from "./MapSvgCSelection.tsx"
 import {MapSvgGBackground} from "./MapSvgGBackground.tsx"
+import {MapSvgL} from "./MapSvgL.tsx"
+import {MapSvgRBackground} from "./MapSvgRBackground.tsx"
+import {MapSvgRConnectors} from "./MapSvgRConnectors.tsx"
+import {MapSvgRIcons} from "./MapSvgRIcons.tsx"
+import {MapSvgRMove} from "./MapSvgRMove.tsx"
+import {MapSvgRSelection} from "./MapSvgRSelection.tsx"
+import {MapSvgRSeparators} from "./MapSvgRSeparators.tsx"
+import {MapSvgSAttributes} from "./MapSvgSAttributes.tsx"
+import {MapSvgSFamilyBackground} from "./MapSvgSFamilyBackground.tsx"
 import {MapSvgSFamilyBorder} from "./MapSvgSFamilyBorder.tsx"
+import {MapSvgSMove} from "./MapSvgSMove.tsx"
+import {MapSvgSSelection} from "./MapSvgSSelection.tsx"
+import {MapSvgSSelectionArea} from "./MapSvgSSelectionArea.tsx"
+import {MapSvgSSelectionPreview} from "./MapSvgSSelectionPreview.tsx"
+import {MapSvgSelfBackgroundS} from "./MapSvgSSelfBackground.tsx"
 import {MapSvgSSelfBorder} from "./MapSvgSSelfBorder.tsx"
 import {MapSvgSTasks} from "./MapSvgSTasks.tsx"
-import {MapSvgRBackground} from "./MapSvgRBackground.tsx"
-import {MapSvgLRConnectors} from "./MapSvgLRConnectors.tsx"
-import {MapSvgSFamilyBackground} from "./MapSvgSFamilyBackground.tsx"
-import {MapSvgSelfBackgroundS} from "./MapSvgSSelfBackground.tsx"
-import {MapSvgSAttributes} from "./MapSvgSAttributes.tsx"
-import {MapSvgCAttributes} from "./MapSvgCAttributes.tsx"
-import {MapSvgRMove} from "./MapSvgRMove.tsx"
-import {MapSvgRSeparators} from "./MapSvgRSeparators.tsx"
-import {MapSvgRSelectionSecondary} from "./MapSvgRSelectionSecondary.tsx"
-import {MapSvgSSelectionSecondary} from "./MapSvgSSelectionSecondary.tsx"
-import {MapSvgRSelectionPrimary} from "./MapSvgRSelectionPrimary.tsx"
-import {MapSvgSSelectionPrimary} from "./MapSvgSSelectionPrimary.tsx"
-import {MapSvgCSelectionPrimary} from "./MapSvgCSelectionPrimary.tsx"
-import {MapSvgSSelectionPreview} from "./MapSvgSSelectionPreview.tsx"
-import {MapSvgSSelectionArea} from "./MapSvgSSelectionArea.tsx"
-import {MapSvgSMove} from "./MapSvgSMove.tsx"
-import {MapSvgRIcons} from "./MapSvgRIcons.tsx"
-import {mSelector} from "../editorQueries/EditorQueries.ts"
 
 export const MapSvg: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -36,6 +35,7 @@ export const MapSvg: FC = () => {
       style={{transition: '0.3s ease-out'}}
     >
       <MapSvgGBackground/>
+      <MapSvgL/>
       <MapSvgRBackground/>
       <MapSvgRSeparators/>
       <MapSvgSFamilyBackground/>
@@ -45,17 +45,15 @@ export const MapSvg: FC = () => {
       <MapSvgSAttributes/>
       <MapSvgCAttributes/>
       <MapSvgSTasks/>
-      <MapSvgRSelectionSecondary/>
-      <MapSvgSSelectionSecondary/>
-      <MapSvgRSelectionPrimary/>
-      <MapSvgSSelectionPrimary/>
-      <MapSvgCSelectionPrimary/>
+      <MapSvgRSelection/>
+      <MapSvgSSelection/>
+      <MapSvgCSelection/>
       <MapSvgSSelectionPreview/>
       <MapSvgSSelectionArea/>
       <MapSvgRMove/>
       <MapSvgSMove/>
       <MapSvgRIcons/>
-      <MapSvgLRConnectors/>
+      <MapSvgRConnectors/>
     </svg>
   )
 }

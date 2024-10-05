@@ -1,5 +1,10 @@
 import {AccessType} from "../consts/Enums.ts"
-import {DefaultGetIngestionQueryState, DefaultGetLatestMergedQueryState, DefaultGetSharesQueryState, DefaultUseOpenWorkspaceQueryState} from "./ApiStateTypes.ts"
+import {
+  DefaultGetIngestionQueryState,
+  DefaultGetLatestMergedQueryState,
+  DefaultGetSharesQueryState,
+  DefaultUseOpenWorkspaceQueryState
+} from "./ApiStateTypes.ts"
 
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   userName: '',
