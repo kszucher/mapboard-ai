@@ -7,9 +7,6 @@ export enum DialogState {
   NONE,
   SHARED_BY_ME,
   SHARED_WITH_ME,
-  EDIT_CONTENT_EQUATION,
-  CREATE_TABLE_O,
-  CREATE_MAP_IN_MAP,
   SHARE_THIS_MAP,
   RENAME_MAP,
   ROOT_INGESTION,
@@ -25,10 +22,6 @@ export enum NodeMode {
   VIEW = 'View',
   EDIT_LINE = 'Edit Line',
   EDIT_ROOT = 'Edit Root',
-  EDIT_STRUCT = 'Edit Struct',
-  EDIT_CELL = 'Edit Cell',
-  EDIT_CELL_ROW = 'Edit Cell Row',
-  EDIT_CELL_COLUMN = 'Edit Cell Column'
 }
 
 export enum LeftMouseMode {
@@ -48,35 +41,6 @@ export enum AccessType {
   EDIT = 'edit'
 }
 
-export enum FormatMode {
-  text,
-  sBorder,
-  fBorder,
-  sFill,
-  fFill,
-  line
-}
-
-export enum TextType {
-  h1 = 36,
-  h2 = 24,
-  h3 = 18,
-  h4 = 16,
-  t = 14
-}
-
-export enum WidthType {
-  w0 = 0,
-  w1 = 1,
-  w2,
-  w3
-}
-
-export enum LineType {
-  bezier,
-  edge
-}
-
 export enum Side {
   L = 'left',
   R = 'right',
@@ -93,9 +57,4 @@ export enum ControlType {
 export enum SubProcessType {
   INGESTION = 'ingestion',
   EXTRACTION = 'extraction'
-}
-
-export enum Flow {
-  EXPLODED = 'exploded',
-  INDENTED = 'indented'
 }

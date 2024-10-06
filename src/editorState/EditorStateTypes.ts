@@ -1,12 +1,4 @@
-import {
-  AlertDialogState,
-  DialogState,
-  FormatMode,
-  LeftMouseMode,
-  MidMouseMode,
-  PageState,
-  Side
-} from "../consts/Enums.ts"
+import {AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState, Side} from "../consts/Enums.ts"
 import {M} from "../mapState/MapStateTypes.ts"
 
 export interface EditorState {
@@ -18,7 +10,6 @@ export interface EditorState {
   pageState: PageState
   dialogState: DialogState
   alertDialogState: AlertDialogState
-  formatMode: FormatMode
   mapId: string
   commitList: M[]
   commitIndex: number

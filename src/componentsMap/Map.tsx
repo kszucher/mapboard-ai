@@ -4,16 +4,12 @@ import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {getColors} from "../consts/Colors.ts"
-import {LeftMouseMode, MidMouseMode, NodeMode} from "../consts/Enums.ts"
+import {LeftMouseMode, MidMouseMode} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
-import {getIntersectingNodes, mSelector} from "../editorQueries/EditorQueries.ts"
-import {getG, getNodeMode} from "../mapQueries/MapQueries.ts"
-import {MapDivC} from "./MapDivC.tsx"
+import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {getG} from "../mapQueries/MapQueries.ts"
 import {MapDivL} from "./MapDivL.tsx"
 import {MapDivR} from "./MapDivR.tsx"
-import {MapDivSText} from "./MapDivSText.tsx"
-import {MapDivSTextEdit} from "./MapDivSTextEdit.tsx"
-import {setScrollLeftAnimated} from "./MapDivUtils.ts"
 import {MapSvg} from "./MapSvg.tsx"
 
 export const Map: FC = () => {
@@ -21,9 +17,7 @@ export const Map: FC = () => {
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
   const m = useSelector((state:RootState) => mSelector(state))
-  const nodeMode = getNodeMode(m)
   const g = getG(m)
-  const { density } = g
   const { data } = useOpenWorkspaceQuery()
   const { mapId, colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
@@ -53,12 +47,6 @@ export const Map: FC = () => {
     }}, [mapId]
   )
 
-  useEffect(() => {
-    if (mainMapDiv.current) {
-      setScrollLeftAnimated((window.innerWidth + g.selfW) / 2, 500)
-    }}, [density]
-  )
-
   return (
     <div
       style={{
@@ -75,20 +63,11 @@ export const Map: FC = () => {
         if (e.button === 1 && e.buttons === 4) {
           e.preventDefault()
         }
-        if (e.button === 0) {
-          if (leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-            dispatch(actions.saveFromCoordinates({e}))
-          }
-        }
-        let didMove = false
         const abortController = new AbortController()
         const { signal } = abortController
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
-          didMove = true
-          if (e.button === 0 && e.buttons === 1 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-            dispatch(actions.selectSByRectanglePreview({e}))
-          } else if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
+          if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
             setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX)
             setScrollTop(document.documentElement.scrollTop - e.movementY)
           }
@@ -96,10 +75,6 @@ export const Map: FC = () => {
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          if (didMove && e.button === 0 && leftMouseMode === LeftMouseMode.RECTANGLE_SELECT && nodeMode === NodeMode.EDIT_STRUCT) {
-            dispatch(actions.selectSByRectangle(getIntersectingNodes()))
-            dispatch(actions.selectSByRectanglePreviewClear())
-          }
         }, { signal })
       }}
       onDoubleClick={() => {
@@ -126,9 +101,6 @@ export const Map: FC = () => {
         <MapSvg/>
         <MapDivL/>
         <MapDivR/>
-        <MapDivSText/>
-        <MapDivSTextEdit/>
-        <MapDivC/>
       </div>
       <div/>
       <div/>

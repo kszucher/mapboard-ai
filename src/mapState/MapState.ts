@@ -1,70 +1,58 @@
-import {ControlType, Flow, LineType, Side} from "../consts/Enums.ts"
+import {ControlType, Side} from "../consts/Enums.ts"
 import {
-  C,
-  CSaveAlways,
-  CSaveNever,
-  CSaveOptional,
   GSaveAlways,
   GSaveNever,
   GSaveOptional,
   LSaveAlways,
   LSaveNever,
   LSaveOptional,
-  PC,
   PG,
   PL,
   PR,
-  PS,
-  R,
   RSaveAlways,
   RSaveNever,
   RSaveOptional,
-  S,
-  SSaveAlways,
-  SSaveNever,
-  SSaveOptional,
 } from "./MapStateTypes.ts"
 
-export const gSaveAlways = {
+export const gSaveAlways: GSaveAlways = {
   path: ['g'] as PG,
   nodeId: ''
-} as GSaveAlways
+}
 
-export const gSaveOptional = {
-  density: 'large',
-  flow: Flow.EXPLODED
-} as GSaveOptional
+export const gSaveOptional: GSaveOptional = {
 
-export const gSaveNever = {
+}
+
+export const gSaveNever: GSaveNever = {
   selfW: 0,
   selfH: 0,
-} as GSaveNever
+}
 
-export const lSaveAlways = {
+export const lSaveAlways: LSaveAlways = {
   path: [] as unknown as PL,
   nodeId: '',
   fromNodeId: '',
   fromNodeSide: Side.L,
   toNodeSide: Side.R,
   toNodeId: '',
-} as LSaveAlways
+}
 
-export const lSaveOptional = {
+export const lSaveOptional: LSaveOptional = {
   lineColor: '#bbbbbb',
   lineWidth: 1,
   selected: 0,
-} as LSaveOptional
+}
 
-export const lSaveNever = {
+export const lSaveNever: LSaveNever = {
 
-} as LSaveNever
+}
 
-export const rSaveAlways = {
+export const rSaveAlways: RSaveAlways = {
   path: [] as unknown as PR,
   nodeId: '',
-} as RSaveAlways
+}
 
-export const rSaveOptional = {
+export const rSaveOptional: RSaveOptional = {
   controlType: ControlType.NONE,
   offsetW: 0,
   offsetH: 0,
@@ -73,12 +61,9 @@ export const rSaveOptional = {
   extractionHash: '',
   selected: 0,
   lastSelectedChild: -1,
-} as RSaveOptional
+}
 
-export const rSaveNever = {
-  so1: [],
-  so: [],
-  co: [],
+export const rSaveNever: RSaveNever = {
   selfW: 0,
   selfH: 0,
   maxW: 0,
@@ -87,94 +72,4 @@ export const rSaveNever = {
   familyH: 0,
   nodeStartX: 0,
   nodeStartY: 0,
-} as RSaveNever
-
-export const sSaveAlways = {
-  path: [] as unknown as PS,
-  nodeId: '',
-} as SSaveAlways
-
-export const sSaveOptional = {
-  contentType: 'text',
-  content: '',
-  linkType: '',
-  link: '',
-  imageW: 0,
-  imageH: 0,
-  dimW: 0,
-  dimH: 0,
-  selected: 0,
-  selection: 's',
-  lastSelectedChild: -1,
-  lineWidth: 1,
-  lineType: LineType.bezier,
-  lineColor: '#bbbbbb',
-  sBorderWidth: 0,
-  fBorderWidth: 0,
-  sBorderColor: '',
-  fBorderColor: '',
-  sFillColor: '',
-  fFillColor: '',
-  textFontSize: 14,
-  textColor: 'default',
-  taskStatus: 0,
-  blur: 0,
-} as SSaveOptional
-
-export const sSaveNever = {
-  ri: {} as R,
-  ci: undefined,
-  ri1: undefined,
-  si1: undefined,
-  ci1: undefined,
-  ti1: {} as R | S | C,
-  so1: [],
-  so: [],
-  co1: [],
-  co: [],
-  su: [],
-  sd: [],
-  selfW: 0,
-  selfH: 0,
-  familyW: 0,
-  familyH: 0,
-  maxW: 0,
-  maxH: 0,
-  nodeStartX: 0,
-  nodeStartY: 0,
-} as SSaveNever
-
-export const cSaveAlways = {
-  path: [] as unknown as PC,
-  nodeId: '',
-} as CSaveAlways
-
-export const cSaveOptional = {
-  dimW: 0,
-  dimH: 0,
-  selected: 0,
-  lastSelectedChild: -1,
-  lineWidth: 1,
-  lineType: LineType.bezier,
-  lineColor: '#bbbbbb',
-} as CSaveOptional
-
-export const cSaveNever = {
-  si1: undefined,
-  so1: [],
-  so: [],
-  cu: [],
-  cd: [],
-  cv: [],
-  cl: [],
-  cr: [],
-  ch: [],
-  selfW: 0,
-  selfH: 0,
-  familyW: 0,
-  familyH: 0,
-  maxW: 0,
-  maxH: 0,
-  nodeStartX: 0,
-  nodeStartY: 0,
-} as CSaveNever
+}

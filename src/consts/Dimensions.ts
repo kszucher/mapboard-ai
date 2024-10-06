@@ -1,17 +1,2 @@
-export const TASK_CIRCLES_GAP = 4
-export const TASK_CIRCLES_NUM = 4
 export const MARGIN_X = 60
 export const MARGIN_Y = 60
-export const MIN_NODE_W = 20
-export const MIN_NODE_H = 20
-export const NODE_MARGIN_X_LARGE = 16
-export const NODE_MARGIN_X_SMALL = 18
-export const NODE_MARGIN_Y_LARGE = 8
-export const NODE_MARGIN_Y_SMALL = 4
-export const INDENT = 40
-export const S_SPACING  = 10
-export const C_SPACING = 10
-export const S_LINE_DELTA_X_DEFAULT = {
-  large: 30, // 30 = 14 + 2*8
-  small: 20 // 20 = 14 + 2*3
-}

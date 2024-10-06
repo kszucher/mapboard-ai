@@ -16,8 +16,6 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
   tabId: 0,
   sharedMapIdList: [],
   sharedMapNameList: [],
-  breadcrumbMapIdList: [],
-  breadcrumbMapNameList: [],
   mapId: '',
   mapName: '',
   mapData: {},

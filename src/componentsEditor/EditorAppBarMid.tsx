@@ -1,8 +1,7 @@
 import {Button, DropdownMenu, IconButton} from "@radix-ui/themes"
-import {FC, Fragment} from 'react'
+import {FC} from 'react'
 import {useDispatch} from "react-redux"
 import ChevronDown from "../../assets/chevron-down.svg?react"
-import ChevronRight from "../../assets/chevron-right.svg?react"
 import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {AppDispatch} from "../appStore/appStore.ts"
@@ -10,7 +9,7 @@ import {MapActions} from "../componentsMapActions/MapActions.tsx"
 
 export const EditorAppBarMid: FC = () => {
   const { data } = useOpenWorkspaceQuery()
-  const { breadcrumbMapIdList, breadcrumbMapNameList, tabMapIdList, tabMapNameList, sharedMapIdList, sharedMapNameList } = data || defaultUseOpenWorkspaceQueryState
+  const { tabMapIdList, tabMapNameList, sharedMapIdList, sharedMapNameList, mapId, mapName } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   return (
     <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">
@@ -36,17 +35,9 @@ export const EditorAppBarMid: FC = () => {
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[0]}))}>
-        {breadcrumbMapNameList[0]}
+      <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId}))}>
+        {mapName}
       </Button>
-      {breadcrumbMapNameList.slice(1).map((el, index) => (
-        <Fragment key={index}>
-          <ChevronRight/>
-          <Button variant='solid' onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index + 1]}))}>
-            {el}
-          </Button>
-        </Fragment>
-      ))}
       <MapActions/>
     </div>
   )

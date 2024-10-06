@@ -1,23 +1,13 @@
-import {createSlice, current, isAction, isAnyOf, PayloadAction} from "@reduxjs/toolkit"
+import {createSlice, isAction, isAnyOf, PayloadAction} from "@reduxjs/toolkit"
 import React from "react"
 import {api} from "../api/Api.ts"
 import {getMapX, getMapY} from "../componentsMap/MapDivUtils.ts"
-import {
-  AlertDialogState,
-  DialogState,
-  FormatMode,
-  LeftMouseMode,
-  MidMouseMode,
-  PageState,
-  Side
-} from "../consts/Enums.ts"
+import {AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState, Side} from "../consts/Enums.ts"
 import {editorState, editorStateDefault} from "../editorState/EditorState.ts"
 import {EditorState} from "../editorState/EditorStateTypes.ts"
 import {mapBuild} from "../mapMutations/MapBuild.ts"
 import {wrappedFunctions} from "../mapMutations/MapMutations.ts"
-import {mapFindIntersecting} from "../mapQueries/MapFindIntersecting.ts"
-import {mapFindNearestS} from "../mapQueries/MapFindNearestS.ts"
-import {getXS, mapObjectToArray} from "../mapQueries/MapQueries.ts"
+import {mapObjectToArray} from "../mapQueries/MapQueries.ts"
 import {R} from "../mapState/MapStateTypes.ts"
 
 export const editorSlice = createSlice({
@@ -41,15 +31,6 @@ export const editorSlice = createSlice({
     },
     setAlertDialogState(state, action: PayloadAction<AlertDialogState>) {
       state.alertDialogState = action.payload
-    },
-    setFormatMode(state, action: PayloadAction<FormatMode>) {
-      state.formatMode = action.payload
-    },
-    openFormatter(state) {
-      state.formatterVisible = true
-    },
-    closeFormatter(state) {
-      state.formatterVisible = false
     },
     setZoomInfo(state, action: PayloadAction<Omit<EditorState['zoomInfo'], 'fromX' | 'fromY'>>) {
       state.zoomInfo.scale = action.payload.scale
@@ -109,19 +90,6 @@ export const editorSlice = createSlice({
       state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
       state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
     },
-    selectSByRectanglePreview(state, action: PayloadAction<{e: MouseEvent}>) {
-      const {e} = action.payload
-      const pm = current(state.commitList[state.commitIndex])
-      const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-      const toX = originX + ((getMapX(e) - prevMapX) / scale)
-      const toY = originY + ((getMapY(e) - prevMapY) / scale)
-      state.selectionRectCoords = [Math.min(fromX, toX), Math.min(fromY, toY), Math.abs(toX - fromX), Math.abs(toY - fromY)]
-      state.intersectingNodes = mapFindIntersecting(pm, fromX, fromY, toX, toY)
-    },
-    selectSByRectanglePreviewClear(state) {
-      state.selectionRectCoords = []
-      state.intersectingNodes = []
-    },
     offsetRByDragPreview(state, action: PayloadAction<{r: R, e: MouseEvent}>) {
       const {r, e} = action.payload
       const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
@@ -132,30 +100,16 @@ export const editorSlice = createSlice({
     offsetRByDragPreviewClear(state) {
       state.rOffsetCoords = []
     },
-    moveSByDragPreview(state, action: PayloadAction<{e: MouseEvent}>) {
-      const {e} = action.payload
-      const pm = current(state.commitList[state.commitIndex])
-      const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
-      const toX = originX + ((getMapX(e) - prevMapX) / scale)
-      const toY = originY + ((getMapY(e) - prevMapY) / scale)
-      const {sMoveCoords, insertLocation} = mapFindNearestS(pm, toX, toY)
-      state.sMoveCoords = sMoveCoords
-      state.insertLocation = insertLocation
-    },
-    moveSByDragPreviewClear(state) {
-      state.sMoveCoords = []
-      state.insertLocation = {sl: '', su: '', sd: ''}
-    },
     startEditReplace(state) {
-      const pm = current(state.commitList[state.commitIndex])
+      // const pm = current(state.commitList[state.commitIndex])
       state.editStartMapListIndex = state.commitIndex
-      state.editedNodeId = getXS(pm).nodeId
+      // state.editedNodeId = getXS(pm).nodeId
       state.editType = 'replace'
     },
     startEditAppend(state) {
-      const pm = current(state.commitList[state.commitIndex])
+      // const pm = current(state.commitList[state.commitIndex])
       state.editStartMapListIndex = state.commitIndex
-      state.editedNodeId = getXS(pm).nodeId
+      // state.editedNodeId = getXS(pm).nodeId
       state.editType = 'append'
     },
     removeMapListEntriesOfEdit(state) {
@@ -205,7 +159,7 @@ export const editorSlice = createSlice({
         if (isValid) {
           const data = mapObjectToArray(payload.mapData)
           const m = structuredClone(data)
-          mapBuild(m, m)
+          mapBuild(m)
           state.mapId = payload.mapId
           state.commitList = [m]
           state.commitIndex = 0

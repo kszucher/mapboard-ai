@@ -1,16 +1,11 @@
 import {AlertDialog, Dialog, Spinner, Theme} from "@radix-ui/themes"
-import {FC, useEffect} from 'react'
+import {FC} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {Map} from "../componentsMap/Map.tsx"
-import {getEquationDim, getTextDim} from "../componentsMap/MapDivUtils.ts"
 import {MapActionsRename} from "../componentsMapActions/MapActionsRename.tsx"
-import {NodeActionsEditContentEquation} from "../componentsMapActions/NodeActionsEditContentEquation.tsx"
-import {NodeActionsEditCreateSubMap} from "../componentsMapActions/NodeActionsEditCreateSubMap.tsx"
-import {NodeActionsEditFormatter} from "../componentsMapActions/NodeActionsEditFormatter.tsx"
-import {NodeActionsInsertTable} from "../componentsMapActions/NodeActionsInsertTable.tsx"
 import {RootExtraction} from "../componentsMapActions/RootExtraction.tsx"
 import {RootIngestion} from "../componentsMapActions/RootIngestion.tsx"
 import {Share} from "../componentsShareActions/Share.tsx"
@@ -27,7 +22,6 @@ import {Window} from "./Window.tsx"
 
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading)
-  const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
   const m = useSelector((state:RootState) => mSelector(state))
   const mExists = m && Object.keys(m).length
   const { data } = useOpenWorkspaceQuery()
@@ -35,11 +29,6 @@ export const Editor: FC = () => {
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
   const dispatch = useDispatch<AppDispatch>()
-
-  useEffect(()=> {
-    getTextDim('Test', 12)
-    getEquationDim('\\[Test\\]')
-  }, [])
 
   return (
     <Theme appearance={colorMode === 'dark' ? 'dark' : 'light'} accentColor="violet" panelBackground="solid" scaling="100%" radius="full">
@@ -52,7 +41,6 @@ export const Editor: FC = () => {
               <EditorAppBarMid/>
               <EditorAppBarRight/>
             </div>
-            {formatterVisible && <NodeActionsEditFormatter/>}
             <Window/>
             {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <UserAccountDelete/>}
           </AlertDialog.Root>
@@ -60,9 +48,6 @@ export const Editor: FC = () => {
           {dialogState === DialogState.SHARE_THIS_MAP && <Share/>}
           {dialogState === DialogState.SHARED_BY_ME && <SharedByMe/>}
           {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMe/>}
-          {dialogState === DialogState.CREATE_MAP_IN_MAP && <NodeActionsEditCreateSubMap/>}
-          {dialogState === DialogState.EDIT_CONTENT_EQUATION && <NodeActionsEditContentEquation/>}
-          {dialogState === DialogState.CREATE_TABLE_O && <NodeActionsInsertTable/>}
           {dialogState === DialogState.ROOT_INGESTION && <RootIngestion/>}
           {dialogState === DialogState.ROOT_EXTRACTION && <RootExtraction/>}
         </Dialog.Root>

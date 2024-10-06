@@ -10,8 +10,6 @@ export interface DefaultUseOpenWorkspaceQueryState {
   tabId: number
   sharedMapIdList: string[]
   sharedMapNameList: string[]
-  breadcrumbMapIdList: string[]
-  breadcrumbMapNameList: string[]
   mapId: string
   mapName: string
   mapData: object,

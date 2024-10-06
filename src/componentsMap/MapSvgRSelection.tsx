@@ -25,7 +25,7 @@ export const MapSvgRSelection: FC = () => {
           strokeWidth={1}
           fill={'none'}
           {...pathCommonProps}
-          d={getPolygonPath(m, xr, 'sSelf', -2)}
+          d={getPolygonPath(xr, 'sSelf', -2)}
         />
       )
     } else if (getAXR(m).length > 1) {
@@ -36,7 +36,7 @@ export const MapSvgRSelection: FC = () => {
           strokeWidth={1}
           fill={'none'}
           {...pathCommonProps}
-          d={getPolygonPath(m, ri, 'sSelf', -2)}
+          d={getPolygonPath(ri, 'sSelf', -2)}
         />
       )
     }

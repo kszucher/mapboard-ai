@@ -20,10 +20,26 @@ export const UserSettings = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
-        {colorMode === 'dark' && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>{'Light Mode'}</DropdownMenu.Item>}
-        {colorMode === 'light' && <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>{'Dark Mode'}</DropdownMenu.Item>}
-        {!connectionHelpersVisible && <DropdownMenu.Item onClick={() => dispatch(actions.showConnectionHelpers())}>{'Show Helpers'}</DropdownMenu.Item>}
-        {connectionHelpersVisible && <DropdownMenu.Item onClick={() => dispatch(actions.hideConnectionHelpers())}>{'Hide Helpers'}</DropdownMenu.Item>}
+        {colorMode === 'dark' &&
+          <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>
+            {'Light Mode'}
+          </DropdownMenu.Item>
+        }
+        {colorMode === 'light' &&
+          <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>
+            {'Dark Mode'}
+          </DropdownMenu.Item>
+        }
+        {!connectionHelpersVisible &&
+          <DropdownMenu.Item onClick={() => dispatch(actions.showConnectionHelpers())}>
+            {'Show Helpers'}
+          </DropdownMenu.Item>
+        }
+        {connectionHelpersVisible &&
+          <DropdownMenu.Item onClick={() => dispatch(actions.hideConnectionHelpers())}>
+            {'Hide Helpers'}
+          </DropdownMenu.Item>
+        }
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )

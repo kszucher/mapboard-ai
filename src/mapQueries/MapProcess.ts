@@ -1,7 +1,7 @@
 import {Side} from "../consts/Enums"
-import {M, PS} from "../mapState/MapStateTypes.ts"
+import {M} from "../mapState/MapStateTypes.ts"
 import {SubProcess} from "./MapProcessTypes.ts"
-import {mL, mR, mS, pathToS} from "./MapQueries.ts"
+import {mL, mR} from "./MapQueries.ts"
 
 const getAllDependencies = (subProcessId: string, subProcessList: SubProcess[]): string[] => {
   const process = subProcessList.find(el => el.subProcessId === subProcessId)
@@ -13,14 +13,6 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
   const subProcesses = mR(m).map(ri => ({
       subProcessId: ri.nodeId,
       subProcessType: ri.controlType,
-      subProcessMindMapData:
-        mS(m)
-          .filter(si => si.path.at(1) === ri.path.at(1) && si.so1.length === 0)
-          .map(si => ({
-            nodeId: si.nodeId,
-            contentList: [si.path, ...si.path.map((_, i) => si.path.slice(0, i)).filter(pi => pi.at(-2) === 's')].map(pi => pathToS(m, pi as PS).content)
-          }))
-      ,
       inputSubProcesses: [
         ...mL(m)
           .filter(li => li.fromNodeId === ri.nodeId && li.fromNodeSide === Side.L)
@@ -31,7 +23,6 @@ export const getSubProcessList = (m: M, subProcessId: string): SubProcess[] => {
       ],
       inputSubProcessesAll: [],
       subProcessInputLink: ri.ingestionHash,
-      shouldQueryAndStoreResultAsMindMapToo: false,
       subProcessPromptOverride: ''
     } as SubProcess)
   )

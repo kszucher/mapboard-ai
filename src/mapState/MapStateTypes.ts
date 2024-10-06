@@ -1,12 +1,10 @@
-import {ControlType, Flow, LineType, Side} from "../consts/Enums.ts"
+import {ControlType, Side} from "../consts/Enums.ts"
 
 export type PG = ['g']
 export type PL = ['l', number]
 export type PR = ['r', number]
-export type PS = [...any[], 's', number]
-export type PC = [...any[], 'c', number, number]
-export type PT = PR | PS | PC
-export type P = PG | PL | PR | PS | PC
+export type PT = PR
+export type P = PG | PL | PR
 
 export interface GSaveAlways {
   path: PG
@@ -14,8 +12,7 @@ export interface GSaveAlways {
 }
 
 export interface GSaveOptional {
-  density: 'large' | 'small'
-  flow: Flow
+
 }
 
 export interface GSaveNever {
@@ -59,99 +56,6 @@ export interface RSaveOptional {
 }
 
 export interface RSaveNever {
-  so1: S[]
-  so: S[]
-  co: C[]
-  selfW: number
-  selfH: number
-  familyW: number
-  familyH: number
-  maxW: number
-  maxH: number
-  nodeStartX: number
-  nodeStartY: number
-}
-
-export interface SSaveAlways {
-  path: PS
-  nodeId: string
-}
-
-export interface SSaveOptional {
-  contentType: string
-  content: string
-  linkType: string
-  link: string
-  imageW: number
-  imageH: number
-  dimW: number
-  dimH: number
-  selected: number
-  selection: string
-  lastSelectedChild: number
-  lineWidth: number
-  lineType: LineType
-  lineColor: string
-  sBorderWidth: number
-  fBorderWidth: number
-  sBorderColor: string
-  fBorderColor: string
-  sFillColor: string
-  fFillColor: string
-  textFontSize: number
-  textColor: string
-  taskStatus: number
-  blur: number
-}
-
-export interface SSaveNever {
-  ri: R
-  ci: C | undefined
-  ri1: R | undefined
-  si1: S | undefined
-  ci1: C | undefined
-  ti1: R | S | C
-  so1: S[]
-  so: S[]
-  co1: C[]
-  co: C[]
-  su: S[]
-  sd: S[]
-  selfW: number
-  selfH: number
-  familyW: number
-  familyH: number
-  maxW: number
-  maxH: number
-  nodeStartX: number
-  nodeStartY: number
-}
-
-export interface CSaveAlways {
-  path: PC
-  nodeId: string
-}
-
-export interface CSaveOptional {
-  dimW: number
-  dimH: number
-  selected: number
-  lastSelectedChild: number
-  lineWidth: number
-  lineType: LineType
-  lineColor: string
-}
-
-export interface CSaveNever {
-  si1: S | undefined
-  so1: S[]
-  so: S[]
-  cu: C[]
-  cd: C[]
-  cv: C[]
-  cl: C[]
-  cr: C[]
-  ch: C[]
   selfW: number
   selfH: number
   familyW: number
@@ -165,16 +69,12 @@ export interface CSaveNever {
 export type G = GSaveAlways & GSaveOptional & GSaveNever
 export type L = LSaveAlways & LSaveOptional & LSaveNever
 export type R = RSaveAlways & RSaveOptional & RSaveNever
-export type S = SSaveAlways & SSaveOptional & SSaveNever
-export type C = CSaveAlways & CSaveOptional & CSaveNever
-export type T = L | R | S | C
-export type N = G | L | R | S | C
+export type T = L | R
+export type N = G | L | R
 export type M = N[]
 
 export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
 export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<LSaveNever>
 export type RPartial = Required<RSaveAlways> & Partial<RSaveOptional> & Partial<RSaveNever>
-export type SPartial = Required<SSaveAlways> & Partial<SSaveOptional> & Partial<SSaveNever>
-export type CPartial = Required<CSaveAlways> & Partial<CSaveOptional> & Partial<CSaveNever>
-export type NPartial = GPartial | LPartial | RPartial | SPartial | CPartial
+export type NPartial = GPartial | LPartial | RPartial
 export type MPartial = NPartial[]

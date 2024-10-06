@@ -12,7 +12,9 @@ export const MapActionsRename = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
-      <Dialog.Title>{'Rename Map'}</Dialog.Title>
+      <Dialog.Title>
+        {'Rename Map'}
+      </Dialog.Title>
       <Dialog.Description size="2" mb="4">
         {'Rename componentsMap'}
       </Dialog.Description>

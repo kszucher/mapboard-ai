@@ -1,12 +1,4 @@
-import {
-  AlertDialogState,
-  DialogState,
-  FormatMode,
-  LeftMouseMode,
-  MidMouseMode,
-  PageState,
-  Side
-} from "../consts/Enums.ts"
+import {AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState, Side} from "../consts/Enums.ts"
 import {EditorState} from "./EditorStateTypes.ts"
 
 export const editorState: EditorState = {
@@ -18,7 +10,6 @@ export const editorState: EditorState = {
   pageState: PageState.AUTH,
   dialogState: DialogState.NONE,
   alertDialogState: AlertDialogState.NONE,
-  formatMode: FormatMode.sFill,
   mapId: '',
   commitList: [],
   commitIndex: 0,
