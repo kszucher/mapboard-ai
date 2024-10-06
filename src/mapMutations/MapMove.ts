@@ -1,4 +1,4 @@
-import {lrscToClipboard} from "../mapQueries/MapExtract.ts"
+import {lrToClipboard} from "../mapQueries/MapExtract.ts"
 import {mapPrune} from "../mapQueries/MapPrune.ts"
 import {getG, getLastIndexL, getLastIndexR, mL, mR} from "../mapQueries/MapQueries.ts"
 import {rSaveOptional} from "../mapState/MapState.ts"
@@ -24,11 +24,11 @@ const cbSave = (cb: M) => {
   })
 }
 
-export const copyLRSC = (m: M) => {
-  cbSave(mapPrune(lrscToClipboard(m).sort(sortPath)))
+export const copyLR = (m: M) => {
+  cbSave(mapPrune(lrToClipboard(m).sort(sortPath)))
 }
 
-const clipboardToLRSC = (m: M, cb: M) => {
+const clipboardToLR = (m: M, cb: M) => {
   const lastIndexL = getLastIndexL(m)
   const lastIndexR = getLastIndexR(m)
   const nodeIdMappingR = new Map<string, string>(mR(cb).map(ri => [ri.nodeId, genId()]))
@@ -48,14 +48,14 @@ const clipboardToLRSC = (m: M, cb: M) => {
   return cb
 }
 
-export const pasteLRSC = (m: M, payload: string) => {
-  const lrsc = JSON.parse(payload) as M
+export const pasteLR = (m: M, payload: string) => {
+  const lr = JSON.parse(payload) as M
   unselectNodes(m)
-  m.push(...clipboardToLRSC(m, lrsc))
+  m.push(...clipboardToLR(m, lr))
 }
 
-export const duplicateLRSC = (m: M) => {
-  const lrsc = lrscToClipboard(m)
+export const duplicateLR = (m: M) => {
+  const lr = lrToClipboard(m)
   unselectNodes(m)
-  m.push(...clipboardToLRSC(m, lrsc))
+  m.push(...clipboardToLR(m, lr))
 }

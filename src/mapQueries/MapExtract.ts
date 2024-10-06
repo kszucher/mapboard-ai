@@ -2,7 +2,7 @@ import {rSaveOptional} from "../mapState/MapState.ts"
 import {M, PR} from "../mapState/MapStateTypes.ts"
 import {getAXR, idToR, mL} from "./MapQueries.ts"
 
-export const lrscToClipboard = (m: M): M => {
+export const lrToClipboard = (m: M): M => {
   const minOffsetW = Math.min(...getAXR(m).map(ri => ri.offsetW ?? rSaveOptional.offsetW))
   const minOffsetH = Math.min(...getAXR(m).map(ri => ri.offsetH ?? rSaveOptional.offsetH))
   return structuredClone([

@@ -9,7 +9,7 @@ import {L, M, PR, R} from "../mapState/MapStateTypes.ts"
 import {mapBuild} from "./MapBuild.ts"
 import {deleteL, deleteLR,} from "./MapDelete"
 import {insertL, insertR} from "./MapInsert"
-import {copyLRSC, duplicateLRSC, pasteLRSC} from "./MapMove"
+import {copyLR, duplicateLR, pasteLR} from "./MapMove"
 import {selectAddR, selectR, selectRL, unselectNodes, unselectR} from "./MapSelect"
 
 export const mapMutations = {
@@ -28,7 +28,7 @@ export const mapMutations = {
   insertR: (m: M) => insertR(m),
 
   deleteL: (m: M, nodeId: string) => deleteL(m, nodeId),
-  deleteLRSC: (m: M) => {
+  deleteLR: (m: M) => {
     const reselect = mR(m).find(ri => !ri.selected)!.nodeId
     deleteLR(m)
     selectR(m, idToR(m, reselect ))
@@ -36,12 +36,12 @@ export const mapMutations = {
 
   cutLRJumpR: (m: M) => {
     const reselect = mR(m).find(ri => !ri.selected)!.nodeId
-    copyLRSC(m); deleteLR(m)
+    copyLR(m); deleteLR(m)
     selectR(m, idToR(m, reselect) as R)
   },
-  copyLR: (m: M) => copyLRSC(m),
-  pasteLR: (m: M, mapAsString: string) => pasteLRSC(m, mapAsString),
-  duplicateR: (m: M) => duplicateLRSC(m),
+  copyLR: (m: M) => copyLR(m),
+  pasteLR: (m: M, mapAsString: string) => pasteLR(m, mapAsString),
+  duplicateR: (m: M) => duplicateLR(m),
 
   offsetD: (m: M) => Object.assign(getXR(m), { offsetH: getXR(m).offsetH += 20 }),
   offsetU: (m: M) => Object.assign(getXR(m), { offsetH: getXR(m).offsetH -= 20 }),

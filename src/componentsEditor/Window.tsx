@@ -44,7 +44,7 @@ export const Window: FC = () => {
     ].join('')
     if (ckm === '---' && e.key === 'Insert' && isAXR(m)) dispatch(actions.insertR())
     if (ckm === '---' && e.key === 'Tab' && isAXR(m)) dispatch(actions.insertR())
-    if (ckm === '---' && e.key === 'Delete' && isAXR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected)) dispatch(actions.deleteLRSC())
+    if (ckm === '---' && e.key === 'Delete' && isAXR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected)) dispatch(actions.deleteLR())
     if (ckm === '---' && e.code === 'Space' && !isAXR(m)) dispatch(actions.selectFirstR())
     if (ckm === '---' && e.code === 'Backspace' && isAXR(m)) dispatch(actions.unselect())
     if (ckm === 'c--' && e.code === 'KeyC' && isAXR(m)) dispatch(actions.copyLR())

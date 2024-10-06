@@ -4,7 +4,7 @@ import {M, MPartial} from "../mapState/MapStateTypes.ts"
 import {_assert} from "./_assert.ts"
 
 describe("MapDeleteTests", () => {
-  test('deleteLRSC', () => {
+  test('deleteLR', () => {
     const test = [
       {nodeId: 'g', path: ['g']},
       {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', fromNodeSide: Side.L, toNodeId: 'r1', toNodeSide: Side.R},
@@ -20,6 +20,6 @@ describe("MapDeleteTests", () => {
       {nodeId: 'r0', path: ['r', 0], selected: 1},
       {nodeId: 'r2', path: ['r', 1], offsetW: 440, offsetH: 550},
     ] as MPartial
-    _assert(test, result, (m: M) => mapMutations.deleteLRSC(m))
+    _assert(test, result, (m: M) => mapMutations.deleteLR(m))
   })
 })
