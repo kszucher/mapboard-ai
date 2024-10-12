@@ -1,15 +1,17 @@
-import {Button, Dialog, Flex, Spinner, Text} from "@radix-ui/themes"
+import {Button, Flex, Spinner, Text} from "@radix-ui/themes"
 import {useEffect, useRef, useState} from "react"
-import {useGetIngestionQuery, useUploadFileMutation} from "../api/Api.ts"
-import {defaultGetIngestionQueryState} from "../apiState/ApiState.ts"
+import {useUploadFileMutation} from "../api/Api.ts"
+import {R} from "../mapState/MapStateTypes.ts"
 
-export const RootIngestion = () => {
+export const MapDivRIngestion = ({ri}: {ri :R}) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [uploadFile, {isSuccess, reset}] = useUploadFileMutation()
-  const { data } = useGetIngestionQuery()
-  const { ingestionResult } = data || defaultGetIngestionQueryState
+  // const { data } = useGetIngestionQuery()
+  // const { ingestionResult } = data || defaultGetIngestionQueryState
+  // no such fancy state here,
+  // instead we will state custom state loading, and server will kill it merge it push it
 
   useEffect(() => {
       if (isSuccess) {
@@ -20,12 +22,11 @@ export const RootIngestion = () => {
   )
 
   return (
-    <Dialog.Content style={{ maxWidth: 450 }} onInteractOutside={(e) => {e.preventDefault()}}>
-      <Dialog.Title>{'INGESTION'}</Dialog.Title>
-      <Dialog.Description size="2" mb="4">
-        {'Ingest the content of text or audio files'}
-      </Dialog.Description>
+
       <Flex direction="column" gap="2" align="start" content="center">
+        <div>
+          {ri.path}
+        </div>
         <input
           type="file"
           onChange={(e) => {
@@ -64,20 +65,11 @@ export const RootIngestion = () => {
         {isUploading &&
           <Spinner size="3"/>
         }
-        {ingestionResult &&
-          <div>
-            {ingestionResult}
-          </div>
-        }
+        {/*{ingestionResult &&*/}
+        {/*  <div>*/}
+        {/*    {ingestionResult}*/}
+        {/*  </div>*/}
+        {/*}*/}
       </Flex>
-      <Flex gap="3" mt="4" justify="end">
-
-        <Dialog.Close>
-          <Button variant="soft" color="gray">
-            {'Cancel'}
-          </Button>
-        </Dialog.Close>
-      </Flex>
-    </Dialog.Content>
   )
 }

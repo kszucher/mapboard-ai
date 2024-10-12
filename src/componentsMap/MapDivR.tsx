@@ -1,11 +1,11 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {AppDispatch, RootState} from "../appStore/appStore.ts"
-import {LeftMouseMode, NodeMode} from "../consts/Enums.ts"
+import {ControlType, LeftMouseMode, NodeMode} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {getROffsetCoords, mSelector} from "../editorQueries/EditorQueries.ts"
 import {getAXR, getNodeMode, isAXR, mR} from "../mapQueries/MapQueries.ts"
-import {adjust} from "../utils/Utils.ts"
+import {MapDivRIngestion} from "./MapDivRIngestion.tsx"
 
 export const MapDivR: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
@@ -19,13 +19,14 @@ export const MapDivR: FC = () => {
         id={ri.nodeId}
         ref={ref => ref && ref.focus()}
         style={{
-          left: adjust(ri.nodeStartX),
-          top: adjust(ri.nodeStartY),
+          position: 'absolute',
+          left: (ri.nodeStartX),
+          top: (ri.nodeStartY),
+          transition: 'left 0.3s, top 0.3s',
+          transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
           minWidth: ri.selfW,
           minHeight: ri.selfH,
-          position: 'absolute',
           zIndex: ri.path.length,
-          border: 0,
           margin: 0,
           pointerEvents: [
             LeftMouseMode.CLICK_SELECT,
@@ -40,7 +41,7 @@ export const MapDivR: FC = () => {
           if (e.buttons === 1) {
             if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT) {
               if (!e.ctrlKey) dispatch(actions.selectR(ri.path))
-              if (e.ctrlKey && isAXR(m) && !ri.selected) dispatch(actions.selectAddR(ri.path))
+              if (e.ctrlKey && isAXR(m) && !ri.selected) dispatch(actions.selectRAdd(ri.path))
               if (e.ctrlKey && ri.selected && getAXR(m).length > 1) dispatch(actions.unselectR(ri.path))
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_ROOT) {
               if (!e.ctrlKey) dispatch(actions.selectR(ri.path))
@@ -66,6 +67,17 @@ export const MapDivR: FC = () => {
           }
         }}
       >
+        <div style={{
+          position: 'relative',
+          left: 40,
+          top: 40,
+          background: '#333333',
+          width: ri.selfW - 80,
+          height: ri.selfH - 80,
+          pointerEvents: ri.selected ? 'auto' : 'none'
+        }}>
+          {ri.controlType === ControlType.INGESTION && <MapDivRIngestion ri={ri}/>}
+        </div>
       </div>
     ))
   )

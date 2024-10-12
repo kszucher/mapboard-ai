@@ -6,8 +6,6 @@ import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {Map} from "../componentsMap/Map.tsx"
 import {MapActionsRename} from "../componentsMapActions/MapActionsRename.tsx"
-import {RootExtraction} from "../componentsMapActions/RootExtraction.tsx"
-import {RootIngestion} from "../componentsMapActions/RootIngestion.tsx"
 import {Share} from "../componentsShareActions/Share.tsx"
 import {SharedByMe} from "../componentsShareActions/SharedByMe.tsx"
 import {SharedWithMe} from "../componentsShareActions/SharedWithMe.tsx"
@@ -48,8 +46,6 @@ export const Editor: FC = () => {
           {dialogState === DialogState.SHARE_THIS_MAP && <Share/>}
           {dialogState === DialogState.SHARED_BY_ME && <SharedByMe/>}
           {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMe/>}
-          {dialogState === DialogState.ROOT_INGESTION && <RootIngestion/>}
-          {dialogState === DialogState.ROOT_EXTRACTION && <RootExtraction/>}
         </Dialog.Root>
       }
       <div

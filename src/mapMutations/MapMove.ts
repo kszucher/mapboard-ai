@@ -40,7 +40,7 @@ const clipboardToLR = (m: M, cb: M) => {
     toNodeId: nodeIdMappingR.get(li.toNodeId)
   }))
   mR(cb).forEach(ri => Object.assign(ri, {
-    nodeId: nodeIdMappingRIterator.next().value[1],
+    nodeId: (nodeIdMappingRIterator.next().value!)[1],
     path: ['r', ri.path[1] + lastIndexR + 1],
     offsetW: (ri.offsetW ?? rSaveOptional.offsetW) + getG(m).selfW,
     offsetH: (ri.offsetH ?? rSaveOptional.offsetH) + getG(m).selfH
@@ -49,7 +49,7 @@ const clipboardToLR = (m: M, cb: M) => {
 }
 
 export const pasteLR = (m: M, payload: string) => {
-  const lr = JSON.parse(payload) as M
+  const lr = JSON.parse(payload)
   unselectNodes(m)
   m.push(...clipboardToLR(m, lr))
 }

@@ -7,9 +7,7 @@ import {MapSvgGBackground} from "./MapSvgGBackground.tsx"
 import {MapSvgL} from "./MapSvgL.tsx"
 import {MapSvgRBackground} from "./MapSvgRBackground.tsx"
 import {MapSvgRConnectors} from "./MapSvgRConnectors.tsx"
-import {MapSvgRIcons} from "./MapSvgRIcons.tsx"
 import {MapSvgRMove} from "./MapSvgRMove.tsx"
-import {MapSvgRSelection} from "./MapSvgRSelection.tsx"
 import {MapSvgRSeparators} from "./MapSvgRSeparators.tsx"
 
 export const MapSvg: FC = () => {
@@ -26,9 +24,7 @@ export const MapSvg: FC = () => {
       <MapSvgL/>
       <MapSvgRBackground/>
       <MapSvgRSeparators/>
-      <MapSvgRSelection/>
       <MapSvgRMove/>
-      <MapSvgRIcons/>
       <MapSvgRConnectors/>
     </svg>
   )

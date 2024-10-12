@@ -6,7 +6,7 @@ import {_assert} from "./_assert.ts"
 describe("MapMoveTests", () => {
   beforeEach(() => {})
   test('duplicateR', () => {
-    const test = [
+    const test: MPartial = [
       {nodeId: 'g', path: ['g']},
       {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', fromNodeSide: Side.L, toNodeId: 'r1', toNodeSide: Side.R},
       {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r0', fromNodeSide: Side.L, toNodeId: 'r2', toNodeSide: Side.R},
@@ -16,8 +16,8 @@ describe("MapMoveTests", () => {
       {nodeId: 'r1', path: ['r', 1], selected: 1, offsetW: 100, offsetH: 200},
       {nodeId: 'r2', path: ['r', 2], selected: 2, offsetW: 110, offsetH: 220},
       {nodeId: 'r3', path: ['r', 3]},
-    ] as MPartial
-    const result = [
+    ]
+    const result: MPartial = [
       {nodeId: 'g', path: ['g']},
       {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', fromNodeSide: Side.L, toNodeId: 'r1', toNodeSide: Side.R},
       {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r0', fromNodeSide: Side.L, toNodeId: 'r2', toNodeSide: Side.R},
@@ -30,7 +30,7 @@ describe("MapMoveTests", () => {
       {nodeId: 'r3', path: ['r', 3]},
       {nodeId: '_r4', path: ['r', 4], selected: 1},
       {nodeId: '_r5', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20},
-    ] as MPartial
+    ]
     _assert(test, result, (m: M) => mapMutations.duplicateR(m))
   })
 })

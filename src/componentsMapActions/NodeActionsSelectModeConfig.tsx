@@ -26,7 +26,7 @@ export const NodeActionsSelectModeConfig = () => {
           value={nodeMode}
           onValueChange={(value) => {
             if (value === NodeMode.VIEW) dispatch(actions.unselect())
-            if (value === NodeMode.EDIT_ROOT) dispatch(actions.selectFirstR())
+            if (value === NodeMode.EDIT_ROOT) dispatch(actions.selectR0())
           }}
         >
           <DropdownMenu.RadioItem value={NodeMode.VIEW}>{NodeMode.VIEW}</DropdownMenu.RadioItem>

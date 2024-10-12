@@ -10,6 +10,7 @@ export default defineConfig({
     globals: true,
   },
   server: {
+    port: 5174,
     host: 'local.mapboard'
   },
 })

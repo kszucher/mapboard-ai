@@ -15,8 +15,8 @@ export const MapSvgRBackground: FC = () => {
     mR(m).map(ri =>
       <rect
         key={`${ri.nodeId}_rb`}
-        x={ri.nodeStartX}
-        y={ri.nodeStartY}
+        x={ri.nodeStartX + .5}
+        y={ri.nodeStartY + .5}
         width={ri.selfW}
         height={ri.selfH}
         rx={16}
@@ -25,6 +25,8 @@ export const MapSvgRBackground: FC = () => {
         style={{
           transition: '0.3s ease-out',
         }}
+        stroke={ri.selected ? '#bbbbbb' : 'none'}
+        strokeWidth={1}
       />
     )
   )

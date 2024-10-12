@@ -45,20 +45,20 @@ export const Window: FC = () => {
     if (ckm === '---' && e.key === 'Insert' && isAXR(m)) dispatch(actions.insertR())
     if (ckm === '---' && e.key === 'Tab' && isAXR(m)) dispatch(actions.insertR())
     if (ckm === '---' && e.key === 'Delete' && isAXR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected)) dispatch(actions.deleteLR())
-    if (ckm === '---' && e.code === 'Space' && !isAXR(m)) dispatch(actions.selectFirstR())
+    if (ckm === '---' && e.code === 'Space' && !isAXR(m)) dispatch(actions.selectR0())
     if (ckm === '---' && e.code === 'Backspace' && isAXR(m)) dispatch(actions.unselect())
     if (ckm === 'c--' && e.code === 'KeyC' && isAXR(m)) dispatch(actions.copyLR())
     if (ckm === 'c--' && e.code === 'KeyX' && isAXR(m) && getLastIndexR(m) > 0) dispatch(actions.cutLRJumpR())
     if (ckm === 'c--' && e.code === 'KeyD' && isAXR(m)) dispatch(actions.duplicateR())
     if (ckm === 'c--' && e.code === 'KeyZ') dispatch(actions.redo())
     if (ckm === 'c--' && e.code === 'KeyY') dispatch(actions.undo())
-    if (ckm === '---' && e.code === 'ArrowDown' && isAXR(m) && getRD(m, getXR(m))) dispatch(actions.selectRD())
+    if (ckm === '---' && e.code === 'ArrowDown' && isAXR(m) && getRD(m, getXR(m))) dispatch(actions.selectRDR())
     if (ckm === 'c--' && e.code === 'ArrowDown' && isAXR(m)) dispatch(actions.offsetD())
-    if (ckm === '---' && e.code === 'ArrowUp' && isAXR(m) && getRU(m, getXR(m))) dispatch(actions.selectRU())
+    if (ckm === '---' && e.code === 'ArrowUp' && isAXR(m) && getRU(m, getXR(m))) dispatch(actions.selectRUR())
     if (ckm === 'c--' && e.code === 'ArrowUp' && isAXR(m)) dispatch(actions.offsetU())
-    if (ckm === '---' && e.code === 'ArrowRight' && isAXR(m) && getRR(m, getXR(m))) dispatch(actions.selectRR())
+    if (ckm === '---' && e.code === 'ArrowRight' && isAXR(m) && getRR(m, getXR(m))) dispatch(actions.selectRRR())
     if (ckm === 'c--' && e.code === 'ArrowRight' && isAXR(m)) dispatch(actions.offsetR())
-    if (ckm === '---' && e.code === 'ArrowLeft' && isAXR(m) && getRL(m, getXR(m))) dispatch(actions.selectRL())
+    if (ckm === '---' && e.code === 'ArrowLeft' && isAXR(m) && getRL(m, getXR(m))) dispatch(actions.selectRLR())
     if (ckm === 'c--' && e.code === 'ArrowLeft' && isAXR(m)) dispatch(actions.offsetL())
   }
 
@@ -81,7 +81,7 @@ export const Window: FC = () => {
                     Object.hasOwn(el, 'nodeId') && typeof el.nodeId === 'string'
                   )
                   if (isValidMap) {
-                    const isPastedLR = ['r', 'l'].includes(mapJson.at(-1).path.at(0))
+                    const isPastedLR = mapJson.every(el => ['r', 'l'].includes(el.path[0]))
                     if (isAXR(m)) {
                       if (isPastedLR) dispatch(actions.pasteLR(text))
                     } else {

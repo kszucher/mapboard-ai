@@ -1,5 +1,5 @@
 import {rSaveOptional} from "../mapState/MapState.ts"
-import {M, PR} from "../mapState/MapStateTypes.ts"
+import {M} from "../mapState/MapStateTypes.ts"
 import {getAXR, idToR, mL} from "./MapQueries.ts"
 
 export const lrToClipboard = (m: M): M => {
@@ -11,7 +11,7 @@ export const lrToClipboard = (m: M): M => {
       .map((li, i) => ({...li, path: ['l', i]})),
     ...getAXR(m).map((ri, i) => ({
       ...ri,
-      path: ri.path.with(1, i) as PR,
+      path: ri.path.with(1, i),
       offsetW: (ri.offsetW ?? rSaveOptional.offsetW) - minOffsetW,
       offsetH: (ri.offsetH ?? rSaveOptional.offsetH) - minOffsetH
     }))

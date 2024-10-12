@@ -1,7 +1,7 @@
-import {FC, Fragment} from "react"
+import {FC} from "react"
 import {useSelector} from "react-redux"
 import {RootState} from "../appStore/appStore.ts"
-import {ControlType} from "../consts/Enums.ts"
+import {Side} from "../consts/Enums.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
 import {mR} from "../mapQueries/MapQueries.ts"
 import {adjust} from "../utils/Utils.ts"
@@ -9,36 +9,29 @@ import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
 
 export const MapSvgRSeparators: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
-  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   return (
-    connectionHelpersVisible && // use flatMap
-    mR(m).filter(ri => ri.controlType !== ControlType.NONE).map(ri => (
-      <Fragment key={`${ri.nodeId}_separator`}>
+    mR(m).map(ri => ([
+      {
+        side: Side.T,
+        x1: adjust(ri.nodeStartX),
+        x2: adjust(ri.nodeStartX + ri.selfW),
+        y1: adjust(ri.nodeStartY + 40),
+        y2: adjust(ri.nodeStartY + 40)
+      },
+      {
+        side: Side.B,
+        x1: adjust(ri.nodeStartX),
+        x2: adjust(ri.nodeStartX + ri.selfW),
+        y1: adjust(ri.nodeStartY + ri.selfH - 40),
+        y2: adjust(ri.nodeStartY + ri.selfH - 40)
+      }].flatMap(el =>
         <path
-          d={
-            getLinearLinePath({
-              x1: adjust(ri.nodeStartX),
-              x2: adjust(ri.nodeStartX + ri.selfW),
-              y1: adjust(ri.nodeStartY + 40),
-              y2: adjust(ri.nodeStartY + 40),
-            })
-          }
+          key={`${ri.nodeId}_${el.side}_rs`}
+          d={getLinearLinePath({x1: el.x1, x2: el.x2, y1: el.y1, y2: el.y2})}
           stroke={'#444'}
           {...pathCommonProps}
         />
-        <path
-          d={
-            getLinearLinePath({
-              x1: adjust(ri.nodeStartX),
-              x2: adjust(ri.nodeStartX + ri.selfW),
-              y1: adjust(ri.nodeStartY + ri.selfH - 40),
-              y2: adjust(ri.nodeStartY + ri.selfH - 40),
-            })
-          }
-          stroke={'#444'}
-          {...pathCommonProps}
-        />
-      </Fragment>
+      )
     ))
   )
 }

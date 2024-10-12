@@ -15,7 +15,7 @@ import {
 } from "./MapStateTypes.ts"
 
 export const gSaveAlways: GSaveAlways = {
-  path: ['g'] as PG,
+  path: <PG>['g'],
   nodeId: ''
 }
 
@@ -29,7 +29,7 @@ export const gSaveNever: GSaveNever = {
 }
 
 export const lSaveAlways: LSaveAlways = {
-  path: [] as unknown as PL,
+  path: <PL><unknown>[],
   nodeId: '',
   fromNodeId: '',
   fromNodeSide: Side.L,
@@ -48,7 +48,7 @@ export const lSaveNever: LSaveNever = {
 }
 
 export const rSaveAlways: RSaveAlways = {
-  path: [] as unknown as PR,
+  path: <PR><unknown>[],
   nodeId: '',
 }
 

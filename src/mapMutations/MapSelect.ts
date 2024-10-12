@@ -6,7 +6,7 @@ export const selectR = (m: M, ri: R) => {
   ri.selected = 1
 }
 
-export const selectAddR = (m: M, ri: R) => {
+export const selectRAdd = (m: M, ri: R) => {
   ri.selected = getXR(m).selected + 1
 }
 

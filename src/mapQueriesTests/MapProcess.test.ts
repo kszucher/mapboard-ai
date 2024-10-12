@@ -17,7 +17,7 @@ describe("MapProcessTests", () => {
       //      [r6]
       //     /
       //  [r5]
-      const test = [
+      const test: MPartial = [
         {nodeId: 'g', path: ['g']},
         {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', fromNodeSide: Side.R, toNodeId: 'r1', toNodeSide: Side.L},
         {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r1', fromNodeSide: Side.R, toNodeId: 'r2', toNodeSide: Side.L},
@@ -32,7 +32,7 @@ describe("MapProcessTests", () => {
         {nodeId: 'r4', path: ['r', 4], controlType: ControlType.EXTRACTION},
         {nodeId: 'r5', path: ['r', 5], controlType: ControlType.INGESTION, ingestionHash: 'mHash'},
         {nodeId: 'r6', path: ['r', 6], controlType: ControlType.EXTRACTION},
-      ] as MPartial
+      ]
       const result = [{
         subProcessId: 'r5',
         subProcessType: SubProcessType.INGESTION,

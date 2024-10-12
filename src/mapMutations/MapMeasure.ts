@@ -1,4 +1,5 @@
 import {MARGIN_X, MARGIN_Y} from "../consts/Dimensions.ts"
+import {ControlType} from "../consts/Enums.ts"
 import {mR} from "../mapQueries/MapQueries.ts"
 import {isG, isR} from "../mapQueries/PathQueries.ts"
 import {G, M, R} from "../mapState/MapStateTypes.ts"
@@ -13,16 +14,23 @@ export const mapMeasure = (m: M) => {
   m.slice().reverse().forEach(ni => {
     switch (true) {
       case isG(ni.path): {
-        const g = ni as G
-        g.selfW = Math.max(...mR(m).map(ri => ri.offsetW + ri.selfW))
-        g.selfH = Math.max(...mR(m).map(ri => ri.offsetH + ri.selfH))
+        const g = <G>ni
+        g.selfW = Math.max(...mR(m).map(ri => ri.offsetW + ri.selfW)) + 40
+        g.selfH = Math.max(...mR(m).map(ri => ri.offsetH + ri.selfH)) + 40
         break
       }
       case isR(ni.path): {
-        const ri = ni as R
-        // TODO switch based on controlType and set familyW, familyH accordingly
-        ri.familyW = 120
-        ri.familyH = 80
+        const ri = <R>ni
+        if (ri.controlType === ControlType.NONE) {
+          ri.familyW = 80
+          ri.familyH = 60
+        } else if (ri.controlType === ControlType.INGESTION) {
+          ri.familyW = 200
+          ri.familyH = 240
+        } else if (ri.controlType === ControlType.EXTRACTION) {
+          ri.familyW = 200
+          ri.familyH = 240
+        }
         ri.selfW = ri.familyW + 2 * MARGIN_X
         ri.selfH = ri.familyH + 2 * MARGIN_Y
         break

@@ -8,9 +8,7 @@ export enum DialogState {
   SHARED_BY_ME,
   SHARED_WITH_ME,
   SHARE_THIS_MAP,
-  RENAME_MAP,
-  ROOT_INGESTION,
-  ROOT_EXTRACTION
+  RENAME_MAP
 }
 
 export enum AlertDialogState {

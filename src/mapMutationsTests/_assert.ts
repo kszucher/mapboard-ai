@@ -5,7 +5,7 @@ import {mL} from "../mapQueries/MapQueries.ts"
 import {M, MPartial} from "../mapState/MapStateTypes.ts"
 
 export const _assert = (test: MPartial, result: MPartial, fn: Function) => {
-  const m = test as M
+  const m = <M>test
   const pathMappingBefore = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('')]))
   mapInit(m)
   fn(m)
@@ -14,7 +14,7 @@ export const _assert = (test: MPartial, result: MPartial, fn: Function) => {
     nodeId: pathMappingBefore.has(ni.nodeId) ? pathMappingBefore.get(ni.nodeId) : '_' +  ni.path.join('')
   }))
   const pathMappingAfter = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('')]))
-  mL(mp as M).forEach(li => Object.assign(li, {
+  mL(mp).forEach(li => Object.assign(li, {
     fromNodeId: pathMappingBefore.has(li.fromNodeId) ? pathMappingBefore.get(li.fromNodeId) : '_' + pathMappingAfter.get(li.fromNodeId),
     toNodeId: pathMappingBefore.has(li.toNodeId) ? pathMappingBefore.get(li.toNodeId) : '_' + pathMappingAfter.get(li.toNodeId)
   }))

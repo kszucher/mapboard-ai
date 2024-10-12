@@ -16,18 +16,17 @@ export const MapSvgRConnectors: FC = () => {
   return (
     connectionHelpersVisible &&
     mR(m).map(ri => ([
-        {side: Side.L, x: ri.nodeStartX, y: ri.nodeStartY + ri.selfH / 2 - 12},
-        {side: Side.R, x: ri.nodeStartX + ri.selfW - 24, y: ri.nodeStartY + ri.selfH / 2 - 12},
-        {side: Side.T, x: ri.nodeStartX + ri.selfW / 2 - 12, y: ri.nodeStartY},
-        {side: Side.B, x: ri.nodeStartX + ri.selfW / 2 - 12, y: ri.nodeStartY + ri.selfH - 24}
+        {side: Side.L, x: ri.nodeStartX, y: ri.nodeStartY + ri.selfH / 2 },
+        {side: Side.R, x: ri.nodeStartX + ri.selfW, y: ri.nodeStartY + ri.selfH / 2 },
+        {side: Side.T, x: ri.nodeStartX + ri.selfW / 2, y: ri.nodeStartY},
+        {side: Side.B, x: ri.nodeStartX + ri.selfW / 2, y: ri.nodeStartY + ri.selfH}
       ].flatMap(el =>
-        <rect
+        <circle
           key={`${ri.nodeId}_${el.side}_rc`}
           viewBox="0 0 24 24"
           width="24"
           height="24"
-          rx={4}
-          ry={4}
+          r={8}
           fill={'#666666'}
           transform={`translate(${adjustIcon(el.x)}, ${adjustIcon(el.y)})`}
           {...{vectorEffect: 'non-scaling-stroke'}}
@@ -40,7 +39,7 @@ export const MapSvgRConnectors: FC = () => {
           onMouseUp={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            const newLink = {...connectionStart, toNodeId: ri.nodeId, toNodeSide: el.side} as L
+            const newLink: Partial<L> = {...connectionStart, toNodeId: ri.nodeId, toNodeSide: el.side}
             if (
               connectionStart.fromNodeId !== '' &&
               connectionStart.fromNodeId !== ri.nodeId &&

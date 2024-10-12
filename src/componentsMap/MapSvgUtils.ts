@@ -1,9 +1,6 @@
 import {Side} from "../consts/Enums.ts"
 import {idToR} from "../mapQueries/MapQueries.ts"
 import {L, M, R} from "../mapState/MapStateTypes.ts"
-import {adjust} from "../utils/Utils.ts"
-
-type coordinates = [number, number]
 
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -12,16 +9,6 @@ export const pathCommonProps = {
     transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
     transitionProperty: 'd, fill, stroke-width'
   }
-}
-
-const getCoordsInLine = (a: coordinates, b: coordinates, dt: number) => {
-  const [x0, y0] = a
-  const [x1, y1] = b
-  const d = Math.sqrt(Math.pow((x1 - x0), 2) + Math.pow((y1 - y0), 2))
-  const t = dt / d
-  const xt = (1 - t) * x0 + t * x1
-  const yt = (1 - t) * y0 + t * y1
-  return [xt, yt]
 }
 
 export const getCoordsMidBezier = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[]) => {
@@ -54,47 +41,4 @@ export const getRootLinePath = (m: M, l: L) => {
   const { x: sx, y: sy, cx: c1x, cy: c1y } = getCoordinatesForSide(fromNode, fromNodeSide)
   const { x: ex, y: ey, cx: c2x, cy: c2y } = getCoordinatesForSide(toNode, toNodeSide)
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey]
-}
-
-export const getPolygonPath = (t: R, mode: string, margin: number) => {
-  let ax = 0, bx = 0, cx = 0, ayu = 0, ayd = 0, byu = 0, byd = 0, cyu = 0, cyd = 0
-  switch (mode) {
-    case 'sSelf': {
-      const R = 8
-      ax = t.nodeStartX
-      bx = t.nodeStartX + t.selfW - R
-      cx = t.nodeStartX + t.selfW
-      ayu = byu = cyu = t.nodeStartY
-      ayd = byd = cyd = t.nodeStartY + t.selfH
-      break
-    }
-  }
-  ax = adjust(ax - margin)
-  bx = adjust(bx - margin)
-  cx = adjust(cx + margin)
-  ayu = adjust(ayu - margin)
-  ayd = adjust(ayd + margin)
-  byu = adjust(byu - margin)
-  byd = adjust(byd + margin)
-  cyu = adjust(cyu - margin)
-  cyd = adjust(cyd + margin)
-  const points = [[ax, ayu], [bx, byu], [cx, cyu], [cx, cyd], [bx, byd], [ax, ayd]] as coordinates[]
-  let path = ''
-  for (let i = 0; i < points.length; i++) {
-    const prevPoint = i === 0 ? points[points.length - 1] : points[i - 1]
-    const currPoint = points[i]
-    const nextPoint = i === points.length - 1 ? points[0] : points[i + 1]
-    const [sx, sy] = getCoordsInLine(currPoint, prevPoint, 12)
-    const [c1x, c1y] = currPoint
-    const [c2x, c2y] = currPoint
-    const [ex, ey] = getCoordsInLine(currPoint, nextPoint, 12)
-    if (['sSelf', 'c'].includes(mode) && i === 1) {
-      path += getBezierLinePath('L', [sx, sy, sx, sy, sx, sy, ex - 24, ey])
-    } else if (['sSelf', 'c'].includes(mode) && i === 4) {
-      path += getBezierLinePath('L', [sx - 24, sy, ex, ey, ex, ey, ex, ey])
-    } else {
-      path += getBezierLinePath(i === 0 ? 'M' : 'L', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
-    }
-  }
-  return path + 'z'
 }
