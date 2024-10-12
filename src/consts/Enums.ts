@@ -24,7 +24,6 @@ export enum NodeMode {
 
 export enum LeftMouseMode {
   CLICK_SELECT = 'clickSelect',
-  CLICK_SELECT_AND_MOVE = 'clickSelectAndMove',
   RECTANGLE_SELECT = 'rectangleSelect',
 }
 

@@ -28,23 +28,18 @@ export const MapDivR: FC = () => {
           minHeight: ri.selfH,
           zIndex: ri.path.length,
           margin: 0,
-          pointerEvents: [
-            LeftMouseMode.CLICK_SELECT,
-            LeftMouseMode.CLICK_SELECT_AND_MOVE
-          ].includes(leftMouseMode) && nodeMode === NodeMode.EDIT_ROOT
-            ? 'auto'
-            : 'none'
+          pointerEvents: leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT ? 'auto' : 'none'
         }}
         onMouseDown={(e) => {
           let didMove = false
           e.stopPropagation()
           if (e.buttons === 1) {
-            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT) {
-              if (!e.ctrlKey) dispatch(actions.selectR(ri.path))
-              if (e.ctrlKey && isAXR(m) && !ri.selected) dispatch(actions.selectRAdd(ri.path))
-              if (e.ctrlKey && ri.selected && getAXR(m).length > 1) dispatch(actions.unselectR(ri.path))
-            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT_AND_MOVE && nodeMode === NodeMode.EDIT_ROOT) {
-              if (!e.ctrlKey) dispatch(actions.selectR(ri.path))
+            if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT && !e.ctrlKey) {
+              if (!e.shiftKey) dispatch(actions.selectR(ri.path))
+              if (e.shiftKey && isAXR(m) && !ri.selected) dispatch(actions.selectRAdd(ri.path))
+              if (e.shiftKey && ri.selected && getAXR(m).length > 1) dispatch(actions.unselectR(ri.path))
+            } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT && e.ctrlKey) {
+              if (!e.shiftKey) dispatch(actions.selectR(ri.path))
               dispatch(actions.saveFromCoordinates({e}))
               const abortController = new AbortController()
               const {signal} = abortController
