@@ -1,8 +1,8 @@
 import {mapInit} from "../mapMutations/MapInit.ts"
 import {getSubProcessList} from "../mapQueries/MapProcess.ts"
 import {SubProcess} from "../mapQueries/MapProcessTypes.ts"
-import {ControlType, Side, SubProcessType} from "../mapState/MapEnums.ts"
 import {M, MPartial} from "../mapState/MapStateTypes.ts"
+import {ControlType, Side, SubProcessType} from "../mapState/MapStateTypesEnums.ts"
 
 describe("MapProcessTests", () => {
   test('getSubProcessList', () => {

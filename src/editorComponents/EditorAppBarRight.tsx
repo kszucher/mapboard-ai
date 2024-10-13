@@ -5,7 +5,7 @@ import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
-import {AccessType} from "../editorState/EditorEnums.ts"
+import {AccessType} from "../editorState/EditorStateTypesEnums.ts"
 import {AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 import {MouseConfig} from "./MouseConfig.tsx"
 

@@ -1,5 +1,5 @@
-import {Side} from "../mapState/MapEnums.ts"
 import {M} from "../mapState/MapStateTypes.ts"
+import {Side} from "../mapState/MapStateTypesEnums.ts"
 import {SubProcess} from "./MapProcessTypes.ts"
 import {mL, mR} from "./MapQueries.ts"
 

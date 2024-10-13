@@ -3,9 +3,9 @@ import {useDispatch, useSelector} from "react-redux"
 import Dots from "../../assets/dots.svg?react"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
-import {NodeMode} from "../editorState/EditorEnums.ts"
+import {NodeMode} from "../editorState/EditorStateTypesEnums.ts"
 import {getNodeMode, getXR} from "../mapQueries/MapQueries.ts"
-import {ControlType} from "../mapState/MapEnums.ts"
+import {ControlType} from "../mapState/MapStateTypesEnums.ts"
 import {AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
 
 export const NodeActions = () => {

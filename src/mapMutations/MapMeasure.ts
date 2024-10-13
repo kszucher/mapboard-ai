@@ -1,8 +1,8 @@
 import {mR} from "../mapQueries/MapQueries.ts"
 import {isG, isR} from "../mapQueries/PathQueries.ts"
 import {MARGIN_X, MARGIN_Y} from "../mapState/MapConsts.ts"
-import {ControlType} from "../mapState/MapEnums.ts"
 import {G, M, R} from "../mapState/MapStateTypes.ts"
+import {ControlType} from "../mapState/MapStateTypesEnums.ts"
 
 export const mapMeasure = (m: M) => {
   const minOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))

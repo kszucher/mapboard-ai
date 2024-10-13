@@ -1,7 +1,7 @@
 import {Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField} from "@radix-ui/themes"
 import {useState} from "react"
 
-import {AccessType} from "../editorState/EditorEnums.ts"
+import {AccessType} from "../editorState/EditorStateTypesEnums.ts"
 import {useCreateShareMutation} from "../rootComponent/RootComponent.tsx"
 
 export const Share = () => {

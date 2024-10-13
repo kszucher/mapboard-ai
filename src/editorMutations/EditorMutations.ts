@@ -1,14 +1,20 @@
 import {createSlice, isAction, isAnyOf, PayloadAction} from "@reduxjs/toolkit"
 import React from "react"
-import {AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState} from "../editorState/EditorEnums.ts"
 import {editorState, editorStateDefault} from "../editorState/EditorState.ts"
 import {EditorState} from "../editorState/EditorStateTypes.ts"
+import {
+  AlertDialogState,
+  DialogState,
+  LeftMouseMode,
+  MidMouseMode,
+  PageState
+} from "../editorState/EditorStateTypesEnums.ts"
 import {getMapX, getMapY} from "../mapComponents/MapDivUtils.ts"
 import {mapBuild} from "../mapMutations/MapBuild.ts"
 import {wrappedFunctions} from "../mapMutations/MapMutations.ts"
 import {mapObjectToArray} from "../mapQueries/MapQueries.ts"
-import {Side} from "../mapState/MapEnums.ts"
 import {R} from "../mapState/MapStateTypes.ts"
+import {Side} from "../mapState/MapStateTypesEnums.ts"
 import {api} from "../rootComponent/RootComponent.tsx"
 
 export const editorSlice = createSlice({

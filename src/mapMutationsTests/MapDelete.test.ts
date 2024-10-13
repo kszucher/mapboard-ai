@@ -1,6 +1,6 @@
 import {mapMutations} from "../mapMutations/MapMutations.ts"
-import {Side} from "../mapState/MapEnums.ts"
 import {M, MPartial} from "../mapState/MapStateTypes.ts"
+import {Side} from "../mapState/MapStateTypesEnums.ts"
 import {_assert} from "./_assert.ts"
 
 describe("MapDeleteTests", () => {

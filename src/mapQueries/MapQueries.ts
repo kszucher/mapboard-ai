@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare"
 
-import {NodeMode} from "../editorState/EditorEnums.ts"
+import {NodeMode} from "../editorState/EditorStateTypesEnums.ts"
 import {sortPath} from "../mapMutations/MapSort.ts"
 import {G, L, M, N, PR, R, T} from "../mapState/MapStateTypes.ts"
 import {excludeEntries, hasTrues} from "../utils/Utils"

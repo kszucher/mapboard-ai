@@ -4,7 +4,7 @@ import Eye from "../../assets/eye.svg?react"
 import LetterR from "../../assets/letter-r.svg?react"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
-import {NodeMode} from "../editorState/EditorEnums.ts"
+import {NodeMode} from "../editorState/EditorStateTypesEnums.ts"
 import {getNodeMode} from "../mapQueries/MapQueries.ts"
 import {AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
 

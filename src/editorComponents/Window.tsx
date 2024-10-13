@@ -3,7 +3,13 @@ import {useDispatch, useSelector} from "react-redux"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {getMap, mSelector} from "../editorQueries/EditorQueries.ts"
-import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../editorState/EditorEnums.ts"
+import {
+  AccessType,
+  AlertDialogState,
+  DialogState,
+  MidMouseMode,
+  PageState
+} from "../editorState/EditorStateTypesEnums.ts"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
 import {getLastIndexR, getXR, isAXR, mR} from "../mapQueries/MapQueries.ts"
 import {api, AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"

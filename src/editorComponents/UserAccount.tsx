@@ -3,7 +3,7 @@ import {AlertDialog, Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import User from "../../assets/user.svg?react"
 import {actions} from "../editorMutations/EditorMutations.ts"
-import {AlertDialogState, DialogState} from "../editorState/EditorEnums.ts"
+import {AlertDialogState, DialogState} from "../editorState/EditorStateTypesEnums.ts"
 import {api, AppDispatch} from "../rootComponent/RootComponent.tsx"
 
 export const UserAccount = () => {

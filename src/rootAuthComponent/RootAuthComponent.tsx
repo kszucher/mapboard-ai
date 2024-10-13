@@ -1,7 +1,7 @@
 import {Auth0Provider} from "@auth0/auth0-react"
 import {useSelector} from "react-redux"
 import {Editor} from "../editorComponents/Editor.tsx"
-import {PageState} from "../editorState/EditorEnums.ts"
+import {PageState} from "../editorState/EditorStateTypesEnums.ts"
 import {Landing} from "../landingComponent/Landing.tsx"
 import {RootState} from "../rootComponent/RootComponent.tsx"
 
