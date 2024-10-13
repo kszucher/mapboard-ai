@@ -1,14 +1,9 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {getColors} from "./Colors.ts"
-import {RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
+import {RootState} from "../rootComponent/RootComponent.tsx"
 
 export const MapSvgRMove: FC = () => {
   const rOffsetCoords = useSelector((state: RootState) => state.editor.rOffsetCoords)
-  const { data } = useOpenWorkspaceQuery()
-  const { colorMode } = data || defaultUseOpenWorkspaceQueryState
-  const C = getColors(colorMode)
   return (
     rOffsetCoords.length &&
     <rect
@@ -20,7 +15,7 @@ export const MapSvgRMove: FC = () => {
       ry={8}
       fill={"none"}
       fillOpacity={1}
-      stroke={C.SELECTION_RECT_COLOR}
+      stroke={'#dddddd'}
       strokeWidth={1}
     />
   )
