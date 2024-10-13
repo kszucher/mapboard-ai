@@ -6,7 +6,7 @@ import Login from "../../assets/login.svg?react"
 import TopologyStar from "../../assets/topology-star.svg?react"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {api, AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
-import {authAudienceUrl} from "../urls/Urls.ts"
+import {frontendUrl} from "../urls/Urls.ts"
 
 export const Landing: FC = () => {
   const token = useSelector((state: RootState) => state.editor.token)
@@ -20,7 +20,7 @@ export const Landing: FC = () => {
         setIsWaiting(true)
         const token = await getAccessTokenSilently({
           authorizationParams: {
-            audience: authAudienceUrl,
+            audience: frontendUrl,
             scope: 'openid profile email',
           },
         })
