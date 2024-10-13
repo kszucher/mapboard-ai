@@ -1,10 +1,11 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import Dots from "../../assets/dots.svg?react"
-import {ControlType, NodeMode} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
+import {NodeMode} from "../editorState/EditorEnums.ts"
 import {getNodeMode, getXR} from "../mapQueries/MapQueries.ts"
+import {ControlType} from "../mapState/MapEnums.ts"
 import {AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
 
 export const NodeActions = () => {

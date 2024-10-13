@@ -2,8 +2,8 @@ import {useAuth0} from "@auth0/auth0-react"
 import {AlertDialog, Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import User from "../../assets/user.svg?react"
-import {AlertDialogState, DialogState} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
+import {AlertDialogState, DialogState} from "../editorState/EditorEnums.ts"
 import {api, AppDispatch} from "../rootComponent/RootComponent.tsx"
 
 export const UserAccount = () => {

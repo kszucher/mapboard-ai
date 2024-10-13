@@ -1,5 +1,5 @@
-import {Side} from "../consts/Enums.ts"
 import {idToR} from "../mapQueries/MapQueries.ts"
+import {Side} from "../mapState/MapEnums.ts"
 import {L, M, R} from "../mapState/MapStateTypes.ts"
 
 export const pathCommonProps = {

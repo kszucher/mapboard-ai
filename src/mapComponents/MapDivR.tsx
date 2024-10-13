@@ -1,9 +1,10 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {ControlType, LeftMouseMode, NodeMode} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {getROffsetCoords, mSelector} from "../editorQueries/EditorQueries.ts"
+import {LeftMouseMode, NodeMode} from "../editorState/EditorEnums.ts"
 import {getAXR, getNodeMode, isAXR, mR} from "../mapQueries/MapQueries.ts"
+import {ControlType} from "../mapState/MapEnums.ts"
 import {AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
 import {MapDivRIngestion} from "./MapDivRIngestion.tsx"
 

@@ -2,8 +2,8 @@ import {Dialog, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch} from "react-redux"
 import Dots from "../../assets/dots.svg?react"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {DialogState} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
+import {DialogState} from "../editorState/EditorEnums.ts"
 import {api, AppDispatch, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 
 export const MapActions = () => {

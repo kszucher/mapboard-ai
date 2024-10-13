@@ -1,4 +1,4 @@
-import {ControlType, Side} from "../consts/Enums.ts"
+import {ControlType, Side} from "./MapEnums.ts"
 import {
   GSaveAlways,
   GSaveNever,

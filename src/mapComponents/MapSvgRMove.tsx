@@ -1,7 +1,7 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {getColors} from "../consts/Colors.ts"
+import {getColors} from "./Colors.ts"
 import {RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 
 export const MapSvgRMove: FC = () => {

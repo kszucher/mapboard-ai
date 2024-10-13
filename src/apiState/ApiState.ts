@@ -1,4 +1,4 @@
-import {AccessType} from "../consts/Enums.ts"
+import {AccessType} from "../editorState/EditorEnums.ts"
 import {
   DefaultGetIngestionQueryState,
   DefaultGetLatestMergedQueryState,
