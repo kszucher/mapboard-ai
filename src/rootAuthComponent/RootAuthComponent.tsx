@@ -2,7 +2,7 @@ import {Auth0Provider} from "@auth0/auth0-react"
 import {useSelector} from "react-redux"
 import {PageState} from "../consts/Enums.ts"
 import {Editor} from "../editorComponents/Editor.tsx"
-import {Landing} from "../landingComponents/Landing.tsx"
+import {Landing} from "../landingComponent/Landing.tsx"
 import {RootState} from "../rootComponent/RootComponent.tsx"
 
 export const RootAuthComponent = () => {
