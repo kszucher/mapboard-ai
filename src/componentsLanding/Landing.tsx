@@ -4,9 +4,8 @@ import {FC, useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import Login from "../../assets/login.svg?react"
 import TopologyStar from "../../assets/topology-star.svg?react"
-import {api} from "../api/Api.ts"
-import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
+import {api, AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
 import {authAudienceUrl} from "../urls/Urls.ts"
 
 export const Landing: FC = () => {

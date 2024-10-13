@@ -1,7 +1,7 @@
 import {Button, Flex, Spinner, Text} from "@radix-ui/themes"
 import {useEffect, useRef, useState} from "react"
-import {useUploadFileMutation} from "../api/Api.ts"
 import {R} from "../mapState/MapStateTypes.ts"
+import {useUploadFileMutation} from "../rootComponent/RootComponent.tsx"
 
 export const MapDivRIngestion = ({ri}: {ri :R}) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null)

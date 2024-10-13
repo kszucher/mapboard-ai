@@ -1,9 +1,9 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import Mouse from "../../assets/mouse.svg?react"
-import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {LeftMouseMode, MidMouseMode} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
+import {AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
 
 export const MouseConfig = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)

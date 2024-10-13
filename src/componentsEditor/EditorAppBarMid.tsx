@@ -2,10 +2,9 @@ import {Button, DropdownMenu, IconButton} from "@radix-ui/themes"
 import {FC} from 'react'
 import {useDispatch} from "react-redux"
 import ChevronDown from "../../assets/chevron-down.svg?react"
-import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {AppDispatch} from "../appStore/appStore.ts"
 import {MapActions} from "../componentsMapActions/MapActions.tsx"
+import {api, AppDispatch, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 
 export const EditorAppBarMid: FC = () => {
   const { data } = useOpenWorkspaceQuery()

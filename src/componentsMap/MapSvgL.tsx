@@ -1,8 +1,8 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../appStore/appStore.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
 import {mL} from "../mapQueries/MapQueries.ts"
+import {RootState} from "../rootComponent/RootComponent.tsx"
 import {getBezierLinePath, getRootLinePath, pathCommonProps} from "./MapSvgUtils.ts"
 
 export const MapSvgL: FC = () => {

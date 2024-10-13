@@ -1,6 +1,5 @@
 import {createSlice, isAction, isAnyOf, PayloadAction} from "@reduxjs/toolkit"
 import React from "react"
-import {api} from "../api/Api.ts"
 import {getMapX, getMapY} from "../componentsMap/MapDivUtils.ts"
 import {AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState, Side} from "../consts/Enums.ts"
 import {editorState, editorStateDefault} from "../editorState/EditorState.ts"
@@ -9,6 +8,7 @@ import {mapBuild} from "../mapMutations/MapBuild.ts"
 import {wrappedFunctions} from "../mapMutations/MapMutations.ts"
 import {mapObjectToArray} from "../mapQueries/MapQueries.ts"
 import {R} from "../mapState/MapStateTypes.ts"
+import {api} from "../rootComponent/RootComponent.tsx"
 
 export const editorSlice = createSlice({
   name: 'editor',

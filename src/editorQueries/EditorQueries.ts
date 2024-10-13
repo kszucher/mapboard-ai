@@ -1,4 +1,4 @@
-import {appStore, RootState} from "../appStore/appStore.ts"
+import {appStore, RootState} from "../rootComponent/RootComponent.tsx"
 
 export const getMap = () => appStore.getState().editor.commitList[appStore.getState().editor.commitIndex]
 export const getMapId = () => appStore.getState().editor.mapId

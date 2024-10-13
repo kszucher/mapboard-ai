@@ -1,11 +1,10 @@
 import {BaseQueryFn, EndpointBuilder} from "@reduxjs/toolkit/query"
-import {api} from "../api/Api.ts"
-import {RootState} from "../appStore/appStore.ts"
 import {timeoutId} from "../componentsEditor/Window.tsx"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {getMapId} from "../editorQueries/EditorQueries.ts"
 import {mapDiff} from "../mapQueries/MapDiff.ts"
 import {mapPrune} from "../mapQueries/MapPrune.ts"
+import {api, RootState} from "../rootComponent/RootComponent.tsx"
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   signIn: builder.mutation<{ connectionId: string }, void>({

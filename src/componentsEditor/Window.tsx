@@ -1,13 +1,12 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {AccessType, AlertDialogState, DialogState, MidMouseMode, PageState} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {getMap, mSelector} from "../editorQueries/EditorQueries.ts"
 import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
 import {getLastIndexR, getXR, isAXR, mR} from "../mapQueries/MapQueries.ts"
+import {api, AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 
 export let timeoutId: NodeJS.Timeout
 let mapListener: AbortController

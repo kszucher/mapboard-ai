@@ -1,11 +1,10 @@
 import {DropdownMenu, IconButton} from "@radix-ui/themes"
 import {useDispatch, useSelector} from "react-redux"
 import Settings2 from "../../assets/settings-2.svg?react"
-import {api, useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 
-import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
+import {api, AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 
 export const UserSettings = () => {
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)

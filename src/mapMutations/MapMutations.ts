@@ -10,7 +10,7 @@ import {mapBuild} from "./MapBuild.ts"
 import {deleteL, deleteLR,} from "./MapDelete"
 import {insertL, insertR} from "./MapInsert"
 import {copyLR, duplicateLR, pasteLR} from "./MapMove"
-import {selectRAdd, selectR, selectRL, unselectNodes, unselectR} from "./MapSelect"
+import {selectR, selectRAdd, selectRL, unselectNodes, unselectR} from "./MapSelect"
 
 export const mapMutations = {
   selectR: (m: M, path: PR) => selectR(m, pathToR(m, path)),

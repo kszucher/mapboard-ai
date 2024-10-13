@@ -1,9 +1,8 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {RootState} from "../appStore/appStore.ts"
 import {getColors} from "../consts/Colors.ts"
+import {RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 
 export const MapSvgRMove: FC = () => {
   const rOffsetCoords = useSelector((state: RootState) => state.editor.rOffsetCoords)

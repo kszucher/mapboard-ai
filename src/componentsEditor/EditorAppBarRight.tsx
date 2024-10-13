@@ -3,16 +3,15 @@ import {FC} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
-import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
 
-import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {NodeActions} from "../componentsMapActions/NodeActions.tsx"
 import {NodeActionsSelectModeConfig} from "../componentsMapActions/NodeActionsSelectModeConfig.tsx"
 import {UserAccount} from "../componentsUserActions/UserAccount.tsx"
 import {UserSettings} from "../componentsUserActions/UserSettings.tsx"
 import {AccessType} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
+import {AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 import {MouseConfig} from "./MouseConfig.tsx"
 
 export const EditorAppBarRight: FC = () => {

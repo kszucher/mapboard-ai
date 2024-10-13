@@ -1,11 +1,10 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
 import colors from "tailwindcss/colors"
-import {useOpenWorkspaceQuery} from "../api/Api.ts"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {RootState} from "../appStore/appStore.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
 import {mR} from "../mapQueries/MapQueries.ts"
+import {RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 
 export const MapSvgRBackground: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))

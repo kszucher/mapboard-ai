@@ -1,9 +1,9 @@
 import {FC} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../appStore/appStore.ts"
 import {Side} from "../consts/Enums.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
 import {mR} from "../mapQueries/MapQueries.ts"
+import {RootState} from "../rootComponent/RootComponent.tsx"
 import {adjust} from "../utils/Utils.ts"
 import {getLinearLinePath, pathCommonProps} from "./MapSvgUtils.ts"
 

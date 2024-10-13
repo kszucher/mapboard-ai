@@ -1,11 +1,11 @@
 import {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {AppDispatch, RootState} from "../appStore/appStore.ts"
 import {Side} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {mSelector} from "../editorQueries/EditorQueries.ts"
 import {isExistingLink, mR} from "../mapQueries/MapQueries.ts"
 import {L} from "../mapState/MapStateTypes.ts"
+import {AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
 import {adjustIcon} from "../utils/Utils.ts"
 
 export const MapSvgRConnectors: FC = () => {
