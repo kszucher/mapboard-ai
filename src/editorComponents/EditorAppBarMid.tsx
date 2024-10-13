@@ -3,8 +3,8 @@ import {FC} from 'react'
 import {useDispatch} from "react-redux"
 import ChevronDown from "../../assets/chevron-down.svg?react"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {MapActions} from "../componentsMapActions/MapActions.tsx"
 import {api, AppDispatch, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
+import {MapActions} from "./MapActions.tsx"
 
 export const EditorAppBarMid: FC = () => {
   const { data } = useOpenWorkspaceQuery()

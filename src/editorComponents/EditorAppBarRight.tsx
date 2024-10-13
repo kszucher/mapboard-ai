@@ -4,15 +4,15 @@ import {useDispatch, useSelector} from "react-redux"
 import ArrowBackUp from "../../assets/arrow-back-up.svg?react"
 import ArrowForwardUp from "../../assets/arrow-forward-up.svg?react"
 import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-
-import {NodeActions} from "../componentsMapActions/NodeActions.tsx"
-import {NodeActionsSelectModeConfig} from "../componentsMapActions/NodeActionsSelectModeConfig.tsx"
-import {UserAccount} from "../componentsUserActions/UserAccount.tsx"
-import {UserSettings} from "../componentsUserActions/UserSettings.tsx"
 import {AccessType} from "../consts/Enums.ts"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 import {MouseConfig} from "./MouseConfig.tsx"
+
+import {NodeActions} from "./NodeActions.tsx"
+import {NodeActionsSelectModeConfig} from "./NodeActionsSelectModeConfig.tsx"
+import {UserAccount} from "./UserAccount.tsx"
+import {UserSettings} from "./UserSettings.tsx"
 
 export const EditorAppBarRight: FC = () => {
   const commitList = useSelector((state: RootState) => state.editor.commitList)

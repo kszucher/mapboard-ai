@@ -5,10 +5,10 @@ import {FC} from 'react'
 import {useSelector} from "react-redux"
 import {apiMutations} from "../apiMutations/ApiMutations.ts"
 import {apiQueries} from "../apiQueries/ApiQueries.ts"
-import {Editor} from "../componentsEditor/Editor.tsx"
-import {Landing} from "../componentsLanding/Landing.tsx"
 import {PageState} from "../consts/Enums.ts"
+import {Editor} from "../editorComponents/Editor.tsx"
 import {editorSlice} from "../editorMutations/EditorMutations.ts"
+import {Landing} from "../landingComponents/Landing.tsx"
 import {pythonBackendUrl} from "../urls/Urls.ts"
 
 export const api = createApi({

@@ -1,5 +1,5 @@
 import {BaseQueryFn, EndpointBuilder} from "@reduxjs/toolkit/query"
-import {timeoutId} from "../componentsEditor/Window.tsx"
+import {timeoutId} from "../editorComponents/Window.tsx"
 import {actions} from "../editorMutations/EditorMutations.ts"
 import {getMapId} from "../editorQueries/EditorQueries.ts"
 import {mapDiff} from "../mapQueries/MapDiff.ts"
