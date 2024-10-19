@@ -3,7 +3,7 @@ import {M, MPartial} from "../mapState/MapStateTypes.ts"
 import {Side} from "../mapState/MapStateTypesEnums.ts"
 import {_assert} from "./_assert.ts"
 
-describe("MapMoveTests", () => {
+describe("MapTransformTests", () => {
   beforeEach(() => {})
   test('duplicateR', () => {
     const test: MPartial = [

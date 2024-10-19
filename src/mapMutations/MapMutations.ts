@@ -9,7 +9,7 @@ import {ControlType} from "../mapState/MapStateTypesEnums.ts"
 import {mapBuild} from "./MapBuild.ts"
 import {deleteL, deleteLR,} from "./MapDelete"
 import {insertL, insertR} from "./MapInsert"
-import {copyLR, duplicateLR, pasteLR} from "./MapMove"
+import {copyLR, duplicateLR, pasteLR} from "./MapTransform.ts"
 import {selectR, selectRAdd, selectRL, unselectNodes, unselectR} from "./MapSelect"
 
 export const mapMutations = {
