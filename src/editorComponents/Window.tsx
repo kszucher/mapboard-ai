@@ -10,8 +10,8 @@ import {
   MidMouseMode,
   PageState
 } from "../editorState/EditorStateTypesEnums.ts"
-import {getRD, getRL, getRR, getRU} from "../mapQueries/MapFindNearestR.ts"
-import {getLastIndexR, getXR, isAXR, mR} from "../mapQueries/MapQueries.ts"
+import {mapMutationsConditions} from "../mapMutations/MapMutationsConditions.ts"
+import {isAXR} from "../mapQueries/MapQueries.ts"
 import {api, AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
 
 export let timeoutId: NodeJS.Timeout
@@ -47,24 +47,44 @@ export const Window: FC = () => {
       +e.shiftKey ? 's' : '-',
       +e.altKey ? 'a' : '-'
     ].join('')
-    if (ckm === '---' && e.key === 'Insert' && isAXR(m)) dispatch(actions.insertR())
-    if (ckm === '---' && e.key === 'Tab' && isAXR(m)) dispatch(actions.insertR())
-    if (ckm === '---' && e.key === 'Delete' && isAXR(m) && getLastIndexR(m) > 0 && mR(m).some(ri => !ri.selected)) dispatch(actions.deleteLR())
-    if (ckm === '---' && e.code === 'Space' && !isAXR(m)) dispatch(actions.selectR0())
-    if (ckm === '---' && e.code === 'Backspace' && isAXR(m)) dispatch(actions.unselect())
-    if (ckm === 'c--' && e.code === 'KeyC' && isAXR(m)) dispatch(actions.copyLR())
-    if (ckm === 'c--' && e.code === 'KeyX' && isAXR(m) && getLastIndexR(m) > 0) dispatch(actions.cutLRJumpR())
-    if (ckm === 'c--' && e.code === 'KeyD' && isAXR(m)) dispatch(actions.duplicateR())
+
+    if (ckm === '---' && e.key === 'Delete' && mapMutationsConditions.deleteLR(m)) dispatch(actions.deleteLR())
+
+    if (ckm === '---' && e.code === 'Space' && mapMutationsConditions.selectR0(m)) dispatch(actions.selectR0())
+
+    if (ckm === '---' && e.code === 'Backspace' && mapMutationsConditions.unselect(m)) dispatch(actions.unselect())
+
+    if (ckm === 'c--' && e.code === 'KeyA' && mapMutationsConditions.selectRA(m)) dispatch(actions.selectRA())
+
+    if (ckm === 'c--' && e.code === 'KeyC' && mapMutationsConditions.copyLR(m)) dispatch(actions.copyLR())
+
+    if (ckm === 'c--' && e.code === 'KeyX' && mapMutationsConditions.cutLRJumpR(m)) dispatch(actions.cutLRJumpR())
+
+    if (ckm === 'c--' && e.code === 'KeyD' && mapMutationsConditions.duplicateLR(m)) dispatch(actions.duplicateLR())
+
     if (ckm === 'c--' && e.code === 'KeyZ') dispatch(actions.redo())
+
     if (ckm === 'c--' && e.code === 'KeyY') dispatch(actions.undo())
-    if (ckm === '---' && e.code === 'ArrowDown' && isAXR(m) && getRD(m, getXR(m))) dispatch(actions.selectRDR())
-    if (ckm === 'c--' && e.code === 'ArrowDown' && isAXR(m)) dispatch(actions.offsetD())
-    if (ckm === '---' && e.code === 'ArrowUp' && isAXR(m) && getRU(m, getXR(m))) dispatch(actions.selectRUR())
-    if (ckm === 'c--' && e.code === 'ArrowUp' && isAXR(m)) dispatch(actions.offsetU())
-    if (ckm === '---' && e.code === 'ArrowRight' && isAXR(m) && getRR(m, getXR(m))) dispatch(actions.selectRRR())
-    if (ckm === 'c--' && e.code === 'ArrowRight' && isAXR(m)) dispatch(actions.offsetR())
-    if (ckm === '---' && e.code === 'ArrowLeft' && isAXR(m) && getRL(m, getXR(m))) dispatch(actions.selectRLR())
-    if (ckm === 'c--' && e.code === 'ArrowLeft' && isAXR(m)) dispatch(actions.offsetL())
+
+    if (ckm === '---' && e.code === 'ArrowDown' && mapMutationsConditions.selectRDR(m)) dispatch(actions.selectRDR())
+    if (ckm === 'c--' && e.code === 'ArrowDown' && mapMutationsConditions.offsetD(m)) dispatch(actions.offsetD())
+    if (ckm === '-s-' && e.code === 'ArrowDown' && mapMutationsConditions.selectRDRAdd(m)) dispatch(actions.selectRDRAdd())
+    if (ckm === '--a' && e.code === 'ArrowDown' && mapMutationsConditions.insertRD(m)) dispatch(actions.insertRD())
+
+    if (ckm === '---' && e.code === 'ArrowUp' && mapMutationsConditions.selectRUR(m)) dispatch(actions.selectRUR())
+    if (ckm === 'c--' && e.code === 'ArrowUp' && mapMutationsConditions.offsetU(m)) dispatch(actions.offsetU())
+    if (ckm === '-s-' && e.code === 'ArrowUp' && mapMutationsConditions.selectRURAdd(m)) dispatch(actions.selectRURAdd())
+    if (ckm === '--a' && e.code === 'ArrowUp' && mapMutationsConditions.insertRU(m)) dispatch(actions.insertRU())
+
+    if (ckm === '---' && e.code === 'ArrowRight' && mapMutationsConditions.selectRRR(m)) dispatch(actions.selectRRR())
+    if (ckm === 'c--' && e.code === 'ArrowRight' && mapMutationsConditions.offsetR(m)) dispatch(actions.offsetR())
+    if (ckm === '-s-' && e.code === 'ArrowRight' && mapMutationsConditions.selectRRRAdd(m)) dispatch(actions.selectRRRAdd())
+    if (ckm === '--a' && e.code === 'ArrowRight' && mapMutationsConditions.insertRR(m)) dispatch(actions.insertRR())
+
+    if (ckm === '---' && e.code === 'ArrowLeft' && mapMutationsConditions.selectRLR(m)) dispatch(actions.selectRLR())
+    if (ckm === 'c--' && e.code === 'ArrowLeft' && mapMutationsConditions.offsetL(m)) dispatch(actions.offsetL())
+    if (ckm === '-s-' && e.code === 'ArrowLeft' && mapMutationsConditions.selectRLRAdd(m)) dispatch(actions.selectRLRAdd())
+    if (ckm === '--a' && e.code === 'ArrowLeft' && mapMutationsConditions.insertRL(m)) dispatch(actions.insertRL())
   }
 
   const paste = (e: Event) => {

@@ -5,7 +5,7 @@ import {_assert} from "./_assert.ts"
 
 describe("MapTransformTests", () => {
   beforeEach(() => {})
-  test('duplicateR', () => {
+  test('duplicateLR', () => {
     const test: MPartial = [
       {nodeId: 'g', path: ['g']},
       {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', fromNodeSide: Side.L, toNodeId: 'r1', toNodeSide: Side.R},
@@ -31,6 +31,6 @@ describe("MapTransformTests", () => {
       {nodeId: '_r4', path: ['r', 4], selected: 1},
       {nodeId: '_r5', path: ['r', 5], selected: 2, offsetW: 10, offsetH: 20},
     ]
-    _assert(test, result, (m: M) => mapMutations.duplicateR(m))
+    _assert(test, result, (m: M) => mapMutations.duplicateLR(m))
   })
 })

@@ -23,6 +23,8 @@ const getMinDistanceRD = (m: M, xr: R) => getRAD(m, xr).reduce((a, ri) => Math.m
 const getMinDistanceRU = (m: M, xr: R) => getRAU(m, xr).reduce((a, ri) => Math.min(...[getDistanceRU(xr, ri), a]), Infinity)
 
 export const getRR = (m: M, xr: R) => mR(m).find(ri => getDistanceRR(xr, ri) === getMinDistanceRR(m, xr))
-export const getRL = (m: M, xr: R) => mR(m).find(ri => getDistanceRL(xr, ri) === getMinDistanceRL(m, xr))
-export const getRD = (m: M, xr: R) => mR(m).find(ri => getDistanceRD(xr, ri) === getMinDistanceRD(m, xr))
-export const getRU = (m: M, xr: R) => mR(m).find(ri => getDistanceRU(xr, ri) === getMinDistanceRU(m, xr))
+export const getLR = (m: M, xr: R) => mR(m).find(ri => getDistanceRL(xr, ri) === getMinDistanceRL(m, xr))
+export const getDR = (m: M, xr: R) => mR(m).find(ri => getDistanceRD(xr, ri) === getMinDistanceRD(m, xr))
+export const getUR = (m: M, xr: R) => mR(m).find(ri => getDistanceRU(xr, ri) === getMinDistanceRU(m, xr))
+
+export const getClosestR = (m: M, xr: R) => getLR(m, xr) || getRR(m, xr) || getDR(m, xr) || getUR(m, xr) || mR(m).find(ri => ri.nodeId !== xr.nodeId)

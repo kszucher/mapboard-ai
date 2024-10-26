@@ -23,33 +23,6 @@ export const NodeActions = () => {
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>
-              {'Select'}
-            </DropdownMenu.SubTrigger>
-            <DropdownMenu.SubContent>
-              <DropdownMenu.Item onClick={() => dispatch(actions.selectRA())}>
-                {'All Root'}
-              </DropdownMenu.Item>
-            </DropdownMenu.SubContent>
-          </DropdownMenu.Sub>
-          <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger>
-              {'Insert'}
-            </DropdownMenu.SubTrigger>
-            <DropdownMenu.SubContent>
-              <DropdownMenu.Item onClick={() => dispatch(actions.insertR())}>
-                {'Root Out'}
-              </DropdownMenu.Item>
-            </DropdownMenu.SubContent>
-          </DropdownMenu.Sub>
-          <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger>
-              {'Move'}
-            </DropdownMenu.SubTrigger>
-            <DropdownMenu.SubContent>
-            </DropdownMenu.SubContent>
-          </DropdownMenu.Sub>
-          <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger>
               {'Edit'}
             </DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>

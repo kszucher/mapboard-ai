@@ -4,7 +4,7 @@ import {getG, getLastIndexL, getLastIndexR, mL, mR} from "../mapQueries/MapQueri
 import {rSaveOptional} from "../mapState/MapState.ts"
 import {M} from "../mapState/MapStateTypes.ts"
 import {genId} from "../utils/Utils"
-import {unselectNodes} from "./MapSelect"
+import {mapUnselect} from "./MapSelect"
 import {sortPath} from "./MapSort.ts"
 
 const formatCb = (m: M) => "[\n" + m.map((e) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
@@ -24,10 +24,6 @@ const cbSave = (cb: M) => {
   })
 }
 
-export const copyLR = (m: M) => {
-  cbSave(mapPrune(lrToClipboard(m).sort(sortPath)))
-}
-
 const clipboardToLR = (m: M, cb: M) => {
   const lastIndexL = getLastIndexL(m)
   const lastIndexR = getLastIndexR(m)
@@ -40,7 +36,7 @@ const clipboardToLR = (m: M, cb: M) => {
     toNodeId: nodeIdMappingR.get(li.toNodeId)
   }))
   mR(cb).forEach(ri => Object.assign(ri, {
-    nodeId: (nodeIdMappingRIterator.next().value!)[1],
+    nodeId: (nodeIdMappingRIterator.next().value)![1],
     path: ['r', ri.path[1] + lastIndexR + 1],
     offsetW: (ri.offsetW ?? rSaveOptional.offsetW) + getG(m).selfW,
     offsetH: (ri.offsetH ?? rSaveOptional.offsetH) + getG(m).selfH
@@ -48,14 +44,20 @@ const clipboardToLR = (m: M, cb: M) => {
   return cb
 }
 
-export const pasteLR = (m: M, payload: string) => {
-  const lr = JSON.parse(payload)
-  unselectNodes(m)
-  m.push(...clipboardToLR(m, lr))
-}
+export const mapTransform = {
+  copyLR: (m: M) => {
+    cbSave(mapPrune(lrToClipboard(m).sort(sortPath)))
+  },
 
-export const duplicateLR = (m: M) => {
-  const lr = lrToClipboard(m)
-  unselectNodes(m)
-  m.push(...clipboardToLR(m, lr))
+  pasteLR: (m: M, payload: string) => {
+    const lr = JSON.parse(payload)
+    mapUnselect.Nodes(m)
+    m.push(...clipboardToLR(m, lr))
+  },
+
+  duplicateLR: (m: M) => {
+    const lr = lrToClipboard(m)
+    mapUnselect.Nodes(m)
+    m.push(...clipboardToLR(m, lr))
+  },
 }
