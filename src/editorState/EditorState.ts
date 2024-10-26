@@ -40,7 +40,7 @@ export const editorState: EditorState = {
     originX: 0,
     originY: 0,
   },
-  connectionHelpersVisible: true,
+  connectionHelpersVisible: false,
   connectionStart: {
     fromNodeId: '',
     fromNodeSide: Side.R

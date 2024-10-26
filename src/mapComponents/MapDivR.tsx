@@ -71,7 +71,7 @@ export const MapDivR: FC = () => {
           background: '#333333',
           width: ri.selfW - 2 * R_PADDING,
           height: ri.selfH - 2 * R_PADDING,
-          pointerEvents: ri.selected ? 'auto' : 'none'
+          pointerEvents: nodeMode === NodeMode.EDIT_ROOT ? 'none' : 'auto'
         }}>
           {ri.controlType === ControlType.INGESTION && <MapDivRIngestion ri={ri}/>}
         </div>
