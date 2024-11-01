@@ -164,6 +164,7 @@ export const editorSlice = createSlice({
         console.log(payload)
         const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'))
         if (isValid) {
+          // ONLY do the following IF arrived map != current map
           const data = mapObjectToArray(payload.mapData)
           const m = structuredClone(data)
           mapBuild(m)
@@ -175,20 +176,6 @@ export const editorSlice = createSlice({
           state.isLoading = false
         } else {
           window.alert('invalid openWorkspace map')
-        }
-      }
-    )
-    builder.addMatcher(
-      api.endpoints.getLatestMerged.matchFulfilled,
-      (state, { payload }) => {
-        console.log(payload)
-        const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'))
-        if (isValid) {
-          const data = mapObjectToArray(payload.mapData)
-          state.latestMapData = structuredClone(data)
-          console.log('new base map loaded')
-        } else {
-          window.alert('invalid getLatestMerged map')
         }
       }
     )

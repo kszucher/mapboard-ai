@@ -13,18 +13,20 @@ import {
 import {mapMutationsConditions} from "../mapMutations/MapMutationsConditions.ts"
 import {isAXR} from "../mapQueries/MapQueries.ts"
 import {api, AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
+import {backendUrl} from "../urls/Urls.ts"
 
 export let timeoutId: NodeJS.Timeout
 let mapListener: AbortController
 let midMouseListener: AbortController
 
 export const Window: FC = () => {
+  const mapId = useSelector((state: RootState) => state.editor.mapId)
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState)
   const commitList = useSelector((state: RootState) => state.editor.commitList)
-  const m = (useSelector((state:RootState) => mSelector(state)))
+  const m = (useSelector((state: RootState) => mSelector(state)))
   const mExists = m && Object.keys(m).length
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()
@@ -39,7 +41,8 @@ export const Window: FC = () => {
       e.which < 48 ||
       e.key === 'F1' ||
       e.key === 'F3'
-    ) {e.preventDefault()
+    ) {
+      e.preventDefault()
     }
     const m = getMap()
     const ckm = [
@@ -98,7 +101,11 @@ export const Window: FC = () => {
             navigator.clipboard.readText()
               .then(text => {
                 let isValidJson = true
-                try { JSON.parse(text) } catch { isValidJson = false }
+                try {
+                  JSON.parse(text)
+                } catch {
+                  isValidJson = false
+                }
                 if (isValidJson) {
                   const mapJson = JSON.parse(text)
                   const isValidMap = Array.isArray(mapJson) && mapJson.length && mapJson.every(el =>
@@ -186,10 +193,21 @@ export const Window: FC = () => {
     if (mExists) {
       if (commitList.length > 1) {
         clearTimeout(timeoutId)
-        timeoutId = setTimeout(() => dispatch(api.endpoints.saveMap.initiate()), 1000)
+        timeoutId = setTimeout(() => dispatch(api.endpoints.saveMap.initiate()), 100)
       }
     }
   }, [m])
+
+  useEffect(() => {
+    if (mapId) {
+      const eventSource = new EventSource(backendUrl + '/map_updates/?map_id=' + mapId)
+      eventSource.onmessage = (event) => {
+        console.log('SSE data:', event.data)
+        dispatch(api.endpoints.selectMap.initiate({mapId}))
+      }
+      return () => eventSource.close()
+    }
+  }, [mapId])
 
   return (
     <></>

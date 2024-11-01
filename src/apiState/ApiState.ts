@@ -1,7 +1,6 @@
 import {AccessType} from "../editorState/EditorStateTypesEnums.ts"
 import {
   DefaultGetIngestionQueryState,
-  DefaultGetLatestMergedQueryState,
   DefaultGetSharesQueryState,
   DefaultUseOpenWorkspaceQueryState
 } from "./ApiStateTypes.ts"
@@ -25,11 +24,6 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
 export const defaultGetSharesQueryState: DefaultGetSharesQueryState = {
   shareDataImport: [],
   shareDataExport: []
-}
-
-export const defaultGetLatestMergedQueryState: DefaultGetLatestMergedQueryState = {
-  mapData: {},
-  mapMergeId: ''
 }
 
 export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {

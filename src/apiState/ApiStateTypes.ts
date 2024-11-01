@@ -33,11 +33,6 @@ export interface DefaultGetSharesQueryState {
   }[]
 }
 
-export interface DefaultGetLatestMergedQueryState {
-  mapData: object,
-  mapMergeId: string,
-}
-
 export interface DefaultGetIngestionQueryState {
   ingestionResult: any[]
 }

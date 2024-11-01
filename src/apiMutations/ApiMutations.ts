@@ -21,9 +21,6 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
   selectMap: builder.mutation<void, { mapId: string }>({
     query: ({ mapId }) => ({ url: 'select-map', method: 'POST', body: { mapId } }),
-    async onQueryStarted(_, { dispatch }) {
-      await dispatch(api.endpoints.saveMap.initiate())
-    },
     invalidatesTags: ['Workspace']
   }),
   renameMap: builder.mutation<void, { name: string }>({
@@ -54,7 +51,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: ['Workspace']
   }),
   saveMap: builder.mutation<void, void>({
-    queryFn: async (_args, { dispatch, getState }, _extraOptions, baseQuery) => {
+    queryFn: async (_args, { getState }, _extraOptions, baseQuery) => {
       const editor = (getState() as unknown as RootState).editor
       if (editor.commitList.length > 1) {
         console.log('saving')
@@ -65,7 +62,6 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
           const mapDelta = mapDiff(editor.latestMapData, mapPrune(editor.commitList[editor.commitIndex]))
           try {
             const { data } = await baseQuery({url: 'save-map', method: 'POST', body: { mapId, mapDelta }})
-            dispatch(api.endpoints.getLatestMerged.initiate())
             return { data } as { data: void }
           } catch (error) {
             return { error }
