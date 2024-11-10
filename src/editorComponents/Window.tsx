@@ -20,7 +20,7 @@ let mapListener: AbortController
 let midMouseListener: AbortController
 
 export const Window: FC = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapId)
+  const connectionId = useSelector((state: RootState) => state.editor.connectionId)
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const dialogState = useSelector((state: RootState) => state.editor.dialogState)
@@ -199,15 +199,15 @@ export const Window: FC = () => {
   }, [m])
 
   useEffect(() => {
-    if (mapId) {
-      const eventSource = new EventSource(backendUrl + '/map_updates/?map_id=' + mapId)
+    if (connectionId) {
+      const eventSource = new EventSource(backendUrl + '/workspace_updates/?connection_id=' + connectionId)
       eventSource.onmessage = (event) => {
         console.log('SSE data:', event.data)
-        dispatch(api.endpoints.selectMap.initiate({mapId}))
+        // dispatch(api.endpoints.selectMap.initiate({connectionId}))
       }
       return () => eventSource.close()
     }
-  }, [mapId])
+  }, [connectionId])
 
   return (
     <></>
