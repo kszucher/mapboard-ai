@@ -8,7 +8,8 @@ import {api, AppDispatch, useOpenWorkspaceQuery} from "../rootComponent/RootComp
 
 export const MapActions = () => {
   const { data } = useOpenWorkspaceQuery()
-  const { isShared } = data || defaultUseOpenWorkspaceQueryState
+  const { mapId, sharedMapIdList } = data || defaultUseOpenWorkspaceQueryState
+  const isShared = sharedMapIdList.includes(mapId)
   const dispatch = useDispatch<AppDispatch>()
   return (
     <DropdownMenu.Root>

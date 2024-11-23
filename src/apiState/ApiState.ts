@@ -8,7 +8,6 @@ import {
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   userName: '',
   colorMode: 'dark',
-  isShared: false,
   access: AccessType.UNAUTHORIZED,
   tabMapIdList: [],
   tabMapNameList: [],

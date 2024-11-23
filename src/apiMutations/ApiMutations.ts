@@ -21,6 +21,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
   selectMap: builder.mutation<void, { mapId: string }>({
     query: ({ mapId }) => ({ url: 'select-map', method: 'POST', body: { mapId } }),
+    // TODO: if it fails, we need to call selectAvailableMap. (normally we call it before error as REDIS updates us!)
     invalidatesTags: ['Workspace']
   }),
   renameMap: builder.mutation<void, { name: string }>({

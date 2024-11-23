@@ -3,7 +3,6 @@ import {AccessType} from "../editorState/EditorStateTypesEnums.ts"
 export interface DefaultUseOpenWorkspaceQueryState {
   userName: string
   colorMode: string
-  isShared: boolean
   access: AccessType
   tabMapIdList: string[]
   tabMapNameList: string[]
