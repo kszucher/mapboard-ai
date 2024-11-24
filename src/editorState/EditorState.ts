@@ -15,7 +15,6 @@ export const editorState: EditorState = {
   commitList: [],
   commitIndex: 0,
   latestMapData: [],
-  latestMapMergeId: '',
   editedNodeId: '',
   editType: '',
   editStartMapListIndex: Infinity,

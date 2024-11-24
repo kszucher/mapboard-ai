@@ -8,16 +8,14 @@ import {
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   userName: '',
   colorMode: 'dark',
-  access: AccessType.UNAUTHORIZED,
   tabMapIdList: [],
   tabMapNameList: [],
-  tabId: 0,
   sharedMapIdList: [],
   sharedMapNameList: [],
   mapId: '',
   mapName: '',
   mapData: {},
-  mapMergeId: ''
+  access: AccessType.UNAUTHORIZED
 }
 
 export const defaultGetSharesQueryState: DefaultGetSharesQueryState = {

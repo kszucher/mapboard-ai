@@ -15,7 +15,6 @@ export interface EditorState {
   commitList: M[]
   commitIndex: number
   latestMapData: M
-  latestMapMergeId: string
   editedNodeId: string
   editType: '' | 'append' | 'replace'
   editStartMapListIndex: number
