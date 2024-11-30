@@ -1,7 +1,7 @@
-import {R_SELF_H_MIN, R_SELF_W_MIN, R_SPACING} from "../mapConsts/MapConsts.ts"
-import {getLastIndexL, getLastIndexR, getXR} from "../mapQueries/MapQueries.ts"
-import {L, M, R} from "../mapState/MapStateTypes.ts"
-import {mapUnselect} from "./MapSelect"
+import { R_SELF_H_MIN, R_SELF_W_MIN, R_SPACING } from "../mapConsts/MapConsts.ts"
+import { getLastIndexL, getLastIndexR, getXR } from "../mapQueries/MapQueries.ts"
+import { L, M, R } from "../mapState/MapStateTypes.ts"
+import { mapUnselect } from "./MapSelect"
 
 export const mapInsert = {
   L: (m: M, partialL: Partial<L>) => {

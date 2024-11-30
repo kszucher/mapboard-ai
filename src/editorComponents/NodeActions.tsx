@@ -1,15 +1,15 @@
-import {DropdownMenu, IconButton} from "@radix-ui/themes"
-import {useDispatch, useSelector} from "react-redux"
+import { DropdownMenu, IconButton } from "@radix-ui/themes"
+import { useDispatch, useSelector } from "react-redux"
 import Dots from "../../assets/dots.svg?react"
-import {actions} from "../editorMutations/EditorMutations.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts"
-import {NodeMode} from "../editorState/EditorStateTypesEnums.ts"
-import {getNodeMode, getXR} from "../mapQueries/MapQueries.ts"
-import {ControlType} from "../mapState/MapStateTypesEnums.ts"
-import {AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
+import { actions } from "../editorMutations/EditorMutations.ts"
+import { mSelector } from "../editorQueries/EditorQueries.ts"
+import { NodeMode } from "../editorState/EditorStateTypesEnums.ts"
+import { getNodeMode, getXR } from "../mapQueries/MapQueries.ts"
+import { ControlType } from "../mapState/MapStateTypesEnums.ts"
+import { AppDispatch, RootState } from "../rootComponent/RootComponent.tsx"
 
 export const NodeActions = () => {
-  const m = useSelector((state:RootState) => mSelector(state))
+  const m = useSelector((state: RootState) => mSelector(state))
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
   return (

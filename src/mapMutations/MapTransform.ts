@@ -1,16 +1,16 @@
-import {lrToClipboard} from "../mapQueries/MapExtract.ts"
-import {mapPrune} from "../mapQueries/MapPrune.ts"
-import {getG, getLastIndexL, getLastIndexR, mL, mR} from "../mapQueries/MapQueries.ts"
-import {rSaveOptional} from "../mapState/MapState.ts"
-import {M} from "../mapState/MapStateTypes.ts"
-import {genId} from "../utils/Utils"
-import {mapUnselect} from "./MapSelect"
-import {sortPath} from "./MapSort.ts"
+import { lrToClipboard } from "../mapQueries/MapExtract.ts"
+import { mapPrune } from "../mapQueries/MapPrune.ts"
+import { getG, getLastIndexL, getLastIndexR, mL, mR } from "../mapQueries/MapQueries.ts"
+import { rSaveOptional } from "../mapState/MapState.ts"
+import { M } from "../mapState/MapStateTypes.ts"
+import { genId } from "../utils/Utils"
+import { mapUnselect } from "./MapSelect"
+import { sortPath } from "./MapSort.ts"
 
 const formatCb = (m: M) => "[\n" + m.map((e) => '  ' + JSON.stringify(e)).join(',\n') + "\n]"
 
 const cbSave = (cb: M) => {
-  navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
+  navigator.permissions.query(<PermissionDescriptor><unknown>{ name: "clipboard-write" }).then(result => {
     if (result.state === "granted" || result.state === "prompt") {
       navigator.clipboard
         .writeText(formatCb(cb))
@@ -31,7 +31,7 @@ const clipboardToLR = (m: M, cb: M) => {
   const nodeIdMappingRIterator = nodeIdMappingR[Symbol.iterator]()
   mL(cb).forEach(li => Object.assign(li, {
     nodeId: genId(),
-    path : ['l', li.path[1] + lastIndexL + 1],
+    path: ['l', li.path[1] + lastIndexL + 1],
     fromNodeId: nodeIdMappingR.get(li.fromNodeId),
     toNodeId: nodeIdMappingR.get(li.toNodeId)
   }))

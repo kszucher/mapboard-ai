@@ -1,17 +1,17 @@
-import {FC} from "react"
-import {useDispatch, useSelector} from "react-redux"
-import {actions} from "../editorMutations/EditorMutations.ts"
-import {getROffsetCoords, mSelector} from "../editorQueries/EditorQueries.ts"
-import {LeftMouseMode, NodeMode} from "../editorState/EditorStateTypesEnums.ts"
-import {R_PADDING} from "../mapConsts/MapConsts.ts"
-import {getAXR, getNodeMode, isAXR, mR} from "../mapQueries/MapQueries.ts"
-import {ControlType} from "../mapState/MapStateTypesEnums.ts"
-import {AppDispatch, RootState} from "../rootComponent/RootComponent.tsx"
-import {MapDivRIngestion} from "./MapDivRIngestion.tsx"
+import { FC } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { actions } from "../editorMutations/EditorMutations.ts"
+import { getROffsetCoords, mSelector } from "../editorQueries/EditorQueries.ts"
+import { LeftMouseMode, NodeMode } from "../editorState/EditorStateTypesEnums.ts"
+import { R_PADDING } from "../mapConsts/MapConsts.ts"
+import { getAXR, getNodeMode, isAXR, mR } from "../mapQueries/MapQueries.ts"
+import { ControlType } from "../mapState/MapStateTypesEnums.ts"
+import { AppDispatch, RootState } from "../rootComponent/RootComponent.tsx"
+import { MapDivRIngestion } from "./MapDivRIngestion.tsx"
 
 export const MapDivR: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
-  const m = useSelector((state:RootState) => mSelector(state))
+  const m = useSelector((state: RootState) => mSelector(state))
   const nodeMode = getNodeMode(m)
   const dispatch = useDispatch<AppDispatch>()
   return (
@@ -42,14 +42,14 @@ export const MapDivR: FC = () => {
               if (e.shiftKey && ri.selected && getAXR(m).length > 1) dispatch(actions.unselectR(ri.path))
             } else if (leftMouseMode === LeftMouseMode.CLICK_SELECT && nodeMode === NodeMode.EDIT_ROOT && e.ctrlKey) {
               if (!e.shiftKey) dispatch(actions.selectR(ri.path))
-              dispatch(actions.saveFromCoordinates({e}))
+              dispatch(actions.saveFromCoordinates({ e }))
               const abortController = new AbortController()
-              const {signal} = abortController
+              const { signal } = abortController
               window.addEventListener('mousemove', (e) => {
                 e.preventDefault()
                 didMove = true
-                dispatch(actions.offsetRByDragPreview({r: ri, e}))
-              }, {signal})
+                dispatch(actions.offsetRByDragPreview({ r: ri, e }))
+              }, { signal })
               window.addEventListener('mouseup', (e) => {
                 abortController.abort()
                 e.preventDefault()
@@ -57,7 +57,7 @@ export const MapDivR: FC = () => {
                   dispatch(actions.offsetRByDrag(getROffsetCoords()))
                   dispatch(actions.offsetRByDragPreviewClear())
                 }
-              }, {signal})
+              }, { signal })
             }
           } else if (e.buttons === 4) {
             e.preventDefault()

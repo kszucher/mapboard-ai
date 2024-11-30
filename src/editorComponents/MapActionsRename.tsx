@@ -1,8 +1,8 @@
-import {Button, Dialog, Flex, Text, TextField} from "@radix-ui/themes"
-import {useState} from "react"
-import {useDispatch} from "react-redux"
-import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {api, AppDispatch, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
+import { Button, Dialog, Flex, Text, TextField } from "@radix-ui/themes"
+import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { defaultUseOpenWorkspaceQueryState } from "../apiState/ApiState.ts"
+import { api, AppDispatch, useOpenWorkspaceQuery } from "../rootComponent/RootComponent.tsx"
 
 export const MapActionsRename = () => {
   const { data } = useOpenWorkspaceQuery()
@@ -37,7 +37,7 @@ export const MapActionsRename = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({name: newMapName}))}>
+          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({ name: newMapName }))}>
             {'Save'}
           </Button>
         </Dialog.Close>

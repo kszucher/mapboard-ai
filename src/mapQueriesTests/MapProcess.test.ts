@@ -1,8 +1,8 @@
-import {mapInit} from "../mapMutations/MapInit.ts"
-import {getSubProcessList} from "../mapQueries/MapProcess.ts"
-import {SubProcess} from "../mapQueries/MapProcessTypes.ts"
-import {M, MPartial} from "../mapState/MapStateTypes.ts"
-import {ControlType, Side, SubProcessType} from "../mapState/MapStateTypesEnums.ts"
+import { mapInit } from "../mapMutations/MapInit.ts"
+import { getSubProcessList } from "../mapQueries/MapProcess.ts"
+import { SubProcess } from "../mapQueries/MapProcessTypes.ts"
+import { M, MPartial } from "../mapState/MapStateTypes.ts"
+import { ControlType, Side, SubProcessType } from "../mapState/MapStateTypesEnums.ts"
 
 describe("MapProcessTests", () => {
   test('getSubProcessList', () => {
@@ -18,20 +18,20 @@ describe("MapProcessTests", () => {
       //     /
       //  [r5]
       const test: MPartial = [
-        {nodeId: 'g', path: ['g']},
-        {nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', fromNodeSide: Side.R, toNodeId: 'r1', toNodeSide: Side.L},
-        {nodeId: 'l1', path: ['l', 1], fromNodeId: 'r1', fromNodeSide: Side.R, toNodeId: 'r2', toNodeSide: Side.L},
-        {nodeId: 'l2', path: ['l', 2], fromNodeId: 'r3', fromNodeSide: Side.R, toNodeId: 'r4', toNodeSide: Side.L},
-        {nodeId: 'l3', path: ['l', 3], fromNodeId: 'r4', fromNodeSide: Side.R, toNodeId: 'r2', toNodeSide: Side.L},
-        {nodeId: 'l4', path: ['l', 4], fromNodeId: 'r5', fromNodeSide: Side.R, toNodeId: 'r6', toNodeSide: Side.L},
-        {nodeId: 'l5', path: ['l', 5], fromNodeId: 'r6', fromNodeSide: Side.R, toNodeId: 'r4', toNodeSide: Side.L},
-        {nodeId: 'r0', path: ['r', 0], controlType: ControlType.INGESTION, ingestionHash: 'hHash', selected: 1},
-        {nodeId: 'r1', path: ['r', 1], controlType: ControlType.EXTRACTION},
-        {nodeId: 'r2', path: ['r', 2], controlType: ControlType.EXTRACTION},
-        {nodeId: 'r3', path: ['r', 3], controlType: ControlType.INGESTION, ingestionHash: 'kHash'},
-        {nodeId: 'r4', path: ['r', 4], controlType: ControlType.EXTRACTION},
-        {nodeId: 'r5', path: ['r', 5], controlType: ControlType.INGESTION, ingestionHash: 'mHash'},
-        {nodeId: 'r6', path: ['r', 6], controlType: ControlType.EXTRACTION},
+        { nodeId: 'g', path: ['g'] },
+        { nodeId: 'l0', path: ['l', 0], fromNodeId: 'r0', fromNodeSide: Side.R, toNodeId: 'r1', toNodeSide: Side.L },
+        { nodeId: 'l1', path: ['l', 1], fromNodeId: 'r1', fromNodeSide: Side.R, toNodeId: 'r2', toNodeSide: Side.L },
+        { nodeId: 'l2', path: ['l', 2], fromNodeId: 'r3', fromNodeSide: Side.R, toNodeId: 'r4', toNodeSide: Side.L },
+        { nodeId: 'l3', path: ['l', 3], fromNodeId: 'r4', fromNodeSide: Side.R, toNodeId: 'r2', toNodeSide: Side.L },
+        { nodeId: 'l4', path: ['l', 4], fromNodeId: 'r5', fromNodeSide: Side.R, toNodeId: 'r6', toNodeSide: Side.L },
+        { nodeId: 'l5', path: ['l', 5], fromNodeId: 'r6', fromNodeSide: Side.R, toNodeId: 'r4', toNodeSide: Side.L },
+        { nodeId: 'r0', path: ['r', 0], controlType: ControlType.INGESTION, ingestionHash: 'hHash', selected: 1 },
+        { nodeId: 'r1', path: ['r', 1], controlType: ControlType.EXTRACTION },
+        { nodeId: 'r2', path: ['r', 2], controlType: ControlType.EXTRACTION },
+        { nodeId: 'r3', path: ['r', 3], controlType: ControlType.INGESTION, ingestionHash: 'kHash' },
+        { nodeId: 'r4', path: ['r', 4], controlType: ControlType.EXTRACTION },
+        { nodeId: 'r5', path: ['r', 5], controlType: ControlType.INGESTION, ingestionHash: 'mHash' },
+        { nodeId: 'r6', path: ['r', 6], controlType: ControlType.EXTRACTION },
       ]
       const result = [{
         subProcessId: 'r5',

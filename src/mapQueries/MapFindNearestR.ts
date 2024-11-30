@@ -1,5 +1,5 @@
-import {M, R} from "../mapState/MapStateTypes.ts"
-import {mR} from "./MapQueries.ts"
+import { M, R } from "../mapState/MapStateTypes.ts"
+import { mR } from "./MapQueries.ts"
 
 const getDistanceBetweenPoints = (x1: number, y1: number, x2: number, y2: number) => {
   const dx = x2 - x1

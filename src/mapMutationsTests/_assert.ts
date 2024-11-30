@@ -1,8 +1,8 @@
-import {mapInit} from "../mapMutations/MapInit.ts"
-import {sortNode} from "../mapMutations/MapSort.ts"
-import {mapPrune} from "../mapQueries/MapPrune.ts"
-import {mL} from "../mapQueries/MapQueries.ts"
-import {M, MPartial} from "../mapState/MapStateTypes.ts"
+import { mapInit } from "../mapMutations/MapInit.ts"
+import { sortNode } from "../mapMutations/MapSort.ts"
+import { mapPrune } from "../mapQueries/MapPrune.ts"
+import { mL } from "../mapQueries/MapQueries.ts"
+import { M, MPartial } from "../mapState/MapStateTypes.ts"
 
 export const _assert = (test: MPartial, result: MPartial, fn: Function) => {
   const m = <M>test
@@ -11,7 +11,7 @@ export const _assert = (test: MPartial, result: MPartial, fn: Function) => {
   fn(m)
   const mp = mapPrune(m)
   mp.forEach(ni => Object.assign(ni, {
-    nodeId: pathMappingBefore.has(ni.nodeId) ? pathMappingBefore.get(ni.nodeId) : '_' +  ni.path.join('')
+    nodeId: pathMappingBefore.has(ni.nodeId) ? pathMappingBefore.get(ni.nodeId) : '_' + ni.path.join('')
   }))
   const pathMappingAfter = new Map<string, string>(m.map(ni => [ni.nodeId, ni.path.join('')]))
   mL(mp).forEach(li => Object.assign(li, {

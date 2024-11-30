@@ -1,8 +1,8 @@
-import {FC, useEffect} from "react"
-import {useDispatch, useSelector} from "react-redux"
-import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {actions} from "../editorMutations/EditorMutations.ts"
-import {getMap, mSelector} from "../editorQueries/EditorQueries.ts"
+import { FC, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { defaultUseOpenWorkspaceQueryState } from "../apiState/ApiState.ts"
+import { actions } from "../editorMutations/EditorMutations.ts"
+import { getMap, mSelector } from "../editorQueries/EditorQueries.ts"
 import {
   AccessType,
   AlertDialogState,
@@ -10,10 +10,10 @@ import {
   MidMouseMode,
   PageState
 } from "../editorState/EditorStateTypesEnums.ts"
-import {mapMutationsConditions} from "../mapMutations/MapMutationsConditions.ts"
-import {isAXR} from "../mapQueries/MapQueries.ts"
-import {api, AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
-import {backendUrl} from "../urls/Urls.ts"
+import { mapMutationsConditions } from "../mapMutations/MapMutationsConditions.ts"
+import { isAXR } from "../mapQueries/MapQueries.ts"
+import { api, AppDispatch, RootState, useOpenWorkspaceQuery } from "../rootComponent/RootComponent.tsx"
+import { backendUrl } from "../urls/Urls.ts"
 
 export let timeoutId: NodeJS.Timeout
 let mapListener: AbortController
@@ -29,8 +29,8 @@ export const Window: FC = () => {
   const m = (useSelector((state: RootState) => mSelector(state)))
   const mExists = m && Object.keys(m).length
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
-  const {data} = useOpenWorkspaceQuery()
-  const {access} = data || defaultUseOpenWorkspaceQueryState
+  const { data } = useOpenWorkspaceQuery()
+  const { access } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
   const keydown = (e: KeyboardEvent) => {
     if (
@@ -93,7 +93,7 @@ export const Window: FC = () => {
   const paste = (e: Event) => {
     e.preventDefault()
     const m = getMap()
-    navigator.permissions.query({name: "clipboard-write" as PermissionName}).then(result => {
+    navigator.permissions.query({ name: "clipboard-write" as PermissionName }).then(result => {
       if (result.state === "granted" || result.state === "prompt") {
         navigator.clipboard.read().then(item => {
           const type = item[0].types[0]
@@ -152,11 +152,11 @@ export const Window: FC = () => {
     ) {
       console.log('WINDOW EVENT LISTENERS ADDED')
       mapListener = new AbortController()
-      const {signal} = mapListener
-      window.addEventListener("keydown", keydown, {signal})
-      window.addEventListener("paste", paste, {signal})
-      window.addEventListener("mouseup", mouseup, {signal})
-      window.addEventListener("contextmenu", contextmenu, {signal})
+      const { signal } = mapListener
+      window.addEventListener("keydown", keydown, { signal })
+      window.addEventListener("paste", paste, { signal })
+      window.addEventListener("mouseup", mouseup, { signal })
+      window.addEventListener("contextmenu", contextmenu, { signal })
     } else {
       console.log('WINDOW EVENT LISTENERS REMOVED')
       if (mapListener) {
@@ -174,8 +174,8 @@ export const Window: FC = () => {
     if (midMouseMode === MidMouseMode.ZOOM) {
       console.log('MID MOUSE PREVENTION ADDED')
       midMouseListener = new AbortController()
-      const {signal} = midMouseListener
-      window.addEventListener("wheel", wheel, {signal, passive: false})
+      const { signal } = midMouseListener
+      window.addEventListener("wheel", wheel, { signal, passive: false })
     } else {
       console.log('MID MOUSE PREVENTION REMOVED')
       if (midMouseListener) {

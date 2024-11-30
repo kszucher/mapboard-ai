@@ -1,11 +1,13 @@
-import {M} from "../mapState/MapStateTypes.ts"
-import {Side} from "../mapState/MapStateTypesEnums.ts"
-import {SubProcess} from "./MapProcessTypes.ts"
-import {mL, mR} from "./MapQueries.ts"
+import { M } from "../mapState/MapStateTypes.ts"
+import { Side } from "../mapState/MapStateTypesEnums.ts"
+import { SubProcess } from "./MapProcessTypes.ts"
+import { mL, mR } from "./MapQueries.ts"
 
 const getAllDependencies = (subProcessId: string, subProcessList: SubProcess[]): string[] => {
   const process = subProcessList.find(el => el.subProcessId === subProcessId)
-  if (!process) {return []}
+  if (!process) {
+    return []
+  }
   return process.inputSubProcesses.concat(process.inputSubProcesses.reduce((acc: string[], curr) => acc.concat(getAllDependencies(curr, subProcessList)), []))
 }
 

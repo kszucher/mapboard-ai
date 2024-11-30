@@ -1,6 +1,6 @@
-import {FC} from "react"
-import {useSelector} from "react-redux"
-import {RootState} from "../rootComponent/RootComponent.tsx"
+import { FC } from "react"
+import { useSelector } from "react-redux"
+import { RootState } from "../rootComponent/RootComponent.tsx"
 
 export const MapSvgRMove: FC = () => {
   const rOffsetCoords = useSelector((state: RootState) => state.editor.rOffsetCoords)

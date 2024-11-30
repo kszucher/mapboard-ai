@@ -1,8 +1,8 @@
-import {M_PADDING, R_PADDING} from "../mapConsts/MapConsts.ts"
-import {mR} from "../mapQueries/MapQueries.ts"
-import {isG, isR} from "../mapQueries/PathQueries.ts"
-import {G, M, R} from "../mapState/MapStateTypes.ts"
-import {ControlType} from "../mapState/MapStateTypesEnums.ts"
+import { M_PADDING, R_PADDING } from "../mapConsts/MapConsts.ts"
+import { mR } from "../mapQueries/MapQueries.ts"
+import { isG, isR } from "../mapQueries/PathQueries.ts"
+import { G, M, R } from "../mapState/MapStateTypes.ts"
+import { ControlType } from "../mapState/MapStateTypesEnums.ts"
 
 export const mapMeasure = (m: M) => {
   const minOffsetW = Math.min(...mR(m).map(ri => ri.offsetW))

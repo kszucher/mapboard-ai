@@ -1,11 +1,11 @@
-import {Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField} from "@radix-ui/themes"
-import {useState} from "react"
+import { Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField } from "@radix-ui/themes"
+import { useState } from "react"
 
-import {AccessType} from "../editorState/EditorStateTypesEnums.ts"
-import {useCreateShareMutation} from "../rootComponent/RootComponent.tsx"
+import { AccessType } from "../editorState/EditorStateTypesEnums.ts"
+import { useCreateShareMutation } from "../rootComponent/RootComponent.tsx"
 
 export const Share = () => {
-  const [ createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset } ] = useCreateShareMutation()
+  const [createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset }] = useCreateShareMutation()
   const errorMessage = error && (error as { data: { detail: string } }).data.detail
   const [shareEmail, setShareEmail] = useState('')
   const [shareAccess, setShareAccess] = useState<AccessType>(AccessType.VIEW)
@@ -20,7 +20,10 @@ export const Share = () => {
         <Select.Root
           disabled={isLoading || isSuccess}
           value={shareAccess}
-          onValueChange={(value) => {reset(); setShareAccess(value as AccessType)}}>
+          onValueChange={(value) => {
+            reset()
+            setShareAccess(value as AccessType)
+          }}>
           <Select.Trigger radius="large"/>
           <Select.Content>
             {[AccessType.VIEW, AccessType.EDIT].map((el, index) => (
@@ -35,7 +38,10 @@ export const Share = () => {
           value={shareEmail}
           placeholder="User email"
           color={isError ? 'red' : 'gray'}
-          onChange={(e) => {reset(); setShareEmail(e.target.value)}}
+          onChange={(e) => {
+            reset()
+            setShareEmail(e.target.value)
+          }}
         />
       </Grid>
       <Flex direction="column" gap="3">
@@ -46,7 +52,7 @@ export const Share = () => {
                 {'Cancel'}
               </Button>
             </Dialog.Close>
-            <Button disabled={shareEmail === ''} onClick={() => createShare({shareEmail, shareAccess})}>
+            <Button disabled={shareEmail === ''} onClick={() => createShare({ shareEmail, shareAccess })}>
               {'Share'}
             </Button>
           </Flex>

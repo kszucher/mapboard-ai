@@ -1,13 +1,13 @@
-import {FC} from "react"
-import {useSelector} from "react-redux"
+import { FC } from "react"
+import { useSelector } from "react-redux"
 import colors from "tailwindcss/colors"
-import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts"
-import {mR} from "../mapQueries/MapQueries.ts"
-import {RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
+import { defaultUseOpenWorkspaceQueryState } from "../apiState/ApiState.ts"
+import { mSelector } from "../editorQueries/EditorQueries.ts"
+import { mR } from "../mapQueries/MapQueries.ts"
+import { RootState, useOpenWorkspaceQuery } from "../rootComponent/RootComponent.tsx"
 
 export const MapSvgRBackground: FC = () => {
-  const m = useSelector((state:RootState) => mSelector(state))
+  const m = useSelector((state: RootState) => mSelector(state))
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   return (

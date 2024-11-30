@@ -1,11 +1,11 @@
-import {FC} from "react"
-import {useSelector} from "react-redux"
-import {mSelector} from "../editorQueries/EditorQueries.ts"
-import {getG} from "../mapQueries/MapQueries.ts"
-import {RootState} from "../rootComponent/RootComponent.tsx"
+import { FC } from "react"
+import { useSelector } from "react-redux"
+import { mSelector } from "../editorQueries/EditorQueries.ts"
+import { getG } from "../mapQueries/MapQueries.ts"
+import { RootState } from "../rootComponent/RootComponent.tsx"
 
 export const MapSvgGBackground: FC = () => {
-  const m = useSelector((state:RootState) => mSelector(state))
+  const m = useSelector((state: RootState) => mSelector(state))
   const g = getG(m)
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
   return (
@@ -21,7 +21,7 @@ export const MapSvgGBackground: FC = () => {
       fill={'none'}
       stroke={'#dddddd'}
       strokeWidth={0.5}
-      style={{transition: '0.3s ease-out'}}
+      style={{ transition: '0.3s ease-out' }}
     />
   )
 }

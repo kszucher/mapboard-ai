@@ -1,7 +1,7 @@
-import {Button, Dialog, Flex, Table} from "@radix-ui/themes"
-import {useDispatch} from "react-redux"
-import {defaultGetSharesQueryState} from "../apiState/ApiState.ts"
-import {api, AppDispatch, useGetSharesQuery} from "../rootComponent/RootComponent.tsx"
+import { Button, Dialog, Flex, Table } from "@radix-ui/themes"
+import { useDispatch } from "react-redux"
+import { defaultGetSharesQueryState } from "../apiState/ApiState.ts"
+import { api, AppDispatch, useGetSharesQuery } from "../rootComponent/RootComponent.tsx"
 
 export const SharedByMe = () => {
   const { data } = useGetSharesQuery()
@@ -31,7 +31,8 @@ export const SharedByMe = () => {
               <Table.Cell>{el.access}</Table.Cell>
               <Table.Cell>{el.status}</Table.Cell>
               <Table.Cell>
-                <Button size="1" variant="solid" onClick={() => dispatch(api.endpoints.withdrawShare.initiate({shareId: el._id}))}>
+                <Button size="1" variant="solid"
+                        onClick={() => dispatch(api.endpoints.withdrawShare.initiate({ shareId: el._id }))}>
                   {'Remove'}
                 </Button>
               </Table.Cell>

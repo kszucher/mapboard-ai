@@ -1,10 +1,10 @@
-import {BaseQueryFn, EndpointBuilder} from "@reduxjs/toolkit/query"
-import {timeoutId} from "../editorComponents/Window.tsx"
-import {actions} from "../editorMutations/EditorMutations.ts"
-import {getMapId} from "../editorQueries/EditorQueries.ts"
-import {mapDiff} from "../mapQueries/MapDiff.ts"
-import {mapPrune} from "../mapQueries/MapPrune.ts"
-import {api, RootState} from "../rootComponent/RootComponent.tsx"
+import { BaseQueryFn, EndpointBuilder } from "@reduxjs/toolkit/query"
+import { timeoutId } from "../editorComponents/Window.tsx"
+import { actions } from "../editorMutations/EditorMutations.ts"
+import { getMapId } from "../editorQueries/EditorQueries.ts"
+import { mapDiff } from "../mapQueries/MapDiff.ts"
+import { mapPrune } from "../mapQueries/MapPrune.ts"
+import { api, RootState } from "../rootComponent/RootComponent.tsx"
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   signIn: builder.mutation<{ connectionId: string }, void>({
@@ -28,8 +28,12 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     query: ({ name }) => ({ url: 'rename-map', method: 'POST', body: { mapId: getMapId(), name } }),
     invalidatesTags: ['Workspace']
   }),
-  createMapInMap: builder.mutation<void, { nodeId: string,  content: string }>({
-    query: ({ nodeId, content }) => ({ url: 'create-map-in-map', method: 'POST', body: { mapId: getMapId(), nodeId, content} }),
+  createMapInMap: builder.mutation<void, { nodeId: string, content: string }>({
+    query: ({ nodeId, content }) => ({
+      url: 'create-map-in-map',
+      method: 'POST',
+      body: { mapId: getMapId(), nodeId, content }
+    }),
     async onQueryStarted(_, { dispatch }) {
       await dispatch(api.endpoints.saveMap.initiate())
     },
@@ -62,7 +66,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
           const mapId = editor.mapId
           const mapDelta = mapDiff(editor.latestMapData, mapPrune(editor.commitList[editor.commitIndex]))
           try {
-            const { data } = await baseQuery({url: 'save-map', method: 'POST', body: { mapId, mapDelta }})
+            const { data } = await baseQuery({ url: 'save-map', method: 'POST', body: { mapId, mapDelta } })
             return { data } as { data: void }
           } catch (error) {
             return { error }
@@ -77,8 +81,12 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     query: () => ({ url: 'delete-map', method: 'POST', body: { mapId: getMapId() } }),
     invalidatesTags: ['Workspace', 'Shares']
   }),
-  createShare: builder.mutation<void, { shareEmail: string, shareAccess: string}>({
-    query: ({ shareEmail, shareAccess }) => ({ url: 'create-share', method: 'POST', body: { mapId: getMapId(), shareEmail, shareAccess } }),
+  createShare: builder.mutation<void, { shareEmail: string, shareAccess: string }>({
+    query: ({ shareEmail, shareAccess }) => ({
+      url: 'create-share',
+      method: 'POST',
+      body: { mapId: getMapId(), shareEmail, shareAccess }
+    }),
     invalidatesTags: ['Shares']
   }),
   updateShareAccess: builder.mutation<void, { shareId: string }>({
@@ -102,7 +110,8 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     async onQueryStarted(_, { dispatch }) {
       dispatch(actions.resetState())
       dispatch(api.util.resetApiState()
-      )},
+      )
+    },
     invalidatesTags: []
   }),
   uploadFile: builder.mutation<void, { bodyFormData: FormData }>({

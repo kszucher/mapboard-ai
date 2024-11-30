@@ -1,7 +1,7 @@
-import {AlertDialog, Button, Flex} from "@radix-ui/themes"
-import {FC} from "react"
-import {useDispatch} from "react-redux"
-import {api, AppDispatch} from "../rootComponent/RootComponent.tsx"
+import { AlertDialog, Button, Flex } from "@radix-ui/themes"
+import { FC } from "react"
+import { useDispatch } from "react-redux"
+import { api, AppDispatch } from "../rootComponent/RootComponent.tsx"
 
 export const UserAccountDelete: FC = () => {
   const dispatch = useDispatch<AppDispatch>()

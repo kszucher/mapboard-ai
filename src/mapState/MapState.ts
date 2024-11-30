@@ -12,16 +12,14 @@ import {
   RSaveNever,
   RSaveOptional,
 } from "./MapStateTypes.ts"
-import {ControlType, Side} from "./MapStateTypesEnums.ts"
+import { ControlType, Side } from "./MapStateTypesEnums.ts"
 
 export const gSaveAlways: GSaveAlways = {
   path: <PG>['g'],
   nodeId: ''
 }
 
-export const gSaveOptional: GSaveOptional = {
-
-}
+export const gSaveOptional: GSaveOptional = {}
 
 export const gSaveNever: GSaveNever = {
   selfW: 0,
@@ -43,9 +41,7 @@ export const lSaveOptional: LSaveOptional = {
   selected: 0,
 }
 
-export const lSaveNever: LSaveNever = {
-
-}
+export const lSaveNever: LSaveNever = {}
 
 export const rSaveAlways: RSaveAlways = {
   path: <PR><unknown>[],

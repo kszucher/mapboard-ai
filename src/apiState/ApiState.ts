@@ -1,4 +1,4 @@
-import {AccessType} from "../editorState/EditorStateTypesEnums.ts"
+import { AccessType } from "../editorState/EditorStateTypesEnums.ts"
 import {
   DefaultGetIngestionQueryState,
   DefaultGetSharesQueryState,

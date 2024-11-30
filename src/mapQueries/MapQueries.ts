@@ -1,13 +1,13 @@
 import isEqual from "react-fast-compare"
 
-import {NodeMode} from "../editorState/EditorStateTypesEnums.ts"
-import {sortPath} from "../mapMutations/MapSort.ts"
-import {G, L, M, N, PR, R, T} from "../mapState/MapStateTypes.ts"
-import {excludeEntries, hasTrues} from "../utils/Utils"
-import {isG, isL, isR, isT} from "./PathQueries.ts"
+import { NodeMode } from "../editorState/EditorStateTypesEnums.ts"
+import { sortPath } from "../mapMutations/MapSort.ts"
+import { G, L, M, N, PR, R, T } from "../mapState/MapStateTypes.ts"
+import { excludeEntries, hasTrues } from "../utils/Utils"
+import { isG, isL, isR, isT } from "./PathQueries.ts"
 
 export const mapArrayToObject = (m: M): object => Object.fromEntries(m.map(n => [n.nodeId, excludeEntries(n, ['nodeId'])]))
-export const mapObjectToArray = (obj: object): M => Object.entries(obj).map(el => ({nodeId: el[0], ...el[1]} as N))
+export const mapObjectToArray = (obj: object): M => Object.entries(obj).map(el => ({ nodeId: el[0], ...el[1] } as N))
 
 export const mG = (m: M): G[] => <G[]>m.filter(n => isG(n.path))
 export const mL = (m: M): L[] => <L[]>m.filter(n => isL(n.path))
@@ -34,7 +34,7 @@ export const isAXR = (m: M): boolean => hasTrues(mT(m).filter(ti => ti.selected)
 export const isExistingLink = (m: M, partialL: Partial<L>): boolean => mL(m).some(li =>
   partialL.fromNodeId === li.fromNodeId &&
   partialL.toNodeId === li.toNodeId &&
-  partialL.fromNodeSide  === li.fromNodeSide &&
+  partialL.fromNodeSide === li.fromNodeSide &&
   partialL.toNodeSide === li.toNodeSide
 )
 

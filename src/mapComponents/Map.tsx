@@ -1,28 +1,36 @@
-import {FC, useEffect, useRef} from "react"
-import {useDispatch, useSelector} from "react-redux"
-import {defaultUseOpenWorkspaceQueryState} from "../apiState/ApiState.ts"
-import {actions} from "../editorMutations/EditorMutations.ts"
-import {mSelector} from "../editorQueries/EditorQueries.ts"
-import {LeftMouseMode, MidMouseMode} from "../editorState/EditorStateTypesEnums.ts"
-import {getG} from "../mapQueries/MapQueries.ts"
-import {AppDispatch, RootState, useOpenWorkspaceQuery} from "../rootComponent/RootComponent.tsx"
-import {getColors} from "./Colors.ts"
-import {MapDivL} from "./MapDivL.tsx"
-import {MapDivR} from "./MapDivR.tsx"
-import {MapSvg} from "./MapSvg.tsx"
+import { FC, useEffect, useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { defaultUseOpenWorkspaceQueryState } from "../apiState/ApiState.ts"
+import { actions } from "../editorMutations/EditorMutations.ts"
+import { mSelector } from "../editorQueries/EditorQueries.ts"
+import { LeftMouseMode, MidMouseMode } from "../editorState/EditorStateTypesEnums.ts"
+import { getG } from "../mapQueries/MapQueries.ts"
+import { AppDispatch, RootState, useOpenWorkspaceQuery } from "../rootComponent/RootComponent.tsx"
+import { getColors } from "./Colors.ts"
+import { MapDivL } from "./MapDivL.tsx"
+import { MapDivR } from "./MapDivR.tsx"
+import { MapSvg } from "./MapSvg.tsx"
 
 export const Map: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode)
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode)
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo)
-  const m = useSelector((state:RootState) => mSelector(state))
+  const m = useSelector((state: RootState) => mSelector(state))
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
   const { mapId, colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch<AppDispatch>()
 
   const resetView = () => {
-    dispatch(actions.setZoomInfo({scale: 1, prevMapX: 0, prevMapY: 0, translateX: 0, translateY: 0, originX: 0, originY: 0}))
+    dispatch(actions.setZoomInfo({
+      scale: 1,
+      prevMapX: 0,
+      prevMapY: 0,
+      translateX: 0,
+      translateY: 0,
+      originX: 0,
+      originY: 0
+    }))
     setScrollLeft((window.innerWidth + g.selfW) / 2)
     setScrollTop(window.innerHeight - 40 * 2)
   }
@@ -41,9 +49,10 @@ export const Map: FC = () => {
   }, [])
 
   useEffect(() => {
-    if (mainMapDiv.current) {
-      resetView()
-    }}, [mapId]
+      if (mainMapDiv.current) {
+        resetView()
+      }
+    }, [mapId]
   )
 
   return (
@@ -83,7 +92,7 @@ export const Map: FC = () => {
       }}
       onWheel={(e) => {
         if (midMouseMode === MidMouseMode.ZOOM) {
-          dispatch(actions.saveView({e}))
+          dispatch(actions.saveView({ e }))
         }
       }}
     >

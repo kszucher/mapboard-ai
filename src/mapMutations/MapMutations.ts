@@ -1,16 +1,16 @@
-import {current, PayloadAction} from "@reduxjs/toolkit"
+import { current, PayloadAction } from "@reduxjs/toolkit"
 import isEqual from "react-fast-compare"
-import {EditorState} from "../editorState/EditorStateTypes.ts"
-import {getClosestR, getDR, getLR, getRR, getUR} from "../mapQueries/MapFindNearestR.ts"
-import {mapPrune} from "../mapQueries/MapPrune.ts"
-import {getAXR, getXR, idToR, mR, pathToR} from "../mapQueries/MapQueries.ts"
-import {L, M, PR} from "../mapState/MapStateTypes.ts"
-import {ControlType} from "../mapState/MapStateTypesEnums.ts"
-import {mapBuild} from "./MapBuild.ts"
-import {mapDelete} from "./MapDelete.ts"
-import {mapInsert} from "./MapInsert"
-import {mapSelect, mapUnselect} from "./MapSelect"
-import {mapTransform} from "./MapTransform.ts"
+import { EditorState } from "../editorState/EditorStateTypes.ts"
+import { getClosestR, getDR, getLR, getRR, getUR } from "../mapQueries/MapFindNearestR.ts"
+import { mapPrune } from "../mapQueries/MapPrune.ts"
+import { getAXR, getXR, idToR, mR, pathToR } from "../mapQueries/MapQueries.ts"
+import { L, M, PR } from "../mapState/MapStateTypes.ts"
+import { ControlType } from "../mapState/MapStateTypesEnums.ts"
+import { mapBuild } from "./MapBuild.ts"
+import { mapDelete } from "./MapDelete.ts"
+import { mapInsert } from "./MapInsert"
+import { mapSelect, mapUnselect } from "./MapSelect"
+import { mapTransform } from "./MapTransform.ts"
 
 export const mapMutations = {
   selectR: (m: M, path: PR) => mapSelect.R(m, pathToR(m, path)),
@@ -38,9 +38,18 @@ export const mapMutations = {
 
   deleteL: (m: M, nodeId: string) => mapDelete.L(m, nodeId),
 
-  deleteLR: (m: M) => { const reselect = getClosestR(m, getXR(m))!.nodeId; mapDelete.LR(m); mapSelect.R(m, idToR(m, reselect)) },
+  deleteLR: (m: M) => {
+    const reselect = getClosestR(m, getXR(m))!.nodeId
+    mapDelete.LR(m)
+    mapSelect.R(m, idToR(m, reselect))
+  },
 
-  cutLRJumpR: (m: M) => { const reselect = mR(m).find(ri => !ri.selected)!.nodeId; mapTransform.copyLR(m); mapDelete.LR(m); mapSelect.R(m, idToR(m, reselect)) },
+  cutLRJumpR: (m: M) => {
+    const reselect = mR(m).find(ri => !ri.selected)!.nodeId
+    mapTransform.copyLR(m)
+    mapDelete.LR(m)
+    mapSelect.R(m, idToR(m, reselect))
+  },
   copyLR: (m: M) => mapTransform.copyLR(m),
   pasteLR: (m: M, mapAsString: string) => mapTransform.pasteLR(m, mapAsString),
   duplicateLR: (m: M) => mapTransform.duplicateLR(m),
@@ -49,7 +58,10 @@ export const mapMutations = {
   offsetU: (m: M) => getAXR(m).forEach(ri => ri.offsetH -= 20),
   offsetR: (m: M) => getAXR(m).forEach(ri => ri.offsetW += 20),
   offsetL: (m: M) => getAXR(m).forEach(ri => ri.offsetW -= 20),
-  offsetRByDrag: (m: M, rOffsetCoords: number[]) => Object.assign(getXR(m), { offsetW: rOffsetCoords[0], offsetH: rOffsetCoords[1] }),
+  offsetRByDrag: (m: M, rOffsetCoords: number[]) => Object.assign(getXR(m), {
+    offsetW: rOffsetCoords[0],
+    offsetH: rOffsetCoords[1]
+  }),
 
   setControlTypeNone: (m: M) => Object.assign(getXR(m), { controlType: ControlType.NONE }),
   setControlTypeIngestion: (m: M) => Object.assign(getXR(m), { controlType: ControlType.INGESTION }),

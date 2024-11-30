@@ -1,4 +1,4 @@
-import {ControlType, Side} from "./MapStateTypesEnums.ts"
+import { ControlType, Side } from "./MapStateTypesEnums.ts"
 
 export type PG = ['g']
 export type PL = ['l', number]

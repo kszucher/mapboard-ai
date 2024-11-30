@@ -1,5 +1,5 @@
-import {getXR, mR} from "../mapQueries/MapQueries.ts"
-import {M, R} from "../mapState/MapStateTypes.ts"
+import { getXR, mR } from "../mapQueries/MapQueries.ts"
+import { M, R } from "../mapState/MapStateTypes.ts"
 
 export const mapSelect = {
   R: (m: M, ri: R) => {

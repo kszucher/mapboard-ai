@@ -1,13 +1,13 @@
-import {Button, Flex, Spinner, Text} from "@radix-ui/themes"
-import {useEffect, useRef, useState} from "react"
-import {R} from "../mapState/MapStateTypes.ts"
-import {useUploadFileMutation} from "../rootComponent/RootComponent.tsx"
+import { Button, Flex, Spinner, Text } from "@radix-ui/themes"
+import { useEffect, useRef, useState } from "react"
+import { R } from "../mapState/MapStateTypes.ts"
+import { useUploadFileMutation } from "../rootComponent/RootComponent.tsx"
 
-export const MapDivRIngestion = ({ri}: { ri: R }) => {
+export const MapDivRIngestion = ({ ri }: { ri: R }) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
-  const [uploadFile, {isSuccess, reset}] = useUploadFileMutation()
+  const [uploadFile, { isSuccess, reset }] = useUploadFileMutation()
   // const { data } = useGetIngestionQuery()
   // const { ingestionResult } = data || defaultGetIngestionQueryState
   // no such fancy state here,
@@ -34,7 +34,7 @@ export const MapDivRIngestion = ({ri}: { ri: R }) => {
           }
         }}
         ref={hiddenFileInput}
-        style={{display: 'none'}}
+        style={{ display: 'none' }}
       />
       {!isUploading &&
         <Button color="gray" onClick={() => (hiddenFileInput.current as HTMLInputElement).click()}>
@@ -55,7 +55,7 @@ export const MapDivRIngestion = ({ri}: { ri: R }) => {
             setIsUploading(true)
             const formData = new FormData()
             formData.append("file", file)
-            uploadFile({bodyFormData: formData})
+            uploadFile({ bodyFormData: formData })
           }
         }}>
           Upload file

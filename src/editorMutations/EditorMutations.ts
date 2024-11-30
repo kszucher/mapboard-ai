@@ -1,7 +1,7 @@
-import {createSlice, isAction, isAnyOf, PayloadAction} from "@reduxjs/toolkit"
+import { createSlice, isAction, isAnyOf, PayloadAction } from "@reduxjs/toolkit"
 import React from "react"
-import {editorState, editorStateDefault} from "../editorState/EditorState.ts"
-import {EditorState} from "../editorState/EditorStateTypes.ts"
+import { editorState, editorStateDefault } from "../editorState/EditorState.ts"
+import { EditorState } from "../editorState/EditorStateTypes.ts"
 import {
   AlertDialogState,
   DialogState,
@@ -9,13 +9,13 @@ import {
   MidMouseMode,
   PageState
 } from "../editorState/EditorStateTypesEnums.ts"
-import {getMapX, getMapY} from "../mapComponents/MapDivUtils.ts"
-import {mapBuild} from "../mapMutations/MapBuild.ts"
-import {wrappedFunctions} from "../mapMutations/MapMutations.ts"
-import {mapObjectToArray} from "../mapQueries/MapQueries.ts"
-import {R} from "../mapState/MapStateTypes.ts"
-import {Side} from "../mapState/MapStateTypesEnums.ts"
-import {api} from "../rootComponent/RootComponent.tsx"
+import { getMapX, getMapY } from "../mapComponents/MapDivUtils.ts"
+import { mapBuild } from "../mapMutations/MapBuild.ts"
+import { wrappedFunctions } from "../mapMutations/MapMutations.ts"
+import { mapObjectToArray } from "../mapQueries/MapQueries.ts"
+import { R } from "../mapState/MapStateTypes.ts"
+import { Side } from "../mapState/MapStateTypesEnums.ts"
+import { api } from "../rootComponent/RootComponent.tsx"
 
 export const editorSlice = createSlice({
   name: 'editor',
@@ -58,7 +58,7 @@ export const editorSlice = createSlice({
       state.connectionStart = action.payload
     },
     clearConnectionStart(state) {
-      state.connectionStart = {fromNodeId: '', fromNodeSide: Side.R}
+      state.connectionStart = { fromNodeId: '', fromNodeSide: Side.R }
     },
     undo(state) {
       state.editedNodeId = ''
@@ -69,8 +69,8 @@ export const editorSlice = createSlice({
       state.commitIndex = state.commitIndex < state.commitList.length - 1 ? state.commitIndex + 1 : state.commitIndex
     },
     saveView(state, action: PayloadAction<{ e: React.WheelEvent }>) {
-      const {e} = action.payload
-      const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+      const { e } = action.payload
+      const { scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
       const mapX = getMapX(e)
       const mapY = getMapY(e)
       const x = originX + ((mapX - prevMapX) / scale)
@@ -91,15 +91,15 @@ export const editorSlice = createSlice({
       state.zoomInfo.originX = x
       state.zoomInfo.originY = y
     },
-    saveFromCoordinates(state, action: PayloadAction<{e: React.MouseEvent}>) {
-      const {e} = action.payload
-      const {scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+    saveFromCoordinates(state, action: PayloadAction<{ e: React.MouseEvent }>) {
+      const { e } = action.payload
+      const { scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
       state.zoomInfo.fromX = originX + ((getMapX(e) - prevMapX) / scale)
       state.zoomInfo.fromY = originY + ((getMapY(e) - prevMapY) / scale)
     },
-    offsetRByDragPreview(state, action: PayloadAction<{r: R, e: MouseEvent}>) {
-      const {r, e} = action.payload
-      const {fromX, fromY, scale, prevMapX, prevMapY, originX, originY} = state.zoomInfo
+    offsetRByDragPreview(state, action: PayloadAction<{ r: R, e: MouseEvent }>) {
+      const { r, e } = action.payload
+      const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo
       const toX = originX + ((getMapX(e) - prevMapX) / scale) - fromX + r.offsetW
       const toY = originY + ((getMapY(e) - prevMapY) / scale) - fromY + r.offsetH
       state.rOffsetCoords = [toX, toY, r.selfW, r.selfH]
@@ -129,7 +129,8 @@ export const editorSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(
-      isAction, () => {}
+      isAction, () => {
+      }
     )
     builder.addMatcher(
       isAnyOf(
