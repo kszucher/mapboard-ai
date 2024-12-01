@@ -16,7 +16,7 @@ export const api = createApi({
       const workspaceId = (getState() as RootState).editor.workspaceId
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
-        headers.set('Connection-Id', workspaceId)
+        headers.set('Workspace-Id', workspaceId)
       }
       return headers
     },

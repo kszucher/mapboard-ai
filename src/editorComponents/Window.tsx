@@ -200,7 +200,7 @@ export const Window: FC = () => {
 
   useEffect(() => {
     if (workspaceId) {
-      const eventSource = new EventSource(backendUrl + '/workspace_updates/?connection_id=' + workspaceId)
+      const eventSource = new EventSource(backendUrl + '/workspace_updates/?workspace_id=' + workspaceId)
       eventSource.onmessage = (event) => {
         console.log('SSE data:', event.data)
         // dispatch(api.endpoints.selectMap.initiate({workspaceId}))
