@@ -13,10 +13,10 @@ export const api = createApi({
     baseUrl: backendUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).editor.token
-      const connectionId = (getState() as RootState).editor.connectionId
+      const workspaceId = (getState() as RootState).editor.workspaceId
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
-        headers.set('Connection-Id', connectionId)
+        headers.set('Connection-Id', workspaceId)
       }
       return headers
     },

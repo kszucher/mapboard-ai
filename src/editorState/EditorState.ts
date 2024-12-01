@@ -4,7 +4,7 @@ import { AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState }
 
 export const editorState: EditorState = {
   token: '',
-  connectionId: '',
+  workspaceId: '',
   isLoading: false,
   leftMouseMode: LeftMouseMode.CLICK_SELECT,
   midMouseMode: MidMouseMode.SCROLL,

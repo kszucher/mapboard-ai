@@ -4,7 +4,7 @@ import { AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState }
 
 export interface EditorState {
   token: string
-  connectionId: string
+  workspaceId: string
   isLoading: boolean
   leftMouseMode: LeftMouseMode
   midMouseMode: MidMouseMode

@@ -7,7 +7,7 @@ import { mapPrune } from "../mapQueries/MapPrune.ts"
 import { api, RootState } from "../rootComponent/RootComponent.tsx"
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
-  signIn: builder.mutation<{ connectionId: string }, void>({
+  signIn: builder.mutation<{ workspaceId: string }, void>({
     query: () => ({ url: '/sign-in', method: 'POST' }),
     invalidatesTags: ['Workspace']
   }),
