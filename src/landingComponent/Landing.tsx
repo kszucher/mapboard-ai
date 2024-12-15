@@ -35,6 +35,7 @@ export const Landing: FC = () => {
   useEffect(() => {
     if (token !== '') {
       dispatch(api.endpoints.signIn.initiate());
+      // dispatch(api.util.invalidateTags(['MapInfo']));
     }
   }, [token]);
 

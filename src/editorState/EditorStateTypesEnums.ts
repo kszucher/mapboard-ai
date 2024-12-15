@@ -33,7 +33,12 @@ export enum MidMouseMode {
 }
 
 export enum AccessType {
-  UNAUTHORIZED = 'unauthorized',
-  VIEW = 'view',
-  EDIT = 'edit',
+  UNAUTHORIZED = 'UNAUTHORIZED',
+  VIEW = 'VIEW',
+  EDIT = 'EDIT',
+}
+
+export enum StatusType {
+  WAITING = 'WAITING',
+  ACCEPTED = 'ACCEPTED',
 }

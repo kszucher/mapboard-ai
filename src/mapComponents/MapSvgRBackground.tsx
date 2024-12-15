@@ -1,15 +1,14 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import colors from 'tailwindcss/colors';
-import { defaultUseOpenWorkspaceQueryState } from '../apiState/ApiState.ts';
+import { userInfoDefaultState } from '../apiState/ApiState.ts';
 import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { mR } from '../mapQueries/MapQueries.ts';
-import { RootState, useOpenWorkspaceQuery } from '../rootComponent/RootComponent.tsx';
+import { api, RootState } from '../rootComponent/RootComponent.tsx';
 
 export const MapSvgRBackground: FC = () => {
   const m = useSelector((state: RootState) => mSelector(state));
-  const { data } = useOpenWorkspaceQuery();
-  const { colorMode } = data || defaultUseOpenWorkspaceQueryState;
+  const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
   return mR(m).map(ri => (
     <rect
       key={`${ri.nodeId}_rb`}
@@ -19,7 +18,7 @@ export const MapSvgRBackground: FC = () => {
       height={ri.selfH}
       rx={16}
       ry={16}
-      fill={colorMode === 'dark' ? colors.zinc[800] : colors.zinc[50]}
+      fill={colorMode === 'DARK' ? colors.zinc[800] : colors.zinc[50]}
       style={{
         transition: '0.3s ease-out',
       }}

@@ -1,11 +1,10 @@
 import { Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
-
 import { AccessType } from '../editorState/EditorStateTypesEnums.ts';
-import { useCreateShareMutation } from '../rootComponent/RootComponent.tsx';
+import { api } from '../rootComponent/RootComponent.tsx';
 
 export const Share = () => {
-  const [createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset }] = useCreateShareMutation();
+  const [createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset }] = api.useCreateShareMutation();
   const errorMessage = error && (error as { data: { detail: string } }).data.detail;
   const [shareEmail, setShareEmail] = useState('');
   const [shareAccess, setShareAccess] = useState<AccessType>(AccessType.VIEW);

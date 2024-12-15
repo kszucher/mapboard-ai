@@ -3,25 +3,24 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ArrowBackUp from '../../assets/arrow-back-up.svg?react';
 import ArrowForwardUp from '../../assets/arrow-forward-up.svg?react';
-import { defaultUseOpenWorkspaceQueryState } from '../apiState/ApiState.ts';
+import { sharesInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
 import { AccessType } from '../editorState/EditorStateTypesEnums.ts';
-import { AppDispatch, RootState, useOpenWorkspaceQuery } from '../rootComponent/RootComponent.tsx';
+import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { MouseConfig } from './MouseConfig.tsx';
-
 import { NodeActions } from './NodeActions.tsx';
 import { NodeActionsSelectModeConfig } from './NodeActionsSelectModeConfig.tsx';
 import { UserAccount } from './UserAccount.tsx';
 import { UserSettings } from './UserSettings.tsx';
 
 export const EditorAppBarRight: FC = () => {
+  const mapId = useSelector((state: RootState) => state.editor.mapId);
   const commitList = useSelector((state: RootState) => state.editor.commitList);
   const commitIndex = useSelector((state: RootState) => state.editor.commitIndex);
-  const { data } = useOpenWorkspaceQuery();
-  const { access } = data || defaultUseOpenWorkspaceQueryState;
-  const disabled = [AccessType.VIEW, AccessType.UNAUTHORIZED].includes(access);
-  const undoDisabled = disabled || commitIndex === 0;
-  const redoDisabled = disabled || commitIndex === commitList.length - 1;
+  const { sharesWithUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
+  const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
+  const undoDisabled = access !== AccessType.EDIT || commitIndex === 0;
+  const redoDisabled = access !== AccessType.EDIT || commitIndex === commitList.length - 1;
   const dispatch = useDispatch<AppDispatch>();
   return (
     <div className="fixed flex right-1 gap-6 h-[40px]">

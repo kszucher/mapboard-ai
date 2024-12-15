@@ -1,12 +1,11 @@
 import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { defaultUseOpenWorkspaceQueryState } from '../apiState/ApiState.ts';
-import { api, AppDispatch, useOpenWorkspaceQuery } from '../rootComponent/RootComponent.tsx';
+import { mapInfoDefaultState } from '../apiState/ApiState.ts';
+import { api, AppDispatch } from '../rootComponent/RootComponent.tsx';
 
 export const MapActionsRename = () => {
-  const { data } = useOpenWorkspaceQuery();
-  const { mapName } = data || defaultUseOpenWorkspaceQueryState;
+  const { mapName } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
   const [newMapName, setNewMapName] = useState(mapName);
   const dispatch = useDispatch<AppDispatch>();
   return (

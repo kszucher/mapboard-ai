@@ -1,11 +1,11 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { defaultUseOpenWorkspaceQueryState } from '../apiState/ApiState.ts';
+import { mapInfoDefaultState, userInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
 import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { LeftMouseMode, MidMouseMode } from '../editorState/EditorStateTypesEnums.ts';
 import { getG } from '../mapQueries/MapQueries.ts';
-import { AppDispatch, RootState, useOpenWorkspaceQuery } from '../rootComponent/RootComponent.tsx';
+import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { getColors } from './Colors.ts';
 import { MapDivL } from './MapDivL.tsx';
 import { MapDivR } from './MapDivR.tsx';
@@ -17,8 +17,8 @@ export const Map: FC = () => {
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo);
   const m = useSelector((state: RootState) => mSelector(state));
   const g = getG(m);
-  const { data } = useOpenWorkspaceQuery();
-  const { mapId, colorMode } = data || defaultUseOpenWorkspaceQueryState;
+  const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
+  const { mapId } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
   const dispatch = useDispatch<AppDispatch>();
 
   const resetView = () => {

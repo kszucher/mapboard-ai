@@ -1,11 +1,10 @@
 import { Button, Dialog, Flex, Table } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
-import { defaultGetSharesQueryState } from '../apiState/ApiState.ts';
-import { api, AppDispatch, useGetSharesQuery } from '../rootComponent/RootComponent.tsx';
+import { sharesInfoDefaultState } from '../apiState/ApiState.ts';
+import { api, AppDispatch } from '../rootComponent/RootComponent.tsx';
 
 export const SharedByMe = () => {
-  const { data } = useGetSharesQuery();
-  const { shareDataExport } = data || defaultGetSharesQueryState;
+  const { sharesByUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
@@ -24,8 +23,8 @@ export const SharedByMe = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {shareDataExport.map(el => (
-            <Table.Row key={el._id}>
+          {sharesByUser.map(el => (
+            <Table.Row key={el.id}>
               <Table.RowHeaderCell>{el.sharedMapName}</Table.RowHeaderCell>
               <Table.Cell>{el.shareUserEmail}</Table.Cell>
               <Table.Cell>{el.access}</Table.Cell>
@@ -34,7 +33,7 @@ export const SharedByMe = () => {
                 <Button
                   size="1"
                   variant="solid"
-                  onClick={() => dispatch(api.endpoints.withdrawShare.initiate({ shareId: el._id }))}
+                  onClick={() => dispatch(api.endpoints.withdrawShare.initiate({ shareId: el.id }))}
                 >
                   {'Remove'}
                 </Button>

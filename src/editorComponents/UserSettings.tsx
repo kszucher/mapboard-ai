@@ -1,15 +1,13 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch, useSelector } from 'react-redux';
 import Settings2 from '../../assets/settings-2.svg?react';
-import { defaultUseOpenWorkspaceQueryState } from '../apiState/ApiState.ts';
-
+import { userInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { api, AppDispatch, RootState, useOpenWorkspaceQuery } from '../rootComponent/RootComponent.tsx';
+import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 
 export const UserSettings = () => {
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
-  const { data } = useOpenWorkspaceQuery();
-  const { colorMode } = data || defaultUseOpenWorkspaceQueryState;
+  const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
   const dispatch = useDispatch<AppDispatch>();
   return (
     <DropdownMenu.Root>
@@ -19,12 +17,12 @@ export const UserSettings = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
-        {colorMode === 'dark' && (
+        {colorMode === 'DARK' && (
           <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>
             {'Light Mode'}
           </DropdownMenu.Item>
         )}
-        {colorMode === 'light' && (
+        {colorMode === 'LIGHT' && (
           <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>
             {'Dark Mode'}
           </DropdownMenu.Item>

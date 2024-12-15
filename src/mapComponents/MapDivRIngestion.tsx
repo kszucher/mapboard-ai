@@ -1,13 +1,13 @@
 import { Button, Flex, Spinner, Text } from '@radix-ui/themes';
 import { useEffect, useRef, useState } from 'react';
 import { R } from '../mapState/MapStateTypes.ts';
-import { useUploadFileMutation } from '../rootComponent/RootComponent.tsx';
+import { api } from '../rootComponent/RootComponent.tsx';
 
 export const MapDivRIngestion = ({ ri }: { ri: R }) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadFile, { isSuccess, reset }] = useUploadFileMutation();
+  const [uploadFile, { isSuccess, reset }] = api.useUploadFileMutation();
   // const { data } = useGetIngestionQuery()
   // const { ingestionResult } = data || defaultGetIngestionQueryState
   // no such fancy state here,

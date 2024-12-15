@@ -1,11 +1,11 @@
 import { Button, Dialog, Flex, Table } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
-import { defaultGetSharesQueryState } from '../apiState/ApiState.ts';
-import { api, AppDispatch, useGetSharesQuery } from '../rootComponent/RootComponent.tsx';
+import { sharesInfoDefaultState } from '../apiState/ApiState.ts';
+import { StatusType } from '../editorState/EditorStateTypesEnums.ts';
+import { api, AppDispatch } from '../rootComponent/RootComponent.tsx';
 
 export const SharedWithMe = () => {
-  const { data } = useGetSharesQuery();
-  const { shareDataImport } = data || defaultGetSharesQueryState;
+  const { sharesWithUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
@@ -24,13 +24,13 @@ export const SharedWithMe = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {shareDataImport.map(el => (
-            <Table.Row key={el._id}>
+          {sharesWithUser.map(el => (
+            <Table.Row key={el.id}>
               <Table.RowHeaderCell>{el.sharedMapName}</Table.RowHeaderCell>
               <Table.Cell>{el.ownerUserEmail}</Table.Cell>
               <Table.Cell>{el.access}</Table.Cell>
               <Table.Cell>{el.status}</Table.Cell>
-              {el.status === 'waiting' && (
+              {el.status === StatusType.WAITING && (
                 <Table.Cell>
                   <Button
                     size="1"
@@ -38,7 +38,7 @@ export const SharedWithMe = () => {
                     onClick={() =>
                       dispatch(
                         api.endpoints.updateShareStatusAccepted.initiate({
-                          shareId: el._id,
+                          shareId: el.id,
                         })
                       )
                     }
@@ -47,12 +47,12 @@ export const SharedWithMe = () => {
                   </Button>
                 </Table.Cell>
               )}
-              {el.status === 'accepted' && (
+              {el.status === StatusType.ACCEPTED && (
                 <Table.Cell>
                   <Button
                     size="1"
                     variant="solid"
-                    onClick={() => dispatch(api.endpoints.rejectShare.initiate({ shareId: el._id }))}
+                    onClick={() => dispatch(api.endpoints.rejectShare.initiate({ shareId: el.id }))}
                   >
                     {'Remove'}
                   </Button>

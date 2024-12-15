@@ -1,12 +1,12 @@
 import { AlertDialog, Dialog, Spinner, Theme } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { defaultUseOpenWorkspaceQueryState } from '../apiState/ApiState.ts';
+import { mapInfoDefaultState, userInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
 import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { AlertDialogState, DialogState } from '../editorState/EditorStateTypesEnums.ts';
 import { Map } from '../mapComponents/Map.tsx';
-import { AppDispatch, RootState, useOpenWorkspaceQuery } from '../rootComponent/RootComponent.tsx';
+import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { EditorAppBarLeft } from './EditorAppBarLeft.tsx';
 import { EditorAppBarMid } from './EditorAppBarMid.tsx';
 import { EditorAppBarRight } from './EditorAppBarRight.tsx';
@@ -18,18 +18,19 @@ import { UserAccountDelete } from './UserAccountDelete.tsx';
 import { Window } from './Window.tsx';
 
 export const Editor: FC = () => {
+  const { mapId } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
+
   const isLoading = useSelector((state: RootState) => state.editor.isLoading);
   const m = useSelector((state: RootState) => mSelector(state));
-  const mExists = m && Object.keys(m).length;
-  const { data } = useOpenWorkspaceQuery();
-  const { colorMode } = data || defaultUseOpenWorkspaceQueryState;
+  const mExists = mapId && m && Object.keys(m).length;
+  const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
   const dialogState = useSelector((state: RootState) => state.editor.dialogState);
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState);
   const dispatch = useDispatch<AppDispatch>();
 
   return (
     <Theme
-      appearance={colorMode === 'dark' ? 'dark' : 'light'}
+      appearance={colorMode === 'DARK' ? 'dark' : 'light'}
       accentColor="violet"
       panelBackground="solid"
       scaling="100%"

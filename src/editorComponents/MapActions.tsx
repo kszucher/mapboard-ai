@@ -1,15 +1,15 @@
 import { Dialog, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
 import Dots from '../../assets/dots.svg?react';
-import { defaultUseOpenWorkspaceQueryState } from '../apiState/ApiState.ts';
+import { mapInfoDefaultState, sharesInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
 import { DialogState } from '../editorState/EditorStateTypesEnums.ts';
-import { api, AppDispatch, useOpenWorkspaceQuery } from '../rootComponent/RootComponent.tsx';
+import { api, AppDispatch } from '../rootComponent/RootComponent.tsx';
 
 export const MapActions = () => {
-  const { data } = useOpenWorkspaceQuery();
-  const { mapId, sharedMapIdList } = data || defaultUseOpenWorkspaceQueryState;
-  const isShared = sharedMapIdList.includes(mapId);
+  const { mapId } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
+  const { sharesWithUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
+  const isShared = sharesWithUser.find(el => el.id === mapId);
   const dispatch = useDispatch<AppDispatch>();
   return (
     <DropdownMenu.Root>

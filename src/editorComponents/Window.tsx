@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { defaultUseOpenWorkspaceQueryState } from '../apiState/ApiState.ts';
+import { sharesInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
 import { getMap, mSelector } from '../editorQueries/EditorQueries.ts';
 import {
@@ -12,7 +12,7 @@ import {
 } from '../editorState/EditorStateTypesEnums.ts';
 import { mapMutationsConditions } from '../mapMutations/MapMutationsConditions.ts';
 import { isAXR } from '../mapQueries/MapQueries.ts';
-import { api, AppDispatch, RootState, useOpenWorkspaceQuery } from '../rootComponent/RootComponent.tsx';
+import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { backendUrl } from '../urls/Urls.ts';
 
 export let timeoutId: NodeJS.Timeout;
@@ -20,6 +20,7 @@ let mapListener: AbortController;
 let midMouseListener: AbortController;
 
 export const Window: FC = () => {
+  const mapId = useSelector((state: RootState) => state.editor.mapId);
   const workspaceId = useSelector((state: RootState) => state.editor.workspaceId);
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
   const pageState = useSelector((state: RootState) => state.editor.pageState);
@@ -29,8 +30,8 @@ export const Window: FC = () => {
   const m = useSelector((state: RootState) => mSelector(state));
   const mExists = m && Object.keys(m).length;
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId);
-  const { data } = useOpenWorkspaceQuery();
-  const { access } = data || defaultUseOpenWorkspaceQueryState;
+  const { sharesWithUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
+  const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const dispatch = useDispatch<AppDispatch>();
   const keydown = (e: KeyboardEvent) => {
     if (
@@ -211,9 +212,10 @@ export const Window: FC = () => {
         // dispatch(api.endpoints.selectMap.initiate({workspaceId}))
         switch (event.data) {
           case 'MAP_UPDATED':
-            // dispatch(api.util.invalidateTags(['Workspace']))
+            // dispatch(api.util.invalidateTags(['MapInfo']))
             break;
           case 'MAP_DELETED':
+            // TODO select_available_map
             break;
         }
       };

@@ -1,28 +1,28 @@
-import { AccessType } from '../editorState/EditorStateTypesEnums.ts';
 import {
-  DefaultGetIngestionQueryState,
-  DefaultGetSharesQueryState,
-  DefaultUseOpenWorkspaceQueryState,
+  IngestionDefaultState,
+  MapInfoDefaultState,
+  SharesInfoDefaultState,
+  UserInfoDefaultState,
 } from './ApiStateTypes.ts';
 
-export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
+export const userInfoDefaultState: UserInfoDefaultState = {
   userName: '',
-  colorMode: 'dark',
+  colorMode: 'DARK',
   tabMapIdList: [],
   tabMapNameList: [],
-  sharedMapIdList: [],
-  sharedMapNameList: [],
+};
+
+export const mapInfoDefaultState: MapInfoDefaultState = {
   mapId: '',
   mapName: '',
   mapData: {},
-  access: AccessType.UNAUTHORIZED,
 };
 
-export const defaultGetSharesQueryState: DefaultGetSharesQueryState = {
-  shareDataImport: [],
-  shareDataExport: [],
+export const sharesInfoDefaultState: SharesInfoDefaultState = {
+  sharesWithUser: [],
+  sharesByUser: [],
 };
 
-export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {
+export const ingestionDefaultState: IngestionDefaultState = {
   ingestionResult: [],
 };

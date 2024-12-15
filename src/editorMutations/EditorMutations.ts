@@ -134,7 +134,6 @@ export const editorSlice = createSlice({
         api.endpoints.toggleColorMode.matchPending,
         api.endpoints.selectMap.matchPending,
         api.endpoints.renameMap.matchPending,
-        api.endpoints.createMapInMap.matchPending,
         api.endpoints.createMapInTab.matchPending,
         api.endpoints.createMapInTabDuplicate.matchPending,
         api.endpoints.moveUpMapInTab.matchPending,
@@ -153,7 +152,10 @@ export const editorSlice = createSlice({
       state.pageState = PageState.WS;
       state.workspaceId = payload.workspaceId;
     });
-    builder.addMatcher(api.endpoints.openWorkspace.matchFulfilled, (state, { payload }) => {
+    builder.addMatcher(api.endpoints.getUserInfo.matchFulfilled, state => {
+      state.isLoading = false;
+    });
+    builder.addMatcher(api.endpoints.getMapInfo.matchFulfilled, (state, { payload }) => {
       console.log(payload);
       const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'));
       if (isValid) {
@@ -168,9 +170,13 @@ export const editorSlice = createSlice({
         state.editedNodeId = '';
         state.isLoading = false;
       } else {
-        window.alert('invalid openWorkspace map');
+        window.alert('invalid map');
       }
     });
+    builder.addMatcher(api.endpoints.getSharesInfo.matchFulfilled, state => {
+      state.isLoading = false;
+    });
+    // TODO have individual loaders for each info query type
   },
 });
 

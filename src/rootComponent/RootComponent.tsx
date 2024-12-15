@@ -21,12 +21,9 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Workspace', 'Shares', 'IngestionData'],
+  tagTypes: ['UserInfo', 'MapInfo', 'SharesInfo', 'IngestionData'],
   endpoints: builder => ({ ...apiQueries(builder), ...apiMutations(builder) }),
 });
-
-export const { useOpenWorkspaceQuery, useGetSharesQuery } = api;
-export const { useCreateShareMutation, useUploadFileMutation, useGetIngestionQuery } = api;
 
 export const appStore = configureStore({
   reducer: combineReducers({ api: api.reducer, editor: editorSlice.reducer }),
@@ -34,6 +31,7 @@ export const appStore = configureStore({
 });
 
 export type RootState = ReturnType<typeof appStore.getState>;
+
 export type AppDispatch = typeof appStore.dispatch;
 
 export const RootComponent: FC = () => {

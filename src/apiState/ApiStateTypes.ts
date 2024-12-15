@@ -1,28 +1,26 @@
-import { AccessType } from '../editorState/EditorStateTypesEnums.ts';
-
-export interface DefaultUseOpenWorkspaceQueryState {
+export interface UserInfoDefaultState {
   userName: string;
   colorMode: string;
   tabMapIdList: string[];
   tabMapNameList: string[];
-  sharedMapIdList: string[];
-  sharedMapNameList: string[];
+}
+
+export interface MapInfoDefaultState {
   mapId: string;
   mapName: string;
   mapData: object;
-  access: AccessType;
 }
 
-export interface DefaultGetSharesQueryState {
-  shareDataImport: {
-    _id: string;
+export interface SharesInfoDefaultState {
+  sharesWithUser: {
+    id: string;
     sharedMapName: string;
     ownerUserEmail: string;
     access: string;
     status: string;
   }[];
-  shareDataExport: {
-    _id: string;
+  sharesByUser: {
+    id: string;
     sharedMapName: string;
     shareUserEmail: string;
     access: string;
@@ -30,6 +28,6 @@ export interface DefaultGetSharesQueryState {
   }[];
 }
 
-export interface DefaultGetIngestionQueryState {
+export interface IngestionDefaultState {
   ingestionResult: any[];
 }
