@@ -14,6 +14,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace'],
   }),
+
   signOutEverywhere: builder.mutation<void, void>({
     query: () => ({
       url: '/sign-out-everywhere',
@@ -21,6 +22,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: [],
   }),
+
   toggleColorMode: builder.mutation<void, void>({
     query: () => ({
       url: 'toggle-color-mode',
@@ -28,6 +30,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace'],
   }),
+
   selectMap: builder.mutation<void, { mapId: string }>({
     query: ({ mapId }) => ({
       url: 'select-map',
@@ -37,6 +40,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     // TODO: if it fails, we need to call selectAvailableMap. (normally we call it before error as REDIS updates us!)
     invalidatesTags: ['Workspace'],
   }),
+
   selectAvailableMap: builder.mutation<void, void>({
     query: () => ({
       url: 'select-available-map',
@@ -45,6 +49,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     // TODO: if it fails, we need to let the user know no more map exists, and offer to create one
     invalidatesTags: ['Workspace'],
   }),
+
   renameMap: builder.mutation<void, { name: string }>({
     query: ({ name }) => ({
       url: 'rename-map',
@@ -53,6 +58,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace'],
   }),
+
   createMapInMap: builder.mutation<void, { nodeId: string; content: string }>({
     query: ({ nodeId, content }) => ({
       url: 'create-map-in-map',
@@ -68,6 +74,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     },
     invalidatesTags: ['Workspace'],
   }),
+
   createMapInTab: builder.mutation<void, void>({
     query: () => ({
       url: 'create-map-in-tab',
@@ -75,6 +82,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace'],
   }),
+
   createMapInTabDuplicate: builder.mutation<void, void>({
     query: () => ({
       url: 'create-map-in-tab-duplicate',
@@ -83,6 +91,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace'],
   }),
+
   moveUpMapInTab: builder.mutation<void, void>({
     query: () => ({
       url: 'move-up-map-in-tab',
@@ -91,6 +100,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace'],
   }),
+
   moveDownMapInTab: builder.mutation<void, void>({
     query: () => ({
       url: 'move-down-map-in-tab',
@@ -99,6 +109,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace'],
   }),
+
   saveMap: builder.mutation<void, void>({
     queryFn: async (_args, { getState }, _extraOptions, baseQuery) => {
       const editor = (getState() as unknown as RootState).editor;
@@ -125,6 +136,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     },
     invalidatesTags: ['LatestMerged'],
   }),
+
   deleteMap: builder.mutation<void, void>({
     query: () => ({
       url: 'delete-map',
@@ -133,6 +145,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace', 'Shares'],
   }),
+
   createShare: builder.mutation<void, { shareEmail: string; shareAccess: string }>({
     query: ({ shareEmail, shareAccess }) => ({
       url: 'create-share',
@@ -145,6 +158,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Shares'],
   }),
+
   updateShareAccess: builder.mutation<void, { shareId: string }>({
     query: ({ shareId }) => ({
       url: 'update-share-access',
@@ -153,6 +167,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace', 'Shares'],
   }),
+
   updateShareStatusAccepted: builder.mutation<void, { shareId: string }>({
     query: ({ shareId }) => ({
       url: 'update-share-status-accepted',
@@ -161,6 +176,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace', 'Shares'],
   }),
+
   withdrawShare: builder.mutation<void, { shareId: string }>({
     query: ({ shareId }) => ({
       url: 'withdraw-share',
@@ -169,6 +185,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace', 'Shares'],
   }),
+
   rejectShare: builder.mutation<void, { shareId: string }>({
     query: ({ shareId }) => ({
       url: 'reject-share',
@@ -177,6 +194,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: ['Workspace', 'Shares'],
   }),
+
   deleteAccount: builder.mutation<void, void>({
     query: () => ({
       url: 'delete-account',
@@ -188,6 +206,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     },
     invalidatesTags: [],
   }),
+
   uploadFile: builder.mutation<void, { bodyFormData: FormData }>({
     query: ({ bodyFormData }) => ({
       url: '/upload-file',

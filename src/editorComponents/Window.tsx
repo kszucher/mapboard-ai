@@ -209,6 +209,13 @@ export const Window: FC = () => {
       eventSource.onmessage = event => {
         console.log('SSE data:', event.data);
         // dispatch(api.endpoints.selectMap.initiate({workspaceId}))
+        switch (event.data) {
+          case 'MAP_UPDATED':
+            // dispatch(api.util.invalidateTags(['Workspace']))
+            break;
+          case 'MAP_DELETED':
+            break;
+        }
       };
       return () => eventSource.close();
     }
