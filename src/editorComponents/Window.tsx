@@ -209,10 +209,10 @@ export const Window: FC = () => {
       const eventSource = new EventSource(backendUrl + '/workspace_updates/?workspace_id=' + workspaceId);
       eventSource.onmessage = event => {
         console.log('SSE data:', event.data);
-        // dispatch(api.endpoints.selectMap.initiate({workspaceId}))
-        switch (event.data) {
+        const eventData = JSON.parse(event.data.replace(/'/g, '"'));
+        switch (eventData.event_id) {
           case 'MAP_UPDATED':
-            // dispatch(api.util.invalidateTags(['MapInfo']))
+            dispatch(api.util.invalidateTags(['MapInfo']));
             break;
           case 'MAP_DELETED':
             // TODO select_available_map
