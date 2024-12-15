@@ -1,6 +1,6 @@
-import { getDR, getLR, getRR, getUR } from "../mapQueries/MapFindNearestR.ts"
-import { getXR, isAXR, mR } from "../mapQueries/MapQueries.ts"
-import { M } from "../mapState/MapStateTypes.ts"
+import { getDR, getLR, getRR, getUR } from '../mapQueries/MapFindNearestR.ts';
+import { getXR, isAXR, mR } from '../mapQueries/MapQueries.ts';
+import { M } from '../mapState/MapStateTypes.ts';
 
 export const mapMutationsConditions = {
   selectR: () => true,
@@ -35,10 +35,9 @@ export const mapMutationsConditions = {
   pasteLR: () => true,
   duplicateLR: (m: M) => isAXR(m),
 
-
   offsetD: (m: M) => isAXR(m),
   offsetU: (m: M) => isAXR(m),
   offsetR: (m: M) => isAXR(m),
   offsetL: (m: M) => isAXR(m),
   offsetRByDrag: () => true,
-}
+};

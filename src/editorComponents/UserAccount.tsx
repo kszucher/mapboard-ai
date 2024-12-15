@@ -1,19 +1,19 @@
-import { useAuth0 } from "@auth0/auth0-react"
-import { AlertDialog, Dialog, DropdownMenu, IconButton } from "@radix-ui/themes"
-import { useDispatch } from "react-redux"
-import User from "../../assets/user.svg?react"
-import { actions } from "../editorMutations/EditorMutations.ts"
-import { AlertDialogState, DialogState } from "../editorState/EditorStateTypesEnums.ts"
-import { api, AppDispatch } from "../rootComponent/RootComponent.tsx"
+import { useAuth0 } from '@auth0/auth0-react';
+import { AlertDialog, Dialog, DropdownMenu, IconButton } from '@radix-ui/themes';
+import { useDispatch } from 'react-redux';
+import User from '../../assets/user.svg?react';
+import { actions } from '../editorMutations/EditorMutations.ts';
+import { AlertDialogState, DialogState } from '../editorState/EditorStateTypesEnums.ts';
+import { api, AppDispatch } from '../rootComponent/RootComponent.tsx';
 
 export const UserAccount = () => {
-  const dispatch = useDispatch<AppDispatch>()
-  const { logout } = useAuth0()
+  const dispatch = useDispatch<AppDispatch>();
+  const { logout } = useAuth0();
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <IconButton variant="solid" color="gray">
-          <User/>
+          <User />
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="bg-red-300" onCloseAutoFocus={e => e.preventDefault()}>
@@ -27,27 +27,36 @@ export const UserAccount = () => {
             {'Maps Shared With Me'}
           </DropdownMenu.Item>
         </Dialog.Trigger>
-        <DropdownMenu.Separator/>
-        <DropdownMenu.Item onClick={() => {
-          logout({ logoutParams: { returnTo: window.location.origin } })
-          dispatch(actions.resetState())
-          dispatch(api.util.resetApiState())
-        }}>{'Sign Out'}
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item
+          onClick={() => {
+            logout({ logoutParams: { returnTo: window.location.origin } });
+            dispatch(actions.resetState());
+            dispatch(api.util.resetApiState());
+          }}
+        >
+          {'Sign Out'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => {
-          logout({ logoutParams: { returnTo: window.location.origin } })
-          dispatch(api.endpoints.signOutEverywhere.initiate())
-          dispatch(actions.resetState())
-          dispatch(api.util.resetApiState())
-        }}>{'Sign Out All Devices'}
+        <DropdownMenu.Item
+          onClick={() => {
+            logout({ logoutParams: { returnTo: window.location.origin } });
+            dispatch(api.endpoints.signOutEverywhere.initiate());
+            dispatch(actions.resetState());
+            dispatch(api.util.resetApiState());
+          }}
+        >
+          {'Sign Out All Devices'}
         </DropdownMenu.Item>
-        <DropdownMenu.Separator/>
+        <DropdownMenu.Separator />
         <AlertDialog.Trigger>
-          <DropdownMenu.Item color="red"
-                             onClick={() => dispatch(actions.setAlertDialogState(AlertDialogState.DELETE_ACCOUNT))}>Delete
-            Account</DropdownMenu.Item>
+          <DropdownMenu.Item
+            color="red"
+            onClick={() => dispatch(actions.setAlertDialogState(AlertDialogState.DELETE_ACCOUNT))}
+          >
+            Delete Account
+          </DropdownMenu.Item>
         </AlertDialog.Trigger>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
-  )
-}
+  );
+};

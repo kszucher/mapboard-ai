@@ -1,9 +1,9 @@
-import { AccessType } from "../editorState/EditorStateTypesEnums.ts"
+import { AccessType } from '../editorState/EditorStateTypesEnums.ts';
 import {
   DefaultGetIngestionQueryState,
   DefaultGetSharesQueryState,
-  DefaultUseOpenWorkspaceQueryState
-} from "./ApiStateTypes.ts"
+  DefaultUseOpenWorkspaceQueryState,
+} from './ApiStateTypes.ts';
 
 export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryState = {
   userName: '',
@@ -15,14 +15,14 @@ export const defaultUseOpenWorkspaceQueryState: DefaultUseOpenWorkspaceQueryStat
   mapId: '',
   mapName: '',
   mapData: {},
-  access: AccessType.UNAUTHORIZED
-}
+  access: AccessType.UNAUTHORIZED,
+};
 
 export const defaultGetSharesQueryState: DefaultGetSharesQueryState = {
   shareDataImport: [],
-  shareDataExport: []
-}
+  shareDataExport: [],
+};
 
 export const defaultGetIngestionQueryState: DefaultGetIngestionQueryState = {
-  ingestionResult: []
-}
+  ingestionResult: [],
+};

@@ -1,121 +1,200 @@
-import { BaseQueryFn, EndpointBuilder } from "@reduxjs/toolkit/query"
-import { timeoutId } from "../editorComponents/Window.tsx"
-import { actions } from "../editorMutations/EditorMutations.ts"
-import { getMapId } from "../editorQueries/EditorQueries.ts"
-import { mapDiff } from "../mapQueries/MapDiff.ts"
-import { mapPrune } from "../mapQueries/MapPrune.ts"
-import { api, RootState } from "../rootComponent/RootComponent.tsx"
+import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
+import { timeoutId } from '../editorComponents/Window.tsx';
+import { actions } from '../editorMutations/EditorMutations.ts';
+import { getMapId } from '../editorQueries/EditorQueries.ts';
+import { mapDiff } from '../mapQueries/MapDiff.ts';
+import { mapPrune } from '../mapQueries/MapPrune.ts';
+import { api, RootState } from '../rootComponent/RootComponent.tsx';
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   signIn: builder.mutation<{ workspaceId: string }, void>({
-    query: () => ({ url: '/sign-in', method: 'POST' }),
-    invalidatesTags: ['Workspace']
+    query: () => ({
+      url: '/sign-in',
+      method: 'POST',
+    }),
+    invalidatesTags: ['Workspace'],
   }),
   signOutEverywhere: builder.mutation<void, void>({
-    query: () => ({ url: '/sign-out-everywhere', method: 'POST' }),
-    invalidatesTags: []
+    query: () => ({
+      url: '/sign-out-everywhere',
+      method: 'POST',
+    }),
+    invalidatesTags: [],
   }),
   toggleColorMode: builder.mutation<void, void>({
-    query: () => ({ url: 'toggle-color-mode', method: 'POST' }),
-    invalidatesTags: ['Workspace']
+    query: () => ({
+      url: 'toggle-color-mode',
+      method: 'POST',
+    }),
+    invalidatesTags: ['Workspace'],
   }),
   selectMap: builder.mutation<void, { mapId: string }>({
-    query: ({ mapId }) => ({ url: 'select-map', method: 'POST', body: { mapId } }),
+    query: ({ mapId }) => ({
+      url: 'select-map',
+      method: 'POST',
+      body: { mapId },
+    }),
     // TODO: if it fails, we need to call selectAvailableMap. (normally we call it before error as REDIS updates us!)
-    invalidatesTags: ['Workspace']
+    invalidatesTags: ['Workspace'],
+  }),
+  selectAvailableMap: builder.mutation<void, void>({
+    query: () => ({
+      url: 'select-available-map',
+      method: 'POST',
+    }),
+    // TODO: if it fails, we need to let the user know no more map exists, and offer to create one
+    invalidatesTags: ['Workspace'],
   }),
   renameMap: builder.mutation<void, { name: string }>({
-    query: ({ name }) => ({ url: 'rename-map', method: 'POST', body: { mapId: getMapId(), name } }),
-    invalidatesTags: ['Workspace']
+    query: ({ name }) => ({
+      url: 'rename-map',
+      method: 'POST',
+      body: { mapId: getMapId(), name },
+    }),
+    invalidatesTags: ['Workspace'],
   }),
-  createMapInMap: builder.mutation<void, { nodeId: string, content: string }>({
+  createMapInMap: builder.mutation<void, { nodeId: string; content: string }>({
     query: ({ nodeId, content }) => ({
       url: 'create-map-in-map',
       method: 'POST',
-      body: { mapId: getMapId(), nodeId, content }
+      body: {
+        mapId: getMapId(),
+        nodeId,
+        content,
+      },
     }),
     async onQueryStarted(_, { dispatch }) {
-      await dispatch(api.endpoints.saveMap.initiate())
+      await dispatch(api.endpoints.saveMap.initiate());
     },
-    invalidatesTags: ['Workspace']
+    invalidatesTags: ['Workspace'],
   }),
   createMapInTab: builder.mutation<void, void>({
-    query: () => ({ url: 'create-map-in-tab', method: 'POST' }),
-    invalidatesTags: ['Workspace']
+    query: () => ({
+      url: 'create-map-in-tab',
+      method: 'POST',
+    }),
+    invalidatesTags: ['Workspace'],
   }),
   createMapInTabDuplicate: builder.mutation<void, void>({
-    query: () => ({ url: 'create-map-in-tab-duplicate', method: 'POST', body: { mapId: getMapId() } }),
-    invalidatesTags: ['Workspace']
+    query: () => ({
+      url: 'create-map-in-tab-duplicate',
+      method: 'POST',
+      body: { mapId: getMapId() },
+    }),
+    invalidatesTags: ['Workspace'],
   }),
   moveUpMapInTab: builder.mutation<void, void>({
-    query: () => ({ url: 'move-up-map-in-tab', method: 'POST', body: { mapId: getMapId() } }),
-    invalidatesTags: ['Workspace']
+    query: () => ({
+      url: 'move-up-map-in-tab',
+      method: 'POST',
+      body: { mapId: getMapId() },
+    }),
+    invalidatesTags: ['Workspace'],
   }),
   moveDownMapInTab: builder.mutation<void, void>({
-    query: () => ({ url: 'move-down-map-in-tab', method: 'POST', body: { mapId: getMapId() } }),
-    invalidatesTags: ['Workspace']
+    query: () => ({
+      url: 'move-down-map-in-tab',
+      method: 'POST',
+      body: { mapId: getMapId() },
+    }),
+    invalidatesTags: ['Workspace'],
   }),
   saveMap: builder.mutation<void, void>({
     queryFn: async (_args, { getState }, _extraOptions, baseQuery) => {
-      const editor = (getState() as unknown as RootState).editor
+      const editor = (getState() as unknown as RootState).editor;
       if (editor.commitList.length > 1) {
-        console.log('saving')
-        clearTimeout(timeoutId)
-        const SAVE_ENABLED = true
+        console.log('saving');
+        clearTimeout(timeoutId);
+        const SAVE_ENABLED = true;
         if (SAVE_ENABLED) {
-          const mapId = editor.mapId
-          const mapDelta = mapDiff(editor.latestMapData, mapPrune(editor.commitList[editor.commitIndex]))
+          const mapId = editor.mapId;
+          const mapDelta = mapDiff(editor.latestMapData, mapPrune(editor.commitList[editor.commitIndex]));
           try {
-            const { data } = await baseQuery({ url: 'save-map', method: 'POST', body: { mapId, mapDelta } })
-            return { data } as { data: void }
+            const { data } = await baseQuery({
+              url: 'save-map',
+              method: 'POST',
+              body: { mapId, mapDelta },
+            });
+            return { data } as { data: void };
           } catch (error) {
-            return { error }
+            return { error };
           }
         }
       }
-      return { error: 'no map' }
+      return { error: 'no map' };
     },
-    invalidatesTags: ['LatestMerged']
+    invalidatesTags: ['LatestMerged'],
   }),
   deleteMap: builder.mutation<void, void>({
-    query: () => ({ url: 'delete-map', method: 'POST', body: { mapId: getMapId() } }),
-    invalidatesTags: ['Workspace', 'Shares']
+    query: () => ({
+      url: 'delete-map',
+      method: 'POST',
+      body: { mapId: getMapId() },
+    }),
+    invalidatesTags: ['Workspace', 'Shares'],
   }),
-  createShare: builder.mutation<void, { shareEmail: string, shareAccess: string }>({
+  createShare: builder.mutation<void, { shareEmail: string; shareAccess: string }>({
     query: ({ shareEmail, shareAccess }) => ({
       url: 'create-share',
       method: 'POST',
-      body: { mapId: getMapId(), shareEmail, shareAccess }
+      body: {
+        mapId: getMapId(),
+        shareEmail,
+        shareAccess,
+      },
     }),
-    invalidatesTags: ['Shares']
+    invalidatesTags: ['Shares'],
   }),
   updateShareAccess: builder.mutation<void, { shareId: string }>({
-    query: ({ shareId }) => ({ url: 'update-share-access', method: 'POST', body: { shareId } }),
-    invalidatesTags: ['Workspace', 'Shares']
+    query: ({ shareId }) => ({
+      url: 'update-share-access',
+      method: 'POST',
+      body: { shareId },
+    }),
+    invalidatesTags: ['Workspace', 'Shares'],
   }),
   updateShareStatusAccepted: builder.mutation<void, { shareId: string }>({
-    query: ({ shareId }) => ({ url: 'update-share-status-accepted', method: 'POST', body: { shareId } }),
-    invalidatesTags: ['Workspace', 'Shares']
+    query: ({ shareId }) => ({
+      url: 'update-share-status-accepted',
+      method: 'POST',
+      body: { shareId },
+    }),
+    invalidatesTags: ['Workspace', 'Shares'],
   }),
   withdrawShare: builder.mutation<void, { shareId: string }>({
-    query: ({ shareId }) => ({ url: 'withdraw-share', method: 'POST', body: { shareId } }),
-    invalidatesTags: ['Workspace', 'Shares']
+    query: ({ shareId }) => ({
+      url: 'withdraw-share',
+      method: 'POST',
+      body: { shareId },
+    }),
+    invalidatesTags: ['Workspace', 'Shares'],
   }),
   rejectShare: builder.mutation<void, { shareId: string }>({
-    query: ({ shareId }) => ({ url: 'reject-share', method: 'POST', body: { shareId } }),
-    invalidatesTags: ['Workspace', 'Shares']
+    query: ({ shareId }) => ({
+      url: 'reject-share',
+      method: 'POST',
+      body: { shareId },
+    }),
+    invalidatesTags: ['Workspace', 'Shares'],
   }),
   deleteAccount: builder.mutation<void, void>({
-    query: () => ({ url: 'delete-account', method: 'POST' }),
+    query: () => ({
+      url: 'delete-account',
+      method: 'POST',
+    }),
     async onQueryStarted(_, { dispatch }) {
-      dispatch(actions.resetState())
-      dispatch(api.util.resetApiState()
-      )
+      dispatch(actions.resetState());
+      dispatch(api.util.resetApiState());
     },
-    invalidatesTags: []
+    invalidatesTags: [],
   }),
   uploadFile: builder.mutation<void, { bodyFormData: FormData }>({
-    query: ({ bodyFormData }) => ({ url: '/upload-file', method: 'POST', body: bodyFormData, formData: true }),
-    invalidatesTags: ['IngestionData']
-  })
-})
+    query: ({ bodyFormData }) => ({
+      url: '/upload-file',
+      method: 'POST',
+      body: bodyFormData,
+      formData: true,
+    }),
+    invalidatesTags: ['IngestionData'],
+  }),
+});

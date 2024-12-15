@@ -1,21 +1,21 @@
-import { Dialog, DropdownMenu, IconButton } from "@radix-ui/themes"
-import { useDispatch } from "react-redux"
-import Dots from "../../assets/dots.svg?react"
-import { defaultUseOpenWorkspaceQueryState } from "../apiState/ApiState.ts"
-import { actions } from "../editorMutations/EditorMutations.ts"
-import { DialogState } from "../editorState/EditorStateTypesEnums.ts"
-import { api, AppDispatch, useOpenWorkspaceQuery } from "../rootComponent/RootComponent.tsx"
+import { Dialog, DropdownMenu, IconButton } from '@radix-ui/themes';
+import { useDispatch } from 'react-redux';
+import Dots from '../../assets/dots.svg?react';
+import { defaultUseOpenWorkspaceQueryState } from '../apiState/ApiState.ts';
+import { actions } from '../editorMutations/EditorMutations.ts';
+import { DialogState } from '../editorState/EditorStateTypesEnums.ts';
+import { api, AppDispatch, useOpenWorkspaceQuery } from '../rootComponent/RootComponent.tsx';
 
 export const MapActions = () => {
-  const { data } = useOpenWorkspaceQuery()
-  const { mapId, sharedMapIdList } = data || defaultUseOpenWorkspaceQueryState
-  const isShared = sharedMapIdList.includes(mapId)
-  const dispatch = useDispatch<AppDispatch>()
+  const { data } = useOpenWorkspaceQuery();
+  const { mapId, sharedMapIdList } = data || defaultUseOpenWorkspaceQueryState;
+  const isShared = sharedMapIdList.includes(mapId);
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <IconButton variant="solid" color="gray">
-          <Dots/>
+          <Dots />
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
@@ -36,11 +36,10 @@ export const MapActions = () => {
         <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate())}>
           {'Move Down'}
         </DropdownMenu.Item>
-        {!isShared &&
-          <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate())}>
-            {'Remove'}
-          </DropdownMenu.Item>}
-        <DropdownMenu.Separator/>
+        {!isShared && (
+          <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate())}>{'Remove'}</DropdownMenu.Item>
+        )}
+        <DropdownMenu.Separator />
         <Dialog.Trigger>
           <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARE_THIS_MAP))}>
             {'Share'}
@@ -48,5 +47,5 @@ export const MapActions = () => {
         </Dialog.Trigger>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
-  )
-}
+  );
+};

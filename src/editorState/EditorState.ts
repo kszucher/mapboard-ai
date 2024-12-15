@@ -1,6 +1,6 @@
-import { Side } from "../mapState/MapStateTypesEnums.ts"
-import { EditorState } from "./EditorStateTypes.ts"
-import { AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState } from "./EditorStateTypesEnums.ts"
+import { Side } from '../mapState/MapStateTypesEnums.ts';
+import { EditorState } from './EditorStateTypes.ts';
+import { AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState } from './EditorStateTypesEnums.ts';
 
 export const editorState: EditorState = {
   token: '',
@@ -24,7 +24,7 @@ export const editorState: EditorState = {
   insertLocation: {
     sl: '',
     su: '',
-    sd: ''
+    sd: '',
   },
   selectionRectCoords: [],
   intersectingNodes: [],
@@ -42,8 +42,8 @@ export const editorState: EditorState = {
   connectionHelpersVisible: false,
   connectionStart: {
     fromNodeId: '',
-    fromNodeSide: Side.R
-  }
-}
+    fromNodeSide: Side.R,
+  },
+};
 
-export const editorStateDefault = JSON.stringify(editorState)
+export const editorStateDefault = JSON.stringify(editorState);

@@ -1,21 +1,21 @@
-import { IconButton } from "@radix-ui/themes"
-import { FC } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import Trash from "../../assets/trash.svg?react"
-import { actions } from "../editorMutations/EditorMutations.ts"
-import { mSelector } from "../editorQueries/EditorQueries.ts"
-import { mL } from "../mapQueries/MapQueries.ts"
-import { AppDispatch, RootState } from "../rootComponent/RootComponent.tsx"
-import { adjustIcon } from "../utils/Utils.ts"
-import { getCoordsMidBezier, getRootLinePath } from "./MapSvgUtils.ts"
+import { IconButton } from '@radix-ui/themes';
+import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Trash from '../../assets/trash.svg?react';
+import { actions } from '../editorMutations/EditorMutations.ts';
+import { mSelector } from '../editorQueries/EditorQueries.ts';
+import { mL } from '../mapQueries/MapQueries.ts';
+import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
+import { adjustIcon } from '../utils/Utils.ts';
+import { getCoordsMidBezier, getRootLinePath } from './MapSvgUtils.ts';
 
 export const MapDivL: FC = () => {
-  const m = useSelector((state: RootState) => mSelector(state))
-  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible)
-  const dispatch = useDispatch<AppDispatch>()
+  const m = useSelector((state: RootState) => mSelector(state));
+  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
+  const dispatch = useDispatch<AppDispatch>();
   return (
     connectionHelpersVisible &&
-    mL(m).map(li =>
+    mL(m).map(li => (
       <IconButton
         key={`${li.nodeId}_inter_root_bezier_trash`}
         variant="solid"
@@ -29,15 +29,15 @@ export const MapDivL: FC = () => {
           transition: 'all 0.3s',
           transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
         }}
-        onMouseDown={(e) => {
-          e.stopPropagation()
+        onMouseDown={e => {
+          e.stopPropagation();
         }}
         onClick={() => {
-          dispatch(actions.deleteL(li.nodeId))
+          dispatch(actions.deleteL(li.nodeId));
         }}
       >
-        <Trash/>
+        <Trash />
       </IconButton>
-    )
-  )
-}
+    ))
+  );
+};

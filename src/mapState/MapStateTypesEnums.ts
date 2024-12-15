@@ -7,11 +7,12 @@ export enum Side {
 
 export enum ControlType {
   NONE = '',
+  FILE = 'file',
   INGESTION = 'ingestion',
   EXTRACTION = 'extraction',
 }
 
 export enum SubProcessType {
   INGESTION = 'ingestion',
-  EXTRACTION = 'extraction'
+  EXTRACTION = 'extraction',
 }

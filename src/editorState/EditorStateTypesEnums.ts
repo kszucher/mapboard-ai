@@ -8,12 +8,12 @@ export enum DialogState {
   SHARED_BY_ME,
   SHARED_WITH_ME,
   SHARE_THIS_MAP,
-  RENAME_MAP
+  RENAME_MAP,
 }
 
 export enum AlertDialogState {
   NONE,
-  DELETE_ACCOUNT
+  DELETE_ACCOUNT,
 }
 
 export enum NodeMode {
@@ -29,11 +29,11 @@ export enum LeftMouseMode {
 
 export enum MidMouseMode {
   SCROLL = 'scroll',
-  ZOOM = 'zoom'
+  ZOOM = 'zoom',
 }
 
 export enum AccessType {
   UNAUTHORIZED = 'unauthorized',
   VIEW = 'view',
-  EDIT = 'edit'
+  EDIT = 'edit',
 }
