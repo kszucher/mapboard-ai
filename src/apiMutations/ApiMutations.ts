@@ -2,8 +2,8 @@ import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import { timeoutId } from '../editorComponents/Window.tsx';
 import { actions } from '../editorMutations/EditorMutations.ts';
 import { getMapId } from '../editorQueries/EditorQueries.ts';
-import { mapDiff } from '../mapQueries/MapDiff.ts';
 import { mapPrune } from '../mapQueries/MapPrune.ts';
+import { mapArrayToObject } from '../mapQueries/MapQueries.ts';
 import { api, RootState } from '../rootComponent/RootComponent.tsx';
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
@@ -103,12 +103,12 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
         const SAVE_ENABLED = true;
         if (SAVE_ENABLED) {
           const mapId = editor.mapId;
-          const mapDelta = mapDiff(editor.latestMapData, mapPrune(editor.commitList[editor.commitIndex]));
+          const mapData = mapArrayToObject(mapPrune(editor.commitList[editor.commitIndex]));
           try {
             const { data } = await baseQuery({
               url: 'save-map',
               method: 'POST',
-              body: { mapId, mapDelta },
+              body: { mapId, mapData },
             });
             return { data } as { data: void };
           } catch (error) {

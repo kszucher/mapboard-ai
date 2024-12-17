@@ -199,7 +199,7 @@ export const Window: FC = () => {
     if (mExists) {
       if (commitList.length > 1) {
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => dispatch(api.endpoints.saveMap.initiate()), 100);
+        timeoutId = setTimeout(() => dispatch(api.endpoints.saveMap.initiate()), 200);
       }
     }
   }, [m]);
