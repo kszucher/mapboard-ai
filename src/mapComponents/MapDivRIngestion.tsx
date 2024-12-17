@@ -1,11 +1,10 @@
-import { Button, Flex, Spinner, Text } from '@radix-ui/themes';
+import { Badge, Button, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
-import { NodeMode } from '../editorState/EditorStateTypesEnums.ts';
 import { R_PADDING } from '../mapConsts/MapConsts.ts';
 import { R } from '../mapState/MapStateTypes.ts';
 import { api } from '../rootComponent/RootComponent.tsx';
 
-export const MapDivRIngestion = ({ ri, nodeMode }: { ri: R; nodeMode: NodeMode }) => {
+export const MapDivRIngestion = ({ ri }: { ri: R }) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -26,17 +25,42 @@ export const MapDivRIngestion = ({ ri, nodeMode }: { ri: R; nodeMode: NodeMode }
     <React.Fragment>
       <div
         style={{
-          position: 'relative',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          paddingTop: 8,
+          paddingLeft: 10,
+        }}
+      >
+        {/*<Text>File Upload</Text>*/}
+        <Badge color="blue" size="2">
+          File Upload
+        </Badge>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          paddingTop: 8,
+          paddingRight: 10,
+        }}
+      >
+        <IconButton variant="solid" size="1" color="gray"></IconButton>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
           top: R_PADDING,
           marginLeft: 10,
-          marginTop: 10,
+          marginTop: 0,
           paddingTop: 10,
           paddingLeft: 10,
           background: '#333333',
           width: ri.selfW - 30,
-          height: ri.selfH - R_PADDING - 30,
+          height: ri.selfH - R_PADDING - 20,
           borderRadius: 8,
-          pointerEvents: nodeMode === NodeMode.EDIT_ROOT ? 'none' : 'auto',
+          pointerEvents: 'auto',
         }}
       >
         <Flex direction="column" gap="2" align="start" content="center">
