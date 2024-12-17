@@ -14,7 +14,7 @@ export const MapActions = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <IconButton variant="solid" color="gray">
+        <IconButton variant="soft" color="gray" radius="full">
           <Dots />
         </IconButton>
       </DropdownMenu.Trigger>

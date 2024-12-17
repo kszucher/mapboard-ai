@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../editorMutations/EditorMutations.ts';
 import { getROffsetCoords, mSelector } from '../editorQueries/EditorQueries.ts';
 import { LeftMouseMode, NodeMode } from '../editorState/EditorStateTypesEnums.ts';
-import { R_PADDING } from '../mapConsts/MapConsts.ts';
 import { getAXR, getNodeMode, isAXR, mR } from '../mapQueries/MapQueries.ts';
 import { ControlType } from '../mapState/MapStateTypesEnums.ts';
 import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
@@ -72,19 +71,7 @@ export const MapDivR: FC = () => {
         }
       }}
     >
-      <div
-        style={{
-          position: 'relative',
-          left: R_PADDING,
-          top: R_PADDING,
-          background: '#333333',
-          width: ri.selfW - 2 * R_PADDING,
-          height: ri.selfH - 2 * R_PADDING,
-          pointerEvents: nodeMode === NodeMode.EDIT_ROOT ? 'none' : 'auto',
-        }}
-      >
-        {ri.controlType === ControlType.INGESTION && <MapDivRIngestion ri={ri} />}
-      </div>
+      {ri.controlType === ControlType.INGESTION && <MapDivRIngestion ri={ri} nodeMode={nodeMode} />}
     </div>
   ));
 };

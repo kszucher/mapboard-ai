@@ -40,7 +40,7 @@ export const Landing: FC = () => {
   }, [token]);
 
   return (
-    <Theme appearance={'dark'} accentColor="violet" panelBackground="solid" scaling="100%" radius="full">
+    <Theme appearance={'dark'} accentColor="iris" panelBackground="solid" scaling="100%" radius="full">
       <main className="flex h-screen items-center justify-center bg-zinc-800">
         <div className="container flex max-w-[64rem] flex-col items-center gap-8 text-center">
           <TopologyStar className="h-16 w-16" />

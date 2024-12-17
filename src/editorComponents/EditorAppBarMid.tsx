@@ -15,7 +15,7 @@ export const EditorAppBarMid: FC = () => {
     <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <IconButton variant="solid" color="gray">
+          <IconButton variant="soft" color="gray" radius="full">
             <ChevronDown />
           </IconButton>
         </DropdownMenu.Trigger>
@@ -35,7 +35,7 @@ export const EditorAppBarMid: FC = () => {
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <Button variant="solid" onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId }))}>
+      <Button variant="solid" radius="full" onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId }))}>
         {mapName}
       </Button>
       <MapActions />
