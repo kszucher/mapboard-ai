@@ -6,7 +6,7 @@ import { LeftMouseMode, NodeMode } from '../editorState/EditorStateTypesEnums.ts
 import { getAXR, getNodeMode, isAXR, mR } from '../mapQueries/MapQueries.ts';
 import { ControlType } from '../mapState/MapStateTypesEnums.ts';
 import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
-import { MapDivRIngestion } from './MapDivRIngestion.tsx';
+import { MapDivRFile } from './MapDivRFile.tsx';
 
 export const MapDivR: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode);
@@ -71,7 +71,7 @@ export const MapDivR: FC = () => {
         }
       }}
     >
-      {ri.controlType === ControlType.INGESTION && <MapDivRIngestion ri={ri} nodeMode={nodeMode} />}
+      {ri.controlType === ControlType.FILE && <MapDivRFile ri={ri} />}
     </div>
   ));
 };

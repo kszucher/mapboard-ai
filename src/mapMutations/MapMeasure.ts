@@ -28,6 +28,9 @@ export const mapMeasure = (m: M) => {
           if (ri.controlType === ControlType.NONE) {
             ri.familyW = 80;
             ri.familyH = 60;
+          } else if (ri.controlType === ControlType.FILE) {
+            ri.familyW = 160;
+            ri.familyH = 90;
           } else if (ri.controlType === ControlType.INGESTION) {
             ri.familyW = 200;
             ri.familyH = 240;

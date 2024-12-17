@@ -65,6 +65,7 @@ export const mapMutations = {
     }),
 
   setControlTypeNone: (m: M) => Object.assign(getXR(m), { controlType: ControlType.NONE }),
+  setControlTypeFile: (m: M) => Object.assign(getXR(m), { controlType: ControlType.FILE }),
   setControlTypeIngestion: (m: M) => Object.assign(getXR(m), { controlType: ControlType.INGESTION }),
   setControlTypeExtraction: (m: M) => Object.assign(getXR(m), { controlType: ControlType.EXTRACTION }),
 };

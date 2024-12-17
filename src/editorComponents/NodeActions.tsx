@@ -24,21 +24,30 @@ export const NodeActions = () => {
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{'Edit'}</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
-              {getXR(m).controlType !== ControlType.NONE && (
-                <DropdownMenu.Item onClick={() => dispatch(actions.setControlTypeNone())}>
-                  {'Control Type None'}
-                </DropdownMenu.Item>
-              )}
-              {getXR(m).controlType !== ControlType.INGESTION && (
-                <DropdownMenu.Item onClick={() => dispatch(actions.setControlTypeIngestion())}>
-                  {'Control Type Ingestion'}
-                </DropdownMenu.Item>
-              )}
-              {getXR(m).controlType !== ControlType.EXTRACTION && (
-                <DropdownMenu.Item onClick={() => dispatch(actions.setControlTypeExtraction())}>
-                  {'Control Type Extraction'}
-                </DropdownMenu.Item>
-              )}
+              <DropdownMenu.Item
+                disabled={getXR(m).controlType === ControlType.NONE}
+                onClick={() => dispatch(actions.setControlTypeNone())}
+              >
+                {'Control Type None'}
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                disabled={getXR(m).controlType === ControlType.FILE}
+                onClick={() => dispatch(actions.setControlTypeFile())}
+              >
+                {'Control Type File'}
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                disabled={getXR(m).controlType === ControlType.INGESTION}
+                onClick={() => dispatch(actions.setControlTypeIngestion())}
+              >
+                {'Control Type Ingestion'}
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                disabled={getXR(m).controlType === ControlType.EXTRACTION}
+                onClick={() => dispatch(actions.setControlTypeExtraction())}
+              >
+                {'Control Type Extraction'}
+              </DropdownMenu.Item>
             </DropdownMenu.SubContent>
           </DropdownMenu.Sub>
         </DropdownMenu.Content>

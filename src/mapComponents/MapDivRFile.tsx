@@ -3,8 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { R_PADDING } from '../mapConsts/MapConsts.ts';
 import { R } from '../mapState/MapStateTypes.ts';
 import { api } from '../rootComponent/RootComponent.tsx';
+import { shrinkString } from '../utils/Utils.ts';
 
-export const MapDivRIngestion = ({ ri }: { ri: R }) => {
+export const MapDivRFile = ({ ri }: { ri: R }) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -32,10 +33,14 @@ export const MapDivRIngestion = ({ ri }: { ri: R }) => {
           paddingLeft: 10,
         }}
       >
-        {/*<Text>File Upload</Text>*/}
-        <Badge color="blue" size="2">
-          File Upload
-        </Badge>
+        <Flex direction="row" gap="2" align="start" content="center">
+          <Badge color="gray" size="2">
+            {ri.path.join('').toUpperCase()}
+          </Badge>
+          <Badge color="blue" size="2">
+            File Upload
+          </Badge>
+        </Flex>
       </div>
       <div
         style={{
@@ -53,18 +58,17 @@ export const MapDivRIngestion = ({ ri }: { ri: R }) => {
           position: 'absolute',
           top: R_PADDING,
           marginLeft: 10,
-          marginTop: 0,
+          marginTop: 10,
           paddingTop: 10,
           paddingLeft: 10,
           background: '#333333',
           width: ri.selfW - 30,
-          height: ri.selfH - R_PADDING - 20,
+          height: ri.selfH - R_PADDING - 30,
           borderRadius: 8,
           pointerEvents: 'auto',
         }}
       >
         <Flex direction="column" gap="2" align="start" content="center">
-          <div>{ri.path}</div>
           <input
             type="file"
             onChange={e => {
@@ -77,7 +81,7 @@ export const MapDivRIngestion = ({ ri }: { ri: R }) => {
           />
           {!isUploading && (
             <Button
-              size="2"
+              size="1"
               radius="full"
               color="gray"
               onClick={() => (hiddenFileInput.current as HTMLInputElement).click()}
@@ -85,28 +89,24 @@ export const MapDivRIngestion = ({ ri }: { ri: R }) => {
               Select File
             </Button>
           )}
-          {!isUploading && file && (
-            <Flex direction="column">
-              <Text size="2">File Details:</Text>
-              <Text size="2">Name: {file.name}</Text>
-              <Text size="2">Type: {file.type}</Text>
-              <Text size="2">Size: {file.size} bytes</Text>
-            </Flex>
-          )}
-          {!isUploading && file && (
-            <Button
-              onClick={() => {
-                if (file) {
-                  setIsUploading(true);
-                  const formData = new FormData();
-                  formData.append('file', file);
-                  uploadFile({ bodyFormData: formData });
-                }
-              }}
-            >
-              Upload file
-            </Button>
-          )}
+          {<Text size="2">{`${!isUploading && file ? shrinkString(file.name, 24) : 'No File Selected'}`}</Text>}
+
+          <Button
+            disabled={isUploading || !file}
+            size="1"
+            color="gray"
+            onClick={() => {
+              if (file) {
+                setIsUploading(true);
+                const formData = new FormData();
+                formData.append('file', file);
+                uploadFile({ bodyFormData: formData });
+              }
+            }}
+          >
+            Upload file
+          </Button>
+
           {isUploading && <Spinner size="3" />}
           {/*{ingestionResult &&*/}
           {/*  <div>*/}
