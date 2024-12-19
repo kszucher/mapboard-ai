@@ -65,8 +65,6 @@ export const rSaveNever: RSaveNever = {
   selfH: 0,
   maxW: 0,
   maxH: 0,
-  familyW: 0,
-  familyH: 0,
   nodeStartX: 0,
   nodeStartY: 0,
 };

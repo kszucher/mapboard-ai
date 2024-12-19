@@ -55,8 +55,6 @@ export interface RSaveOptional {
 export interface RSaveNever {
   selfW: number;
   selfH: number;
-  familyW: number;
-  familyH: number;
   maxW: number;
   maxH: number;
   nodeStartX: number;

@@ -26,20 +26,20 @@ export const mapMeasure = (m: M) => {
         case isR(ni.path): {
           const ri = <R>ni;
           if (ri.controlType === ControlType.NONE) {
-            ri.familyW = 80;
-            ri.familyH = 60;
+            ri.selfW = 80;
+            ri.selfH = 60;
           } else if (ri.controlType === ControlType.FILE) {
-            ri.familyW = 160;
-            ri.familyH = 90;
+            ri.selfW = 160;
+            ri.selfH = 90;
           } else if (ri.controlType === ControlType.INGESTION) {
-            ri.familyW = 200;
-            ri.familyH = 240;
+            ri.selfW = 200;
+            ri.selfH = 240;
           } else if (ri.controlType === ControlType.EXTRACTION) {
-            ri.familyW = 200;
-            ri.familyH = 240;
+            ri.selfW = 200;
+            ri.selfH = 240;
           }
-          ri.selfW = ri.familyW + 2 * R_PADDING;
-          ri.selfH = ri.familyH + 2 * R_PADDING;
+          ri.selfW += 2 * R_PADDING;
+          ri.selfH += 2 * R_PADDING;
           break;
         }
       }
