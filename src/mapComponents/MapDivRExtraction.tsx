@@ -5,7 +5,7 @@ import { R } from '../mapState/MapStateTypes.ts';
 import { api } from '../rootComponent/RootComponent.tsx';
 import { shrinkString } from '../utils/Utils.ts';
 
-export const MapDivRFile = ({ ri }: { ri: R }) => {
+export const MapDivRExtraction = ({ ri }: { ri: R }) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -37,8 +37,8 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
           <Badge color="gray" size="2">
             {ri.path.join('').toUpperCase()}
           </Badge>
-          <Badge color="yellow" size="2">
-            File Upload
+          <Badge color="jade" size="2">
+            Extraction
           </Badge>
         </Flex>
       </div>
