@@ -4,55 +4,33 @@ import { actions } from '../editorMutations/EditorMutations.ts';
 import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { isExistingLink, mR } from '../mapQueries/MapQueries.ts';
 import { L } from '../mapState/MapStateTypes.ts';
-import { Side } from '../mapState/MapStateTypesEnums.ts';
+import { ControlType, Side } from '../mapState/MapStateTypesEnums.ts';
 import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { adjustIcon } from '../utils/Utils.ts';
 
-export const MapSvgRConnectors: FC = () => {
+export const MapSvgRConnectorTo: FC = () => {
   const m = useSelector((state: RootState) => mSelector(state));
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart);
   const dispatch = useDispatch<AppDispatch>();
   return (
     connectionHelpersVisible &&
-    mR(m).map(ri =>
-      [
-        { side: Side.L, x: ri.nodeStartX, y: ri.nodeStartY + ri.selfH / 2 },
-        {
-          side: Side.R,
-          x: ri.nodeStartX + ri.selfW,
-          y: ri.nodeStartY + ri.selfH / 2,
-        },
-        { side: Side.T, x: ri.nodeStartX + ri.selfW / 2, y: ri.nodeStartY },
-        {
-          side: Side.B,
-          x: ri.nodeStartX + ri.selfW / 2,
-          y: ri.nodeStartY + ri.selfH,
-        },
-      ].flatMap(el => (
+    mR(m)
+      .filter(ri => [ControlType.INGESTION, ControlType.EXTRACTION].includes(ri.controlType))
+      .map(ri => (
         <circle
-          key={`${ri.nodeId}_${el.side}_rc`}
+          key={`${ri.nodeId}_${Side.L}_rc`}
           viewBox="0 0 24 24"
           width="24"
           height="24"
           r={8}
           fill={'#666666'}
-          transform={`translate(${adjustIcon(el.x)}, ${adjustIcon(el.y)})`}
+          transform={`translate(${adjustIcon(ri.nodeStartX)}, ${adjustIcon(ri.nodeStartY + ri.selfH / 2)})`}
           {...{ vectorEffect: 'non-scaling-stroke' }}
           style={{
             transition: 'all 0.3s',
             transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
             transitionProperty: 'all',
-          }}
-          onMouseDown={e => {
-            e.preventDefault();
-            e.stopPropagation();
-            dispatch(
-              actions.setConnectionStart({
-                fromNodeId: ri.nodeId,
-                fromNodeSide: el.side,
-              })
-            );
           }}
           onMouseUp={e => {
             e.preventDefault();
@@ -60,7 +38,7 @@ export const MapSvgRConnectors: FC = () => {
             const newLink: Partial<L> = {
               ...connectionStart,
               toNodeId: ri.nodeId,
-              toNodeSide: el.side,
+              toNodeSide: Side.L,
             };
             if (
               connectionStart.fromNodeId !== '' &&
@@ -72,6 +50,5 @@ export const MapSvgRConnectors: FC = () => {
           }}
         />
       ))
-    )
   );
 };

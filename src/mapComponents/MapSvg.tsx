@@ -6,7 +6,8 @@ import { RootState } from '../rootComponent/RootComponent.tsx';
 import { MapSvgGBackground } from './MapSvgGBackground.tsx';
 import { MapSvgL } from './MapSvgL.tsx';
 import { MapSvgRBackground } from './MapSvgRBackground.tsx';
-import { MapSvgRConnectors } from './MapSvgRConnectors.tsx';
+import { MapSvgRConnectorTo } from './MapSvgRConnectorTo.tsx';
+import { MapSvgRConnectorsFrom } from './MapSvgRConnectorsFrom.tsx';
 import { MapSvgRMove } from './MapSvgRMove.tsx';
 import { MapSvgRSeparators } from './MapSvgRSeparators.tsx';
 
@@ -20,7 +21,8 @@ export const MapSvg: FC = () => {
       <MapSvgRBackground />
       <MapSvgRSeparators />
       <MapSvgRMove />
-      <MapSvgRConnectors />
+      <MapSvgRConnectorsFrom />
+      <MapSvgRConnectorTo />
     </svg>
   );
 };
