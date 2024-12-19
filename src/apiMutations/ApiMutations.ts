@@ -191,13 +191,17 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [],
   }),
 
-  uploadFile: builder.mutation<void, { bodyFormData: FormData }>({
-    query: ({ bodyFormData }) => ({
-      url: '/upload-file',
-      method: 'POST',
-      body: bodyFormData,
-      formData: true,
-    }),
-    invalidatesTags: ['IngestionData'],
+  uploadFile: builder.mutation<void, { bodyFormData: FormData; mapId: string; nodeId: string }>({
+    query: ({ bodyFormData, mapId, nodeId }) => {
+      bodyFormData.append('map_id', mapId);
+      bodyFormData.append('node_id', nodeId);
+      return {
+        url: '/upload-file',
+        method: 'POST',
+        body: bodyFormData,
+        formData: true,
+      };
+    },
+    invalidatesTags: [],
   }),
 });

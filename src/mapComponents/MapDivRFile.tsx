@@ -1,26 +1,25 @@
 import { Badge, Button, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../editorMutations/EditorMutations.ts';
 import { R_PADDING } from '../mapConsts/MapConsts.ts';
 import { R } from '../mapState/MapStateTypes.ts';
-import { api } from '../rootComponent/RootComponent.tsx';
+import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { shrinkString } from '../utils/Utils.ts';
 
 export const MapDivRFile = ({ ri }: { ri: R }) => {
+  const mapId = useSelector((state: RootState) => state.editor.mapId);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadFile, { isSuccess, reset }] = api.useUploadFileMutation();
-  // const { data } = useGetIngestionQuery()
-  // const { ingestionResult } = data || defaultGetIngestionQueryState
-  // no such fancy state here,
-  // instead we will state custom state loading, and server will kill it merge it push it
+  const [uploadFile, { isError, reset }] = api.useUploadFileMutation();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isError) {
       reset();
-      setIsUploading(false);
+      dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, value: false }));
     }
-  }, [isSuccess]);
+  }, [isError]);
 
   return (
     <React.Fragment>
@@ -79,40 +78,44 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
             ref={hiddenFileInput}
             style={{ display: 'none' }}
           />
-          {!isUploading && (
+
+          {!ri.isProcessing && !ri.fileHash && (
             <Button
               size="1"
               radius="full"
               color="gray"
               onClick={() => (hiddenFileInput.current as HTMLInputElement).click()}
             >
-              Select File
+              {'Select File'}
             </Button>
           )}
-          {<Text size="2">{`${!isUploading && file ? shrinkString(file.name, 24) : 'No File Selected'}`}</Text>}
 
-          <Button
-            disabled={isUploading || !file}
-            size="1"
-            color="gray"
-            onClick={() => {
-              if (file) {
-                setIsUploading(true);
-                const formData = new FormData();
-                formData.append('file', file);
-                uploadFile({ bodyFormData: formData });
-              }
-            }}
-          >
-            Upload file
-          </Button>
+          <Text size="2">{`${!ri.isProcessing && file ? shrinkString(file.name, 24) : 'No File Selected'}`}</Text>
 
-          {isUploading && <Spinner size="3" />}
-          {/*{ingestionResult &&*/}
-          {/*  <div>*/}
-          {/*    {ingestionResult}*/}
-          {/*  </div>*/}
-          {/*}*/}
+          {file && !ri.isProcessing && !ri.fileHash && (
+            <Button
+              size="1"
+              color="gray"
+              onClick={() => {
+                if (file) {
+                  dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, value: true }));
+                  const formData = new FormData();
+                  formData.append('file', file);
+                  uploadFile({ bodyFormData: formData, mapId, nodeId: ri.nodeId });
+                }
+              }}
+            >
+              {'Upload File'}
+            </Button>
+          )}
+
+          {ri.isProcessing && !ri.fileHash && <Spinner size="3" />}
+
+          {ri.fileHash && (
+            <Button size="1" radius="full" color="gray" onClick={() => window.alert('OPENING STUFF')}>
+              {'Open File'}
+            </Button>
+          )}
         </Flex>
       </div>
     </React.Fragment>

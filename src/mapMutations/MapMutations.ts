@@ -68,6 +68,9 @@ export const mapMutations = {
   setControlTypeFile: (m: M) => Object.assign(getXR(m), { controlType: ControlType.FILE }),
   setControlTypeIngestion: (m: M) => Object.assign(getXR(m), { controlType: ControlType.INGESTION }),
   setControlTypeExtraction: (m: M) => Object.assign(getXR(m), { controlType: ControlType.EXTRACTION }),
+
+  setIsProcessing: (m: M, { nodeId, value }: { nodeId: string; value: boolean }) =>
+    (idToR(m, nodeId).isProcessing = value),
 };
 
 export function wrapFunction<P>(fn: (m: M, payload: P) => void) {

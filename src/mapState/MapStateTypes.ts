@@ -48,6 +48,7 @@ export interface RSaveOptional {
   fileHash: string;
   ingestionHash: string;
   extractionHash: string;
+  isProcessing: boolean;
   selected: number;
   lastSelectedChild: number;
 }
