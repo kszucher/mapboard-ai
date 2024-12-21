@@ -69,7 +69,7 @@ export const MapDivRIngestion = ({ ri }: { ri: R }) => {
                 dispatch(
                   api.endpoints.ingestion.initiate({
                     mapId,
-                    nodeId: inputNode?.nodeId || '',
+                    nodeId: ri.nodeId,
                     fileHash: inputNode?.fileHash || '',
                   })
                 )
