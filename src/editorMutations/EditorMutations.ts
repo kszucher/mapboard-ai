@@ -166,7 +166,6 @@ export const editorSlice = createSlice({
         state.mapId = payload.mapId;
         state.commitList = [m];
         state.commitIndex = 0;
-        state.latestMapData = structuredClone(data);
         state.editedNodeId = '';
         state.isLoading = false;
       } else {

@@ -90,19 +90,17 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
             </Button>
           )}
 
-          <Text size="2">{`${!ri.isProcessing && file ? shrinkString(file.name, 24) : 'No File Selected'}`}</Text>
+          {!ri.isProcessing && file && <Text size="2">{`File: ${shrinkString(file.name, 24)}`}</Text>}
 
           {file && !ri.isProcessing && !ri.fileHash && (
             <Button
               size="1"
               color="gray"
               onClick={() => {
-                if (file) {
-                  dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, value: true }));
-                  const formData = new FormData();
-                  formData.append('file', file);
-                  uploadFile({ bodyFormData: formData, mapId, nodeId: ri.nodeId });
-                }
+                dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, value: true }));
+                const formData = new FormData();
+                formData.append('file', file);
+                uploadFile({ bodyFormData: formData, mapId, nodeId: ri.nodeId });
               }}
             >
               {'Upload File'}

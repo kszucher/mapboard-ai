@@ -204,4 +204,13 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     },
     invalidatesTags: [],
   }),
+
+  ingestion: builder.mutation<void, { mapId: string; nodeId: string; fileHash: string }>({
+    query: ({ mapId, nodeId, fileHash }) => ({
+      url: 'ingestion',
+      method: 'POST',
+      body: { mapId, nodeId, fileHash },
+    }),
+    invalidatesTags: [],
+  }),
 });

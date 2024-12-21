@@ -14,7 +14,6 @@ export interface EditorState {
   mapId: string;
   commitList: M[];
   commitIndex: number;
-  latestMapData: M;
   editedNodeId: string;
   editType: '' | 'append' | 'replace';
   editStartMapListIndex: number;

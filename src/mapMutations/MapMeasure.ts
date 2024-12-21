@@ -32,8 +32,8 @@ export const mapMeasure = (m: M) => {
             ri.selfW = 160;
             ri.selfH = 90;
           } else if (ri.controlType === ControlType.INGESTION) {
-            ri.selfW = 200;
-            ri.selfH = 240;
+            ri.selfW = 160;
+            ri.selfH = 90;
           } else if (ri.controlType === ControlType.EXTRACTION) {
             ri.selfW = 200;
             ri.selfH = 240;

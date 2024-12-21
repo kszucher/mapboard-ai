@@ -1,9 +1,18 @@
-import { Badge, Flex, IconButton } from '@radix-ui/themes';
+import { Badge, Button, Flex, IconButton } from '@radix-ui/themes';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { R_PADDING } from '../mapConsts/MapConsts.ts';
+import { getInputNode } from '../mapQueries/MapQueries.ts';
 import { R } from '../mapState/MapStateTypes.ts';
+import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 
 export const MapDivRIngestion = ({ ri }: { ri: R }) => {
+  const mapId = useSelector((state: RootState) => state.editor.mapId);
+  const m = useSelector((state: RootState) => mSelector(state));
+  const inputNode = getInputNode(m, ri.nodeId);
+  const dispatch = useDispatch<AppDispatch>();
+
   return (
     <React.Fragment>
       <div
@@ -50,7 +59,26 @@ export const MapDivRIngestion = ({ ri }: { ri: R }) => {
           pointerEvents: 'auto',
         }}
       >
-        <Flex direction="column" gap="2" align="start" content="center"></Flex>
+        <Flex direction="column" gap="2" align="start" content="center">
+          {inputNode && (
+            <Button
+              size="1"
+              radius="full"
+              color="gray"
+              onClick={() =>
+                dispatch(
+                  api.endpoints.ingestion.initiate({
+                    mapId,
+                    nodeId: inputNode?.nodeId || '',
+                    fileHash: inputNode?.fileHash || '',
+                  })
+                )
+              }
+            >
+              {'Ingest File'}
+            </Button>
+          )}
+        </Flex>
       </div>
     </React.Fragment>
   );

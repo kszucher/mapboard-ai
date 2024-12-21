@@ -1,5 +1,4 @@
 import isEqual from 'react-fast-compare';
-
 import { NodeMode } from '../editorState/EditorStateTypesEnums.ts';
 import { sortPath } from '../mapMutations/MapSort.ts';
 import { G, L, M, N, PR, R, T } from '../mapState/MapStateTypes.ts';
@@ -68,4 +67,12 @@ export const getNodeMode = (m: M) => {
   if (isAXL(m)) return NodeMode.EDIT_LINE;
   else if (isAXR(m)) return NodeMode.EDIT_ROOT;
   else return NodeMode.VIEW;
+};
+
+export const getInputNode = (m: M, nodeId: string) => {
+  const inputLink = mL(m).find(el => el.toNodeId === nodeId);
+  if (!inputLink) return null;
+  const inputNode = mR(m).find(el => el.nodeId === inputLink.fromNodeId);
+  if (!inputNode) return null;
+  return inputNode;
 };
