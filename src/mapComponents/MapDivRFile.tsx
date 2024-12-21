@@ -72,7 +72,9 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
             type="file"
             onChange={e => {
               if (e.target.files) {
-                setFile(e.target.files[0]);
+                const currFile = e.target.files[0];
+                setFile(currFile);
+                dispatch(actions.setFileName({ nodeId: ri.nodeId, fileName: currFile.name }));
               }
             }}
             ref={hiddenFileInput}
@@ -90,7 +92,7 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
             </Button>
           )}
 
-          {!ri.isProcessing && file && <Text size="2">{`File: ${shrinkString(file.name, 24)}`}</Text>}
+          {ri.fileName && <Text size="2">{`File: ${shrinkString(ri.fileName, 24)}`}</Text>}
 
           {file && !ri.isProcessing && !ri.fileHash && (
             <Button
@@ -98,9 +100,7 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
               color="gray"
               onClick={() => {
                 dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, value: true }));
-                const formData = new FormData();
-                formData.append('file', file);
-                uploadFile({ bodyFormData: formData, mapId, nodeId: ri.nodeId });
+                uploadFile({ file, mapId, nodeId: ri.nodeId });
               }}
             >
               {'Upload File'}
@@ -110,8 +110,15 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
           {ri.isProcessing && !ri.fileHash && <Spinner size="3" />}
 
           {ri.fileHash && (
-            <Button size="1" radius="full" color="gray" onClick={() => window.alert('OPENING STUFF')}>
-              {'Open File'}
+            <Button
+              size="1"
+              radius="full"
+              color="gray"
+              onClick={() => {
+                console.log('Show File');
+              }}
+            >
+              {'Show File'}
             </Button>
           )}
         </Flex>

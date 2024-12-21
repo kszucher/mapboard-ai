@@ -1,6 +1,7 @@
-import { Badge, Button, Flex, IconButton } from '@radix-ui/themes';
-import React from 'react';
+import { Badge, Button, Flex, IconButton, Spinner } from '@radix-ui/themes';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../editorMutations/EditorMutations.ts';
 import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { R_PADDING } from '../mapConsts/MapConsts.ts';
 import { getInputNode } from '../mapQueries/MapQueries.ts';
@@ -11,7 +12,15 @@ export const MapDivRIngestion = ({ ri }: { ri: R }) => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
   const m = useSelector((state: RootState) => mSelector(state));
   const inputNode = getInputNode(m, ri.nodeId);
+  const [ingestion, { isError, reset }] = api.useIngestionMutation();
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (isError) {
+      reset();
+      dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, value: false }));
+    }
+  }, [isError]);
 
   return (
     <React.Fragment>
@@ -60,22 +69,36 @@ export const MapDivRIngestion = ({ ri }: { ri: R }) => {
         }}
       >
         <Flex direction="column" gap="2" align="start" content="center">
-          {inputNode && (
+          {inputNode && inputNode.fileHash && !ri.isProcessing && !ri.ingestionHash && (
             <Button
               size="1"
               radius="full"
               color="gray"
-              onClick={() =>
-                dispatch(
-                  api.endpoints.ingestion.initiate({
-                    mapId,
-                    nodeId: ri.nodeId,
-                    fileHash: inputNode?.fileHash || '',
-                  })
-                )
-              }
+              onClick={() => {
+                dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, value: true }));
+                ingestion({
+                  mapId,
+                  nodeId: ri.nodeId,
+                  fileHash: inputNode?.fileHash || '',
+                });
+              }}
             >
               {'Ingest File'}
+            </Button>
+          )}
+
+          {ri.isProcessing && !ri.ingestionHash && <Spinner size="3" />}
+
+          {ri.ingestionHash && (
+            <Button
+              size="1"
+              radius="full"
+              color="gray"
+              onClick={() => {
+                console.log('Show Ingestion');
+              }}
+            >
+              {'Show Ingestion'}
             </Button>
           )}
         </Flex>

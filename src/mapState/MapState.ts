@@ -54,6 +54,7 @@ export const rSaveOptional: RSaveOptional = {
   offsetH: 0,
   note: '',
   fileHash: '',
+  fileName: '',
   ingestionHash: '',
   extractionHash: '',
   isProcessing: false,

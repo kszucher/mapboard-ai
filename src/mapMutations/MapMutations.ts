@@ -71,6 +71,9 @@ export const mapMutations = {
 
   setIsProcessing: (m: M, { nodeId, value }: { nodeId: string; value: boolean }) =>
     (idToR(m, nodeId).isProcessing = value),
+
+  setFileName: (m: M, { nodeId, fileName }: { nodeId: string; fileName: string }) =>
+    (idToR(m, nodeId).fileName = fileName),
 };
 
 export function wrapFunction<P>(fn: (m: M, payload: P) => void) {

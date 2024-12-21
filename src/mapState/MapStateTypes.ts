@@ -46,6 +46,7 @@ export interface RSaveOptional {
   offsetH: number;
   note: string;
   fileHash: string;
+  fileName: string;
   ingestionHash: string;
   extractionHash: string;
   isProcessing: boolean;

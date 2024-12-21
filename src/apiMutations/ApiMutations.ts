@@ -191,8 +191,10 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [],
   }),
 
-  uploadFile: builder.mutation<void, { bodyFormData: FormData; mapId: string; nodeId: string }>({
-    query: ({ bodyFormData, mapId, nodeId }) => {
+  uploadFile: builder.mutation<void, { file: File; mapId: string; nodeId: string }>({
+    query: ({ file, mapId, nodeId }) => {
+      const bodyFormData = new FormData();
+      bodyFormData.append('file', file);
       bodyFormData.append('map_id', mapId);
       bodyFormData.append('node_id', nodeId);
       return {
