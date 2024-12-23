@@ -34,6 +34,7 @@ export const Window: FC = () => {
   const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const dispatch = useDispatch<AppDispatch>();
   const keydown = (e: KeyboardEvent) => {
+    return;
     if (
       (+e.ctrlKey && e.code === 'KeyD') ||
       (+e.ctrlKey && e.code === 'KeyZ') ||
