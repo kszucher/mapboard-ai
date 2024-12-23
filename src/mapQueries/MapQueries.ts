@@ -33,9 +33,17 @@ export const isExistingLink = (m: M, partialL: Partial<L>): boolean =>
   );
 
 export const getInputNode = (m: M, nodeId: string) => {
-  const inputLink = mL(m).find(el => el.toNodeId === nodeId);
+  const inputLink = mL(m).find(li => li.toNodeId === nodeId);
   if (!inputLink) return null;
-  const inputNode = mR(m).find(el => el.nodeId === inputLink.fromNodeId);
+  const inputNode = mR(m).find(ri => ri.nodeId === inputLink.fromNodeId);
   if (!inputNode) return null;
   return inputNode;
+};
+
+export const getInputNodes = (m: M, nodeId: string) => {
+  const inputLinks = mL(m).filter(li => li.toNodeId === nodeId);
+  if (!inputLinks) return null;
+  const inputNodes = mR(m).filter(ri => inputLinks.some(li => li.fromNodeId === ri.nodeId));
+  if (!inputNodes) return null;
+  return inputNodes;
 };

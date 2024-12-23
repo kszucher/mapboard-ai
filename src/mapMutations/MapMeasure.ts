@@ -22,7 +22,7 @@ export const mapMeasure = (m: M) => {
         break;
       case ControlType.EXTRACTION:
         ri.selfW = 200;
-        ri.selfH = 150;
+        ri.selfH = 170;
         break;
     }
     ri.selfW += 2 * R_PADDING;
