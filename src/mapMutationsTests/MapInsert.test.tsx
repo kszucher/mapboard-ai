@@ -13,7 +13,7 @@ describe('MapInsertTests', () => {
     const result: MPartial = [
       { nodeId: 'g', path: ['g'] },
       { nodeId: 'r0', path: ['r', 0] },
-      { nodeId: '_r1', path: ['r', 1], controlType: ControlType.FILE },
+      { nodeId: '_r1', path: ['r', 1] },
     ];
     _assert(test, result, (m: M) => mapInsert.R(m, ControlType.FILE));
   });
