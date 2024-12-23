@@ -21,7 +21,6 @@ export const MapSvgRBackground: FC = () => {
       style={{
         transition: '0.3s ease-out',
       }}
-      stroke={ri.selected ? '#bbbbbb' : 'none'}
       strokeWidth={1}
     />
   ));

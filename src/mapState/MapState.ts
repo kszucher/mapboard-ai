@@ -38,7 +38,6 @@ export const lSaveAlways: LSaveAlways = {
 export const lSaveOptional: LSaveOptional = {
   lineColor: '#bbbbbb',
   lineWidth: 1,
-  selected: 0,
 };
 
 export const lSaveNever: LSaveNever = {};
@@ -52,14 +51,11 @@ export const rSaveOptional: RSaveOptional = {
   controlType: ControlType.FILE,
   offsetW: 0,
   offsetH: 0,
-  note: '',
   fileHash: '',
   fileName: '',
   ingestionHash: '',
   extractionHash: '',
   isProcessing: false,
-  selected: 0,
-  lastSelectedChild: -1,
 };
 
 export const rSaveNever: RSaveNever = {

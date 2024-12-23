@@ -30,7 +30,6 @@ export interface LSaveAlways {
 export interface LSaveOptional {
   lineColor: string;
   lineWidth: number;
-  selected: number;
 }
 
 export interface LSaveNever {}
@@ -44,14 +43,11 @@ export interface RSaveOptional {
   controlType: ControlType;
   offsetW: number;
   offsetH: number;
-  note: string;
   fileHash: string;
   fileName: string;
   ingestionHash: string;
   extractionHash: string;
   isProcessing: boolean;
-  selected: number;
-  lastSelectedChild: number;
 }
 
 export interface RSaveNever {
