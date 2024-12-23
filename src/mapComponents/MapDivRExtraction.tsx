@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Flex, IconButton, TextArea } from '@radix-ui/themes';
+import { Badge, Box, Button, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { R } from '../mapState/MapStateTypes.ts';
 
@@ -11,12 +11,9 @@ export const MapDivRExtraction = ({ ri }: { ri: R }) => {
             {ri.path.join('').toUpperCase()}
           </Badge>
           <Badge color="jade" size="2">
-            Extraction
+            {'Extraction'}
           </Badge>
         </Flex>
-      </Box>
-      <Box position="absolute" top="0" right="0" pt="2" pr="2">
-        <IconButton variant="solid" size="1" color="gray"></IconButton>
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="4" align="start" content="center">

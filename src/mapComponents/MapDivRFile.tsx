@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
+import { Badge, Box, Button, Flex, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../editorMutations/EditorMutations.ts';
@@ -31,9 +31,6 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
             {'File Upload'}
           </Badge>
         </Flex>
-      </Box>
-      <Box position="absolute" top="0" right="0" pt="2" pr="2">
-        <IconButton variant="solid" size="1" color="gray"></IconButton>
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="2" align="start" content="center">

@@ -58,8 +58,8 @@ export const mapMutations = {
   offsetU: (m: M) => getAXR(m).forEach(ri => (ri.offsetH -= 20)),
   offsetR: (m: M) => getAXR(m).forEach(ri => (ri.offsetW += 20)),
   offsetL: (m: M) => getAXR(m).forEach(ri => (ri.offsetW -= 20)),
-  offsetRByDrag: (m: M, rOffsetCoords: number[]) =>
-    Object.assign(getXR(m), {
+  offsetRByDrag: (m: M, { nodeId, rOffsetCoords }: { nodeId: string; rOffsetCoords: number[] }) =>
+    Object.assign(idToR(m, nodeId), {
       offsetW: rOffsetCoords[0],
       offsetH: rOffsetCoords[1],
     }),
