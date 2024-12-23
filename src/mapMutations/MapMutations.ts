@@ -1,7 +1,7 @@
 import { current, PayloadAction } from '@reduxjs/toolkit';
 import isEqual from 'react-fast-compare';
 import { EditorState } from '../editorState/EditorStateTypes.ts';
-import { getClosestR, getDR, getLR, getRR, getUR } from '../mapQueries/MapFindNearestR.ts';
+import { getDR, getLR, getRR, getUR } from '../mapQueries/MapFindNearestR.ts';
 import { mapPrune } from '../mapQueries/MapPrune.ts';
 import { getAXR, getXR, idToR, mR, pathToR } from '../mapQueries/MapQueries.ts';
 import { L, M, PR } from '../mapState/MapStateTypes.ts';
@@ -38,10 +38,10 @@ export const mapMutations = {
 
   deleteL: (m: M, nodeId: string) => mapDelete.L(m, nodeId),
 
-  deleteLR: (m: M) => {
-    const reselect = getClosestR(m, getXR(m))!.nodeId;
-    mapDelete.LR(m);
-    mapSelect.R(m, idToR(m, reselect));
+  deleteLR: (m: M, { nodeId }: { nodeId: string }) => {
+    // const reselect = getClosestR(m, getXR(m))!.nodeId;
+    mapDelete.LR(m, nodeId);
+    // mapSelect.R(m, idToR(m, reselect));
   },
 
   cutLRJumpR: (m: M) => {

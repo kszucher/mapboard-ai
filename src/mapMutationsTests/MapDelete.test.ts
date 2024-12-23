@@ -32,7 +32,7 @@ describe('MapDeleteTests', () => {
         toNodeSide: Side.R,
       },
       { nodeId: 'r0', path: ['r', 0], offsetW: 120, offsetH: 230 },
-      { nodeId: 'r1', path: ['r', 1], offsetW: 340, offsetH: 450, selected: 1 },
+      { nodeId: 'r1', path: ['r', 1], offsetW: 340, offsetH: 450 },
       { nodeId: 'r2', path: ['r', 2], offsetW: 560, offsetH: 780 },
     ];
     const result: MPartial = [
@@ -45,9 +45,9 @@ describe('MapDeleteTests', () => {
         toNodeId: 'r2',
         toNodeSide: Side.R,
       },
-      { nodeId: 'r0', path: ['r', 0], selected: 1 },
+      { nodeId: 'r0', path: ['r', 0] },
       { nodeId: 'r2', path: ['r', 1], offsetW: 440, offsetH: 550 },
     ];
-    _assert(test, result, (m: M) => mapMutations.deleteLR(m));
+    _assert(test, result, (m: M) => mapMutations.deleteLR(m, { nodeId: 'r1' }));
   });
 });

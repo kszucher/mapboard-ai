@@ -1,6 +1,8 @@
-import { Box, IconButton } from '@radix-ui/themes';
+import { Box, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Dots from '../../assets/dots.svg?react';
+import GripVertical from '../../assets/grip-vertical.svg?react';
 import { actions } from '../editorMutations/EditorMutations.ts';
 import { getROffsetCoords, mSelector } from '../editorQueries/EditorQueries.ts';
 import { LeftMouseMode, NodeMode } from '../editorState/EditorStateTypesEnums.ts';
@@ -10,7 +12,6 @@ import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { MapDivRExtraction } from './MapDivRExtraction.tsx';
 import { MapDivRFile } from './MapDivRFile.tsx';
 import { MapDivRIngestion } from './MapDivRIngestion.tsx';
-import GripVertical from '../../assets/grip-vertical.svg?react';
 
 export const MapDivR: FC = () => {
   const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode);
@@ -76,7 +77,22 @@ export const MapDivR: FC = () => {
       }}
     >
       <Box position="absolute" top="0" right="0" pt="2" pr="7">
-        <IconButton variant="solid" size="1" color="gray"></IconButton>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <IconButton variant="soft" size="1" color="gray" style={{ pointerEvents: 'auto', background: 'none' }}>
+              <Dots />
+            </IconButton>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
+            <DropdownMenu.Item
+              onClick={() => {
+                dispatch(actions.deleteLR({ nodeId: ri.nodeId }));
+              }}
+            >
+              {'Delete'}
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
       </Box>
       <Box position="absolute" top="0" right="0" pt="2" pr="2">
         <IconButton
