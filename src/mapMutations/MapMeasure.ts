@@ -25,10 +25,7 @@ export const mapMeasure = (m: M) => {
         }
         case isR(ni.path): {
           const ri = <R>ni;
-          if (ri.controlType === ControlType.NONE) {
-            ri.selfW = 80;
-            ri.selfH = 60;
-          } else if (ri.controlType === ControlType.FILE) {
+          if (ri.controlType === ControlType.FILE) {
             ri.selfW = 160;
             ri.selfH = 90;
           } else if (ri.controlType === ControlType.INGESTION) {
