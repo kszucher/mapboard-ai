@@ -1,4 +1,4 @@
-import { Badge, Button, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
+import { Badge, Box, Button, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../editorMutations/EditorMutations.ts';
@@ -22,7 +22,7 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
 
   return (
     <React.Fragment>
-      <div className="absolute top-0 left-0 pt-2 pl-2.5">
+      <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
             {ri.path.join('').toUpperCase()}
@@ -31,11 +31,11 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
             {'File Upload'}
           </Badge>
         </Flex>
-      </div>
-      <div className="absolute top-0 right-0 pt-2 pr-2.5">
+      </Box>
+      <Box position="absolute" top="0" right="0" pt="2" pr="2">
         <IconButton variant="solid" size="1" color="gray"></IconButton>
-      </div>
-      <div className="absolute top-10 mt-2 ml-2 pt-2 pl-2 bg-[var(--gray-a2)] w-[calc(100%-24px)] h-[calc(100%-64px)] rounded-md pointer-events-auto">
+      </Box>
+      <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="2" align="start" content="center">
           <input
             type="file"
@@ -91,7 +91,7 @@ export const MapDivRFile = ({ ri }: { ri: R }) => {
             </Button>
           )}
         </Flex>
-      </div>
+      </Box>
     </React.Fragment>
   );
 };

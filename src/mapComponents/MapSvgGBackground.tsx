@@ -19,7 +19,7 @@ export const MapSvgGBackground: FC = () => {
         rx={0}
         ry={0}
         fill={'none'}
-        stroke={'#dddddd'}
+        // stroke={'var(--gray-a1)'}
         strokeWidth={0.5}
         style={{ transition: '0.3s ease-out' }}
       />

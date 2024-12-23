@@ -1,11 +1,11 @@
-import { Badge, Flex, IconButton, TextArea } from '@radix-ui/themes';
+import { Badge, Box, Flex, IconButton, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { R } from '../mapState/MapStateTypes.ts';
 
 export const MapDivRExtraction = ({ ri }: { ri: R }) => {
   return (
     <React.Fragment>
-      <div className="absolute top-0 left-0 pt-2 pl-2.5">
+      <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
             {ri.path.join('').toUpperCase()}
@@ -14,14 +14,15 @@ export const MapDivRExtraction = ({ ri }: { ri: R }) => {
             Extraction
           </Badge>
         </Flex>
-      </div>
-      <div className="absolute top-0 right-0 pt-2 pr-2.5">
+      </Box>
+      <Box position="absolute" top="0" right="0" pt="2" pr="2">
         <IconButton variant="solid" size="1" color="gray"></IconButton>
-      </div>
-      <div className="absolute top-10 mt-2 ml-2 pt-2 pl-2 bg-[var(--gray-a2)] w-[calc(100%-24px)] h-[calc(100%-64px)] rounded-md pointer-events-auto">
+      </Box>
+      <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <TextArea
           placeholder="Your Prompt…"
           color="gray"
+          variant="soft"
           style={{
             width: ri.selfW - 32,
             minHeight: 100,
@@ -47,7 +48,7 @@ export const MapDivRExtraction = ({ ri }: { ri: R }) => {
         {/*>*/}
         {/*  <Flex direction="column" gap="2" align="start" content="center"></Flex>*/}
         {/*</div>*/}
-      </div>
+      </Box>
     </React.Fragment>
   );
 };
