@@ -35,6 +35,7 @@ export const MapDivRExtraction = ({ ri }: { ri: R }) => {
               pointerEvents: 'auto',
             }}
           />
+
           <Flex direction="row" gap="4" align="start" content="center">
             {!ri.extractionHash && (
               <Button
