@@ -36,7 +36,7 @@ export const mapMeasure = (m: M) => {
             ri.selfH = 90;
           } else if (ri.controlType === ControlType.EXTRACTION) {
             ri.selfW = 200;
-            ri.selfH = 240;
+            ri.selfH = 150;
           }
           ri.selfW += 2 * R_PADDING;
           ri.selfH += 2 * R_PADDING;

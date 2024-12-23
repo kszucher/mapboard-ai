@@ -1,4 +1,4 @@
-import { Badge, Box, Flex, IconButton, TextArea } from '@radix-ui/themes';
+import { Badge, Box, Button, Flex, IconButton, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { R } from '../mapState/MapStateTypes.ts';
 
@@ -19,35 +19,32 @@ export const MapDivRExtraction = ({ ri }: { ri: R }) => {
         <IconButton variant="solid" size="1" color="gray"></IconButton>
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
-        <TextArea
-          placeholder="Your Prompt…"
-          color="gray"
-          variant="soft"
-          style={{
-            width: ri.selfW - 32,
-            minHeight: 100,
-            outline: 'none',
-            pointerEvents: 'auto',
-          }}
-        />
-        {/*</div>*/}
-        {/*<div*/}
-        {/*  style={{*/}
-        {/*    position: 'absolute',*/}
-        {/*    top: 110,*/}
-        {/*    marginLeft: 10,*/}
-        {/*    marginTop: 10,*/}
-        {/*    paddingTop: 10,*/}
-        {/*    paddingLeft: 10,*/}
-        {/*    background: '#333333',*/}
-        {/*    width: ri.selfW - 30,*/}
-        {/*    height: ri.selfH - 120,*/}
-        {/*    borderRadius: 8,*/}
-        {/*    pointerEvents: 'auto',*/}
-        {/*  }}*/}
-        {/*>*/}
-        {/*  <Flex direction="column" gap="2" align="start" content="center"></Flex>*/}
-        {/*</div>*/}
+        <Flex direction="column" gap="4" align="start" content="center">
+          <TextArea
+            placeholder="Your Prompt…"
+            color="gray"
+            variant="soft"
+            style={{
+              width: ri.selfW - 32,
+              minHeight: 100,
+              outline: 'none',
+              pointerEvents: 'auto',
+            }}
+          />
+
+          {!ri.extractionHash && (
+            <Button
+              size="1"
+              radius="full"
+              color="gray"
+              onClick={() => {
+                console.log('Start Extraction');
+              }}
+            >
+              {'Start'}
+            </Button>
+          )}
+        </Flex>
       </Box>
     </React.Fragment>
   );
