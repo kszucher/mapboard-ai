@@ -22,11 +22,6 @@ export enum NodeMode {
   EDIT_ROOT = 'Edit Root',
 }
 
-export enum LeftMouseMode {
-  CLICK_SELECT = 'clickSelect',
-  RECTANGLE_SELECT = 'rectangleSelect',
-}
-
 export enum MidMouseMode {
   SCROLL = 'scroll',
   ZOOM = 'zoom',

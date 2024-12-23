@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { mapInfoDefaultState, userInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { AlertDialogState, DialogState } from '../editorState/EditorStateTypesEnums.ts';
 import { Map } from '../mapComponents/Map.tsx';
 import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
@@ -21,7 +20,7 @@ export const Editor: FC = () => {
   const { mapId } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
 
   const isLoading = useSelector((state: RootState) => state.editor.isLoading);
-  const m = useSelector((state: RootState) => mSelector(state));
+  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const mExists = mapId && m && Object.keys(m).length;
   const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
   const dialogState = useSelector((state: RootState) => state.editor.dialogState);

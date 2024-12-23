@@ -43,20 +43,6 @@ const getCoordinatesForSide = (node: R, side: Side): { x: number; y: number; cx:
         cx: nodeStartX - offset,
         cy: nodeStartY + selfH / 2,
       };
-    case Side.T:
-      return {
-        x: nodeStartX + selfW / 2,
-        y: nodeStartY,
-        cx: nodeStartX + selfW / 2,
-        cy: nodeStartY - offset,
-      };
-    case Side.B:
-      return {
-        x: nodeStartX + selfW / 2,
-        y: nodeStartY + selfH,
-        cx: nodeStartX + selfW / 2,
-        cy: nodeStartY + selfH + offset,
-      };
   }
 };
 

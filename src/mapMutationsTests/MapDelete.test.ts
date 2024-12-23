@@ -1,4 +1,4 @@
-import { mapMutations } from '../mapMutations/MapMutations.ts';
+import { mapDelete } from '../mapMutations/MapDelete.ts';
 import { M, MPartial } from '../mapState/MapStateTypes.ts';
 import { Side } from '../mapState/MapStateTypesEnums.ts';
 import { _assert } from './_assert.ts';
@@ -48,6 +48,6 @@ describe('MapDeleteTests', () => {
       { nodeId: 'r0', path: ['r', 0] },
       { nodeId: 'r2', path: ['r', 1], offsetW: 440, offsetH: 550 },
     ];
-    _assert(test, result, (m: M) => mapMutations.deleteLR(m, { nodeId: 'r1' }));
+    _assert(test, result, (m: M) => mapDelete.LR(m, 'r1'));
   });
 });

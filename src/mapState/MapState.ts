@@ -49,7 +49,7 @@ export const rSaveAlways: RSaveAlways = {
 };
 
 export const rSaveOptional: RSaveOptional = {
-  controlType: ControlType.NONE,
+  controlType: ControlType.FILE,
   offsetW: 0,
   offsetH: 0,
   note: '',

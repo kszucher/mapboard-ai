@@ -5,7 +5,7 @@ import { mapInfoDefaultState } from '../apiState/ApiState.ts';
 import { api, AppDispatch } from '../rootComponent/RootComponent.tsx';
 
 export const MapActionsRename = () => {
-  const { mapName } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
+  const { mapName, mapId } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
   const [newMapName, setNewMapName] = useState(mapName);
   const dispatch = useDispatch<AppDispatch>();
   return (
@@ -34,7 +34,9 @@ export const MapActionsRename = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({ name: newMapName }))}>{'Save'}</Button>
+          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({ mapId, name: newMapName }))}>
+            {'Save'}
+          </Button>
         </Dialog.Close>
       </Flex>
     </Dialog.Content>

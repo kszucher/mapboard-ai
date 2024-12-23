@@ -27,17 +27,19 @@ export const MapActions = () => {
         <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTab.initiate())}>
           {'Create'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTabDuplicate.initiate())}>
+        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTabDuplicate.initiate({ mapId }))}>
           {'Duplicate'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate())}>
+        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate({ mapId }))}>
           {'Move Up'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate())}>
+        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate({ mapId }))}>
           {'Move Down'}
         </DropdownMenu.Item>
         {!isShared && (
-          <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate())}>{'Remove'}</DropdownMenu.Item>
+          <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate({ mapId }))}>
+            {'Remove'}
+          </DropdownMenu.Item>
         )}
         <DropdownMenu.Separator />
         <Dialog.Trigger>

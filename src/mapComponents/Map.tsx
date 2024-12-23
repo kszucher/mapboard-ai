@@ -2,8 +2,7 @@ import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { mapInfoDefaultState, userInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { mSelector } from '../editorQueries/EditorQueries.ts';
-import { LeftMouseMode, MidMouseMode } from '../editorState/EditorStateTypesEnums.ts';
+import { MidMouseMode } from '../editorState/EditorStateTypesEnums.ts';
 import { getG } from '../mapQueries/MapQueries.ts';
 import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { getColors } from './Colors.ts';
@@ -12,10 +11,9 @@ import { MapDivR } from './MapDivR.tsx';
 import { MapSvg } from './MapSvg.tsx';
 
 export const Map: FC = () => {
-  const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode);
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo);
-  const m = useSelector((state: RootState) => mSelector(state));
+  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const g = getG(m);
   const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
   const { mapId } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
@@ -82,7 +80,7 @@ export const Map: FC = () => {
           'mousemove',
           e => {
             e.preventDefault();
-            if (e.button === 0 && e.buttons === 1 && leftMouseMode !== LeftMouseMode.RECTANGLE_SELECT) {
+            if (e.button === 0 && e.buttons === 1) {
               setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX);
               setScrollTop(document.documentElement.scrollTop - e.movementY);
             }

@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { isExistingLink, mR } from '../mapQueries/MapQueries.ts';
 import { L } from '../mapState/MapStateTypes.ts';
 import { ControlType, Side } from '../mapState/MapStateTypesEnums.ts';
@@ -9,7 +8,7 @@ import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { adjustIcon } from '../utils/Utils.ts';
 
 export const MapSvgRConnectorTo: FC = () => {
-  const m = useSelector((state: RootState) => mSelector(state));
+  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart);
   const dispatch = useDispatch<AppDispatch>();
@@ -45,7 +44,7 @@ export const MapSvgRConnectorTo: FC = () => {
               connectionStart.fromNodeId !== ri.nodeId &&
               !isExistingLink(m, newLink)
             ) {
-              dispatch(actions.insertL(newLink));
+              dispatch(actions.insertL({ lPartial: newLink }));
             }
           }}
         />

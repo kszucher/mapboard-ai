@@ -3,14 +3,13 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Trash from '../../assets/trash.svg?react';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { mL } from '../mapQueries/MapQueries.ts';
 import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { adjustIcon } from '../utils/Utils.ts';
 import { getCoordsMidBezier, getRootLinePath } from './MapSvgUtils.ts';
 
 export const MapDivL: FC = () => {
-  const m = useSelector((state: RootState) => mSelector(state));
+  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();
   return (
@@ -33,7 +32,7 @@ export const MapDivL: FC = () => {
           e.stopPropagation();
         }}
         onClick={() => {
-          dispatch(actions.deleteL(li.nodeId));
+          dispatch(actions.deleteL({ nodeId: li.nodeId }));
         }}
       >
         <Trash />

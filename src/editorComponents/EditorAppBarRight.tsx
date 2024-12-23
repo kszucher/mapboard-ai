@@ -9,7 +9,6 @@ import { AccessType } from '../editorState/EditorStateTypesEnums.ts';
 import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { MouseConfig } from './MouseConfig.tsx';
 import { NodeActions } from './NodeActions.tsx';
-import { NodeActionsSelectModeConfig } from './NodeActionsSelectModeConfig.tsx';
 import { UserAccount } from './UserAccount.tsx';
 import { UserSettings } from './UserSettings.tsx';
 
@@ -25,7 +24,6 @@ export const EditorAppBarRight: FC = () => {
   return (
     <div className="fixed flex right-1 gap-6 h-[40px]">
       <div className="flex items-center gap-1">
-        <NodeActionsSelectModeConfig />
         <NodeActions />
       </div>
       <div className="flex items-center gap-1">

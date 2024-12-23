@@ -1,20 +1,15 @@
-import { createSlice, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { editorState, editorStateDefault } from '../editorState/EditorState.ts';
 import { EditorState } from '../editorState/EditorStateTypes.ts';
-import {
-  AlertDialogState,
-  DialogState,
-  LeftMouseMode,
-  MidMouseMode,
-  PageState,
-} from '../editorState/EditorStateTypesEnums.ts';
+import { AlertDialogState, DialogState, MidMouseMode, PageState } from '../editorState/EditorStateTypesEnums.ts';
 import { getMapX, getMapY } from '../mapComponents/MapDivUtils.ts';
 import { mapBuild } from '../mapMutations/MapBuild.ts';
-import { wrappedFunctions } from '../mapMutations/MapMutations.ts';
-import { mapObjectToArray } from '../mapQueries/MapQueries.ts';
-import { R } from '../mapState/MapStateTypes.ts';
-import { Side } from '../mapState/MapStateTypesEnums.ts';
+import { mapDelete } from '../mapMutations/MapDelete.ts';
+import { mapInsert } from '../mapMutations/MapInsert.ts';
+import { idToR, mapObjectToArray } from '../mapQueries/MapQueries.ts';
+import { L, R } from '../mapState/MapStateTypes.ts';
+import { ControlType, Side } from '../mapState/MapStateTypesEnums.ts';
 import { api } from '../rootComponent/RootComponent.tsx';
 
 export const editorSlice = createSlice({
@@ -26,9 +21,6 @@ export const editorSlice = createSlice({
     },
     resetState() {
       return JSON.parse(editorStateDefault);
-    },
-    setLeftMouseMode(state, action: PayloadAction<LeftMouseMode>) {
-      state.leftMouseMode = action.payload;
     },
     setMidMouseMode(state, action: PayloadAction<MidMouseMode>) {
       state.midMouseMode = action.payload;
@@ -61,11 +53,9 @@ export const editorSlice = createSlice({
       state.connectionStart = { fromNodeId: '', fromNodeSide: Side.R };
     },
     undo(state) {
-      state.editedNodeId = '';
       state.commitIndex = state.commitIndex > 0 ? state.commitIndex - 1 : state.commitIndex;
     },
     redo(state) {
-      state.editedNodeId = '';
       state.commitIndex = state.commitIndex < state.commitList.length - 1 ? state.commitIndex + 1 : state.commitIndex;
     },
     saveView(state, action: PayloadAction<{ e: React.WheelEvent }>) {
@@ -104,28 +94,60 @@ export const editorSlice = createSlice({
       const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + r.offsetH;
       state.rOffsetCoords = [toX, toY, r.selfW, r.selfH];
     },
-    offsetRByDragPreviewClear(state) {
+    insertL(state, { payload: { lPartial } }: PayloadAction<{ lPartial: Partial<L> }>) {
+      const m = structuredClone(current(state.commitList[state.commitIndex]));
+      mapInsert.L(m, lPartial);
+      mapBuild(m);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+      state.commitIndex = state.commitIndex + 1;
+    },
+    insertR(state, { payload: { controlType } }: PayloadAction<{ controlType: ControlType }>) {
+      const m = structuredClone(current(state.commitList[state.commitIndex]));
+      mapInsert.R(m, controlType);
+      mapBuild(m);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+      state.commitIndex = state.commitIndex + 1;
+    },
+    deleteL(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+      const m = structuredClone(current(state.commitList[state.commitIndex]));
+      mapDelete.L(m, nodeId);
+      mapBuild(m);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+      state.commitIndex = state.commitIndex + 1;
+    },
+    deleteLR(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+      const m = structuredClone(current(state.commitList[state.commitIndex]));
+      mapDelete.LR(m, nodeId);
+      mapBuild(m);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+      state.commitIndex = state.commitIndex + 1;
+    },
+    offsetLR(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+      const m = structuredClone(current(state.commitList[state.commitIndex]));
+      Object.assign(idToR(m, nodeId), {
+        offsetW: state.rOffsetCoords[0],
+        offsetH: state.rOffsetCoords[1],
+      });
+      mapBuild(m);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+      state.commitIndex = state.commitIndex + 1;
       state.rOffsetCoords = [];
     },
-    startEditReplace(state) {
-      // const pm = current(state.commitList[state.commitIndex])
-      state.editStartMapListIndex = state.commitIndex;
-      // state.editedNodeId = getXS(pm).nodeId
-      state.editType = 'replace';
+    setIsProcessing(state, { payload: { nodeId, value } }: PayloadAction<{ nodeId: string; value: boolean }>) {
+      const m = structuredClone(current(state.commitList[state.commitIndex]));
+      idToR(m, nodeId).isProcessing = value;
+
+      mapBuild(m);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+      state.commitIndex = state.commitIndex + 1;
     },
-    startEditAppend(state) {
-      // const pm = current(state.commitList[state.commitIndex])
-      state.editStartMapListIndex = state.commitIndex;
-      // state.editedNodeId = getXS(pm).nodeId
-      state.editType = 'append';
+    setFileName(state, { payload: { nodeId, fileName } }: PayloadAction<{ nodeId: string; fileName: string }>) {
+      const m = structuredClone(current(state.commitList[state.commitIndex]));
+      idToR(m, nodeId).fileName = fileName;
+      mapBuild(m);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+      state.commitIndex = state.commitIndex + 1;
     },
-    removeMapListEntriesOfEdit(state) {
-      state.editedNodeId = '';
-      state.editType = '';
-      state.commitList = [...state.commitList.slice(0, state.editStartMapListIndex + 1), ...state.commitList.slice(-1)];
-      state.commitIndex = state.editStartMapListIndex + 1;
-    },
-    ...wrappedFunctions,
   },
   extraReducers: builder => {
     builder.addMatcher(isAction, () => {});
@@ -159,14 +181,11 @@ export const editorSlice = createSlice({
       console.log(payload);
       const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'));
       if (isValid) {
-        // ONLY do the following IF arrived map != current map
-        const data = mapObjectToArray(payload.mapData);
-        const m = structuredClone(data);
+        const m = structuredClone(mapObjectToArray(payload.mapData));
         mapBuild(m);
         state.mapId = payload.mapId;
         state.commitList = [m];
         state.commitIndex = 0;
-        state.editedNodeId = '';
         state.isLoading = false;
       } else {
         window.alert('invalid map');
@@ -175,7 +194,6 @@ export const editorSlice = createSlice({
     builder.addMatcher(api.endpoints.getSharesInfo.matchFulfilled, state => {
       state.isLoading = false;
     });
-    // TODO have individual loaders for each info query type
   },
 });
 

@@ -2,11 +2,10 @@ import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch, useSelector } from 'react-redux';
 import Mouse from '../../assets/mouse.svg?react';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { LeftMouseMode, MidMouseMode } from '../editorState/EditorStateTypesEnums.ts';
+import { MidMouseMode } from '../editorState/EditorStateTypesEnums.ts';
 import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 
 export const MouseConfig = () => {
-  const leftMouseMode = useSelector((state: RootState) => state.editor.leftMouseMode);
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
   const dispatch = useDispatch<AppDispatch>();
   return (
@@ -17,16 +16,6 @@ export const MouseConfig = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
-        <DropdownMenu.Label>{'Left Mouse'}</DropdownMenu.Label>
-        <DropdownMenu.RadioGroup
-          value={leftMouseMode}
-          onValueChange={value => dispatch(actions.setLeftMouseMode(value as LeftMouseMode))}
-        >
-          <DropdownMenu.RadioItem value={LeftMouseMode.CLICK_SELECT}>{'Click Select'}</DropdownMenu.RadioItem>
-          <DropdownMenu.RadioItem value={LeftMouseMode.RECTANGLE_SELECT}>{'Rectangle Select'}</DropdownMenu.RadioItem>
-        </DropdownMenu.RadioGroup>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Label>{'Mid Mouse'}</DropdownMenu.Label>
         <DropdownMenu.RadioGroup
           value={midMouseMode}
           onValueChange={value => dispatch(actions.setMidMouseMode(value as MidMouseMode))}

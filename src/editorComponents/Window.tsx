@@ -2,7 +2,6 @@ import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sharesInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { getMap, mSelector } from '../editorQueries/EditorQueries.ts';
 import {
   AccessType,
   AlertDialogState,
@@ -10,8 +9,6 @@ import {
   MidMouseMode,
   PageState,
 } from '../editorState/EditorStateTypesEnums.ts';
-import { mapMutationsConditions } from '../mapMutations/MapMutationsConditions.ts';
-import { isAXR } from '../mapQueries/MapQueries.ts';
 import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { backendUrl } from '../urls/Urls.ts';
 
@@ -27,114 +24,11 @@ export const Window: FC = () => {
   const dialogState = useSelector((state: RootState) => state.editor.dialogState);
   const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState);
   const commitList = useSelector((state: RootState) => state.editor.commitList);
-  const m = useSelector((state: RootState) => mSelector(state));
+  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const mExists = m && Object.keys(m).length;
-  const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId);
   const { sharesWithUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
   const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const dispatch = useDispatch<AppDispatch>();
-  const keydown = (e: KeyboardEvent) => {
-    if (
-      (+e.ctrlKey && e.code === 'KeyD') ||
-      (+e.ctrlKey && e.code === 'KeyZ') ||
-      (+e.ctrlKey && e.code === 'KeyY') ||
-      (+e.ctrlKey && e.which >= 96 && e.which <= 105) ||
-      e.which < 48 ||
-      e.key === 'F1' ||
-      e.key === 'F3'
-    ) {
-      e.preventDefault();
-    }
-    const m = getMap();
-    const ckm = [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('');
-
-    if (ckm === '---' && e.key === 'Delete' && mapMutationsConditions.deleteLR(m)) dispatch(actions.deleteLR());
-
-    if (ckm === '---' && e.code === 'Space' && mapMutationsConditions.selectR0(m)) dispatch(actions.selectR0());
-
-    if (ckm === '---' && e.code === 'Backspace' && mapMutationsConditions.unselect(m)) dispatch(actions.unselect());
-
-    if (ckm === 'c--' && e.code === 'KeyA' && mapMutationsConditions.selectRA(m)) dispatch(actions.selectRA());
-
-    if (ckm === 'c--' && e.code === 'KeyC' && mapMutationsConditions.copyLR(m)) dispatch(actions.copyLR());
-
-    if (ckm === 'c--' && e.code === 'KeyX' && mapMutationsConditions.cutLRJumpR(m)) dispatch(actions.cutLRJumpR());
-
-    if (ckm === 'c--' && e.code === 'KeyD' && mapMutationsConditions.duplicateLR(m)) dispatch(actions.duplicateLR());
-
-    if (ckm === 'c--' && e.code === 'KeyZ') dispatch(actions.redo());
-
-    if (ckm === 'c--' && e.code === 'KeyY') dispatch(actions.undo());
-
-    if (ckm === '---' && e.code === 'ArrowDown' && mapMutationsConditions.selectRDR(m)) dispatch(actions.selectRDR());
-    if (ckm === 'c--' && e.code === 'ArrowDown' && mapMutationsConditions.offsetD(m)) dispatch(actions.offsetD());
-    if (ckm === '-s-' && e.code === 'ArrowDown' && mapMutationsConditions.selectRDRAdd(m))
-      dispatch(actions.selectRDRAdd());
-    if (ckm === '--a' && e.code === 'ArrowDown' && mapMutationsConditions.insertRD(m)) dispatch(actions.insertRD());
-
-    if (ckm === '---' && e.code === 'ArrowUp' && mapMutationsConditions.selectRUR(m)) dispatch(actions.selectRUR());
-    if (ckm === 'c--' && e.code === 'ArrowUp' && mapMutationsConditions.offsetU(m)) dispatch(actions.offsetU());
-    if (ckm === '-s-' && e.code === 'ArrowUp' && mapMutationsConditions.selectRURAdd(m))
-      dispatch(actions.selectRURAdd());
-    if (ckm === '--a' && e.code === 'ArrowUp' && mapMutationsConditions.insertRU(m)) dispatch(actions.insertRU());
-
-    if (ckm === '---' && e.code === 'ArrowRight' && mapMutationsConditions.selectRRR(m)) dispatch(actions.selectRRR());
-    if (ckm === 'c--' && e.code === 'ArrowRight' && mapMutationsConditions.offsetR(m)) dispatch(actions.offsetR());
-    if (ckm === '-s-' && e.code === 'ArrowRight' && mapMutationsConditions.selectRRRAdd(m))
-      dispatch(actions.selectRRRAdd());
-    if (ckm === '--a' && e.code === 'ArrowRight' && mapMutationsConditions.insertRR(m)) dispatch(actions.insertRR());
-
-    if (ckm === '---' && e.code === 'ArrowLeft' && mapMutationsConditions.selectRLR(m)) dispatch(actions.selectRLR());
-    if (ckm === 'c--' && e.code === 'ArrowLeft' && mapMutationsConditions.offsetL(m)) dispatch(actions.offsetL());
-    if (ckm === '-s-' && e.code === 'ArrowLeft' && mapMutationsConditions.selectRLRAdd(m))
-      dispatch(actions.selectRLRAdd());
-    if (ckm === '--a' && e.code === 'ArrowLeft' && mapMutationsConditions.insertRL(m)) dispatch(actions.insertRL());
-  };
-
-  const paste = (e: Event) => {
-    e.preventDefault();
-    const m = getMap();
-    navigator.permissions.query({ name: 'clipboard-write' as PermissionName }).then(result => {
-      if (result.state === 'granted' || result.state === 'prompt') {
-        navigator.clipboard.read().then(item => {
-          const type = item[0].types[0];
-          if (type === 'text/plain') {
-            navigator.clipboard.readText().then(text => {
-              let isValidJson = true;
-              try {
-                JSON.parse(text);
-              } catch {
-                isValidJson = false;
-              }
-              if (isValidJson) {
-                const mapJson = JSON.parse(text);
-                const isValidMap =
-                  Array.isArray(mapJson) &&
-                  mapJson.length &&
-                  mapJson.every(
-                    el =>
-                      Object.hasOwn(el, 'path') &&
-                      Array.isArray(el.path) &&
-                      Object.hasOwn(el, 'nodeId') &&
-                      typeof el.nodeId === 'string'
-                  );
-                if (isValidMap) {
-                  const isPastedLR = mapJson.every(el => ['r', 'l'].includes(el.path[0]));
-                  if (isAXR(m)) {
-                    if (isPastedLR) dispatch(actions.pasteLR(text));
-                  } else {
-                    if (isPastedLR) dispatch(actions.pasteLR(text));
-                  }
-                } else {
-                  window.alert('invalid componentsMap');
-                }
-              }
-            });
-          }
-        });
-      }
-    });
-  };
 
   const mouseup = () => {
     dispatch(actions.clearConnectionStart());
@@ -153,14 +47,11 @@ export const Window: FC = () => {
       pageState === PageState.WS &&
       dialogState === DialogState.NONE &&
       alertDialogState === AlertDialogState.NONE &&
-      access === AccessType.EDIT &&
-      editedNodeId === ''
+      access === AccessType.EDIT
     ) {
       console.log('WINDOW EVENT LISTENERS ADDED');
       mapListener = new AbortController();
       const { signal } = mapListener;
-      window.addEventListener('keydown', keydown, { signal });
-      window.addEventListener('paste', paste, { signal });
       window.addEventListener('mouseup', mouseup, { signal });
       window.addEventListener('contextmenu', contextmenu, { signal });
     } else {
@@ -174,7 +65,7 @@ export const Window: FC = () => {
         mapListener.abort();
       }
     };
-  }, [pageState, dialogState, alertDialogState, access, editedNodeId]);
+  }, [pageState, dialogState, alertDialogState, access]);
 
   useEffect(() => {
     if (midMouseMode === MidMouseMode.ZOOM) {

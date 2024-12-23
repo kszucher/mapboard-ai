@@ -1,14 +1,13 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { mR } from '../mapQueries/MapQueries.ts';
 import { ControlType, Side } from '../mapState/MapStateTypesEnums.ts';
 import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { adjustIcon } from '../utils/Utils.ts';
 
 export const MapSvgRConnectorsFrom: FC = () => {
-  const m = useSelector((state: RootState) => mSelector(state));
+  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();
   return (

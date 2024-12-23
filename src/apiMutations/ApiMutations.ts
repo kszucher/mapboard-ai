@@ -1,7 +1,6 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import { timeoutId } from '../editorComponents/Window.tsx';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { getMapId } from '../editorQueries/EditorQueries.ts';
 import { mapPrune } from '../mapQueries/MapPrune.ts';
 import { mapArrayToObject } from '../mapQueries/MapQueries.ts';
 import { api, RootState } from '../rootComponent/RootComponent.tsx';
@@ -50,11 +49,11 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: ['MapInfo'],
   }),
 
-  renameMap: builder.mutation<void, { name: string }>({
-    query: ({ name }) => ({
+  renameMap: builder.mutation<void, { mapId: string; name: string }>({
+    query: ({ mapId, name }) => ({
       url: 'rename-map',
       method: 'POST',
-      body: { mapId: getMapId(), name },
+      body: { mapId, name },
     }),
     invalidatesTags: ['UserInfo', 'MapInfo'],
   }),
@@ -67,29 +66,29 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: ['UserInfo', 'MapInfo'],
   }),
 
-  createMapInTabDuplicate: builder.mutation<void, void>({
-    query: () => ({
+  createMapInTabDuplicate: builder.mutation<void, { mapId: string }>({
+    query: ({ mapId }) => ({
       url: 'create-map-in-tab-duplicate',
       method: 'POST',
-      body: { mapId: getMapId() },
+      body: { mapId },
     }),
     invalidatesTags: ['UserInfo', 'MapInfo'],
   }),
 
-  moveUpMapInTab: builder.mutation<void, void>({
-    query: () => ({
+  moveUpMapInTab: builder.mutation<void, { mapId: string }>({
+    query: ({ mapId }) => ({
       url: 'move-up-map-in-tab',
       method: 'POST',
-      body: { mapId: getMapId() },
+      body: { mapId },
     }),
     invalidatesTags: ['UserInfo'],
   }),
 
-  moveDownMapInTab: builder.mutation<void, void>({
-    query: () => ({
+  moveDownMapInTab: builder.mutation<void, { mapId: string }>({
+    query: ({ mapId }) => ({
       url: 'move-down-map-in-tab',
       method: 'POST',
-      body: { mapId: getMapId() },
+      body: { mapId },
     }),
     invalidatesTags: ['UserInfo'],
   }),
@@ -121,21 +120,21 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [], // no direct invalidation
   }),
 
-  deleteMap: builder.mutation<void, void>({
-    query: () => ({
+  deleteMap: builder.mutation<void, { mapId: string }>({
+    query: ({ mapId }) => ({
       url: 'delete-map',
       method: 'POST',
-      body: { mapId: getMapId() },
+      body: { mapId },
     }),
     invalidatesTags: [], // no direct invalidation
   }),
 
-  createShare: builder.mutation<void, { shareEmail: string; shareAccess: string }>({
-    query: ({ shareEmail, shareAccess }) => ({
+  createShare: builder.mutation<void, { mapId: string; shareEmail: string; shareAccess: string }>({
+    query: ({ mapId, shareEmail, shareAccess }) => ({
       url: 'create-share',
       method: 'POST',
       body: {
-        mapId: getMapId(),
+        mapId,
         shareEmail,
         shareAccess,
       },

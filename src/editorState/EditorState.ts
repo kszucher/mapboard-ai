@@ -1,12 +1,11 @@
 import { Side } from '../mapState/MapStateTypesEnums.ts';
 import { EditorState } from './EditorStateTypes.ts';
-import { AlertDialogState, DialogState, LeftMouseMode, MidMouseMode, PageState } from './EditorStateTypesEnums.ts';
+import { AlertDialogState, DialogState, MidMouseMode, PageState } from './EditorStateTypesEnums.ts';
 
 export const editorState: EditorState = {
   token: '',
   workspaceId: '',
   isLoading: false,
-  leftMouseMode: LeftMouseMode.CLICK_SELECT,
   midMouseMode: MidMouseMode.SCROLL,
   pageState: PageState.AUTH,
   dialogState: DialogState.NONE,
@@ -14,19 +13,8 @@ export const editorState: EditorState = {
   mapId: '',
   commitList: [],
   commitIndex: 0,
-  editedNodeId: '',
-  editType: '',
-  editStartMapListIndex: Infinity,
   formatterVisible: false,
   rOffsetCoords: [],
-  sMoveCoords: [],
-  insertLocation: {
-    sl: '',
-    su: '',
-    sd: '',
-  },
-  selectionRectCoords: [],
-  intersectingNodes: [],
   zoomInfo: {
     fromX: 0,
     fromY: 0,

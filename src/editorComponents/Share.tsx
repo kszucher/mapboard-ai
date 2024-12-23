@@ -1,9 +1,11 @@
 import { Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { AccessType } from '../editorState/EditorStateTypesEnums.ts';
-import { api } from '../rootComponent/RootComponent.tsx';
+import { api, RootState } from '../rootComponent/RootComponent.tsx';
 
 export const Share = () => {
+  const mapId = useSelector((state: RootState) => state.editor.mapId);
   const [createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset }] = api.useCreateShareMutation();
   const errorMessage = error && (error as { data: { detail: string } }).data.detail;
   const [shareEmail, setShareEmail] = useState('');
@@ -58,7 +60,7 @@ export const Share = () => {
                 {'Cancel'}
               </Button>
             </Dialog.Close>
-            <Button disabled={shareEmail === ''} onClick={() => createShare({ shareEmail, shareAccess })}>
+            <Button disabled={shareEmail === ''} onClick={() => createShare({ mapId, shareEmail, shareAccess })}>
               {'Share'}
             </Button>
           </Flex>

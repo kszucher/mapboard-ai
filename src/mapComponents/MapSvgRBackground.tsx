@@ -2,12 +2,11 @@ import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import colors from 'tailwindcss/colors';
 import { userInfoDefaultState } from '../apiState/ApiState.ts';
-import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { mR } from '../mapQueries/MapQueries.ts';
 import { api, RootState } from '../rootComponent/RootComponent.tsx';
 
 export const MapSvgRBackground: FC = () => {
-  const m = useSelector((state: RootState) => mSelector(state));
+  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
   return mR(m).map(ri => (
     <rect

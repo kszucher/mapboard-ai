@@ -2,14 +2,13 @@ import { Badge, Box, Button, Flex, Spinner } from '@radix-ui/themes';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../editorMutations/EditorMutations.ts';
-import { mSelector } from '../editorQueries/EditorQueries.ts';
 import { getInputNode } from '../mapQueries/MapQueries.ts';
 import { R } from '../mapState/MapStateTypes.ts';
 import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 
 export const MapDivRIngestion = ({ ri }: { ri: R }) => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
-  const m = useSelector((state: RootState) => mSelector(state));
+  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const inputNode = getInputNode(m, ri.nodeId);
   const [ingestion, { isError, reset }] = api.useIngestionMutation();
   const dispatch = useDispatch<AppDispatch>();
