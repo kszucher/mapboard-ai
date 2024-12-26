@@ -3,7 +3,7 @@ import { ControlType, Side } from './MapStateTypesEnums.ts';
 export type PG = ['g'];
 export type PL = ['l', number];
 export type PR = ['r', number];
-export type PT = PR;
+
 export type P = PG | PL | PR;
 
 export interface GSaveAlways {
