@@ -44,7 +44,6 @@ export const MapDivRIngestion = ({ ri }: { ri: R }) => {
                 ingestion({
                   mapId,
                   nodeId: ri.nodeId,
-                  fileHash: inputNode?.fileHash || '',
                 });
               }}
             >
