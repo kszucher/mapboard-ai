@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { R_PADDING } from '../mapConsts/MapConsts.ts';
 import { RootState } from '../rootComponent/RootComponent.tsx';
 
-export const MapSvgRMove: FC = () => {
+export const RootNodeMovePreview: FC = () => {
   const rOffsetCoords = useSelector((state: RootState) => state.editor.rOffsetCoords);
   return (
     rOffsetCoords.length && (

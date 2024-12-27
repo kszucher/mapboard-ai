@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { mR } from '../mapQueries/MapQueries.ts';
 import { RootState } from '../rootComponent/RootComponent.tsx';
 import { adjust } from '../utils/Utils.ts';
-import { getLinearLinePath, pathCommonProps } from './MapSvgUtils.ts';
+import { getLinearLinePath, pathCommonProps } from './UtilsSvg.ts';
 
-export const MapSvgRSeparators: FC = () => {
+export const RootNodeSeparator: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   return mR(m).map(ri => (
     <path

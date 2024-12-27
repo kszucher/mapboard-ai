@@ -6,9 +6,14 @@ import { MidMouseMode } from '../editorState/EditorStateTypesEnums.ts';
 import { getG } from '../mapQueries/MapQueries.ts';
 import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { getColors } from './Colors.ts';
-import { MapDivL } from './MapDivL.tsx';
-import { MapDivR } from './MapDivR.tsx';
-import { MapSvg } from './MapSvg.tsx';
+import { LinkNodeBezier } from './LinkNodeBezier.tsx';
+import { LinkNodeConnectorIn } from './LinkNodeConnectorIn.tsx';
+import { LinkNodeConnectorOut } from './LinkNodeConnectorOut.tsx';
+import { LinkNodeDelete } from './LinkNodeDelete.tsx';
+import { MapSvgGBackground } from './RootNodeFrame.tsx';
+import { RootNode } from './RootNode.tsx';
+import { RootNodeMovePreview } from './RootNodeMovePreview.tsx';
+import { RootNodeSeparator } from './RootNodeSeparator.tsx';
 
 export const Map: FC = () => {
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
@@ -119,9 +124,21 @@ export const Map: FC = () => {
           transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`,
         }}
       >
-        <MapDivL />
-        <MapDivR />
-        <MapSvg />
+        <LinkNodeDelete />
+        <RootNode />
+        <svg
+          key={g.nodeId}
+          width={g.selfW}
+          height={g.selfH}
+          style={{ transition: '0.3s ease-out', zIndex: 10, pointerEvents: 'none' }}
+        >
+          <MapSvgGBackground />
+          <LinkNodeBezier />
+          <RootNodeSeparator />
+          <RootNodeMovePreview />
+          <LinkNodeConnectorOut />
+          <LinkNodeConnectorIn />
+        </svg>
       </div>
       <div />
       <div />

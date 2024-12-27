@@ -3,7 +3,7 @@ import React from 'react';
 import { editorState, editorStateDefault } from '../editorState/EditorState.ts';
 import { EditorState } from '../editorState/EditorStateTypes.ts';
 import { AlertDialogState, DialogState, MidMouseMode, PageState } from '../editorState/EditorStateTypesEnums.ts';
-import { getMapX, getMapY } from '../mapComponents/MapDivUtils.ts';
+import { getMapX, getMapY } from '../mapComponents/UtilsDiv.ts';
 import { mapBuild } from '../mapMutations/MapBuild.ts';
 import { mapDelete } from '../mapMutations/MapDelete.ts';
 import { mapInsert } from '../mapMutations/MapInsert.ts';

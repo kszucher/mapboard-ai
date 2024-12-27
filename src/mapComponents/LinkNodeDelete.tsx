@@ -6,9 +6,9 @@ import { actions } from '../editorMutations/EditorMutations.ts';
 import { mL } from '../mapQueries/MapQueries.ts';
 import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { adjustIcon } from '../utils/Utils.ts';
-import { getCoordsMidBezier, getRootLinePath } from './MapSvgUtils.ts';
+import { getCoordsMidBezier, getRootLinePath } from './UtilsSvg.ts';
 
-export const MapDivL: FC = () => {
+export const LinkNodeDelete: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();

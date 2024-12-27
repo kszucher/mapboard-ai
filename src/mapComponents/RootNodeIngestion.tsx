@@ -6,7 +6,7 @@ import { getInputNode } from '../mapQueries/MapQueries.ts';
 import { R } from '../mapState/MapStateTypes.ts';
 import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 
-export const MapDivRIngestion = ({ ri }: { ri: R }) => {
+export const RootNodeIngestion = ({ ri }: { ri: R }) => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const inputNode = getInputNode(m, ri.nodeId);

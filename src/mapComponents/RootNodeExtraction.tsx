@@ -5,7 +5,7 @@ import { getInputNodes } from '../mapQueries/MapQueries.ts';
 import { R } from '../mapState/MapStateTypes.ts';
 import { RootState } from '../rootComponent/RootComponent.tsx';
 
-export const MapDivRExtraction = ({ ri }: { ri: R }) => {
+export const RootNodeExtraction = ({ ri }: { ri: R }) => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
 
   return (

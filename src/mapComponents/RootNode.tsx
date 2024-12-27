@@ -9,11 +9,11 @@ import { actions } from '../editorMutations/EditorMutations.ts';
 import { mR } from '../mapQueries/MapQueries.ts';
 import { ControlType } from '../mapState/MapStateTypesEnums.ts';
 import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
-import { MapDivRExtraction } from './MapDivRExtraction.tsx';
-import { MapDivRFile } from './MapDivRFile.tsx';
-import { MapDivRIngestion } from './MapDivRIngestion.tsx';
+import { RootNodeExtraction } from './RootNodeExtraction.tsx';
+import { RootNodeFileUpload } from './RootNodeFileUpload.tsx';
+import { RootNodeIngestion } from './RootNodeIngestion.tsx';
 
-export const MapDivR: FC = () => {
+export const RootNode: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
 
@@ -93,9 +93,9 @@ export const MapDivR: FC = () => {
           <GripVertical />
         </IconButton>
       </Box>
-      {ri.controlType === ControlType.FILE && <MapDivRFile ri={ri} />}
-      {ri.controlType === ControlType.INGESTION && <MapDivRIngestion ri={ri} />}
-      {ri.controlType === ControlType.EXTRACTION && <MapDivRExtraction ri={ri} />}
+      {ri.controlType === ControlType.FILE && <RootNodeFileUpload ri={ri} />}
+      {ri.controlType === ControlType.INGESTION && <RootNodeIngestion ri={ri} />}
+      {ri.controlType === ControlType.EXTRACTION && <RootNodeExtraction ri={ri} />}
     </div>
   ));
 };

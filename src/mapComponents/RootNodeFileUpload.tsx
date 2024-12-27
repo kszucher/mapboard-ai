@@ -6,7 +6,7 @@ import { R } from '../mapState/MapStateTypes.ts';
 import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { shrinkString } from '../utils/Utils.ts';
 
-export const MapDivRFile = ({ ri }: { ri: R }) => {
+export const RootNodeFileUpload = ({ ri }: { ri: R }) => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
