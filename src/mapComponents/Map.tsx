@@ -119,9 +119,9 @@ export const Map: FC = () => {
           transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`,
         }}
       >
-        <MapSvg />
         <MapDivL />
         <MapDivR />
+        <MapSvg />
       </div>
       <div />
       <div />

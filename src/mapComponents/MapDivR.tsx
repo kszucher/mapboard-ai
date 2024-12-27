@@ -1,18 +1,22 @@
 import { Box, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import colors from 'tailwindcss/colors';
 import Dots from '../../assets/dots.svg?react';
 import GripVertical from '../../assets/grip-vertical.svg?react';
+import { userInfoDefaultState } from '../apiState/ApiState.ts';
 import { actions } from '../editorMutations/EditorMutations.ts';
 import { mR } from '../mapQueries/MapQueries.ts';
 import { ControlType } from '../mapState/MapStateTypesEnums.ts';
-import { AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
+import { api, AppDispatch, RootState } from '../rootComponent/RootComponent.tsx';
 import { MapDivRExtraction } from './MapDivRExtraction.tsx';
 import { MapDivRFile } from './MapDivRFile.tsx';
 import { MapDivRIngestion } from './MapDivRIngestion.tsx';
 
 export const MapDivR: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
+  const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
+
   const dispatch = useDispatch<AppDispatch>();
   return mR(m).map(ri => (
     <div
@@ -30,6 +34,8 @@ export const MapDivR: FC = () => {
         zIndex: ri.path.length,
         margin: 0,
         pointerEvents: 'none',
+        backgroundColor: colorMode === 'DARK' ? colors.zinc[800] : colors.zinc[50],
+        borderRadius: 16,
       }}
     >
       <Box position="absolute" top="0" right="0" pt="2" pr="7">
