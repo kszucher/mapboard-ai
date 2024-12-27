@@ -7,7 +7,7 @@ import { mapInfoDefaultState, sharesInfoDefaultState, userInfoDefaultState } fro
 import { AppDispatch } from '../../data/store.ts';
 import { MapActions } from './MapActions.tsx';
 
-export const EditorAppBarMid: FC = () => {
+export const MapSelector: FC = () => {
   const { mapId, mapName } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
   const { tabMapIdList, tabMapNameList } = api.useGetUserInfoQuery().data || userInfoDefaultState;
   const { sharesWithUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;

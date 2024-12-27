@@ -2,12 +2,12 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Button, Spinner, Theme } from '@radix-ui/themes';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Login from '../../../assets/login.svg?react';
-import TopologyStar from '../../../assets/topology-star.svg?react';
-import { actions } from '../../data/clientSide/Reducer.ts';
-import { api } from '../../data/serverSide/Api.ts';
-import { AppDispatch, RootState } from '../../data/store.ts';
-import { frontendUrl } from '../../urls/Urls.ts';
+import Login from '../../assets/login.svg?react';
+import TopologyStar from '../../assets/topology-star.svg?react';
+import { actions } from '../data/clientSide/Reducer.ts';
+import { api } from '../data/serverSide/Api.ts';
+import { AppDispatch, RootState } from '../data/store.ts';
+import { frontendUrl } from '../urls/Urls.ts';
 
 export const Landing: FC = () => {
   const token = useSelector((state: RootState) => state.editor.token);
