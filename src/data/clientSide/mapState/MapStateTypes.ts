@@ -1,4 +1,13 @@
-import { ControlType, Side } from './MapStateTypesEnums.ts';
+export enum Side {
+  L = 'left',
+  R = 'right',
+}
+
+export enum ControlType {
+  FILE = 'file',
+  INGESTION = 'ingestion',
+  EXTRACTION = 'extraction',
+}
 
 export type PG = ['g'];
 export type PL = ['l', number];

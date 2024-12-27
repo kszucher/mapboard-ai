@@ -1,6 +1,5 @@
 import { idToR } from '../../data/clientSide/mapGetters/MapQueries.ts';
-import { L, M, R } from '../../data/clientSide/mapState/MapStateTypes.ts';
-import { Side } from '../../data/clientSide/mapState/MapStateTypesEnums.ts';
+import { L, M, R, Side } from '../../data/clientSide/mapState/MapStateTypes.ts';
 
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',

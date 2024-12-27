@@ -8,8 +8,7 @@ import { mapBuild } from './mapSetters/MapBuild.ts';
 import { mapDelete } from './mapSetters/MapDelete.ts';
 import { mapInsert } from './mapSetters/MapInsert.ts';
 import { idToR, mapObjectToArray } from './mapGetters/MapQueries.ts';
-import { L, R } from './mapState/MapStateTypes.ts';
-import { ControlType, Side } from './mapState/MapStateTypesEnums.ts';
+import { ControlType, L, R, Side } from './mapState/MapStateTypes.ts';
 
 export const editorSlice = createSlice({
   name: 'editor',

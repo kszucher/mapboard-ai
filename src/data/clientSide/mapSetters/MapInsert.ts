@@ -1,6 +1,5 @@
 import { getG, getLastIndexL, getLastIndexR } from '../mapGetters/MapQueries.ts';
-import { L, M, R } from '../mapState/MapStateTypes.ts';
-import { ControlType } from '../mapState/MapStateTypesEnums.ts';
+import { ControlType, L, M, R } from '../mapState/MapStateTypes.ts';
 
 export const mapInsert = {
   L: (m: M, partialL: Partial<L>) => {

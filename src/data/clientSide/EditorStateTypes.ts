@@ -1,5 +1,4 @@
-import { M } from './mapState/MapStateTypes.ts';
-import { Side } from './mapState/MapStateTypesEnums.ts';
+import { M, Side } from './mapState/MapStateTypes.ts';
 
 export enum PageState {
   AUTH,

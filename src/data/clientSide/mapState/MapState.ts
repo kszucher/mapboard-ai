@@ -1,4 +1,5 @@
 import {
+  ControlType,
   GSaveAlways,
   GSaveNever,
   GSaveOptional,
@@ -11,8 +12,8 @@ import {
   RSaveAlways,
   RSaveNever,
   RSaveOptional,
+  Side,
 } from './MapStateTypes.ts';
-import { ControlType, Side } from './MapStateTypesEnums.ts';
 
 export const gSaveAlways: GSaveAlways = {
   path: <PG>['g'],

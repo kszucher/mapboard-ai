@@ -1,6 +1,5 @@
 import { mapInsert } from './MapInsert.ts';
-import { M, MPartial } from '../mapState/MapStateTypes.ts';
-import { ControlType } from '../mapState/MapStateTypesEnums.ts';
+import { ControlType, M, MPartial } from '../mapState/MapStateTypes.ts';
 import { _assert } from './_assert.ts';
 
 describe('MapInsertTests', () => {

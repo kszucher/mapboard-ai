@@ -1,6 +1,5 @@
 import { mapDelete } from './MapDelete.ts';
-import { M, MPartial } from '../mapState/MapStateTypes.ts';
-import { Side } from '../mapState/MapStateTypesEnums.ts';
+import { M, MPartial, Side } from '../mapState/MapStateTypes.ts';
 import { _assert } from './_assert.ts';
 
 describe('MapDeleteTests', () => {

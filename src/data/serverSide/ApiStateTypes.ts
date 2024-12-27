@@ -1,6 +1,11 @@
+export enum ColorMode {
+  DARK = 'DARK',
+  LIGHT = 'LIGHT',
+}
+
 export interface UserInfoDefaultState {
   userName: string;
-  colorMode: string;
+  colorMode: ColorMode;
   tabMapIdList: string[];
   tabMapNameList: string[];
 }

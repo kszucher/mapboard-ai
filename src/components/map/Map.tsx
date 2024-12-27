@@ -1,18 +1,18 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MidMouseMode } from '../../data/clientSide/EditorStateTypes.ts';
+import { getG } from '../../data/clientSide/mapGetters/MapQueries.ts';
+import { actions } from '../../data/clientSide/Reducer.ts';
 import { api } from '../../data/serverSide/Api.ts';
 import { mapInfoDefaultState, userInfoDefaultState } from '../../data/serverSide/ApiState.ts';
-import { actions } from '../../data/clientSide/Reducer.ts';
-import { getG } from '../../data/clientSide/mapGetters/MapQueries.ts';
+import { ColorMode } from '../../data/serverSide/ApiStateTypes.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { getColors } from './Colors.ts';
 import { LinkNodeBezier } from './LinkNodeBezier.tsx';
 import { LinkNodeConnectorIn } from './LinkNodeConnectorIn.tsx';
 import { LinkNodeConnectorOut } from './LinkNodeConnectorOut.tsx';
 import { LinkNodeDelete } from './LinkNodeDelete.tsx';
-import { RootNodeFrame } from './RootNodeFrame.tsx';
 import { RootNode } from './RootNode.tsx';
+import { RootNodeFrame } from './RootNodeFrame.tsx';
 import { RootNodeMovePreview } from './RootNodeMovePreview.tsx';
 import { RootNodeSeparator } from './RootNodeSeparator.tsx';
 
@@ -69,7 +69,7 @@ export const Map: FC = () => {
       style={{
         overflow: 'auto',
         display: 'grid',
-        backgroundColor: getColors(colorMode).PAGE_BACKGROUND,
+        backgroundColor: colorMode === ColorMode.DARK ? '#404040' : '#dddddd',
         gridTemplateRows: `100vh ${g.selfH}px 100vh`,
         gridTemplateColumns: `100vw ${g.selfW}px 100vw`,
         outline: 'none',

@@ -2,8 +2,7 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../../data/clientSide/Reducer.ts';
 import { isExistingLink, mR } from '../../data/clientSide/mapGetters/MapQueries.ts';
-import { L } from '../../data/clientSide/mapState/MapStateTypes.ts';
-import { ControlType, Side } from '../../data/clientSide/mapState/MapStateTypesEnums.ts';
+import { ControlType, L, Side } from '../../data/clientSide/mapState/MapStateTypes.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { adjustIcon } from '../../utils/Utils.ts';
 

@@ -5,11 +5,15 @@ import User from '../../../assets/user.svg?react';
 import { actions } from '../../data/clientSide/Reducer.ts';
 import { AlertDialogState, DialogState } from '../../data/clientSide/EditorStateTypes.ts';
 import { api } from '../../data/serverSide/Api.ts';
+import { userInfoDefaultState } from '../../data/serverSide/ApiState.ts';
+import { ColorMode } from '../../data/serverSide/ApiStateTypes.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const UserAccount = () => {
+  const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
   const dispatch = useDispatch<AppDispatch>();
   const { logout } = useAuth0();
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
@@ -18,6 +22,12 @@ export const UserAccount = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="bg-red-300" onCloseAutoFocus={e => e.preventDefault()}>
+        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}>
+          {colorMode === ColorMode.DARK ? 'Light Mode' : 'Dark Mode'}
+        </DropdownMenu.Item>
+
+        <DropdownMenu.Separator />
+
         <Dialog.Trigger>
           <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_BY_ME))}>
             {'Maps Shared By Me'}
@@ -28,7 +38,9 @@ export const UserAccount = () => {
             {'Maps Shared With Me'}
           </DropdownMenu.Item>
         </Dialog.Trigger>
+
         <DropdownMenu.Separator />
+
         <DropdownMenu.Item
           onClick={() => {
             logout({ logoutParams: { returnTo: window.location.origin } });
@@ -48,7 +60,9 @@ export const UserAccount = () => {
         >
           {'Sign Out All Devices'}
         </DropdownMenu.Item>
+
         <DropdownMenu.Separator />
+
         <AlertDialog.Trigger>
           <DropdownMenu.Item
             color="red"

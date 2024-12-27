@@ -6,7 +6,7 @@ import { actions } from '../../data/clientSide/Reducer.ts';
 import { MidMouseMode } from '../../data/clientSide/EditorStateTypes.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
-export const MouseConfig = () => {
+export const ConfigMouse = () => {
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
   const dispatch = useDispatch<AppDispatch>();
   return (

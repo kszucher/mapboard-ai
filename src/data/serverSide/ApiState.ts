@@ -1,8 +1,8 @@
-import { MapInfoDefaultState, SharesInfoDefaultState, UserInfoDefaultState } from './ApiStateTypes.ts';
+import { ColorMode, MapInfoDefaultState, SharesInfoDefaultState, UserInfoDefaultState } from './ApiStateTypes.ts';
 
 export const userInfoDefaultState: UserInfoDefaultState = {
   userName: '',
-  colorMode: 'DARK',
+  colorMode: ColorMode.DARK,
   tabMapIdList: [],
   tabMapNameList: [],
 };

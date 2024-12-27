@@ -1,4 +1,4 @@
-import { Side } from './mapState/MapStateTypesEnums.ts';
+import { Side } from './mapState/MapStateTypes.ts';
 import { AlertDialogState, DialogState, EditorState, MidMouseMode, PageState } from './EditorStateTypes.ts';
 
 export const editorStateDefaults: EditorState = {

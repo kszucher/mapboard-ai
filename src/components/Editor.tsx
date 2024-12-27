@@ -2,19 +2,17 @@ import { AlertDialog, Dialog, Spinner, Theme } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertDialogState, DialogState } from '../data/clientSide/EditorStateTypes.ts';
+import { actions } from '../data/clientSide/Reducer.ts';
 import { api } from '../data/serverSide/Api.ts';
 import { mapInfoDefaultState, userInfoDefaultState } from '../data/serverSide/ApiState.ts';
-import { actions } from '../data/clientSide/Reducer.ts';
 import { AppDispatch, RootState } from '../data/store.ts';
-import { Map } from './map/Map.tsx';
-import { Logo } from './appBar/Logo.tsx';
-import { MapSelector } from './appBar/MapSelector.tsx';
-import { EditorAppBarRight } from './appBar/EditorAppBarRight.tsx';
+import { UserAccountDelete } from './alertDialogs/UserAccountDelete.tsx';
+import { AppBar } from './AppBar.tsx';
 import { MapActionsRename } from './dialogs/MapActionsRename.tsx';
 import { MapActionsShare } from './dialogs/MapActionsShare.tsx';
 import { SharedByMe } from './dialogs/SharedByMe.tsx';
 import { SharedWithMe } from './dialogs/SharedWithMe.tsx';
-import { UserAccountDelete } from './alertDialogs/UserAccountDelete.tsx';
+import { Map } from './map/Map.tsx';
 import { Window } from './window/Window.tsx';
 
 export const Editor: FC = () => {
@@ -42,11 +40,7 @@ export const Editor: FC = () => {
             onOpenChange={isOpen => !isOpen && dispatch(actions.setAlertDialogState(AlertDialogState.NONE))}
           >
             <Map />
-            <div className="dark:bg-zinc-800 bg-zinc-50 dark:border-neutral-700 fixed top-0 left-0 w-screen h-[40px] z-50">
-              <Logo />
-              <MapSelector />
-              <EditorAppBarRight />
-            </div>
+            <AppBar />
             <Window />
             {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <UserAccountDelete />}
           </AlertDialog.Root>
