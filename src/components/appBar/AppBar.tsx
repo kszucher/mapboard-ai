@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { Logo } from './appBar/Logo.tsx';
-import { MapSelector } from './appBar/MapSelector.tsx';
-import { ConfigMouse } from './appBar/ConfigMouse.tsx';
-import { NodeInsert } from './appBar/NodeInsert.tsx';
-import { NodeRedo } from './appBar/NodeRedo.tsx';
-import { NodeUndo } from './appBar/NodeUndo.tsx';
-import { UserAccount } from './appBar/UserAccount.tsx';
-import { ConfigView } from './appBar/ConfigView.tsx';
+import { Logo } from './Logo.tsx';
+import { MapSelector } from './MapSelector.tsx';
+import { ConfigMouse } from './ConfigMouse.tsx';
+import { NodeInsert } from './NodeInsert.tsx';
+import { NodeRedo } from './NodeRedo.tsx';
+import { NodeUndo } from './NodeUndo.tsx';
+import { UserAccount } from './UserAccount.tsx';
+import { ConfigView } from './ConfigView.tsx';
 
 export const AppBar: FC = () => {
   return (

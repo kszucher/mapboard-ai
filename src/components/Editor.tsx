@@ -5,9 +5,10 @@ import { AlertDialogState, DialogState } from '../data/clientSide/EditorStateTyp
 import { actions } from '../data/clientSide/Reducer.ts';
 import { api } from '../data/serverSide/Api.ts';
 import { mapInfoDefaultState, userInfoDefaultState } from '../data/serverSide/ApiState.ts';
+import { ColorMode } from '../data/serverSide/ApiStateTypes.ts';
 import { AppDispatch, RootState } from '../data/store.ts';
 import { UserAccountDelete } from './alertDialogs/UserAccountDelete.tsx';
-import { AppBar } from './AppBar.tsx';
+import { AppBar } from './appBar/AppBar.tsx';
 import { MapActionsRename } from './dialogs/MapActionsRename.tsx';
 import { MapActionsShare } from './dialogs/MapActionsShare.tsx';
 import { SharedByMe } from './dialogs/SharedByMe.tsx';
@@ -28,7 +29,7 @@ export const Editor: FC = () => {
 
   return (
     <Theme
-      appearance={colorMode === 'DARK' ? 'dark' : 'light'}
+      appearance={colorMode === ColorMode.DARK ? 'dark' : 'light'}
       accentColor="iris"
       panelBackground="solid"
       scaling="100%"
