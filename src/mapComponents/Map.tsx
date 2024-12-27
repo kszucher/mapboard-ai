@@ -10,7 +10,7 @@ import { LinkNodeBezier } from './LinkNodeBezier.tsx';
 import { LinkNodeConnectorIn } from './LinkNodeConnectorIn.tsx';
 import { LinkNodeConnectorOut } from './LinkNodeConnectorOut.tsx';
 import { LinkNodeDelete } from './LinkNodeDelete.tsx';
-import { MapSvgGBackground } from './RootNodeFrame.tsx';
+import { RootNodeFrame } from './RootNodeFrame.tsx';
 import { RootNode } from './RootNode.tsx';
 import { RootNodeMovePreview } from './RootNodeMovePreview.tsx';
 import { RootNodeSeparator } from './RootNodeSeparator.tsx';
@@ -124,15 +124,15 @@ export const Map: FC = () => {
           transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`,
         }}
       >
-        <LinkNodeDelete />
         <RootNode />
+        <LinkNodeDelete />
         <svg
           key={g.nodeId}
           width={g.selfW}
           height={g.selfH}
           style={{ transition: '0.3s ease-out', zIndex: 10, pointerEvents: 'none' }}
         >
-          <MapSvgGBackground />
+          <RootNodeFrame />
           <LinkNodeBezier />
           <RootNodeSeparator />
           <RootNodeMovePreview />

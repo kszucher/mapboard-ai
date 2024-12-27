@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { getG } from '../mapQueries/MapQueries.ts';
 import { RootState } from '../rootComponent/RootComponent.tsx';
 
-export const MapSvgGBackground: FC = () => {
+export const RootNodeFrame: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const g = getG(m);
   const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
