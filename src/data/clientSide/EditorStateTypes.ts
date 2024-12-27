@@ -46,7 +46,6 @@ export interface EditorState {
   mapId: string;
   commitList: M[];
   commitIndex: number;
-  formatterVisible: boolean;
   rOffsetCoords: number[];
   zoomInfo: {
     fromX: number;
@@ -59,7 +58,8 @@ export interface EditorState {
     originX: number;
     originY: number;
   };
-  connectionHelpersVisible: boolean;
+  linkHelpersVisible: boolean;
+  rootFrameVisible: boolean;
   connectionStart: {
     fromNodeId: string;
     fromNodeSide: Side;

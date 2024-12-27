@@ -7,7 +7,8 @@ import { actions } from '../../data/clientSide/Reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const UserSettings = () => {
-  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
+  const linkHelpersVisible = useSelector((state: RootState) => state.editor.linkHelpersVisible);
+  const rootFrameVisible = useSelector((state: RootState) => state.editor.rootFrameVisible);
   const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
   const dispatch = useDispatch<AppDispatch>();
   return (
@@ -28,16 +29,12 @@ export const UserSettings = () => {
             {'Dark Mode'}
           </DropdownMenu.Item>
         )}
-        {!connectionHelpersVisible && (
-          <DropdownMenu.Item onClick={() => dispatch(actions.showConnectionHelpers())}>
-            {'Show Helpers'}
-          </DropdownMenu.Item>
-        )}
-        {connectionHelpersVisible && (
-          <DropdownMenu.Item onClick={() => dispatch(actions.hideConnectionHelpers())}>
-            {'Hide Helpers'}
-          </DropdownMenu.Item>
-        )}
+        <DropdownMenu.Item onClick={() => dispatch(actions.setLinkHelpersVisible(!linkHelpersVisible))}>
+          {linkHelpersVisible ? 'Hide Link Helpers' : 'Show Link Helpers'}
+        </DropdownMenu.Item>
+        <DropdownMenu.Item onClick={() => dispatch(actions.setRootFrameVisible(!rootFrameVisible))}>
+          {rootFrameVisible ? 'Hide Frame' : 'Show Frame'}
+        </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );

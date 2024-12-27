@@ -39,11 +39,11 @@ export const editorSlice = createSlice({
       state.zoomInfo.originX = action.payload.originX;
       state.zoomInfo.originY = action.payload.originY;
     },
-    showConnectionHelpers(state) {
-      state.connectionHelpersVisible = true;
+    setLinkHelpersVisible(state, { payload }: PayloadAction<boolean>) {
+      state.linkHelpersVisible = payload;
     },
-    hideConnectionHelpers(state) {
-      state.connectionHelpersVisible = false;
+    setRootFrameVisible(state, { payload }: PayloadAction<boolean>) {
+      state.rootFrameVisible = payload;
     },
     setConnectionStart(state, action: PayloadAction<EditorState['connectionStart']>) {
       state.connectionStart = action.payload;

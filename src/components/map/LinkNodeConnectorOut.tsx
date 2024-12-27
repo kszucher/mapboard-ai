@@ -8,10 +8,10 @@ import { adjustIcon } from '../../utils/Utils.ts';
 
 export const LinkNodeConnectorOut: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
-  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
+  const linkHelpersVisible = useSelector((state: RootState) => state.editor.linkHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();
   return (
-    connectionHelpersVisible &&
+    linkHelpersVisible &&
     mR(m)
       .filter(ri => [ControlType.FILE, ControlType.INGESTION].includes(ri.controlType))
       .map(ri => (

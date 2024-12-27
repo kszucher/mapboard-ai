@@ -10,10 +10,10 @@ import { getCoordsMidBezier, getRootLinePath } from './UtilsSvg.ts';
 
 export const LinkNodeDelete: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
-  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
+  const linkHelpersVisible = useSelector((state: RootState) => state.editor.linkHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();
   return (
-    connectionHelpersVisible &&
+    linkHelpersVisible &&
     mL(m).map(li => (
       <IconButton
         key={`${li.nodeId}_inter_root_bezier_trash`}

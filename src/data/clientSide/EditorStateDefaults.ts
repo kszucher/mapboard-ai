@@ -12,7 +12,6 @@ export const editorStateDefaults: EditorState = {
   mapId: '',
   commitList: [],
   commitIndex: 0,
-  formatterVisible: false,
   rOffsetCoords: [],
   zoomInfo: {
     fromX: 0,
@@ -25,7 +24,8 @@ export const editorStateDefaults: EditorState = {
     originX: 0,
     originY: 0,
   },
-  connectionHelpersVisible: false,
+  linkHelpersVisible: false,
+  rootFrameVisible: false,
   connectionStart: {
     fromNodeId: '',
     fromNodeSide: Side.R,

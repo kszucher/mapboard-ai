@@ -6,9 +6,9 @@ import { RootState } from '../../data/store.ts';
 export const RootNodeFrame: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const g = getG(m);
-  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
+  const rootFrameVisible = useSelector((state: RootState) => state.editor.rootFrameVisible);
   return (
-    connectionHelpersVisible && (
+    rootFrameVisible && (
       <rect
         key={`${g.nodeId}_svg_map_background`}
         x={0}

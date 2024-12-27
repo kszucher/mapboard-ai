@@ -9,11 +9,11 @@ import { adjustIcon } from '../../utils/Utils.ts';
 
 export const LinkNodeConnectorIn: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
-  const connectionHelpersVisible = useSelector((state: RootState) => state.editor.connectionHelpersVisible);
+  const linkHelpersVisible = useSelector((state: RootState) => state.editor.linkHelpersVisible);
   const connectionStart = useSelector((state: RootState) => state.editor.connectionStart);
   const dispatch = useDispatch<AppDispatch>();
   return (
-    connectionHelpersVisible &&
+    linkHelpersVisible &&
     mR(m)
       .filter(ri => [ControlType.INGESTION, ControlType.EXTRACTION].includes(ri.controlType))
       .map(ri => (
