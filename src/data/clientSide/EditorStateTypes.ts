@@ -11,6 +11,7 @@ export enum DialogState {
   SHARED_WITH_ME,
   SHARE_THIS_MAP,
   RENAME_MAP,
+  EXTRACTION_SHOW_RAW_PROMPT,
 }
 
 export enum AlertDialogState {

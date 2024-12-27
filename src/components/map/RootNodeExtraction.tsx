@@ -1,12 +1,15 @@
-import { Badge, Box, Button, Flex, Text, TextArea } from '@radix-ui/themes';
+import { Badge, Box, Button, Dialog, Flex, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { DialogState } from '../../data/clientSide/EditorStateTypes.ts';
 import { getInputNodes } from '../../data/clientSide/mapGetters/MapQueries.ts';
 import { R } from '../../data/clientSide/mapState/MapStateTypes.ts';
-import { RootState } from '../../data/store.ts';
+import { actions } from '../../data/clientSide/Reducer.ts';
+import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const RootNodeExtraction = ({ ri }: { ri: R }) => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <React.Fragment>
@@ -38,16 +41,18 @@ export const RootNodeExtraction = ({ ri }: { ri: R }) => {
 
           <Flex direction="row" gap="4" align="start" content="center">
             {!ri.extractionHash && (
-              <Button
-                size="1"
-                radius="full"
-                color="gray"
-                onClick={() => {
-                  console.log('Show Raw Prompt');
-                }}
-              >
-                {'Show Raw Prompt'}
-              </Button>
+              <Dialog.Trigger>
+                <Button
+                  size="1"
+                  radius="full"
+                  color="gray"
+                  onClick={() => {
+                    dispatch(actions.setDialogState(DialogState.EXTRACTION_SHOW_RAW_PROMPT));
+                  }}
+                >
+                  {'Show Raw Prompt'}
+                </Button>
+              </Dialog.Trigger>
             )}
 
             {!ri.extractionHash && (
