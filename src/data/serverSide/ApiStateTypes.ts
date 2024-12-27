@@ -32,3 +32,7 @@ export interface SharesInfoDefaultState {
     status: string;
   }[];
 }
+
+export interface ExtractionRawPromptDefaultState {
+  rawPrompt: string;
+}

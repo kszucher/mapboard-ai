@@ -1,4 +1,10 @@
-import { ColorMode, MapInfoDefaultState, SharesInfoDefaultState, UserInfoDefaultState } from './ApiStateTypes.ts';
+import {
+  ColorMode,
+  ExtractionRawPromptDefaultState,
+  MapInfoDefaultState,
+  SharesInfoDefaultState,
+  UserInfoDefaultState,
+} from './ApiStateTypes.ts';
 
 export const userInfoDefaultState: UserInfoDefaultState = {
   userName: '',
@@ -16,4 +22,8 @@ export const mapInfoDefaultState: MapInfoDefaultState = {
 export const sharesInfoDefaultState: SharesInfoDefaultState = {
   sharesWithUser: [],
   sharesByUser: [],
+};
+
+export const extractionRawPromptDefaultState: ExtractionRawPromptDefaultState = {
+  rawPrompt: '',
 };

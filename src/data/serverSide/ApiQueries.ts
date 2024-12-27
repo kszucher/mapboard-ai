@@ -1,5 +1,10 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
-import { MapInfoDefaultState, SharesInfoDefaultState, UserInfoDefaultState } from './ApiStateTypes.ts';
+import {
+  ExtractionRawPromptDefaultState,
+  MapInfoDefaultState,
+  SharesInfoDefaultState,
+  UserInfoDefaultState,
+} from './ApiStateTypes.ts';
 
 export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   getUserInfo: builder.query<UserInfoDefaultState, void>({
@@ -15,5 +20,10 @@ export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>
   getSharesInfo: builder.query<SharesInfoDefaultState, void>({
     query: () => ({ url: 'get-shares-info', method: 'POST' }),
     providesTags: ['SharesInfo'],
+  }),
+
+  getExtractionRawPrompt: builder.query<ExtractionRawPromptDefaultState, { mapId: string; nodeId: string }>({
+    query: ({ mapId, nodeId }) => ({ url: 'get-extraction-raw-prompt', method: 'POST', body: { mapId, nodeId } }),
+    providesTags: [],
   }),
 });

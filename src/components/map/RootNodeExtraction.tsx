@@ -47,6 +47,7 @@ export const RootNodeExtraction = ({ ri }: { ri: R }) => {
                   radius="full"
                   color="gray"
                   onClick={() => {
+                    dispatch(actions.setNodeId({ nodeId: ri.nodeId }));
                     dispatch(actions.setDialogState(DialogState.EXTRACTION_SHOW_RAW_PROMPT));
                   }}
                 >

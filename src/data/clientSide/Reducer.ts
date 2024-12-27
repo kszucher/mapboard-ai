@@ -146,6 +146,9 @@ export const editorSlice = createSlice({
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
+    setNodeId(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+      state.nodeId = nodeId;
+    },
   },
   extraReducers: builder => {
     builder.addMatcher(isAction, () => {});

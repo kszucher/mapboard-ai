@@ -64,4 +64,5 @@ export interface EditorState {
     fromNodeId: string;
     fromNodeSide: Side;
   };
+  nodeId: string;
 }

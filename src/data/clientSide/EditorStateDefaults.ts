@@ -30,6 +30,7 @@ export const editorStateDefaults: EditorState = {
     fromNodeId: '',
     fromNodeSide: Side.R,
   },
+  nodeId: '',
 };
 
 export const editorStateDefault = JSON.stringify(editorStateDefaults);
