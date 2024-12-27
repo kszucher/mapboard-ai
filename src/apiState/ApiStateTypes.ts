@@ -27,7 +27,3 @@ export interface SharesInfoDefaultState {
     status: string;
   }[];
 }
-
-export interface IngestionDefaultState {
-  ingestionResult: any[];
-}

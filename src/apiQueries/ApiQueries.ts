@@ -1,10 +1,5 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
-import {
-  IngestionDefaultState,
-  MapInfoDefaultState,
-  SharesInfoDefaultState,
-  UserInfoDefaultState,
-} from '../apiState/ApiStateTypes.ts';
+import { MapInfoDefaultState, SharesInfoDefaultState, UserInfoDefaultState } from '../apiState/ApiStateTypes.ts';
 
 export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   getUserInfo: builder.query<UserInfoDefaultState, void>({
@@ -20,10 +15,5 @@ export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>
   getSharesInfo: builder.query<SharesInfoDefaultState, void>({
     query: () => ({ url: 'get-shares-info', method: 'POST' }),
     providesTags: ['SharesInfo'],
-  }),
-
-  getIngestion: builder.query<IngestionDefaultState, void>({
-    query: () => ({ url: '/get-ingestion', method: 'POST', body: {} }),
-    providesTags: ['IngestionData'],
   }),
 });

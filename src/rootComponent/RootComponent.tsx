@@ -21,7 +21,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['UserInfo', 'MapInfo', 'SharesInfo', 'IngestionData'],
+  tagTypes: ['UserInfo', 'MapInfo', 'SharesInfo'],
   endpoints: builder => ({ ...apiQueries(builder), ...apiMutations(builder) }),
 });
 

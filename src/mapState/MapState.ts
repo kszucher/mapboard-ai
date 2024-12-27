@@ -61,8 +61,6 @@ export const rSaveOptional: RSaveOptional = {
 export const rSaveNever: RSaveNever = {
   selfW: 0,
   selfH: 0,
-  maxW: 0,
-  maxH: 0,
   nodeStartX: 0,
   nodeStartY: 0,
 };
