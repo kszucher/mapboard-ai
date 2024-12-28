@@ -215,4 +215,13 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     }),
     invalidatesTags: [],
   }),
+
+  executeExtraction: builder.mutation<void, { mapId: string; nodeId: string }>({
+    query: ({ mapId, nodeId }) => ({
+      url: 'execute-extraction',
+      method: 'POST',
+      body: { mapId, nodeId },
+    }),
+    invalidatesTags: [],
+  }),
 });
