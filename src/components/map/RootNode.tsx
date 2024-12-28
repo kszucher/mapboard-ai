@@ -1,14 +1,11 @@
 import { Box, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import colors from 'tailwindcss/colors';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
-import { ControlType } from '../../data/clientSide/mapState/MapStateTypes.ts';
-import { api } from '../../data/serverSide/Api.ts';
-import { userInfoDefaultState } from '../../data/serverSide/ApiState.ts';
-import { actions } from '../../data/clientSide/Reducer.ts';
 import { mR } from '../../data/clientSide/mapGetters/MapQueries.ts';
+import { ControlType } from '../../data/clientSide/mapState/MapStateTypes.ts';
+import { actions } from '../../data/clientSide/Reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { RootNodeExtraction } from './RootNodeExtraction.tsx';
 import { RootNodeFileUpload } from './RootNodeFileUpload.tsx';
@@ -16,8 +13,6 @@ import { RootNodeIngestion } from './RootNodeIngestion.tsx';
 
 export const RootNode: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
-  const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
-
   const dispatch = useDispatch<AppDispatch>();
   return mR(m).map(ri => (
     <div
@@ -32,11 +27,8 @@ export const RootNode: FC = () => {
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
         minWidth: ri.selfW,
         minHeight: ri.selfH,
-        zIndex: ri.path.length,
         margin: 0,
         pointerEvents: 'none',
-        backgroundColor: colorMode === 'DARK' ? colors.zinc[800] : colors.zinc[50],
-        borderRadius: 16,
       }}
     >
       <Box position="absolute" top="0" right="0" pt="2" pr="7">

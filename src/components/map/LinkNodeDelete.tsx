@@ -27,7 +27,6 @@ export const LinkNodeDelete: FC = () => {
           top: adjustIcon(getCoordsMidBezier(getRootLinePath(m, li)).y) - 12,
           transition: 'all 0.3s',
           transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-          zIndex: 11,
         }}
         onMouseDown={e => {
           e.stopPropagation();

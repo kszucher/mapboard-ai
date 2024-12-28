@@ -4,9 +4,11 @@ export enum Side {
 }
 
 export enum ControlType {
-  FILE = 'file',
-  INGESTION = 'ingestion',
-  EXTRACTION = 'extraction',
+  FILE = 'FILE',
+  INGESTION = 'INGESTION',
+  EXTRACTION = 'EXTRACTION',
+  TEXT_INPUT = 'TEXT_INPUT',
+  TEXT_OUTPUT = 'TEXT_OUTPUT',
 }
 
 export type PG = ['g'];
@@ -56,6 +58,8 @@ export interface RSaveOptional {
   fileName: string;
   ingestionHash: string;
   extractionHash: string;
+  textInput: string;
+  textOutput: string;
   isProcessing: boolean;
 }
 
