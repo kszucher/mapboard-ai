@@ -3,12 +3,14 @@ import { useSelector } from 'react-redux';
 import { api } from '../../data/serverSide/Api.ts';
 import { extractionRawPromptDefaultState } from '../../data/serverSide/ApiState.ts';
 import { RootState } from '../../data/store.ts';
+import React from 'react';
 
 export const NodeActionsExtractionShowRawPrompt = () => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
   const nodeId = useSelector((state: RootState) => state.editor.nodeId);
 
   const { rawPrompt } = api.useGetExtractionRawPromptQuery({ mapId, nodeId }).data || extractionRawPromptDefaultState;
+  const lines = rawPrompt.split('\n');
 
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
@@ -21,7 +23,14 @@ export const NodeActionsExtractionShowRawPrompt = () => {
       <ScrollArea type="always" scrollbars="vertical" style={{ height: 180 }}>
         <Box p="2" pr="8">
           <Flex direction="column" gap="4">
-            <div>{rawPrompt}</div>
+            <div>
+              {lines.map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
+            </div>
           </Flex>
         </Box>
       </ScrollArea>

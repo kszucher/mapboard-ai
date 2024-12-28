@@ -17,7 +17,7 @@ export const RootNodeTextInput = ({ ri }: { ri: R }) => {
           <Badge color="gray" size="2">
             {ri.path.join('').toUpperCase()}
           </Badge>
-          <Badge color="iris" size="2">
+          <Badge color="violet" size="2">
             {'Text Input'}
           </Badge>
         </Flex>
