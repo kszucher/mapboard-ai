@@ -17,7 +17,7 @@ export const RootNodeFileUpload = ({ ri }: { ri: R }) => {
   useEffect(() => {
     if (isError) {
       reset();
-      dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, value: false }));
+      dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, isProcessing: false }));
     }
   }, [isError]);
 
@@ -66,7 +66,7 @@ export const RootNodeFileUpload = ({ ri }: { ri: R }) => {
               size="1"
               color="gray"
               onClick={() => {
-                dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, value: true }));
+                dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, isProcessing: true }));
                 uploadFile({ file, mapId, nodeId: ri.nodeId });
               }}
             >

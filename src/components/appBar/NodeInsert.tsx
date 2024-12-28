@@ -24,6 +24,12 @@ export const NodeInsert = () => {
         <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.EXTRACTION }))}>
           {'Extraction'}
         </DropdownMenu.Item>
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.TEXT_INPUT }))}>
+          {'Text Input'}
+        </DropdownMenu.Item>
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.TEXT_OUTPUT }))}>
+          {'Text Output'}
+        </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );

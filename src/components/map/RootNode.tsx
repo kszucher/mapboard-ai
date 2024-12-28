@@ -10,6 +10,8 @@ import { AppDispatch, RootState } from '../../data/store.ts';
 import { RootNodeExtraction } from './RootNodeExtraction.tsx';
 import { RootNodeFileUpload } from './RootNodeFileUpload.tsx';
 import { RootNodeIngestion } from './RootNodeIngestion.tsx';
+import { RootNodeTextInput } from './RootNodeTextInput.tsx';
+import { RootNodeTextOutput } from './RootNodeTextOutput.tsx';
 
 export const RootNode: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
@@ -89,6 +91,8 @@ export const RootNode: FC = () => {
       {ri.controlType === ControlType.FILE && <RootNodeFileUpload ri={ri} />}
       {ri.controlType === ControlType.INGESTION && <RootNodeIngestion ri={ri} />}
       {ri.controlType === ControlType.EXTRACTION && <RootNodeExtraction ri={ri} />}
+      {ri.controlType === ControlType.TEXT_INPUT && <RootNodeTextInput ri={ri} />}
+      {ri.controlType === ControlType.TEXT_OUTPUT && <RootNodeTextOutput ri={ri} />}
     </div>
   ));
 };

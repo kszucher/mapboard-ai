@@ -58,6 +58,7 @@ export interface RSaveOptional {
   fileName: string;
   ingestionHash: string;
   extractionHash: string;
+  extractionPrompt: string;
   textInput: string;
   textOutput: string;
   isProcessing: boolean;

@@ -1,14 +1,22 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
-import { api } from '../serverSide/Api.ts';
-import { editorStateDefaults, editorStateDefault } from './EditorStateDefaults.ts';
-import { AlertDialogState, DialogState, EditorState, MidMouseMode, PageState } from './EditorStateTypes.ts';
 import { getMapX, getMapY } from '../../components/map/UtilsDiv.ts';
+import { api } from '../serverSide/Api.ts';
+import { editorStateDefault, editorStateDefaults } from './EditorStateDefaults.ts';
+import { AlertDialogState, DialogState, EditorState, MidMouseMode, PageState } from './EditorStateTypes.ts';
+import { idToR, mapObjectToArray } from './mapGetters/MapQueries.ts';
 import { mapBuild } from './mapSetters/MapBuild.ts';
 import { mapDelete } from './mapSetters/MapDelete.ts';
 import { mapInsert } from './mapSetters/MapInsert.ts';
-import { idToR, mapObjectToArray } from './mapGetters/MapQueries.ts';
 import { ControlType, L, R, Side } from './mapState/MapStateTypes.ts';
+
+const updateRootProp = (state: EditorState, nodeId: string, override: object) => {
+  const m = structuredClone(current(state.commitList[state.commitIndex]));
+  Object.assign(idToR(m, nodeId), override);
+  mapBuild(m);
+  state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+  state.commitIndex = state.commitIndex + 1;
+};
 
 export const editorSlice = createSlice({
   name: 'editor',
@@ -131,20 +139,23 @@ export const editorSlice = createSlice({
       state.commitIndex = state.commitIndex + 1;
       state.rOffsetCoords = [];
     },
-    setIsProcessing(state, { payload: { nodeId, value } }: PayloadAction<{ nodeId: string; value: boolean }>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      idToR(m, nodeId).isProcessing = value;
-
-      mapBuild(m);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-      state.commitIndex = state.commitIndex + 1;
+    setIsProcessing(
+      state,
+      { payload: { nodeId, isProcessing } }: PayloadAction<{ nodeId: string; isProcessing: boolean }>
+    ) {
+      updateRootProp(state, nodeId, { isProcessing });
     },
     setFileName(state, { payload: { nodeId, fileName } }: PayloadAction<{ nodeId: string; fileName: string }>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      idToR(m, nodeId).fileName = fileName;
-      mapBuild(m);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-      state.commitIndex = state.commitIndex + 1;
+      updateRootProp(state, nodeId, { fileName });
+    },
+    setExtractionPrompt(
+      state,
+      { payload: { nodeId, extractionPrompt } }: PayloadAction<{ nodeId: string; extractionPrompt: string }>
+    ) {
+      updateRootProp(state, nodeId, { extractionPrompt });
+    },
+    setTextInput(state, { payload: { nodeId, textInput } }: PayloadAction<{ nodeId: string; textInput: string }>) {
+      updateRootProp(state, nodeId, { textInput });
     },
     setNodeId(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       state.nodeId = nodeId;

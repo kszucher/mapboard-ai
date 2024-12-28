@@ -56,6 +56,7 @@ export const rSaveOptional: RSaveOptional = {
   fileName: '',
   ingestionHash: '',
   extractionHash: '',
+  extractionPrompt: '',
   textInput: '',
   textOutput: '',
   isProcessing: false,

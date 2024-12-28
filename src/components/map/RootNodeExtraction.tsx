@@ -51,7 +51,7 @@ export const RootNodeExtraction = ({ ri }: { ri: R }) => {
                     dispatch(actions.setDialogState(DialogState.EXTRACTION_SHOW_RAW_PROMPT));
                   }}
                 >
-                  {'Show Raw Prompt'}
+                  {'Show Prompt'}
                 </Button>
               </Dialog.Trigger>
             )}
@@ -65,7 +65,7 @@ export const RootNodeExtraction = ({ ri }: { ri: R }) => {
                   console.log('Start');
                 }}
               >
-                {'Start'}
+                {'Execute Prompt'}
               </Button>
             )}
           </Flex>
