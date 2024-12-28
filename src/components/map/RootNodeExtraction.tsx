@@ -37,6 +37,10 @@ export const RootNodeExtraction = ({ ri }: { ri: R }) => {
               outline: 'none',
               pointerEvents: 'auto',
             }}
+            value={ri.extractionPrompt}
+            onChange={e => {
+              dispatch(actions.setExtractionPrompt({ nodeId: ri.nodeId, extractionPrompt: e.target.value }));
+            }}
           />
 
           <Flex direction="row" gap="4" align="start" content="center">
