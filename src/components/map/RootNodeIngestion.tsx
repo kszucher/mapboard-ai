@@ -11,7 +11,7 @@ export const RootNodeIngestion = ({ ri }: { ri: R }) => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const inputNode = getInputNode(m, ri.nodeId);
-  const [ingestion, { isError, reset }] = api.useIngestionMutation();
+  const [ingestion, { isError, reset }] = api.useExecuteIngestionMutation();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
