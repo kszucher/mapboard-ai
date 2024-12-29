@@ -1,12 +1,12 @@
-import { Badge, Box, Button, Dialog, DropdownMenu, Flex, IconButton, Spinner, Text, TextArea } from '@radix-ui/themes';
+import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text, TextArea } from '@radix-ui/themes';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Dots from '../../../../assets/dots.svg?react';
 import { getInputNodes } from '../../../data/clientSide/mapGetters/MapQueries.ts';
 import { R } from '../../../data/clientSide/mapState/MapStateTypes.ts';
 import { actions } from '../../../data/clientSide/Reducer.ts';
 import { api } from '../../../data/serverSide/Api.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
-import Dots from '../../../../assets/dots.svg?react';
 
 export const Extraction = ({ ri }: { ri: R }) => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
@@ -18,7 +18,7 @@ export const Extraction = ({ ri }: { ri: R }) => {
   useEffect(() => {
     if (isError) {
       reset();
-      dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, isProcessing: false }));
+      dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: false } }));
     }
   }, [isError]);
 
@@ -38,6 +38,18 @@ export const Extraction = ({ ri }: { ri: R }) => {
               }}
             >
               {'Delete'}
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onClick={() => {
+                dispatch(
+                  actions.setRAttributes({
+                    nodeId: ri.nodeId,
+                    attributes: { extractionPrompt: '', extractionHash: '', isProcessing: false },
+                  })
+                );
+              }}
+            >
+              {'Reset'}
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
@@ -69,29 +81,26 @@ export const Extraction = ({ ri }: { ri: R }) => {
             }}
             value={ri.extractionPrompt}
             onChange={e => {
-              dispatch(actions.setExtractionPrompt({ nodeId: ri.nodeId, extractionPrompt: e.target.value }));
+              dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { extractionPrompt: e.target.value } }));
             }}
           />
 
           <Flex direction="row" gap="4" align="start" content="center">
-            {inputNodes?.length !== 0 && !ri.isProcessing && (
-              <Dialog.Trigger>
-                <Button
-                  size="1"
-                  radius="full"
-                  color="gray"
-                  onClick={() => {
-                    dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, isProcessing: true }));
-                    extraction({
-                      mapId,
-                      nodeId: ri.nodeId,
-                    });
-                  }}
-                >
-                  {'Execute Prompt'}
-                </Button>
-              </Dialog.Trigger>
-            )}
+            <Button
+              disabled={!ri.extractionPrompt || !inputNodes?.length || ri.isProcessing}
+              size="1"
+              radius="full"
+              color="gray"
+              onClick={() => {
+                dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
+                extraction({
+                  mapId,
+                  nodeId: ri.nodeId,
+                });
+              }}
+            >
+              {'Execute Prompt'}
+            </Button>
 
             {ri.isProcessing && !ri.extractionHash && <Spinner size="3" />}
           </Flex>

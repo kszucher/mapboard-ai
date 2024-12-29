@@ -53,7 +53,7 @@ export const TextInput = ({ ri }: { ri: R }) => {
             }}
             value={ri.textInput}
             onChange={e => {
-              dispatch(actions.setTextInput({ nodeId: ri.nodeId, textInput: e.target.value }));
+              dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { textInput: e.target.value } }));
             }}
           />
         </Flex>

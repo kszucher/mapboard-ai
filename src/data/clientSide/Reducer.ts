@@ -10,14 +10,6 @@ import { mapDelete } from './mapSetters/MapDelete.ts';
 import { mapInsert } from './mapSetters/MapInsert.ts';
 import { ControlType, L, R, Side } from './mapState/MapStateTypes.ts';
 
-const updateRootProp = (state: EditorState, nodeId: string, override: object) => {
-  const m = structuredClone(current(state.commitList[state.commitIndex]));
-  Object.assign(idToR(m, nodeId), override);
-  mapBuild(m);
-  state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-  state.commitIndex = state.commitIndex + 1;
-};
-
 export const editorSlice = createSlice({
   name: 'editor',
   initialState: editorStateDefaults,
@@ -139,23 +131,15 @@ export const editorSlice = createSlice({
       state.commitIndex = state.commitIndex + 1;
       state.rOffsetCoords = [];
     },
-    setIsProcessing(
+    setRAttributes(
       state,
-      { payload: { nodeId, isProcessing } }: PayloadAction<{ nodeId: string; isProcessing: boolean }>
+      { payload: { nodeId, attributes } }: PayloadAction<{ nodeId: string; attributes: Partial<R> }>
     ) {
-      updateRootProp(state, nodeId, { isProcessing });
-    },
-    setFileName(state, { payload: { nodeId, fileName } }: PayloadAction<{ nodeId: string; fileName: string }>) {
-      updateRootProp(state, nodeId, { fileName });
-    },
-    setExtractionPrompt(
-      state,
-      { payload: { nodeId, extractionPrompt } }: PayloadAction<{ nodeId: string; extractionPrompt: string }>
-    ) {
-      updateRootProp(state, nodeId, { extractionPrompt });
-    },
-    setTextInput(state, { payload: { nodeId, textInput } }: PayloadAction<{ nodeId: string; textInput: string }>) {
-      updateRootProp(state, nodeId, { textInput });
+      const m = structuredClone(current(state.commitList[state.commitIndex]));
+      Object.assign(idToR(m, nodeId), attributes);
+      mapBuild(m);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+      state.commitIndex = state.commitIndex + 1;
     },
     setNodeId(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       state.nodeId = nodeId;

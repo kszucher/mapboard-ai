@@ -18,7 +18,7 @@ export const Ingestion = ({ ri }: { ri: R }) => {
   useEffect(() => {
     if (isError) {
       reset();
-      dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, isProcessing: false }));
+      dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: false } }));
     }
   }, [isError]);
 
@@ -62,7 +62,7 @@ export const Ingestion = ({ ri }: { ri: R }) => {
               radius="full"
               color="gray"
               onClick={() => {
-                dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, isProcessing: true }));
+                dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
                 ingestion({
                   mapId,
                   nodeId: ri.nodeId,

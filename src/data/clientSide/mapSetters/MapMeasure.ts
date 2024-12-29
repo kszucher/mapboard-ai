@@ -21,7 +21,7 @@ export const mapMeasure = (m: M) => {
         break;
       case ControlType.EXTRACTION:
         ri.selfW = 200;
-        ri.selfH = 170;
+        ri.selfH = 210;
         break;
       case ControlType.TEXT_INPUT:
         ri.selfW = 200;

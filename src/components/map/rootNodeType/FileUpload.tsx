@@ -18,7 +18,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
   useEffect(() => {
     if (isError) {
       reset();
-      dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, isProcessing: false }));
+      dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: false } }));
     }
   }, [isError]);
 
@@ -62,7 +62,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
               if (e.target.files) {
                 const currFile = e.target.files[0];
                 setFile(currFile);
-                dispatch(actions.setFileName({ nodeId: ri.nodeId, fileName: currFile.name }));
+                dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { fileName: currFile.name } }));
               }
             }}
             ref={hiddenFileInput}
@@ -85,7 +85,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
               size="1"
               color="gray"
               onClick={() => {
-                dispatch(actions.setIsProcessing({ nodeId: ri.nodeId, isProcessing: true }));
+                dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
                 uploadFile({ file, mapId, nodeId: ri.nodeId });
               }}
             >
