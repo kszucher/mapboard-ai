@@ -14,9 +14,9 @@ export const MapActionsShare = () => {
   const [shareAccess, setShareAccess] = useState<AccessType>(AccessType.VIEW);
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
-      <Dialog.Title>{'MapActionsShare This Map'}</Dialog.Title>
+      <Dialog.Title>{'Share This Map'}</Dialog.Title>
       <Dialog.Description size="2" mb="4">
-        {'MapActionsShare This Map'}
+        {'Share This Map'}
       </Dialog.Description>
       <Grid columns="1" gap="3" width="auto" align="center">
         <Text as="div" size="2" weight="bold">
@@ -63,7 +63,7 @@ export const MapActionsShare = () => {
               </Button>
             </Dialog.Close>
             <Button disabled={shareEmail === ''} onClick={() => createShare({ mapId, shareEmail, shareAccess })}>
-              {'MapActionsShare'}
+              {'Share'}
             </Button>
           </Flex>
         )}
