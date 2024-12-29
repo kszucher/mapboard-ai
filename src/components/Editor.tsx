@@ -11,7 +11,6 @@ import { UserAccountDelete } from './alertDialogs/UserAccountDelete.tsx';
 import { AppBar } from './appBar/AppBar.tsx';
 import { MapActionsRename } from './dialogs/MapActionsRename.tsx';
 import { MapActionsShare } from './dialogs/MapActionsShare.tsx';
-import { NodeActionsExtractionShowRawPrompt } from './dialogs/NodeActionsExtractionShowRawPrompt.tsx';
 import { SharedByMe } from './dialogs/SharedByMe.tsx';
 import { SharedWithMe } from './dialogs/SharedWithMe.tsx';
 import { Map } from './map/Map.tsx';
@@ -50,7 +49,6 @@ export const Editor: FC = () => {
           {dialogState === DialogState.SHARE_THIS_MAP && <MapActionsShare />}
           {dialogState === DialogState.SHARED_BY_ME && <SharedByMe />}
           {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMe />}
-          {dialogState === DialogState.EXTRACTION_SHOW_RAW_PROMPT && <NodeActionsExtractionShowRawPrompt />}
         </Dialog.Root>
       )}
       <div
