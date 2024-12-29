@@ -1,13 +1,14 @@
-import { Badge, Box, Button, Flex, Spinner, Text } from '@radix-ui/themes';
+import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../../data/clientSide/Reducer.ts';
-import { R } from '../../data/clientSide/mapState/MapStateTypes.ts';
-import { api } from '../../data/serverSide/Api.ts';
-import { AppDispatch, RootState } from '../../data/store.ts';
-import { shrinkString } from '../../utils/Utils.ts';
+import { actions } from '../../../data/clientSide/Reducer.ts';
+import { R } from '../../../data/clientSide/mapState/MapStateTypes.ts';
+import { api } from '../../../data/serverSide/Api.ts';
+import { AppDispatch, RootState } from '../../../data/store.ts';
+import { shrinkString } from '../../../utils/Utils.ts';
+import Dots from '../../../../assets/dots.svg?react';
 
-export const RootNodeFileUpload = ({ ri }: { ri: R }) => {
+export const FileUpload = ({ ri }: { ri: R }) => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -23,6 +24,24 @@ export const RootNodeFileUpload = ({ ri }: { ri: R }) => {
 
   return (
     <React.Fragment>
+      <Box position="absolute" top="0" right="0" pt="2" pr="7">
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <IconButton variant="soft" size="1" color="gray" style={{ pointerEvents: 'auto', background: 'none' }}>
+              <Dots />
+            </IconButton>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
+            <DropdownMenu.Item
+              onClick={() => {
+                dispatch(actions.deleteLR({ nodeId: ri.nodeId }));
+              }}
+            >
+              {'Delete'}
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      </Box>
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
@@ -35,6 +54,8 @@ export const RootNodeFileUpload = ({ ri }: { ri: R }) => {
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="2" align="start" content="center">
+          {ri.fileName && <Text size="2">{`File: ${shrinkString(ri.fileName, 24)}`}</Text>}
+
           <input
             type="file"
             onChange={e => {
@@ -59,8 +80,6 @@ export const RootNodeFileUpload = ({ ri }: { ri: R }) => {
             </Button>
           )}
 
-          {ri.fileName && <Text size="2">{`File: ${shrinkString(ri.fileName, 24)}`}</Text>}
-
           {file && !ri.isProcessing && !ri.fileHash && (
             <Button
               size="1"
@@ -75,19 +94,6 @@ export const RootNodeFileUpload = ({ ri }: { ri: R }) => {
           )}
 
           {ri.isProcessing && !ri.fileHash && <Spinner size="3" />}
-
-          {ri.fileHash && (
-            <Button
-              size="1"
-              radius="full"
-              color="gray"
-              onClick={() => {
-                console.log('Show File');
-              }}
-            >
-              {'Show File'}
-            </Button>
-          )}
         </Flex>
       </Box>
     </React.Fragment>

@@ -1,17 +1,16 @@
-import { Box, DropdownMenu, IconButton } from '@radix-ui/themes';
+import { Box, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { mR } from '../../data/clientSide/mapGetters/MapQueries.ts';
 import { ControlType } from '../../data/clientSide/mapState/MapStateTypes.ts';
 import { actions } from '../../data/clientSide/Reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { RootNodeExtraction } from './RootNodeExtraction.tsx';
-import { RootNodeFileUpload } from './RootNodeFileUpload.tsx';
-import { RootNodeIngestion } from './RootNodeIngestion.tsx';
-import { RootNodeTextInput } from './RootNodeTextInput.tsx';
-import { RootNodeTextOutput } from './RootNodeTextOutput.tsx';
+import { Extraction } from './rootNodeType/Extraction.tsx';
+import { FileUpload } from './rootNodeType/FileUpload.tsx';
+import { Ingestion } from './rootNodeType/Ingestion.tsx';
+import { TextInput } from './rootNodeType/TextInput.tsx';
+import { TextOutput } from './rootNodeType/TextOutput.tsx';
 
 export const RootNode: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
@@ -33,24 +32,6 @@ export const RootNode: FC = () => {
         pointerEvents: 'none',
       }}
     >
-      <Box position="absolute" top="0" right="0" pt="2" pr="7">
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            <IconButton variant="soft" size="1" color="gray" style={{ pointerEvents: 'auto', background: 'none' }}>
-              <Dots />
-            </IconButton>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
-            <DropdownMenu.Item
-              onClick={() => {
-                dispatch(actions.deleteLR({ nodeId: ri.nodeId }));
-              }}
-            >
-              {'Delete'}
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      </Box>
       <Box position="absolute" top="0" right="0" pt="2" pr="2">
         <IconButton
           variant="soft"
@@ -88,11 +69,11 @@ export const RootNode: FC = () => {
           <GripVertical />
         </IconButton>
       </Box>
-      {ri.controlType === ControlType.FILE && <RootNodeFileUpload ri={ri} />}
-      {ri.controlType === ControlType.INGESTION && <RootNodeIngestion ri={ri} />}
-      {ri.controlType === ControlType.EXTRACTION && <RootNodeExtraction ri={ri} />}
-      {ri.controlType === ControlType.TEXT_INPUT && <RootNodeTextInput ri={ri} />}
-      {ri.controlType === ControlType.TEXT_OUTPUT && <RootNodeTextOutput ri={ri} />}
+      {ri.controlType === ControlType.FILE && <FileUpload ri={ri} />}
+      {ri.controlType === ControlType.INGESTION && <Ingestion ri={ri} />}
+      {ri.controlType === ControlType.EXTRACTION && <Extraction ri={ri} />}
+      {ri.controlType === ControlType.TEXT_INPUT && <TextInput ri={ri} />}
+      {ri.controlType === ControlType.TEXT_OUTPUT && <TextOutput ri={ri} />}
     </div>
   ));
 };
