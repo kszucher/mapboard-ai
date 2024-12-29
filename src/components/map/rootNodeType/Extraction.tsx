@@ -12,7 +12,7 @@ export const Extraction = ({ ri }: { ri: R }) => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const inputNodes = getInputNodes(m, ri.nodeId);
-  const [extraction, { isError, reset }] = api.useExecuteExtractionMutation();
+  const [executeExtraction, { isError, reset }] = api.useExecuteExtractionMutation();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export const Extraction = ({ ri }: { ri: R }) => {
               color="gray"
               onClick={() => {
                 dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
-                extraction({
+                executeExtraction({
                   mapId,
                   nodeId: ri.nodeId,
                 });

@@ -1,16 +1,26 @@
-import { Badge, Box, DropdownMenu, Flex, IconButton, Text, TextArea } from '@radix-ui/themes';
-import React from 'react';
+import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text, TextArea } from '@radix-ui/themes';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInputNodes } from '../../../data/clientSide/mapGetters/MapQueries.ts';
+import { getInputNode } from '../../../data/clientSide/mapGetters/MapQueries.ts';
 import { R } from '../../../data/clientSide/mapState/MapStateTypes.ts';
 import { actions } from '../../../data/clientSide/Reducer.ts';
+import { api } from '../../../data/serverSide/Api.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 import Dots from '../../../../assets/dots.svg?react';
 
 export const TextOutput = ({ ri }: { ri: R }) => {
+  const mapId = useSelector((state: RootState) => state.editor.mapId);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
-  const inputNodes = getInputNodes(m, ri.nodeId);
+  const inputNode = getInputNode(m, ri.nodeId);
+  const [executeTextOutput, { isError, reset }] = api.useExecuteTextOutputMutation();
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (isError) {
+      reset();
+      dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: false } }));
+    }
+  }, [isError]);
 
   return (
     <React.Fragment>
@@ -44,17 +54,33 @@ export const TextOutput = ({ ri }: { ri: R }) => {
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="4" align="start" content="center">
-          <Text size="2">{`Inputs: ${inputNodes?.map(ri => ri.path.join('').toUpperCase())}`}</Text>
+          <Text size="2">{`Input: ${inputNode?.path.join('').toUpperCase()}`}</Text>
+
+          <Button
+            disabled={!inputNode?.extractionHash || ri.textOutput !== ''}
+            size="1"
+            color="gray"
+            onClick={() => {
+              dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
+              executeTextOutput({ mapId, nodeId: ri.nodeId });
+            }}
+          >
+            {'Show'}
+          </Button>
+
+          {ri.isProcessing && !ri.textOutput && <Spinner size="3" />}
+
           <TextArea
             disabled={true}
             color="gray"
             variant="soft"
             style={{
               width: ri.selfW - 32,
-              minHeight: 400,
+              minHeight: 360,
               outline: 'none',
               pointerEvents: 'auto',
             }}
+            value={ri.textOutput}
           />
         </Flex>
       </Box>

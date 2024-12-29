@@ -191,14 +191,14 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [],
   }),
 
-  uploadFile: builder.mutation<void, { file: File; mapId: string; nodeId: string }>({
+  executeUploadFile: builder.mutation<void, { file: File; mapId: string; nodeId: string }>({
     query: ({ file, mapId, nodeId }) => {
       const bodyFormData = new FormData();
       bodyFormData.append('file', file);
       bodyFormData.append('map_id', mapId);
       bodyFormData.append('node_id', nodeId);
       return {
-        url: '/upload-file',
+        url: '/execute-upload-file',
         method: 'POST',
         body: bodyFormData,
         formData: true,
@@ -219,6 +219,15 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   executeExtraction: builder.mutation<void, { mapId: string; nodeId: string }>({
     query: ({ mapId, nodeId }) => ({
       url: 'execute-extraction',
+      method: 'POST',
+      body: { mapId, nodeId },
+    }),
+    invalidatesTags: [],
+  }),
+
+  executeTextOutput: builder.mutation<void, { mapId: string; nodeId: string }>({
+    query: ({ mapId, nodeId }) => ({
+      url: 'execute-text-output',
       method: 'POST',
       body: { mapId, nodeId },
     }),

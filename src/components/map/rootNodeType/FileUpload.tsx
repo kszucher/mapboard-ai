@@ -12,7 +12,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
   const mapId = useSelector((state: RootState) => state.editor.mapId);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [uploadFile, { isError, reset }] = api.useUploadFileMutation();
+  const [executeUploadFile, { isError, reset }] = api.useExecuteUploadFileMutation();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
               color="gray"
               onClick={() => {
                 dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
-                uploadFile({ file, mapId, nodeId: ri.nodeId });
+                executeUploadFile({ file, mapId, nodeId: ri.nodeId });
               }}
             >
               {'Upload File'}
