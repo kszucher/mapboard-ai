@@ -45,6 +45,23 @@ app.post('/create-map-in-tab-mutation', async (req: Request, res: Response) => {
   res.json();
 });
 
+app.post('/save-map-mutation', async (req: Request, res: Response) => {
+  const workspaceId = '1';
+  const mapId = '1';
+  const mapData = {};
+
+  await prismaClient.$executeRawUnsafe(`
+      UPDATE "Map"
+      SET data = jsonb_merge_recurse(
+              $1::jsonb,
+              jsonb_diff_recurse(
+                      "Map".data, (SELECT "map_data"
+                                   FROM "Workspace"
+                                   WHERE id = $2)))
+      WHERE id = $3
+  `, JSON.stringify(mapData), workspaceId, mapId);
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
