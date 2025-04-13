@@ -19,6 +19,16 @@ app.post('/users', async (req: Request, res: Response) => {
   res.json(user);
 });
 
+
+app.post('/create-map-in-tab-mutation', async (req: Request, res: Response) => {
+  const { map_id } = req.body;
+  const user = await prisma.map.create({
+    // data: { name, email },
+  });
+  res.json(user);
+});
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -14,6 +14,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Map {
-  id    String  @id @default(uuid())
+model User {
+  id                Int       @id @default(autoincrement())
+  sub               String
+  signInCount       Int
+  colorMode         ColorMode
+  email             String
+  name              String
+  Maps              Map[]     @relation("Maps")
+  tabId             Int       @unique
+  Tab               Tab       @relation(fields: [tabId], references: [id])
+  lastSelectedMapId Int
+  LastSelectedMap   Map       @relation(fields: [lastSelectedMapId], references: [id])
+  SharesByMe        Share[]   @relation("SharesByMe")
+  SharesWithMe      Share[]   @relation("SharesWithMe")
 }
+
+model Map {
+  id        Int     @id @default(autoincrement())
+  data      Json
+  name      String
+  userId    Int
+  Shares    Share[] @relation("Shares")
+  OwnerUser User    @relation("Maps", fields: [userId], references: [id])
+  User      User[]
+}
+
+model Tab {
+  id     Int   @id @default(autoincrement())
+  user   User?
+  mapIds Int[]
+}
+
+model Share {
+  id          Int         @id @default(autoincrement())
+  ownerUserId Int
+  OwnerUser   User        @relation("SharesByMe", fields: [ownerUserId], references: [id])
+  shareUserId Int
+  ShareUser   User        @relation("SharesWithMe", fields: [shareUserId], references: [id])
+  mapId       Int
+  Map         Map         @relation("Shares", fields: [mapId], references: [id])
+  access      ShareAccess
+  status      ShareStatus
+}
+
+enum ColorMode {
+  DARK
+  LIGHT
+}
+
+enum ShareAccess {
+  UNAUTHORIZED
+  VIEW
+  EDIT
+}
+
+enum ShareStatus {
+  WAITING
+  ACCEPTED
+}
+
+// for the first implementation I'll only work with generated types, and once that is done, I create the actual db
