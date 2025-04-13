@@ -1,5 +1,6 @@
+import { PrismaClient } from './generated/client'
+
 import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
 
 const app = express();
 const prisma = new PrismaClient();
@@ -13,17 +14,30 @@ app.get('/users', async (req: Request, res: Response) => {
 
 app.post('/users', async (req: Request, res: Response) => {
   const { name, email } = req.body;
-  const user = await prisma.user.create({
-    data: { name, email },
-  });
-  res.json(user);
+  // const user = await prisma.user.create({
+  //   data: { name, email },
+  // });
+  // res.json(user);
 });
 
 
 app.post('/create-map-in-tab-mutation', async (req: Request, res: Response) => {
-  const { map_id } = req.body;
+  const {} = req.body;
+
+  const userId = 1;
+  const mapData = {};
+  const mapName = '';
+
+  const x = 5 as number
+
   const user = await prisma.map.create({
-    // data: { name, email },
+    data: {
+      mapData,
+      name: mapName,
+      OwnerUser: {
+        connect: { id: userId },
+      },
+    },
   });
   res.json(user);
 });
