@@ -1,20 +1,19 @@
-import { PrismaClient } from './generated/client'
-
 import express, { Request, Response } from 'express';
+import { PrismaClient } from './generated/client';
 
 const app = express();
-const prisma = new PrismaClient();
+const prismaClient = new PrismaClient();
 
 app.use(express.json());
 
 app.get('/users', async (req: Request, res: Response) => {
-  const users = await prisma.user.findMany();
+  const users = await prismaClient.user.findMany();
   res.json(users);
 });
 
 app.post('/users', async (req: Request, res: Response) => {
   const { name, email } = req.body;
-  // const user = await prisma.user.create({
+  // const user = await prismaClient.user.create({
   //   data: { name, email },
   // });
   // res.json(user);
@@ -27,19 +26,32 @@ app.post('/create-map-in-tab-mutation', async (req: Request, res: Response) => {
   const userId = 1;
   const mapData = {};
   const mapName = '';
-
-  const x = 5 as number
-
-  const user = await prisma.map.create({
+  
+  const map = await prismaClient.map.create({
     data: {
       mapData,
       name: mapName,
-      OwnerUser: {
-        connect: { id: userId },
+      OwnerUser: { connect: { id: userId } },
+    },
+    select: { id: true },
+  });
+
+  await prismaClient.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      Tab: {
+        update: {
+          mapIds: {
+            push: map.id,
+          },
+        },
       },
     },
   });
-  res.json(user);
+
+  res.json();
 });
 
 
