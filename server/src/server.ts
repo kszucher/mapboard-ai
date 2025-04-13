@@ -11,22 +11,13 @@ app.get('/users', async (req: Request, res: Response) => {
   res.json(users);
 });
 
-app.post('/users', async (req: Request, res: Response) => {
-  const { name, email } = req.body;
-  // const user = await prismaClient.user.create({
-  //   data: { name, email },
-  // });
-  // res.json(user);
-});
-
-
 app.post('/create-map-in-tab-mutation', async (req: Request, res: Response) => {
   const {} = req.body;
 
   const userId = 1;
   const mapData = {};
   const mapName = '';
-  
+
   const map = await prismaClient.map.create({
     data: {
       mapData,
