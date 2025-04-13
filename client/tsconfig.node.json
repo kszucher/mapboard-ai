@@ -20,5 +20,7 @@
 
     "types": ["vitest/globals", "vite-plugin-svgr/client"]
   },
-  "include": ["vite.config.ts"]
+  "include": [
+    "vite.config.ts"
+  ]
 }
