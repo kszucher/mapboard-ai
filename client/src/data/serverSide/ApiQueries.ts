@@ -4,7 +4,7 @@ import {
   MapInfoDefaultState,
   SharesInfoDefaultState,
   UserInfoDefaultState,
-} from './ApiStateTypes.ts';
+} from '../../../../shared/types/api-state-types.ts';
 
 export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   getUserInfo: builder.query<UserInfoDefaultState, void>({

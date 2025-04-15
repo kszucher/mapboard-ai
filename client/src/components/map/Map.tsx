@@ -5,7 +5,7 @@ import { getG } from '../../data/clientSide/mapGetters/MapQueries.ts';
 import { actions } from '../../data/clientSide/Reducer.ts';
 import { api } from '../../data/serverSide/Api.ts';
 import { mapInfoDefaultState, userInfoDefaultState } from '../../data/serverSide/ApiState.ts';
-import { ColorMode } from '../../data/serverSide/ApiStateTypes.ts';
+import { ColorMode } from '../../../../shared/types/api-state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { LinkNodeBezier } from './LinkNodeBezier.tsx';
 import { LinkNodeConnectorIn } from './LinkNodeConnectorIn.tsx';

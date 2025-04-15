@@ -6,7 +6,7 @@ import { actions } from '../../data/clientSide/Reducer.ts';
 import { AlertDialogState, DialogState } from '../../data/clientSide/EditorStateTypes.ts';
 import { api } from '../../data/serverSide/Api.ts';
 import { userInfoDefaultState } from '../../data/serverSide/ApiState.ts';
-import { ColorMode } from '../../data/serverSide/ApiStateTypes.ts';
+import { ColorMode } from '../../../../shared/types/api-state-types.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const UserAccount = () => {

@@ -15,29 +15,28 @@ datasource db {
 }
 
 model User {
-  id                Int       @id @default(autoincrement())
-  sub               String
-  signInCount       Int
-  colorMode         ColorMode
-  email             String
-  name              String
-  Maps              Map[]     @relation("Maps")
-  tabId             Int       @unique
-  Tab               Tab       @relation(fields: [tabId], references: [id])
-  lastSelectedMapId Int
-  LastSelectedMap   Map       @relation(fields: [lastSelectedMapId], references: [id])
-  SharesByMe        Share[]   @relation("SharesByMe")
-  SharesWithMe      Share[]   @relation("SharesWithMe")
+  id           Int         @id @default(autoincrement())
+  sub          String
+  signInCount  Int
+  colorMode    ColorMode
+  email        String
+  name         String
+  Maps         Map[]       @relation("Maps")
+  tabId        Int         @unique
+  Tab          Tab         @relation(fields: [tabId], references: [id])
+  SharesByMe   Share[]     @relation("SharesByMe")
+  SharesWithMe Share[]     @relation("SharesWithMe")
+  Workspaces   Workspace[]
 }
 
 model Map {
-  id        Int     @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   mapData   Json
   name      String
   userId    Int
-  Shares    Share[] @relation("Shares")
-  OwnerUser User    @relation("Maps", fields: [userId], references: [id])
-  User      User[]
+  User      User        @relation("Maps", fields: [userId], references: [id])
+  Shares    Share[]     @relation("Shares")
+  Workspace Workspace[]
 }
 
 model Tab {
@@ -56,6 +55,15 @@ model Share {
   Map         Map         @relation("Shares", fields: [mapId], references: [id])
   access      ShareAccess
   status      ShareStatus
+}
+
+model Workspace {
+  id      Int  @id @default(autoincrement())
+  userId  Int
+  User    User @relation(fields: [userId], references: [id])
+  mapId   Int
+  Map     Map  @relation(fields: [mapId], references: [id])
+  mapData Json
 }
 
 enum ColorMode {

@@ -10,9 +10,11 @@ const mapService = new MapService(prismaClient);
 
 app.use(express.json());
 
-app.get('/users', async (req: Request, res: Response) => {
-  const users = await prismaClient.user.findMany();
-  res.json(users);
+app.get('/get-map-info', async (req: Request, res: Response) => {
+  const userId = 1;
+  const workspaceId = 1; // should be a query parameter, and the endpoint should be protected, OR just use tRPC
+  const mapInfo = await mapService.getMapInfo({ userId, workspaceId });
+  res.json(mapInfo);
 });
 
 app.post('/create-map-in-tab-mutation', async (req: Request, res: Response) => {
