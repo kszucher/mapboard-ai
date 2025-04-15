@@ -1,12 +1,13 @@
-import { PrismaClient } from '@prisma/client';
 import { MapInfoDefaultState, UserInfoDefaultState } from '../../../shared/types/api-state-types';
+import { PrismaClient } from '../generated/client';
+import { JsonObject } from '@prisma/client/runtime/library';
 
 export class MapService {
   constructor(private prisma: PrismaClient) {
   }
 
   async getMapInfo({ userId, workspaceId }: { userId: number, workspaceId: number }): Promise<MapInfoDefaultState> {
-    const workspace = await this.prisma.workspace.findFirst({
+    const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
       select: {
         Map: {
@@ -20,14 +21,14 @@ export class MapService {
     });
 
     return {
-      mapId: workspace.Map.id,
+      mapId: workspace.Map.id.toString(),
       mapName: workspace.Map.name,
-      mapData: workspace.Map.mapData,
+      mapData: workspace.Map.mapData as JsonObject,
     };
   }
 
   async getUserInfo({ workspaceId }: { workspaceId: number }): Promise<UserInfoDefaultState> {
-    const workspace = await this.prisma.workspace.findFirst({
+    const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
       select: {
         User: {
@@ -57,7 +58,7 @@ export class MapService {
     return {
       userName: workspace.User.name,
       colorMode: workspace.User.colorMode,
-      tabMapIdList: tabMaps.map(el => el.id),
+      tabMapIdList: tabMaps.map(el => el.id.toString()),
       tabMapNameList: tabMaps.map(el => el.name),
     };
   }
@@ -71,7 +72,7 @@ export class MapService {
       data: {
         mapData,
         name: mapName,
-        OwnerUser: { connect: { id: userId } },
+        User: { connect: { id: userId } },
       },
       select: { id: true },
     });
