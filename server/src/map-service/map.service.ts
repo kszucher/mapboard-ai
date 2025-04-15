@@ -123,6 +123,30 @@ export class MapService {
     };
   }
 
+  async signIn(): Promise<void> {
+
+    const userId = 1;
+
+    await this.prisma.user.update({ where: { id: userId }, data: { signInCount: { increment: 1 } } });
+
+    const lastAvailableMap = await this.prisma.map.findFirstOrThrow({
+      where: { userId },
+      orderBy: {
+        // updatedAt: 'desc', // this will give me the most recent one!!!
+      },
+      select: { id: true, mapData: true },
+    });
+
+    await this.prisma.workspace.create({
+        data: {
+          User: { connect: { id: userId } },
+          Map: { connect: { id: lastAvailableMap.id } },
+          mapData: lastAvailableMap.mapData as JsonObject,
+        },
+      },
+    );
+  }
+
   async createMapInTab({ userId, mapData, mapName }: {
     userId: number,
     mapData: object,
