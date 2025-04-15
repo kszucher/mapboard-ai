@@ -44,11 +44,9 @@ export class MapService {
         },
       },
     });
-
-    const mapIds = workspace.User.Tab.mapIds;
-
+    
     const tabMaps = await this.prisma.map.findMany({
-      where: { id: { in: mapIds } },
+      where: { id: { in: workspace.User.Tab.mapIds } },
       select: {
         id: true,
         name: true,
