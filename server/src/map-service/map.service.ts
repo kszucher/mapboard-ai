@@ -133,6 +133,7 @@ export class MapService {
       where: { userId },
       orderBy: {
         // updatedAt: 'desc', // this will give me the most recent one!!!
+        // when opening a map I should increment an openCount or something so there will be an update
       },
       select: { id: true, mapData: true },
     });
