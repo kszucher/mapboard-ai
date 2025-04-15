@@ -1,4 +1,8 @@
-import { MapInfoDefaultState, UserInfoDefaultState } from '../../../shared/types/api-state-types';
+import {
+  MapInfoDefaultState,
+  SharesInfoDefaultState,
+  UserInfoDefaultState,
+} from '../../../shared/types/api-state-types';
 import { PrismaClient } from '../generated/client';
 import { JsonObject } from '@prisma/client/runtime/library';
 
@@ -44,7 +48,7 @@ export class MapService {
         },
       },
     });
-    
+
     const tabMaps = await this.prisma.map.findMany({
       where: { id: { in: workspace.User.Tab.mapIds } },
       select: {
@@ -58,6 +62,64 @@ export class MapService {
       colorMode: workspace.User.colorMode,
       tabMapIdList: tabMaps.map(el => el.id.toString()),
       tabMapNameList: tabMaps.map(el => el.name),
+    };
+  }
+
+  async getShareInfo({ userId }: { userId: string }): Promise<SharesInfoDefaultState> {
+    const user = await this.prisma.user.findFirstOrThrow({
+      select: {
+        SharesByMe: {
+          select: {
+            id: true,
+            access: true,
+            status: true,
+            Map: {
+              select: {
+                name: true,
+              },
+            },
+            ShareUser: {
+              select: {
+                email: true,
+              },
+            },
+          },
+        },
+        SharesWithMe: {
+          select: {
+            id: true,
+            access: true,
+            status: true,
+            Map: {
+              select: {
+                name: true,
+              },
+            },
+            OwnerUser: {
+              select: {
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return {
+      sharesByUser: user.SharesByMe.map(el => ({
+        id: el.id.toString(),
+        sharedMapName: el.Map.name,
+        shareUserEmail: el.ShareUser.email,
+        access: el.access,
+        status: el.status,
+      })),
+      sharesWithUser: user.SharesWithMe.map(el => ({
+        id: el.id.toString(),
+        sharedMapName: el.Map.name,
+        ownerUserEmail: el.OwnerUser.email,
+        access: el.access,
+        status: el.status,
+      })),
     };
   }
 
