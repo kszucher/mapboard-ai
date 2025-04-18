@@ -33,6 +33,7 @@ model Map {
   id        Int         @id @default(autoincrement())
   mapData   Json
   name      String
+  openCount Int         @default(0)
   userId    Int
   User      User        @relation("Maps", fields: [userId], references: [id])
   Shares    Share[]     @relation("Shares")

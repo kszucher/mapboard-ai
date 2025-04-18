@@ -1,10 +1,7 @@
-// export enum ColorMode {
-//   DARK = 'DARK',
-//   LIGHT = 'LIGHT',
-// }
-
-import { $Enums } from '../../server/generated/prisma';
-import ColorMode = $Enums.ColorMode;
+export enum ColorMode {
+  DARK = 'DARK',
+  LIGHT = 'LIGHT',
+}
 
 export interface UserInfoDefaultState {
   userName: string;

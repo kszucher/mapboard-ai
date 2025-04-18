@@ -1,4 +1,5 @@
 import {
+  ColorMode,
   MapInfoDefaultState,
   SharesInfoDefaultState,
   UserInfoDefaultState,
@@ -20,6 +21,15 @@ export class MapService {
             name: true,
             mapData: true,
           },
+        },
+      },
+    });
+
+    await this.prisma.map.update({
+      where: { id: workspace.Map.id },
+      data: {
+        openCount: {
+          increment: 1,
         },
       },
     });
@@ -59,7 +69,7 @@ export class MapService {
 
     return {
       userName: workspace.User.name,
-      colorMode: workspace.User.colorMode,
+      colorMode: workspace.User.colorMode as ColorMode,
       tabMapIdList: tabMaps.map(el => el.id.toString()),
       tabMapNameList: tabMaps.map(el => el.name),
     };
@@ -127,7 +137,14 @@ export class MapService {
 
     const userId = 1;
 
-    await this.prisma.user.update({ where: { id: userId }, data: { signInCount: { increment: 1 } } });
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        signInCount: {
+          increment: 1,
+        },
+      },
+    });
 
     const lastAvailableMap = await this.prisma.map.findFirstOrThrow({
       where: { userId },
@@ -176,5 +193,9 @@ export class MapService {
         },
       },
     });
+  }
+
+  async createMapInTabDuplicate() {
+
   }
 }
