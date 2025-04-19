@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { auth } from 'express-oauth2-jwt-bearer';
 import { PrismaClient } from './generated/client';
@@ -25,24 +25,57 @@ const checkJwt = auth({
   issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
 });
 
+const getUserIdAndWorkspaceId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const user = await prismaClient.user.findFirstOrThrow({
+      where: { sub: req.auth?.payload.sub ?? '' },
+      select: { id: true },
+    });
+
+    const workspaceId = parseInt(req.headers['workspace-id'] as string);
+
+    (req as any).userId = user.id;
+    (req as any).workspaceId = workspaceId;
+
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' }); // no need to return
+  }
+};
+
 const app = express();
 
 app.use(cors());
 
 app.use(express.json());
 
-app.post('/sign-in', checkJwt, async (req: Request, res: Response) => {
-  // console.log(req.auth?.payload.sub);
-  const mapInfo = await userService.signIn({ userSub: req.auth?.payload.sub ?? '' });
-  res.json();
+app.get('/ping', async (req: Request, res: Response) => {
+  console.log('ping');
+  res.json('ping');
 });
 
-app.get('/get-map-info', checkJwt, async (req: Request, res: Response) => {
-  const userId = 1;
-  const workspaceId = 1;
+app.post('/sign-in', checkJwt, async (req: Request, res: Response) => {
+  const workspaceId = await userService.signIn({ userSub: req.auth?.payload.sub ?? '' });
+  res.json({ workspaceId });
+});
+
+app.post('/get-user-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { workspaceId } = (req as any);
+  const userInfo = await userService.readUser({ workspaceId });
+  res.json(userInfo);
+});
+
+app.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { userId, workspaceId } = (req as any);
   const mapInfo = await mapService.readMap({ userId, workspaceId });
   res.json(mapInfo);
 });
+
 
 app.post('/create-map-in-tab-mutation', checkJwt, async (req: Request, res: Response) => {
   const { mapData, mapName } = req.body;
@@ -56,12 +89,6 @@ app.post('/save-map-mutation', checkJwt, async (req: Request, res: Response) => 
   const mapId = 1;
   const mapData = {};
   await mapService.updateMapByClient({ workspaceId, mapId, mapData });
-
-});
-
-app.get('/ping', async (req: Request, res: Response) => {
-  console.log('ping');
-  res.json('ping');
 });
 
 const PORT = process.env.PORT || 8083;

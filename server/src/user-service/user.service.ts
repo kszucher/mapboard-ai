@@ -3,10 +3,19 @@ import { ColorMode, UserInfoDefaultState } from '../../../shared/types/api-state
 import { PrismaClient } from '../generated/client';
 
 export class UserService {
-  constructor(private prisma: PrismaClient) {
+  constructor(
+    private prisma: PrismaClient,
+  ) {
   }
 
-  async signIn({ userSub }: { userSub: string }): Promise<void> {
+  private createNewMapData() {
+    return {
+      [global.crypto.randomUUID().slice(-8)]: { path: ['g'] },
+      [global.crypto.randomUUID().slice(-8)]: { path: ['r', 0] },
+    };
+  }
+
+  async signIn({ userSub }: { userSub: string }): Promise<number> {
     const user = await this.prisma.user.update({
       where: { sub: userSub },
       data: {
@@ -19,7 +28,7 @@ export class UserService {
       },
     });
 
-    const lastAvailableMap = await this.prisma.map.findFirst({
+    let lastAvailableMap = await this.prisma.map.findFirst({
       where: { id: user.id },
       orderBy: {
         updatedAt: 'desc',
@@ -27,23 +36,46 @@ export class UserService {
       select: { id: true, mapData: true },
     });
 
-    if (lastAvailableMap) {
-      await this.prisma.workspace.create({
-          data: {
-            User: { connect: { id: user.id } },
-            Map: { connect: { id: lastAvailableMap.id } },
-            mapData: lastAvailableMap.mapData as JsonObject,
+    if (!lastAvailableMap) {
+      lastAvailableMap = await this.prisma.map.create({
+        data: {
+          name: 'New Map',
+          mapData: this.createNewMapData(),
+          User: { connect: { id: user.id } },
+        },
+      });
+
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          Tab: {
+            update: {
+              mapIds: {
+                push: lastAvailableMap.id,
+              },
+            },
           },
         },
-      );
-    } else {
-      console.log('no map exists, we will have to create one');
+      });
     }
 
+    const workspace = await this.prisma.workspace.create({
+      data: {
+        User: { connect: { id: user.id } },
+        Map: { connect: { id: lastAvailableMap.id } },
+        mapData: lastAvailableMap.mapData as JsonObject,
+      },
+      select: {
+        id: true,
+      },
+    });
 
+    return workspace.id;
   }
 
-  async getUserInfo({ workspaceId }: { workspaceId: number }): Promise<UserInfoDefaultState> {
+  async readUser({ workspaceId }: { workspaceId: number }): Promise<UserInfoDefaultState> {
     const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
       select: {
