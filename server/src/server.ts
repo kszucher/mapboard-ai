@@ -22,7 +22,7 @@ app.use(express.json());
 app.get('/get-map-info', async (req: Request, res: Response) => {
   const userId = 1;
   const workspaceId = 1;
-  const mapInfo = await mapService.loadMap({ userId, workspaceId });
+  const mapInfo = await mapService.readMap({ userId, workspaceId });
   res.json(mapInfo);
 });
 
@@ -37,7 +37,7 @@ app.post('/save-map-mutation', async (req: Request, res: Response) => {
   const workspaceId = 1;
   const mapId = 1;
   const mapData = {};
-  await mapService.saveMap({ workspaceId, mapId, mapData });
+  await mapService.updateMapByClient({ workspaceId, mapId, mapData });
 
 });
 

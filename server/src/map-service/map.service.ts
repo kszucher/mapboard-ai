@@ -40,7 +40,7 @@ export class MapService {
 
   }
 
-  async loadMap({ userId, workspaceId }: { userId: number, workspaceId: number }): Promise<MapInfoDefaultState> {
+  async readMap({ userId, workspaceId }: { userId: number, workspaceId: number }): Promise<MapInfoDefaultState> {
     const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
       select: {
@@ -70,17 +70,17 @@ export class MapService {
     };
   }
 
-  async saveMap({ workspaceId, mapId, mapData }: {
+  async updateMapByClient({ workspaceId, mapId, mapData }: {
     workspaceId: number,
     mapId: number,
     mapData: object
   }): Promise<void> {
     await this.prisma.$executeRawUnsafe(`
         UPDATE "Map"
-        SET data = jsonb_merge_recurse(
+        SET mapData = jsonb_merge_recurse(
             $1::jsonb,
             jsonb_diff_recurse(
-                "Map".data,
+                "Map".mapData,
                 (
                     SELECT "mapData"
                     FROM "Workspace"
@@ -92,4 +92,14 @@ export class MapService {
     `, JSON.stringify(mapData), workspaceId, mapId);
   }
 
+  async updateMapByServer({ mapId, mapDataDelta }: { mapId: number, mapDataDelta: object }) {
+    await this.prisma.$executeRawUnsafe(`
+        UPDATE "Map"
+        SET mapData = jsonb_merge_recurse(
+            "Map".mapData,
+            $1::jsonb
+        )
+      WHERE id = $2
+    `, JSON.stringify(mapDataDelta), mapId);
+  }
 }
