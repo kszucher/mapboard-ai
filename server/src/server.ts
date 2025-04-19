@@ -1,12 +1,21 @@
 import express, { Request, Response } from 'express';
 import { PrismaClient } from './generated/client';
 import { MapService } from './map-service/map.service';
+import { PgFunctionsService } from './pg-functions/pg.functions.service';
+import { ShareService } from './share-service/share.service';
+import { UserService } from './user-service/user.service';
 
 const app = express();
 const prismaClient = new PrismaClient();
 
+const pgFunctionsService = new PgFunctionsService(prismaClient);
 const mapService = new MapService(prismaClient);
+const userService = new UserService(prismaClient);
+const shareService = new ShareService(prismaClient);
 
+(async () => {
+  await pgFunctionsService.setupFunctions();
+})();
 
 app.use(express.json());
 
@@ -31,7 +40,6 @@ app.post('/save-map-mutation', async (req: Request, res: Response) => {
   await mapService.saveMap({ workspaceId, mapId, mapData });
 
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
