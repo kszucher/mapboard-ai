@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import { auth } from 'express-oauth2-jwt-bearer';
 import { PrismaClient } from './generated/client';
 import { MapService } from './map-service/map.service';
@@ -26,11 +27,14 @@ const checkJwt = auth({
 
 const app = express();
 
+app.use(cors());
+
 app.use(express.json());
 
-app.get('/sign_in', checkJwt, async (req: Request, res: Response) => {
-  const mapInfo = await userService.signIn({ userSub: req.body.userSub });
-  res.json(mapInfo);
+app.post('/sign-in', checkJwt, async (req: Request, res: Response) => {
+  // console.log(req.auth?.payload.sub);
+  const mapInfo = await userService.signIn({ userSub: req.auth?.payload.sub ?? '' });
+  res.json();
 });
 
 app.get('/get-map-info', checkJwt, async (req: Request, res: Response) => {
@@ -55,7 +59,12 @@ app.post('/save-map-mutation', checkJwt, async (req: Request, res: Response) => 
 
 });
 
-const PORT = process.env.PORT || 3000;
+app.get('/ping', async (req: Request, res: Response) => {
+  console.log('ping');
+  res.json('ping');
+});
+
+const PORT = process.env.PORT || 8083;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

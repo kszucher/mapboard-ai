@@ -1,10 +1,12 @@
 {
   "dependencies": {
     "@prisma/client": "^6.6.0",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-oauth2-jwt-bearer": "^1.6.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
     "prisma": "^6.6.0",
