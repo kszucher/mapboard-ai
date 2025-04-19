@@ -6,35 +6,41 @@ export class UserService {
   constructor(private prisma: PrismaClient) {
   }
 
-  async signIn(): Promise<void> {
-
-    const userId = 1;
-
-    await this.prisma.user.update({
-      where: { id: userId },
+  async signIn({ userSub }: { userSub: string }): Promise<void> {
+    const user = await this.prisma.user.update({
+      where: { sub: userSub },
       data: {
         signInCount: {
           increment: 1,
         },
       },
+      select: {
+        id: true,
+      },
     });
 
-    const lastAvailableMap = await this.prisma.map.findFirstOrThrow({
-      where: { userId },
+    const lastAvailableMap = await this.prisma.map.findFirst({
+      where: { id: user.id },
       orderBy: {
         updatedAt: 'desc',
       },
       select: { id: true, mapData: true },
     });
 
-    await this.prisma.workspace.create({
-        data: {
-          User: { connect: { id: userId } },
-          Map: { connect: { id: lastAvailableMap.id } },
-          mapData: lastAvailableMap.mapData as JsonObject,
+    if (lastAvailableMap) {
+      await this.prisma.workspace.create({
+          data: {
+            User: { connect: { id: user.id } },
+            Map: { connect: { id: lastAvailableMap.id } },
+            mapData: lastAvailableMap.mapData as JsonObject,
+          },
         },
-      },
-    );
+      );
+    } else {
+      console.log('no map exists, we will have to create one');
+    }
+
+
   }
 
   async getUserInfo({ workspaceId }: { workspaceId: number }): Promise<UserInfoDefaultState> {

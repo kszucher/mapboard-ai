@@ -16,7 +16,7 @@ datasource db {
 
 model User {
   id           Int         @id @default(autoincrement())
-  sub          String
+  sub          String      @unique
   signInCount  Int
   colorMode    ColorMode
   email        String
