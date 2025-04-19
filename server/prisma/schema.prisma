@@ -38,6 +38,7 @@ model Map {
   User      User        @relation("Maps", fields: [userId], references: [id])
   Shares    Share[]     @relation("Shares")
   Workspace Workspace[]
+  updatedAt DateTime    @updatedAt
 }
 
 model Tab {
