@@ -29,7 +29,7 @@ export class UserService {
     });
 
     let lastAvailableMap = await this.prisma.map.findFirst({
-      where: { id: user.id },
+      where: { userId: user.id },
       orderBy: {
         updatedAt: 'desc',
       },
