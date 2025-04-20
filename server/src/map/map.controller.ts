@@ -1,18 +1,22 @@
 import { Request, Response, Router } from 'express';
-import { ReadMapResponseDto, RenameMapResponseDto } from '../../../shared/types/api-state-types';
+import {
+  CreateMapInTabResponseDto,
+  ReadMapResponseDto,
+  RenameMapResponseDto,
+} from '../../../shared/types/api-state-types';
 import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
 import { MapService } from './map.service';
 
 const router = Router();
 export const mapService = new MapService(prismaClient);
 
-router.post('/create-map-in-tab', checkJwt, async (req: Request, res: Response) => {
+router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId } = (req as any);
   const mapInfo = await mapService.createMapInTab({ userId, mapName: 'New Map In Tab' });
-  res.json(mapInfo);
+  res.json({ mapInfo } as CreateMapInTabResponseDto);
 });
 
-router.post('/rename-map', checkJwt, async (req: Request, res: Response) => {
+router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { mapId, mapName } = req.body;
   const mapInfo = await mapService.renameMap({ mapId, mapName });
   res.json({ mapInfo } as RenameMapResponseDto);
@@ -24,7 +28,7 @@ router.post('/read-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request,
   res.json({ mapInfo } as ReadMapResponseDto);
 });
 
-router.post('/save-map', checkJwt, async (req: Request, res: Response) => {
+router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const workspaceId = 1;
   const mapId = 1;
   const mapData = {};
