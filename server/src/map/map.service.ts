@@ -56,14 +56,7 @@ export class MapService {
       },
     });
 
-    await this.prisma.map.update({
-      where: { id: workspace.Map.id },
-      data: {
-        openCount: {
-          increment: 1,
-        },
-      },
-    });
+    await this.updateOpenCount({ mapId: workspace.Map.id });
 
     return {
       id: workspace.Map.id,
