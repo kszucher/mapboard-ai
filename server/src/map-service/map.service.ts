@@ -30,7 +30,7 @@ export class MapService {
     });
 
     return {
-      mapId: workspace.Map.id.toString(),
+      mapId: workspace.Map.id,
       mapName: workspace.Map.name,
       mapData: workspace.Map.mapData as JsonObject,
     };
@@ -68,6 +68,13 @@ export class MapService {
 
   async createMapInTabDuplicate() {
 
+  }
+
+  async renameMap({ mapId, name }: { mapId: number, name: string }) {
+    await this.prisma.map.update({
+      where: { id: mapId },
+      data: { name },
+    });
   }
 
   async updateMapByClient({ workspaceId, mapId, mapData }: {

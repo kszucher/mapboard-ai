@@ -31,7 +31,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: ['UserInfo'],
   }),
 
-  selectMap: builder.mutation<void, { mapId: string }>({
+  selectMap: builder.mutation<void, { mapId: number }>({
     query: ({ mapId }) => ({
       url: 'select-map',
       method: 'POST',
@@ -50,7 +50,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: ['MapInfo'],
   }),
 
-  renameMap: builder.mutation<void, { mapId: string; name: string }>({
+  renameMap: builder.mutation<void, { mapId: number; name: string }>({
     query: ({ mapId, name }) => ({
       url: 'rename-map',
       method: 'POST',
@@ -67,7 +67,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: ['UserInfo', 'MapInfo'],
   }),
 
-  createMapInTabDuplicate: builder.mutation<void, { mapId: string }>({
+  createMapInTabDuplicate: builder.mutation<void, { mapId: number }>({
     query: ({ mapId }) => ({
       url: 'create-map-in-tab-duplicate',
       method: 'POST',
@@ -76,7 +76,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: ['UserInfo', 'MapInfo'],
   }),
 
-  moveUpMapInTab: builder.mutation<void, { mapId: string }>({
+  moveUpMapInTab: builder.mutation<void, { mapId: number }>({
     query: ({ mapId }) => ({
       url: 'move-up-map-in-tab',
       method: 'POST',
@@ -85,7 +85,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: ['UserInfo'],
   }),
 
-  moveDownMapInTab: builder.mutation<void, { mapId: string }>({
+  moveDownMapInTab: builder.mutation<void, { mapId: number }>({
     query: ({ mapId }) => ({
       url: 'move-down-map-in-tab',
       method: 'POST',
@@ -121,7 +121,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [], // no direct invalidation
   }),
 
-  deleteMap: builder.mutation<void, { mapId: string }>({
+  deleteMap: builder.mutation<void, { mapId: number }>({
     query: ({ mapId }) => ({
       url: 'delete-map',
       method: 'POST',
@@ -130,7 +130,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [], // no direct invalidation
   }),
 
-  createShare: builder.mutation<void, { mapId: string; shareEmail: string; shareAccess: string }>({
+  createShare: builder.mutation<void, { mapId: number; shareEmail: string; shareAccess: string }>({
     query: ({ mapId, shareEmail, shareAccess }) => ({
       url: 'create-share',
       method: 'POST',
@@ -191,11 +191,11 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [],
   }),
 
-  executeUploadFile: builder.mutation<void, { file: File; mapId: string; nodeId: string }>({
+  executeUploadFile: builder.mutation<void, { file: File; mapId: number; nodeId: string }>({
     query: ({ file, mapId, nodeId }) => {
       const bodyFormData = new FormData();
       bodyFormData.append('file', file);
-      bodyFormData.append('map_id', mapId);
+      bodyFormData.append('map_id', mapId.toString());
       bodyFormData.append('node_id', nodeId);
       return {
         url: '/execute-upload-file',
@@ -207,7 +207,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [],
   }),
 
-  executeIngestion: builder.mutation<void, { mapId: string; nodeId: string }>({
+  executeIngestion: builder.mutation<void, { mapId: number; nodeId: string }>({
     query: ({ mapId, nodeId }) => ({
       url: 'execute-ingestion',
       method: 'POST',
@@ -216,7 +216,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [],
   }),
 
-  executeExtraction: builder.mutation<void, { mapId: string; nodeId: string }>({
+  executeExtraction: builder.mutation<void, { mapId: number; nodeId: string }>({
     query: ({ mapId, nodeId }) => ({
       url: 'execute-extraction',
       method: 'POST',
@@ -225,7 +225,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: [],
   }),
 
-  executeTextOutput: builder.mutation<void, { mapId: string; nodeId: string }>({
+  executeTextOutput: builder.mutation<void, { mapId: number; nodeId: string }>({
     query: ({ mapId, nodeId }) => ({
       url: 'execute-text-output',
       method: 'POST',

@@ -22,7 +22,7 @@ export const MapSelector: FC = () => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           <DropdownMenu.Label>{'My Maps'}</DropdownMenu.Label>
-          {tabMapIdList.map((el: string, index) => (
+          {tabMapIdList.map((el, index) => (
             <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId: el }))}>
               {tabMapNameList[index]}
             </DropdownMenu.Item>

@@ -6,26 +6,26 @@ export enum ColorMode {
 export interface UserInfoDefaultState {
   userName: string;
   colorMode: ColorMode;
-  tabMapIdList: string[];
+  tabMapIdList: number[];
   tabMapNameList: string[];
 }
 
 export interface MapInfoDefaultState {
-  mapId: string;
+  mapId: number;
   mapName: string;
   mapData: object;
 }
 
 export interface SharesInfoDefaultState {
   sharesWithUser: {
-    id: string;
+    id: number;
     sharedMapName: string;
     ownerUserEmail: string;
     access: string;
     status: string;
   }[];
   sharesByUser: {
-    id: string;
+    id: number;
     sharedMapName: string;
     shareUserEmail: string;
     access: string;

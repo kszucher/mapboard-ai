@@ -104,7 +104,7 @@ export class UserService {
     return {
       userName: workspace.User.name,
       colorMode: workspace.User.colorMode as ColorMode,
-      tabMapIdList: tabMaps.map(el => el.id.toString()),
+      tabMapIdList: tabMaps.map(el => el.id),
       tabMapNameList: tabMaps.map(el => el.name),
     };
   }

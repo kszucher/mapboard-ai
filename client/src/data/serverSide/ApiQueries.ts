@@ -22,7 +22,7 @@ export const apiQueries = (builder: EndpointBuilder<BaseQueryFn, string, string>
     providesTags: ['SharesInfo'],
   }),
 
-  getExtractionRawPrompt: builder.query<ExtractionRawPromptDefaultState, { mapId: string; nodeId: string }>({
+  getExtractionRawPrompt: builder.query<ExtractionRawPromptDefaultState, { mapId: number; nodeId: string }>({
     query: ({ mapId, nodeId }) => ({ url: 'get-extraction-raw-prompt', method: 'POST', body: { mapId, nodeId } }),
     providesTags: [],
   }),

@@ -42,7 +42,7 @@ export interface EditorState {
   pageState: PageState;
   dialogState: DialogState;
   alertDialogState: AlertDialogState;
-  mapId: string;
+  mapId: number;
   commitList: M[];
   commitIndex: number;
   rOffsetCoords: number[];

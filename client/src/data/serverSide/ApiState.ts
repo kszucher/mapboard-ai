@@ -14,7 +14,7 @@ export const userInfoDefaultState: UserInfoDefaultState = {
 };
 
 export const mapInfoDefaultState: MapInfoDefaultState = {
-  mapId: '',
+  mapId: 1,
   mapName: '',
   mapData: {},
 };
