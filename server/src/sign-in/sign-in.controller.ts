@@ -2,15 +2,14 @@ import { Request, Response, Router } from 'express';
 import { SignInResponseDto } from '../../../shared/types/api-state-types';
 import { mapService } from '../map/map.controller';
 import { shareService } from '../share/share.controller';
-import { checkJwt, prismaClient } from '../startup';
+import { checkJwt } from '../startup';
 import { userService } from '../user/user.controller';
-import { SignInService } from './sign-in.service';
+import { workspaceService } from '../workspace/workspace.controller';
 
 const router = Router();
-const signInService = new SignInService(prismaClient, mapService);
 
 router.post('/sign-in', checkJwt, async (req: Request, res: Response) => {
-  const { userId, workspaceId } = await signInService.signIn({ userSub: req.auth?.payload.sub ?? '' });
+  const { userId, workspaceId } = await workspaceService.createWorkspace({ userSub: req.auth?.payload.sub ?? '' });
   const userInfo = await userService.readUser({ workspaceId });
   const mapInfo = await mapService.readMap({ workspaceId });
   const shareInfo = await shareService.getShareInfo({ userId });

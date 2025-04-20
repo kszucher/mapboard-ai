@@ -5,6 +5,7 @@ import { PgFunctionsService } from './pg-functions/pg.functions.service';
 import mapController from './map/map.controller';
 import shareController from './share/share.controller';
 import userController from './user/user.controller';
+import workspaceController from './workspace/workspace.controller';
 import signInController from './sign-in/sign-in.controller';
 
 const pgFunctionsService = new PgFunctionsService(prismaClient);
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(userController);
 app.use(mapController);
 app.use(shareController);
+app.use(workspaceController);
 app.use(signInController);
 
 app.get('/ping', async (req: Request, res: Response) => {

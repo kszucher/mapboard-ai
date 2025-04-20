@@ -2,14 +2,14 @@ import { JsonObject } from '@prisma/client/runtime/library';
 import { PrismaClient } from '../generated/client';
 import { MapService } from '../map/map.service';
 
-export class SignInService {
+export class WorkspaceService {
   constructor(
     private prisma: PrismaClient,
     private mapService: MapService,
   ) {
   }
 
-  async signIn({ userSub }: { userSub: string }): Promise<{ userId: number, workspaceId: number }> {
+  async createWorkspace({ userSub }: { userSub: string }): Promise<{ userId: number, workspaceId: number }> {
     const user = await this.prisma.user.update({
       where: { sub: userSub },
       data: {
