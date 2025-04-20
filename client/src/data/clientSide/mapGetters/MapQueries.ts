@@ -1,4 +1,4 @@
-import { G, L, M, N, R } from '../mapState/MapStateTypes.ts';
+import { G, L, M, N, R } from '../mapState/map-state-types.ts';
 import { excludeEntries } from '../../../utils/Utils.ts';
 import { isG, isL, isR } from './PathQueries.ts';
 

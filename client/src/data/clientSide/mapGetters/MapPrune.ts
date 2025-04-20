@@ -6,8 +6,8 @@ import {
   lSaveOptional,
   rSaveAlways,
   rSaveOptional,
-} from '../mapState/MapStateDefaults.ts';
-import { M } from '../mapState/MapStateTypes.ts';
+} from '../mapState/map-state-defaults.ts';
+import { M } from '../mapState/map-state-types.ts';
 import { getNonDefaultEntries, includeEntries } from '../../../utils/Utils.ts';
 import { mG, mL, mR } from './MapQueries.ts';
 

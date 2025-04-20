@@ -1,11 +1,10 @@
 import { Button, Dialog, Flex, Table } from '@radix-ui/themes';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { api } from '../../data/serverSide/Api.ts';
-import { sharesInfoDefaultState } from '../../data/serverSide/ApiState.ts';
-import { AppDispatch } from '../../data/store.ts';
+import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const SharedByMe = () => {
-  const { sharesByUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
+  const sharesByUser = useSelector((state: RootState) => state.editor.shareInfo.sharesByUser);
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>

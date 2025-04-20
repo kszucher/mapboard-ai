@@ -1,5 +1,5 @@
 import { getG, getLastIndexL, getLastIndexR } from '../mapGetters/MapQueries.ts';
-import { ControlType, L, M, R } from '../mapState/MapStateTypes.ts';
+import { ControlType, L, M, R } from '../mapState/map-state-types.ts';
 
 export const mapInsert = {
   L: (m: M, partialL: Partial<L>) => {

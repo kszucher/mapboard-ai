@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ControlType, Side } from '../../data/clientSide/mapState/MapStateTypes.ts';
+import { ControlType, Side } from '../../data/clientSide/mapState/map-state-types.ts';
 import { actions } from '../../data/clientSide/Reducer.ts';
 import { mR } from '../../data/clientSide/mapGetters/MapQueries.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';

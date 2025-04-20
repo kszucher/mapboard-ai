@@ -1,16 +1,15 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { AlertDialog, Dialog, DropdownMenu, IconButton } from '@radix-ui/themes';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import User from '../../../assets/user.svg?react';
 import { actions } from '../../data/clientSide/Reducer.ts';
-import { AlertDialogState, DialogState } from '../../data/clientSide/EditorStateTypes.ts';
+import { AlertDialogState, DialogState } from '../../data/clientSide/editorState/editor-state-types.ts';
 import { api } from '../../data/serverSide/Api.ts';
-import { userInfoDefaultState } from '../../data/serverSide/ApiState.ts';
 import { ColorMode } from '../../../../shared/types/api-state-types.ts';
-import { AppDispatch } from '../../data/store.ts';
+import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const UserAccount = () => {
-  const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
+  const colorMode = useSelector((state: RootState) => state.editor.userInfo.colorMode);
   const dispatch = useDispatch<AppDispatch>();
   const { logout } = useAuth0();
 

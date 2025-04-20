@@ -6,10 +6,9 @@ import {
   DialogState,
   MidMouseMode,
   PageState,
-} from '../../data/clientSide/EditorStateTypes.ts';
-import { api } from '../../data/serverSide/Api.ts';
-import { sharesInfoDefaultState } from '../../data/serverSide/ApiState.ts';
+} from '../../data/clientSide/editorState/editor-state-types.ts';
 import { actions } from '../../data/clientSide/Reducer.ts';
+import { api } from '../../data/serverSide/Api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { backendUrl } from '../../urls/Urls.ts';
 
@@ -18,7 +17,7 @@ let mapListener: AbortController;
 let midMouseListener: AbortController;
 
 export const Window: FC = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
   const workspaceId = useSelector((state: RootState) => state.editor.workspaceId);
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
   const pageState = useSelector((state: RootState) => state.editor.pageState);
@@ -27,7 +26,7 @@ export const Window: FC = () => {
   const commitList = useSelector((state: RootState) => state.editor.commitList);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const mExists = m && Object.keys(m).length;
-  const { sharesWithUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
+  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
   const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const dispatch = useDispatch<AppDispatch>();
 
@@ -104,7 +103,7 @@ export const Window: FC = () => {
         const eventData = JSON.parse(event.data.replace(/'/g, '"'));
         switch (eventData.event_id) {
           case 'MAP_UPDATED':
-            dispatch(api.util.invalidateTags(['MapInfo']));
+            // dispatch(api.util.invalidateTags(['MapInfo']));
             break;
           case 'MAP_DELETED':
             // TODO select_available_map

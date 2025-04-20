@@ -3,20 +3,20 @@ export enum ColorMode {
   LIGHT = 'LIGHT',
 }
 
-export interface UserInfoDefaultState {
+export interface UserInfo {
   userName: string;
   colorMode: ColorMode;
   tabMapIdList: number[];
   tabMapNameList: string[];
 }
 
-export interface MapInfoDefaultState {
+export interface MapInfo {
   mapId: number;
   mapName: string;
   mapData: object;
 }
 
-export interface SharesInfoDefaultState {
+export interface ShareInfo {
   sharesWithUser: {
     id: number;
     sharedMapName: string;
@@ -35,4 +35,11 @@ export interface SharesInfoDefaultState {
 
 export interface ExtractionRawPromptDefaultState {
   rawPrompt: string;
+}
+
+export type SignInResponseDto = {
+  workspaceId: number;
+  mapInfo: MapInfo,
+  userInfo: UserInfo,
+  shareInfo: ShareInfo,
 }

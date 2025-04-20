@@ -1,11 +1,11 @@
-import { SharesInfoDefaultState } from '../../../shared/types/api-state-types';
+import { ShareInfo } from '../../../shared/types/api-state-types';
 import { PrismaClient } from '../generated/client';
 
 export class ShareService {
   constructor(private prisma: PrismaClient) {
   }
 
-  async getShareInfo({ userId }: { userId: number }): Promise<SharesInfoDefaultState> {
+  async getShareInfo({ userId }: { userId: number }): Promise<ShareInfo> {
     const user = await this.prisma.user.findFirstOrThrow({
       where: {
         id: userId,
@@ -50,14 +50,14 @@ export class ShareService {
 
     return {
       sharesByUser: user.SharesByMe.map(el => ({
-        id: el.id.toString(),
+        id: el.id,
         sharedMapName: el.Map.name,
         shareUserEmail: el.ShareUser.email,
         access: el.access,
         status: el.status,
       })),
       sharesWithUser: user.SharesWithMe.map(el => ({
-        id: el.id.toString(),
+        id: el.id,
         sharedMapName: el.Map.name,
         ownerUserEmail: el.OwnerUser.email,
         access: el.access,

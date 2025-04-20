@@ -1,4 +1,4 @@
-import { M } from '../mapState/MapStateTypes.ts';
+import { M } from '../mapState/map-state-types.ts';
 import { mapInit } from './MapInit.ts';
 import { mapMeasure } from './MapMeasure.ts';
 import { mapPlace } from './MapPlace.ts';

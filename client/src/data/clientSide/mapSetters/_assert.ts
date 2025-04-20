@@ -2,7 +2,7 @@ import { mapInit } from './MapInit.ts';
 import { sortNode } from './MapSort.ts';
 import { mapPrune } from '../mapGetters/MapPrune.ts';
 import { mL } from '../mapGetters/MapQueries.ts';
-import { M, MPartial } from '../mapState/MapStateTypes.ts';
+import { M, MPartial } from '../mapState/map-state-types.ts';
 
 export const _assert = (test: MPartial, result: MPartial, fn: Function) => {
   const m = <M>test;

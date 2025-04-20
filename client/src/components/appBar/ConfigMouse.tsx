@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Mouse from '../../../assets/mouse.svg?react';
 import { actions } from '../../data/clientSide/Reducer.ts';
 
-import { MidMouseMode } from '../../data/clientSide/EditorStateTypes.ts';
+import { MidMouseMode } from '../../data/clientSide/editorState/editor-state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const ConfigMouse = () => {

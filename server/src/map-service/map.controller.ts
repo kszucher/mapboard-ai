@@ -3,7 +3,7 @@ import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
 import { MapService } from './map.service';
 
 const router = Router();
-const mapService = new MapService(prismaClient);
+export const mapService = new MapService(prismaClient);
 
 router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);

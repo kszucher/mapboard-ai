@@ -1,38 +1,15 @@
 import { JsonObject } from '@prisma/client/runtime/library';
-import { MapInfoDefaultState } from '../../../shared/types/api-state-types';
+import { MapInfo } from '../../../shared/types/api-state-types';
 import { PrismaClient } from '../generated/client';
 
 export class MapService {
   constructor(private prisma: PrismaClient) {
   }
 
-  async readMap({ workspaceId }: { workspaceId: number }): Promise<MapInfoDefaultState> {
-    const workspace = await this.prisma.workspace.findFirstOrThrow({
-      where: { id: workspaceId },
-      select: {
-        Map: {
-          select: {
-            id: true,
-            name: true,
-            mapData: true,
-          },
-        },
-      },
-    });
-
-    await this.prisma.map.update({
-      where: { id: workspace.Map.id },
-      data: {
-        openCount: {
-          increment: 1,
-        },
-      },
-    });
-
+  createNewMapData() {
     return {
-      mapId: workspace.Map.id,
-      mapName: workspace.Map.name,
-      mapData: workspace.Map.mapData as JsonObject,
+      [global.crypto.randomUUID().slice(-8)]: { path: ['g'] },
+      [global.crypto.randomUUID().slice(-8)]: { path: ['r', 0] },
     };
   }
 
@@ -68,6 +45,36 @@ export class MapService {
 
   async createMapInTabDuplicate() {
 
+  }
+
+  async readMap({ workspaceId }: { workspaceId: number }): Promise<MapInfo> {
+    const workspace = await this.prisma.workspace.findFirstOrThrow({
+      where: { id: workspaceId },
+      select: {
+        Map: {
+          select: {
+            id: true,
+            name: true,
+            mapData: true,
+          },
+        },
+      },
+    });
+
+    await this.prisma.map.update({
+      where: { id: workspace.Map.id },
+      data: {
+        openCount: {
+          increment: 1,
+        },
+      },
+    });
+
+    return {
+      mapId: workspace.Map.id,
+      mapName: workspace.Map.name,
+      mapData: workspace.Map.mapData as JsonObject,
+    };
   }
 
   async renameMap({ mapId, name }: { mapId: number, name: string }) {

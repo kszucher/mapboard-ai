@@ -1,11 +1,9 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MidMouseMode } from '../../data/clientSide/EditorStateTypes.ts';
+import { ColorMode } from '../../../../shared/types/api-state-types.ts';
+import { MidMouseMode } from '../../data/clientSide/editorState/editor-state-types.ts';
 import { getG } from '../../data/clientSide/mapGetters/MapQueries.ts';
 import { actions } from '../../data/clientSide/Reducer.ts';
-import { api } from '../../data/serverSide/Api.ts';
-import { mapInfoDefaultState, userInfoDefaultState } from '../../data/serverSide/ApiState.ts';
-import { ColorMode } from '../../../../shared/types/api-state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { LinkNodeBezier } from './LinkNodeBezier.tsx';
 import { LinkNodeConnectorIn } from './LinkNodeConnectorIn.tsx';
@@ -20,10 +18,11 @@ import { RootNodeSeparator } from './RootNodeSeparator.tsx';
 export const Map: FC = () => {
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo);
+  const colorMode = useSelector((state: RootState) => state.editor.userInfo.colorMode);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const g = getG(m);
-  const { colorMode } = api.useGetUserInfoQuery().data || userInfoDefaultState;
-  const { mapId } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
+
   const dispatch = useDispatch<AppDispatch>();
 
   const resetView = () => {

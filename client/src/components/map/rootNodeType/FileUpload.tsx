@@ -2,7 +2,7 @@ import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text } fro
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../../../data/clientSide/Reducer.ts';
-import { R } from '../../../data/clientSide/mapState/MapStateTypes.ts';
+import { R } from '../../../data/clientSide/mapState/map-state-types.ts';
 import { api } from '../../../data/serverSide/Api.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 import { shrinkString } from '../../../utils/Utils.ts';

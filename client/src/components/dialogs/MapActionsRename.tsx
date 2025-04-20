@@ -1,12 +1,12 @@
 import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { api } from '../../data/serverSide/Api.ts';
-import { mapInfoDefaultState } from '../../data/serverSide/ApiState.ts';
-import { AppDispatch } from '../../data/store.ts';
+import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const MapActionsRename = () => {
-  const { mapName, mapId } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
+  const mapName = useSelector((state: RootState) => state.editor.mapInfo.mapName);
   const [newMapName, setNewMapName] = useState(mapName);
   const dispatch = useDispatch<AppDispatch>();
   return (

@@ -1,5 +1,5 @@
 import { idToL, idToR, mL, mR } from '../mapGetters/MapQueries.ts';
-import { M, T } from '../mapState/MapStateTypes.ts';
+import { M, T } from '../mapState/map-state-types.ts';
 
 const deleteTL = (m: M, tl: T[]) =>
   tl

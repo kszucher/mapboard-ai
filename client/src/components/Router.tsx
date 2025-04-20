@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { PageState } from '../data/clientSide/EditorStateTypes.ts';
+import { PageState } from '../data/clientSide/editorState/editor-state-types.ts';
 import { RootState } from '../data/store.ts';
 import { Editor } from './Editor.tsx';
 import { Landing } from './Landing.tsx';

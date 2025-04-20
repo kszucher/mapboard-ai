@@ -2,7 +2,7 @@ import { Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField } from '@r
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { AccessType } from '../../data/clientSide/EditorStateTypes.ts';
+import { AccessType } from '../../data/clientSide/editorState/editor-state-types.ts';
 import { api } from '../../data/serverSide/Api.ts';
 import { RootState } from '../../data/store.ts';
 

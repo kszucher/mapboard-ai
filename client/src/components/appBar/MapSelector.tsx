@@ -1,16 +1,17 @@
 import { Button, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ChevronDown from '../../../assets/chevron-down.svg?react';
 import { api } from '../../data/serverSide/Api.ts';
-import { mapInfoDefaultState, sharesInfoDefaultState, userInfoDefaultState } from '../../data/serverSide/ApiState.ts';
-import { AppDispatch } from '../../data/store.ts';
+import { AppDispatch, RootState } from '../../data/store.ts';
 import { MapActions } from './MapActions.tsx';
 
 export const MapSelector: FC = () => {
-  const { mapId, mapName } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
-  const { tabMapIdList, tabMapNameList } = api.useGetUserInfoQuery().data || userInfoDefaultState;
-  const { sharesWithUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
+  const tabMapIdList = useSelector((state: RootState) => state.editor.userInfo.tabMapIdList);
+  const tabMapNameList = useSelector((state: RootState) => state.editor.userInfo.tabMapNameList);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
+  const mapName = useSelector((state: RootState) => state.editor.mapInfo.mapName);
+  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
   const dispatch = useDispatch<AppDispatch>();
   return (
     <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">
@@ -23,20 +24,20 @@ export const MapSelector: FC = () => {
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           <DropdownMenu.Label>{'My Maps'}</DropdownMenu.Label>
           {tabMapIdList.map((el, index) => (
-            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId: el }))}>
+            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.readMap.initiate({ mapId: el }))}>
               {tabMapNameList[index]}
             </DropdownMenu.Item>
           ))}
           <DropdownMenu.Separator />
           <DropdownMenu.Label>{'Shared Maps'}</DropdownMenu.Label>
           {sharesWithUser.map((el, index) => (
-            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId: el.id }))}>
+            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.readMap.initiate({ mapId: el.id }))}>
               {el.sharedMapName}
             </DropdownMenu.Item>
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <Button variant="solid" radius="full" onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId }))}>
+      <Button variant="solid" radius="full" onClick={() => dispatch(api.endpoints.readMap.initiate({ mapId }))}>
         {mapName}
       </Button>
       <MapActions />

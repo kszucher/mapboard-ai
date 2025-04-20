@@ -1,14 +1,21 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
+import { MapInfo } from '../../../../shared/types/api-state-types.ts';
 import { getMapX, getMapY } from '../../components/map/UtilsDiv.ts';
 import { api } from '../serverSide/Api.ts';
-import { editorStateDefault, editorStateDefaults } from './EditorStateDefaults.ts';
-import { AlertDialogState, DialogState, EditorState, MidMouseMode, PageState } from './EditorStateTypes.ts';
+import { editorStateDefault, editorStateDefaults } from './editorState/editor-state-defaults.ts';
+import {
+  AlertDialogState,
+  DialogState,
+  EditorState,
+  MidMouseMode,
+  PageState,
+} from './editorState/editor-state-types.ts';
 import { idToR, mapObjectToArray } from './mapGetters/MapQueries.ts';
 import { mapBuild } from './mapSetters/MapBuild.ts';
 import { mapDelete } from './mapSetters/MapDelete.ts';
 import { mapInsert } from './mapSetters/MapInsert.ts';
-import { ControlType, L, R, Side } from './mapState/MapStateTypes.ts';
+import { ControlType, L, R, Side } from './mapState/map-state-types.ts';
 
 export const editorSlice = createSlice({
   name: 'editor',
@@ -150,10 +157,10 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       isAnyOf(
         api.endpoints.toggleColorMode.matchPending,
-        api.endpoints.selectMap.matchPending,
-        api.endpoints.renameMap.matchPending,
         api.endpoints.createMapInTab.matchPending,
         api.endpoints.createMapInTabDuplicate.matchPending,
+        api.endpoints.readMap.matchPending,
+        api.endpoints.renameMap.matchPending,
         api.endpoints.moveUpMapInTab.matchPending,
         api.endpoints.moveDownMapInTab.matchPending,
         api.endpoints.deleteMap.matchPending,
@@ -167,30 +174,35 @@ export const editorSlice = createSlice({
       }
     );
     builder.addMatcher(api.endpoints.signIn.matchFulfilled, (state, { payload }) => {
+      console.log(payload);
+
       state.pageState = PageState.WS;
       state.workspaceId = payload.workspaceId;
-    });
-    builder.addMatcher(api.endpoints.getUserInfo.matchFulfilled, state => {
-      state.isLoading = false;
-    });
-    builder.addMatcher(api.endpoints.getMapInfo.matchFulfilled, (state, { payload }) => {
-      console.log(payload);
-      const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'));
-      if (isValid) {
-        const m = structuredClone(mapObjectToArray(payload.mapData));
-        mapBuild(m);
-        state.mapId = payload.mapId;
-        state.commitList = [m];
-        state.commitIndex = 0;
+      state.userInfo = payload.userInfo;
+      const readMapSuccess = readMap(state, payload.mapInfo);
+      state.shareInfo = payload.shareInfo;
+      if (readMapSuccess) {
         state.isLoading = false;
-      } else {
-        window.alert('invalid map');
       }
-    });
-    builder.addMatcher(api.endpoints.getSharesInfo.matchFulfilled, state => {
-      state.isLoading = false;
     });
   },
 });
+
+const readMap = (state: EditorState, payload: MapInfo): boolean => {
+  console.log(payload);
+  const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'));
+  if (isValid) {
+    const m = structuredClone(mapObjectToArray(payload.mapData));
+    mapBuild(m);
+    state.mapInfo.mapId = payload.mapId;
+    state.mapInfo.mapName = payload.mapName;
+    state.commitList = [m];
+    state.commitIndex = 0;
+    return true;
+  } else {
+    window.alert('invalid map');
+    return false;
+  }
+};
 
 export const { actions } = editorSlice;

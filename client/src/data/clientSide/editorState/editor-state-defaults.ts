@@ -1,15 +1,30 @@
-import { Side } from './mapState/MapStateTypes.ts';
-import { AlertDialogState, DialogState, EditorState, MidMouseMode, PageState } from './EditorStateTypes.ts';
+import { ColorMode } from '../../../../../shared/types/api-state-types.ts';
+import { AlertDialogState, DialogState, EditorState, MidMouseMode, PageState } from './editor-state-types.ts';
+import { Side } from '../mapState/map-state-types.ts';
 
 export const editorStateDefaults: EditorState = {
   token: '',
-  workspaceId: '',
+  workspaceId: 1,
   isLoading: false,
   midMouseMode: MidMouseMode.SCROLL,
   pageState: PageState.AUTH,
   dialogState: DialogState.NONE,
   alertDialogState: AlertDialogState.NONE,
-  mapId: '',
+  userInfo: {
+    userName: '',
+    colorMode: ColorMode.DARK,
+    tabMapIdList: [],
+    tabMapNameList: [],
+  },
+  mapInfo: {
+    mapId: 1,
+    mapName: '',
+    mapData: {},
+  },
+  shareInfo: {
+    sharesWithUser: [],
+    sharesByUser: [],
+  },
   commitList: [],
   commitIndex: 0,
   rOffsetCoords: [],

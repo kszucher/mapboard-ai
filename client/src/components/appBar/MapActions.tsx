@@ -1,15 +1,14 @@
 import { Dialog, DropdownMenu, IconButton } from '@radix-ui/themes';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Dots from '../../../assets/dots.svg?react';
-import { DialogState } from '../../data/clientSide/EditorStateTypes.ts';
+import { DialogState } from '../../data/clientSide/editorState/editor-state-types.ts';
 import { api } from '../../data/serverSide/Api.ts';
-import { mapInfoDefaultState, sharesInfoDefaultState } from '../../data/serverSide/ApiState.ts';
 import { actions } from '../../data/clientSide/Reducer.ts';
-import { AppDispatch } from '../../data/store.ts';
+import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const MapActions = () => {
-  const { mapId } = api.useGetMapInfoQuery().data || mapInfoDefaultState;
-  const { sharesWithUser } = api.useGetSharesInfoQuery().data || sharesInfoDefaultState;
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
+  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
   const isShared = sharesWithUser.find(el => el.id === mapId);
   const dispatch = useDispatch<AppDispatch>();
   return (
