@@ -17,7 +17,7 @@ let mapListener: AbortController;
 let midMouseListener: AbortController;
 
 export const Window: FC = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const workspaceId = useSelector((state: RootState) => state.editor.workspaceId);
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
   const pageState = useSelector((state: RootState) => state.editor.pageState);

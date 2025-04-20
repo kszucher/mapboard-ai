@@ -1,5 +1,10 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
-import { MapInfo, RenameMapResponseDto, SignInResponseDto } from '../../../../shared/types/api-state-types.ts';
+import {
+  CreateMapInTabResponseDto,
+  MapInfo,
+  RenameMapResponseDto,
+  SignInResponseDto,
+} from '../../../../shared/types/api-state-types.ts';
 import { timeoutId } from '../../components/window/Window.tsx';
 import { mapPrune } from '../clientSide/mapGetters/MapPrune.ts';
 import { mapArrayToObject } from '../clientSide/mapGetters/MapQueries.ts';
@@ -24,7 +29,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
 
   // map
-  createMapInTab: builder.mutation<void, void>({
+  createMapInTab: builder.mutation<CreateMapInTabResponseDto, void>({
     query: () => ({ url: 'create-map-in-tab', method: 'POST' }),
   }),
 
@@ -56,7 +61,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
         clearTimeout(timeoutId);
         const SAVE_ENABLED = true;
         if (SAVE_ENABLED) {
-          const mapId = editor.mapInfo.mapId;
+          const mapId = editor.mapInfo.id;
           const mapData = mapArrayToObject(mapPrune(editor.commitList[editor.commitIndex]));
           try {
             const { data } = await baseQuery({

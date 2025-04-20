@@ -7,7 +7,7 @@ import { actions } from '../../data/clientSide/Reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const MapActions = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
   const isShared = sharesWithUser.find(el => el.id === mapId);
   const dispatch = useDispatch<AppDispatch>();

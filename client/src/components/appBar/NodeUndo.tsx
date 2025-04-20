@@ -7,7 +7,7 @@ import { actions } from '../../data/clientSide/Reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const NodeUndo: FC = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const commitIndex = useSelector((state: RootState) => state.editor.commitIndex);
   const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
   const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;

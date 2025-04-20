@@ -19,7 +19,7 @@ export const Map: FC = () => {
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
   const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo);
   const colorMode = useSelector((state: RootState) => state.editor.userInfo.colorMode);
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const g = getG(m);
 

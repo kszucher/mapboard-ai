@@ -17,8 +17,8 @@ export const editorStateDefaults: EditorState = {
     tabMapNameList: [],
   },
   mapInfo: {
-    mapId: 1,
-    mapName: '',
+    id: 1,
+    name: '',
     mapData: {},
   },
   shareInfo: {

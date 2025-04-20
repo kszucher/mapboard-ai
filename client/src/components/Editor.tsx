@@ -17,7 +17,7 @@ import { Window } from './window/Window.tsx';
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.editor.isLoading);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const mExists = mapId && m && Object.keys(m).length;
   const colorMode = useSelector((state: RootState) => state.editor.userInfo.colorMode);
   const dialogState = useSelector((state: RootState) => state.editor.dialogState);

@@ -184,8 +184,14 @@ export const editorSlice = createSlice({
       }
     });
     builder.addMatcher(api.endpoints.renameMap.matchFulfilled, (state, { payload }) => {
-      state.mapInfo.mapName = payload.name;
+      state.mapInfo.name = payload.mapInfo.name;
       state.isLoading = false;
+    });
+    builder.addMatcher(api.endpoints.createMapInTab.matchFulfilled, (state, { payload }) => {
+      const readMapSuccess = readMap(state, payload.mapInfo);
+      if (readMapSuccess) {
+        state.isLoading = false;
+      }
     });
   },
 });
@@ -196,8 +202,8 @@ const readMap = (state: EditorState, payload: MapInfo): boolean => {
   if (isValid) {
     const m = structuredClone(mapObjectToArray(payload.mapData));
     mapBuild(m);
-    state.mapInfo.mapId = payload.mapId;
-    state.mapInfo.mapName = payload.mapName;
+    state.mapInfo.id = payload.id;
+    state.mapInfo.name = payload.name;
     state.commitList = [m];
     state.commitIndex = 0;
     return true;

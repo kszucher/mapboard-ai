@@ -11,8 +11,8 @@ export interface UserInfo {
 }
 
 export interface MapInfo {
-  mapId: number;
-  mapName: string;
+  id: number;
+  name: string;
   mapData: object;
 }
 
@@ -44,6 +44,14 @@ export type SignInResponseDto = {
   shareInfo: ShareInfo,
 }
 
+export type CreateMapInTabResponseDto = {
+  mapInfo: MapInfo,
+}
+
+export type ReadMapResponseDto = {
+  mapInfo: MapInfo,
+}
+
 export type RenameMapResponseDto = {
-  name: string
+  mapInfo: Pick<MapInfo, 'name'>
 }

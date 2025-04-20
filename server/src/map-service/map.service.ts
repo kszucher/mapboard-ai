@@ -1,30 +1,32 @@
 import { JsonObject } from '@prisma/client/runtime/library';
-import { MapInfo, RenameMapResponseDto } from '../../../shared/types/api-state-types';
-import { PrismaClient } from '../generated/client';
+import { PrismaClient, Map } from '../generated/client';
 
 export class MapService {
   constructor(private prisma: PrismaClient) {
   }
 
-  createNewMapData() {
+  private createNewMapData() {
     return {
       [global.crypto.randomUUID().slice(-8)]: { path: ['g'] },
       [global.crypto.randomUUID().slice(-8)]: { path: ['r', 0] },
     };
   }
 
-  async createMapInTab({ userId, mapData, mapName }: {
+  async createMapInTab({ userId, mapName }: {
     userId: number,
-    mapData: object,
     mapName: string
-  }): Promise<void> {
+  }): Promise<Pick<Map, 'id' | 'name' | 'mapData'>> {
     const map = await this.prisma.map.create({
       data: {
-        mapData,
         name: mapName,
+        mapData: this.createNewMapData(),
         User: { connect: { id: userId } },
       },
-      select: { id: true },
+      select: {
+        id: true,
+        name: true,
+        mapData: true,
+      },
     });
 
     await this.prisma.user.update({
@@ -41,13 +43,15 @@ export class MapService {
         },
       },
     });
+
+    return map;
   }
 
   async createMapInTabDuplicate() {
 
   }
 
-  async readMap({ workspaceId }: { workspaceId: number }): Promise<MapInfo> {
+  async readMap({ workspaceId }: { workspaceId: number }): Promise<Pick<Map, 'id' | 'name' | 'mapData'>> {
     const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
       select: {
@@ -71,13 +75,13 @@ export class MapService {
     });
 
     return {
-      mapId: workspace.Map.id,
-      mapName: workspace.Map.name,
+      id: workspace.Map.id,
+      name: workspace.Map.name,
       mapData: workspace.Map.mapData as JsonObject,
     };
   }
 
-  async renameMap({ mapId, mapName }: { mapId: number, mapName: string }): Promise<RenameMapResponseDto> {
+  async renameMap({ mapId, mapName }: { mapId: number, mapName: string }): Promise<Pick<Map, 'name'>> {
     return this.prisma.map.update({
       where: { id: mapId },
       data: { name: mapName },

@@ -9,8 +9,8 @@ import { MapActions } from './MapActions.tsx';
 export const MapSelector: FC = () => {
   const tabMapIdList = useSelector((state: RootState) => state.editor.userInfo.tabMapIdList);
   const tabMapNameList = useSelector((state: RootState) => state.editor.userInfo.tabMapNameList);
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.mapId);
-  const mapName = useSelector((state: RootState) => state.editor.mapInfo.mapName);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
+  const mapName = useSelector((state: RootState) => state.editor.mapInfo.name);
   const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
   const dispatch = useDispatch<AppDispatch>();
   return (
