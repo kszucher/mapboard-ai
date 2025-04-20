@@ -91,10 +91,10 @@ export class MapService {
   }): Promise<void> {
     await this.prisma.$executeRawUnsafe(`
         UPDATE "Map"
-        SET mapData = jsonb_merge_recurse(
+        SET "mapData" = jsonb_merge_recurse(
             $1::jsonb,
             jsonb_diff_recurse(
-                "Map".mapData,
+                "Map"."mapData",
                 (
                     SELECT "mapData"
                     FROM "Workspace"
@@ -109,8 +109,8 @@ export class MapService {
   async updateMapByServer({ mapId, mapDataDelta }: { mapId: number, mapDataDelta: object }) {
     await this.prisma.$executeRawUnsafe(`
         UPDATE "Map"
-        SET mapData = jsonb_merge_recurse(
-            "Map".mapData,
+        SET "mapData" = jsonb_merge_recurse(
+            "Map"."mapData",
             $1::jsonb
         )
       WHERE id = $2
