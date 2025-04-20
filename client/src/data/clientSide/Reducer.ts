@@ -177,8 +177,9 @@ export const editorSlice = createSlice({
       state.pageState = PageState.WS;
       state.workspaceId = payload.workspaceId;
       state.userInfo = payload.userInfo;
-      const readMapSuccess = readMap(state, payload.mapInfo);
+      state.tabInfo = payload.tabInfo;
       state.shareInfo = payload.shareInfo;
+      const readMapSuccess = readMap(state, payload.mapInfo);
       if (readMapSuccess) {
         state.isLoading = false;
       }
@@ -188,6 +189,7 @@ export const editorSlice = createSlice({
       state.isLoading = false;
     });
     builder.addMatcher(api.endpoints.createMapInTab.matchFulfilled, (state, { payload }) => {
+      state.tabInfo = payload.tabInfo;
       const readMapSuccess = readMap(state, payload.mapInfo);
       if (readMapSuccess) {
         state.isLoading = false;

@@ -5,15 +5,17 @@ import {
   RenameMapResponseDto,
 } from '../../../shared/types/api-state-types';
 import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
+import { tabService } from '../tab/tab.controller';
 import { MapService } from './map.service';
 
 const router = Router();
-export const mapService = new MapService(prismaClient);
+export const mapService = new MapService(prismaClient, tabService);
 
 router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId } = (req as any);
   const mapInfo = await mapService.createMapInTab({ userId, mapName: 'New Map In Tab' });
-  res.json({ mapInfo } as CreateMapInTabResponseDto);
+  const tabInfo = await tabService.readTab({ userId });
+  res.json({ mapInfo, tabInfo } as CreateMapInTabResponseDto);
 });
 
 router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {

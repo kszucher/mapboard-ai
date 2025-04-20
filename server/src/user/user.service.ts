@@ -3,8 +3,7 @@ import { PrismaClient } from '../generated/client';
 
 export class UserService {
   constructor(
-    private prisma: PrismaClient,
-  ) {
+    private prisma: PrismaClient) {
   }
 
   async readUser({ workspaceId }: { workspaceId: number }): Promise<UserInfo> {
@@ -25,19 +24,9 @@ export class UserService {
       },
     });
 
-    const tabMaps = await this.prisma.map.findMany({
-      where: { id: { in: workspace.User.Tab.mapIds } },
-      select: {
-        id: true,
-        name: true,
-      },
-    });
-
     return {
       userName: workspace.User.name,
       colorMode: workspace.User.colorMode as ColorMode,
-      tabMapIdList: tabMaps.map(el => el.id),
-      tabMapNameList: tabMaps.map(el => el.name),
     };
   }
 }

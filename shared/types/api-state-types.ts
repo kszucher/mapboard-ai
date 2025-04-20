@@ -6,14 +6,17 @@ export enum ColorMode {
 export interface UserInfo {
   userName: string;
   colorMode: ColorMode;
-  tabMapIdList: number[];
-  tabMapNameList: string[];
 }
 
 export interface MapInfo {
   id: number;
   name: string;
   mapData: object;
+}
+
+export interface TabInfo {
+  tabMapIdList: number[];
+  tabMapNameList: string[];
 }
 
 export interface ShareInfo {
@@ -39,13 +42,15 @@ export interface ExtractionRawPromptDefaultState {
 
 export type SignInResponseDto = {
   workspaceId: number;
-  mapInfo: MapInfo,
   userInfo: UserInfo,
+  mapInfo: MapInfo,
+  tabInfo: TabInfo,
   shareInfo: ShareInfo,
 }
 
 export type CreateMapInTabResponseDto = {
   mapInfo: MapInfo,
+  tabInfo: TabInfo,
 }
 
 export type ReadMapResponseDto = {

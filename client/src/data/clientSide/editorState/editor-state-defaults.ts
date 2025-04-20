@@ -13,13 +13,15 @@ export const editorStateDefaults: EditorState = {
   userInfo: {
     userName: '',
     colorMode: ColorMode.DARK,
-    tabMapIdList: [],
-    tabMapNameList: [],
   },
   mapInfo: {
     id: 1,
     name: '',
     mapData: {},
+  },
+  tabInfo: {
+    tabMapIdList: [],
+    tabMapNameList: [],
   },
   shareInfo: {
     sharesWithUser: [],

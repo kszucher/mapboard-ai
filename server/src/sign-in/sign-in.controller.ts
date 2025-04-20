@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { SignInResponseDto } from '../../../shared/types/api-state-types';
 import { mapService } from '../map/map.controller';
+import { tabService } from '../tab/tab.controller';
 import { shareService } from '../share/share.controller';
 import { checkJwt } from '../startup';
 import { userService } from '../user/user.controller';
@@ -12,8 +13,9 @@ router.post('/sign-in', checkJwt, async (req: Request, res: Response) => {
   const { userId, workspaceId } = await workspaceService.createWorkspace({ userSub: req.auth?.payload.sub ?? '' });
   const userInfo = await userService.readUser({ workspaceId });
   const mapInfo = await mapService.readMap({ workspaceId });
+  const tabInfo = await tabService.readTab({ userId });
   const shareInfo = await shareService.getShareInfo({ userId });
-  res.json({ workspaceId, userInfo, mapInfo, shareInfo } as SignInResponseDto);
+  res.json({ workspaceId, userInfo, mapInfo, tabInfo, shareInfo } as SignInResponseDto);
 });
 
 export default router;

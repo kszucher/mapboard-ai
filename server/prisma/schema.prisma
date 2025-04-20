@@ -43,7 +43,7 @@ model Map {
 
 model Tab {
   id     Int   @id @default(autoincrement())
-  user   User?
+  User   User?
   mapIds Int[]
 }
 

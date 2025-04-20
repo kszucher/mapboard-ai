@@ -1,8 +1,12 @@
 import { JsonObject } from '@prisma/client/runtime/library';
 import { PrismaClient, Map } from '../generated/client';
+import { TabService } from '../tab/tab.service';
 
 export class MapService {
-  constructor(private prisma: PrismaClient) {
+  constructor(
+    private prisma: PrismaClient,
+    private tabService: TabService,
+  ) {
   }
 
   private createNewMapData() {
@@ -29,20 +33,7 @@ export class MapService {
       },
     });
 
-    await this.prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        Tab: {
-          update: {
-            mapIds: {
-              push: map.id,
-            },
-          },
-        },
-      },
-    });
+    await this.tabService.addMapToTab({ userId, mapId: map.id });
 
     return map;
   }
