@@ -19,9 +19,9 @@ router.post('/create-map-in-tab', checkJwt, async (req: Request, res: Response) 
 });
 
 router.post('/rename-map', checkJwt, async (req: Request, res: Response) => {
-  const { mapId, name } = req.body;
-  await mapService.renameMap({ mapId, name });
-  res.json();
+  const { mapId, mapName } = req.body;
+  const mapRenameResponseDto = await mapService.renameMap({ mapId, mapName });
+  res.json(mapRenameResponseDto);
 });
 
 router.post('/save-map', checkJwt, async (req: Request, res: Response) => {

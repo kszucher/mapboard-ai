@@ -174,8 +174,6 @@ export const editorSlice = createSlice({
       }
     );
     builder.addMatcher(api.endpoints.signIn.matchFulfilled, (state, { payload }) => {
-      console.log(payload);
-
       state.pageState = PageState.WS;
       state.workspaceId = payload.workspaceId;
       state.userInfo = payload.userInfo;
@@ -184,6 +182,10 @@ export const editorSlice = createSlice({
       if (readMapSuccess) {
         state.isLoading = false;
       }
+    });
+    builder.addMatcher(api.endpoints.renameMap.matchFulfilled, (state, { payload }) => {
+      state.mapInfo.mapName = payload.name;
+      state.isLoading = false;
     });
   },
 });

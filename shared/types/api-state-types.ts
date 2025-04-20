@@ -43,3 +43,7 @@ export type SignInResponseDto = {
   userInfo: UserInfo,
   shareInfo: ShareInfo,
 }
+
+export type RenameMapResponseDto = {
+  name: string
+}

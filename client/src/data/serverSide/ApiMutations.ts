@@ -1,5 +1,5 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
-import { MapInfo, SignInResponseDto } from '../../../../shared/types/api-state-types.ts';
+import { MapInfo, RenameMapResponseDto, SignInResponseDto } from '../../../../shared/types/api-state-types.ts';
 import { timeoutId } from '../../components/window/Window.tsx';
 import { mapPrune } from '../clientSide/mapGetters/MapPrune.ts';
 import { mapArrayToObject } from '../clientSide/mapGetters/MapQueries.ts';
@@ -36,8 +36,8 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     query: ({ mapId }) => ({ url: 'read-map', method: 'POST', body: { mapId } }),
   }),
 
-  renameMap: builder.mutation<void, { mapId: number; name: string }>({
-    query: ({ mapId, name }) => ({ url: 'rename-map', method: 'POST', body: { mapId, name } }),
+  renameMap: builder.mutation<RenameMapResponseDto, { mapId: number; mapName: string }>({
+    query: ({ mapId, mapName }) => ({ url: 'rename-map', method: 'POST', body: { mapId, mapName } }),
   }),
 
   moveUpMapInTab: builder.mutation<void, { mapId: number }>({

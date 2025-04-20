@@ -1,5 +1,5 @@
 import { JsonObject } from '@prisma/client/runtime/library';
-import { MapInfo } from '../../../shared/types/api-state-types';
+import { MapInfo, RenameMapResponseDto } from '../../../shared/types/api-state-types';
 import { PrismaClient } from '../generated/client';
 
 export class MapService {
@@ -77,10 +77,11 @@ export class MapService {
     };
   }
 
-  async renameMap({ mapId, name }: { mapId: number, name: string }) {
-    await this.prisma.map.update({
+  async renameMap({ mapId, mapName }: { mapId: number, mapName: string }): Promise<RenameMapResponseDto> {
+    return this.prisma.map.update({
       where: { id: mapId },
-      data: { name },
+      data: { name: mapName },
+      select: { name: true },
     });
   }
 
