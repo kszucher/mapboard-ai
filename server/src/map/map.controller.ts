@@ -1,9 +1,5 @@
 import { Request, Response, Router } from 'express';
-import {
-  CreateMapInTabResponseDto,
-  ReadMapResponseDto,
-  RenameMapResponseDto,
-} from '../../../shared/types/api-state-types';
+import { CreateMapInTabResponseDto, RenameMapResponseDto } from '../../../shared/types/api-state-types';
 import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
 import { tabService } from '../tab/tab.controller';
 import { MapService } from './map.service';
@@ -22,12 +18,6 @@ router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Reques
   const { mapId, mapName } = req.body;
   const mapInfo = await mapService.renameMap({ mapId, mapName });
   res.json({ mapInfo } as RenameMapResponseDto);
-});
-
-router.post('/read-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId } = (req as any);
-  const mapInfo = await mapService.readMap({ workspaceId });
-  res.json({ mapInfo } as ReadMapResponseDto);
 });
 
 router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {

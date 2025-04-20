@@ -159,7 +159,7 @@ export const editorSlice = createSlice({
         api.endpoints.toggleColorMode.matchPending,
         api.endpoints.createMapInTab.matchPending,
         api.endpoints.createMapInTabDuplicate.matchPending,
-        api.endpoints.readMap.matchPending,
+        api.endpoints.workspaceUpdate.matchPending,
         api.endpoints.renameMap.matchPending,
         api.endpoints.moveUpMapInTab.matchPending,
         api.endpoints.moveDownMapInTab.matchPending,
@@ -184,12 +184,18 @@ export const editorSlice = createSlice({
         state.isLoading = false;
       }
     });
+    builder.addMatcher(api.endpoints.createMapInTab.matchFulfilled, (state, { payload }) => {
+      state.tabInfo = payload.tabInfo;
+      const readMapSuccess = readMap(state, payload.mapInfo);
+      if (readMapSuccess) {
+        state.isLoading = false;
+      }
+    });
     builder.addMatcher(api.endpoints.renameMap.matchFulfilled, (state, { payload }) => {
       state.mapInfo.name = payload.mapInfo.name;
       state.isLoading = false;
     });
-    builder.addMatcher(api.endpoints.createMapInTab.matchFulfilled, (state, { payload }) => {
-      state.tabInfo = payload.tabInfo;
+    builder.addMatcher(api.endpoints.workspaceUpdate.matchFulfilled, (state, { payload }) => {
       const readMapSuccess = readMap(state, payload.mapInfo);
       if (readMapSuccess) {
         state.isLoading = false;

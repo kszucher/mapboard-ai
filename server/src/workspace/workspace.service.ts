@@ -48,4 +48,21 @@ export class WorkspaceService {
       workspaceId: workspace.id,
     };
   }
+
+  async updateWorkspace({ workspaceId, mapId }: { workspaceId: number, mapId: number }): Promise<void> {
+    const map = await this.prisma.map.findFirstOrThrow({
+      where: { id: mapId },
+      select: { id: true, mapData: true },
+    });
+
+    await this.prisma.workspace.update({
+      where: { id: workspaceId },
+      data: {
+        mapId: map.id,
+        mapData: map.mapData as JsonObject,
+      },
+    });
+
+    await this.mapService.updateOpenCount({ mapId });
+  }
 }

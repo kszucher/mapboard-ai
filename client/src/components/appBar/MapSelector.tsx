@@ -24,20 +24,26 @@ export const MapSelector: FC = () => {
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           <DropdownMenu.Label>{'My Maps'}</DropdownMenu.Label>
           {tabMapIdList.map((el, index) => (
-            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.readMap.initiate({ mapId: el }))}>
+            <DropdownMenu.Item
+              key={index}
+              onClick={() => dispatch(api.endpoints.workspaceUpdate.initiate({ mapId: el }))}
+            >
               {tabMapNameList[index]}
             </DropdownMenu.Item>
           ))}
           <DropdownMenu.Separator />
           <DropdownMenu.Label>{'Shared Maps'}</DropdownMenu.Label>
           {sharesWithUser.map((el, index) => (
-            <DropdownMenu.Item key={index} onClick={() => dispatch(api.endpoints.readMap.initiate({ mapId: el.id }))}>
+            <DropdownMenu.Item
+              key={index}
+              onClick={() => dispatch(api.endpoints.workspaceUpdate.initiate({ mapId: el.id }))}
+            >
               {el.sharedMapName}
             </DropdownMenu.Item>
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <Button variant="solid" radius="full" onClick={() => dispatch(api.endpoints.readMap.initiate({ mapId }))}>
+      <Button variant="solid" radius="full" onClick={() => dispatch(api.endpoints.workspaceUpdate.initiate({ mapId }))}>
         {mapName}
       </Button>
       <MapActions />

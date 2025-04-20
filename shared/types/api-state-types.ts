@@ -53,7 +53,7 @@ export type CreateMapInTabResponseDto = {
   tabInfo: TabInfo,
 }
 
-export type ReadMapResponseDto = {
+export type WorkspaceUpdateResponseDto = {
   mapInfo: MapInfo,
 }
 

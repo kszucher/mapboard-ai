@@ -80,6 +80,17 @@ export class MapService {
     });
   }
 
+  async updateOpenCount({ mapId }: { mapId: number }): Promise<void> {
+    await this.prisma.map.update({
+      where: { id: mapId },
+      data: {
+        openCount: {
+          increment: 1,
+        },
+      },
+    });
+  }
+
   async updateMapByClient({ workspaceId, mapId, mapData }: {
     workspaceId: number,
     mapId: number,

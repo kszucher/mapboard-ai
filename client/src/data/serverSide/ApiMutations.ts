@@ -1,7 +1,7 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
   CreateMapInTabResponseDto,
-  MapInfo,
+  WorkspaceUpdateResponseDto,
   RenameMapResponseDto,
   SignInResponseDto,
 } from '../../../../shared/types/api-state-types.ts';
@@ -35,10 +35,6 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
 
   createMapInTabDuplicate: builder.mutation<void, { mapId: number }>({
     query: ({ mapId }) => ({ url: 'create-map-in-tab-duplicate', method: 'POST', body: { mapId } }),
-  }),
-
-  readMap: builder.mutation<MapInfo, { mapId: number }>({
-    query: ({ mapId }) => ({ url: 'read-map', method: 'POST', body: { mapId } }),
   }),
 
   renameMap: builder.mutation<RenameMapResponseDto, { mapId: number; mapName: string }>({
@@ -137,6 +133,11 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
       dispatch(actions.resetState());
       dispatch(api.util.resetApiState());
     },
+  }),
+
+  // workspace
+  workspaceUpdate: builder.mutation<WorkspaceUpdateResponseDto, { mapId: number }>({
+    query: ({ mapId }) => ({ url: 'workspace-update', method: 'POST', body: { mapId } }),
   }),
 
   // llm
