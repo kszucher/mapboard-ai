@@ -101,7 +101,8 @@ export class MapService {
                     WHERE id = $2
                 )
             )
-        )
+        ),
+        "updatedAt" = NOW()
       WHERE id = $3
     `, JSON.stringify(mapData), workspaceId, mapId);
   }

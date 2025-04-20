@@ -19,7 +19,6 @@ export class PgCdcService {
     CREATE OR REPLACE FUNCTION notify_map_update()
     RETURNS TRIGGER AS $$
     BEGIN
-      RAISE NOTICE '🔥 Trigger fired for map id: %', NEW.id;
       PERFORM pg_notify('map_update', NEW.id::text);
       RETURN NEW;
     END;
@@ -42,20 +41,30 @@ export class PgCdcService {
     await this.pgClient.connect();
 
     this.pgClient.on('notification', async (msg) => {
-      console.log('📨 NOTIFY received:', msg);
+        console.log('📨 NOTIFY received:', msg);
 
-      const mapId = parseInt(msg.payload as string);
-      const map = await this.prisma.map.findUnique({ where: { id: mapId } });
+        try {
+          const mapId = parseInt(msg.payload as string);
+          const map = await this.prisma.map.findUnique({ where: { id: mapId } });
 
-      if (!map) return;
+          if (!map) return;
 
-      for (const client of this.clients) {
-        if (client.mapId === mapId) {
-          client.res.write(`event: mapUpdate\n`);
-          client.res.write(`data: ${JSON.stringify(map)}\n\n`);
+          // console.log(this.clients);
+
+          for (const client of this.clients) {
+            if (client.mapId === mapId) {
+              console.log('match');
+              // client.res.write(`message: mapUpdate\n`);
+              // client.res.write(`data: ${JSON.stringify(map)}\n\n`);
+            }
+          }
+
+
+        } catch (e) {
+          console.log('error');
         }
-      }
-    });
+      },
+    );
 
     this.pgClient.on('error', (err) => {
       console.error('Postgres client error:', err);
