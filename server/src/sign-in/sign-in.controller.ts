@@ -1,9 +1,9 @@
 import { Request, Response, Router } from 'express';
 import { SignInResponseDto } from '../../../shared/types/api-state-types';
-import { mapService } from '../map-service/map.controller';
-import { shareService } from '../share-service/share.controller';
+import { mapService } from '../map/map.controller';
+import { shareService } from '../share/share.controller';
 import { checkJwt, prismaClient } from '../startup';
-import { userService } from '../user-service/user.controller';
+import { userService } from '../user/user.controller';
 import { SignInService } from './sign-in.service';
 
 const router = Router();

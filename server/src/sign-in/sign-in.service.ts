@@ -1,6 +1,6 @@
 import { JsonObject } from '@prisma/client/runtime/library';
 import { PrismaClient } from '../generated/client';
-import { MapService } from '../map-service/map.service';
+import { MapService } from '../map/map.service';
 
 export class SignInService {
   constructor(

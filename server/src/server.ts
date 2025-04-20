@@ -2,10 +2,10 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import { prismaClient } from './startup';
 import { PgFunctionsService } from './pg-functions/pg.functions.service';
-import mapController from './map-service/map.controller';
-import shareController from './share-service/share.controller';
-import userController from './user-service/user.controller';
-import signInController from './sign-in-service/sign-in.controller';
+import mapController from './map/map.controller';
+import shareController from './share/share.controller';
+import userController from './user/user.controller';
+import signInController from './sign-in/sign-in.controller';
 
 const pgFunctionsService = new PgFunctionsService(prismaClient);
 
