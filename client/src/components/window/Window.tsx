@@ -18,7 +18,6 @@ let midMouseListener: AbortController;
 
 export const Window: FC = () => {
   const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
-  const workspaceId = useSelector((state: RootState) => state.editor.workspaceId);
   const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
   const pageState = useSelector((state: RootState) => state.editor.pageState);
   const dialogState = useSelector((state: RootState) => state.editor.dialogState);
@@ -96,8 +95,9 @@ export const Window: FC = () => {
   }, [m]);
 
   useEffect(() => {
-    if (workspaceId) {
-      const eventSource = new EventSource(backendUrl + '/workspace_updates/?workspace_id=' + workspaceId);
+    if (mapId) {
+      console.log('attempt to start event source with mapId: ', mapId);
+      const eventSource = new EventSource(backendUrl + '/map_updates/?map_id=' + mapId);
       eventSource.onmessage = event => {
         console.log('SSE data:', event.data);
         const eventData = JSON.parse(event.data.replace(/'/g, '"'));
@@ -110,9 +110,12 @@ export const Window: FC = () => {
             break;
         }
       };
-      return () => eventSource.close();
+      return () => {
+        console.log('closing SSE');
+        eventSource.close();
+      };
     }
-  }, [workspaceId]);
+  }, [mapId]);
 
   return <></>;
 };

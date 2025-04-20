@@ -9,7 +9,7 @@ export interface UserInfo {
 }
 
 export interface MapInfo {
-  id: number;
+  id: number | null;
   name: string;
   mapData: object;
 }

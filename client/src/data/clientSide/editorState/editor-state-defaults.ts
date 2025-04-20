@@ -15,7 +15,7 @@ export const editorStateDefaults: EditorState = {
     colorMode: ColorMode.DARK,
   },
   mapInfo: {
-    id: 1,
+    id: null,
     name: '',
     mapData: {},
   },
