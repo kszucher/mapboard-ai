@@ -5,8 +5,11 @@ export class ShareService {
   constructor(private prisma: PrismaClient) {
   }
 
-  async getShareInfo({ userId }: { userId: string }): Promise<SharesInfoDefaultState> {
+  async getShareInfo({ userId }: { userId: number }): Promise<SharesInfoDefaultState> {
     const user = await this.prisma.user.findFirstOrThrow({
+      where: {
+        id: userId,
+      },
       select: {
         SharesByMe: {
           select: {
