@@ -3,12 +3,14 @@
     "@prisma/client": "^6.6.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "express-oauth2-jwt-bearer": "^1.6.1"
+    "express-oauth2-jwt-bearer": "^1.6.1",
+    "pg": "^8.14.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
+    "@types/pg": "^8.11.13",
     "prisma": "^6.6.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

@@ -8,12 +8,17 @@ import tabController from './tab/tab.controller';
 import shareController from './share/share.controller';
 import workspaceController from './workspace/workspace.controller';
 import signInController from './sign-in/sign-in.controller';
+import { Client as PgClient } from 'pg';
 
 const pgFunctionsService = new PgFunctionsService(prismaClient);
 
 (async () => {
   await pgFunctionsService.setupFunctions();
 })();
+
+export const pgClient = new PgClient({
+  connectionString: process.env.DATABASE_URL,
+});
 
 const app = express();
 
@@ -30,6 +35,7 @@ app.get('/ping', async (req: Request, res: Response) => {
   console.log('ping');
   res.json('ping');
 });
+
 
 const PORT = process.env.PORT || 8083;
 app.listen(PORT, () => {
