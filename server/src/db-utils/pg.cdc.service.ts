@@ -33,7 +33,7 @@ export class PgCdcService {
     CREATE TRIGGER map_update_trigger
     AFTER UPDATE ON "Map"
     FOR EACH ROW
-    WHEN (OLD.* IS DISTINCT FROM NEW.*)
+    WHEN (OLD."updatedAt" IS DISTINCT FROM NEW."updatedAt")
     EXECUTE PROCEDURE notify_map_update();
   `);
 
