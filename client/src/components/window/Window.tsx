@@ -97,18 +97,18 @@ export const Window: FC = () => {
   useEffect(() => {
     if (mapId) {
       console.log('attempt to start event source with mapId: ', mapId);
-      const eventSource = new EventSource(backendUrl + '/map_updates/?map_id=' + mapId);
+      const eventSource = new EventSource(`${backendUrl}/map_events/${mapId}`);
       eventSource.onmessage = event => {
         console.log('SSE data:', event.data);
-        const eventData = JSON.parse(event.data.replace(/'/g, '"'));
-        switch (eventData.event_id) {
-          case 'MAP_UPDATED':
-            // dispatch(api.util.invalidateTags(['MapInfo']));
-            break;
-          case 'MAP_DELETED':
-            // TODO select_available_map
-            break;
-        }
+        // const eventData = JSON.parse(event.data.replace(/'/g, '"'));
+        // switch (eventData.event_id) {
+        //   case 'MAP_UPDATED':
+        //     // dispatch(api.util.invalidateTags(['MapInfo']));
+        //     break;
+        //   case 'MAP_DELETED':
+        //     // TODO select_available_map
+        //     break;
+        // }
       };
       return () => {
         console.log('closing SSE');

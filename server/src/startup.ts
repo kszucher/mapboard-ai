@@ -1,6 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { auth } from 'express-oauth2-jwt-bearer';
+import { Client as PgClient } from 'pg';
 import { PrismaClient } from './generated/client';
+
+export const pgClient = new PgClient({
+  connectionString: process.env.DATABASE_URL,
+});
 
 export const prismaClient = new PrismaClient();
 

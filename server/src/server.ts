@@ -1,24 +1,22 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
-import { prismaClient } from './startup';
-import { PgFunctionsService } from './pg-functions/pg.functions.service';
+import { PgCdcService } from './db-utils/pg.cdc.service';
+import { pgClient, prismaClient } from './startup';
+import { PgFunctionsService } from './db-utils/pg.functions.service';
 import userController from './user/user.controller';
 import mapController from './map/map.controller';
 import tabController from './tab/tab.controller';
 import shareController from './share/share.controller';
 import workspaceController from './workspace/workspace.controller';
 import signInController from './sign-in/sign-in.controller';
-import { Client as PgClient } from 'pg';
 
 const pgFunctionsService = new PgFunctionsService(prismaClient);
+const pgCdcService = new PgCdcService(pgClient, prismaClient);
 
 (async () => {
   await pgFunctionsService.setupFunctions();
+  await pgCdcService.setupListenNotify();
 })();
-
-export const pgClient = new PgClient({
-  connectionString: process.env.DATABASE_URL,
-});
 
 const app = express();
 
@@ -36,6 +34,28 @@ app.get('/ping', async (req: Request, res: Response) => {
   res.json('ping');
 });
 
+app.get('/map_events/:map_id', async (req, res) => {
+
+  console.log('runs...');
+
+  const mapId = parseInt(req.params.map_id);
+
+  console.log(mapId);
+
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  const client = { mapId, res };
+  pgCdcService.addClient(client);
+
+  req.on('close', async () => {
+    console.log('...stops');
+    pgCdcService.deleteClient(client);
+    res.end();
+  });
+});
 
 const PORT = process.env.PORT || 8083;
 app.listen(PORT, () => {
