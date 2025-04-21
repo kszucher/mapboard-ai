@@ -24,6 +24,7 @@ router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request,
   const { workspaceId } = (req as any);
   const { mapId, mapData } = req.body;
   await mapService.updateMapByClient({ workspaceId, mapId, mapData });
+  res.json();
 });
 
 export default router;
