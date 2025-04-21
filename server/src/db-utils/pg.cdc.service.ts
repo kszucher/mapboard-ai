@@ -16,27 +16,26 @@ export class PgCdcService {
   async setupListenNotify() {
 
     await this.prisma.$executeRawUnsafe(`
-    CREATE OR REPLACE FUNCTION notify_map_update()
-    RETURNS TRIGGER AS $$
-    BEGIN
-      PERFORM pg_notify('map_update', NEW.id::text);
-      RETURN NEW;
-    END;
-    $$ LANGUAGE plpgsql;
-  `);
+  DROP TRIGGER IF EXISTS map_update_trigger ON "Map";
+`);
 
     await this.prisma.$executeRawUnsafe(`
-    DROP TRIGGER IF EXISTS map_update_trigger ON "Map";
-  `);
+  CREATE OR REPLACE FUNCTION notify_map_update()
+  RETURNS TRIGGER AS $$
+  BEGIN
+    PERFORM pg_notify('map_update', NEW.id::text);
+    RETURN NEW;
+  END;
+  $$ LANGUAGE plpgsql;
+`);
 
     await this.prisma.$executeRawUnsafe(`
-    CREATE TRIGGER map_update_trigger
-    AFTER UPDATE ON "Map"
-    FOR EACH ROW
-    WHEN (OLD."updatedAt" IS DISTINCT FROM NEW."updatedAt")
-    EXECUTE PROCEDURE notify_map_update();
-  `);
-
+  CREATE TRIGGER map_update_trigger
+  AFTER UPDATE ON "Map"
+  FOR EACH ROW
+  WHEN (OLD."updatedAt" IS DISTINCT FROM NEW."updatedAt")
+  EXECUTE FUNCTION notify_map_update();
+`);
 
     await this.pgClient.connect();
 
@@ -68,6 +67,10 @@ export class PgCdcService {
 
     this.pgClient.on('error', (err) => {
       console.error('Postgres client error:', err);
+    });
+
+    this.pgClient.on('end', () => {
+      console.error('Postgres client end!!!:');
     });
 
     await this.pgClient.query('LISTEN map_update');
