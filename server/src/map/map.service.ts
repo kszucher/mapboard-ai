@@ -89,6 +89,8 @@ export class MapService {
     mapId: number,
     mapData: object
   }): Promise<void> {
+    // S = C + S - LC
+    // Map.mapData = mapData + Map.mapData - Workspace.mapData
     await this.prisma.$executeRawUnsafe(`
         UPDATE "Map"
         SET "mapData" = jsonb_merge_recurse(

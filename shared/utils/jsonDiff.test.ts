@@ -12,7 +12,7 @@ describe('jsonDiff', () => {
       t: { a: 'vo', b: 'vd', d: 'vd' },
       v: { a: 'vd' },
     };
-    const expected = {
+    const expected = { // original + diff = a --> diff = a - original
       t: { b: 'vd', c: null, d: 'vd' },
       u: null,
       v: { a: 'vd' },
