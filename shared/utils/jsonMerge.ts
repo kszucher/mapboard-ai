@@ -1,4 +1,4 @@
-const jsonMerge = (orig: any, delta: any): any => {
+export const jsonMerge = (orig: any, delta: any): any => {
   const result: Record<string, any> = {};
 
   const keys = new Set([...Object.keys(orig || {}), ...Object.keys(delta || {})]);
@@ -7,17 +7,15 @@ const jsonMerge = (orig: any, delta: any): any => {
     const valOrig = orig?.[key];
     const valDelta = delta?.[key];
 
-    if (valOrig === undefined || valOrig === null) {
-      result[key] = valDelta;
-    } else if (valDelta === undefined || valDelta === null) {
-      result[key] = valOrig;
-    } else if (
-      typeof valOrig === 'object' && !Array.isArray(valOrig) &&
-      typeof valDelta === 'object' && !Array.isArray(valDelta)
+    if (
+      typeof valOrig === 'object' && valOrig !== null && !Array.isArray(valOrig) &&
+      typeof valDelta === 'object' && valDelta !== null && !Array.isArray(valDelta)
     ) {
       result[key] = jsonMerge(valOrig, valDelta);
-    } else {
+    } else if (valDelta !== undefined) {
       result[key] = valDelta;
+    } else {
+      result[key] = valOrig;
     }
   }
 
