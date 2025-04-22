@@ -1,4 +1,4 @@
-const jsonDiff = (val1: any, val2: any): any => {
+export const jsonDiff = (val1: any, val2: any): any => {
   if (typeof val1 !== 'object' || val1 === null || typeof val2 !== 'object' || val2 === null) {
     return val1 === val2 ? undefined : val2;
   }
