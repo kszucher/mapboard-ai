@@ -1,11 +1,10 @@
-import { ShareInfo } from '../../../shared/types/api-state-types';
 import { PrismaClient } from '../generated/client';
 
 export class ShareService {
   constructor(private prisma: PrismaClient) {
   }
 
-  async getShareInfo({ userId }: { userId: number }): Promise<ShareInfo> {
+  async getShareInfo({ userId }: { userId: number }) {
     const user = await this.prisma.user.findFirstOrThrow({
       where: {
         id: userId,

@@ -16,6 +16,6 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['UserInfo', 'MapInfo', 'SharesInfo'],
+  tagTypes: [],
   endpoints: builder => ({ ...apiMutations(builder) }),
 });

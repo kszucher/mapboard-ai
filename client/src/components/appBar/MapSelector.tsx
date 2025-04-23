@@ -9,8 +9,7 @@ import { MapActions } from './MapActions.tsx';
 export const MapSelector: FC = () => {
   const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const mapName = useSelector((state: RootState) => state.editor.mapInfo.name);
-  const tabMapIdList = useSelector((state: RootState) => state.editor.tabInfo.tabMapIdList);
-  const tabMapNameList = useSelector((state: RootState) => state.editor.tabInfo.tabMapNameList);
+  const tabMapInfo = useSelector((state: RootState) => state.editor.tabMapInfo);
   const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
   const dispatch = useDispatch<AppDispatch>();
   return (
@@ -23,12 +22,12 @@ export const MapSelector: FC = () => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           <DropdownMenu.Label>{'My Maps'}</DropdownMenu.Label>
-          {tabMapIdList.map((el, index) => (
+          {tabMapInfo.map((el, index) => (
             <DropdownMenu.Item
               key={index}
-              onClick={() => dispatch(api.endpoints.workspaceUpdate.initiate({ mapId: el }))}
+              onClick={() => dispatch(api.endpoints.workspaceUpdate.initiate({ mapId: el.id }))}
             >
-              {tabMapNameList[index]}
+              {tabMapInfo[index].name}
             </DropdownMenu.Item>
           ))}
           <DropdownMenu.Separator />

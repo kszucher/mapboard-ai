@@ -1,62 +1,59 @@
+import { User, Map } from '../../server/generated/prisma/';
+
 export enum ColorMode {
   DARK = 'DARK',
   LIGHT = 'LIGHT',
 }
 
-export interface UserInfo {
-  userName: string;
-  colorMode: ColorMode;
-}
+export type UserInfo = Pick<User, 'name' | 'colorMode'>
 
-export interface MapInfo {
-  id: number | null;
-  name: string;
-  mapData: object;
-}
+export type MapInfo = Pick<Map, 'id' | 'name'> & { mapData: object | any }
 
-export interface TabInfo {
-  tabMapIdList: number[];
-  tabMapNameList: string[];
-}
+export type TabMapInfo = Pick<Map, 'id' | 'name'> []
 
 export interface ShareInfo {
   sharesWithUser: {
-    id: number;
-    sharedMapName: string;
-    ownerUserEmail: string;
-    access: string;
-    status: string;
+    id: number
+    sharedMapName: string
+    ownerUserEmail: string
+    access: string
+    status: string
   }[];
   sharesByUser: {
-    id: number;
-    sharedMapName: string;
-    shareUserEmail: string;
-    access: string;
-    status: string;
+    id: number
+    sharedMapName: string
+    shareUserEmail: string
+    access: string
+    status: string
   }[];
-}
-
-export interface ExtractionRawPromptDefaultState {
-  rawPrompt: string;
 }
 
 export type SignInResponseDto = {
-  workspaceId: number;
-  userInfo: UserInfo,
-  mapInfo: MapInfo,
-  tabInfo: TabInfo,
-  shareInfo: ShareInfo,
+  workspaceId: number
+  userInfo: UserInfo
+  mapInfo: MapInfo
+  tabMapInfo: TabMapInfo
+  shareInfo: ShareInfo
+}
+
+export type CreateMapInTabRequestDto = {
+  mapName: string
 }
 
 export type CreateMapInTabResponseDto = {
-  mapInfo: MapInfo,
-  tabInfo: TabInfo,
+  mapInfo: MapInfo
+  tabMapInfo: TabMapInfo
 }
 
 export type WorkspaceUpdateResponseDto = {
-  mapInfo: MapInfo,
+  mapInfo: MapInfo
+}
+
+export type RenameMapRequestDto = {
+  mapId: number
+  mapName: string
 }
 
 export type RenameMapResponseDto = {
-  mapInfo: Pick<MapInfo, 'name'>
+  mapInfo: Pick<Map, 'name'>
 }

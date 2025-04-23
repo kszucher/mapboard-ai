@@ -4,6 +4,8 @@ import {
   WorkspaceUpdateResponseDto,
   RenameMapResponseDto,
   SignInResponseDto,
+  CreateMapInTabRequestDto,
+  RenameMapRequestDto,
 } from '../../../../shared/types/api-state-types.ts';
 import { timeoutId } from '../../components/window/Window.tsx';
 import { mapPrune } from '../clientSide/mapGetters/MapPrune.ts';
@@ -29,7 +31,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
 
   // map
-  createMapInTab: builder.mutation<CreateMapInTabResponseDto, void>({
+  createMapInTab: builder.mutation<CreateMapInTabResponseDto, CreateMapInTabRequestDto>({
     query: () => ({ url: 'create-map-in-tab', method: 'POST' }),
   }),
 
@@ -37,7 +39,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
     query: ({ mapId }) => ({ url: 'create-map-in-tab-duplicate', method: 'POST', body: { mapId } }),
   }),
 
-  renameMap: builder.mutation<RenameMapResponseDto, { mapId: number; mapName: string }>({
+  renameMap: builder.mutation<RenameMapResponseDto, RenameMapRequestDto>({
     query: ({ mapId, mapName }) => ({ url: 'rename-map', method: 'POST', body: { mapId, mapName } }),
   }),
 

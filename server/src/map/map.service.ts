@@ -1,4 +1,3 @@
-import { JsonObject } from '@prisma/client/runtime/library';
 import { PrismaClient, Map } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 
@@ -16,10 +15,7 @@ export class MapService {
     };
   }
 
-  async createMapInTab({ userId, mapName }: {
-    userId: number,
-    mapName: string
-  }): Promise<Pick<Map, 'id' | 'name' | 'mapData'>> {
+  async createMapInTab({ userId, mapName }: { userId: number, mapName: string }) {
     const map = await this.prisma.map.create({
       data: {
         name: mapName,
@@ -42,7 +38,7 @@ export class MapService {
 
   }
 
-  async readMap({ workspaceId }: { workspaceId: number }): Promise<Pick<Map, 'id' | 'name' | 'mapData'>> {
+  async readMap({ workspaceId }: { workspaceId: number }) {
     const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
       select: {
@@ -58,14 +54,10 @@ export class MapService {
 
     await this.updateOpenCount({ mapId: workspace.Map.id });
 
-    return {
-      id: workspace.Map.id,
-      name: workspace.Map.name,
-      mapData: workspace.Map.mapData as JsonObject,
-    };
+    return workspace.Map;
   }
 
-  async renameMap({ mapId, mapName }: { mapId: number, mapName: string }): Promise<Pick<Map, 'name'>> {
+  async renameMap({ mapId, mapName }: { mapId: number, mapName: string }) {
     return this.prisma.map.update({
       where: { id: mapId },
       data: { name: mapName },
@@ -73,7 +65,7 @@ export class MapService {
     });
   }
 
-  async updateOpenCount({ mapId }: { mapId: number }): Promise<void> {
+  async updateOpenCount({ mapId }: { mapId: number }) {
     await this.prisma.map.update({
       where: { id: mapId },
       data: {
@@ -84,11 +76,7 @@ export class MapService {
     });
   }
 
-  async updateMapByClient({ workspaceId, mapId, mapData }: {
-    workspaceId: number,
-    mapId: number,
-    mapData: object
-  }): Promise<void> {
+  async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number, mapId: number, mapData: object }) {
     // S = C + S - LC
     // Map.mapData = mapData + Map.mapData - Workspace.mapData
     await this.prisma.$executeRawUnsafe(`

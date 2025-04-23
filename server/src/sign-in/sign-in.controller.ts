@@ -13,9 +13,10 @@ router.post('/sign-in', checkJwt, async (req: Request, res: Response) => {
   const { userId, workspaceId } = await workspaceService.createWorkspace({ userSub: req.auth?.payload.sub ?? '' });
   const userInfo = await userService.readUser({ workspaceId });
   const mapInfo = await mapService.readMap({ workspaceId });
-  const tabInfo = await tabService.readTab({ userId });
+  const tabMapInfo = await tabService.readTab({ userId });
   const shareInfo = await shareService.getShareInfo({ userId });
-  res.json({ workspaceId, userInfo, mapInfo, tabInfo, shareInfo } as SignInResponseDto);
+  const response: SignInResponseDto = { workspaceId, userInfo, mapInfo, tabMapInfo, shareInfo };
+  res.json(response);
 });
 
 export default router;

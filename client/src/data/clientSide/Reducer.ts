@@ -177,7 +177,7 @@ export const editorSlice = createSlice({
       state.pageState = PageState.WS;
       state.workspaceId = payload.workspaceId;
       state.userInfo = payload.userInfo;
-      state.tabInfo = payload.tabInfo;
+      state.tabMapInfo = payload.tabMapInfo;
       state.shareInfo = payload.shareInfo;
       const readMapSuccess = readMap(state, payload.mapInfo);
       if (readMapSuccess) {
@@ -185,7 +185,7 @@ export const editorSlice = createSlice({
       }
     });
     builder.addMatcher(api.endpoints.createMapInTab.matchFulfilled, (state, { payload }) => {
-      state.tabInfo = payload.tabInfo;
+      state.tabMapInfo = payload.tabMapInfo;
       const readMapSuccess = readMap(state, payload.mapInfo);
       if (readMapSuccess) {
         state.isLoading = false;
@@ -206,7 +206,7 @@ export const editorSlice = createSlice({
 
 const readMap = (state: EditorState, payload: MapInfo): boolean => {
   console.log(payload);
-  const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj).includes('path'));
+  const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj as object).includes('path'));
   if (isValid) {
     const m = structuredClone(mapObjectToArray(payload.mapData));
     mapBuild(m);

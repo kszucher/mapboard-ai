@@ -1,4 +1,4 @@
-import { MapInfo, ShareInfo, TabInfo, UserInfo } from '../../../../../shared/types/api-state-types.ts';
+import { MapInfo, ShareInfo, TabMapInfo, UserInfo } from '../../../../../shared/types/api-state-types.ts';
 import { M, Side } from '../mapState/map-state-types.ts';
 
 export interface EditorState {
@@ -11,7 +11,7 @@ export interface EditorState {
   alertDialogState: AlertDialogState;
   userInfo: UserInfo;
   mapInfo: MapInfo;
-  tabInfo: TabInfo;
+  tabMapInfo: TabMapInfo;
   shareInfo: ShareInfo;
   commitList: M[];
   commitIndex: number;

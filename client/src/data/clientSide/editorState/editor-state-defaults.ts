@@ -11,18 +11,15 @@ export const editorStateDefaults: EditorState = {
   dialogState: DialogState.NONE,
   alertDialogState: AlertDialogState.NONE,
   userInfo: {
-    userName: '',
+    name: '',
     colorMode: ColorMode.DARK,
   },
   mapInfo: {
-    id: null,
+    id: 1,
     name: '',
     mapData: {},
   },
-  tabInfo: {
-    tabMapIdList: [],
-    tabMapNameList: [],
-  },
+  tabMapInfo: [],
   shareInfo: {
     sharesWithUser: [],
     sharesByUser: [],

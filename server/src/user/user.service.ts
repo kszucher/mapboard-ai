@@ -1,4 +1,3 @@
-import { ColorMode, UserInfo } from '../../../shared/types/api-state-types';
 import { PrismaClient } from '../generated/client';
 
 export class UserService {
@@ -6,27 +5,13 @@ export class UserService {
     private prisma: PrismaClient) {
   }
 
-  async readUser({ workspaceId }: { workspaceId: number }): Promise<UserInfo> {
-    const workspace = await this.prisma.workspace.findFirstOrThrow({
-      where: { id: workspaceId },
+  async readUser({ workspaceId }: { workspaceId: number }) {
+    return this.prisma.user.findFirstOrThrow({
+      where: { Workspaces: { some: { id: workspaceId } } },
       select: {
-        User: {
-          select: {
-            name: true,
-            colorMode: true,
-            Tab: {
-              select: {
-                mapIds: true,
-              },
-            },
-          },
-        },
+        name: true,
+        colorMode: true,
       },
     });
-
-    return {
-      userName: workspace.User.name,
-      colorMode: workspace.User.colorMode as ColorMode,
-    };
   }
 }

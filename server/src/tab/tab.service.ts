@@ -1,4 +1,3 @@
-import { TabInfo } from '../../../shared/types/api-state-types';
 import { PrismaClient } from '../generated/client';
 
 export class TabService {
@@ -7,7 +6,7 @@ export class TabService {
   ) {
   }
 
-  async readTab({ userId }: { userId: number }): Promise<TabInfo> {
+  async readTab({ userId }: { userId: number }) {
     const tab = await this.prisma.tab.findFirstOrThrow({
       where: { User: { id: userId } },
       select: {
@@ -15,21 +14,16 @@ export class TabService {
       },
     });
 
-    const tabMaps = await this.prisma.map.findMany({
+    return this.prisma.map.findMany({
       where: { id: { in: tab.mapIds } },
       select: {
         id: true,
         name: true,
       },
     });
-
-    return {
-      tabMapIdList: tabMaps.map(el => el.id),
-      tabMapNameList: tabMaps.map(el => el.name),
-    };
   }
 
-  async addMapToTab({ userId, mapId }: { userId: number, mapId: number }): Promise<void> {
+  async addMapToTab({ userId, mapId }: { userId: number, mapId: number }) {
     await this.prisma.user.update({
       where: {
         id: userId,
@@ -42,9 +36,6 @@ export class TabService {
             },
           },
         },
-      },
-      select: {
-        id: true,
       },
     });
   }
