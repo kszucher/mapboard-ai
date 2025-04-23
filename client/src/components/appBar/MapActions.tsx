@@ -24,7 +24,7 @@ export const MapActions = () => {
             {'Rename'}
           </DropdownMenu.Item>
         </Dialog.Trigger>
-        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTab.initiate())}>
+        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTab.initiate({ mapName: 'New Map' }))}>
           {'Create'}
         </DropdownMenu.Item>
         <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTabDuplicate.initiate({ mapId }))}>
