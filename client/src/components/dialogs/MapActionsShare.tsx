@@ -7,7 +7,7 @@ import { api } from '../../data/serverSide/Api.ts';
 import { RootState } from '../../data/store.ts';
 
 export const MapActionsShare = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const [createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset }] = api.useCreateShareMutation();
   const errorMessage = error && (error as { data: { detail: string } }).data.detail;
   const [shareEmail, setShareEmail] = useState('');

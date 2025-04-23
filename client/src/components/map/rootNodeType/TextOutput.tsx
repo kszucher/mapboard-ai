@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from '../../../data/store.ts';
 import Dots from '../../../../assets/dots.svg?react';
 
 export const TextOutput = ({ ri }: { ri: R }) => {
-  const mapId = useSelector((state: RootState) => state.editor.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const inputNode = getInputNode(m, ri.nodeId);
   const [executeTextOutput, { isError, reset }] = api.useExecuteTextOutputMutation();

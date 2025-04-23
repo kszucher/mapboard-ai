@@ -9,7 +9,7 @@ import { api } from '../../../data/serverSide/Api.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 
 export const Ingestion = ({ ri }: { ri: R }) => {
-  const mapId = useSelector((state: RootState) => state.editor.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const inputNode = getInputNode(m, ri.nodeId);
   const [executeIngestion, { isError, reset }] = api.useExecuteIngestionMutation();

@@ -9,7 +9,7 @@ import { shrinkString } from '../../../utils/Utils.ts';
 import Dots from '../../../../assets/dots.svg?react';
 
 export const FileUpload = ({ ri }: { ri: R }) => {
-  const mapId = useSelector((state: RootState) => state.editor.mapId);
+  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [executeUploadFile, { isError, reset }] = api.useExecuteUploadFileMutation();
