@@ -5,7 +5,7 @@ export class ShareService {
   }
 
   async getShareInfo({ userId }: { userId: number }) {
-    const user = await this.prisma.user.findFirstOrThrow({
+    return this.prisma.user.findFirstOrThrow({
       where: {
         id: userId,
       },
@@ -45,23 +45,6 @@ export class ShareService {
           },
         },
       },
-    });
-
-    return {
-      sharesByUser: user.SharesByMe.map(el => ({
-        id: el.id,
-        sharedMapName: el.Map.name,
-        shareUserEmail: el.ShareUser.email,
-        access: el.access,
-        status: el.status,
-      })),
-      sharesWithUser: user.SharesWithMe.map(el => ({
-        id: el.id,
-        sharedMapName: el.Map.name,
-        ownerUserEmail: el.OwnerUser.email,
-        access: el.access,
-        status: el.status,
-      })),
-    };
+    })
   }
 }

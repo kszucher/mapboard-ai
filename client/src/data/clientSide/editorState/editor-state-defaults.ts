@@ -21,8 +21,8 @@ export const editorStateDefaults: EditorState = {
   },
   tabMapInfo: [],
   shareInfo: {
-    sharesWithUser: [],
-    sharesByUser: [],
+    SharesByMe: [],
+    SharesWithMe: [],
   },
   commitList: [],
   commitIndex: 0,

@@ -12,19 +12,27 @@ export type MapInfo = Pick<Map, 'id' | 'name'> & { mapData: object | any }
 export type TabMapInfo = Pick<Map, 'id' | 'name'> []
 
 export interface ShareInfo {
-  sharesWithUser: {
+  SharesByMe: {
     id: number
-    sharedMapName: string
-    ownerUserEmail: string
     access: string
     status: string
+    Map: {
+      name: string
+    }
+    ShareUser: {
+      email: string
+    }
   }[];
-  sharesByUser: {
+  SharesWithMe: {
     id: number
-    sharedMapName: string
-    shareUserEmail: string
     access: string
     status: string
+    Map: {
+      name: string
+    }
+    OwnerUser: {
+      email: string
+    }
   }[];
 }
 

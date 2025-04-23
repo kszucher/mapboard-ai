@@ -25,7 +25,7 @@ export const Window: FC = () => {
   const commitList = useSelector((state: RootState) => state.editor.commitList);
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
   const mExists = m && Object.keys(m).length;
-  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
+  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.SharesWithMe);
   const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const dispatch = useDispatch<AppDispatch>();
 

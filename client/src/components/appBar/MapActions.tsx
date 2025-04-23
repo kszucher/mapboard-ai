@@ -8,7 +8,7 @@ import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const MapActions = () => {
   const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
-  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
+  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.SharesWithMe);
   const isShared = sharesWithUser.find(el => el.id === mapId);
   const dispatch = useDispatch<AppDispatch>();
   return (

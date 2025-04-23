@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from '../../data/store.ts';
 export const NodeUndo: FC = () => {
   const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const commitIndex = useSelector((state: RootState) => state.editor.commitIndex);
-  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
+  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.SharesWithMe);
   const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const undoDisabled = access !== AccessType.EDIT || commitIndex === 0;
   const dispatch = useDispatch<AppDispatch>();

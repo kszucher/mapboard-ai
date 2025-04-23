@@ -10,7 +10,7 @@ export const NodeRedo: FC = () => {
   const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
   const commitList = useSelector((state: RootState) => state.editor.commitList);
   const commitIndex = useSelector((state: RootState) => state.editor.commitIndex);
-  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
+  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.SharesWithMe);
   const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const redoDisabled = access !== AccessType.EDIT || commitIndex === commitList.length - 1;
   const dispatch = useDispatch<AppDispatch>();

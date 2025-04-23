@@ -5,7 +5,7 @@ import { api } from '../../data/serverSide/Api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const SharedWithMe = () => {
-  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.sharesWithUser);
+  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.SharesWithMe);
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
@@ -26,8 +26,8 @@ export const SharedWithMe = () => {
         <Table.Body>
           {sharesWithUser.map(el => (
             <Table.Row key={el.id}>
-              <Table.RowHeaderCell>{el.sharedMapName}</Table.RowHeaderCell>
-              <Table.Cell>{el.ownerUserEmail}</Table.Cell>
+              <Table.RowHeaderCell>{el.Map.name}</Table.RowHeaderCell>
+              <Table.Cell>{el.OwnerUser.email}</Table.Cell>
               <Table.Cell>{el.access}</Table.Cell>
               <Table.Cell>{el.status}</Table.Cell>
               {el.status === StatusType.WAITING && (
