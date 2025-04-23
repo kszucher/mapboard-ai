@@ -35,7 +35,7 @@ export const MapActionsRename = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({ mapId, mapName: newMapName }))}>
+          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({ id: mapId, name: newMapName }))}>
             {'Save'}
           </Button>
         </Dialog.Close>

@@ -57,10 +57,10 @@ export class MapService {
     return workspace.Map;
   }
 
-  async renameMap({ mapId, mapName }: { mapId: number, mapName: string }) {
+  async renameMap({ id, name }: Pick<Map, 'id' | 'name'>) {
     return this.prisma.map.update({
-      where: { id: mapId },
-      data: { name: mapName },
+      where: { id },
+      data: { name },
       select: { name: true },
     });
   }

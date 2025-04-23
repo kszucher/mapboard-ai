@@ -49,10 +49,7 @@ export type WorkspaceUpdateResponseDto = {
   mapInfo: MapInfo
 }
 
-export type RenameMapRequestDto = {
-  mapId: number
-  mapName: string
-}
+export type RenameMapRequestDto = Pick<Map, 'id' | 'name'>
 
 export type RenameMapResponseDto = {
   mapInfo: Pick<Map, 'name'>

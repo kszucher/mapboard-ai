@@ -40,7 +40,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
 
   renameMap: builder.mutation<RenameMapResponseDto, RenameMapRequestDto>({
-    query: ({ mapId, mapName }) => ({ url: 'rename-map', method: 'POST', body: { mapId, mapName } }),
+    query: ({ id, name }) => ({ url: 'rename-map', method: 'POST', body: { id, name } }),
   }),
 
   moveUpMapInTab: builder.mutation<void, { mapId: number }>({
