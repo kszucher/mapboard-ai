@@ -6,6 +6,7 @@ import {
   SignInResponseDto,
   CreateMapInTabRequestDto,
   RenameMapRequestDto,
+  WorkspaceUpdateRequestDto,
 } from '../../../../shared/types/api-state-types.ts';
 import { timeoutId } from '../../components/window/Window.tsx';
 import { mapPrune } from '../clientSide/mapGetters/MapPrune.ts';
@@ -138,7 +139,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
 
   // workspace
-  workspaceUpdate: builder.mutation<WorkspaceUpdateResponseDto, { mapId: number }>({
+  workspaceUpdate: builder.mutation<WorkspaceUpdateResponseDto, WorkspaceUpdateRequestDto>({
     query: ({ mapId }) => ({ url: 'workspace-update', method: 'POST', body: { mapId } }),
   }),
 

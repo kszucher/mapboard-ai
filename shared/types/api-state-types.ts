@@ -39,7 +39,11 @@ export interface ShareInfo {
 export type SignInResponseDto = {
   workspaceId: number
   userInfo: UserInfo
-  mapInfo: MapInfo
+  mapInfo: {
+    id: number,
+    name: string,
+    mapData: object | any,
+  },
   tabMapInfo: TabMapInfo
   shareInfo: ShareInfo
 }
@@ -51,6 +55,10 @@ export type CreateMapInTabRequestDto = {
 export type CreateMapInTabResponseDto = {
   mapInfo: MapInfo
   tabMapInfo: TabMapInfo
+}
+
+export type WorkspaceUpdateRequestDto = {
+  mapId: number
 }
 
 export type WorkspaceUpdateResponseDto = {
