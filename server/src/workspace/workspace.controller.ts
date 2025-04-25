@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { CreateWorkspaceResponseDto, WorkspaceUpdateResponseDto } from '../../../shared/types/api-state-types';
+import { CreateWorkspaceResponseDto, UpdateWorkspaceResponseDto } from '../../../shared/types/api-state-types';
 import { mapService } from '../map/map.controller';
 import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
 import { WorkspaceService } from './workspace.service';
@@ -20,7 +20,7 @@ router.post('/update-workspace-map', checkJwt, getUserIdAndWorkspaceId, async (r
   const { mapId } = req.body;
   await workspaceService.updateWorkspaceMap(({ workspaceId, mapId }));
   const mapInfo = await mapService.readMap({ workspaceId });
-  res.json({ mapInfo } as WorkspaceUpdateResponseDto);
+  res.json({ mapInfo } as UpdateWorkspaceResponseDto);
 });
 
 export default router;

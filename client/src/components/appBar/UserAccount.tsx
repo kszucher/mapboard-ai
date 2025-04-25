@@ -52,7 +52,7 @@ export const UserAccount = () => {
         <DropdownMenu.Item
           onClick={() => {
             logout({ logoutParams: { returnTo: window.location.origin } });
-            dispatch(api.endpoints.signOutEverywhere.initiate());
+            dispatch(api.endpoints.deleteWorkspace.initiate());
             dispatch(actions.resetState());
             dispatch(api.util.resetApiState());
           }}

@@ -1,13 +1,13 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
-  CreateMapInTabResponseDto,
-  WorkspaceUpdateResponseDto,
-  RenameMapResponseDto,
-  CreateWorkspaceResponseDto,
   CreateMapInTabRequestDto,
-  RenameMapRequestDto,
-  WorkspaceUpdateRequestDto,
+  CreateMapInTabResponseDto,
   CreateWorkspaceRequestDto,
+  CreateWorkspaceResponseDto,
+  RenameMapRequestDto,
+  RenameMapResponseDto,
+  UpdateWorkspaceRequestDto,
+  UpdateWorkspaceResponseDto,
 } from '../../../../shared/types/api-state-types.ts';
 import { timeoutId } from '../../components/window/Window.tsx';
 import { mapPrune } from '../clientSide/mapGetters/MapPrune.ts';
@@ -17,6 +17,19 @@ import { RootState } from '../store.ts';
 import { api } from './Api.ts';
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
+  // workspace
+  createWorkspace: builder.mutation<CreateWorkspaceResponseDto, CreateWorkspaceRequestDto>({
+    query: () => ({ url: '/create-workspace', method: 'POST' }),
+  }),
+
+  updateWorkspace: builder.mutation<UpdateWorkspaceResponseDto, UpdateWorkspaceRequestDto>({
+    query: ({ mapId }) => ({ url: 'update-workspace-map', method: 'POST', body: { mapId } }),
+  }),
+
+  deleteWorkspace: builder.mutation<void, void>({
+    query: () => ({ url: '/sign-out-everywhere', method: 'POST' }),
+  }),
+
   // user
   toggleColorMode: builder.mutation<void, void>({
     query: () => ({ url: 'toggle-color-mode', method: 'POST' }),
@@ -127,19 +140,6 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
       dispatch(actions.resetState());
       dispatch(api.util.resetApiState());
     },
-  }),
-
-  // workspace
-  signIn: builder.mutation<CreateWorkspaceResponseDto, CreateWorkspaceRequestDto>({
-    query: () => ({ url: '/create-workspace', method: 'POST' }),
-  }),
-
-  signOutEverywhere: builder.mutation<void, void>({
-    query: () => ({ url: '/sign-out-everywhere', method: 'POST' }),
-  }),
-
-  workspaceUpdate: builder.mutation<WorkspaceUpdateResponseDto, WorkspaceUpdateRequestDto>({
-    query: ({ mapId }) => ({ url: 'update-workspace-map', method: 'POST', body: { mapId } }),
   }),
 
   // llm

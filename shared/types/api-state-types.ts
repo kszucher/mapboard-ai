@@ -56,6 +56,14 @@ export type CreateWorkspaceResponseDto = {
   shareInfo: ShareInfo
 }
 
+export type UpdateWorkspaceRequestDto = {
+  mapId: number
+}
+
+export type UpdateWorkspaceResponseDto = {
+  mapInfo: MapInfo
+}
+
 export type CreateMapInTabRequestDto = {
   mapName: string
 }
@@ -63,14 +71,6 @@ export type CreateMapInTabRequestDto = {
 export type CreateMapInTabResponseDto = {
   mapInfo: MapInfo
   tabMapInfo: TabMapInfo
-}
-
-export type WorkspaceUpdateRequestDto = {
-  mapId: number
-}
-
-export type WorkspaceUpdateResponseDto = {
-  mapInfo: MapInfo
 }
 
 export type RenameMapRequestDto = {

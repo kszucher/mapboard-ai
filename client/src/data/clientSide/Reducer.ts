@@ -159,7 +159,7 @@ export const editorSlice = createSlice({
         api.endpoints.toggleColorMode.matchPending,
         api.endpoints.createMapInTab.matchPending,
         api.endpoints.createMapInTabDuplicate.matchPending,
-        api.endpoints.workspaceUpdate.matchPending,
+        api.endpoints.updateWorkspace.matchPending,
         api.endpoints.renameMap.matchPending,
         api.endpoints.moveUpMapInTab.matchPending,
         api.endpoints.moveDownMapInTab.matchPending,
@@ -173,7 +173,7 @@ export const editorSlice = createSlice({
         state.isLoading = true;
       }
     );
-    builder.addMatcher(api.endpoints.signIn.matchFulfilled, (state, { payload }) => {
+    builder.addMatcher(api.endpoints.createWorkspace.matchFulfilled, (state, { payload }) => {
       state.pageState = PageState.WS;
       state.workspaceId = payload.workspaceId;
       state.userInfo = payload.userInfo;
@@ -195,7 +195,7 @@ export const editorSlice = createSlice({
       state.mapInfo.name = payload.mapInfo.name;
       state.isLoading = false;
     });
-    builder.addMatcher(api.endpoints.workspaceUpdate.matchFulfilled, (state, { payload }) => {
+    builder.addMatcher(api.endpoints.updateWorkspace.matchFulfilled, (state, { payload }) => {
       const readMapSuccess = readMap(state, payload.mapInfo);
       if (readMapSuccess) {
         state.isLoading = false;
