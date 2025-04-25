@@ -1,15 +1,25 @@
-import { User, Map } from '../../server/generated/prisma/';
+export const ColorMode = {
+  DARK: 'DARK',
+  LIGHT: 'LIGHT',
+} as const;
 
-export enum ColorMode {
-  DARK = 'DARK',
-  LIGHT = 'LIGHT',
+export type ColorMode = (typeof ColorMode)[keyof typeof ColorMode];
+
+export type UserInfo = {
+  name: string
+  colorMode: ColorMode
 }
 
-export type UserInfo = Pick<User, 'name' | 'colorMode'>
+export type MapInfo = {
+  id: number
+  name: string
+  mapData: object | any
+}
 
-export type MapInfo = Pick<Map, 'id' | 'name'> & { mapData: object | any }
-
-export type TabMapInfo = Pick<Map, 'id' | 'name'> []
+export type TabMapInfo = {
+  id: number
+  name: string
+} []
 
 export interface ShareInfo {
   SharesByMe: {
@@ -36,14 +46,12 @@ export interface ShareInfo {
   }[];
 }
 
-export type SignInResponseDto = {
+export type CreateWorkspaceRequestDto = void
+
+export type CreateWorkspaceResponseDto = {
   workspaceId: number
   userInfo: UserInfo
-  mapInfo: {
-    id: number,
-    name: string,
-    mapData: object | any,
-  },
+  mapInfo: MapInfo
   tabMapInfo: TabMapInfo
   shareInfo: ShareInfo
 }
@@ -65,8 +73,11 @@ export type WorkspaceUpdateResponseDto = {
   mapInfo: MapInfo
 }
 
-export type RenameMapRequestDto = Pick<Map, 'id' | 'name'>
+export type RenameMapRequestDto = {
+  mapId: number
+  mapName: string
+}
 
 export type RenameMapResponseDto = {
-  mapInfo: Pick<Map, 'name'>
+  mapInfo: Pick<MapInfo, 'name'>
 }

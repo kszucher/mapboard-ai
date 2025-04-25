@@ -22,8 +22,8 @@ router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req:
 });
 
 router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { id, name }: RenameMapRequestDto = req.body;
-  const response: RenameMapResponseDto = { mapInfo: await mapService.renameMap({ id, name }) };
+  const { mapId, mapName }: RenameMapRequestDto = req.body;
+  const response: RenameMapResponseDto = { mapInfo: await mapService.renameMap({ mapId, mapName }) };
   res.json(response);
 });
 

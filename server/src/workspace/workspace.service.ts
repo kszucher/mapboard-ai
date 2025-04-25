@@ -119,7 +119,6 @@ export class WorkspaceService {
       },
     });
 
-
     const userInfo = workspace.User;
     const mapInfo = workspace.Map;
     const tabMapInfo = workspace.User.Tab.mapIds.map(el => workspace.User.Maps.find(map => map.id === el)!);

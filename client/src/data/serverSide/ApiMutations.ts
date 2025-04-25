@@ -3,10 +3,11 @@ import {
   CreateMapInTabResponseDto,
   WorkspaceUpdateResponseDto,
   RenameMapResponseDto,
-  SignInResponseDto,
+  CreateWorkspaceResponseDto,
   CreateMapInTabRequestDto,
   RenameMapRequestDto,
   WorkspaceUpdateRequestDto,
+  CreateWorkspaceRequestDto,
 } from '../../../../shared/types/api-state-types.ts';
 import { timeoutId } from '../../components/window/Window.tsx';
 import { mapPrune } from '../clientSide/mapGetters/MapPrune.ts';
@@ -31,7 +32,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
 
   renameMap: builder.mutation<RenameMapResponseDto, RenameMapRequestDto>({
-    query: ({ id, name }) => ({ url: 'rename-map', method: 'POST', body: { id, name } }),
+    query: ({ mapId, mapName }) => ({ url: 'rename-map', method: 'POST', body: { mapId, mapName } }),
   }),
 
   moveUpMapInTab: builder.mutation<void, { mapId: number }>({
@@ -129,7 +130,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
 
   // workspace
-  signIn: builder.mutation<SignInResponseDto, void>({
+  signIn: builder.mutation<CreateWorkspaceResponseDto, CreateWorkspaceRequestDto>({
     query: () => ({ url: '/create-workspace', method: 'POST' }),
   }),
 
