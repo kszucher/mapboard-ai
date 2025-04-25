@@ -127,7 +127,7 @@ export class WorkspaceService {
     return { userInfo, mapInfo, tabMapInfo, shareInfo };
   }
 
-  async updateWorkspace({ workspaceId, mapId }: { workspaceId: number, mapId: number }): Promise<void> {
+  async updateWorkspaceMap({ workspaceId, mapId }: { workspaceId: number, mapId: number }): Promise<void> {
     const map = await this.prisma.map.findFirstOrThrow({
       where: { id: mapId },
       select: { id: true, mapData: true },

@@ -8,18 +8,17 @@ const router = Router();
 
 export const workspaceService = new WorkspaceService(prismaClient, mapService);
 
-
-router.post('/sign-in', checkJwt, async (req: Request, res: Response) => {
+router.post('/create-workspace', checkJwt, async (req: Request, res: Response) => {
   const { workspaceId } = await workspaceService.createWorkspace({ userSub: req.auth?.payload.sub ?? '' });
   const { userInfo, mapInfo, tabMapInfo, shareInfo } = await workspaceService.readWorkspace({ workspaceId });
   const response: SignInResponseDto = { workspaceId, userInfo, mapInfo, tabMapInfo, shareInfo };
   res.json(response);
 });
 
-router.post('/update-workspace', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+router.post('/update-workspace-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
   const { mapId } = req.body;
-  await workspaceService.updateWorkspace(({ workspaceId, mapId }));
+  await workspaceService.updateWorkspaceMap(({ workspaceId, mapId }));
   const mapInfo = await mapService.readMap({ workspaceId });
   res.json({ mapInfo } as WorkspaceUpdateResponseDto);
 });

@@ -130,7 +130,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
 
   // workspace
   signIn: builder.mutation<SignInResponseDto, void>({
-    query: () => ({ url: '/sign-in', method: 'POST' }),
+    query: () => ({ url: '/create-workspace', method: 'POST' }),
   }),
 
   signOutEverywhere: builder.mutation<void, void>({
@@ -138,7 +138,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
 
   workspaceUpdate: builder.mutation<WorkspaceUpdateResponseDto, WorkspaceUpdateRequestDto>({
-    query: ({ mapId }) => ({ url: 'update-workspace', method: 'POST', body: { mapId } }),
+    query: ({ mapId }) => ({ url: 'update-workspace-map', method: 'POST', body: { mapId } }),
   }),
 
   // llm
