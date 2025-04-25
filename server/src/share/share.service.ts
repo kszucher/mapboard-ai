@@ -1,4 +1,6 @@
-import { PrismaClient } from '../generated/client';
+import { $Enums, PrismaClient } from '../generated/client';
+import ShareAccess = $Enums.ShareAccess;
+import ShareStatus = $Enums.ShareStatus;
 
 export class ShareService {
   constructor(private prisma: PrismaClient) {
@@ -45,6 +47,43 @@ export class ShareService {
           },
         },
       },
-    })
+    });
+  }
+
+  async getAccess({ workspaceId }: { workspaceId: number }) {
+    const workspace = await this.prisma.workspace.findFirstOrThrow({
+      where: { id: workspaceId },
+      select: {
+        userId: true,
+        Map: {
+          select: {
+            id: true,
+            userId: true,
+            Shares: {
+              where: { status: ShareStatus.ACCEPTED },
+              select: {
+                mapId: true,
+                shareUserId: true,
+                access: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (workspace.userId === workspace.Map.userId) {
+      return ShareAccess.EDIT;
+    }
+
+    const userShare = workspace.Map.Shares.find(
+      el => el.mapId === workspace.Map.id && el.shareUserId === workspace.userId,
+    );
+
+    if (userShare) {
+      return userShare.access;
+    }
+
+    return ShareAccess.UNAUTHORIZED;
   }
 }
