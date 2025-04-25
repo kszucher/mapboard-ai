@@ -16,16 +16,6 @@ import { RootState } from '../store.ts';
 import { api } from './Api.ts';
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
-  // sign-in
-  signIn: builder.mutation<SignInResponseDto, void>({
-    query: () => ({ url: '/sign-in', method: 'POST' }),
-  }),
-
-  // sign-out
-  signOutEverywhere: builder.mutation<void, void>({
-    query: () => ({ url: '/sign-out-everywhere', method: 'POST' }),
-  }),
-
   // user
   toggleColorMode: builder.mutation<void, void>({
     query: () => ({ url: 'toggle-color-mode', method: 'POST' }),
@@ -139,8 +129,16 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
   }),
 
   // workspace
+  signIn: builder.mutation<SignInResponseDto, void>({
+    query: () => ({ url: '/sign-in', method: 'POST' }),
+  }),
+
+  signOutEverywhere: builder.mutation<void, void>({
+    query: () => ({ url: '/sign-out-everywhere', method: 'POST' }),
+  }),
+
   workspaceUpdate: builder.mutation<WorkspaceUpdateResponseDto, WorkspaceUpdateRequestDto>({
-    query: ({ mapId }) => ({ url: 'workspace-update', method: 'POST', body: { mapId } }),
+    query: ({ mapId }) => ({ url: 'update-workspace', method: 'POST', body: { mapId } }),
   }),
 
   // llm

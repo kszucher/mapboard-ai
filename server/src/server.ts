@@ -1,14 +1,13 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import { PgCdcService } from './db-utils/pg.cdc.service';
-import { pgClient, prismaClient } from './startup';
 import { PgFunctionsService } from './db-utils/pg.functions.service';
-import userController from './user/user.controller';
 import mapController from './map/map.controller';
-import tabController from './tab/tab.controller';
 import shareController from './share/share.controller';
+import { pgClient, prismaClient } from './startup';
+import tabController from './tab/tab.controller';
+import userController from './user/user.controller';
 import workspaceController from './workspace/workspace.controller';
-import signInController from './sign-in/sign-in.controller';
 
 const pgFunctionsService = new PgFunctionsService(prismaClient);
 const pgCdcService = new PgCdcService(pgClient, prismaClient);
@@ -27,7 +26,6 @@ app.use(mapController);
 app.use(tabController);
 app.use(shareController);
 app.use(workspaceController);
-app.use(signInController);
 
 app.get('/ping', async (req: Request, res: Response) => {
   console.log('ping');
