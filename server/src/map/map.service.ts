@@ -94,39 +94,38 @@ export class MapService {
 
     console.time('Save Map');
 
-    await this.prisma.$transaction(async tx => {
-      await tx.$executeRawUnsafe(`
-        UPDATE "Map"
-        SET "data" = jsonb_merge_recurse(
-            $1::jsonb,
+    await this.prisma.$transaction(async (tx) => {
+      // First, calculate the merged data using a raw query
+      const mergedDataResult = await tx.$queryRawUnsafe<{ merged_data: any }[]>(`
+        --
+        WITH "MergedData" AS (
+          SELECT jsonb_merge_recurse(
+            $3::jsonb,
             jsonb_diff_recurse(
-                "Map"."data",
-                (
-                    SELECT "mapData"
-                    FROM "Workspace"
-                    WHERE id = $2
-                )
+              (SELECT "data" FROM "Map" WHERE id = $2),
+              (SELECT "mapData" FROM "Workspace" WHERE id = $1)
             )
-        ),
-        "updatedAt" = NOW()
-      WHERE id = $3
-    `, JSON.stringify(mapData), workspaceId, mapId);
+          ) AS merged_data
+        )
+        SELECT merged_data FROM "MergedData"
+      `, workspaceId, mapId, JSON.stringify(mapData));
 
+      // Now, safely access the merged data
+      const mergedData = mergedDataResult[0].merged_data;
+
+      // Update Workspace table
       await tx.workspace.update({
-        where: {
-          id: workspaceId,  // Identifies the workspace to update
-        },
-        data: {
-          mapData: {
-            // Fetch the map data from the Map model
-            connect: {
-              id: mapId,  // Identifies the map to copy data from
-            },
-          },
-        },
+        where: { id: workspaceId },
+        data: { mapData: mergedData },
+      });
+
+      // Update Map table
+      await tx.map.update({
+        where: { id: mapId },
+        data: { data: mergedData, updatedAt: new Date() },
       });
     });
-
+    
     console.timeEnd('Save Map');
   }
 
