@@ -14,4 +14,15 @@ export class UserService {
       },
     });
   }
+
+  async incrementSignInCount({ userId }: { userId: number }) {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        signInCount: {
+          increment: 1,
+        },
+      },
+    });
+  }
 }

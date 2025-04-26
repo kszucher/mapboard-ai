@@ -2,46 +2,36 @@ import { JsonObject } from '@prisma/client/runtime/library';
 import { PrismaClient } from '../generated/client';
 import { MapService } from '../map/map.service';
 import { prismaClient } from '../startup';
+import { TabService } from '../tab/tab.service';
+import { UserService } from '../user/user.service';
 
 export class WorkspaceService {
   constructor(
     private prisma: PrismaClient,
+    private userService: UserService,
     private mapService: MapService,
+    private tabService: TabService,
   ) {
   }
 
-  async createWorkspace({ userSub }: { userSub: string }): Promise<{ userId: number, workspaceId: number }> {
-    const user = await this.prisma.user.update({
-      where: { sub: userSub },
-      data: {
-        signInCount: {
-          increment: 1,
-        },
-      },
-      select: {
-        id: true,
-      },
-    });
+  async createWorkspace({ userId }: { userId: number }): Promise<{ userId: number, workspaceId: number }> {
+    const lastMap = await this.mapService.readLastMap({ userId });
 
-    const lastAvailableMap = await this.prisma.map.findFirst({
-      where: { userId: user.id },
-      orderBy: {
-        updatedAt: 'desc',
-      },
-      select: { id: true, mapData: true },
-    });
-
-    if (lastAvailableMap) {
-      await this.mapService.updateOpenCount({ mapId: lastAvailableMap.id });
+    if (lastMap) {
+      await this.mapService.updateOpenCount({ mapId: lastMap.id });
     }
 
-    const map = lastAvailableMap ?? await this.mapService.createMapInTab({ userId: user.id, mapName: 'New Map' });
+    const map = lastMap ?? await this.mapService.createMap({ userId, mapName: 'New Map' });
+
+    await this.userService.incrementSignInCount({ userId });
+
+    await this.tabService.addMapToTab({ userId, mapId: map.id });
 
     const workspace = await this.prisma.workspace.create({
       data: {
-        User: { connect: { id: user.id } },
+        User: { connect: { id: userId } },
         Map: { connect: { id: map.id } },
-        mapData: map.mapData as JsonObject,
+        mapData: map.data as JsonObject,
       },
       select: {
         id: true,
@@ -49,7 +39,7 @@ export class WorkspaceService {
     });
 
     return {
-      userId: user.id,
+      userId,
       workspaceId: workspace.id,
     };
   }
@@ -113,7 +103,7 @@ export class WorkspaceService {
           select: {
             id: true,
             name: true,
-            mapData: true,
+            data: true,
           },
         },
       },
@@ -121,7 +111,7 @@ export class WorkspaceService {
 
     const userInfo = workspace.User;
     const mapInfo = workspace.Map;
-    const tabMapInfo = workspace.User.Tab.mapIds.map(el => workspace.User.Maps.find(map => map.id === el)!);
+    const tabMapInfo = workspace.User.Tab!.mapIds.map(el => workspace.User.Maps.find(map => map.id === el)!);
     const shareInfo = { SharesByMe: workspace.User.SharesByMe, SharesWithMe: workspace.User.SharesWithMe };
     return { userInfo, mapInfo, tabMapInfo, shareInfo };
   }
@@ -129,14 +119,14 @@ export class WorkspaceService {
   async updateWorkspaceMap({ workspaceId, mapId }: { workspaceId: number, mapId: number }): Promise<void> {
     const map = await this.prisma.map.findFirstOrThrow({
       where: { id: mapId },
-      select: { id: true, mapData: true },
+      select: { id: true, data: true },
     });
 
     await this.prisma.workspace.update({
       where: { id: workspaceId },
       data: {
         mapId: map.id,
-        mapData: map.mapData as JsonObject,
+        mapData: map.data as JsonObject,
       },
     });
 

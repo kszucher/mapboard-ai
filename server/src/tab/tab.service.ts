@@ -30,9 +30,14 @@ export class TabService {
       },
       data: {
         Tab: {
-          update: {
-            mapIds: {
-              push: mapId,
+          upsert: {
+            create: {
+              mapIds: [mapId],
+            },
+            update: {
+              mapIds: {
+                push: mapId,
+              },
             },
           },
         },

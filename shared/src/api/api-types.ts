@@ -13,7 +13,7 @@ export type UserInfo = {
 export type MapInfo = {
   id: number
   name: string
-  mapData: object | any
+  data: object | any
 }
 
 export type TabMapInfo = {

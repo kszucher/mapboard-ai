@@ -17,7 +17,7 @@ export const stateDefaults: State = {
   mapInfo: {
     id: 1,
     name: '',
-    mapData: {},
+    data: {},
   },
   tabMapInfo: [],
   shareInfo: {

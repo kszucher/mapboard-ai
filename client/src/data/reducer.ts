@@ -200,9 +200,9 @@ export const slice = createSlice({
 
 const readMap = (state: State, payload: MapInfo): boolean => {
   console.log(payload);
-  const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj as object).includes('path'));
+  const isValid = Object.values(payload.data).every(obj => Object.keys(obj as object).includes('path'));
   if (isValid) {
-    const m = structuredClone(mapObjectToArray(payload.mapData));
+    const m = structuredClone(mapObjectToArray(payload.data));
     mapBuild(m);
     state.mapInfo.id = payload.id;
     state.mapInfo.name = payload.name;

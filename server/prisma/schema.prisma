@@ -17,13 +17,12 @@ datasource db {
 model User {
   id           Int         @id @default(autoincrement())
   sub          String      @unique
-  signInCount  Int
-  colorMode    ColorMode
-  email        String
+  signInCount  Int         @default(0)
+  colorMode    ColorMode   @default(DARK)
+  email        String      @unique
   name         String
   Maps         Map[]       @relation("Maps")
-  tabId        Int         @unique
-  Tab          Tab         @relation(fields: [tabId], references: [id])
+  Tab          Tab?        @relation("UserTab")
   SharesByMe   Share[]     @relation("SharesByMe")
   SharesWithMe Share[]     @relation("SharesWithMe")
   Workspaces   Workspace[]
@@ -31,7 +30,7 @@ model User {
 
 model Map {
   id        Int         @id @default(autoincrement())
-  mapData   Json
+  data      Json
   name      String
   openCount Int         @default(0)
   userId    Int
@@ -43,7 +42,8 @@ model Map {
 
 model Tab {
   id     Int   @id @default(autoincrement())
-  User   User?
+  userId Int   @unique
+  User   User  @relation("UserTab", fields: [userId], references: [id])
   mapIds Int[]
 }
 

@@ -1,4 +1,4 @@
-import { PrismaClient, Map } from '../generated/client';
+import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 
 export class MapService {
@@ -15,27 +15,39 @@ export class MapService {
     };
   }
 
-  async createMapInTab({ userId, mapName }: { userId: number, mapName: string }) {
-    const map = await this.prisma.map.create({
+  async createMap({ userId, mapName }: { userId: number, mapName: string }) {
+    return this.prisma.map.create({
       data: {
+        userId,
         name: mapName,
-        mapData: this.createNewMapData(),
-        User: { connect: { id: userId } },
+        data: this.createNewMapData(),
       },
       select: {
         id: true,
         name: true,
-        mapData: true,
+        data: true,
       },
     });
+  }
 
+  async createMapInTab({ userId, mapName }: { userId: number, mapName: string }) {
+    const map = await this.createMap({ userId, mapName });
     await this.tabService.addMapToTab({ userId, mapId: map.id });
-
     return map;
   }
 
   async createMapInTabDuplicate() {
 
+  }
+
+  async readLastMap({ userId }: { userId: number }) {
+    return this.prisma.map.findFirst({
+      where: { userId },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+      select: { id: true, data: true },
+    });
   }
 
   async readMap({ workspaceId }: { workspaceId: number }) {
@@ -46,7 +58,7 @@ export class MapService {
           select: {
             id: true,
             name: true,
-            mapData: true,
+            data: true,
           },
         },
       },
@@ -78,13 +90,13 @@ export class MapService {
 
   async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number, mapId: number, mapData: object }) {
     // S = C + S - LC
-    // Map.mapData = mapData + Map.mapData - Workspace.mapData
+    // Map.mapData = mapData + Map.data - Workspace.mapData
     await this.prisma.$executeRawUnsafe(`
         UPDATE "Map"
-        SET "mapData" = jsonb_merge_recurse(
+        SET "data" = jsonb_merge_recurse(
             $1::jsonb,
             jsonb_diff_recurse(
-                "Map"."mapData",
+                "Map"."data",
                 (
                     SELECT "mapData"
                     FROM "Workspace"
@@ -100,8 +112,8 @@ export class MapService {
   async updateMapByServer({ mapId, mapDataDelta }: { mapId: number, mapDataDelta: object }) {
     await this.prisma.$executeRawUnsafe(`
         UPDATE "Map"
-        SET "mapData" = jsonb_merge_recurse(
-            "Map"."mapData",
+        SET "data" = jsonb_merge_recurse(
+            "Map"."data",
             $1::jsonb
         )
       WHERE id = $2
