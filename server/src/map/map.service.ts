@@ -91,7 +91,11 @@ export class MapService {
   async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number, mapId: number, mapData: object }) {
     // S = C + S - LC
     // Map.mapData = mapData + Map.data - Workspace.mapData
-    await this.prisma.$executeRawUnsafe(`
+
+    console.time('Save Map');
+
+    await this.prisma.$transaction(async tx => {
+      await tx.$executeRawUnsafe(`
         UPDATE "Map"
         SET "data" = jsonb_merge_recurse(
             $1::jsonb,
@@ -107,6 +111,23 @@ export class MapService {
         "updatedAt" = NOW()
       WHERE id = $3
     `, JSON.stringify(mapData), workspaceId, mapId);
+
+      await tx.workspace.update({
+        where: {
+          id: workspaceId,  // Identifies the workspace to update
+        },
+        data: {
+          mapData: {
+            // Fetch the map data from the Map model
+            connect: {
+              id: mapId,  // Identifies the map to copy data from
+            },
+          },
+        },
+      });
+    });
+
+    console.timeEnd('Save Map');
   }
 
   async updateMapByServer({ mapId, mapDataDelta }: { mapId: number, mapDataDelta: object }) {
