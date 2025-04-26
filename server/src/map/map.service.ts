@@ -1,3 +1,5 @@
+import { jsonDiff } from '../../../shared/src/map/utils/json-diff';
+import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 
@@ -94,30 +96,24 @@ export class MapService {
 
     console.time('Save Map');
 
-    const mergedDataResult = await this.prisma.$queryRawUnsafe<{ merged_data: any }[]>(`
-      --
-      WITH "MergedData" AS (
-        SELECT jsonb_merge_recurse(
-          $3::jsonb,
-          jsonb_diff_recurse(
-            (SELECT "data" FROM "Map" WHERE id = $2),
-            (SELECT "mapData" FROM "Workspace" WHERE id = $1)
-          )
-        ) AS merged_data
-      )
-      UPDATE "Map"
-      SET
-        "data" = (SELECT merged_data FROM "MergedData"),
-        "updatedAt" = NOW()
-      WHERE id = $2
-      RETURNING "data" AS merged_data
-    `, workspaceId, mapId, JSON.stringify(mapData));
+    const currentData = await this.prisma.workspace.findFirstOrThrow({
+      where: { id: workspaceId },
+      select: {
+        Map: { select: { data: true } },
+        mapData: true,
+      },
+    });
 
-    const mergedData = mergedDataResult[0].merged_data;
+    const result = jsonMerge(mapData, jsonDiff(currentData.Map.data, currentData.mapData));
+
+    await this.prisma.map.update({
+      where: { id: mapId },
+      data: { data: result },
+    });
 
     await this.prisma.workspace.update({
       where: { id: workspaceId },
-      data: { mapData: mergedData },
+      data: { mapData: result },
     });
   }
 
