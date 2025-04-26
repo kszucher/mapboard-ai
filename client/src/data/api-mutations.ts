@@ -9,12 +9,12 @@ import {
   UpdateWorkspaceRequestDto,
   UpdateWorkspaceResponseDto,
 } from '../../../shared/src/api/api-types.ts';
-import { timeoutId } from '../components/window/Window.tsx';
 import { mapPrune } from '../../../shared/src/map/getters/map-prune.ts';
 import { mapArrayToObject } from '../../../shared/src/map/getters/map-queries.ts';
+import { timeoutId } from '../components/window/Window.tsx';
+import { api } from './api.ts';
 import { actions } from './reducer.ts';
 import { RootState } from './store.ts';
-import { api } from './api.ts';
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   // workspace
@@ -37,7 +37,7 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
 
   // map
   createMapInTab: builder.mutation<CreateMapInTabResponseDto, CreateMapInTabRequestDto>({
-    query: () => ({ url: 'create-map-in-tab', method: 'POST' }),
+    query: ({ mapName }) => ({ url: 'create-map-in-tab', method: 'POST', body: { mapName } }),
   }),
 
   createMapInTabDuplicate: builder.mutation<void, { mapId: number }>({
