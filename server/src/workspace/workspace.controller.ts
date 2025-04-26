@@ -23,4 +23,6 @@ router.post('/update-workspace-map', checkJwt, getUserIdAndWorkspaceId, async (r
   res.json({ mapInfo } as UpdateWorkspaceResponseDto);
 });
 
+// TODO deleteWorkspace
+
 export default router;

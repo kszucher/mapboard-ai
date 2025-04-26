@@ -1,7 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { backendUrl } from '../urls/Urls.ts';
+import { apiMutationsMap } from './api-mutations-map.ts';
+import { apiMutationsShare } from './api-mutations-share.ts';
+import { apiMutationsTab } from './api-mutations-tab.ts';
+import { apiMutationsUser } from './api-mutations-user.ts';
+import { apiMutationsWorkspace } from './api-mutations-workspace.ts';
 import { RootState } from './store.ts';
-import { apiMutations } from './api-mutations.ts';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -17,5 +21,11 @@ export const api = createApi({
     },
   }),
   tagTypes: [],
-  endpoints: builder => ({ ...apiMutations(builder) }),
+  endpoints: builder => ({
+    ...apiMutationsUser(builder),
+    ...apiMutationsMap(builder),
+    ...apiMutationsTab(builder),
+    ...apiMutationsShare(builder),
+    ...apiMutationsWorkspace(builder),
+  }),
 });

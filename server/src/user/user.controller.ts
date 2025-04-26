@@ -6,3 +6,7 @@ const router = Router();
 export const userService = new UserService(prismaClient);
 
 export default router;
+
+// TODO toggleColorMode
+
+// TODO deleteAccount

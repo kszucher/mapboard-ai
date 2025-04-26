@@ -21,6 +21,8 @@ router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req:
   res.json(response);
 });
 
+// TODO createMapInTabDuplicate
+
 router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { mapId, mapName }: RenameMapRequestDto = req.body;
   const response: RenameMapResponseDto = { mapInfo: await mapService.renameMap({ mapId, mapName }) };
@@ -34,5 +36,15 @@ router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request,
   await mapService.updateMapByClient({ workspaceId, mapId, mapData });
   res.json();
 });
+
+// TODO executeUploadFile
+
+// TODO executeIngestion
+
+// TODO executeExtraction
+
+// TODO executeTextOutput
+
+// TODO deleteMap
 
 export default router;
