@@ -5,8 +5,8 @@ import { mR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
 
 export const RootNodeBackground: FC = () => {
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
-  const colorMode = useSelector((state: RootState) => state.editor.userInfo.colorMode);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
+  const colorMode = useSelector((state: RootState) => state.slice.userInfo.colorMode);
   return mR(m).map(ri => (
     <rect
       key={`${ri.nodeId}_rb`}

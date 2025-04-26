@@ -7,8 +7,8 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: backendUrl,
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).editor.token;
-      const workspaceId = (getState() as RootState).editor.workspaceId;
+      const token = (getState() as RootState).slice.token;
+      const workspaceId = (getState() as RootState).slice.workspaceId;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
         headers.set('Workspace-Id', workspaceId.toString());

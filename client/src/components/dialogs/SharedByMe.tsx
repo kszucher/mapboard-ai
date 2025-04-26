@@ -4,7 +4,7 @@ import { api } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const SharedByMe = () => {
-  const sharesByUser = useSelector((state: RootState) => state.editor.shareInfo.SharesByMe);
+  const sharesByUser = useSelector((state: RootState) => state.slice.shareInfo.SharesByMe);
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>

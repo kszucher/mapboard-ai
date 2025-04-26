@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from '../data/store.ts';
 import { frontendUrl } from '../urls/Urls.ts';
 
 export const Landing: FC = () => {
-  const token = useSelector((state: RootState) => state.editor.token);
+  const token = useSelector((state: RootState) => state.slice.token);
   const [isWaiting, setIsWaiting] = useState(false);
   const { loginWithRedirect, getAccessTokenSilently } = useAuth0();
   const dispatch = useDispatch<AppDispatch>();

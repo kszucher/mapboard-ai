@@ -2,14 +2,14 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../../data/reducer.ts';
 import { isExistingLink, mR } from '../../../../shared/src/map/getters/map-queries.ts';
-import { ControlType, L, Side } from '../../../../shared/src/map/state/map-state-types.ts';
+import { ControlType, L, Side } from '../../../../shared/src/map/state/map-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { adjustIcon } from '../../utils/utils.ts';
 
 export const LinkNodeConnectorIn: FC = () => {
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
-  const linkHelpersVisible = useSelector((state: RootState) => state.editor.linkHelpersVisible);
-  const connectionStart = useSelector((state: RootState) => state.editor.connectionStart);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
+  const linkHelpersVisible = useSelector((state: RootState) => state.slice.linkHelpersVisible);
+  const connectionStart = useSelector((state: RootState) => state.slice.connectionStart);
   const dispatch = useDispatch<AppDispatch>();
   return (
     linkHelpersVisible &&

@@ -5,8 +5,8 @@ import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const ConfigView = () => {
-  const linkHelpersVisible = useSelector((state: RootState) => state.editor.linkHelpersVisible);
-  const rootFrameVisible = useSelector((state: RootState) => state.editor.rootFrameVisible);
+  const linkHelpersVisible = useSelector((state: RootState) => state.slice.linkHelpersVisible);
+  const rootFrameVisible = useSelector((state: RootState) => state.slice.rootFrameVisible);
   const dispatch = useDispatch<AppDispatch>();
 
   return (

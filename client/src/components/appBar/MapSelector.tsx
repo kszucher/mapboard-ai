@@ -7,10 +7,10 @@ import { AppDispatch, RootState } from '../../data/store.ts';
 import { MapActions } from './MapActions.tsx';
 
 export const MapSelector: FC = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
-  const mapName = useSelector((state: RootState) => state.editor.mapInfo.name);
-  const tabMapInfo = useSelector((state: RootState) => state.editor.tabMapInfo);
-  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.SharesWithMe);
+  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapName = useSelector((state: RootState) => state.slice.mapInfo.name);
+  const tabMapInfo = useSelector((state: RootState) => state.slice.tabMapInfo);
+  const sharesWithUser = useSelector((state: RootState) => state.slice.shareInfo.SharesWithMe);
   const dispatch = useDispatch<AppDispatch>();
   return (
     <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">

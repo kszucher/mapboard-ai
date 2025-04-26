@@ -2,12 +2,12 @@ import { Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField } from '@r
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { AccessType } from '../../data/editor-state-types.ts';
+import { AccessType } from '../../data/state-types.ts';
 import { api } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 
 export const MapActionsShare = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
+  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
   const [createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset }] = api.useCreateShareMutation();
   const errorMessage = error && (error as { data: { detail: string } }).data.detail;
   const [shareEmail, setShareEmail] = useState('');

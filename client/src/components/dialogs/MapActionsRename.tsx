@@ -5,8 +5,8 @@ import { api } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const MapActionsRename = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
-  const mapName = useSelector((state: RootState) => state.editor.mapInfo.name);
+  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapName = useSelector((state: RootState) => state.slice.mapInfo.name);
   const [newMapName, setNewMapName] = useState(mapName);
   const dispatch = useDispatch<AppDispatch>();
   return (

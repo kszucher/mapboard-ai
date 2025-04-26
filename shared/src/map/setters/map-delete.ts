@@ -1,5 +1,5 @@
 import { idToL, idToR, mL, mR } from '../getters/map-queries';
-import { M, T } from '../state/map-state-types';
+import { M, T } from '../state/map-types';
 
 const deleteTL = (m: M, tl: T[]) =>
   tl

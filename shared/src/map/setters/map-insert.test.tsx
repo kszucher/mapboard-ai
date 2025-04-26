@@ -1,4 +1,4 @@
-import { ControlType, M, MPartial } from '../state/map-state-types';
+import { ControlType, M, MPartial } from '../state/map-types';
 import { _assert } from './_assert';
 import { mapInsert } from './map-insert';
 

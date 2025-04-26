@@ -1,4 +1,4 @@
-import { M } from '../state/map-state-types';
+import { M } from '../state/map-types';
 import { mapInit } from './map-init';
 import { mapMeasure } from './map-measure';
 import { mapPlace } from './map-place';

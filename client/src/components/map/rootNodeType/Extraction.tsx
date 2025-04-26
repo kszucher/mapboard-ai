@@ -3,14 +3,14 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Dots from '../../../../assets/dots.svg?react';
 import { getInputNodes } from '../../../../../shared/src/map/getters/map-queries.ts';
-import { R } from '../../../../../shared/src/map/state/map-state-types.ts';
+import { R } from '../../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../../data/reducer.ts';
 import { api } from '../../../data/api.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 
 export const Extraction = ({ ri }: { ri: R }) => {
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
+  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const inputNodes = getInputNodes(m, ri.nodeId);
   const [executeExtraction, { isError, reset }] = api.useExecuteExtractionMutation();
   const dispatch = useDispatch<AppDispatch>();

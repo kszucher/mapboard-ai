@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
-import { PageState } from '../data/editor-state-types.ts';
+import { PageState } from '../data/state-types.ts';
 import { RootState } from '../data/store.ts';
 import { Editor } from './Editor.tsx';
 import { Landing } from './Landing.tsx';
 import React from 'react';
 
 export const Router = () => {
-  const pageState = useSelector((state: RootState) => state.editor.pageState);
+  const pageState = useSelector((state: RootState) => state.slice.pageState);
   return (
     <React.Fragment>
       {pageState === PageState.AUTH && <Landing />}

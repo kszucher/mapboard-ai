@@ -9,8 +9,8 @@ import { adjustIcon } from '../../utils/utils.ts';
 import { getCoordsMidBezier, getRootLinePath } from './UtilsSvg.ts';
 
 export const LinkNodeDelete: FC = () => {
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
-  const linkHelpersVisible = useSelector((state: RootState) => state.editor.linkHelpersVisible);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
+  const linkHelpersVisible = useSelector((state: RootState) => state.slice.linkHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();
   return (
     linkHelpersVisible &&

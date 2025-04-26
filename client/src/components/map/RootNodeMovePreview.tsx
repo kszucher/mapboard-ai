@@ -4,7 +4,7 @@ import { RootState } from '../../data/store.ts';
 import { R_PADDING } from '../../../../shared/src/map/state/map-consts.ts';
 
 export const RootNodeMovePreview: FC = () => {
-  const rOffsetCoords = useSelector((state: RootState) => state.editor.rOffsetCoords);
+  const rOffsetCoords = useSelector((state: RootState) => state.slice.rOffsetCoords);
   return (
     rOffsetCoords.length && (
       <rect

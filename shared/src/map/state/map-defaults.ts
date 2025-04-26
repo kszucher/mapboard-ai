@@ -13,7 +13,7 @@ import {
   RSaveNever,
   RSaveOptional,
   Side,
-} from './map-state-types';
+} from './map-types';
 
 export const gSaveAlways: GSaveAlways = {
   path: <PG>['g'],

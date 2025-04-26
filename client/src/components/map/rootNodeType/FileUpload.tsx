@@ -2,14 +2,14 @@ import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text } fro
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../../../data/reducer.ts';
-import { R } from '../../../../../shared/src/map/state/map-state-types.ts';
+import { R } from '../../../../../shared/src/map/state/map-types.ts';
 import { api } from '../../../data/api.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 import { shrinkString } from '../../../utils/utils.ts';
 import Dots from '../../../../assets/dots.svg?react';
 
 export const FileUpload = ({ ri }: { ri: R }) => {
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
+  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [executeUploadFile, { isError, reset }] = api.useExecuteUploadFileMutation();

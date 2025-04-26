@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { CreateWorkspaceResponseDto, UpdateWorkspaceResponseDto } from '../../../shared/src/api/api-state-types';
+import { CreateWorkspaceResponseDto, UpdateWorkspaceResponseDto } from '../../../shared/src/api/api-types';
 import { mapService } from '../map/map.controller';
 import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
 import { WorkspaceService } from './workspace.service';

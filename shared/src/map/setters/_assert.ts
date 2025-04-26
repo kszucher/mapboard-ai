@@ -1,6 +1,6 @@
 import { mapPrune } from '../getters/map-prune';
 import { mL } from '../getters/map-queries';
-import { M, MPartial } from '../state/map-state-types';
+import { M, MPartial } from '../state/map-types';
 import { mapInit } from './map-init';
 import { sortNode } from './map-sort';
 

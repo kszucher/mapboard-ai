@@ -1,7 +1,7 @@
-import { MapInfo, ShareInfo, TabMapInfo, UserInfo } from '../../../shared/src/api/api-state-types.ts';
-import { M, Side } from '../../../shared/src/map/state/map-state-types.ts';
+import { MapInfo, ShareInfo, TabMapInfo, UserInfo } from '../../../shared/src/api/api-types.ts';
+import { M, Side } from '../../../shared/src/map/state/map-types.ts';
 
-export interface EditorState {
+export interface State {
   token: string;
   workspaceId: number;
   isLoading: boolean;

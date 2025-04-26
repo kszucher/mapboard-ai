@@ -4,9 +4,9 @@ import { getG } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
 
 export const RootNodeFrame: FC = () => {
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const g = getG(m);
-  const rootFrameVisible = useSelector((state: RootState) => state.editor.rootFrameVisible);
+  const rootFrameVisible = useSelector((state: RootState) => state.slice.rootFrameVisible);
   return (
     rootFrameVisible && (
       <rect

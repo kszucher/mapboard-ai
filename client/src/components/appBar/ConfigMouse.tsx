@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Mouse from '../../../assets/mouse.svg?react';
 import { actions } from '../../data/reducer.ts';
 
-import { MidMouseMode } from '../../data/editor-state-types.ts';
+import { MidMouseMode } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const ConfigMouse = () => {
-  const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
+  const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const dispatch = useDispatch<AppDispatch>();
   return (
     <DropdownMenu.Root>

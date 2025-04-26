@@ -10,8 +10,8 @@ import {
   rSaveAlways,
   rSaveNever,
   rSaveOptional,
-} from '../state/map-state-defaults';
-import { G, L, MPartial, R } from '../state/map-state-types';
+} from '../state/map-defaults';
+import { G, L, MPartial, R } from '../state/map-types';
 import { excludeEntries } from '../utils/object-utils';
 
 export const mapInit = (m: MPartial) => {

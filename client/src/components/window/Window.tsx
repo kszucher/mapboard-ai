@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/editor-state-types.ts';
+import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { api } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -11,15 +11,15 @@ let mapListener: AbortController;
 let midMouseListener: AbortController;
 
 export const Window: FC = () => {
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
-  const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
-  const pageState = useSelector((state: RootState) => state.editor.pageState);
-  const dialogState = useSelector((state: RootState) => state.editor.dialogState);
-  const alertDialogState = useSelector((state: RootState) => state.editor.alertDialogState);
-  const commitList = useSelector((state: RootState) => state.editor.commitList);
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
+  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
+  const pageState = useSelector((state: RootState) => state.slice.pageState);
+  const dialogState = useSelector((state: RootState) => state.slice.dialogState);
+  const alertDialogState = useSelector((state: RootState) => state.slice.alertDialogState);
+  const commitList = useSelector((state: RootState) => state.slice.commitList);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const mExists = m && Object.keys(m).length;
-  const sharesWithUser = useSelector((state: RootState) => state.editor.shareInfo.SharesWithMe);
+  const sharesWithUser = useSelector((state: RootState) => state.slice.shareInfo.SharesWithMe);
   const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const dispatch = useDispatch<AppDispatch>();
 

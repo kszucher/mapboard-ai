@@ -6,7 +6,7 @@ import { adjust } from '../../utils/utils.ts';
 import { getLinearLinePath, pathCommonProps } from './UtilsSvg.ts';
 
 export const RootNodeSeparator: FC = () => {
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   return mR(m).map(ri => (
     <path
       key={`${ri.nodeId}_separator`}

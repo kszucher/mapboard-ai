@@ -1,7 +1,7 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { R } from '../../../../../shared/src/map/state/map-state-types.ts';
+import { R } from '../../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch } from '../../../data/store.ts';
 import Dots from '../../../../assets/dots.svg?react';

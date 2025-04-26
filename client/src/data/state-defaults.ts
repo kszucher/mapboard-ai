@@ -1,8 +1,8 @@
-import { ColorMode } from '../../../shared/src/api/api-state-types.ts';
-import { AlertDialogState, DialogState, EditorState, MidMouseMode, PageState } from './editor-state-types.ts';
-import { Side } from '../../../shared/src/map/state/map-state-types.ts';
+import { ColorMode } from '../../../shared/src/api/api-types.ts';
+import { AlertDialogState, DialogState, State, MidMouseMode, PageState } from './state-types.ts';
+import { Side } from '../../../shared/src/map/state/map-types.ts';
 
-export const editorStateDefaults: EditorState = {
+export const stateDefaults: State = {
   token: '',
   workspaceId: 1,
   isLoading: false,
@@ -47,4 +47,4 @@ export const editorStateDefaults: EditorState = {
   nodeId: '',
 };
 
-export const editorStateDefault = JSON.stringify(editorStateDefaults);
+export const stateDefault = JSON.stringify(stateDefaults);

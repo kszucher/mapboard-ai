@@ -1,25 +1,25 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
-import { MapInfo } from '../../../shared/src/api/api-state-types.ts';
+import { MapInfo } from '../../../shared/src/api/api-types.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
 import { api } from './api.ts';
-import { editorStateDefault, editorStateDefaults } from './editor-state-defaults.ts';
-import { AlertDialogState, DialogState, EditorState, MidMouseMode, PageState } from './editor-state-types.ts';
+import { stateDefault, stateDefaults } from './state-defaults.ts';
+import { AlertDialogState, DialogState, State, MidMouseMode, PageState } from './state-types.ts';
 import { idToR, mapObjectToArray } from '../../../shared/src/map/getters/map-queries.ts';
 import { mapBuild } from '../../../shared/src/map/setters/map-build.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
 import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
-import { ControlType, L, R, Side } from '../../../shared/src/map/state/map-state-types.ts';
+import { ControlType, L, R, Side } from '../../../shared/src/map/state/map-types.ts';
 
-export const editorSlice = createSlice({
-  name: 'editor',
-  initialState: editorStateDefaults,
+export const slice = createSlice({
+  name: 'slice',
+  initialState: stateDefaults,
   reducers: {
     setToken(state, action: PayloadAction<string>) {
       state.token = action.payload;
     },
     resetState() {
-      return JSON.parse(editorStateDefault);
+      return JSON.parse(stateDefault);
     },
     setMidMouseMode(state, action: PayloadAction<MidMouseMode>) {
       state.midMouseMode = action.payload;
@@ -30,7 +30,7 @@ export const editorSlice = createSlice({
     setAlertDialogState(state, action: PayloadAction<AlertDialogState>) {
       state.alertDialogState = action.payload;
     },
-    setZoomInfo(state, action: PayloadAction<Omit<EditorState['zoomInfo'], 'fromX' | 'fromY'>>) {
+    setZoomInfo(state, action: PayloadAction<Omit<State['zoomInfo'], 'fromX' | 'fromY'>>) {
       state.zoomInfo.scale = action.payload.scale;
       state.zoomInfo.prevMapX = action.payload.prevMapX;
       state.zoomInfo.prevMapY = action.payload.prevMapY;
@@ -45,7 +45,7 @@ export const editorSlice = createSlice({
     setRootFrameVisible(state, { payload }: PayloadAction<boolean>) {
       state.rootFrameVisible = payload;
     },
-    setConnectionStart(state, action: PayloadAction<EditorState['connectionStart']>) {
+    setConnectionStart(state, action: PayloadAction<State['connectionStart']>) {
       state.connectionStart = action.payload;
     },
     clearConnectionStart(state) {
@@ -198,7 +198,7 @@ export const editorSlice = createSlice({
   },
 });
 
-const readMap = (state: EditorState, payload: MapInfo): boolean => {
+const readMap = (state: State, payload: MapInfo): boolean => {
   console.log(payload);
   const isValid = Object.values(payload.mapData).every(obj => Object.keys(obj as object).includes('path'));
   if (isValid) {
@@ -215,4 +215,4 @@ const readMap = (state: EditorState, payload: MapInfo): boolean => {
   }
 };
 
-export const { actions } = editorSlice;
+export const { actions } = slice;

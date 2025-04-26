@@ -1,4 +1,4 @@
-import { G, L, M, N, R } from '../state/map-state-types';
+import { G, L, M, N, R } from '../state/map-types';
 import { excludeEntries } from '../utils/object-utils';
 import { isG, isL, isR } from './path-queries';
 

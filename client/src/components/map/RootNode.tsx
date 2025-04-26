@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { mR } from '../../../../shared/src/map/getters/map-queries.ts';
-import { ControlType } from '../../../../shared/src/map/state/map-state-types.ts';
+import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { Extraction } from './rootNodeType/Extraction.tsx';
@@ -13,7 +13,7 @@ import { TextInput } from './rootNodeType/TextInput.tsx';
 import { TextOutput } from './rootNodeType/TextOutput.tsx';
 
 export const RootNode: FC = () => {
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
   return mR(m).map(ri => (
     <div

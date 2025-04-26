@@ -1,4 +1,4 @@
-import { M, MPartial, Side } from '../state/map-state-types';
+import { M, MPartial, Side } from '../state/map-types';
 import { _assert } from './_assert';
 import { mapDelete } from './map-delete';
 

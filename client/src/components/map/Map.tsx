@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ColorMode } from '../../../../shared/src/api/api-state-types.ts';
-import { MidMouseMode } from '../../data/editor-state-types.ts';
+import { ColorMode } from '../../../../shared/src/api/api-types.ts';
+import { MidMouseMode } from '../../data/state-types.ts';
 import { getG } from '../../../../shared/src/map/getters/map-queries.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -16,11 +16,11 @@ import { RootNodeMovePreview } from './RootNodeMovePreview.tsx';
 import { RootNodeSeparator } from './RootNodeSeparator.tsx';
 
 export const Map: FC = () => {
-  const midMouseMode = useSelector((state: RootState) => state.editor.midMouseMode);
-  const zoomInfo = useSelector((state: RootState) => state.editor.zoomInfo);
-  const colorMode = useSelector((state: RootState) => state.editor.userInfo.colorMode);
-  const mapId = useSelector((state: RootState) => state.editor.mapInfo.id);
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
+  const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
+  const zoomInfo = useSelector((state: RootState) => state.slice.zoomInfo);
+  const colorMode = useSelector((state: RootState) => state.slice.userInfo.colorMode);
+  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const g = getG(m);
 
   const dispatch = useDispatch<AppDispatch>();

@@ -8,7 +8,7 @@ import {
   RenameMapResponseDto,
   UpdateWorkspaceRequestDto,
   UpdateWorkspaceResponseDto,
-} from '../../../shared/src/api/api-state-types.ts';
+} from '../../../shared/src/api/api-types.ts';
 import { timeoutId } from '../components/window/Window.tsx';
 import { mapPrune } from '../../../shared/src/map/getters/map-prune.ts';
 import { mapArrayToObject } from '../../../shared/src/map/getters/map-queries.ts';
@@ -58,14 +58,14 @@ export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, strin
 
   saveMap: builder.mutation<void, void>({
     queryFn: async (_args, { getState }, _extraOptions, baseQuery) => {
-      const editor = (getState() as unknown as RootState).editor;
-      if (editor.commitList.length > 1) {
+      const slice = (getState() as unknown as RootState).slice;
+      if (slice.commitList.length > 1) {
         console.log('saving');
         clearTimeout(timeoutId);
         const SAVE_ENABLED = true;
         if (SAVE_ENABLED) {
-          const mapId = editor.mapInfo.id;
-          const mapData = mapArrayToObject(mapPrune(editor.commitList[editor.commitIndex]));
+          const mapId = slice.mapInfo.id;
+          const mapData = mapArrayToObject(mapPrune(slice.commitList[slice.commitIndex]));
           try {
             const { data } = await baseQuery({
               url: 'save-map',

@@ -5,7 +5,7 @@ import { RootState } from '../../data/store.ts';
 import { getBezierLinePath, getRootLinePath, pathCommonProps } from './UtilsSvg.ts';
 
 export const LinkNodeBezier: FC = () => {
-  const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   return mL(m).map(li => (
     <path
       key={`${li.nodeId}_l`}
