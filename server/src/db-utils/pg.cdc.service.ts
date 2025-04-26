@@ -55,23 +55,21 @@ export class PgCdcService {
       try {
         const mapId = parseInt(msg.payload as string);
 
-        // TODO: we need a different listener for map deletes so we don't have to load the map here
-
         // Try to fetch the map from the database
-        // const map = await this.prisma.map.findUnique({ where: { id: mapId } });
-        //
-        // if (!map) {
-        //   // 🔥 Map was deleted
-        //   for (const client of this.clients) {
-        //     if (client.mapId === mapId) {
-        //       console.log('map deleted match');
-        //       // client.res.write(`event: mapDelete\n`);
-        //       // client.res.write(`data: ${JSON.stringify({ id: mapId })}\n\n`);
-        //     }
-        //   }
-        //
-        //   return; // nothing more to do
-        // }
+        const map = await this.prisma.map.findUnique({ where: { id: mapId } });
+
+        if (!map) {
+          // 🔥 Map was deleted
+          for (const client of this.clients) {
+            if (client.mapId === mapId) {
+              console.log('map deleted match');
+              // client.res.write(`event: mapDelete\n`);
+              // client.res.write(`data: ${JSON.stringify({ id: mapId })}\n\n`);
+            }
+          }
+
+          return; // nothing more to do
+        }
 
         // ✅ Map exists — it's an update
         for (const client of this.clients) {
