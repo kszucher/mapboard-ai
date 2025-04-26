@@ -94,39 +94,31 @@ export class MapService {
 
     console.time('Save Map');
 
-    await this.prisma.$transaction(async (tx) => {
-      // First, calculate the merged data using a raw query
-      const mergedDataResult = await tx.$queryRawUnsafe<{ merged_data: any }[]>(`
-        --
-        WITH "MergedData" AS (
-          SELECT jsonb_merge_recurse(
-            $3::jsonb,
-            jsonb_diff_recurse(
-              (SELECT "data" FROM "Map" WHERE id = $2),
-              (SELECT "mapData" FROM "Workspace" WHERE id = $1)
-            )
-          ) AS merged_data
-        )
-        SELECT merged_data FROM "MergedData"
-      `, workspaceId, mapId, JSON.stringify(mapData));
+    const mergedDataResult = await this.prisma.$queryRawUnsafe<{ merged_data: any }[]>(`
+      --
+      WITH "MergedData" AS (
+        SELECT jsonb_merge_recurse(
+          $3::jsonb,
+          jsonb_diff_recurse(
+            (SELECT "data" FROM "Map" WHERE id = $2),
+            (SELECT "mapData" FROM "Workspace" WHERE id = $1)
+          )
+        ) AS merged_data
+      )
+      UPDATE "Map"
+      SET
+        "data" = (SELECT merged_data FROM "MergedData"),
+        "updatedAt" = NOW()
+      WHERE id = $2
+      RETURNING "data" AS merged_data
+    `, workspaceId, mapId, JSON.stringify(mapData));
 
-      // Now, safely access the merged data
-      const mergedData = mergedDataResult[0].merged_data;
+    const mergedData = mergedDataResult[0].merged_data;
 
-      // Update Workspace table
-      await tx.workspace.update({
-        where: { id: workspaceId },
-        data: { mapData: mergedData },
-      });
-
-      // Update Map table
-      await tx.map.update({
-        where: { id: mapId },
-        data: { data: mergedData, updatedAt: new Date() },
-      });
+    await this.prisma.workspace.update({
+      where: { id: workspaceId },
+      data: { mapData: mergedData },
     });
-    
-    console.timeEnd('Save Map');
   }
 
   async updateMapByServer({ mapId, mapDataDelta }: { mapId: number, mapDataDelta: object }) {
