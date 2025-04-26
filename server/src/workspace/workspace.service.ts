@@ -23,9 +23,11 @@ export class WorkspaceService {
 
     const map = lastMap ?? await this.mapService.createMap({ userId, mapName: 'New Map' });
 
-    await this.userService.incrementSignInCount({ userId });
+    await this.tabService.createTabIfNotExists({ userId });
 
-    await this.tabService.addMapToTab({ userId, mapId: map.id });
+    await this.tabService.addMapIfNotIncluded({ userId, mapId: map.id });
+
+    await this.userService.incrementSignInCount({ userId });
 
     const workspace = await this.prisma.workspace.create({
       data: {

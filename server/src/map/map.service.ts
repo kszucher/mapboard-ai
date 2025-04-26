@@ -32,7 +32,7 @@ export class MapService {
 
   async createMapInTab({ userId, mapName }: { userId: number, mapName: string }) {
     const map = await this.createMap({ userId, mapName });
-    await this.tabService.addMapToTab({ userId, mapId: map.id });
+    await this.tabService.addMapIfNotIncluded({ userId, mapId: map.id });
     return map;
   }
 

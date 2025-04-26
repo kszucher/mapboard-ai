@@ -23,23 +23,35 @@ export class TabService {
     });
   }
 
-  async addMapToTab({ userId, mapId }: { userId: number, mapId: number }) {
+  async createTabIfNotExists({ userId }: { userId: number }) {
     await this.prisma.user.update({
-      where: {
-        id: userId,
-      },
+      where: { id: userId },
       data: {
         Tab: {
-          upsert: {
+          connectOrCreate: {
+            where: { userId },
             create: {
-              mapIds: [mapId],
-            },
-            update: {
-              mapIds: {
-                push: mapId,
-              },
+              mapIds: [],
             },
           },
+        },
+      },
+    });
+  }
+
+  async addMapIfNotIncluded({ userId, mapId }: { userId: number, mapId: number }) {
+    await this.prisma.tab.updateMany({
+      where: {
+        userId: userId,
+        NOT: {
+          mapIds: {
+            has: mapId,
+          },
+        },
+      },
+      data: {
+        mapIds: {
+          push: mapId,
         },
       },
     });
