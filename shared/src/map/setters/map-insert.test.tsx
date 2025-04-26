@@ -1,9 +1,10 @@
-import { mapInsert } from './MapInsert.ts';
-import { ControlType, M, MPartial } from '../mapState/map-state-types.ts';
-import { _assert } from './_assert.ts';
+import { ControlType, M, MPartial } from '../state/map-state-types';
+import { _assert } from './_assert';
+import { mapInsert } from './map-insert';
 
 describe('MapInsertTests', () => {
-  beforeEach(() => {});
+  beforeEach(() => {
+  });
   test('insertR', () => {
     const test: MPartial = [
       { nodeId: 'g', path: ['g'] },

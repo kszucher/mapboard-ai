@@ -1,9 +1,9 @@
 import { Dialog, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch, useSelector } from 'react-redux';
 import Dots from '../../../assets/dots.svg?react';
-import { DialogState } from '../../data/clientSide/editorState/editor-state-types.ts';
-import { api } from '../../data/serverSide/Api.ts';
-import { actions } from '../../data/clientSide/Reducer.ts';
+import { DialogState } from '../../data/editor-state-types.ts';
+import { api } from '../../data/api.ts';
+import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const MapActions = () => {

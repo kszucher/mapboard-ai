@@ -1,7 +1,7 @@
 import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { api } from '../../data/serverSide/Api.ts';
+import { api } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const MapActionsRename = () => {

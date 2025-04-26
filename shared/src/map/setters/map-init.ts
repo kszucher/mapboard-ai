@@ -1,4 +1,5 @@
-import { isG, isL, isR } from '../mapGetters/PathQueries.ts';
+import { genId } from '../../../../client/src/utils/utils';
+import { isG, isL, isR } from '../getters/path-queries';
 import {
   gSaveAlways,
   gSaveNever,
@@ -9,9 +10,9 @@ import {
   rSaveAlways,
   rSaveNever,
   rSaveOptional,
-} from '../mapState/map-state-defaults.ts';
-import { G, L, MPartial, R } from '../mapState/map-state-types.ts';
-import { excludeEntries, genId } from '../../../utils/Utils.ts';
+} from '../state/map-state-defaults';
+import { G, L, MPartial, R } from '../state/map-state-types';
+import { excludeEntries } from '../utils/object-utils';
 
 export const mapInit = (m: MPartial) => {
   m.forEach(ni => {
@@ -24,7 +25,7 @@ export const mapInit = (m: MPartial) => {
             ...excludeEntries(gSaveOptional, Object.keys(ni)),
             ...gSaveNever,
           }),
-          { nodeId: ni.nodeId || genId() }
+          { nodeId: ni.nodeId || genId() },
         );
         break;
       case isL(ni.path):
@@ -35,7 +36,7 @@ export const mapInit = (m: MPartial) => {
             ...excludeEntries(lSaveOptional, Object.keys(ni)),
             ...lSaveNever,
           }),
-          { nodeId: ni.nodeId || genId() }
+          { nodeId: ni.nodeId || genId() },
         );
         break;
       case isR(ni.path):
@@ -46,7 +47,7 @@ export const mapInit = (m: MPartial) => {
             ...excludeEntries(rSaveOptional, Object.keys(ni)),
             ...rSaveNever,
           }),
-          { nodeId: ni.nodeId || genId() }
+          { nodeId: ni.nodeId || genId() },
         );
         break;
     }

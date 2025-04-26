@@ -1,7 +1,7 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch, useSelector } from 'react-redux';
 import Eye from '../../../assets/eye.svg?react';
-import { actions } from '../../data/clientSide/Reducer.ts';
+import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const ConfigView = () => {

@@ -1,11 +1,11 @@
 import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../../../data/clientSide/Reducer.ts';
-import { R } from '../../../data/clientSide/mapState/map-state-types.ts';
-import { api } from '../../../data/serverSide/Api.ts';
+import { actions } from '../../../data/reducer.ts';
+import { R } from '../../../../../shared/src/map/state/map-state-types.ts';
+import { api } from '../../../data/api.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
-import { shrinkString } from '../../../utils/Utils.ts';
+import { shrinkString } from '../../../utils/utils.ts';
 import Dots from '../../../../assets/dots.svg?react';
 
 export const FileUpload = ({ ri }: { ri: R }) => {

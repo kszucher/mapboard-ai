@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ControlType, Side } from '../../data/clientSide/mapState/map-state-types.ts';
-import { actions } from '../../data/clientSide/Reducer.ts';
-import { mR } from '../../data/clientSide/mapGetters/MapQueries.ts';
+import { ControlType, Side } from '../../../../shared/src/map/state/map-state-types.ts';
+import { actions } from '../../data/reducer.ts';
+import { mR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { adjustIcon } from '../../utils/Utils.ts';
+import { adjustIcon } from '../../utils/utils.ts';
 
 export const LinkNodeConnectorOut: FC = () => {
   const m = useSelector((state: RootState) => state.editor.commitList[state.editor.commitIndex]);

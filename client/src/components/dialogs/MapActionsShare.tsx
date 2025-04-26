@@ -2,8 +2,8 @@ import { Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField } from '@r
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { AccessType } from '../../data/clientSide/editorState/editor-state-types.ts';
-import { api } from '../../data/serverSide/Api.ts';
+import { AccessType } from '../../data/editor-state-types.ts';
+import { api } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 
 export const MapActionsShare = () => {

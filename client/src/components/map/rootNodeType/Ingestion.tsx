@@ -2,10 +2,10 @@ import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text } fro
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Dots from '../../../../assets/dots.svg?react';
-import { getInputNode } from '../../../data/clientSide/mapGetters/MapQueries.ts';
-import { R } from '../../../data/clientSide/mapState/map-state-types.ts';
-import { actions } from '../../../data/clientSide/Reducer.ts';
-import { api } from '../../../data/serverSide/Api.ts';
+import { getInputNode } from '../../../../../shared/src/map/getters/map-queries.ts';
+import { R } from '../../../../../shared/src/map/state/map-state-types.ts';
+import { actions } from '../../../data/reducer.ts';
+import { api } from '../../../data/api.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 
 export const Ingestion = ({ ri }: { ri: R }) => {

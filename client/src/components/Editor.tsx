@@ -1,9 +1,9 @@
 import { AlertDialog, Dialog, Spinner, Theme } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AlertDialogState, DialogState } from '../data/clientSide/editorState/editor-state-types.ts';
-import { actions } from '../data/clientSide/Reducer.ts';
-import { ColorMode } from '../../../shared/types/api-state-types.ts';
+import { AlertDialogState, DialogState } from '../data/editor-state-types.ts';
+import { actions } from '../data/reducer.ts';
+import { ColorMode } from '../../../shared/src/api/api-state-types.ts';
 import { AppDispatch, RootState } from '../data/store.ts';
 import { UserAccountDelete } from './alertDialogs/UserAccountDelete.tsx';
 import { AppBar } from './appBar/AppBar.tsx';

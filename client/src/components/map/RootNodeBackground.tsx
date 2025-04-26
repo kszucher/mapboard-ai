@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import colors from 'tailwindcss/colors';
-import { mR } from '../../data/clientSide/mapGetters/MapQueries.ts';
+import { mR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
 
 export const RootNodeBackground: FC = () => {

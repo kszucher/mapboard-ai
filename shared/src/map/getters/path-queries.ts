@@ -1,4 +1,4 @@
-import { P } from '../mapState/map-state-types.ts';
+import { P } from '../state/map-state-types';
 
 export const isG = (p: P): boolean => p.at(0) === 'g';
 export const isL = (p: P): boolean => p.at(0) === 'l';

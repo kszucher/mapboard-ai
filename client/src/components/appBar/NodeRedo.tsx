@@ -2,8 +2,8 @@ import { IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ArrowForwardUp from '../../../assets/arrow-forward-up.svg?react';
-import { AccessType } from '../../data/clientSide/editorState/editor-state-types.ts';
-import { actions } from '../../data/clientSide/Reducer.ts';
+import { AccessType } from '../../data/editor-state-types.ts';
+import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const NodeRedo: FC = () => {

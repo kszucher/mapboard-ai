@@ -1,4 +1,4 @@
-import { jsonMerge } from './jsonMerge';
+import { jsonMerge } from './json-merge';
 
 describe('jsonMerge', () => {
   it('merges complex nested objects with nulls and overrides', () => {

@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { mR } from '../../data/clientSide/mapGetters/MapQueries.ts';
+import { mR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
-import { adjust } from '../../utils/Utils.ts';
+import { adjust } from '../../utils/utils.ts';
 import { getLinearLinePath, pathCommonProps } from './UtilsSvg.ts';
 
 export const RootNodeSeparator: FC = () => {

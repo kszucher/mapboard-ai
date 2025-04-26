@@ -1,6 +1,6 @@
-import { G, L, M, N, R } from '../mapState/map-state-types.ts';
-import { excludeEntries } from '../../../utils/Utils.ts';
-import { isG, isL, isR } from './PathQueries.ts';
+import { G, L, M, N, R } from '../state/map-state-types';
+import { excludeEntries } from '../utils/object-utils';
+import { isG, isL, isR } from './path-queries';
 
 export const mapArrayToObject = (m: M): object =>
   Object.fromEntries(m.map(n => [n.nodeId, excludeEntries(n, ['nodeId'])]));
@@ -29,7 +29,7 @@ export const isExistingLink = (m: M, partialL: Partial<L>): boolean =>
       partialL.fromNodeId === li.fromNodeId &&
       partialL.toNodeId === li.toNodeId &&
       partialL.fromNodeSide === li.fromNodeSide &&
-      partialL.toNodeSide === li.toNodeSide
+      partialL.toNodeSide === li.toNodeSide,
   );
 
 export const getInputNode = (m: M, nodeId: string) => {

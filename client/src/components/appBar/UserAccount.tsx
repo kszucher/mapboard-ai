@@ -2,10 +2,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { AlertDialog, Dialog, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch, useSelector } from 'react-redux';
 import User from '../../../assets/user.svg?react';
-import { actions } from '../../data/clientSide/Reducer.ts';
-import { AlertDialogState, DialogState } from '../../data/clientSide/editorState/editor-state-types.ts';
-import { api } from '../../data/serverSide/Api.ts';
-import { ColorMode } from '../../../../shared/types/api-state-types.ts';
+import { actions } from '../../data/reducer.ts';
+import { AlertDialogState, DialogState } from '../../data/editor-state-types.ts';
+import { api } from '../../data/api.ts';
+import { ColorMode } from '../../../../shared/src/api/api-state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const UserAccount = () => {

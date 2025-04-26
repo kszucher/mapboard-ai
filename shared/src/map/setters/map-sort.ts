@@ -1,4 +1,4 @@
-import { N, NPartial, P } from '../mapState/map-state-types.ts';
+import { N, NPartial, P } from '../state/map-state-types';
 
 export const sortablePath = (p: P): string => p.map((pi: any) => (isNaN(pi) ? pi : 1000 + pi)).join('');
 export const sortPath = (a: N, b: N) => (sortablePath(a.path) > sortablePath(b.path) ? 1 : -1);

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { mL } from '../../data/clientSide/mapGetters/MapQueries.ts';
+import { mL } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
 import { getBezierLinePath, getRootLinePath, pathCommonProps } from './UtilsSvg.ts';
 

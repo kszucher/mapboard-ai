@@ -1,8 +1,8 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
 import Plus from '../../../assets/plus.svg?react';
-import { ControlType } from '../../data/clientSide/mapState/map-state-types.ts';
-import { actions } from '../../data/clientSide/Reducer.ts';
+import { ControlType } from '../../../../shared/src/map/state/map-state-types.ts';
+import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeInsert = () => {

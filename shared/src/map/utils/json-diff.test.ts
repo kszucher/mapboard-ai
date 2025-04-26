@@ -1,4 +1,4 @@
-import { jsonDiff } from './jsonDiff';
+import { jsonDiff } from './json-diff';
 
 describe('jsonDiff', () => {
   it('should compute the diff for nested objects with adds, changes, and removals', () => {

@@ -8,13 +8,13 @@ import {
   RenameMapResponseDto,
   UpdateWorkspaceRequestDto,
   UpdateWorkspaceResponseDto,
-} from '../../../../shared/types/api-state-types.ts';
-import { timeoutId } from '../../components/window/Window.tsx';
-import { mapPrune } from '../clientSide/mapGetters/MapPrune.ts';
-import { mapArrayToObject } from '../clientSide/mapGetters/MapQueries.ts';
-import { actions } from '../clientSide/Reducer.ts';
-import { RootState } from '../store.ts';
-import { api } from './Api.ts';
+} from '../../../shared/src/api/api-state-types.ts';
+import { timeoutId } from '../components/window/Window.tsx';
+import { mapPrune } from '../../../shared/src/map/getters/map-prune.ts';
+import { mapArrayToObject } from '../../../shared/src/map/getters/map-queries.ts';
+import { actions } from './reducer.ts';
+import { RootState } from './store.ts';
+import { api } from './api.ts';
 
 export const apiMutations = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   // workspace

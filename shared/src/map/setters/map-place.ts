@@ -1,6 +1,6 @@
-import { M_PADDING } from '../mapState/map-consts.ts';
-import { mR } from '../mapGetters/MapQueries.ts';
-import { M } from '../mapState/map-state-types.ts';
+import { mR } from '../getters/map-queries';
+import { M_PADDING } from '../state/map-consts';
+import { M } from '../state/map-state-types';
 
 export const mapPlace = (m: M) => {
   mR(m).forEach(ri => {

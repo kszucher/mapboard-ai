@@ -1,21 +1,15 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
-import { MapInfo } from '../../../../shared/types/api-state-types.ts';
-import { getMapX, getMapY } from '../../components/map/UtilsDiv.ts';
-import { api } from '../serverSide/Api.ts';
-import { editorStateDefault, editorStateDefaults } from './editorState/editor-state-defaults.ts';
-import {
-  AlertDialogState,
-  DialogState,
-  EditorState,
-  MidMouseMode,
-  PageState,
-} from './editorState/editor-state-types.ts';
-import { idToR, mapObjectToArray } from './mapGetters/MapQueries.ts';
-import { mapBuild } from './mapSetters/MapBuild.ts';
-import { mapDelete } from './mapSetters/MapDelete.ts';
-import { mapInsert } from './mapSetters/MapInsert.ts';
-import { ControlType, L, R, Side } from './mapState/map-state-types.ts';
+import { MapInfo } from '../../../shared/src/api/api-state-types.ts';
+import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
+import { api } from './api.ts';
+import { editorStateDefault, editorStateDefaults } from './editor-state-defaults.ts';
+import { AlertDialogState, DialogState, EditorState, MidMouseMode, PageState } from './editor-state-types.ts';
+import { idToR, mapObjectToArray } from '../../../shared/src/map/getters/map-queries.ts';
+import { mapBuild } from '../../../shared/src/map/setters/map-build.ts';
+import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
+import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
+import { ControlType, L, R, Side } from '../../../shared/src/map/state/map-state-types.ts';
 
 export const editorSlice = createSlice({
   name: 'editor',

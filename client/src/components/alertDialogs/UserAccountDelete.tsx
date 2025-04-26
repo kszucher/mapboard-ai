@@ -1,7 +1,7 @@
 import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { api } from '../../data/serverSide/Api.ts';
+import { api } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const UserAccountDelete: FC = () => {

@@ -1,9 +1,9 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ColorMode } from '../../../../shared/types/api-state-types.ts';
-import { MidMouseMode } from '../../data/clientSide/editorState/editor-state-types.ts';
-import { getG } from '../../data/clientSide/mapGetters/MapQueries.ts';
-import { actions } from '../../data/clientSide/Reducer.ts';
+import { ColorMode } from '../../../../shared/src/api/api-state-types.ts';
+import { MidMouseMode } from '../../data/editor-state-types.ts';
+import { getG } from '../../../../shared/src/map/getters/map-queries.ts';
+import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { LinkNodeBezier } from './LinkNodeBezier.tsx';
 import { LinkNodeConnectorIn } from './LinkNodeConnectorIn.tsx';

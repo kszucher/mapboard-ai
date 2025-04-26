@@ -2,7 +2,7 @@ import { Button, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ChevronDown from '../../../assets/chevron-down.svg?react';
-import { api } from '../../data/serverSide/Api.ts';
+import { api } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { MapActions } from './MapActions.tsx';
 

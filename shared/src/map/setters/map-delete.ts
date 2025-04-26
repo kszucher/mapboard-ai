@@ -1,5 +1,5 @@
-import { idToL, idToR, mL, mR } from '../mapGetters/MapQueries.ts';
-import { M, T } from '../mapState/map-state-types.ts';
+import { idToL, idToR, mL, mR } from '../getters/map-queries';
+import { M, T } from '../state/map-state-types';
 
 const deleteTL = (m: M, tl: T[]) =>
   tl
@@ -16,10 +16,10 @@ export const mapDelete = {
     const selectedRL = [idToR(m, nodeId)];
     const nonSelectedRL = mR(m).filter(ri => ri.nodeId !== nodeId);
     const selectedL = mL(m).filter(li =>
-      selectedRL.map(ri => ri.nodeId).some(id => li.fromNodeId === id || li.toNodeId === id)
+      selectedRL.map(ri => ri.nodeId).some(id => li.fromNodeId === id || li.toNodeId === id),
     );
     const nonSelectedL = mL(m).filter(li =>
-      selectedRL.map(ri => ri.nodeId).every(id => li.fromNodeId !== id && li.toNodeId !== id)
+      selectedRL.map(ri => ri.nodeId).every(id => li.fromNodeId !== id && li.toNodeId !== id),
     );
     const rMap = new Map(nonSelectedRL.map((ri, i) => [ri.path.at(1), i]));
     nonSelectedRL.map(ti => (ti.path[1] = <number>rMap.get(ti.path[1])));

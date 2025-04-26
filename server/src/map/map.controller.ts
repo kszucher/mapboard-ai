@@ -4,7 +4,7 @@ import {
   CreateMapInTabResponseDto,
   RenameMapRequestDto,
   RenameMapResponseDto,
-} from '../../../shared/types/api-state-types';
+} from '../../../shared/src/api/api-state-types';
 import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
 import { tabService } from '../tab/tab.controller';
 import { MapService } from './map.service';

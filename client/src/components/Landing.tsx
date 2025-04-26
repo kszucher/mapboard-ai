@@ -4,8 +4,8 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Login from '../../assets/login.svg?react';
 import TopologyStar from '../../assets/topology-star.svg?react';
-import { actions } from '../data/clientSide/Reducer.ts';
-import { api } from '../data/serverSide/Api.ts';
+import { actions } from '../data/reducer.ts';
+import { api } from '../data/api.ts';
 import { AppDispatch, RootState } from '../data/store.ts';
 import { frontendUrl } from '../urls/Urls.ts';
 
