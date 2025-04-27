@@ -56,11 +56,11 @@ export type CreateWorkspaceResponseDto = {
   shareInfo: ShareInfo
 }
 
-export type UpdateWorkspaceRequestDto = {
+export type UpdateWorkspaceMapRequestDto = {
   mapId: number
 }
 
-export type UpdateWorkspaceResponseDto = {
+export type UpdateWorkspaceMapResponseDto = {
   mapInfo: MapInfo
 }
 

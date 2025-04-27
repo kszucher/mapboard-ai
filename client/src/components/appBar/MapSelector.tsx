@@ -25,7 +25,7 @@ export const MapSelector: FC = () => {
           {tabMapInfo.map((el, index) => (
             <DropdownMenu.Item
               key={index}
-              onClick={() => dispatch(api.endpoints.updateWorkspace.initiate({ mapId: el.id }))}
+              onClick={() => dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: el.id }))}
             >
               {tabMapInfo[index].name}
             </DropdownMenu.Item>
@@ -35,14 +35,18 @@ export const MapSelector: FC = () => {
           {sharesWithUser.map((el, index) => (
             <DropdownMenu.Item
               key={index}
-              onClick={() => dispatch(api.endpoints.updateWorkspace.initiate({ mapId: el.id }))}
+              onClick={() => dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: el.id }))}
             >
               {el.Map.name}
             </DropdownMenu.Item>
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <Button variant="solid" radius="full" onClick={() => dispatch(api.endpoints.updateWorkspace.initiate({ mapId }))}>
+      <Button
+        variant="solid"
+        radius="full"
+        onClick={() => dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId }))}
+      >
         {mapName}
       </Button>
       <MapActions />

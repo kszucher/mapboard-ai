@@ -153,7 +153,7 @@ export const slice = createSlice({
         api.endpoints.toggleColorMode.matchPending,
         api.endpoints.createMapInTab.matchPending,
         api.endpoints.createMapInTabDuplicate.matchPending,
-        api.endpoints.updateWorkspace.matchPending,
+        api.endpoints.updateWorkspaceMap.matchPending,
         api.endpoints.renameMap.matchPending,
         api.endpoints.moveUpMapInTab.matchPending,
         api.endpoints.moveDownMapInTab.matchPending,
@@ -172,7 +172,7 @@ export const slice = createSlice({
         api.endpoints.createWorkspace.matchFulfilled,
         api.endpoints.createMapInTab.matchFulfilled,
         api.endpoints.createMapInTabDuplicate.matchFulfilled,
-        api.endpoints.updateWorkspace.matchFulfilled
+        api.endpoints.updateWorkspaceMap.matchFulfilled
       ),
       (state, { payload }: { payload: { mapInfo: MapInfo } }) => {
         console.log(payload.mapInfo);

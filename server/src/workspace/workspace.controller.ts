@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { CreateWorkspaceResponseDto, UpdateWorkspaceResponseDto } from '../../../shared/src/api/api-types';
+import { CreateWorkspaceResponseDto, UpdateWorkspaceMapResponseDto } from '../../../shared/src/api/api-types';
 import { mapService } from '../map/map.controller';
 import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
 import { tabService } from '../tab/tab.controller';
@@ -26,7 +26,7 @@ router.post('/update-workspace-map', checkJwt, getUserIdAndWorkspaceId, async (r
   const { mapId } = req.body;
   await workspaceService.updateWorkspaceMap(({ workspaceId, mapId }));
   const mapInfo = await mapService.readMap({ workspaceId });
-  res.json({ mapInfo } as UpdateWorkspaceResponseDto);
+  res.json({ mapInfo } as UpdateWorkspaceMapResponseDto);
 });
 
 // TODO deleteWorkspace
