@@ -4,7 +4,10 @@ import { actions } from './reducer.ts';
 
 export const apiMutationsUser = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   toggleColorMode: builder.mutation<void, void>({
-    query: () => ({ url: 'toggle-color-mode', method: 'POST' }),
+    query: () => ({
+      url: 'toggle-color-mode',
+      method: 'POST',
+    }),
   }),
 
   deleteAccount: builder.mutation<void, void>({

@@ -14,15 +14,27 @@ import { RootState } from './store.ts';
 
 export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   createMapInTab: builder.mutation<CreateMapInTabResponseDto, CreateMapInTabRequestDto>({
-    query: ({ mapName }) => ({ url: 'create-map-in-tab', method: 'POST', body: { mapName } }),
+    query: ({ mapName }) => ({
+      url: 'create-map-in-tab',
+      method: 'POST',
+      body: { mapName },
+    }),
   }),
 
   createMapInTabDuplicate: builder.mutation<CreateMapInTabDuplicateResponseDto, CreateMapInTabDuplicateRequestDto>({
-    query: ({ mapId }) => ({ url: 'create-map-in-tab-duplicate', method: 'POST', body: { mapId } }),
+    query: ({ mapId }) => ({
+      url: 'create-map-in-tab-duplicate',
+      method: 'POST',
+      body: { mapId },
+    }),
   }),
 
   renameMap: builder.mutation<RenameMapResponseDto, RenameMapRequestDto>({
-    query: ({ mapId, mapName }) => ({ url: 'rename-map', method: 'POST', body: { mapId, mapName } }),
+    query: ({ mapId, mapName }) => ({
+      url: 'rename-map',
+      method: 'POST',
+      body: { mapId, mapName },
+    }),
   }),
 
   saveMap: builder.mutation<void, void>({
