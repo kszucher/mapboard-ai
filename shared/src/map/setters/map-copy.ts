@@ -1,7 +1,7 @@
 import { isL } from '../getters/path-queries';
 import { L, M } from '../state/map-types';
 
-export const copyArrayWithReplacedIds = (originalArray: M, generateNodeId: Function): M => {
+export const mapCopy = (originalArray: M, generateNodeId: Function): M => {
   const newArray: M = [];
 
   const idMapping: { [oldId: string]: string } = {};

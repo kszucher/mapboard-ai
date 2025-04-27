@@ -185,6 +185,13 @@ export const slice = createSlice({
         state.isLoading = false;
       }
     });
+    builder.addMatcher(api.endpoints.createMapInTabDuplicate.matchFulfilled, (state, { payload }) => {
+      state.tabMapInfo = payload.tabMapInfo;
+      const readMapSuccess = readMap(state, payload.mapInfo);
+      if (readMapSuccess) {
+        state.isLoading = false;
+      }
+    });
     builder.addMatcher(api.endpoints.renameMap.matchFulfilled, (state, { payload }) => {
       state.mapInfo.name = payload.mapInfo.name;
       state.isLoading = false;

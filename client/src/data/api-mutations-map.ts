@@ -1,5 +1,7 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
+  CreateMapInTabDuplicateRequestDto,
+  CreateMapInTabDuplicateResponseDto,
   CreateMapInTabRequestDto,
   CreateMapInTabResponseDto,
   RenameMapRequestDto,
@@ -15,7 +17,7 @@ export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, st
     query: ({ mapName }) => ({ url: 'create-map-in-tab', method: 'POST', body: { mapName } }),
   }),
 
-  createMapInTabDuplicate: builder.mutation<void, { mapId: number }>({
+  createMapInTabDuplicate: builder.mutation<CreateMapInTabDuplicateResponseDto, CreateMapInTabDuplicateRequestDto>({
     query: ({ mapId }) => ({ url: 'create-map-in-tab-duplicate', method: 'POST', body: { mapId } }),
   }),
 

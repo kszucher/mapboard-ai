@@ -1,5 +1,7 @@
 import { Request, Response, Router } from 'express';
 import {
+  CreateMapInTabDuplicateRequestDto,
+  CreateMapInTabDuplicateResponseDto,
   CreateMapInTabRequestDto,
   CreateMapInTabResponseDto,
   RenameMapRequestDto,
@@ -21,7 +23,14 @@ router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req:
   res.json(response);
 });
 
-// TODO createMapInTabDuplicate
+router.post('/create-map-in-tab-duplicate', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { userId } = (req as any);
+  const { mapId }: CreateMapInTabDuplicateRequestDto = req.body;
+  const mapInfo = await mapService.createMapInTabDuplicate({ userId, mapId });
+  const tabMapInfo = await tabService.readTab({ userId });
+  const response: CreateMapInTabDuplicateResponseDto = { mapInfo, tabMapInfo };
+  res.json(response);
+});
 
 router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { mapId, mapName }: RenameMapRequestDto = req.body;

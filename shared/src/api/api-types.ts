@@ -73,6 +73,15 @@ export type CreateMapInTabResponseDto = {
   tabMapInfo: TabMapInfo
 }
 
+export type CreateMapInTabDuplicateRequestDto = {
+  mapId: number
+}
+
+export type CreateMapInTabDuplicateResponseDto = {
+  mapInfo: MapInfo
+  tabMapInfo: TabMapInfo
+}
+
 export type RenameMapRequestDto = {
   mapId: number
   mapName: string

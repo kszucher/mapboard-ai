@@ -1,3 +1,7 @@
+import { JsonObject } from '@prisma/client/runtime/library';
+import { mapArrayToObject, mapObjectToArray } from '../../../shared/src/map/getters/map-queries';
+import { mapCopy } from '../../../shared/src/map/setters/map-copy';
+import { M } from '../../../shared/src/map/state/map-types';
 import { jsonDiff } from '../../../shared/src/map/utils/json-diff';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
 import { PrismaClient } from '../generated/client';
@@ -38,8 +42,34 @@ export class MapService {
     return map;
   }
 
-  async createMapInTabDuplicate() {
+  async createMapInTabDuplicate({ userId, mapId }: { userId: number, mapId: number }) {
+    const map = await this.prisma.map.findFirstOrThrow({
+      where: { id: mapId },
+      select: { id: true, name: true, data: true },
+    });
 
+    const mapDataObject = mapObjectToArray(map.data as M);
+
+    const newMapDataArray = mapCopy(mapDataObject, () => global.crypto.randomUUID().slice(-8));
+
+    const newMapDataObject = mapArrayToObject(newMapDataArray);
+
+    const newMap = await this.prisma.map.create({
+      data: {
+        userId,
+        name: map.name + 'Copy',
+        data: newMapDataObject as JsonObject,
+      },
+      select: {
+        id: true,
+        name: true,
+        data: true,
+      },
+    });
+
+    await this.tabService.addMapIfNotIncluded({ userId, mapId: newMap.id });
+
+    return newMap;
   }
 
   async readLastMap({ userId }: { userId: number }) {
