@@ -6,6 +6,30 @@ export class ShareService {
   constructor(private prisma: PrismaClient) {
   }
 
+  async createShare({ userId, mapId, shareEmail, shareAccess }: {
+    userId: number
+    mapId: number,
+    shareEmail: string,
+    shareAccess: ShareAccess
+  }) {
+    const shareUser = await this.prisma.user.findUniqueOrThrow({
+      where: {
+        email: shareEmail,
+      },
+      select: { id: true },
+    });
+
+    return this.prisma.share.create({
+      data: {
+        mapId,
+        ownerUserId: userId,
+        shareUserId: shareUser.id,
+        access: shareAccess,
+        status: ShareStatus.WAITING,
+      },
+    });
+  }
+
   async getShareInfo({ userId }: { userId: number }) {
     return this.prisma.user.findFirstOrThrow({
       where: {

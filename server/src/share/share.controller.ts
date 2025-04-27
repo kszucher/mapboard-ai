@@ -13,16 +13,16 @@ const router = Router();
 export const shareService = new ShareService(prismaClient);
 
 router.post('create-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId } = (req as any);
+  const { userId } = (req as any);
   const { mapId, shareEmail, shareAccess }: CreateShareRequestDto = req.body;
-  // TODO
+  await shareService.createShare({ userId, mapId, shareEmail, shareAccess });
   res.json();
 });
 
 router.post('update-share-access', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId } = (req as any);
+  const { userID } = (req as any);
   const { shareId }: UpdateShareAccessRequestDto = req.body;
-  // TODO
+  
   res.json();
 });
 
