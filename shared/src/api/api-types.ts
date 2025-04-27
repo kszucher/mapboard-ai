@@ -5,6 +5,21 @@ export const ColorMode = {
 
 export type ColorMode = (typeof ColorMode)[keyof typeof ColorMode];
 
+export const ShareAccess = {
+  UNAUTHORIZED: 'UNAUTHORIZED',
+  VIEW: 'VIEW',
+  EDIT: 'EDIT',
+} as const;
+
+export type ShareAccess = (typeof ShareAccess)[keyof typeof ShareAccess];
+
+export const ShareStatus = {
+  WAITING: 'WAITING',
+  ACCEPTED: 'ACCEPTED',
+} as const;
+
+export type ShareStatus = (typeof ShareStatus)[keyof typeof ShareStatus];
+
 export type UserInfo = {
   name: string
   colorMode: ColorMode
@@ -46,24 +61,6 @@ export interface ShareInfo {
   }[];
 }
 
-export type CreateWorkspaceRequestDto = void
-
-export type CreateWorkspaceResponseDto = {
-  workspaceId: number
-  userInfo: UserInfo
-  mapInfo: MapInfo
-  tabMapInfo: TabMapInfo
-  shareInfo: ShareInfo
-}
-
-export type UpdateWorkspaceMapRequestDto = {
-  mapId: number
-}
-
-export type UpdateWorkspaceMapResponseDto = {
-  mapInfo: MapInfo
-}
-
 export type CreateMapInTabRequestDto = {
   mapName: string
 }
@@ -89,4 +86,58 @@ export type RenameMapRequestDto = {
 
 export type RenameMapResponseDto = {
   mapInfo: Pick<MapInfo, 'name'>
+}
+
+export type DeleteMapRequestDto = {}
+
+export type DeleteMapResponseDto = {}
+
+export type CreateShareRequestDto = {
+  mapId: number,
+  shareEmail: string,
+  shareAccess: ShareAccess
+}
+
+export type CreateShareResponseDto = void
+
+export type UpdateShareAccessRequestDto = {
+  shareId: number
+}
+
+export type UpdateShareAccessResponseDto = void
+
+export type UpdateShareStatusAcceptedRequestDto = {
+  shareId: number
+}
+
+export type UpdateShareStatusAcceptedResponseDto = void
+
+export type WithdrawShareRequestDto = {
+  shareId: number
+}
+
+export type WithdrawShareResponseDto = void
+
+export type RejectShareRequestDto = {
+  shareId: number
+}
+
+export type RejectShareResponseDto = void
+
+export type CreateWorkspaceRequestDto = void
+
+export type CreateWorkspaceResponseDto = {
+  workspaceId: number
+  userInfo: UserInfo
+  mapInfo: MapInfo
+  tabMapInfo: TabMapInfo
+  shareInfo: ShareInfo
+}
+
+export type UpdateWorkspaceMapRequestDto = {
+  mapId: number
+}
+
+export type UpdateWorkspaceMapResponseDto = {
+  mapInfo: MapInfo
 }
