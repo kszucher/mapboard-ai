@@ -167,59 +167,49 @@ export const slice = createSlice({
         state.isLoading = true;
       }
     );
+    builder.addMatcher(
+      isAnyOf(
+        api.endpoints.createWorkspace.matchFulfilled,
+        api.endpoints.createMapInTab.matchFulfilled,
+        api.endpoints.createMapInTabDuplicate.matchFulfilled,
+        api.endpoints.updateWorkspace.matchFulfilled
+      ),
+      (state, { payload }: { payload: { mapInfo: MapInfo } }) => {
+        console.log(payload.mapInfo);
+
+        const isValid = Object.values(payload.mapInfo.data).every(obj => Object.keys(obj as object).includes('path'));
+
+        if (isValid) {
+          const m = structuredClone(mapObjectToArray(payload.mapInfo.data));
+          mapBuild(m);
+          state.mapInfo.id = payload.mapInfo.id;
+          state.mapInfo.name = payload.mapInfo.name;
+          state.commitList = [m];
+          state.commitIndex = 0;
+          state.isLoading = false;
+        } else {
+          window.alert('invalid map');
+        }
+      }
+    );
     builder.addMatcher(api.endpoints.createWorkspace.matchFulfilled, (state, { payload }) => {
       state.pageState = PageState.WS;
       state.workspaceId = payload.workspaceId;
       state.userInfo = payload.userInfo;
       state.tabMapInfo = payload.tabMapInfo;
       state.shareInfo = payload.shareInfo;
-      const readMapSuccess = readMap(state, payload.mapInfo);
-      if (readMapSuccess) {
-        state.isLoading = false;
-      }
     });
     builder.addMatcher(api.endpoints.createMapInTab.matchFulfilled, (state, { payload }) => {
       state.tabMapInfo = payload.tabMapInfo;
-      const readMapSuccess = readMap(state, payload.mapInfo);
-      if (readMapSuccess) {
-        state.isLoading = false;
-      }
     });
     builder.addMatcher(api.endpoints.createMapInTabDuplicate.matchFulfilled, (state, { payload }) => {
       state.tabMapInfo = payload.tabMapInfo;
-      const readMapSuccess = readMap(state, payload.mapInfo);
-      if (readMapSuccess) {
-        state.isLoading = false;
-      }
     });
     builder.addMatcher(api.endpoints.renameMap.matchFulfilled, (state, { payload }) => {
       state.mapInfo.name = payload.mapInfo.name;
       state.isLoading = false;
     });
-    builder.addMatcher(api.endpoints.updateWorkspace.matchFulfilled, (state, { payload }) => {
-      const readMapSuccess = readMap(state, payload.mapInfo);
-      if (readMapSuccess) {
-        state.isLoading = false;
-      }
-    });
   },
 });
-
-const readMap = (state: State, payload: MapInfo): boolean => {
-  console.log(payload);
-  const isValid = Object.values(payload.data).every(obj => Object.keys(obj as object).includes('path'));
-  if (isValid) {
-    const m = structuredClone(mapObjectToArray(payload.data));
-    mapBuild(m);
-    state.mapInfo.id = payload.id;
-    state.mapInfo.name = payload.name;
-    state.commitList = [m];
-    state.commitIndex = 0;
-    return true;
-  } else {
-    window.alert('invalid map');
-    return false;
-  }
-};
 
 export const { actions } = slice;
