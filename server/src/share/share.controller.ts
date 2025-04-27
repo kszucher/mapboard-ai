@@ -20,9 +20,8 @@ router.post('create-share', checkJwt, getUserIdAndWorkspaceId, async (req: Reque
 });
 
 router.post('update-share-access', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = (req as any);
-  const { shareId }: UpdateShareAccessRequestDto = req.body;
-
+  const { shareId, shareAccess }: UpdateShareAccessRequestDto = req.body;
+  await shareService.updateShareAccess({ shareId, shareAccess });
   res.json();
 });
 

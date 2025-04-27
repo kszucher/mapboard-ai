@@ -102,6 +102,7 @@ export type CreateShareResponseDto = void
 
 export type UpdateShareAccessRequestDto = {
   shareId: number
+  shareAccess: ShareAccess
 }
 
 export type UpdateShareAccessResponseDto = void

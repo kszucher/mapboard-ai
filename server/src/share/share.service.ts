@@ -110,4 +110,11 @@ export class ShareService {
 
     return ShareAccess.UNAUTHORIZED;
   }
+
+  async updateShareAccess({ shareId, shareAccess }: { shareId: number, shareAccess: ShareAccess }) {
+    return this.prisma.share.update({
+      where: { id: shareId },
+      data: { access: shareAccess },
+    });
+  }
 }

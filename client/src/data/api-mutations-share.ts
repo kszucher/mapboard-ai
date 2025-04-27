@@ -22,10 +22,10 @@ export const apiMutationsShare = (builder: EndpointBuilder<BaseQueryFn, string, 
   }),
 
   updateShareAccess: builder.mutation<UpdateShareAccessResponseDto, UpdateShareAccessRequestDto>({
-    query: ({ shareId }) => ({
+    query: ({ shareId, shareAccess }) => ({
       url: 'update-share-access',
       method: 'POST',
-      body: { shareId },
+      body: { shareId, shareAccess },
     }),
   }),
 
