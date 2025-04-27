@@ -20,28 +20,28 @@ router.post('create-share', checkJwt, getUserIdAndWorkspaceId, async (req: Reque
 });
 
 router.post('update-share-access', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userID } = (req as any);
+  const { userId } = (req as any);
   const { shareId }: UpdateShareAccessRequestDto = req.body;
-  
+
   res.json();
 });
 
 router.post('update-share-status-accepted', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId } = (req as any);
+  const { userId } = (req as any);
   const { shareId }: UpdateShareStatusAcceptedRequestDto = req.body;
   // TODO
   res.json();
 });
 
 router.post('withdraw-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId } = (req as any);
+  const { userId } = (req as any);
   const { shareId }: WithdrawShareRequestDto = req.body;
   // TODO
   res.json();
 });
 
 router.post('reject-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId } = (req as any);
+  const { userId } = (req as any);
   const { shareId }: RejectShareRequestDto = req.body;
   // TODO
   res.json();
