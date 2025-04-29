@@ -6,30 +6,6 @@ export class ShareService {
   constructor(private prisma: PrismaClient) {
   }
 
-  async createShare({ userId, mapId, shareEmail, shareAccess }: {
-    userId: number
-    mapId: number,
-    shareEmail: string,
-    shareAccess: ShareAccess
-  }) {
-    const shareUser = await this.prisma.user.findUniqueOrThrow({
-      where: {
-        email: shareEmail,
-      },
-      select: { id: true },
-    });
-
-    return this.prisma.share.create({
-      data: {
-        mapId,
-        ownerUserId: userId,
-        shareUserId: shareUser.id,
-        access: shareAccess,
-        status: ShareStatus.WAITING,
-      },
-    });
-  }
-
   async getShareInfo({ userId }: { userId: number }) {
     return this.prisma.user.findFirstOrThrow({
       where: {
@@ -76,7 +52,7 @@ export class ShareService {
 
   async getAccess({ workspaceId }: { workspaceId: number }) {
     const workspace = await this.prisma.workspace.findFirstOrThrow({
-      where: { id: workspaceId },
+      where: { id: workspaceId, Map: { isNot: null } },
       select: {
         userId: true,
         Map: {
@@ -96,12 +72,12 @@ export class ShareService {
       },
     });
 
-    if (workspace.userId === workspace.Map.userId) {
+    if (workspace.userId === workspace.Map!.userId) {
       return ShareAccess.EDIT;
     }
 
-    const userShare = workspace.Map.Shares.find(
-      el => el.mapId === workspace.Map.id && el.shareUserId === workspace.userId,
+    const userShare = workspace.Map!.Shares.find(
+      el => el.mapId === workspace.Map!.id && el.shareUserId === workspace.userId,
     );
 
     if (userShare) {
@@ -109,6 +85,30 @@ export class ShareService {
     }
 
     return ShareAccess.UNAUTHORIZED;
+  }
+
+  async createShare({ userId, mapId, shareEmail, shareAccess }: {
+    userId: number
+    mapId: number,
+    shareEmail: string,
+    shareAccess: ShareAccess
+  }) {
+    const shareUser = await this.prisma.user.findUniqueOrThrow({
+      where: {
+        email: shareEmail,
+      },
+      select: { id: true },
+    });
+
+    return this.prisma.share.create({
+      data: {
+        mapId,
+        ownerUserId: userId,
+        shareUserId: shareUser.id,
+        access: shareAccess,
+        status: ShareStatus.WAITING,
+      },
+    });
   }
 
   async updateShareAccess({ shareId, shareAccess }: { shareId: number, shareAccess: ShareAccess }) {
@@ -127,6 +127,9 @@ export class ShareService {
 
   async withdrawShare({ shareId }: { shareId: number }) {
 
+  }
+
+  async rejectShare({ shareId }: { shareId: number }) {
 
   }
 }
