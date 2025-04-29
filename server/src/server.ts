@@ -44,11 +44,9 @@ app.get('/ping', async (req: Request, res: Response) => {
 
 app.get('/map_events/:map_id', async (req, res) => {
 
-  console.log('runs...');
-
   const mapId = parseInt(req.params.map_id);
 
-  console.log(mapId);
+  console.log('runs... on mapId: ', mapId);
 
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');

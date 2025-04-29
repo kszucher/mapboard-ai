@@ -39,7 +39,6 @@ export class MapService {
         },
       },
     });
-    console.log(workspace);
     return workspace.Map;
   }
 
