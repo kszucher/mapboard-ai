@@ -25,18 +25,20 @@ export class MapService {
   }
 
   async readMap({ workspaceId }: { workspaceId: number }) {
-    console.log('work', workspaceId);
-
     const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
       select: {
-        Map: {
-          select: {
-            id: true,
-            name: true,
-            data: true,
-          },
-        },
+        Map: { select: { id: true, name: true } },
+      },
+    });
+    return workspace.Map;
+  }
+
+  async readMapData({ workspaceId }: { workspaceId: number }) {
+    const workspace = await this.prisma.workspace.findFirstOrThrow({
+      where: { id: workspaceId },
+      select: {
+        Map: { select: { data: true } },
       },
     });
     return workspace.Map;

@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '../../data/store.ts';
 import { MapActions } from './MapActions.tsx';
 
 export const MapSelector: FC = () => {
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const mapName = useGetMapInfoQuery().data?.mapInfo.name;
   const tabMapInfo = useGetTabInfoQuery().data?.tabInfo;
   const sharesWithUser = useSelector((state: RootState) => state.slice.shareInfo.SharesWithMe);
@@ -45,7 +45,7 @@ export const MapSelector: FC = () => {
       <Button
         variant="solid"
         radius="full"
-        onClick={() => dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId }))}
+        onClick={() => mapId && dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId }))}
       >
         {mapName}
       </Button>

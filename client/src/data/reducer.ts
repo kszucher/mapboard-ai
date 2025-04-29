@@ -169,29 +169,21 @@ export const slice = createSlice({
     builder.addMatcher(api.endpoints.getUserInfo.matchFulfilled, (state, { payload }) => {
       state.userInfo = payload.userInfo;
     });
-    builder.addMatcher(api.endpoints.getMapInfo.matchFulfilled, (state, { payload }) => {
+    builder.addMatcher(api.endpoints.getMapInfo.matchFulfilled, state => {
+      state.isLoading = false;
+    });
+    builder.addMatcher(api.endpoints.getMapData.matchFulfilled, (state, { payload }) => {
       console.log(payload.mapInfo);
       const isValid = Object.values(payload.mapInfo.data).every(obj => Object.keys(obj as object).includes('path'));
       if (isValid) {
         const m = structuredClone(mapObjectToArray(payload.mapInfo.data));
         mapBuild(m);
-        state.mapInfo.id = payload.mapInfo.id;
-        state.mapInfo.name = payload.mapInfo.name;
         state.commitList = [m];
         state.commitIndex = 0;
         state.isLoading = false;
       } else {
         window.alert('invalid map');
       }
-    });
-    builder.addMatcher(api.endpoints.getMapNameInfo.matchFulfilled, (state, { payload }) => {
-      state.mapInfo.name = payload.mapInfo.name;
-    });
-    builder.addMatcher(api.endpoints.getTabInfo.matchFulfilled, (state, { payload }) => {
-      state.tabMapInfo = payload.tabInfo;
-    });
-    builder.addMatcher(api.endpoints.getShareInfo.matchFulfilled, (state, { payload }) => {
-      state.shareInfo = payload.shareInfo;
     });
     builder.addMatcher(api.endpoints.createWorkspace.matchFulfilled, (state, { payload }) => {
       state.workspaceId = payload.workspaceInfo.workspaceId;

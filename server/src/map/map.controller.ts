@@ -1,7 +1,9 @@
 import { Request, Response, Router } from 'express';
 import {
   CreateMapInTabDuplicateRequestDto,
-  CreateMapInTabRequestDto, GetMapInfoQueryResponseDto,
+  CreateMapInTabRequestDto,
+  GetMapDataQueryResponseDto,
+  GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
 } from '../../../shared/src/api/api-types-map';
 import { mapService } from '../server';
@@ -13,6 +15,13 @@ router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Requ
   const { workspaceId } = (req as any);
   const map = await mapService.readMap({ workspaceId });
   const response: GetMapInfoQueryResponseDto = { mapInfo: map };
+  res.json(response);
+});
+
+router.post('/get-map-data-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { workspaceId } = (req as any);
+  const map = await mapService.readMapData({ workspaceId });
+  const response: GetMapDataQueryResponseDto = { mapInfo: map };
   res.json(response);
 });
 
@@ -32,6 +41,7 @@ router.post('/create-map-in-tab-duplicate', checkJwt, getUserIdAndWorkspaceId, a
 
 router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { mapId, mapName }: RenameMapRequestDto = req.body;
+  console.log('ren star');
   await mapService.renameMap({ mapId, mapName });
   res.json();
 });

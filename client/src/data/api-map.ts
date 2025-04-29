@@ -4,8 +4,8 @@ import {
   CreateMapInTabDuplicateResponseDto,
   CreateMapInTabRequestDto,
   CreateMapInTabResponseDto,
+  GetMapDataQueryResponseDto,
   GetMapInfoQueryResponseDto,
-  GetMapNameInfoQueryResponseDto,
   RenameMapRequestDto,
   RenameMapResponseDto,
 } from '../../../shared/src/api/api-types-map.ts';
@@ -20,9 +20,9 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     providesTags: ['MapInfo'],
   }),
 
-  getMapNameInfo: builder.query<GetMapNameInfoQueryResponseDto, void>({
-    query: () => ({ url: 'get-map-name-info', method: 'POST', body: {} }),
-    providesTags: ['MapNameInfo'],
+  getMapData: builder.query<GetMapDataQueryResponseDto, void>({
+    query: () => ({ url: 'get-map-data-info', method: 'POST', body: {} }),
+    providesTags: ['MapData'],
   }),
 
   createMapInTab: builder.mutation<CreateMapInTabResponseDto, CreateMapInTabRequestDto>({
@@ -49,7 +49,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
       method: 'POST',
       body: { mapId, mapName },
     }),
-    invalidatesTags: ['MapNameInfo'],
+    invalidatesTags: ['MapInfo'],
   }),
 
   saveMap: builder.mutation<void, void>({
