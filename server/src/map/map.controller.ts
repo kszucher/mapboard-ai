@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import {
   CreateMapInTabDuplicateRequestDto,
   CreateMapInTabRequestDto,
+  DeleteMapRequestDto,
   GetMapDataQueryResponseDto,
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
@@ -62,6 +63,11 @@ router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request,
 
 // TODO executeTextOutput
 
-// TODO deleteMap
+router.post('/delete-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { userId } = (req as any);
+  const { mapId }: DeleteMapRequestDto = req.body;
+  await mapService.deleteMap({ userId, mapId });
+  res.json();
+});
 
 export default router;

@@ -4,6 +4,8 @@ import {
   CreateMapInTabDuplicateResponseDto,
   CreateMapInTabRequestDto,
   CreateMapInTabResponseDto,
+  DeleteMapRequestDto,
+  DeleteMapResponseDto,
   GetMapDataQueryResponseDto,
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
@@ -122,7 +124,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     invalidatesTags: [],
   }),
 
-  deleteMap: builder.mutation<void, { mapId: number }>({
+  deleteMap: builder.mutation<DeleteMapResponseDto, DeleteMapRequestDto>({
     query: ({ mapId }) => ({
       url: 'delete-map',
       method: 'POST',

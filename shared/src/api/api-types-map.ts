@@ -36,6 +36,8 @@ export type RenameMapRequestDto = {
 
 export type RenameMapResponseDto = void
 
-export type DeleteMapRequestDto = {}
+export type DeleteMapRequestDto = {
+  mapId: number
+}
 
-export type DeleteMapResponseDto = {}
+export type DeleteMapResponseDto = void

@@ -180,4 +180,24 @@ export class MapService {
       WHERE id = $2
     `, JSON.stringify(mapDataDelta), mapId);
   }
+
+  async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
+
+    await this.prisma.workspace.updateMany({
+      where: { mapId },
+      data: {
+        mapId: undefined,
+        mapData: undefined,
+      },
+    });
+
+    // TODO: call remove item from user's tab function!
+
+    // TODO: remove all shares
+
+    await this.prisma.map.delete({
+      where: { id: mapId },
+    });
+
+  }
 }
