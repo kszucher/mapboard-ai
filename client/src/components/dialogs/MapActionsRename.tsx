@@ -1,11 +1,11 @@
 import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { api } from '../../data/api.ts';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const MapActionsRename = () => {
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const mapName = useSelector((state: RootState) => state.slice.mapInfo.name);
   const [newMapName, setNewMapName] = useState(mapName);
   const dispatch = useDispatch<AppDispatch>();
@@ -35,7 +35,7 @@ export const MapActionsRename = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({ mapId, mapName: newMapName }))}>
+          <Button onClick={() => mapId && dispatch(api.endpoints.renameMap.initiate({ mapId, mapName: newMapName }))}>
             {'Save'}
           </Button>
         </Dialog.Close>

@@ -1,15 +1,15 @@
 import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../../../data/reducer.ts';
+import { useDispatch } from 'react-redux';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
-import { api } from '../../../data/api.ts';
-import { AppDispatch, RootState } from '../../../data/store.ts';
-import { shrinkString } from '../../../utils/utils.ts';
 import Dots from '../../../../assets/dots.svg?react';
+import { api, useGetMapInfoQuery } from '../../../data/api.ts';
+import { actions } from '../../../data/reducer.ts';
+import { AppDispatch } from '../../../data/store.ts';
+import { shrinkString } from '../../../utils/utils.ts';
 
 export const FileUpload = ({ ri }: { ri: R }) => {
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [executeUploadFile, { isError, reset }] = api.useExecuteUploadFileMutation();

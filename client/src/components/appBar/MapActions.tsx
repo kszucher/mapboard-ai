@@ -1,13 +1,13 @@
 import { Dialog, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch, useSelector } from 'react-redux';
 import Dots from '../../../assets/dots.svg?react';
-import { DialogState } from '../../data/state-types.ts';
-import { api } from '../../data/api.ts';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
+import { DialogState } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const MapActions = () => {
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const sharesWithUser = useSelector((state: RootState) => state.slice.shareInfo.SharesWithMe);
   const isShared = sharesWithUser.find(el => el.id === mapId);
   const dispatch = useDispatch<AppDispatch>();
@@ -27,17 +27,17 @@ export const MapActions = () => {
         <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTab.initiate({ mapName: 'New Map' }))}>
           {'Create'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTabDuplicate.initiate({ mapId }))}>
+        <DropdownMenu.Item onClick={() => mapId && dispatch(api.endpoints.createMapInTabDuplicate.initiate({ mapId }))}>
           {'Duplicate'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate({ mapId }))}>
+        <DropdownMenu.Item onClick={() => mapId && dispatch(api.endpoints.moveUpMapInTab.initiate({ mapId }))}>
           {'Move Up'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate({ mapId }))}>
+        <DropdownMenu.Item onClick={() => mapId && dispatch(api.endpoints.moveDownMapInTab.initiate({ mapId }))}>
           {'Move Down'}
         </DropdownMenu.Item>
         {!isShared && (
-          <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate({ mapId }))}>
+          <DropdownMenu.Item onClick={() => mapId && dispatch(api.endpoints.deleteMap.initiate({ mapId }))}>
             {'Remove'}
           </DropdownMenu.Item>
         )}

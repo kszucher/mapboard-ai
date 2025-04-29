@@ -3,9 +3,9 @@ import { AlertDialog, Dialog, DropdownMenu, IconButton } from '@radix-ui/themes'
 import { useDispatch, useSelector } from 'react-redux';
 import { ColorMode } from '../../../../shared/src/api/api-types-user.ts';
 import User from '../../../assets/user.svg?react';
+import { api } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AlertDialogState, DialogState } from '../../data/state-types.ts';
-import { api } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const UserAccount = () => {

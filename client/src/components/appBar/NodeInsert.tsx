@@ -1,7 +1,7 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
-import Plus from '../../../assets/plus.svg?react';
 import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
+import Plus from '../../../assets/plus.svg?react';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 

@@ -1,9 +1,10 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ColorMode } from '../../../../shared/src/api/api-types-user.ts';
-import { MidMouseMode } from '../../data/state-types.ts';
 import { getG } from '../../../../shared/src/map/getters/map-queries.ts';
+import { useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
+import { MidMouseMode } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { LinkNodeBezier } from './LinkNodeBezier.tsx';
 import { LinkNodeConnectorIn } from './LinkNodeConnectorIn.tsx';
@@ -19,7 +20,7 @@ export const Map: FC = () => {
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const zoomInfo = useSelector((state: RootState) => state.slice.zoomInfo);
   const colorMode = useSelector((state: RootState) => state.slice.userInfo.colorMode);
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const g = getG(m);
 

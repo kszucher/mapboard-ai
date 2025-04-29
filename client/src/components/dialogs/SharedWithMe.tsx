@@ -1,7 +1,7 @@
 import { Button, Dialog, Flex, Table } from '@radix-ui/themes';
 import { useDispatch, useSelector } from 'react-redux';
-import { StatusType } from '../../data/state-types.ts';
 import { api } from '../../data/api.ts';
+import { StatusType } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const SharedWithMe = () => {

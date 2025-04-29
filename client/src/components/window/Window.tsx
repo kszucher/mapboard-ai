@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
-import { api } from '../../data/api.ts';
+import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { backendUrl } from '../../urls/Urls.ts';
 
@@ -11,7 +11,7 @@ let mapListener: AbortController;
 let midMouseListener: AbortController;
 
 export const Window: FC = () => {
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const pageState = useSelector((state: RootState) => state.slice.pageState);
   const dialogState = useSelector((state: RootState) => state.slice.dialogState);

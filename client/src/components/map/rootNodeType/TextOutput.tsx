@@ -3,13 +3,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInputNode } from '../../../../../shared/src/map/getters/map-queries.ts';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
-import { actions } from '../../../data/reducer.ts';
-import { api } from '../../../data/api.ts';
-import { AppDispatch, RootState } from '../../../data/store.ts';
 import Dots from '../../../../assets/dots.svg?react';
+import { api, useGetMapInfoQuery } from '../../../data/api.ts';
+import { actions } from '../../../data/reducer.ts';
+import { AppDispatch, RootState } from '../../../data/store.ts';
 
 export const TextOutput = ({ ri }: { ri: R }) => {
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const inputNode = getInputNode(m, ri.nodeId);
   const [executeTextOutput, { isError, reset }] = api.useExecuteTextOutputMutation();
@@ -62,7 +62,7 @@ export const TextOutput = ({ ri }: { ri: R }) => {
             color="gray"
             onClick={() => {
               dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
-              executeTextOutput({ mapId, nodeId: ri.nodeId });
+              mapId && executeTextOutput({ mapId, nodeId: ri.nodeId });
             }}
           >
             {'Show'}

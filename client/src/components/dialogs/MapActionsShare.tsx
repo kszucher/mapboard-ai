@@ -1,13 +1,11 @@
 import { Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
 
 import { AccessType } from '../../data/state-types.ts';
-import { api } from '../../data/api.ts';
-import { RootState } from '../../data/store.ts';
 
 export const MapActionsShare = () => {
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const [createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset }] = api.useCreateShareMutation();
   const errorMessage = error && (error as { data: { detail: string } }).data.detail;
   const [shareEmail, setShareEmail] = useState('');
@@ -62,7 +60,10 @@ export const MapActionsShare = () => {
                 {'Cancel'}
               </Button>
             </Dialog.Close>
-            <Button disabled={shareEmail === ''} onClick={() => createShare({ mapId, shareEmail, shareAccess })}>
+            <Button
+              disabled={shareEmail === ''}
+              onClick={() => mapId && createShare({ mapId, shareEmail, shareAccess })}
+            >
               {'Share'}
             </Button>
           </Flex>

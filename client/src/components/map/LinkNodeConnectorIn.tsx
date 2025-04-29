@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../../data/reducer.ts';
 import { isExistingLink, mR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { ControlType, L, Side } from '../../../../shared/src/map/state/map-types.ts';
+import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { adjustIcon } from '../../utils/utils.ts';
 

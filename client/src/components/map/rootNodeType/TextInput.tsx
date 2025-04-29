@@ -2,9 +2,9 @@ import { Badge, Box, DropdownMenu, Flex, IconButton, TextArea } from '@radix-ui/
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
+import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch } from '../../../data/store.ts';
-import Dots from '../../../../assets/dots.svg?react';
 
 export const TextInput = ({ ri }: { ri: R }) => {
   const dispatch = useDispatch<AppDispatch>();

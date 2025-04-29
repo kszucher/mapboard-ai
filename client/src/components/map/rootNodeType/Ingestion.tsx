@@ -1,15 +1,15 @@
 import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Dots from '../../../../assets/dots.svg?react';
 import { getInputNode } from '../../../../../shared/src/map/getters/map-queries.ts';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
+import Dots from '../../../../assets/dots.svg?react';
+import { api, useGetMapInfoQuery } from '../../../data/api.ts';
 import { actions } from '../../../data/reducer.ts';
-import { api } from '../../../data/api.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 
 export const Ingestion = ({ ri }: { ri: R }) => {
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const inputNode = getInputNode(m, ri.nodeId);
   const [executeIngestion, { isError, reset }] = api.useExecuteIngestionMutation();
@@ -63,10 +63,11 @@ export const Ingestion = ({ ri }: { ri: R }) => {
               color="gray"
               onClick={() => {
                 dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
-                executeIngestion({
-                  mapId,
-                  nodeId: ri.nodeId,
-                });
+                mapId &&
+                  executeIngestion({
+                    mapId,
+                    nodeId: ri.nodeId,
+                  });
               }}
             >
               {'Ingest File'}

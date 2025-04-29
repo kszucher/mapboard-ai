@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../data/store.ts';
 import { R_PADDING } from '../../../../shared/src/map/state/map-consts.ts';
+import { RootState } from '../../data/store.ts';
 
 export const RootNodeMovePreview: FC = () => {
   const rOffsetCoords = useSelector((state: RootState) => state.slice.rOffsetCoords);

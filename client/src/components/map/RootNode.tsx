@@ -1,9 +1,9 @@
 import { Box, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { mR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
+import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { Extraction } from './rootNodeType/Extraction.tsx';
