@@ -1,15 +1,14 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
-import { MapInfo } from '../../../shared/src/api/api-types.ts';
-import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
-import { api } from './api.ts';
-import { stateDefault, stateDefaults } from './state-defaults.ts';
-import { AlertDialogState, DialogState, State, MidMouseMode, PageState } from './state-types.ts';
 import { idToR, mapObjectToArray } from '../../../shared/src/map/getters/map-queries.ts';
 import { mapBuild } from '../../../shared/src/map/setters/map-build.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
 import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
 import { ControlType, L, R, Side } from '../../../shared/src/map/state/map-types.ts';
+import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
+import { api } from './api.ts';
+import { stateDefault, stateDefaults } from './state-defaults.ts';
+import { AlertDialogState, DialogState, MidMouseMode, PageState, State } from './state-types.ts';
 
 export const slice = createSlice({
   name: 'slice',
@@ -167,47 +166,36 @@ export const slice = createSlice({
         state.isLoading = true;
       }
     );
-    builder.addMatcher(
-      isAnyOf(
-        api.endpoints.createWorkspace.matchFulfilled,
-        api.endpoints.createMapInTab.matchFulfilled,
-        api.endpoints.createMapInTabDuplicate.matchFulfilled,
-        api.endpoints.updateWorkspaceMap.matchFulfilled
-      ),
-      (state, { payload }: { payload: { mapInfo: MapInfo } }) => {
-        console.log(payload.mapInfo);
-
-        const isValid = Object.values(payload.mapInfo.data).every(obj => Object.keys(obj as object).includes('path'));
-
-        if (isValid) {
-          const m = structuredClone(mapObjectToArray(payload.mapInfo.data));
-          mapBuild(m);
-          state.mapInfo.id = payload.mapInfo.id;
-          state.mapInfo.name = payload.mapInfo.name;
-          state.commitList = [m];
-          state.commitIndex = 0;
-          state.isLoading = false;
-        } else {
-          window.alert('invalid map');
-        }
-      }
-    );
-    builder.addMatcher(api.endpoints.createWorkspace.matchFulfilled, (state, { payload }) => {
-      state.pageState = PageState.WS;
-      state.workspaceId = payload.workspaceId;
+    builder.addMatcher(api.endpoints.getUserInfo.matchFulfilled, (state, { payload }) => {
       state.userInfo = payload.userInfo;
-      state.tabMapInfo = payload.tabMapInfo;
+    });
+    builder.addMatcher(api.endpoints.getMapInfo.matchFulfilled, (state, { payload }) => {
+      console.log(payload.mapInfo);
+      const isValid = Object.values(payload.mapInfo.data).every(obj => Object.keys(obj as object).includes('path'));
+      if (isValid) {
+        const m = structuredClone(mapObjectToArray(payload.mapInfo.data));
+        mapBuild(m);
+        state.mapInfo.id = payload.mapInfo.id;
+        state.mapInfo.name = payload.mapInfo.name;
+        state.commitList = [m];
+        state.commitIndex = 0;
+        state.isLoading = false;
+      } else {
+        window.alert('invalid map');
+      }
+    });
+    builder.addMatcher(api.endpoints.getMapNameInfo.matchFulfilled, (state, { payload }) => {
+      state.mapInfo.name = payload.mapInfo.name;
+    });
+    builder.addMatcher(api.endpoints.getTabInfo.matchFulfilled, (state, { payload }) => {
+      state.tabMapInfo = payload.tabInfo;
+    });
+    builder.addMatcher(api.endpoints.getShareInfo.matchFulfilled, (state, { payload }) => {
       state.shareInfo = payload.shareInfo;
     });
-    builder.addMatcher(api.endpoints.createMapInTab.matchFulfilled, (state, { payload }) => {
-      state.tabMapInfo = payload.tabMapInfo;
-    });
-    builder.addMatcher(api.endpoints.createMapInTabDuplicate.matchFulfilled, (state, { payload }) => {
-      state.tabMapInfo = payload.tabMapInfo;
-    });
-    builder.addMatcher(api.endpoints.renameMap.matchFulfilled, (state, { payload }) => {
-      state.mapInfo.name = payload.mapInfo.name;
-      state.isLoading = false;
+    builder.addMatcher(api.endpoints.createWorkspace.matchFulfilled, (state, { payload }) => {
+      state.workspaceId = payload.workspaceInfo.workspaceId;
+      state.pageState = PageState.WS;
     });
   },
 });

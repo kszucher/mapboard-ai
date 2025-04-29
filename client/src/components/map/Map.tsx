@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ColorMode } from '../../../../shared/src/api/api-types.ts';
+import { ColorMode } from '../../../../shared/src/api/api-types-user.ts';
 import { MidMouseMode } from '../../data/state-types.ts';
 import { getG } from '../../../../shared/src/map/getters/map-queries.ts';
 import { actions } from '../../data/reducer.ts';

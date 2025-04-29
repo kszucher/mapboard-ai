@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { backendUrl } from '../urls/Urls.ts';
-import { apiMutationsMap } from './api-mutations-map.ts';
-import { apiMutationsShare } from './api-mutations-share.ts';
-import { apiMutationsTab } from './api-mutations-tab.ts';
-import { apiMutationsUser } from './api-mutations-user.ts';
-import { apiMutationsWorkspace } from './api-mutations-workspace.ts';
+import { apiMap } from './api-map.ts';
+import { apiShare } from './api-share.ts';
+import { apiTab } from './api-tab.ts';
+import { apiUser } from './api-user.ts';
+import { apiWorkspace } from './api-workspace.ts';
 import { RootState } from './store.ts';
 
 export const api = createApi({
@@ -20,12 +20,14 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: [],
+  tagTypes: ['UserInfo', 'MapInfo', 'MapNameInfo', 'TabInfo', 'ShareInfo'],
   endpoints: builder => ({
-    ...apiMutationsUser(builder),
-    ...apiMutationsMap(builder),
-    ...apiMutationsTab(builder),
-    ...apiMutationsShare(builder),
-    ...apiMutationsWorkspace(builder),
+    ...apiUser(builder),
+    ...apiMap(builder),
+    ...apiTab(builder),
+    ...apiShare(builder),
+    ...apiWorkspace(builder),
   }),
 });
+
+export const { useGetUserInfoQuery, useGetMapInfoQuery, useGetTabInfoQuery, useGetShareInfoQuery } = api;

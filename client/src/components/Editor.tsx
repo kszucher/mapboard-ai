@@ -1,9 +1,10 @@
 import { AlertDialog, Dialog, Spinner, Theme } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AlertDialogState, DialogState } from '../data/state-types.ts';
+import { ColorMode } from '../../../shared/src/api/api-types-user.ts';
+import { useGetMapInfoQuery, useGetUserInfoQuery } from '../data/api.ts';
 import { actions } from '../data/reducer.ts';
-import { ColorMode } from '../../../shared/src/api/api-types.ts';
+import { AlertDialogState, DialogState } from '../data/state-types.ts';
 import { AppDispatch, RootState } from '../data/store.ts';
 import { UserAccountDelete } from './alertDialogs/UserAccountDelete.tsx';
 import { AppBar } from './appBar/AppBar.tsx';
@@ -17,9 +18,9 @@ import { Window } from './window/Window.tsx';
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.slice.isLoading);
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const mExists = mapId && m && Object.keys(m).length;
-  const colorMode = useSelector((state: RootState) => state.slice.userInfo.colorMode);
+  const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
   const dialogState = useSelector((state: RootState) => state.slice.dialogState);
   const alertDialogState = useSelector((state: RootState) => state.slice.alertDialogState);
   const dispatch = useDispatch<AppDispatch>();

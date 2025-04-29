@@ -1,41 +1,39 @@
 import { Request, Response, Router } from 'express';
 import {
   CreateMapInTabDuplicateRequestDto,
-  CreateMapInTabDuplicateResponseDto,
-  CreateMapInTabRequestDto,
-  CreateMapInTabResponseDto,
+  CreateMapInTabRequestDto, GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
-  RenameMapResponseDto,
-} from '../../../shared/src/api/api-types';
-import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
-import { tabService } from '../tab/tab.controller';
-import { MapService } from './map.service';
+} from '../../../shared/src/api/api-types-map';
+import { mapService } from '../server';
+import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
 
 const router = Router();
-export const mapService = new MapService(prismaClient, tabService);
 
-router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = (req as any);
-  const { mapName }: CreateMapInTabRequestDto = req.body;
-  const mapInfo = await mapService.createMapInTab({ userId, mapName });
-  const tabMapInfo = await tabService.readTab({ userId });
-  const response: CreateMapInTabResponseDto = { mapInfo, tabMapInfo };
+router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { workspaceId } = (req as any);
+  const map = await mapService.readMap({ workspaceId });
+  const response: GetMapInfoQueryResponseDto = { mapInfo: map };
   res.json(response);
 });
 
+router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { userId, workspaceId } = (req as any);
+  const { mapName }: CreateMapInTabRequestDto = req.body;
+  await mapService.createMapInTab({ workspaceId, userId, mapName });
+  res.json();
+});
+
 router.post('/create-map-in-tab-duplicate', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = (req as any);
+  const { userId, workspaceId } = (req as any);
   const { mapId }: CreateMapInTabDuplicateRequestDto = req.body;
-  const mapInfo = await mapService.createMapInTabDuplicate({ userId, mapId });
-  const tabMapInfo = await tabService.readTab({ userId });
-  const response: CreateMapInTabDuplicateResponseDto = { mapInfo, tabMapInfo };
-  res.json(response);
+  await mapService.createMapInTabDuplicate({ workspaceId, userId, mapId });
+  res.json();
 });
 
 router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { mapId, mapName }: RenameMapRequestDto = req.body;
-  const response: RenameMapResponseDto = { mapInfo: await mapService.renameMap({ mapId, mapName }) };
-  res.json(response);
+  await mapService.renameMap({ mapId, mapName });
+  res.json();
 });
 
 router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {

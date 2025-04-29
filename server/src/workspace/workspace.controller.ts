@@ -1,23 +1,17 @@
 import { Request, Response, Router } from 'express';
-import { CreateWorkspaceResponseDto, UpdateWorkspaceMapResponseDto } from '../../../shared/src/api/api-types';
-import { mapService } from '../map/map.controller';
+import { CreateWorkspaceResponseDto } from '../../../shared/src/api/api-types-workspace';
+import { workspaceService } from '../server';
 import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
-import { tabService } from '../tab/tab.controller';
-import { userService } from '../user/user.controller';
-import { WorkspaceService } from './workspace.service';
 
 const router = Router();
-
-export const workspaceService = new WorkspaceService(prismaClient, userService, mapService, tabService);
 
 router.post('/create-workspace', checkJwt, async (req: Request, res: Response) => {
   const user = await prismaClient.user.findFirstOrThrow({
     where: { sub: req.auth?.payload.sub ?? '' },
     select: { id: true },
   });
-  const { workspaceId } = await workspaceService.createWorkspace({ userId: user.id });
-  const { userInfo, mapInfo, tabMapInfo, shareInfo } = await workspaceService.readWorkspace({ workspaceId });
-  const response: CreateWorkspaceResponseDto = { workspaceId, userInfo, mapInfo, tabMapInfo, shareInfo };
+  const workspace = await workspaceService.createWorkspace({ userId: user.id });
+  const response: CreateWorkspaceResponseDto = { workspaceInfo: { workspaceId: workspace.id } };
   res.json(response);
 });
 
@@ -25,8 +19,7 @@ router.post('/update-workspace-map', checkJwt, getUserIdAndWorkspaceId, async (r
   const { workspaceId } = (req as any);
   const { mapId } = req.body;
   await workspaceService.updateWorkspaceMap(({ workspaceId, mapId }));
-  const mapInfo = await mapService.readMap({ workspaceId });
-  res.json({ mapInfo } as UpdateWorkspaceMapResponseDto);
+  res.json();
 });
 
 // TODO deleteWorkspace

@@ -6,12 +6,51 @@ import { jsonDiff } from '../../../shared/src/map/utils/json-diff';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
+import { WorkspaceService } from '../workspace/workspace.service';
 
 export class MapService {
   constructor(
     private prisma: PrismaClient,
-    private tabService: TabService,
+    private getTabService: () => TabService,
+    private getWorkspaceService: () => WorkspaceService,
   ) {
+  }
+
+  get tabService(): TabService {
+    return this.getTabService();
+  }
+
+  get workspaceService(): WorkspaceService {
+    return this.getWorkspaceService();
+  }
+
+  async readMap({ workspaceId }: { workspaceId: number }) {
+    console.log('work', workspaceId);
+
+    const workspace = await this.prisma.workspace.findFirstOrThrow({
+      where: { id: workspaceId },
+      select: {
+        Map: {
+          select: {
+            id: true,
+            name: true,
+            data: true,
+          },
+        },
+      },
+    });
+    console.log(workspace);
+    return workspace.Map;
+  }
+
+  async readLastMap({ userId }: { userId: number }) {
+    return this.prisma.map.findFirst({
+      where: { userId },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+      select: { id: true, data: true },
+    });
   }
 
   private createNewMapData() {
@@ -36,13 +75,26 @@ export class MapService {
     });
   }
 
-  async createMapInTab({ userId, mapName }: { userId: number, mapName: string }) {
-    const map = await this.createMap({ userId, mapName });
-    await this.tabService.addMapIfNotIncluded({ userId, mapId: map.id });
-    return map;
+  async createMapInTab({ workspaceId, userId, mapName }: { workspaceId: number, userId: number, mapName: string }) {
+    const newMap = await this.prisma.map.create({
+      data: {
+        userId,
+        name: mapName,
+        data: this.createNewMapData(),
+      },
+      select: {
+        id: true,
+      },
+    });
+    await this.tabService.addMapIfNotIncluded({ userId, mapId: newMap.id });
+    await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMap.id });
   }
 
-  async createMapInTabDuplicate({ userId, mapId }: { userId: number, mapId: number }) {
+  async createMapInTabDuplicate({ workspaceId, userId, mapId }: {
+    workspaceId: number,
+    userId: number,
+    mapId: number
+  }) {
     const map = await this.prisma.map.findFirstOrThrow({
       where: { id: mapId },
       select: { id: true, name: true, data: true },
@@ -68,37 +120,7 @@ export class MapService {
     });
 
     await this.tabService.addMapIfNotIncluded({ userId, mapId: newMap.id });
-
-    return newMap;
-  }
-
-  async readLastMap({ userId }: { userId: number }) {
-    return this.prisma.map.findFirst({
-      where: { userId },
-      orderBy: {
-        updatedAt: 'desc',
-      },
-      select: { id: true, data: true },
-    });
-  }
-
-  async readMap({ workspaceId }: { workspaceId: number }) {
-    const workspace = await this.prisma.workspace.findFirstOrThrow({
-      where: { id: workspaceId },
-      select: {
-        Map: {
-          select: {
-            id: true,
-            name: true,
-            data: true,
-          },
-        },
-      },
-    });
-
-    await this.updateOpenCount({ mapId: workspace.Map.id });
-
-    return workspace.Map;
+    await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMap.id });
   }
 
   async renameMap({ mapId, mapName }: { mapId: number, mapName: string }) {

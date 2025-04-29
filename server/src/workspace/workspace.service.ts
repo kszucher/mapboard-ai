@@ -1,20 +1,31 @@
 import { JsonObject } from '@prisma/client/runtime/library';
 import { PrismaClient } from '../generated/client';
 import { MapService } from '../map/map.service';
-import { prismaClient } from '../startup';
 import { TabService } from '../tab/tab.service';
 import { UserService } from '../user/user.service';
 
 export class WorkspaceService {
   constructor(
     private prisma: PrismaClient,
-    private userService: UserService,
-    private mapService: MapService,
-    private tabService: TabService,
+    private getUserService: () => UserService,
+    private getMapService: () => MapService,
+    private getTabService: () => TabService,
   ) {
   }
 
-  async createWorkspace({ userId }: { userId: number }): Promise<{ userId: number, workspaceId: number }> {
+  get userService(): UserService {
+    return this.getUserService();
+  }
+
+  get mapService(): MapService {
+    return this.getMapService();
+  }
+
+  get tabService(): TabService {
+    return this.getTabService();
+  }
+
+  async createWorkspace({ userId }: { userId: number }) {
     const lastMap = await this.mapService.readLastMap({ userId });
 
     if (lastMap) {
@@ -29,7 +40,7 @@ export class WorkspaceService {
 
     await this.userService.incrementSignInCount({ userId });
 
-    const workspace = await this.prisma.workspace.create({
+    return this.prisma.workspace.create({
       data: {
         User: { connect: { id: userId } },
         Map: { connect: { id: map.id } },
@@ -39,83 +50,6 @@ export class WorkspaceService {
         id: true,
       },
     });
-
-    return {
-      userId,
-      workspaceId: workspace.id,
-    };
-  }
-
-  async readWorkspace({ workspaceId }: { workspaceId: number }) {
-    const workspace = await prismaClient.workspace.findFirstOrThrow({
-      where: { id: workspaceId },
-      select: {
-        User: {
-          select: {
-            name: true,
-            colorMode: true,
-            Maps: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-            Tab: {
-              select: {
-                mapIds: true,
-              },
-            },
-            SharesByMe: {
-              select: {
-                id: true,
-                access: true,
-                status: true,
-                Map: {
-                  select: {
-                    name: true,
-                  },
-                },
-                ShareUser: {
-                  select: {
-                    email: true,
-                  },
-                },
-              },
-            },
-            SharesWithMe: {
-              select: {
-                id: true,
-                access: true,
-                status: true,
-                Map: {
-                  select: {
-                    name: true,
-                  },
-                },
-                OwnerUser: {
-                  select: {
-                    email: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        Map: {
-          select: {
-            id: true,
-            name: true,
-            data: true,
-          },
-        },
-      },
-    });
-
-    const userInfo = workspace.User;
-    const mapInfo = workspace.Map;
-    const tabMapInfo = workspace.User.Tab!.mapIds.map(el => workspace.User.Maps.find(map => map.id === el)!);
-    const shareInfo = { SharesByMe: workspace.User.SharesByMe, SharesWithMe: workspace.User.SharesWithMe };
-    return { userInfo, mapInfo, tabMapInfo, shareInfo };
   }
 
   async updateWorkspaceMap({ workspaceId, mapId }: { workspaceId: number, mapId: number }): Promise<void> {

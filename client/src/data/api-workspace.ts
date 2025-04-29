@@ -4,14 +4,15 @@ import {
   CreateWorkspaceResponseDto,
   UpdateWorkspaceMapRequestDto,
   UpdateWorkspaceMapResponseDto,
-} from '../../../shared/src/api/api-types.ts';
+} from '../../../shared/src/api/api-types-workspace.ts';
 
-export const apiMutationsWorkspace = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
+export const apiWorkspace = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   createWorkspace: builder.mutation<CreateWorkspaceResponseDto, CreateWorkspaceRequestDto>({
     query: () => ({
       url: '/create-workspace',
       method: 'POST',
     }),
+    invalidatesTags: ['UserInfo', 'MapInfo', 'TabInfo', 'ShareInfo'],
   }),
 
   updateWorkspaceMap: builder.mutation<UpdateWorkspaceMapResponseDto, UpdateWorkspaceMapRequestDto>({
@@ -20,6 +21,7 @@ export const apiMutationsWorkspace = (builder: EndpointBuilder<BaseQueryFn, stri
       method: 'POST',
       body: { mapId },
     }),
+    invalidatesTags: ['MapInfo'],
   }),
 
   deleteWorkspace: builder.mutation<void, void>({
@@ -27,5 +29,6 @@ export const apiMutationsWorkspace = (builder: EndpointBuilder<BaseQueryFn, stri
       url: '/delete-workspace',
       method: 'POST',
     }),
+    invalidatesTags: [],
   }),
 });

@@ -4,21 +4,34 @@ import {
   CreateMapInTabDuplicateResponseDto,
   CreateMapInTabRequestDto,
   CreateMapInTabResponseDto,
+  GetMapInfoQueryResponseDto,
+  GetMapNameInfoQueryResponseDto,
   RenameMapRequestDto,
   RenameMapResponseDto,
-} from '../../../shared/src/api/api-types.ts';
+} from '../../../shared/src/api/api-types-map.ts';
 import { mapPrune } from '../../../shared/src/map/getters/map-prune.ts';
 import { mapArrayToObject } from '../../../shared/src/map/getters/map-queries.ts';
 import { timeoutId } from '../components/window/Window.tsx';
 import { RootState } from './store.ts';
 
-export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
+export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
+  getMapInfo: builder.query<GetMapInfoQueryResponseDto, void>({
+    query: () => ({ url: 'get-map-info', method: 'POST', body: {} }),
+    providesTags: ['MapInfo'],
+  }),
+
+  getMapNameInfo: builder.query<GetMapNameInfoQueryResponseDto, void>({
+    query: () => ({ url: 'get-map-name-info', method: 'POST', body: {} }),
+    providesTags: ['MapNameInfo'],
+  }),
+
   createMapInTab: builder.mutation<CreateMapInTabResponseDto, CreateMapInTabRequestDto>({
     query: ({ mapName }) => ({
       url: 'create-map-in-tab',
       method: 'POST',
       body: { mapName },
     }),
+    invalidatesTags: ['MapInfo', 'TabInfo'],
   }),
 
   createMapInTabDuplicate: builder.mutation<CreateMapInTabDuplicateResponseDto, CreateMapInTabDuplicateRequestDto>({
@@ -27,6 +40,7 @@ export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, st
       method: 'POST',
       body: { mapId },
     }),
+    invalidatesTags: ['MapInfo', 'TabInfo'],
   }),
 
   renameMap: builder.mutation<RenameMapResponseDto, RenameMapRequestDto>({
@@ -35,6 +49,7 @@ export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, st
       method: 'POST',
       body: { mapId, mapName },
     }),
+    invalidatesTags: ['MapNameInfo'],
   }),
 
   saveMap: builder.mutation<void, void>({
@@ -61,6 +76,7 @@ export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, st
       }
       return { error: 'no map' };
     },
+    invalidatesTags: [],
   }),
 
   executeUploadFile: builder.mutation<void, { file: File; mapId: number; nodeId: string }>({
@@ -76,6 +92,7 @@ export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, st
         formData: true,
       };
     },
+    invalidatesTags: [],
   }),
 
   executeIngestion: builder.mutation<void, { mapId: number; nodeId: string }>({
@@ -84,6 +101,7 @@ export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, st
       method: 'POST',
       body: { mapId, nodeId },
     }),
+    invalidatesTags: [],
   }),
 
   executeExtraction: builder.mutation<void, { mapId: number; nodeId: string }>({
@@ -92,6 +110,7 @@ export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, st
       method: 'POST',
       body: { mapId, nodeId },
     }),
+    invalidatesTags: [],
   }),
 
   executeTextOutput: builder.mutation<void, { mapId: number; nodeId: string }>({
@@ -100,6 +119,7 @@ export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, st
       method: 'POST',
       body: { mapId, nodeId },
     }),
+    invalidatesTags: [],
   }),
 
   deleteMap: builder.mutation<void, { mapId: number }>({
@@ -108,5 +128,6 @@ export const apiMutationsMap = (builder: EndpointBuilder<BaseQueryFn, string, st
       method: 'POST',
       body: { mapId },
     }),
+    invalidatesTags: [],
   }),
 });

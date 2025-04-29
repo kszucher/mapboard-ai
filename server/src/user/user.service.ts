@@ -5,9 +5,9 @@ export class UserService {
     private prisma: PrismaClient) {
   }
 
-  async readUser({ workspaceId }: { workspaceId: number }) {
-    return this.prisma.user.findFirstOrThrow({
-      where: { Workspaces: { some: { id: workspaceId } } },
+  async readUser({ userId }: { userId: number }) {
+    return this.prisma.user.findUniqueOrThrow({
+      where: { id: userId },
       select: {
         name: true,
         colorMode: true,

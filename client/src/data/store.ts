@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { slice } from './reducer.ts';
 import { api } from './api.ts';
+import { slice } from './reducer.ts';
 
 export const appStore = configureStore({
   reducer: combineReducers({ api: api.reducer, slice: slice.reducer }),

@@ -1,4 +1,7 @@
-import { MapInfo, ShareInfo, TabMapInfo, UserInfo } from '../../../shared/src/api/api-types.ts';
+import { MapInfo } from '../../../shared/src/api/api-types-map.ts';
+import { ShareInfo } from '../../../shared/src/api/api-types-share.ts';
+import { TabMapInfo } from '../../../shared/src/api/api-types-tab.ts';
+import { UserInfo } from '../../../shared/src/api/api-types-user.ts';
 import { M, Side } from '../../../shared/src/map/state/map-types.ts';
 
 export interface State {

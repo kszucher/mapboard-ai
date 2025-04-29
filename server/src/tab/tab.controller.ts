@@ -1,12 +1,19 @@
-import { Router } from 'express';
-import { prismaClient } from '../startup';
-import { TabService } from './tab.service';
+import { Request, Response, Router } from 'express';
+import { GetTabInfoQueryResponseDto } from '../../../shared/src/api/api-types-tab';
+import { tabService } from '../server';
+import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
 
 const router = Router();
-export const tabService = new TabService(prismaClient);
 
-export default router;
+router.post('/get-tab-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { userId } = (req as any);
+  const tabInfo = await tabService.readTab({ userId });
+  const response: GetTabInfoQueryResponseDto = { tabInfo };
+  res.json(response);
+});
 
 // TODO moveUpMapInTab
 
 // TODO moveDownMapInTab
+
+export default router;

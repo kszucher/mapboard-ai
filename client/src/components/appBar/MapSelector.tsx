@@ -2,14 +2,14 @@ import { Button, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ChevronDown from '../../../assets/chevron-down.svg?react';
-import { api } from '../../data/api.ts';
+import { api, useGetMapInfoQuery, useGetTabInfoQuery } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { MapActions } from './MapActions.tsx';
 
 export const MapSelector: FC = () => {
   const mapId = useSelector((state: RootState) => state.slice.mapInfo.id);
-  const mapName = useSelector((state: RootState) => state.slice.mapInfo.name);
-  const tabMapInfo = useSelector((state: RootState) => state.slice.tabMapInfo);
+  const mapName = useGetMapInfoQuery().data?.mapInfo.name;
+  const tabMapInfo = useGetTabInfoQuery().data?.tabInfo;
   const sharesWithUser = useSelector((state: RootState) => state.slice.shareInfo.SharesWithMe);
   const dispatch = useDispatch<AppDispatch>();
   return (
@@ -22,7 +22,7 @@ export const MapSelector: FC = () => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
           <DropdownMenu.Label>{'My Maps'}</DropdownMenu.Label>
-          {tabMapInfo.map((el, index) => (
+          {tabMapInfo?.map((el, index) => (
             <DropdownMenu.Item
               key={index}
               onClick={() => dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: el.id }))}

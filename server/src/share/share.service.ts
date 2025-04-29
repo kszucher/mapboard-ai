@@ -117,4 +117,16 @@ export class ShareService {
       data: { access: shareAccess },
     });
   }
+
+  async updateShareStatusAccepted({ shareId }: { shareId: number }) {
+    return this.prisma.share.update({
+      where: { id: shareId },
+      data: { status: ShareStatus.ACCEPTED },
+    });
+  }
+
+  async withdrawShare({ shareId }: { shareId: number }) {
+
+
+  }
 }

@@ -1,6 +1,6 @@
-import { ColorMode } from '../../../shared/src/api/api-types.ts';
-import { AlertDialogState, DialogState, State, MidMouseMode, PageState } from './state-types.ts';
+import { ColorMode } from '../../../shared/src/api/api-types-user.ts';
 import { Side } from '../../../shared/src/map/state/map-types.ts';
+import { AlertDialogState, DialogState, MidMouseMode, PageState, State } from './state-types.ts';
 
 export const stateDefaults: State = {
   token: '',

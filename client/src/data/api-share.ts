@@ -2,6 +2,7 @@ import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
   CreateShareRequestDto,
   CreateShareResponseDto,
+  GetShareInfoQueryResponseDto,
   RejectShareRequestDto,
   RejectShareResponseDto,
   UpdateShareAccessRequestDto,
@@ -10,15 +11,21 @@ import {
   UpdateShareStatusAcceptedResponseDto,
   WithdrawShareRequestDto,
   WithdrawShareResponseDto,
-} from '../../../shared/src/api/api-types.ts';
+} from '../../../shared/src/api/api-types-share.ts';
 
-export const apiMutationsShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
+export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
+  getShareInfo: builder.query<GetShareInfoQueryResponseDto, void>({
+    query: () => ({ url: '/get-share-info', method: 'POST', body: {} }),
+    providesTags: ['ShareInfo'],
+  }),
+
   createShare: builder.mutation<CreateShareResponseDto, CreateShareRequestDto>({
     query: ({ mapId, shareEmail, shareAccess }) => ({
       url: 'create-share',
       method: 'POST',
       body: { mapId, shareEmail, shareAccess },
     }),
+    invalidatesTags: [],
   }),
 
   updateShareAccess: builder.mutation<UpdateShareAccessResponseDto, UpdateShareAccessRequestDto>({
@@ -27,6 +34,7 @@ export const apiMutationsShare = (builder: EndpointBuilder<BaseQueryFn, string, 
       method: 'POST',
       body: { shareId, shareAccess },
     }),
+    invalidatesTags: [],
   }),
 
   updateShareStatusAccepted: builder.mutation<
@@ -38,6 +46,7 @@ export const apiMutationsShare = (builder: EndpointBuilder<BaseQueryFn, string, 
       method: 'POST',
       body: { shareId },
     }),
+    invalidatesTags: ['TabInfo'],
   }),
 
   withdrawShare: builder.mutation<WithdrawShareResponseDto, WithdrawShareRequestDto>({
@@ -46,6 +55,7 @@ export const apiMutationsShare = (builder: EndpointBuilder<BaseQueryFn, string, 
       method: 'POST',
       body: { shareId },
     }),
+    invalidatesTags: [],
   }),
 
   rejectShare: builder.mutation<RejectShareResponseDto, RejectShareRequestDto>({
@@ -54,5 +64,6 @@ export const apiMutationsShare = (builder: EndpointBuilder<BaseQueryFn, string, 
       method: 'POST',
       body: { shareId },
     }),
+    invalidatesTags: [],
   }),
 });

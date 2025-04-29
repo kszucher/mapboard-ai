@@ -3,14 +3,24 @@ import express, { Request, Response } from 'express';
 import { PgCdcService } from './db-utils/pg.cdc.service';
 import { PgFunctionsService } from './db-utils/pg.functions.service';
 import mapController from './map/map.controller';
+import { MapService } from './map/map.service';
 import shareController from './share/share.controller';
+import { ShareService } from './share/share.service';
 import { pgClient, prismaClient } from './startup';
 import tabController from './tab/tab.controller';
+import { TabService } from './tab/tab.service';
 import userController from './user/user.controller';
+import { UserService } from './user/user.service';
 import workspaceController from './workspace/workspace.controller';
+import { WorkspaceService } from './workspace/workspace.service';
 
 const pgFunctionsService = new PgFunctionsService(prismaClient);
 const pgCdcService = new PgCdcService(pgClient, prismaClient);
+export const userService: UserService = new UserService(prismaClient);
+export const mapService: MapService = new MapService(prismaClient, () => tabService, () => workspaceService);
+export const tabService: TabService = new TabService(prismaClient);
+export const shareService: ShareService = new ShareService(prismaClient);
+export const workspaceService: WorkspaceService = new WorkspaceService(prismaClient, () => userService, () => mapService, () => tabService);
 
 (async () => {
   await pgFunctionsService.setupFunctions();
