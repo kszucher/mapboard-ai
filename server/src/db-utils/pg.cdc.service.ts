@@ -63,8 +63,8 @@ export class PgCdcService {
           for (const client of this.clients) {
             if (client.mapId === mapId) {
               console.log('map deleted match');
-              // client.res.write(`event: mapDelete\n`);
-              // client.res.write(`data: ${JSON.stringify({ id: mapId })}\n\n`);
+              client.res.write(`event: mapDelete\n\n`);
+              client.res.write(`data: ${JSON.stringify({ op: 'mapDelete', id: mapId })}\n\n`);
             }
           }
 
@@ -78,8 +78,8 @@ export class PgCdcService {
 
             console.timeEnd('Save Map');
 
-            // client.res.write(`event: mapUpdate\n`);
-            // client.res.write(`data: ${JSON.stringify(map)}\n\n`);
+            client.res.write(`event: mapUpdate\n\n`);
+            client.res.write(`data: ${JSON.stringify({ op: 'mapUpdate', id: mapId })}\n\n`);
           }
         }
 

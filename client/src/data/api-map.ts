@@ -54,15 +54,14 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     invalidatesTags: ['MapInfo'],
   }),
 
-  saveMap: builder.mutation<void, void>({
-    queryFn: async (_args, { getState }, _extraOptions, baseQuery) => {
+  saveMap: builder.mutation<void, { mapId: number }>({
+    queryFn: async ({ mapId }, { getState }, _extraOptions, baseQuery) => {
       const slice = (getState() as unknown as RootState).slice;
       if (slice.commitList.length > 1) {
         console.log('saving');
         clearTimeout(timeoutId);
         const SAVE_ENABLED = true;
         if (SAVE_ENABLED) {
-          const mapId = slice.mapInfo.id;
           const mapData = mapArrayToObject(mapPrune(slice.commitList[slice.commitIndex]));
           try {
             const { data } = await baseQuery({

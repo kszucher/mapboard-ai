@@ -76,7 +76,7 @@ export class MapService {
     });
   }
 
-  async createMapInTab({ workspaceId, userId, mapName }: { workspaceId: number, userId: number, mapName: string }) {
+  async createMapInTab({ userId, workspaceId, mapName }: { userId: number, workspaceId: number, mapName: string }) {
     const newMap = await this.prisma.map.create({
       data: {
         userId,
@@ -87,13 +87,13 @@ export class MapService {
         id: true,
       },
     });
-    await this.tabService.addMapIfNotIncluded({ userId, mapId: newMap.id });
+    await this.tabService.addMapToTab({ userId, mapId: newMap.id });
     await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMap.id });
   }
 
-  async createMapInTabDuplicate({ workspaceId, userId, mapId }: {
-    workspaceId: number,
+  async createMapInTabDuplicate({ userId, workspaceId, mapId }: {
     userId: number,
+    workspaceId: number,
     mapId: number
   }) {
     const map = await this.prisma.map.findFirstOrThrow({
@@ -120,7 +120,7 @@ export class MapService {
       },
     });
 
-    await this.tabService.addMapIfNotIncluded({ userId, mapId: newMap.id });
+    await this.tabService.addMapToTab({ userId, mapId: newMap.id });
     await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMap.id });
   }
 
@@ -150,14 +150,14 @@ export class MapService {
     console.time('Save Map');
 
     const currentData = await this.prisma.workspace.findFirstOrThrow({
-      where: { id: workspaceId },
+      where: { id: workspaceId, Map: { isNot: null } },
       select: {
         Map: { select: { data: true } },
         mapData: true,
       },
     });
 
-    const result = jsonMerge(mapData, jsonDiff(currentData.Map.data, currentData.mapData));
+    const result = jsonMerge(mapData, jsonDiff(currentData.Map!.data, currentData.mapData));
 
     await this.prisma.map.update({
       where: { id: mapId },
@@ -183,17 +183,13 @@ export class MapService {
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
 
-    await this.prisma.workspace.updateMany({
+    await this.workspaceService.removeMapFromWorkspaces({ mapId });
+
+    await this.tabService.deleteMapFromTab({ userId, mapId });
+
+    await this.prisma.share.deleteMany({
       where: { mapId },
-      data: {
-        mapId: undefined,
-        mapData: undefined,
-      },
     });
-
-    // TODO: call remove item from user's tab function!
-
-    // TODO: remove all shares
 
     await this.prisma.map.delete({
       where: { id: mapId },

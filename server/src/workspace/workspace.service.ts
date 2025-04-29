@@ -34,9 +34,9 @@ export class WorkspaceService {
 
     const map = lastMap ?? await this.mapService.createMap({ userId, mapName: 'New Map' });
 
-    await this.tabService.createTabIfNotExists({ userId });
+    await this.tabService.addTabToUser({ userId });
 
-    await this.tabService.addMapIfNotIncluded({ userId, mapId: map.id });
+    await this.tabService.addMapToTab({ userId, mapId: map.id });
 
     await this.userService.incrementSignInCount({ userId });
 
@@ -67,5 +67,15 @@ export class WorkspaceService {
     });
 
     await this.mapService.updateOpenCount({ mapId });
+  }
+
+  async removeMapFromWorkspaces({ mapId }: { mapId: number }): Promise<void> {
+    await this.prisma.workspace.updateMany({
+      where: { mapId },
+      data: {
+        mapId: undefined,
+        mapData: undefined,
+      },
+    });
   }
 }

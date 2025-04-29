@@ -15,28 +15,28 @@ const router = Router();
 router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
   const map = await mapService.readMap({ workspaceId });
-  const response: GetMapInfoQueryResponseDto = { mapInfo: map };
+  const response: GetMapInfoQueryResponseDto = { mapInfo: map! };
   res.json(response);
 });
 
 router.post('/get-map-data-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
   const map = await mapService.readMapData({ workspaceId });
-  const response: GetMapDataQueryResponseDto = { mapInfo: map };
+  const response: GetMapDataQueryResponseDto = { mapInfo: map! };
   res.json(response);
 });
 
 router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId, workspaceId } = (req as any);
   const { mapName }: CreateMapInTabRequestDto = req.body;
-  await mapService.createMapInTab({ workspaceId, userId, mapName });
+  await mapService.createMapInTab({ userId, workspaceId, mapName });
   res.json();
 });
 
 router.post('/create-map-in-tab-duplicate', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId, workspaceId } = (req as any);
   const { mapId }: CreateMapInTabDuplicateRequestDto = req.body;
-  await mapService.createMapInTabDuplicate({ workspaceId, userId, mapId });
+  await mapService.createMapInTabDuplicate({ userId, workspaceId, mapId });
   res.json();
 });
 

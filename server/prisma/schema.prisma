@@ -63,8 +63,8 @@ model Workspace {
   id      Int  @id @default(autoincrement())
   userId  Int
   User    User @relation(fields: [userId], references: [id])
-  mapId   Int
-  Map     Map  @relation(fields: [mapId], references: [id])
+  mapId   Int?
+  Map     Map? @relation(fields: [mapId], references: [id])
   mapData Json
 }
 

@@ -23,7 +23,7 @@ export class TabService {
     });
   }
 
-  async createTabIfNotExists({ userId }: { userId: number }) {
+  async addTabToUser({ userId }: { userId: number }) {
     await this.prisma.user.update({
       where: { id: userId },
       data: {
@@ -39,7 +39,7 @@ export class TabService {
     });
   }
 
-  async addMapIfNotIncluded({ userId, mapId }: { userId: number, mapId: number }) {
+  async addMapToTab({ userId, mapId }: { userId: number, mapId: number }) {
     await this.prisma.tab.updateMany({
       where: {
         userId: userId,
@@ -52,6 +52,28 @@ export class TabService {
       data: {
         mapIds: {
           push: mapId,
+        },
+      },
+    });
+  }
+
+  async deleteMapFromTab({ userId, mapId }: { userId: number, mapId: number }) {
+    const tab = await this.prisma.tab.findUnique({
+      where: { userId },
+      select: { mapIds: true },
+    });
+
+    if (!tab) {
+      throw new Error(`Tab not found for userId: ${userId}`);
+    }
+
+    const updatedMapIds = tab.mapIds.filter(id => id !== mapId);
+
+    await this.prisma.tab.update({
+      where: { userId },
+      data: {
+        mapIds: {
+          set: updatedMapIds,
         },
       },
     });
