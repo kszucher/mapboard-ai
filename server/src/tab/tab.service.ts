@@ -61,14 +61,10 @@ export class TabService {
   }
 
   async deleteMapFromTab({ userId, mapId }: { userId: number, mapId: number }) {
-    const tab = await this.prisma.tab.findUnique({
+    const tab = await this.prisma.tab.findUniqueOrThrow({
       where: { userId },
       select: { mapIds: true },
     });
-
-    if (!tab) {
-      throw new Error(`Tab not found for userId: ${userId}`);
-    }
 
     const updatedMapIds = tab.mapIds.filter(id => id !== mapId);
 
