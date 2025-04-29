@@ -14,13 +14,16 @@ export class TabService {
       },
     });
 
-    return this.prisma.map.findMany({
+    const maps = await this.prisma.map.findMany({
       where: { id: { in: tab.mapIds } },
       select: {
         id: true,
         name: true,
       },
     });
+
+    const idToMap = new Map(maps.map(map => [map.id, map]));
+    return tab.mapIds.map(id => idToMap.get(id)).filter(Boolean);
   }
 
   async addTabToUser({ userId }: { userId: number }) {
