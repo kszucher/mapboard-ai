@@ -51,7 +51,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
       method: 'POST',
       body: { mapId, mapName },
     }),
-    invalidatesTags: ['MapInfo'],
+    invalidatesTags: ['MapInfo', 'TabInfo'],
   }),
 
   saveMap: builder.mutation<void, { mapId: number }>({
