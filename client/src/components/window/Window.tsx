@@ -94,9 +94,11 @@ export const Window: FC = () => {
     if (workspaceId) {
       console.log('attempt to start event source with workspaceId: ', workspaceId);
       const eventSource = new EventSource(`${backendUrl}/workspace_events/${workspaceId}`);
+
       eventSource.onopen = () => {
         console.log('SSE open');
       };
+
       eventSource.onerror = error => {
         console.error('SSE error', error);
       };
@@ -108,6 +110,9 @@ export const Window: FC = () => {
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.MAP_DATA_UPDATED, e => {
+        // TODO
+        // S = C + S - LC
+        // LS = C
         console.log('payload:', JSON.parse(e.data));
       });
 

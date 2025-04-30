@@ -184,6 +184,7 @@ export const slice = createSlice({
         state.commitList = [m];
         state.commitIndex = 0;
         state.isLoading = false;
+        // TODO update workspaceMap
       } else {
         window.alert('invalid map');
       }
