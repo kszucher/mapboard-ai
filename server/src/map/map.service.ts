@@ -1,9 +1,11 @@
 import { JsonObject } from '@prisma/client/runtime/library';
+import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { mapArrayToObject, mapObjectToArray } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { M } from '../../../shared/src/map/state/map-types';
 import { jsonDiff } from '../../../shared/src/map/utils/json-diff';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
+import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
@@ -13,6 +15,7 @@ export class MapService {
     private prisma: PrismaClient,
     private getTabService: () => TabService,
     private getWorkspaceService: () => WorkspaceService,
+    private getDistributionService: () => DistributionService,
   ) {
   }
 
@@ -22,6 +25,10 @@ export class MapService {
 
   get workspaceService(): WorkspaceService {
     return this.getWorkspaceService();
+  }
+
+  get distributionService(): DistributionService {
+    return this.getDistributionService();
   }
 
   async readMap({ workspaceId }: { workspaceId: number }) {
@@ -125,10 +132,20 @@ export class MapService {
   }
 
   async renameMap({ mapId, mapName }: { mapId: number, mapName: string }) {
-    return this.prisma.map.update({
+    await this.prisma.map.update({
       where: { id: mapId },
       data: { name: mapName },
-      select: { name: true },
+      // select: { name: true },
+    });
+
+    const workspacesOfMap = await this.prisma.workspace.findMany({
+      where: { mapId },
+      select: { id: true },
+    });
+
+    await this.distributionService.publish(workspacesOfMap.map(el => el.id), {
+      type: WORKSPACE_EVENT.MAP_RENAMED,
+      payload: { mapId, mapName },
     });
   }
 

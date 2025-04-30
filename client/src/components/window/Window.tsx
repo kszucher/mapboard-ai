@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { WORKSPACE_EVENT } from '../../../../shared/src/api/api-types-distribution.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';
@@ -11,6 +12,7 @@ let mapListener: AbortController;
 let midMouseListener: AbortController;
 
 export const Window: FC = () => {
+  const workspaceId = useSelector((state: RootState) => state.slice.workspaceId);
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const pageState = useSelector((state: RootState) => state.slice.pageState);
@@ -89,35 +91,40 @@ export const Window: FC = () => {
   }, [m]);
 
   useEffect(() => {
-    if (mapId) {
-      console.log('attempt to start event source with mapId: ', mapId);
-      const eventSource = new EventSource(`${backendUrl}/map_events/${mapId}`);
+    if (workspaceId) {
+      console.log('attempt to start event source with workspaceId: ', workspaceId);
+      const eventSource = new EventSource(`${backendUrl}/workspace_events/${workspaceId}`);
       eventSource.onopen = () => {
-        console.log('SSE connection opened successfully');
+        console.log('SSE open');
       };
       eventSource.onerror = error => {
-        console.error('EventSource failed:', error);
+        console.error('SSE error', error);
       };
-      eventSource.onmessage = event => {
-        const eventData = JSON.parse(event.data);
-        console.log('SSE data:', eventData);
-        switch (eventData.op) {
-          case 'mapUpdate':
-            console.log('MAP_UPDATED');
-            // dispatch(api.util.invalidateTags(['MapInfo']));
-            break;
-          case 'mapDelete':
-            console.log('MAP_DELETED');
-            // TODO select_available_map
-            break;
-        }
-      };
+
+      eventSource.addEventListener(WORKSPACE_EVENT.MAP_RENAMED, e => {
+        console.log('map renames sse trigger');
+        dispatch(api.util.invalidateTags(['MapInfo', 'TabInfo']));
+        console.log('payload:', JSON.parse(e.data));
+      });
+
+      eventSource.addEventListener(WORKSPACE_EVENT.MAP_DATA_UPDATED, e => {
+        console.log('payload:', JSON.parse(e.data));
+      });
+
+      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_CREATED, e => {
+        console.log('payload:', JSON.parse(e.data));
+      });
+
+      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_RECEIVED, e => {
+        console.log('payload:', JSON.parse(e.data));
+      });
+
       return () => {
-        console.log('closing SSE');
+        console.log('SSE close');
         eventSource.close();
       };
     }
-  }, [mapId]);
+  }, [workspaceId]);
 
   return <></>;
 };

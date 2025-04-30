@@ -1,13 +1,13 @@
 import { Request, Response, Router } from 'express';
 import {
-  CreateShareRequestDto, GetShareInfoQueryResponseDto,
+  CreateShareRequestDto,
+  GetShareInfoQueryResponseDto,
   RejectShareRequestDto,
   UpdateShareAccessRequestDto,
   UpdateShareStatusAcceptedRequestDto,
   WithdrawShareRequestDto,
 } from '../../../shared/src/api/api-types-share';
-import { shareService } from '../server';
-import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
+import { checkJwt, getUserIdAndWorkspaceId, shareService } from '../server';
 
 const router = Router();
 

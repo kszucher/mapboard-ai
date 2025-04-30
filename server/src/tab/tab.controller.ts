@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { GetTabInfoQueryResponseDto } from '../../../shared/src/api/api-types-tab';
-import { tabService } from '../server';
-import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
+import { checkJwt, getUserIdAndWorkspaceId, tabService } from '../server';
 
 const router = Router();
 

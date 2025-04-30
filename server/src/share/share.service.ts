@@ -100,7 +100,7 @@ export class ShareService {
       select: { id: true },
     });
 
-    return this.prisma.share.create({
+    await this.prisma.share.create({
       data: {
         mapId,
         ownerUserId: userId,
@@ -109,6 +109,20 @@ export class ShareService {
         status: ShareStatus.WAITING,
       },
     });
+
+    const workspacesOfOwnerUsers = await this.prisma.workspace.findMany({
+      where: { userId: userId },
+      select: { id: true },
+    });
+
+    const workspacesOfShareUsers = await this.prisma.workspace.findMany({
+      where: { userId: shareUser.id },
+      select: { id: true },
+    });
+
+    // TODO distribution call --> type: CREATED_SHARE, payload: {} for OwnerUsers
+    // TODO distribution call --> type: RECEIVED_SHARE, payload: { ownerUserId, mapId, mapName } for ShareUsers
+
   }
 
   async updateShareAccess({ shareId, shareAccess }: { shareId: number, shareAccess: ShareAccess }) {

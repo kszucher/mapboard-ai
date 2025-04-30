@@ -46,7 +46,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
       method: 'POST',
       body: { shareId },
     }),
-    invalidatesTags: ['TabInfo'],
+    invalidatesTags: ['ShareInfo'],
   }),
 
   withdrawShare: builder.mutation<WithdrawShareResponseDto, WithdrawShareRequestDto>({

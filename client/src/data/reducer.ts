@@ -144,6 +144,9 @@ export const slice = createSlice({
     setNodeId(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       state.nodeId = nodeId;
     },
+    clearIsLoading(state) {
+      state.isLoading = false;
+    },
   },
   extraReducers: builder => {
     builder.addMatcher(isAction, () => {});

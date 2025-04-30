@@ -1,5 +1,4 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
-
 import { GetTabInfoQueryResponseDto } from '../../../shared/src/api/api-types-tab.ts';
 
 export const apiTab = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({

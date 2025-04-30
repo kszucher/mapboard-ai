@@ -7,8 +7,7 @@ import {
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
 } from '../../../shared/src/api/api-types-map';
-import { mapService } from '../server';
-import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
+import { checkJwt, getUserIdAndWorkspaceId, mapService } from '../server';
 
 const router = Router();
 

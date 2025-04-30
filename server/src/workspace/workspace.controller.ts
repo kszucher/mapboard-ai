@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { CreateWorkspaceResponseDto } from '../../../shared/src/api/api-types-workspace';
-import { workspaceService } from '../server';
-import { checkJwt, getUserIdAndWorkspaceId, prismaClient } from '../startup';
+import { checkJwt, getUserIdAndWorkspaceId, prismaClient, workspaceService } from '../server';
 
 const router = Router();
 
