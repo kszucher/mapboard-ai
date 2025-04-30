@@ -51,23 +51,6 @@ export class DistributionService {
     }
   }
 
-  // addClient(req: Request, res: Response, workspaceId: number) {
-  //   const clientId = randomUUID();
-  //   // Set SSE headers
-  //   res.writeHead(200, {
-  //     'Content-Type': 'text/event-stream',
-  //     'Cache-Control': 'no-cache',
-  //     // Connection: 'keep-alive',
-  //   });
-  //   res.write('\n'); // keep the connection open
-  //
-  //   this.clients.set(clientId, { res, workspaceId });
-  //
-  //   req.on('close', () => {
-  //     this.clients.delete(clientId);
-  //   });
-  // }
-
   addClient(req: Request, res: Response, workspaceId: number) {
     const clientId = randomUUID();
 
@@ -89,12 +72,11 @@ export class DistributionService {
   private broadcast(message: RedisEventMessage) {
     for (const { res, workspaceId } of this.clients.values()) {
       if (workspaceId === message.workspaceId) {
-        // const payload = {
-        //   event_id: message.event.type,
-        //   payload: message.event.payload,
-        // };
-        // res.write(`data: ${JSON.stringify(payload)}\n\n`);
-        // inside broadcast():
+
+        if (message.event.type === WORKSPACE_EVENT.MAP_DATA_UPDATED) {
+          console.timeEnd('Save Map');
+        }
+
         res.write(`event: ${message.event.type}\n`);
         res.write(`data: ${JSON.stringify(message.event.payload)}\n\n`);
 

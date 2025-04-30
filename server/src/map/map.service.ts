@@ -161,9 +161,6 @@ export class MapService {
   }
 
   async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number, mapId: number, mapData: object }) {
-    // S = C + S - LC
-    // Map.mapData = mapData + Map.data - Workspace.mapData
-
     console.time('Save Map');
 
     const currentData = await this.prisma.workspace.findFirstOrThrow({
@@ -175,6 +172,13 @@ export class MapService {
     });
 
     const result = jsonMerge(mapData, jsonDiff(currentData.Map!.data, currentData.mapData));
+
+    const workspacesOfMap = await this.workspaceService.getWorkspacesOfMap({ mapId });
+
+    await this.distributionService.publish(workspacesOfMap.map(el => el.id), {
+      type: WORKSPACE_EVENT.MAP_DATA_UPDATED,
+      payload: { mapId, mapData: result },
+    });
 
     await this.prisma.map.update({
       where: { id: mapId },
@@ -199,7 +203,6 @@ export class MapService {
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
-
     await this.workspaceService.removeMapFromWorkspaces({ mapId });
 
     await this.tabService.deleteMapFromTab({ userId, mapId });
@@ -211,6 +214,5 @@ export class MapService {
     await this.prisma.map.delete({
       where: { id: mapId },
     });
-
   }
 }
