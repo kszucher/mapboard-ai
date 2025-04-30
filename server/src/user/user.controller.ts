@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { GetUserInfoQueryResponseDto } from '../../../shared/src/api/api-types-user';
-import { checkJwt, getUserIdAndWorkspaceId, userService } from '../server';
+import { userService } from '../server';
+import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
 
 const router = Router();
 

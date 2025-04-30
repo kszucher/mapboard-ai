@@ -7,7 +7,8 @@ import {
   UpdateShareStatusAcceptedRequestDto,
   WithdrawShareRequestDto,
 } from '../../../shared/src/api/api-types-share';
-import { checkJwt, getUserIdAndWorkspaceId, shareService } from '../server';
+import { shareService } from '../server';
+import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
 
 const router = Router();
 

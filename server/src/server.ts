@@ -1,6 +1,5 @@
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
-import { auth } from 'express-oauth2-jwt-bearer';
+import express, { Request, Response } from 'express';
 import distributionController from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
 import { PrismaClient } from './generated/client';
@@ -14,7 +13,6 @@ import userController from './user/user.controller';
 import { UserService } from './user/user.service';
 import workspaceController from './workspace/workspace.controller';
 import { WorkspaceService } from './workspace/workspace.service';
-
 
 export const prismaClient = new PrismaClient();
 export const userService: UserService = new UserService(prismaClient);
@@ -44,35 +42,6 @@ app.get('/ping', async (req: Request, res: Response) => {
   res.json('ping');
 });
 
-export const checkJwt = auth({
-  audience: process.env.NODE_ENV
-    ? process.env.AUTH0_REMOTE_URL
-    : process.env.AUTH0_LOCAL_URL,
-  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-});
-
-export const getUserIdAndWorkspaceId = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  try {
-    const user = await prismaClient.user.findFirstOrThrow({
-      where: { sub: req.auth?.payload.sub ?? '' },
-      select: { id: true },
-    });
-
-    const workspaceId = parseInt(req.headers['workspace-id'] as string);
-
-    (req as any).userId = user.id;
-    (req as any).workspaceId = workspaceId;
-
-    next();
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server error' }); // no need to return
-  }
-};
 
 const PORT = process.env.PORT || 8083;
 app.listen(PORT, () => {
