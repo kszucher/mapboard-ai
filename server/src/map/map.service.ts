@@ -182,15 +182,16 @@ export class MapService {
       payload: { mapId, mapData: newMapData },
     });
 
-    await this.prisma.map.update({
-      where: { id: mapId },
-      data: { data: newMapData },
-    });
-
-    await this.prisma.workspace.update({
-      where: { id: workspaceId },
-      data: { mapData: newMapData },
-    });
+    await this.prisma.$transaction([
+      this.prisma.map.update({
+        where: { id: mapId },
+        data: { data: newMapData },
+      }),
+      this.prisma.workspace.updateMany({
+        where: { id: { in: workspacesOfMap.map(el => el.id) } },
+        data: { mapData: newMapData },
+      }),
+    ]);
   }
 
   async updateMapByServer({ mapId, mapDataDelta }: { mapId: number, mapDataDelta: object }) {

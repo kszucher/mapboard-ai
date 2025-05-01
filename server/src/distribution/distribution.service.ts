@@ -68,7 +68,6 @@ export class DistributionService {
     req.on('close', () => this.clients.delete(clientId));
   }
 
-
   private broadcast(message: RedisEventMessage) {
     for (const { res, workspaceId } of this.clients.values()) {
       if (workspaceId === message.workspaceId) {
