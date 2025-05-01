@@ -27,7 +27,7 @@ export const Editor: FC = () => {
 
   return (
     <Theme
-      appearance={colorMode === ColorMode.DARK ? 'dark' : 'light'}
+      appearance={colorMode === ColorMode.LIGHT ? 'light' : 'dark'}
       accentColor="iris"
       panelBackground="solid"
       scaling="100%"
