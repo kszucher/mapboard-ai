@@ -20,9 +20,10 @@ export const mapService: MapService = new MapService(prismaClient, () => tabServ
 export const tabService: TabService = new TabService(prismaClient);
 export const shareService: ShareService = new ShareService(prismaClient);
 export const workspaceService: WorkspaceService = new WorkspaceService(prismaClient, () => userService, () => mapService, () => tabService);
-export const distributionService: DistributionService = new DistributionService(process.env.REDIS_MAIN!);
+export const distributionService: DistributionService = new DistributionService(prismaClient, process.env.REDIS_MAIN!);
 
 (async () => {
+  await prismaClient.workspace.deleteMany({});
   await distributionService.connectAndSubscribe();
 })();
 

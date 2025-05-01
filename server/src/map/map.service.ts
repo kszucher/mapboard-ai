@@ -169,7 +169,7 @@ export class MapService {
 
     await this.distributionService.publish(workspacesOfMap.map(el => el.id), {
       type: WORKSPACE_EVENT.MAP_DATA_UPDATED,
-      payload: { mapId, mapData: newMapData },
+      payload: { mapInfo: { id: mapId, data: newMapData } },
     });
 
     await this.prisma.$transaction([

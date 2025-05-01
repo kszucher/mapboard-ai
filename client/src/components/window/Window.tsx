@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { WORKSPACE_EVENT } from '../../../../shared/src/api/api-types-distribution.ts';
+import { MapInfo } from '../../../../shared/src/api/api-types-map.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';
@@ -110,11 +111,8 @@ export const Window: FC = () => {
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.MAP_DATA_UPDATED, e => {
-        // TODO
-        // S = C + S - LC
-        // LS = C
-
-        console.log('payload:', JSON.parse(e.data));
+        const mapInfo = JSON.parse(e.data) as { mapInfo: MapInfo };
+        dispatch(actions.updateMapFromSSE(mapInfo));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.SHARE_CREATED, e => {

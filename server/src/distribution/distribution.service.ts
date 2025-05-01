@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { createClient, RedisClientType } from 'redis';
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
+import { PrismaClient } from '../generated/client';
 
 export interface RedisEventPayload {
   type: WORKSPACE_EVENT;
@@ -24,7 +25,11 @@ export class DistributionService {
   private clients = new Map<string, ClientInfo>();
   private readonly channel: string;
 
-  constructor(redisUrl: string, channel = 'workspace_updates') {
+  constructor(
+    private prisma: PrismaClient,
+    redisUrl: string,
+    channel = 'workspace_updates',
+  ) {
     this.publisher = createClient({ url: redisUrl });
     this.subscriber = this.publisher.duplicate();
     this.channel = channel;
@@ -65,7 +70,10 @@ export class DistributionService {
     res.write('retry: 5000\n\n');
 
     this.clients.set(clientId, { res, workspaceId });
-    req.on('close', () => this.clients.delete(clientId));
+    req.on('close', () => {
+      this.prisma.workspace.delete({ where: { id: workspaceId } });
+      this.clients.delete(clientId);
+    });
   }
 
   private broadcast(message: RedisEventMessage) {

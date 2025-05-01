@@ -1,5 +1,6 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
+import { MapInfo } from '../../../shared/src/api/api-types-map.ts';
 import { idToR, mapObjectToArray } from '../../../shared/src/map/getters/map-queries.ts';
 import { mapBuild } from '../../../shared/src/map/setters/map-build.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
@@ -146,6 +147,15 @@ export const slice = createSlice({
     },
     clearIsLoading(state) {
       state.isLoading = false;
+    },
+    updateMapFromSSE(state, { payload }: PayloadAction<{ mapInfo: MapInfo }>) {
+      console.log('map updated from server...');
+      // S = C + S - LC
+      // LS = C
+      const m = structuredClone(mapObjectToArray(payload.mapInfo.data));
+      mapBuild(m);
+      state.commitList = [m];
+      state.commitIndex = 0;
     },
   },
   extraReducers: builder => {
