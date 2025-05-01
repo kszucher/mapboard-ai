@@ -1,11 +1,14 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { MapInfo } from '../../../shared/src/api/api-types-map.ts';
-import { idToR, mapObjectToArray } from '../../../shared/src/map/getters/map-queries.ts';
+import { mapPrune } from '../../../shared/src/map/getters/map-prune.ts';
+import { idToR, mapArrayToObject, mapObjectToArray } from '../../../shared/src/map/getters/map-queries.ts';
 import { mapBuild } from '../../../shared/src/map/setters/map-build.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
 import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
 import { ControlType, L, R, Side } from '../../../shared/src/map/state/map-types.ts';
+import { jsonDiff } from '../../../shared/src/map/utils/json-diff.ts';
+import { jsonMerge } from '../../../shared/src/map/utils/json-merge.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
 import { api } from './api.ts';
 import { stateDefault, stateDefaults } from './state-defaults.ts';
@@ -144,14 +147,17 @@ export const slice = createSlice({
     },
     updateMapFromSSE(state, { payload }: PayloadAction<{ mapInfo: MapInfo }>) {
       console.log('map updated from server...');
-      // S = C + S - LC
-      // LS = C
-      const m = structuredClone(mapObjectToArray(payload.mapInfo.data));
-      mapBuild(m);
-      state.commitList = [m];
-      state.commitIndex = 0;
 
-      // as a last step we should actually try to keep the local changes!!!
+      const newWorkspaceMap = payload.mapInfo.data;
+      const clientMap = mapArrayToObject(mapPrune(current(state.commitList[state.commitIndex])));
+      const workspaceMap = current(state.workspaceMap);
+
+      // C = C + S - LS
+      const newClientMap = mapObjectToArray(jsonMerge(clientMap, jsonDiff(newWorkspaceMap, workspaceMap)));
+      mapBuild(newClientMap);
+      state.commitList = [newClientMap];
+      state.commitIndex = 0;
+      state.workspaceMap = newWorkspaceMap;
     },
   },
   extraReducers: builder => {
@@ -188,7 +194,7 @@ export const slice = createSlice({
         state.commitList = [m];
         state.commitIndex = 0;
         state.isLoading = false;
-        // TODO update workspaceMap
+        state.workspaceMap = payload.mapInfo.data;
       } else {
         window.alert('invalid map');
       }

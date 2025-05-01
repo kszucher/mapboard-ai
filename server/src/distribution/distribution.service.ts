@@ -72,7 +72,11 @@ export class DistributionService {
     this.clients.set(clientId, { res, workspaceId });
     req.on('close', async () => {
       console.log('killing workspace ', workspaceId);
-      await this.prisma.workspace.delete({ where: { id: workspaceId } });
+      try {
+        await this.prisma.workspace.delete({ where: { id: workspaceId } });
+      } catch {
+        console.log('failed to delete workspace');
+      }
       this.clients.delete(clientId);
     });
   }
