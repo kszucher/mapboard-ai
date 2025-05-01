@@ -154,6 +154,9 @@ export const slice = createSlice({
 
       // C = C + S - LS
       const newClientMap = mapObjectToArray(jsonMerge(clientMap, jsonDiff(newWorkspaceMap, workspaceMap)));
+
+      // console.log(jsonDiff(newWorkspaceMap, workspaceMap)); TODO see if we can do text diff
+
       mapBuild(newClientMap);
       state.commitList = [newClientMap];
       state.commitIndex = 0;
