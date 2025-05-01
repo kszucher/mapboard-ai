@@ -3,7 +3,6 @@ import {
   CreateMapInTabDuplicateRequestDto,
   CreateMapInTabRequestDto,
   DeleteMapRequestDto,
-  GetMapDataQueryResponseDto,
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
 } from '../../../shared/src/api/api-types-map';
@@ -14,15 +13,8 @@ const router = Router();
 
 router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
-  const map = await mapService.readMap({ workspaceId });
+  const map = await mapService.getMap({ workspaceId });
   const response: GetMapInfoQueryResponseDto = { mapInfo: map! };
-  res.json(response);
-});
-
-router.post('/get-map-data-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId } = (req as any);
-  const map = await mapService.readMapData({ workspaceId });
-  const response: GetMapDataQueryResponseDto = { mapInfo: map! };
   res.json(response);
 });
 

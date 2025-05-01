@@ -6,7 +6,7 @@ export class TabService {
   ) {
   }
 
-  async readTab({ userId }: { userId: number }) {
+  async getMapsOfTab({ userId }: { userId: number }) {
     const tab = await this.prisma.tab.findFirstOrThrow({
       where: { User: { id: userId } },
       select: {
@@ -60,7 +60,7 @@ export class TabService {
     });
   }
 
-  async deleteMapFromTab({ userId, mapId }: { userId: number, mapId: number }) {
+  async removeMapFromTab({ userId, mapId }: { userId: number, mapId: number }) {
     const tab = await this.prisma.tab.findUniqueOrThrow({
       where: { userId },
       select: { mapIds: true },

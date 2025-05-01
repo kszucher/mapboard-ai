@@ -5,7 +5,7 @@ export class UserService {
     private prisma: PrismaClient) {
   }
 
-  async readUser({ userId }: { userId: number }) {
+  async getUser({ userId }: { userId: number }) {
     return this.prisma.user.findUniqueOrThrow({
       where: { id: userId },
       select: {

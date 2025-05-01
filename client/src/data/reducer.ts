@@ -172,10 +172,7 @@ export const slice = createSlice({
     builder.addMatcher(api.endpoints.getUserInfo.matchFulfilled, (state, { payload }) => {
       state.userInfo = payload.userInfo;
     });
-    builder.addMatcher(api.endpoints.getMapInfo.matchFulfilled, state => {
-      state.isLoading = false;
-    });
-    builder.addMatcher(api.endpoints.getMapData.matchFulfilled, (state, { payload }) => {
+    builder.addMatcher(api.endpoints.getMapInfo.matchFulfilled, (state, { payload }) => {
       console.log(payload.mapInfo);
       const isValid = Object.values(payload.mapInfo.data).every(obj => Object.keys(obj as object).includes('path'));
       if (isValid) {

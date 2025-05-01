@@ -7,12 +7,7 @@ export type MapInfo = {
 export type GetMapInfoQueryResponseDto = {
   mapInfo: {
     id: number,
-    name: string
-  };
-};
-
-export type GetMapDataQueryResponseDto = {
-  mapInfo: {
+    name: string,
     data: object | any
   };
 };

@@ -6,7 +6,6 @@ import {
   CreateMapInTabResponseDto,
   DeleteMapRequestDto,
   DeleteMapResponseDto,
-  GetMapDataQueryResponseDto,
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
   RenameMapResponseDto,
@@ -20,11 +19,6 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
   getMapInfo: builder.query<GetMapInfoQueryResponseDto, void>({
     query: () => ({ url: 'get-map-info', method: 'POST', body: {} }),
     providesTags: ['MapInfo'],
-  }),
-
-  getMapData: builder.query<GetMapDataQueryResponseDto, void>({
-    query: () => ({ url: 'get-map-data-info', method: 'POST', body: {} }),
-    providesTags: ['MapData'],
   }),
 
   createMapInTab: builder.mutation<CreateMapInTabResponseDto, CreateMapInTabRequestDto>({

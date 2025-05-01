@@ -31,27 +31,17 @@ export class MapService {
     return this.getDistributionService();
   }
 
-  async readMap({ workspaceId }: { workspaceId: number }) {
+  async getMap({ workspaceId }: { workspaceId: number }) {
     const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
       select: {
-        Map: { select: { id: true, name: true } },
+        Map: { select: { id: true, name: true, data: true } },
       },
     });
     return workspace.Map;
   }
 
-  async readMapData({ workspaceId }: { workspaceId: number }) {
-    const workspace = await this.prisma.workspace.findFirstOrThrow({
-      where: { id: workspaceId },
-      select: {
-        Map: { select: { data: true } },
-      },
-    });
-    return workspace.Map;
-  }
-
-  async readLastMap({ userId }: { userId: number }) {
+  async getLastMap({ userId }: { userId: number }) {
     return this.prisma.map.findFirst({
       where: { userId },
       orderBy: {
@@ -208,7 +198,7 @@ export class MapService {
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
     await this.workspaceService.removeMapFromWorkspaces({ mapId });
 
-    await this.tabService.deleteMapFromTab({ userId, mapId });
+    await this.tabService.removeMapFromTab({ userId, mapId });
 
     await this.prisma.share.deleteMany({
       where: { mapId },

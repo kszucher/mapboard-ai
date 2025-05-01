@@ -20,7 +20,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['UserInfo', 'MapInfo', 'MapData', 'TabInfo', 'ShareInfo'],
+  tagTypes: ['UserInfo', 'MapInfo', 'TabInfo', 'ShareInfo'],
   endpoints: builder => ({
     ...apiUser(builder),
     ...apiMap(builder),
@@ -30,5 +30,4 @@ export const api = createApi({
   }),
 });
 
-export const { useGetUserInfoQuery, useGetMapInfoQuery, useGetMapDataQuery, useGetTabInfoQuery, useGetShareInfoQuery } =
-  api;
+export const { useGetUserInfoQuery, useGetMapInfoQuery, useGetTabInfoQuery, useGetShareInfoQuery } = api;

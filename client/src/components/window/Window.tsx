@@ -113,6 +113,7 @@ export const Window: FC = () => {
         // TODO
         // S = C + S - LC
         // LS = C
+
         console.log('payload:', JSON.parse(e.data));
       });
 

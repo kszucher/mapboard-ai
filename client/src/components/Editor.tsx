@@ -2,7 +2,7 @@ import { AlertDialog, Dialog, Spinner, Theme } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ColorMode } from '../../../shared/src/api/api-types-user.ts';
-import { useGetMapDataQuery, useGetUserInfoQuery } from '../data/api.ts';
+import { useGetMapInfoQuery, useGetUserInfoQuery } from '../data/api.ts';
 import { actions } from '../data/reducer.ts';
 import { AlertDialogState, DialogState } from '../data/state-types.ts';
 import { AppDispatch, RootState } from '../data/store.ts';
@@ -18,7 +18,7 @@ import { Window } from './window/Window.tsx';
 export const Editor: FC = () => {
   const isLoading = useSelector((state: RootState) => state.slice.isLoading);
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const mapData = useGetMapDataQuery().data?.mapInfo.data;
+  const mapData = useGetMapInfoQuery().data?.mapInfo.data;
   const mExists = mapData && m && Object.keys(m).length;
   const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
   const dialogState = useSelector((state: RootState) => state.slice.dialogState);

@@ -12,7 +12,7 @@ export const apiWorkspace = (builder: EndpointBuilder<BaseQueryFn, string, strin
       url: '/create-workspace',
       method: 'POST',
     }),
-    invalidatesTags: ['UserInfo', 'MapInfo', 'MapData', 'TabInfo', 'ShareInfo'],
+    invalidatesTags: ['UserInfo', 'MapInfo', 'TabInfo', 'ShareInfo'],
   }),
 
   updateWorkspaceMap: builder.mutation<UpdateWorkspaceMapResponseDto, UpdateWorkspaceMapRequestDto>({
@@ -21,7 +21,7 @@ export const apiWorkspace = (builder: EndpointBuilder<BaseQueryFn, string, strin
       method: 'POST',
       body: { mapId },
     }),
-    invalidatesTags: ['MapInfo', 'MapData'],
+    invalidatesTags: ['MapInfo'],
   }),
 
   deleteWorkspace: builder.mutation<void, void>({

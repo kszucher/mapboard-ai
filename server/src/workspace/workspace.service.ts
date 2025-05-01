@@ -40,7 +40,7 @@ export class WorkspaceService {
   }
 
   async createWorkspace({ userId }: { userId: number }) {
-    const lastMap = await this.mapService.readLastMap({ userId });
+    const lastMap = await this.mapService.getLastMap({ userId });
 
     if (lastMap) {
       await this.mapService.updateOpenCount({ mapId: lastMap.id });
