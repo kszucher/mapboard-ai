@@ -93,10 +93,11 @@ export const Extraction = ({ ri }: { ri: R }) => {
               color="gray"
               onClick={() => {
                 dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
-                executeExtraction({
-                  mapId,
-                  nodeId: ri.nodeId,
-                });
+                mapId &&
+                  executeExtraction({
+                    mapId,
+                    nodeId: ri.nodeId,
+                  });
               }}
             >
               {'Execute Prompt'}
