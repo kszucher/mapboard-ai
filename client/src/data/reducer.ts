@@ -142,12 +142,6 @@ export const slice = createSlice({
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
-    setNodeId(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
-      state.nodeId = nodeId;
-    },
-    clearIsLoading(state) {
-      state.isLoading = false;
-    },
     updateMapFromSSE(state, { payload }: PayloadAction<{ mapInfo: MapInfo }>) {
       console.log('map updated from server...');
       // S = C + S - LC
@@ -156,10 +150,16 @@ export const slice = createSlice({
       mapBuild(m);
       state.commitList = [m];
       state.commitIndex = 0;
+
+      // as a last step we should actually try to keep the local changes!!!
     },
   },
   extraReducers: builder => {
     builder.addMatcher(isAction, () => {});
+    builder.addMatcher(api.endpoints.createWorkspace.matchFulfilled, (state, { payload }) => {
+      state.workspaceId = payload.workspaceInfo.workspaceId;
+      state.pageState = PageState.WS;
+    });
     builder.addMatcher(
       isAnyOf(
         api.endpoints.toggleColorMode.matchPending,
@@ -179,9 +179,6 @@ export const slice = createSlice({
         state.isLoading = true;
       }
     );
-    builder.addMatcher(api.endpoints.getUserInfo.matchFulfilled, (state, { payload }) => {
-      state.userInfo = payload.userInfo;
-    });
     builder.addMatcher(api.endpoints.getMapInfo.matchFulfilled, (state, { payload }) => {
       console.log(payload.mapInfo);
       const isValid = Object.values(payload.mapInfo.data).every(obj => Object.keys(obj as object).includes('path'));
@@ -195,10 +192,6 @@ export const slice = createSlice({
       } else {
         window.alert('invalid map');
       }
-    });
-    builder.addMatcher(api.endpoints.createWorkspace.matchFulfilled, (state, { payload }) => {
-      state.workspaceId = payload.workspaceInfo.workspaceId;
-      state.pageState = PageState.WS;
     });
   },
 });

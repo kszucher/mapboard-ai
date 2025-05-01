@@ -1,10 +1,10 @@
 import { Button, Dialog, Flex, Table } from '@radix-ui/themes';
-import { useDispatch, useSelector } from 'react-redux';
-import { api } from '../../data/api.ts';
-import { AppDispatch, RootState } from '../../data/store.ts';
+import { useDispatch } from 'react-redux';
+import { api, useGetShareInfoQuery } from '../../data/api.ts';
+import { AppDispatch } from '../../data/store.ts';
 
 export const SharedByMe = () => {
-  const sharesByUser = useSelector((state: RootState) => state.slice.shareInfo.SharesByMe);
+  const sharesByUser = useGetShareInfoQuery().data?.shareInfo.SharesByMe;
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
@@ -23,7 +23,7 @@ export const SharedByMe = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {sharesByUser.map(el => (
+          {sharesByUser?.map(el => (
             <Table.Row key={el.id}>
               <Table.RowHeaderCell>{el.Map.name}</Table.RowHeaderCell>
               <Table.Cell>{el.ShareUser.email}</Table.Cell>

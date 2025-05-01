@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { WORKSPACE_EVENT } from '../../../../shared/src/api/api-types-distribution.ts';
 import { MapInfo } from '../../../../shared/src/api/api-types-map.ts';
-import { api, useGetMapInfoQuery } from '../../data/api.ts';
+import { api, useGetMapInfoQuery, useGetShareInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -22,8 +22,8 @@ export const Window: FC = () => {
   const commitList = useSelector((state: RootState) => state.slice.commitList);
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const mExists = m && Object.keys(m).length;
-  const sharesWithUser = useSelector((state: RootState) => state.slice.shareInfo.SharesWithMe);
-  const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
+  const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
+  const access = sharesWithUser?.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const dispatch = useDispatch<AppDispatch>();
 
   const mouseup = () => {

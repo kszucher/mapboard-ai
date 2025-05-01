@@ -70,8 +70,9 @@ export class DistributionService {
     res.write('retry: 5000\n\n');
 
     this.clients.set(clientId, { res, workspaceId });
-    req.on('close', () => {
-      this.prisma.workspace.delete({ where: { id: workspaceId } });
+    req.on('close', async () => {
+      console.log('killing workspace ', workspaceId);
+      await this.prisma.workspace.delete({ where: { id: workspaceId } });
       this.clients.delete(clientId);
     });
   }

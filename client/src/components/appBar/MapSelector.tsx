@@ -1,16 +1,16 @@
 import { Button, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ChevronDown from '../../../assets/chevron-down.svg?react';
-import { api, useGetMapInfoQuery, useGetTabInfoQuery } from '../../data/api.ts';
-import { AppDispatch, RootState } from '../../data/store.ts';
+import { api, useGetMapInfoQuery, useGetShareInfoQuery, useGetTabInfoQuery } from '../../data/api.ts';
+import { AppDispatch } from '../../data/store.ts';
 import { MapActions } from './MapActions.tsx';
 
 export const MapSelector: FC = () => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const mapName = useGetMapInfoQuery().data?.mapInfo.name;
   const tabMapInfo = useGetTabInfoQuery().data?.tabInfo;
-  const sharesWithUser = useSelector((state: RootState) => state.slice.shareInfo.SharesWithMe);
+  const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
   const dispatch = useDispatch<AppDispatch>();
   return (
     <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">
@@ -32,7 +32,7 @@ export const MapSelector: FC = () => {
           ))}
           <DropdownMenu.Separator />
           <DropdownMenu.Label>{'Shared Maps'}</DropdownMenu.Label>
-          {sharesWithUser.map((el, index) => (
+          {sharesWithUser?.map((el, index) => (
             <DropdownMenu.Item
               key={index}
               onClick={() => dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: el.id }))}

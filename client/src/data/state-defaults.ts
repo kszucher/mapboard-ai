@@ -1,4 +1,3 @@
-import { ColorMode } from '../../../shared/src/api/api-types-user.ts';
 import { Side } from '../../../shared/src/map/state/map-types.ts';
 import { AlertDialogState, DialogState, MidMouseMode, PageState, State } from './state-types.ts';
 
@@ -10,20 +9,6 @@ export const stateDefaults: State = {
   pageState: PageState.AUTH,
   dialogState: DialogState.NONE,
   alertDialogState: AlertDialogState.NONE,
-  userInfo: {
-    name: '',
-    colorMode: ColorMode.DARK,
-  },
-  mapInfo: {
-    id: 1,
-    name: '',
-    data: {},
-  },
-  tabMapInfo: [],
-  shareInfo: {
-    SharesByMe: [],
-    SharesWithMe: [],
-  },
   commitList: [],
   commitIndex: 0,
   rOffsetCoords: [],
@@ -44,7 +29,6 @@ export const stateDefaults: State = {
     fromNodeId: '',
     fromNodeSide: Side.R,
   },
-  nodeId: '',
 };
 
 export const stateDefault = JSON.stringify(stateDefaults);

@@ -2,7 +2,7 @@ import { IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ArrowForwardUp from '../../../assets/arrow-forward-up.svg?react';
-import { useGetMapInfoQuery } from '../../data/api.ts';
+import { useGetMapInfoQuery, useGetShareInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AccessType } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -11,8 +11,8 @@ export const NodeRedo: FC = () => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const commitList = useSelector((state: RootState) => state.slice.commitList);
   const commitIndex = useSelector((state: RootState) => state.slice.commitIndex);
-  const sharesWithUser = useSelector((state: RootState) => state.slice.shareInfo.SharesWithMe);
-  const access = sharesWithUser.find(el => el.id === mapId)?.access || AccessType.EDIT;
+  const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
+  const access = sharesWithUser?.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const redoDisabled = access !== AccessType.EDIT || commitIndex === commitList.length - 1;
   const dispatch = useDispatch<AppDispatch>();
   return (

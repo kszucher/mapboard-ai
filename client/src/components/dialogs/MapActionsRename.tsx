@@ -1,13 +1,13 @@
 import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
-import { AppDispatch, RootState } from '../../data/store.ts';
+import { AppDispatch } from '../../data/store.ts';
 
 export const MapActionsRename = () => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
-  const mapName = useSelector((state: RootState) => state.slice.mapInfo.name);
-  const [newMapName, setNewMapName] = useState(mapName);
+  const mapName = useGetMapInfoQuery().data?.mapInfo.name;
+  const [newMapName, setNewMapName] = useState(mapName ?? '');
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>

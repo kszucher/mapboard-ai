@@ -1,3 +1,4 @@
+import { sortNode } from '../setters/map-sort';
 import {
   gSaveAlways,
   gSaveOptional,
@@ -7,7 +8,6 @@ import {
   rSaveOptional,
 } from '../state/map-defaults';
 import { M } from '../state/map-types';
-import { sortNode } from '../setters/map-sort';
 import { getNonDefaultEntries, includeEntries } from '../utils/object-utils';
 import { mG, mL, mR } from './map-queries';
 
