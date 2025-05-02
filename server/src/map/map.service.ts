@@ -3,8 +3,6 @@ import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution'
 import { mapArrayToObject, mapObjectToArray } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { M } from '../../../shared/src/map/state/map-types';
-import { jsonDiff } from '../../../shared/src/map/utils/json-diff';
-import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
