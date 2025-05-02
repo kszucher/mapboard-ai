@@ -11,7 +11,7 @@ export const stateDefaults: State = {
   alertDialogState: AlertDialogState.NONE,
   commitList: [],
   commitIndex: 0,
-  workspaceMap: {},
+  serverMap: {},
   rOffsetCoords: [],
   zoomInfo: {
     fromX: 0,

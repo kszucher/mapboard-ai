@@ -10,7 +10,7 @@ export interface State {
   alertDialogState: AlertDialogState;
   commitList: M[];
   commitIndex: number;
-  workspaceMap: object;
+  serverMap: object;
   rOffsetCoords: number[];
   zoomInfo: {
     fromX: number;
