@@ -167,7 +167,7 @@ export class MapService {
 
     const workspacesOfMap = await this.workspaceService.getWorkspacesOfMap({ mapId });
 
-    await this.distributionService.publish(workspacesOfMap.filter(el => el.id !== workspaceId).map(el => el.id), {
+    await this.distributionService.publish(workspacesOfMap.map(el => el.id), {
       type: WORKSPACE_EVENT.MAP_DATA_UPDATED,
       payload: { mapInfo: { id: mapId, data: newMapData } },
     });
