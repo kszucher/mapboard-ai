@@ -1,3 +1,4 @@
+import { JsonObject } from '@prisma/client/runtime/library';
 import { PrismaClient } from '../generated/client';
 import { MapService } from '../map/map.service';
 import { TabService } from '../tab/tab.service';
@@ -57,6 +58,7 @@ export class WorkspaceService {
       data: {
         User: { connect: { id: userId } },
         Map: { connect: { id: map.id } },
+        mapData: map.data as JsonObject,
       },
       select: {
         id: true,
@@ -74,6 +76,7 @@ export class WorkspaceService {
       where: { id: workspaceId },
       data: {
         mapId: map.id,
+        mapData: map.data as JsonObject,
       },
     });
 
@@ -85,6 +88,7 @@ export class WorkspaceService {
       where: { mapId },
       data: {
         mapId: undefined,
+        mapData: undefined,
       },
     });
   }
