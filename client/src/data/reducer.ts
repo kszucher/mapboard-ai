@@ -147,16 +147,10 @@ export const slice = createSlice({
     },
     updateMapFromSSE(state, { payload }: PayloadAction<{ mapInfo: MapInfo }>) {
       console.log('map updated from server...');
-
       const newWorkspaceMap = payload.mapInfo.data;
       const clientMap = mapArrayToObject(mapPrune(current(state.commitList[state.commitIndex])));
       const workspaceMap = current(state.workspaceMap);
-
-      // C = C + S - LS
       const newClientMap = mapObjectToArray(jsonMerge(clientMap, jsonDiff(newWorkspaceMap, workspaceMap)));
-
-      // console.log(jsonDiff(newWorkspaceMap, workspaceMap)); TODO see if we can do text diff
-
       mapBuild(newClientMap);
       state.commitList = [newClientMap];
       state.commitIndex = 0;
