@@ -125,7 +125,6 @@ export class MapService {
     await this.prisma.map.update({
       where: { id: mapId },
       data: { name: mapName },
-      // select: { name: true },
     });
 
     const workspacesOfMap = await this.prisma.workspace.findMany({
@@ -153,18 +152,6 @@ export class MapService {
   async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number, mapId: number, mapData: object }) {
     console.time('Save Map');
 
-    const workspace = await this.prisma.workspace.findFirstOrThrow({
-      where: { id: workspaceId, Map: { isNot: null } },
-      select: {
-        Map: { select: { data: true } },
-        mapData: true,
-      },
-    });
-    
-    console.log('diff', jsonDiff(workspace.Map!.data, workspace.mapData));
-
-    const newMapData = jsonMerge(mapData, jsonDiff(workspace.Map!.data, workspace.mapData));
-
     const workspacesOfMap = await this.workspaceService.getWorkspacesOfMap({ mapId });
 
     await this.distributionService.publish(workspacesOfMap.filter(el => el.id !== workspaceId).map(el => el.id), {
@@ -172,16 +159,10 @@ export class MapService {
       payload: { mapInfo: { id: mapId, data: mapData } },
     });
 
-    await this.prisma.$transaction([
-      this.prisma.map.update({
-        where: { id: mapId },
-        data: { data: mapData },
-      }),
-      this.prisma.workspace.updateMany({
-        where: { id: { in: workspacesOfMap.map(el => el.id) } },
-        data: { mapData: newMapData },
-      }),
-    ]);
+    this.prisma.map.update({
+      where: { id: mapId },
+      data: { data: mapData },
+    });
   }
 
   async updateMapByServer({ mapId, mapDataDelta }: { mapId: number, mapDataDelta: object }) {
