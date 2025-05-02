@@ -3,9 +3,13 @@ import { excludeEntries } from '../utils/object-utils';
 import { isG, isL, isR } from './path-queries';
 
 export const mapArrayToObject = (m: M): object =>
-  Object.fromEntries(m.map(n => [n.nodeId, excludeEntries(n, ['nodeId'])]));
+  Object.fromEntries(m.map(n => [n.nodeId, { path: n.path.join(','), ...excludeEntries(n, ['nodeId', 'path']) }]));
 
-export const mapObjectToArray = (obj: object): M => Object.entries(obj).map(el => ({ nodeId: el[0], ...el[1] }) as N);
+export const mapObjectToArray = (obj: object): M => Object.entries(obj).map(el => ({
+  nodeId: el[0],
+  path: el[1].path.split(','),
+  ...excludeEntries(el[1], ['path']),
+}) as N);
 
 export const mG = (m: M): G[] => <G[]>m.filter(n => isG(n.path));
 

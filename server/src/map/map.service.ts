@@ -53,8 +53,8 @@ export class MapService {
 
   private createNewMapData() {
     return {
-      [global.crypto.randomUUID().slice(-8)]: { path: ['g'] },
-      [global.crypto.randomUUID().slice(-8)]: { path: ['r', 0] },
+      [global.crypto.randomUUID().slice(-8)]: { path: 'g' },
+      [global.crypto.randomUUID().slice(-8)]: { path: 'r,0' },
     };
   }
 
