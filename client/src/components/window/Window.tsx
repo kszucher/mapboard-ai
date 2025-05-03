@@ -119,7 +119,12 @@ export const Window: FC = () => {
         console.log('payload:', JSON.parse(e.data));
         dispatch(api.util.invalidateTags(['TabInfo']));
       });
-      
+
+      eventSource.addEventListener(WORKSPACE_EVENT.MAP_IN_TAB_CREATED, e => {
+        console.log('payload:', JSON.parse(e.data));
+        dispatch(api.util.invalidateTags(['TabInfo']));
+      });
+
       eventSource.addEventListener(WORKSPACE_EVENT.SHARE_CREATED, e => {
         console.log('payload:', JSON.parse(e.data));
       });

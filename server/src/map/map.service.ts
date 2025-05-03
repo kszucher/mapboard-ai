@@ -82,8 +82,17 @@ export class MapService {
         id: true,
       },
     });
+
     await this.tabService.addMapToTab({ userId, mapId: newMap.id });
+
     await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMap.id });
+
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
+
+    await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
+      type: WORKSPACE_EVENT.MAP_IN_TAB_CREATED,
+      payload: {},
+    });
   }
 
   async createMapInTabDuplicate({ userId, workspaceId, mapId }: {
@@ -116,7 +125,15 @@ export class MapService {
     });
 
     await this.tabService.addMapToTab({ userId, mapId: newMap.id });
+
     await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMap.id });
+
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
+
+    await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
+      type: WORKSPACE_EVENT.MAP_IN_TAB_CREATED,
+      payload: {},
+    });
   }
 
   async renameMap({ mapId, mapName }: { mapId: number, mapName: string }) {
