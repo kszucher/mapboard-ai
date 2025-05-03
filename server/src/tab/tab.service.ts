@@ -23,7 +23,14 @@ export class TabService {
     });
 
     const idToMap = new Map(maps.map(map => [map.id, map]));
-    return tab.mapIds.map(id => idToMap.get(id)).filter(Boolean);
+
+    return tab.mapIds.map(id => {
+      const map = idToMap.get(id);
+      if (!map) {
+        throw new Error(`Map with id ${id} not found`);
+      }
+      return map;
+    });
   }
 
   async addTabToUser({ userId }: { userId: number }) {
