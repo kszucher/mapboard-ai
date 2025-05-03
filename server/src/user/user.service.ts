@@ -1,8 +1,21 @@
+import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
+import { WorkspaceService } from '../workspace/workspace.service';
 
 export class UserService {
   constructor(
-    private prisma: PrismaClient) {
+    private prisma: PrismaClient,
+    private getWorkspaceService: () => WorkspaceService,
+    private getDistributionService: () => DistributionService,
+  ) {
+  }
+
+  get workspaceService() {
+    return this.getWorkspaceService();
+  }
+
+  get distributionService() {
+    return this.getDistributionService();
   }
 
   async getUser({ userId }: { userId: number }) {

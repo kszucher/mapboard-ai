@@ -1,9 +1,21 @@
+import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
+import { WorkspaceService } from '../workspace/workspace.service';
 
 export class TabService {
   constructor(
     private prisma: PrismaClient,
+    private getWorkspaceService: () => WorkspaceService,
+    private getDistributionService: () => DistributionService,
   ) {
+  }
+
+  get workspaceService() {
+    return this.getWorkspaceService();
+  }
+
+  get distributionService() {
+    return this.getDistributionService();
   }
 
   async getMapsOfTab({ userId }: { userId: number }) {
@@ -38,7 +50,7 @@ export class TabService {
       where: { User: { id: userId } },
       select: { id: true, mapIds: true },
     });
-    
+
     const i = mapIds.indexOf(mapId);
     if (i <= 0) return;
 

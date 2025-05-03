@@ -1,9 +1,23 @@
+import { DistributionService } from '../distribution/distribution.service';
 import { $Enums, PrismaClient } from '../generated/client';
+import { WorkspaceService } from '../workspace/workspace.service';
 import ShareAccess = $Enums.ShareAccess;
 import ShareStatus = $Enums.ShareStatus;
 
 export class ShareService {
-  constructor(private prisma: PrismaClient) {
+  constructor(
+    private prisma: PrismaClient,
+    private getWorkspaceService: () => WorkspaceService,
+    private getDistributionService: () => DistributionService,
+  ) {
+  }
+
+  get workspaceService() {
+    return this.getWorkspaceService();
+  }
+
+  get distributionService() {
+    return this.getDistributionService();
   }
 
   async getShareInfo({ userId }: { userId: number }) {

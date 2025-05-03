@@ -15,12 +15,37 @@ import workspaceController from './workspace/workspace.controller';
 import { WorkspaceService } from './workspace/workspace.service';
 
 export const prismaClient = new PrismaClient();
-export const userService: UserService = new UserService(prismaClient);
-export const mapService: MapService = new MapService(prismaClient, () => tabService, () => workspaceService, () => distributionService);
-export const tabService: TabService = new TabService(prismaClient);
-export const shareService: ShareService = new ShareService(prismaClient);
-export const workspaceService: WorkspaceService = new WorkspaceService(prismaClient, () => userService, () => mapService, () => tabService);
-export const distributionService: DistributionService = new DistributionService(prismaClient, process.env.REDIS_MAIN!);
+export const userService: UserService = new UserService(
+  prismaClient,
+  () => workspaceService,
+  () => distributionService,
+);
+export const mapService: MapService = new MapService(
+  prismaClient,
+  () => tabService,
+  () => workspaceService,
+  () => distributionService,
+);
+export const tabService: TabService = new TabService(
+  prismaClient,
+  () => workspaceService,
+  () => distributionService,
+);
+export const shareService: ShareService = new ShareService(
+  prismaClient,
+  () => workspaceService,
+  () => distributionService,
+);
+export const workspaceService: WorkspaceService = new WorkspaceService(
+  prismaClient,
+  () => userService,
+  () => mapService,
+  () => tabService,
+);
+export const distributionService: DistributionService = new DistributionService(
+  () => workspaceService,
+  process.env.REDIS_MAIN!,
+);
 
 (async () => {
   await prismaClient.workspace.deleteMany({});

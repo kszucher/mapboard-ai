@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { createClient, RedisClientType } from 'redis';
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
-import { PrismaClient } from '../generated/client';
+import { WorkspaceService } from '../workspace/workspace.service';
 
 export interface RedisEventPayload {
   type: WORKSPACE_EVENT;
@@ -26,13 +26,17 @@ export class DistributionService {
   private readonly channel: string;
 
   constructor(
-    private prisma: PrismaClient,
+    private getWorkspaceService: () => WorkspaceService,
     redisUrl: string,
     channel = 'workspace_updates',
   ) {
     this.publisher = createClient({ url: redisUrl });
     this.subscriber = this.publisher.duplicate();
     this.channel = channel;
+  }
+
+  get workspaceService() {
+    return this.getWorkspaceService();
   }
 
   async connectAndSubscribe() {
@@ -72,11 +76,7 @@ export class DistributionService {
     this.clients.set(clientId, { res, workspaceId });
     req.on('close', async () => {
       console.log('killing workspace ', workspaceId);
-      try {
-        await this.prisma.workspace.delete({ where: { id: workspaceId } });
-      } catch {
-        console.log('failed to delete workspace');
-      }
+      await this.workspaceService.deleteWorkspace({ workspaceId });
       this.clients.delete(clientId);
     });
   }

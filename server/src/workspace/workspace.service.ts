@@ -96,4 +96,8 @@ export class WorkspaceService {
       },
     });
   }
+
+  async deleteWorkspace({ workspaceId }: { workspaceId: number }) {
+    await this.prisma.workspace.delete({ where: { id: workspaceId } });
+  }
 }
