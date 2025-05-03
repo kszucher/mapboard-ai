@@ -119,18 +119,15 @@ export class MapService {
     await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMap.id });
   }
 
-  async renameMap({ mapId, mapName }: { mapId: number, mapName: string }) {
+  async renameMap({ workspaceId, mapId, mapName }: { workspaceId: number, mapId: number, mapName: string }) {
     await this.prisma.map.update({
       where: { id: mapId },
       data: { name: mapName },
     });
 
-    const workspacesOfMap = await this.prisma.workspace.findMany({
-      where: { mapId },
-      select: { id: true },
-    });
+    const otherWorkspaceIdsOfMap = await this.workspaceService.getOtherWorkspaceIdsOfMap({ workspaceId, mapId });
 
-    await this.distributionService.publish(workspacesOfMap.map(el => el.id), {
+    await this.distributionService.publish(otherWorkspaceIdsOfMap, {
       type: WORKSPACE_EVENT.MAP_RENAMED,
       payload: { mapId, mapName },
     });

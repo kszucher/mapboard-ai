@@ -33,8 +33,9 @@ router.post('/create-map-in-tab-duplicate', checkJwt, getUserIdAndWorkspaceId, a
 });
 
 router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { workspaceId } = (req as any);
   const { mapId, mapName }: RenameMapRequestDto = req.body;
-  await mapService.renameMap({ mapId, mapName });
+  await mapService.renameMap({ workspaceId, mapId, mapName });
   res.json();
 });
 
