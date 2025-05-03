@@ -24,11 +24,15 @@ export class WorkspaceService {
     return this.getTabService();
   }
 
-  async getWorkspacesOfUser({ userId }: { userId: number }) {
-    return this.prisma.workspace.findMany({
-      where: { User: { id: userId } },
+  async getOtherWorkspaceIdOfUser({ workspaceId, userId }: { workspaceId: number, userId: number }) {
+    const otherWorkspaces = await this.prisma.workspace.findMany({
+      where: {
+        id: { not: workspaceId },
+        User: { id: userId },
+      },
       select: { id: true },
     });
+    return otherWorkspaces.map(el => el.id);
   }
 
   async getOtherWorkspaceIdsOfMap({ workspaceId, mapId }: { workspaceId: number, mapId: number }) {
