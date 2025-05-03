@@ -6,3 +6,11 @@ export type TabMapInfo = {
 export type GetTabInfoQueryResponseDto = {
   tabInfo: TabMapInfo;
 };
+
+export type MoveUpMapInTabRequestDto = {
+  mapId: number;
+};
+
+export type MoveDownMapInTabRequestDto = {
+  mapId: number;
+};

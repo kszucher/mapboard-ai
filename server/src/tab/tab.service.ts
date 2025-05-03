@@ -33,6 +33,40 @@ export class TabService {
     });
   }
 
+  async moveUpMapInTab({ userId, mapId }: { userId: number, mapId: number }) {
+    const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
+      where: { User: { id: userId } },
+      select: { id: true, mapIds: true },
+    });
+    
+    const i = mapIds.indexOf(mapId);
+    if (i <= 0) return;
+
+    [mapIds[i], mapIds[i - 1]] = [mapIds[i - 1], mapIds[i]];
+
+    await this.prisma.tab.update({
+      where: { id },
+      data: { mapIds },
+    });
+  }
+
+  async moveDownMapInTab({ userId, mapId }: { userId: number, mapId: number }) {
+    const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
+      where: { User: { id: userId } },
+      select: { id: true, mapIds: true },
+    });
+
+    const i = mapIds.indexOf(mapId);
+    if (i === -1 || i === mapIds.length - 1) return;
+
+    [mapIds[i], mapIds[i + 1]] = [mapIds[i + 1], mapIds[i]];
+
+    await this.prisma.tab.update({
+      where: { id },
+      data: { mapIds },
+    });
+  }
+
   async addTabToUser({ userId }: { userId: number }) {
     await this.prisma.user.update({
       where: { id: userId },

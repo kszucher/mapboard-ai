@@ -190,12 +190,22 @@ export const slice = createSlice({
         mapBuild(m);
         state.commitList = [m];
         state.commitIndex = 0;
-        state.isLoading = false;
         state.serverMap = payload.mapInfo.data;
       } else {
         window.alert('invalid map');
       }
     });
+    builder.addMatcher(
+      isAnyOf(
+        api.endpoints.getUserInfo.matchFulfilled,
+        api.endpoints.getMapInfo.matchFulfilled,
+        api.endpoints.getTabInfo.matchFulfilled,
+        api.endpoints.getShareInfo.matchFulfilled
+      ),
+      state => {
+        state.isLoading = false;
+      }
+    );
   },
 });
 
