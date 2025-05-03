@@ -46,7 +46,7 @@ export class TabService {
     });
   }
 
-  async moveUpMapInTab({ workspaceId, userId, mapId }: { workspaceId: number, userId: number, mapId: number }) {
+  async moveUpMapInTab({ userId, mapId }: { userId: number, mapId: number }) {
     const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
       where: { User: { id: userId } },
       select: { id: true, mapIds: true },
@@ -62,15 +62,15 @@ export class TabService {
       data: { mapIds },
     });
 
-    const otherWorkspaceIdsOfUser = await this.workspaceService.getOtherWorkspaceIdOfUser({ workspaceId, userId });
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
 
-    await this.distributionService.publish(otherWorkspaceIdsOfUser, {
+    await this.distributionService.publish(workspaceIdsOfUser, {
       type: WORKSPACE_EVENT.TAB_DATA_UPDATED,
       payload: {},
     });
   }
 
-  async moveDownMapInTab({ workspaceId, userId, mapId }: { workspaceId: number, userId: number, mapId: number }) {
+  async moveDownMapInTab({ userId, mapId }: { userId: number, mapId: number }) {
     const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
       where: { User: { id: userId } },
       select: { id: true, mapIds: true },
@@ -86,9 +86,9 @@ export class TabService {
       data: { mapIds },
     });
 
-    const otherWorkspaceIdsOfUser = await this.workspaceService.getOtherWorkspaceIdOfUser({ workspaceId, userId });
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
 
-    await this.distributionService.publish(otherWorkspaceIdsOfUser, {
+    await this.distributionService.publish(workspaceIdsOfUser, {
       type: WORKSPACE_EVENT.TAB_DATA_UPDATED,
       payload: {},
     });

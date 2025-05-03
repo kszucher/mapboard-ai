@@ -24,10 +24,9 @@ export class WorkspaceService {
     return this.getTabService();
   }
 
-  async getOtherWorkspaceIdOfUser({ workspaceId, userId }: { workspaceId: number, userId: number }) {
+  async getWorkspaceIdOfUser({ userId }: { userId: number }) {
     const otherWorkspaces = await this.prisma.workspace.findMany({
       where: {
-        id: { not: workspaceId },
         User: { id: userId },
       },
       select: { id: true },
@@ -35,10 +34,9 @@ export class WorkspaceService {
     return otherWorkspaces.map(el => el.id);
   }
 
-  async getOtherWorkspaceIdsOfMap({ workspaceId, mapId }: { workspaceId: number, mapId: number }) {
+  async getWorkspaceIdsOfMap({ mapId }: { mapId: number }) {
     const otherWorkspaces = await this.prisma.workspace.findMany({
       where: {
-        id: { not: workspaceId },
         Map: { id: mapId },
       },
       select: { id: true },
