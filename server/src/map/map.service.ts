@@ -188,6 +188,7 @@ export class MapService {
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
     await this.workspaceService.removeMapFromWorkspaces({ mapId });
@@ -200,6 +201,11 @@ export class MapService {
 
     await this.prisma.map.delete({
       where: { id: mapId },
+    });
+
+    await this.distributionService.publish(workspaceIdsOfUser, {
+      type: WORKSPACE_EVENT.TAB_UPDATED,
+      payload: { mapId },
     });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
