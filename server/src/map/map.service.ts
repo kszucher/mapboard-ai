@@ -71,7 +71,24 @@ export class MapService {
     });
   }
 
-  async createMapInTab({ userId, workspaceId, mapName }: { userId: number, workspaceId: number, mapName: string }) {
+  private async createMapInTabCommon({ userId, workspaceId, newMapId }: {
+    userId: number,
+    workspaceId: number,
+    newMapId: number
+  }) {
+    await this.tabService.addMapToTab({ userId, mapId: newMapId });
+
+    await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMapId });
+
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
+
+    await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
+      type: WORKSPACE_EVENT.MAP_IN_TAB_CREATED,
+      payload: {},
+    });
+  }
+
+  async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number, workspaceId: number, mapName: string }) {
     const newMap = await this.prisma.map.create({
       data: {
         userId,
@@ -83,16 +100,7 @@ export class MapService {
       },
     });
 
-    await this.tabService.addMapToTab({ userId, mapId: newMap.id });
-
-    await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMap.id });
-
-    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
-
-    await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.MAP_IN_TAB_CREATED,
-      payload: {},
-    });
+    await this.createMapInTabCommon({ userId, workspaceId, newMapId: newMap.id });
   }
 
   async createMapInTabDuplicate({ userId, workspaceId, mapId }: {
@@ -124,16 +132,7 @@ export class MapService {
       },
     });
 
-    await this.tabService.addMapToTab({ userId, mapId: newMap.id });
-
-    await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMap.id });
-
-    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
-
-    await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.MAP_IN_TAB_CREATED,
-      payload: {},
-    });
+    await this.createMapInTabCommon({ userId, workspaceId, newMapId: newMap.id });
   }
 
   async renameMap({ mapId, mapName }: { mapId: number, mapName: string }) {

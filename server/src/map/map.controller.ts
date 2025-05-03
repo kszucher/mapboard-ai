@@ -21,7 +21,7 @@ router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Requ
 router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId, workspaceId } = (req as any);
   const { mapName }: CreateMapInTabRequestDto = req.body;
-  await mapService.createMapInTab({ userId, workspaceId, mapName });
+  await mapService.createMapInTabNew({ userId, workspaceId, mapName });
   res.json();
 });
 
