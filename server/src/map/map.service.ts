@@ -76,9 +76,9 @@ export class MapService {
     workspaceId: number,
     newMapId: number
   }) {
-    await this.tabService.addMapToTab({ userId, mapId: newMapId });
+    await this.tabService.addMapToTabIfNotAdded({ userId, mapId: newMapId });
 
-    await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId: newMapId });
+    await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMapId });
 
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
 
@@ -188,6 +188,8 @@ export class MapService {
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
+    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+
     await this.workspaceService.removeMapFromWorkspaces({ mapId });
 
     await this.tabService.removeMapFromTab({ userId, mapId });
@@ -198,6 +200,11 @@ export class MapService {
 
     await this.prisma.map.delete({
       where: { id: mapId },
+    });
+    
+    await this.distributionService.publish(workspaceIdsOfMap, {
+      type: WORKSPACE_EVENT.MAP_DELETED,
+      payload: { mapId },
     });
   }
 }

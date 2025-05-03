@@ -45,19 +45,21 @@ export class WorkspaceService {
   }
 
   async createWorkspace({ userId }: { userId: number }) {
-    const lastMap = await this.mapService.getLastMap({ userId });
+    await this.userService.incrementSignInCount({ userId });
 
+    await this.tabService.addTabToUserIfNotAdded({ userId });
+
+    let map;
+    const lastMap = await this.mapService.getLastMap({ userId });
     if (lastMap) {
-      await this.mapService.updateOpenCount({ mapId: lastMap.id });
+      map = lastMap;
+    } else {
+      map = await this.mapService.createMap({ userId, mapName: 'New Map' });
     }
 
-    const map = lastMap ?? await this.mapService.createMap({ userId, mapName: 'New Map' });
+    await this.mapService.updateOpenCount({ mapId: map.id });
 
-    await this.tabService.addTabToUser({ userId });
-
-    await this.tabService.addMapToTab({ userId, mapId: map.id });
-
-    await this.userService.incrementSignInCount({ userId });
+    await this.tabService.addMapToTabIfNotAdded({ userId, mapId: map.id });
 
     return this.prisma.workspace.create({
       data: {
@@ -70,20 +72,36 @@ export class WorkspaceService {
     });
   }
 
-  async updateWorkspaceMap({ workspaceId, mapId }: { workspaceId: number, mapId: number }): Promise<void> {
-    const map = await this.prisma.map.findFirstOrThrow({
-      where: { id: mapId },
-      select: { id: true, data: true },
-    });
+  async updateWorkspaceMap({ workspaceId, userId, mapId }: {
+    workspaceId: number,
+    userId: number,
+    mapId: number | null
+  }): Promise<void> {
+    let map;
+    if (mapId) {
+      map = await this.prisma.map.findFirstOrThrow({
+        where: { id: mapId },
+        select: { id: true, data: true },
+      });
+    } else {
+      const lastMap = await this.mapService.getLastMap({ userId });
+      if (lastMap) {
+        map = lastMap;
+      } else {
+        map = await this.mapService.createMap({ userId, mapName: 'New Map' });
+      }
+    }
+
+    await this.mapService.updateOpenCount({ mapId: map.id });
+
+    await this.tabService.addMapToTabIfNotAdded({ userId, mapId: map.id });
 
     await this.prisma.workspace.update({
       where: { id: workspaceId },
       data: {
-        mapId: map.id,
+        Map: { connect: { id: map.id } },
       },
     });
-
-    await this.mapService.updateOpenCount({ mapId });
   }
 
   async removeMapFromWorkspaces({ mapId }: { mapId: number }): Promise<void> {
@@ -99,7 +117,7 @@ export class WorkspaceService {
     try {
       await this.prisma.workspace.delete({ where: { id: workspaceId } });
     } catch (e) {
-      console.error(e);
+      console.error('delete workspace error');
     }
   }
 }

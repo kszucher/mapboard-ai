@@ -105,7 +105,7 @@ export const Window: FC = () => {
       };
 
       eventSource.addEventListener(WORKSPACE_EVENT.MAP_RENAMED, e => {
-        console.log('map renames sse trigger');
+        console.log('map renamed');
         dispatch(api.util.invalidateTags(['MapInfo', 'TabInfo']));
         console.log('payload:', JSON.parse(e.data));
       });
@@ -123,6 +123,12 @@ export const Window: FC = () => {
       eventSource.addEventListener(WORKSPACE_EVENT.MAP_IN_TAB_CREATED, e => {
         console.log('payload:', JSON.parse(e.data));
         dispatch(api.util.invalidateTags(['TabInfo']));
+      });
+
+      eventSource.addEventListener(WORKSPACE_EVENT.MAP_DELETED, e => {
+        console.log('payload:', JSON.parse(e.data));
+        console.log('map deleted');
+        dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.SHARE_CREATED, e => {

@@ -5,5 +5,5 @@ export type CreateWorkspaceResponseDto = {
 }
 
 export type UpdateWorkspaceMapRequestDto = {
-  mapId: number
+  mapId: number | null
 }

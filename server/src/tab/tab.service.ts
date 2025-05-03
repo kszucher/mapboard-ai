@@ -94,7 +94,7 @@ export class TabService {
     });
   }
 
-  async addTabToUser({ userId }: { userId: number }) {
+  async addTabToUserIfNotAdded({ userId }: { userId: number }) {
     await this.prisma.user.update({
       where: { id: userId },
       data: {
@@ -110,7 +110,7 @@ export class TabService {
     });
   }
 
-  async addMapToTab({ userId, mapId }: { userId: number, mapId: number }) {
+  async addMapToTabIfNotAdded({ userId, mapId }: { userId: number, mapId: number }) {
     await this.prisma.tab.updateMany({
       where: {
         userId: userId,

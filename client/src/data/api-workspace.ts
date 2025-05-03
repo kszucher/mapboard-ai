@@ -19,7 +19,7 @@ export const apiWorkspace = (builder: EndpointBuilder<BaseQueryFn, string, strin
       method: 'POST',
       body: { mapId },
     }),
-    invalidatesTags: ['MapInfo'],
+    invalidatesTags: ['MapInfo', 'TabInfo'],
   }),
 
   deleteWorkspace: builder.mutation<void, void>({
