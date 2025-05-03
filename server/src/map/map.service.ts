@@ -83,7 +83,7 @@ export class MapService {
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.MAP_IN_TAB_CREATED,
+      type: WORKSPACE_EVENT.TAB_UPDATED,
       payload: {},
     });
   }
@@ -201,7 +201,7 @@ export class MapService {
     await this.prisma.map.delete({
       where: { id: mapId },
     });
-    
+
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: WORKSPACE_EVENT.MAP_DELETED,
       payload: { mapId },

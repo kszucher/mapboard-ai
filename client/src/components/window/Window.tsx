@@ -115,20 +115,15 @@ export const Window: FC = () => {
         dispatch(actions.updateMapFromSSE(mapInfo));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.TAB_DATA_UPDATED, e => {
-        console.log('payload:', JSON.parse(e.data));
-        dispatch(api.util.invalidateTags(['TabInfo']));
-      });
-
-      eventSource.addEventListener(WORKSPACE_EVENT.MAP_IN_TAB_CREATED, e => {
-        console.log('payload:', JSON.parse(e.data));
-        dispatch(api.util.invalidateTags(['TabInfo']));
-      });
-
       eventSource.addEventListener(WORKSPACE_EVENT.MAP_DELETED, e => {
         console.log('payload:', JSON.parse(e.data));
         console.log('map deleted');
         dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
+      });
+
+      eventSource.addEventListener(WORKSPACE_EVENT.TAB_UPDATED, e => {
+        console.log('payload:', JSON.parse(e.data));
+        dispatch(api.util.invalidateTags(['TabInfo']));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.SHARE_CREATED, e => {
