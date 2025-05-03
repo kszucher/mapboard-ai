@@ -17,16 +17,16 @@ router.post('/get-tab-info', checkJwt, getUserIdAndWorkspaceId, async (req: Requ
 });
 
 router.post('/move-up-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = (req as any);
+  const { workspaceId, userId } = (req as any);
   const { mapId }: MoveUpMapInTabRequestDto = req.body;
-  await tabService.moveUpMapInTab({ userId, mapId });
+  await tabService.moveUpMapInTab({ workspaceId, userId, mapId });
   res.json();
 });
 
 router.post('/move-down-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = (req as any);
+  const { workspaceId, userId } = (req as any);
   const { mapId }: MoveDownMapInTabRequestDto = req.body;
-  await tabService.moveDownMapInTab({ userId, mapId });
+  await tabService.moveDownMapInTab({ workspaceId, userId, mapId });
   res.json();
 });
 

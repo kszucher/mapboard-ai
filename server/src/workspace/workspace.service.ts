@@ -98,6 +98,10 @@ export class WorkspaceService {
   }
 
   async deleteWorkspace({ workspaceId }: { workspaceId: number }) {
-    await this.prisma.workspace.delete({ where: { id: workspaceId } });
+    try {
+      await this.prisma.workspace.delete({ where: { id: workspaceId } });
+    } catch (e) {
+      console.error(e);
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { WorkspaceService } from '../workspace/workspace.service';
@@ -45,7 +46,7 @@ export class TabService {
     });
   }
 
-  async moveUpMapInTab({ userId, mapId }: { userId: number, mapId: number }) {
+  async moveUpMapInTab({ workspaceId, userId, mapId }: { workspaceId: number, userId: number, mapId: number }) {
     const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
       where: { User: { id: userId } },
       select: { id: true, mapIds: true },
@@ -60,9 +61,16 @@ export class TabService {
       where: { id },
       data: { mapIds },
     });
+
+    const otherWorkspaceIdsOfUser = await this.workspaceService.getOtherWorkspaceIdOfUser({ workspaceId, userId });
+
+    await this.distributionService.publish(otherWorkspaceIdsOfUser, {
+      type: WORKSPACE_EVENT.TAB_DATA_UPDATED,
+      payload: {},
+    });
   }
 
-  async moveDownMapInTab({ userId, mapId }: { userId: number, mapId: number }) {
+  async moveDownMapInTab({ workspaceId, userId, mapId }: { workspaceId: number, userId: number, mapId: number }) {
     const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
       where: { User: { id: userId } },
       select: { id: true, mapIds: true },
@@ -76,6 +84,13 @@ export class TabService {
     await this.prisma.tab.update({
       where: { id },
       data: { mapIds },
+    });
+
+    const otherWorkspaceIdsOfUser = await this.workspaceService.getOtherWorkspaceIdOfUser({ workspaceId, userId });
+
+    await this.distributionService.publish(otherWorkspaceIdsOfUser, {
+      type: WORKSPACE_EVENT.TAB_DATA_UPDATED,
+      payload: {},
     });
   }
 
