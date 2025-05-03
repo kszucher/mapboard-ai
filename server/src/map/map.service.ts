@@ -150,16 +150,16 @@ export class MapService {
   async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number, mapId: number, mapData: object }) {
     console.time('Save Map');
 
-    const workspacesOfMap = await this.workspaceService.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(workspacesOfMap.filter(el => el.id !== workspaceId).map(el => el.id), {
-      type: WORKSPACE_EVENT.MAP_DATA_UPDATED,
-      payload: { mapInfo: { id: mapId, data: mapData } },
-    });
-
     this.prisma.map.update({
       where: { id: mapId },
       data: { data: mapData },
+    });
+
+    const otherWorkspaceIdsOfMap = await this.workspaceService.getOtherWorkspaceIdsOfMap({ workspaceId, mapId });
+
+    await this.distributionService.publish(otherWorkspaceIdsOfMap, {
+      type: WORKSPACE_EVENT.MAP_DATA_UPDATED,
+      payload: { mapInfo: { id: mapId, data: mapData } },
     });
   }
 
