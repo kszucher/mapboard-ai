@@ -1,16 +1,11 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
   CreateShareRequestDto,
-  CreateShareResponseDto,
   GetShareInfoQueryResponseDto,
   RejectShareRequestDto,
-  RejectShareResponseDto,
   UpdateShareAccessRequestDto,
-  UpdateShareAccessResponseDto,
   UpdateShareStatusAcceptedRequestDto,
-  UpdateShareStatusAcceptedResponseDto,
   WithdrawShareRequestDto,
-  WithdrawShareResponseDto,
 } from '../../../shared/src/api/api-types-share.ts';
 
 export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
@@ -19,7 +14,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
     providesTags: ['ShareInfo'],
   }),
 
-  createShare: builder.mutation<CreateShareResponseDto, CreateShareRequestDto>({
+  createShare: builder.mutation<void, CreateShareRequestDto>({
     query: ({ mapId, shareEmail, shareAccess }) => ({
       url: 'create-share',
       method: 'POST',
@@ -28,7 +23,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
     invalidatesTags: [],
   }),
 
-  updateShareAccess: builder.mutation<UpdateShareAccessResponseDto, UpdateShareAccessRequestDto>({
+  updateShareAccess: builder.mutation<void, UpdateShareAccessRequestDto>({
     query: ({ shareId, shareAccess }) => ({
       url: 'update-share-access',
       method: 'POST',
@@ -37,10 +32,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
     invalidatesTags: [],
   }),
 
-  updateShareStatusAccepted: builder.mutation<
-    UpdateShareStatusAcceptedResponseDto,
-    UpdateShareStatusAcceptedRequestDto
-  >({
+  updateShareStatusAccepted: builder.mutation<void, UpdateShareStatusAcceptedRequestDto>({
     query: ({ shareId }) => ({
       url: 'update-share-status-accepted',
       method: 'POST',
@@ -49,7 +41,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
     invalidatesTags: ['ShareInfo'],
   }),
 
-  withdrawShare: builder.mutation<WithdrawShareResponseDto, WithdrawShareRequestDto>({
+  withdrawShare: builder.mutation<void, WithdrawShareRequestDto>({
     query: ({ shareId }) => ({
       url: 'withdraw-share',
       method: 'POST',
@@ -58,7 +50,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
     invalidatesTags: [],
   }),
 
-  rejectShare: builder.mutation<RejectShareResponseDto, RejectShareRequestDto>({
+  rejectShare: builder.mutation<void, RejectShareRequestDto>({
     query: ({ shareId }) => ({
       url: 'reject-share',
       method: 'POST',

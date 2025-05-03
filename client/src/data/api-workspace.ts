@@ -1,13 +1,11 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
-  CreateWorkspaceRequestDto,
   CreateWorkspaceResponseDto,
   UpdateWorkspaceMapRequestDto,
-  UpdateWorkspaceMapResponseDto,
 } from '../../../shared/src/api/api-types-workspace.ts';
 
 export const apiWorkspace = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
-  createWorkspace: builder.mutation<CreateWorkspaceResponseDto, CreateWorkspaceRequestDto>({
+  createWorkspace: builder.mutation<CreateWorkspaceResponseDto, void>({
     query: () => ({
       url: '/create-workspace',
       method: 'POST',
@@ -15,7 +13,7 @@ export const apiWorkspace = (builder: EndpointBuilder<BaseQueryFn, string, strin
     invalidatesTags: ['UserInfo', 'MapInfo', 'TabInfo', 'ShareInfo'],
   }),
 
-  updateWorkspaceMap: builder.mutation<UpdateWorkspaceMapResponseDto, UpdateWorkspaceMapRequestDto>({
+  updateWorkspaceMap: builder.mutation<void, UpdateWorkspaceMapRequestDto>({
     query: ({ mapId }) => ({
       url: 'update-workspace-map',
       method: 'POST',

@@ -1,5 +1,3 @@
-export type CreateWorkspaceRequestDto = void
-
 export type CreateWorkspaceResponseDto = {
   workspaceInfo: {
     workspaceId: number
@@ -9,5 +7,3 @@ export type CreateWorkspaceResponseDto = {
 export type UpdateWorkspaceMapRequestDto = {
   mapId: number
 }
-
-export type UpdateWorkspaceMapResponseDto = void

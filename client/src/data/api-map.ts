@@ -1,14 +1,10 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
   CreateMapInTabDuplicateRequestDto,
-  CreateMapInTabDuplicateResponseDto,
   CreateMapInTabRequestDto,
-  CreateMapInTabResponseDto,
   DeleteMapRequestDto,
-  DeleteMapResponseDto,
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
-  RenameMapResponseDto,
 } from '../../../shared/src/api/api-types-map.ts';
 import { mapPrune } from '../../../shared/src/map/getters/map-prune.ts';
 import { mapArrayToObject } from '../../../shared/src/map/getters/map-queries.ts';
@@ -21,7 +17,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     providesTags: ['MapInfo'],
   }),
 
-  createMapInTab: builder.mutation<CreateMapInTabResponseDto, CreateMapInTabRequestDto>({
+  createMapInTab: builder.mutation<void, CreateMapInTabRequestDto>({
     query: ({ mapName }) => ({
       url: 'create-map-in-tab',
       method: 'POST',
@@ -30,7 +26,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     invalidatesTags: ['MapInfo', 'TabInfo'],
   }),
 
-  createMapInTabDuplicate: builder.mutation<CreateMapInTabDuplicateResponseDto, CreateMapInTabDuplicateRequestDto>({
+  createMapInTabDuplicate: builder.mutation<void, CreateMapInTabDuplicateRequestDto>({
     query: ({ mapId }) => ({
       url: 'create-map-in-tab-duplicate',
       method: 'POST',
@@ -39,7 +35,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     invalidatesTags: ['MapInfo', 'TabInfo'],
   }),
 
-  renameMap: builder.mutation<RenameMapResponseDto, RenameMapRequestDto>({
+  renameMap: builder.mutation<void, RenameMapRequestDto>({
     query: ({ mapId, mapName }) => ({
       url: 'rename-map',
       method: 'POST',
@@ -117,7 +113,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     invalidatesTags: [],
   }),
 
-  deleteMap: builder.mutation<DeleteMapResponseDto, DeleteMapRequestDto>({
+  deleteMap: builder.mutation<void, DeleteMapRequestDto>({
     query: ({ mapId }) => ({
       url: 'delete-map',
       method: 'POST',

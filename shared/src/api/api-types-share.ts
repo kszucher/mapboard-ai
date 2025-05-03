@@ -37,39 +37,29 @@ export interface ShareInfo {
   }[];
 }
 
+export type GetShareInfoQueryResponseDto = {
+  shareInfo: ShareInfo;
+};
+
 export type CreateShareRequestDto = {
   mapId: number,
   shareEmail: string,
   shareAccess: ShareAccess
 }
 
-export type GetShareInfoQueryResponseDto = {
-  shareInfo: ShareInfo;
-};
-
-export type CreateShareResponseDto = void
-
 export type UpdateShareAccessRequestDto = {
   shareId: number
   shareAccess: ShareAccess
 }
 
-export type UpdateShareAccessResponseDto = void
-
 export type UpdateShareStatusAcceptedRequestDto = {
   shareId: number
 }
-
-export type UpdateShareStatusAcceptedResponseDto = void
 
 export type WithdrawShareRequestDto = {
   shareId: number
 }
 
-export type WithdrawShareResponseDto = void
-
 export type RejectShareRequestDto = {
   shareId: number
 }
-
-export type RejectShareResponseDto = void
