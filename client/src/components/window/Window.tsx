@@ -139,7 +139,10 @@ export const Window: FC = () => {
       eventSource.addEventListener(WORKSPACE_EVENT.DELETE_MAP, e => {
         const data = JSON.parse(e.data);
         console.log(WORKSPACE_EVENT.DELETE_MAP, data);
-        dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
+        if (data.mapId === mapIdRef.current) {
+          dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
+        }
+        dispatch(api.util.invalidateTags(['TabInfo']));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.UPDATE_TAB, e => {
