@@ -162,12 +162,22 @@ export class ShareService {
       where: { id: shareId },
       select: {
         shareUserId: true,
+        mapId: true,
         OwnerUser: { select: { name: true } },
         Map: { select: { name: true } },
       },
     });
 
     await this.prisma.share.delete({ where: { id: shareId } });
+
+    const workspaceIdsOfShareUserAndMap = await this.workspaceService.getWorkspaceIdsOfUserAndMap({
+      userId: share.shareUserId,
+      mapId: share.mapId,
+    });
+    await this.distributionService.publish(workspaceIdsOfShareUserAndMap, {
+      type: WORKSPACE_EVENT.MAP_DELETED,
+      payload: {},
+    });
 
     const workspaceIdsOfShareUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.shareUserId });
     await this.distributionService.publish(workspaceIdsOfShareUser, {
@@ -181,12 +191,23 @@ export class ShareService {
       where: { id: shareId },
       select: {
         ownerUserId: true,
+        shareUserId: true,
+        mapId: true,
         ShareUser: { select: { name: true } },
         Map: { select: { name: true } },
       },
     });
 
     await this.prisma.share.delete({ where: { id: shareId } });
+
+    const workspaceIdsOfShareUserAndMap = await this.workspaceService.getWorkspaceIdsOfUserAndMap({
+      userId: share.shareUserId,
+      mapId: share.mapId,
+    });
+    await this.distributionService.publish(workspaceIdsOfShareUserAndMap, {
+      type: WORKSPACE_EVENT.MAP_DELETED,
+      payload: {},
+    });
 
     const workspaceIdsOfOwnerUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.ownerUserId });
     await this.distributionService.publish(workspaceIdsOfOwnerUser, {
