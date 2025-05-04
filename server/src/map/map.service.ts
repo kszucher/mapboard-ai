@@ -87,7 +87,7 @@ export class MapService {
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.TAB_UPDATED,
+      type: WORKSPACE_EVENT.UPDATE_TAB,
       payload: {},
     });
   }
@@ -115,7 +115,7 @@ export class MapService {
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.TAB_UPDATED,
+      type: WORKSPACE_EVENT.UPDATE_TAB,
       payload: {},
     });
   }
@@ -129,7 +129,7 @@ export class MapService {
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: WORKSPACE_EVENT.MAP_RENAMED,
+      type: WORKSPACE_EVENT.RENAME_MAP,
       payload: { mapId, mapName },
     });
   }
@@ -156,7 +156,7 @@ export class MapService {
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.MAP_DATA_UPDATED,
+      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
       payload: { mapInfo: { id: mapId, data: mapData } },
     });
   }
@@ -189,12 +189,12 @@ export class MapService {
     });
 
     await this.distributionService.publish(workspaceIdsOfUser, {
-      type: WORKSPACE_EVENT.TAB_UPDATED,
+      type: WORKSPACE_EVENT.UPDATE_TAB,
       payload: { mapId },
     });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: WORKSPACE_EVENT.MAP_DELETED,
+      type: WORKSPACE_EVENT.DELETE_MAP,
       payload: { mapId },
     });
   }

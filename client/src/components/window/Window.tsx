@@ -2,6 +2,13 @@ import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { WORKSPACE_EVENT } from '../../../../shared/src/api/api-types-distribution.ts';
 import { MapInfo } from '../../../../shared/src/api/api-types-map.ts';
+import {
+  AcceptShareEvent,
+  CreateShareEvent,
+  ModifyShareAccessEvent,
+  RejectShareEvent,
+  WithdrawShareEvent,
+} from '../../../../shared/src/api/api-types-share.ts';
 import { api, useGetMapInfoQuery, useGetShareInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';
@@ -104,58 +111,65 @@ export const Window: FC = () => {
         console.error('SSE error', error);
       };
 
-      eventSource.addEventListener(WORKSPACE_EVENT.MAP_RENAMED, e => {
+      eventSource.addEventListener(WORKSPACE_EVENT.RENAME_MAP, e => {
         const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.MAP_RENAMED, data);
+        console.log(WORKSPACE_EVENT.RENAME_MAP, data);
         dispatch(api.util.invalidateTags(['MapInfo', 'TabInfo']));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.MAP_DATA_UPDATED, e => {
+      eventSource.addEventListener(WORKSPACE_EVENT.UPDATE_MAP_DATA, e => {
         const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.MAP_DATA_UPDATED, data);
+        console.log(WORKSPACE_EVENT.UPDATE_MAP_DATA, data);
         const mapInfo = data as { mapInfo: MapInfo };
         dispatch(actions.updateMapFromSSE(mapInfo));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.MAP_DELETED, e => {
+      eventSource.addEventListener(WORKSPACE_EVENT.DELETE_MAP, e => {
         const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.MAP_DELETED, data);
+        console.log(WORKSPACE_EVENT.DELETE_MAP, data);
         dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.TAB_UPDATED, e => {
+      eventSource.addEventListener(WORKSPACE_EVENT.UPDATE_TAB, e => {
         const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.TAB_UPDATED, data);
+        console.log(WORKSPACE_EVENT.UPDATE_TAB, data);
         dispatch(api.util.invalidateTags(['TabInfo']));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_CREATED, e => {
-        const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.SHARE_CREATED, data);
+      eventSource.addEventListener(WORKSPACE_EVENT.CREATE_SHARE, e => {
+        const data = JSON.parse(e.data) as CreateShareEvent;
+        const toastMessage = `${data.OwnerUser.name} created share of map ${data.Map.name}`;
+        console.log(WORKSPACE_EVENT.CREATE_SHARE, toastMessage);
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_ACCEPTED, e => {
-        const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.SHARE_ACCEPTED, data);
+      eventSource.addEventListener(WORKSPACE_EVENT.ACCEPT_SHARE, e => {
+        const data = JSON.parse(e.data) as AcceptShareEvent;
+        const toastMessage = `${data.ShareUser.name} accepted share of map ${data.Map.name}`;
+        console.log(WORKSPACE_EVENT.ACCEPT_SHARE, toastMessage);
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_WITHDREW, e => {
-        const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.SHARE_WITHDREW, data);
+      eventSource.addEventListener(WORKSPACE_EVENT.WITHDRAW_SHARE, e => {
+        const data = JSON.parse(e.data) as WithdrawShareEvent;
+        const toastMessage = `${data.OwnerUser.name} withdrew share of map ${data.Map.name}`;
+        console.log(WORKSPACE_EVENT.WITHDRAW_SHARE, toastMessage);
+        // TODO if I am seeing map and is withdrew from me I should updateWorkspaceMap
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_REJECTED, e => {
-        const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.SHARE_REJECTED, data);
+      eventSource.addEventListener(WORKSPACE_EVENT.REJECT_SHARE, e => {
+        const data = JSON.parse(e.data) as RejectShareEvent;
+        const toastMessage = `${data.ShareUser.name} rejected share of map ${data.Map.name}`;
+        console.log(WORKSPACE_EVENT.REJECT_SHARE, toastMessage);
+        // TODO if I am seeing map and is rejected by me I should updateWorkspaceMap
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_ACCESS_MODIFIED, e => {
-        const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.SHARE_ACCESS_MODIFIED, data);
+      eventSource.addEventListener(WORKSPACE_EVENT.MODIFY_SHARE_ACCESS, e => {
+        const data = JSON.parse(e.data) as ModifyShareAccessEvent;
+        const toastMessage = `${data.OwnerUser.name} changed access of map ${data.Map.name} to ${data.access}`;
+        console.log(WORKSPACE_EVENT.MODIFY_SHARE_ACCESS, toastMessage);
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 

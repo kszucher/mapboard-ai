@@ -1,6 +1,13 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
+import {
+  AcceptShareEvent,
+  CreateShareEvent,
+  ModifyShareAccessEvent,
+  RejectShareEvent,
+  WithdrawShareEvent,
+} from '../../../shared/src/api/api-types-share';
 import { DistributionService } from '../distribution/distribution.service';
-import { $Enums, PrismaClient, Share } from '../generated/client';
+import { $Enums, PrismaClient } from '../generated/client';
 import { WorkspaceService } from '../workspace/workspace.service';
 import ShareAccess = $Enums.ShareAccess;
 import ShareStatus = $Enums.ShareStatus;
@@ -135,13 +142,20 @@ export class ShareService {
         access: shareAccess,
         status: ShareStatus.WAITING,
       },
-      select: { ownerUserId: true, shareUserId: true },
+      select: {
+        ownerUserId: true,
+        shareUserId: true,
+        OwnerUser: { select: { name: true } },
+        Map: { select: { name: true } },
+      },
     });
 
-    const workspaceIdsOfShareUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.shareUserId });
-    await this.distributionService.publish(workspaceIdsOfShareUser, {
-      type: WORKSPACE_EVENT.SHARE_CREATED,
-      payload: share,
+    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+      userIds: [share.ownerUserId, share.shareUserId],
+    });
+    await this.distributionService.publish(workspaceIdsOfUsers, {
+      type: WORKSPACE_EVENT.CREATE_SHARE,
+      payload: share as CreateShareEvent,
     });
   }
 
@@ -149,13 +163,20 @@ export class ShareService {
     const share = await this.prisma.share.update({
       where: { id: shareId },
       data: { status: ShareStatus.ACCEPTED },
-      select: { ownerUserId: true, shareUserId: true },
+      select: {
+        ownerUserId: true,
+        shareUserId: true,
+        ShareUser: { select: { name: true } },
+        Map: { select: { name: true } },
+      },
     });
 
-    const workspaceIdsOfOwnerUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.ownerUserId });
-    await this.distributionService.publish(workspaceIdsOfOwnerUser, {
-      type: WORKSPACE_EVENT.SHARE_ACCEPTED,
-      payload: share,
+    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+      userIds: [share.ownerUserId, share.shareUserId],
+    });
+    await this.distributionService.publish(workspaceIdsOfUsers, {
+      type: WORKSPACE_EVENT.ACCEPT_SHARE,
+      payload: share as AcceptShareEvent,
     });
   }
 
@@ -163,8 +184,8 @@ export class ShareService {
     const share = await this.prisma.share.findFirstOrThrow({
       where: { id: shareId },
       select: {
+        ownerUserId: true,
         shareUserId: true,
-        mapId: true,
         OwnerUser: { select: { name: true } },
         Map: { select: { name: true } },
       },
@@ -172,19 +193,12 @@ export class ShareService {
 
     await this.prisma.share.delete({ where: { id: shareId } });
 
-    const workspaceIdsOfShareUserAndMap = await this.workspaceService.getWorkspaceIdsOfUserAndMap({
-      userId: share.shareUserId,
-      mapId: share.mapId,
+    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+      userIds: [share.ownerUserId, share.shareUserId],
     });
-    await this.distributionService.publish(workspaceIdsOfShareUserAndMap, {
-      type: WORKSPACE_EVENT.MAP_DELETED,
-      payload: {},
-    });
-
-    const workspaceIdsOfShareUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.shareUserId });
-    await this.distributionService.publish(workspaceIdsOfShareUser, {
-      type: WORKSPACE_EVENT.SHARE_WITHDREW,
-      payload: { message: `${share.OwnerUser.name} withdrew share of map ${share.Map.name}` },
+    await this.distributionService.publish(workspaceIdsOfUsers, {
+      type: WORKSPACE_EVENT.WITHDRAW_SHARE,
+      payload: share as WithdrawShareEvent,
     });
   }
 
@@ -194,7 +208,6 @@ export class ShareService {
       select: {
         ownerUserId: true,
         shareUserId: true,
-        mapId: true,
         ShareUser: { select: { name: true } },
         Map: { select: { name: true } },
       },
@@ -202,19 +215,12 @@ export class ShareService {
 
     await this.prisma.share.delete({ where: { id: shareId } });
 
-    const workspaceIdsOfShareUserAndMap = await this.workspaceService.getWorkspaceIdsOfUserAndMap({
-      userId: share.shareUserId,
-      mapId: share.mapId,
+    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+      userIds: [share.ownerUserId, share.shareUserId],
     });
-    await this.distributionService.publish(workspaceIdsOfShareUserAndMap, {
-      type: WORKSPACE_EVENT.MAP_DELETED,
-      payload: {},
-    });
-
-    const workspaceIdsOfOwnerUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.ownerUserId });
-    await this.distributionService.publish(workspaceIdsOfOwnerUser, {
-      type: WORKSPACE_EVENT.SHARE_REJECTED,
-      payload: { message: `${share.ShareUser.name} rejected share of map ${share.Map.name}` },
+    await this.distributionService.publish(workspaceIdsOfUsers, {
+      type: WORKSPACE_EVENT.REJECT_SHARE,
+      payload: share as RejectShareEvent,
     });
   }
 
@@ -223,17 +229,20 @@ export class ShareService {
       where: { id: shareId },
       data: { access: shareAccess },
       select: {
+        ownerUserId: true,
         shareUserId: true,
+        access: true,
         OwnerUser: { select: { name: true } },
         Map: { select: { name: true } },
-        access: true,
       },
     });
 
-    const workspaceIdsOfShareUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.shareUserId });
-    await this.distributionService.publish(workspaceIdsOfShareUser, {
-      type: WORKSPACE_EVENT.SHARE_ACCESS_MODIFIED,
-      payload: { message: `${share.OwnerUser.name} changed access of map ${share.Map.name} to ${share.access}` },
+    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+      userIds: [share.ownerUserId, share.shareUserId],
+    });
+    await this.distributionService.publish(workspaceIdsOfUsers, {
+      type: WORKSPACE_EVENT.MODIFY_SHARE_ACCESS,
+      payload: share as ModifyShareAccessEvent,
     });
   }
 }

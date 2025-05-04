@@ -32,17 +32,17 @@ export class WorkspaceService {
     return workspaces.map(el => el.id);
   }
 
-  async getWorkspaceIdsOfMap({ mapId }: { mapId: number }) {
+  async getWorkspaceIdsOfUsers({ userIds }: { userIds: number[] }) {
     const workspaces = await this.prisma.workspace.findMany({
-      where: { Map: { id: mapId } },
+      where: { User: { id: { in: userIds } } },
       select: { id: true },
     });
     return workspaces.map(el => el.id);
   }
 
-  async getWorkspaceIdsOfUserAndMap({ userId, mapId }: { userId: number, mapId: number }) {
+  async getWorkspaceIdsOfMap({ mapId }: { mapId: number }) {
     const workspaces = await this.prisma.workspace.findMany({
-      where: { User: { id: userId }, Map: { id: mapId } },
+      where: { Map: { id: mapId } },
       select: { id: true },
     });
     return workspaces.map(el => el.id);

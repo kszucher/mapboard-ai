@@ -20,7 +20,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
       method: 'POST',
       body: { mapId, shareEmail, shareAccess },
     }),
-    invalidatesTags: ['ShareInfo'],
+    invalidatesTags: [],
   }),
 
   acceptShare: builder.mutation<void, AcceptShareRequestDto>({
@@ -29,7 +29,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
       method: 'POST',
       body: { shareId },
     }),
-    invalidatesTags: ['ShareInfo'],
+    invalidatesTags: [],
   }),
 
   withdrawShare: builder.mutation<void, WithdrawShareRequestDto>({
@@ -38,7 +38,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
       method: 'POST',
       body: { shareId },
     }),
-    invalidatesTags: ['ShareInfo'],
+    invalidatesTags: [],
   }),
 
   rejectShare: builder.mutation<void, RejectShareRequestDto>({
@@ -47,7 +47,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
       method: 'POST',
       body: { shareId },
     }),
-    invalidatesTags: ['ShareInfo'],
+    invalidatesTags: [],
   }),
 
   modifyShareAccess: builder.mutation<void, ModifyShareAccessRequestDto>({
@@ -56,6 +56,6 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
       method: 'POST',
       body: { shareId, shareAccess },
     }),
-    invalidatesTags: ['ShareInfo'],
+    invalidatesTags: [],
   }),
 });
