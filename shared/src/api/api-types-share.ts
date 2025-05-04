@@ -15,6 +15,7 @@ export type ShareAccess = (typeof ShareAccess)[keyof typeof ShareAccess];
 export interface ShareInfo {
   SharesByMe: {
     id: number
+    mapId: number
     access: string
     status: string
     Map: {
@@ -26,6 +27,7 @@ export interface ShareInfo {
   }[];
   SharesWithMe: {
     id: number
+    mapId: number
     access: string
     status: string
     Map: {

@@ -38,7 +38,7 @@ export const MapSelector: FC = () => {
             .map((el, index) => (
               <DropdownMenu.Item
                 key={index}
-                onClick={() => dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: el.id }))}
+                onClick={() => dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: el.mapId }))}
               >
                 {el.Map.name}
               </DropdownMenu.Item>

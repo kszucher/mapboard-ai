@@ -30,6 +30,7 @@ export class ShareService {
         SharesByMe: {
           select: {
             id: true,
+            mapId: true,
             access: true,
             status: true,
             Map: {
@@ -47,6 +48,7 @@ export class ShareService {
         SharesWithMe: {
           select: {
             id: true,
+            mapId: true,
             access: true,
             status: true,
             Map: {
