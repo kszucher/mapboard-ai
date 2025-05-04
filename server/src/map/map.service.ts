@@ -1,4 +1,3 @@
-import { JsonObject } from '@prisma/client/runtime/library';
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { mapArrayToObject, mapObjectToArray } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
@@ -33,7 +32,7 @@ export class MapService {
     const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
       select: {
-        Map: { select: { id: true, name: true, data: true } },
+        Map: { select: { id: true, name: true, data: true, userId: true } },
       },
     });
     return workspace.Map;
@@ -45,7 +44,7 @@ export class MapService {
       orderBy: {
         updatedAt: 'desc',
       },
-      select: { id: true, data: true },
+      select: { id: true, data: true, userId: true },
     });
   }
 
@@ -56,29 +55,34 @@ export class MapService {
     };
   }
 
-  async createMap({ userId, mapName }: { userId: number, mapName: string }) {
-    return this.prisma.map.create({
+  async createMap({ userId, mapName, mapData = this.createNewMapData() }: {
+    userId: number,
+    mapName: string,
+    mapData?: object
+  }) {
+    const map = await this.prisma.map.create({
       data: {
         userId,
         name: mapName,
-        data: this.createNewMapData(),
+        data: mapData,
       },
       select: {
         id: true,
         name: true,
         data: true,
+        userId: true,
       },
     });
+
+    await this.tabService.addMapToTab({ userId, mapId: map.id });
+
+    return map;
   }
 
-  private async createMapInTabCommon({ userId, workspaceId, newMapId }: {
-    userId: number,
-    workspaceId: number,
-    newMapId: number
-  }) {
-    await this.tabService.addMapToTabIfNotAdded({ userId, mapId: newMapId });
+  async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number, workspaceId: number, mapName: string }) {
+    const newMap = await this.createMap({ userId, mapName });
 
-    await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMapId });
+    await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
 
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
@@ -86,21 +90,6 @@ export class MapService {
       type: WORKSPACE_EVENT.TAB_UPDATED,
       payload: {},
     });
-  }
-
-  async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number, workspaceId: number, mapName: string }) {
-    const newMap = await this.prisma.map.create({
-      data: {
-        userId,
-        name: mapName,
-        data: this.createNewMapData(),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    await this.createMapInTabCommon({ userId, workspaceId, newMapId: newMap.id });
   }
 
   async createMapInTabDuplicate({ userId, workspaceId, mapId }: {
@@ -119,20 +108,16 @@ export class MapService {
 
     const newMapDataObject = mapArrayToObject(newMapDataArray);
 
-    const newMap = await this.prisma.map.create({
-      data: {
-        userId,
-        name: map.name + 'Copy',
-        data: newMapDataObject as JsonObject,
-      },
-      select: {
-        id: true,
-        name: true,
-        data: true,
-      },
-    });
+    const newMap = await this.createMap({ userId, mapName: map.name + 'Copy', mapData: newMapDataObject });
 
-    await this.createMapInTabCommon({ userId, workspaceId, newMapId: newMap.id });
+    await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
+
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
+
+    await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
+      type: WORKSPACE_EVENT.TAB_UPDATED,
+      payload: {},
+    });
   }
 
   async renameMap({ mapId, mapName }: { mapId: number, mapName: string }) {

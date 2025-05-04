@@ -51,8 +51,6 @@ export class WorkspaceService {
   async createWorkspace({ userId }: { userId: number }) {
     await this.userService.incrementSignInCount({ userId });
 
-    await this.tabService.addTabToUserIfNotAdded({ userId });
-
     let map;
     const lastMap = await this.mapService.getLastMap({ userId });
     if (lastMap) {
@@ -62,8 +60,6 @@ export class WorkspaceService {
     }
 
     await this.mapService.updateOpenCount({ mapId: map.id });
-
-    await this.tabService.addMapToTabIfNotAdded({ userId, mapId: map.id });
 
     return this.prisma.workspace.create({
       data: {
@@ -85,7 +81,7 @@ export class WorkspaceService {
     if (mapId) {
       map = await this.prisma.map.findFirstOrThrow({
         where: { id: mapId },
-        select: { id: true, data: true },
+        select: { id: true, data: true, userId: true },
       });
     } else {
       const lastMap = await this.mapService.getLastMap({ userId });
@@ -97,8 +93,6 @@ export class WorkspaceService {
     }
 
     await this.mapService.updateOpenCount({ mapId: map.id });
-
-    await this.tabService.addMapToTabIfNotAdded({ userId, mapId: map.id });
 
     await this.prisma.workspace.update({
       where: { id: workspaceId },

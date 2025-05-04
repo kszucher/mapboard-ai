@@ -28,6 +28,21 @@ export class UserService {
     });
   }
 
+  async registerUser({ name, sub, email }: { name: string, sub: string, email: string }) {
+    await this.prisma.user.create({
+      data: {
+        name,
+        sub,
+        email,
+        Tab: {
+          create: {
+            mapIds: [],
+          },
+        },
+      },
+    });
+  }
+
   async incrementSignInCount({ userId }: { userId: number }) {
     await this.prisma.user.update({
       where: { id: userId },

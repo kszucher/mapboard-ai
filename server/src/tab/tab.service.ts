@@ -46,6 +46,19 @@ export class TabService {
     });
   }
 
+  async addMapToTab({ userId, mapId }: { userId: number, mapId: number }) {
+    await this.prisma.tab.update({
+      where: {
+        userId,
+      },
+      data: {
+        mapIds: {
+          push: mapId,
+        },
+      },
+    });
+  }
+
   async moveUpMapInTab({ userId, mapId }: { userId: number, mapId: number }) {
     const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
       where: { User: { id: userId } },
@@ -91,40 +104,6 @@ export class TabService {
     await this.distributionService.publish(workspaceIdsOfUser, {
       type: WORKSPACE_EVENT.TAB_UPDATED,
       payload: {},
-    });
-  }
-
-  async addTabToUserIfNotAdded({ userId }: { userId: number }) {
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        Tab: {
-          connectOrCreate: {
-            where: { userId },
-            create: {
-              mapIds: [],
-            },
-          },
-        },
-      },
-    });
-  }
-
-  async addMapToTabIfNotAdded({ userId, mapId }: { userId: number, mapId: number }) {
-    await this.prisma.tab.updateMany({
-      where: {
-        userId: userId,
-        NOT: {
-          mapIds: {
-            has: mapId,
-          },
-        },
-      },
-      data: {
-        mapIds: {
-          push: mapId,
-        },
-      },
     });
   }
 
