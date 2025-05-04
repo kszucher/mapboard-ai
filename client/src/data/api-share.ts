@@ -10,7 +10,7 @@ import {
 
 export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   getShareInfo: builder.query<GetShareInfoQueryResponseDto, void>({
-    query: () => ({ url: '/get-share-info', method: 'POST', body: {} }),
+    query: () => ({ url: 'get-share-info', method: 'POST', body: {} }),
     providesTags: ['ShareInfo'],
   }),
 

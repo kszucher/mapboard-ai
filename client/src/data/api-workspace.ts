@@ -7,7 +7,7 @@ import {
 export const apiWorkspace = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   createWorkspace: builder.mutation<CreateWorkspaceResponseDto, void>({
     query: () => ({
-      url: '/create-workspace',
+      url: 'create-workspace',
       method: 'POST',
     }),
     invalidatesTags: ['UserInfo', 'MapInfo', 'TabInfo', 'ShareInfo'],
@@ -24,7 +24,7 @@ export const apiWorkspace = (builder: EndpointBuilder<BaseQueryFn, string, strin
 
   deleteWorkspace: builder.mutation<void, void>({
     query: () => ({
-      url: '/delete-workspace',
+      url: 'delete-workspace',
       method: 'POST',
     }),
     invalidatesTags: [],

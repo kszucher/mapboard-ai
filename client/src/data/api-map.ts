@@ -77,7 +77,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
       bodyFormData.append('map_id', mapId.toString());
       bodyFormData.append('node_id', nodeId);
       return {
-        url: '/execute-upload-file',
+        url: 'execute-upload-file',
         method: 'POST',
         body: bodyFormData,
         formData: true,
