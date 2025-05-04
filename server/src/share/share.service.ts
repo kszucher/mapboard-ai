@@ -186,6 +186,7 @@ export class ShareService {
       select: {
         ownerUserId: true,
         shareUserId: true,
+        mapId: true,
         OwnerUser: { select: { name: true } },
         Map: { select: { name: true } },
       },
@@ -208,6 +209,7 @@ export class ShareService {
       select: {
         ownerUserId: true,
         shareUserId: true,
+        mapId: true,
         ShareUser: { select: { name: true } },
         Map: { select: { name: true } },
       },

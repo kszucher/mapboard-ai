@@ -6,6 +6,7 @@ export const ColorMode = {
 export type ColorMode = (typeof ColorMode)[keyof typeof ColorMode];
 
 export type UserInfo = {
+  id: number
   name: string
   colorMode: ColorMode
 }

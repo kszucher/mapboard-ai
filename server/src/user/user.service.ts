@@ -22,6 +22,7 @@ export class UserService {
     return this.prisma.user.findUniqueOrThrow({
       where: { id: userId },
       select: {
+        id: true,
         name: true,
         colorMode: true,
       },

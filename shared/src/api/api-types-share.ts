@@ -68,15 +68,21 @@ export type WithdrawShareRequestDto = {
 }
 
 export type WithdrawShareEvent = {
+  shareUserId: number
+  mapId: number
   OwnerUser: { name: string }
   Map: { name: string }
 }
 
 export type RejectShareRequestDto = {
+  shareUserId: number
+  mapId: number
   shareId: number
 }
 
 export type RejectShareEvent = {
+  shareUserId: number
+  mapId: number
   ShareUser: { name: string }
   Map: { name: string }
 }

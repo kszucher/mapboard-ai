@@ -9,7 +9,7 @@ import {
   RejectShareEvent,
   WithdrawShareEvent,
 } from '../../../../shared/src/api/api-types-share.ts';
-import { api, useGetMapInfoQuery, useGetShareInfoQuery } from '../../data/api.ts';
+import { api, useGetMapInfoQuery, useGetShareInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -21,6 +21,7 @@ let midMouseListener: AbortController;
 
 export const Window: FC = () => {
   const workspaceId = useSelector((state: RootState) => state.slice.workspaceId);
+  const userId = useGetUserInfoQuery().data?.userInfo.id;
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const pageState = useSelector((state: RootState) => state.slice.pageState);
@@ -139,37 +140,42 @@ export const Window: FC = () => {
       eventSource.addEventListener(WORKSPACE_EVENT.CREATE_SHARE, e => {
         const data = JSON.parse(e.data) as CreateShareEvent;
         const toastMessage = `${data.OwnerUser.name} created share of map ${data.Map.name}`;
-        console.log(WORKSPACE_EVENT.CREATE_SHARE, toastMessage);
+        console.log(WORKSPACE_EVENT.CREATE_SHARE, data, toastMessage);
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.ACCEPT_SHARE, e => {
         const data = JSON.parse(e.data) as AcceptShareEvent;
         const toastMessage = `${data.ShareUser.name} accepted share of map ${data.Map.name}`;
-        console.log(WORKSPACE_EVENT.ACCEPT_SHARE, toastMessage);
+        console.log(WORKSPACE_EVENT.ACCEPT_SHARE, data, toastMessage);
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.WITHDRAW_SHARE, e => {
         const data = JSON.parse(e.data) as WithdrawShareEvent;
         const toastMessage = `${data.OwnerUser.name} withdrew share of map ${data.Map.name}`;
-        console.log(WORKSPACE_EVENT.WITHDRAW_SHARE, toastMessage);
-        // TODO if I am seeing map and is withdrew from me I should updateWorkspaceMap
+        console.log(WORKSPACE_EVENT.WITHDRAW_SHARE, data, toastMessage);
+        console.log(userId, mapId);
+        if (data.shareUserId === userId && data.mapId === mapId) {
+          dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
+        }
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.REJECT_SHARE, e => {
         const data = JSON.parse(e.data) as RejectShareEvent;
         const toastMessage = `${data.ShareUser.name} rejected share of map ${data.Map.name}`;
-        console.log(WORKSPACE_EVENT.REJECT_SHARE, toastMessage);
-        // TODO if I am seeing map and is rejected by me I should updateWorkspaceMap
+        console.log(WORKSPACE_EVENT.REJECT_SHARE, data, toastMessage);
+        if (data.shareUserId === userId && data.mapId === mapId) {
+          dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
+        }
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.MODIFY_SHARE_ACCESS, e => {
         const data = JSON.parse(e.data) as ModifyShareAccessEvent;
         const toastMessage = `${data.OwnerUser.name} changed access of map ${data.Map.name} to ${data.access}`;
-        console.log(WORKSPACE_EVENT.MODIFY_SHARE_ACCESS, toastMessage);
+        console.log(WORKSPACE_EVENT.MODIFY_SHARE_ACCESS, data, toastMessage);
         dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
