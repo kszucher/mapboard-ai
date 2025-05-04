@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { WORKSPACE_EVENT } from '../../../../shared/src/api/api-types-distribution.ts';
 import { MapInfo } from '../../../../shared/src/api/api-types-map.ts';
@@ -33,6 +33,17 @@ export const Window: FC = () => {
   const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
   const access = sharesWithUser?.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const dispatch = useDispatch<AppDispatch>();
+
+  const userIdRef = useRef(userId);
+  const mapIdRef = useRef(mapId);
+
+  useEffect(() => {
+    userIdRef.current = userId;
+  }, [userId]);
+
+  useEffect(() => {
+    mapIdRef.current = mapId;
+  }, [mapId]);
 
   const mouseup = () => {
     dispatch(actions.clearConnectionStart());
@@ -155,8 +166,7 @@ export const Window: FC = () => {
         const data = JSON.parse(e.data) as WithdrawShareEvent;
         const toastMessage = `${data.OwnerUser.name} withdrew share of map ${data.Map.name}`;
         console.log(WORKSPACE_EVENT.WITHDRAW_SHARE, data, toastMessage);
-        console.log(userId, mapId);
-        if (data.shareUserId === userId && data.mapId === mapId) {
+        if (data.shareUserId === userIdRef.current && data.mapId === mapIdRef.current) {
           dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
         }
         dispatch(api.util.invalidateTags(['ShareInfo']));
@@ -166,7 +176,7 @@ export const Window: FC = () => {
         const data = JSON.parse(e.data) as RejectShareEvent;
         const toastMessage = `${data.ShareUser.name} rejected share of map ${data.Map.name}`;
         console.log(WORKSPACE_EVENT.REJECT_SHARE, data, toastMessage);
-        if (data.shareUserId === userId && data.mapId === mapId) {
+        if (data.shareUserId === userIdRef.current && data.mapId === mapIdRef.current) {
           dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
         }
         dispatch(api.util.invalidateTags(['ShareInfo']));
