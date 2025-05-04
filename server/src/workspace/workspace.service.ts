@@ -1,6 +1,5 @@
 import { PrismaClient } from '../generated/client';
 import { MapService } from '../map/map.service';
-import { TabService } from '../tab/tab.service';
 import { UserService } from '../user/user.service';
 
 export class WorkspaceService {
@@ -8,7 +7,6 @@ export class WorkspaceService {
     private prisma: PrismaClient,
     private getUserService: () => UserService,
     private getMapService: () => MapService,
-    private getTabService: () => TabService,
   ) {
   }
 
@@ -18,10 +16,6 @@ export class WorkspaceService {
 
   get mapService(): MapService {
     return this.getMapService();
-  }
-
-  get tabService(): TabService {
-    return this.getTabService();
   }
 
   async getWorkspaceIdsOfUser({ userId }: { userId: number }) {

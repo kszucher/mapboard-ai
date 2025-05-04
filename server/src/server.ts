@@ -40,7 +40,6 @@ export const workspaceService: WorkspaceService = new WorkspaceService(
   prismaClient,
   () => userService,
   () => mapService,
-  () => tabService,
 );
 export const distributionService: DistributionService = new DistributionService(
   () => workspaceService,
