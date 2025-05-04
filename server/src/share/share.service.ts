@@ -1,5 +1,6 @@
+import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
-import { $Enums, PrismaClient } from '../generated/client';
+import { $Enums, PrismaClient, Share } from '../generated/client';
 import { WorkspaceService } from '../workspace/workspace.service';
 import ShareAccess = $Enums.ShareAccess;
 import ShareStatus = $Enums.ShareStatus;
@@ -108,13 +109,23 @@ export class ShareService {
     shareAccess: ShareAccess
   }) {
     const shareUser = await this.prisma.user.findUniqueOrThrow({
-      where: {
-        email: shareEmail,
-      },
+      where: { email: shareEmail },
       select: { id: true },
     });
 
-    await this.prisma.share.create({
+    const existingShare = await this.prisma.share.findFirst({
+      where: {
+        mapId,
+        ownerUserId: userId,
+        shareUserId: shareUser.id,
+      },
+    });
+
+    if (existingShare) {
+      throw new Error('Share already exists');
+    }
+
+    const share = await this.prisma.share.create({
       data: {
         mapId,
         ownerUserId: userId,
@@ -122,42 +133,84 @@ export class ShareService {
         access: shareAccess,
         status: ShareStatus.WAITING,
       },
+      select: { ownerUserId: true, shareUserId: true },
     });
 
-    const workspacesOfOwnerUsers = await this.prisma.workspace.findMany({
-      where: { userId: userId },
-      select: { id: true },
-    });
-
-    const workspacesOfShareUsers = await this.prisma.workspace.findMany({
-      where: { userId: shareUser.id },
-      select: { id: true },
-    });
-
-    // TODO distribution call --> type: CREATED_SHARE, payload: {} for OwnerUsers
-    // TODO distribution call --> type: RECEIVED_SHARE, payload: { ownerUserId, mapId, mapName } for ShareUsers
-
-  }
-
-  async updateShareAccess({ shareId, shareAccess }: { shareId: number, shareAccess: ShareAccess }) {
-    return this.prisma.share.update({
-      where: { id: shareId },
-      data: { access: shareAccess },
+    const workspaceIdsOfShareUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.shareUserId });
+    await this.distributionService.publish(workspaceIdsOfShareUser, {
+      type: WORKSPACE_EVENT.SHARE_CREATED,
+      payload: share,
     });
   }
 
-  async updateShareStatusAccepted({ shareId }: { shareId: number }) {
-    return this.prisma.share.update({
+  async acceptShare({ shareId }: { shareId: number }) {
+    const share = await this.prisma.share.update({
       where: { id: shareId },
       data: { status: ShareStatus.ACCEPTED },
+      select: { ownerUserId: true, shareUserId: true },
+    });
+
+    const workspaceIdsOfOwnerUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.ownerUserId });
+    await this.distributionService.publish(workspaceIdsOfOwnerUser, {
+      type: WORKSPACE_EVENT.SHARE_ACCEPTED,
+      payload: share,
     });
   }
 
   async withdrawShare({ shareId }: { shareId: number }) {
+    const share = await this.prisma.share.findFirstOrThrow({
+      where: { id: shareId },
+      select: {
+        shareUserId: true,
+        OwnerUser: { select: { name: true } },
+        Map: { select: { name: true } },
+      },
+    });
 
+    await this.prisma.share.delete({ where: { id: shareId } });
+
+    const workspaceIdsOfShareUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.shareUserId });
+    await this.distributionService.publish(workspaceIdsOfShareUser, {
+      type: WORKSPACE_EVENT.SHARE_WITHDREW,
+      payload: { message: `${share.OwnerUser.name} withdrew share of map ${share.Map.name}` },
+    });
   }
 
   async rejectShare({ shareId }: { shareId: number }) {
+    const share = await this.prisma.share.findFirstOrThrow({
+      where: { id: shareId },
+      select: {
+        ownerUserId: true,
+        ShareUser: { select: { name: true } },
+        Map: { select: { name: true } },
+      },
+    });
 
+    await this.prisma.share.delete({ where: { id: shareId } });
+
+    const workspaceIdsOfOwnerUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.ownerUserId });
+    await this.distributionService.publish(workspaceIdsOfOwnerUser, {
+      type: WORKSPACE_EVENT.SHARE_REJECTED,
+      payload: { message: `${share.ShareUser.name} rejected share of map ${share.Map.name}` },
+    });
+  }
+
+  async modifyShareAccess({ shareId, shareAccess }: { shareId: number, shareAccess: ShareAccess }) {
+    const share = await this.prisma.share.update({
+      where: { id: shareId },
+      data: { access: shareAccess },
+      select: {
+        shareUserId: true,
+        OwnerUser: { select: { name: true } },
+        Map: { select: { name: true } },
+        access: true,
+      },
+    });
+
+    const workspaceIdsOfShareUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId: share.shareUserId });
+    await this.distributionService.publish(workspaceIdsOfShareUser, {
+      type: WORKSPACE_EVENT.SHARE_ACCESS_MODIFIED,
+      payload: { message: `${share.OwnerUser.name} changed access of map ${share.Map.name} to ${share.access}` },
+    });
   }
 }

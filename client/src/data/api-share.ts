@@ -1,10 +1,10 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
+  AcceptShareRequestDto,
   CreateShareRequestDto,
   GetShareInfoQueryResponseDto,
+  ModifyShareAccessRequestDto,
   RejectShareRequestDto,
-  UpdateShareAccessRequestDto,
-  UpdateShareStatusAcceptedRequestDto,
   WithdrawShareRequestDto,
 } from '../../../shared/src/api/api-types-share.ts';
 
@@ -20,21 +20,12 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
       method: 'POST',
       body: { mapId, shareEmail, shareAccess },
     }),
-    invalidatesTags: [],
+    invalidatesTags: ['ShareInfo'],
   }),
 
-  updateShareAccess: builder.mutation<void, UpdateShareAccessRequestDto>({
-    query: ({ shareId, shareAccess }) => ({
-      url: 'update-share-access',
-      method: 'POST',
-      body: { shareId, shareAccess },
-    }),
-    invalidatesTags: [],
-  }),
-
-  updateShareStatusAccepted: builder.mutation<void, UpdateShareStatusAcceptedRequestDto>({
+  acceptShare: builder.mutation<void, AcceptShareRequestDto>({
     query: ({ shareId }) => ({
-      url: 'update-share-status-accepted',
+      url: 'accept-share',
       method: 'POST',
       body: { shareId },
     }),
@@ -47,7 +38,7 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
       method: 'POST',
       body: { shareId },
     }),
-    invalidatesTags: [],
+    invalidatesTags: ['ShareInfo'],
   }),
 
   rejectShare: builder.mutation<void, RejectShareRequestDto>({
@@ -56,6 +47,15 @@ export const apiShare = (builder: EndpointBuilder<BaseQueryFn, string, string>) 
       method: 'POST',
       body: { shareId },
     }),
-    invalidatesTags: [],
+    invalidatesTags: ['ShareInfo'],
+  }),
+
+  modifyShareAccess: builder.mutation<void, ModifyShareAccessRequestDto>({
+    query: ({ shareId, shareAccess }) => ({
+      url: 'modify-share-access',
+      method: 'POST',
+      body: { shareId, shareAccess },
+    }),
+    invalidatesTags: ['ShareInfo'],
   }),
 });

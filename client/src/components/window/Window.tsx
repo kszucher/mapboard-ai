@@ -105,33 +105,58 @@ export const Window: FC = () => {
       };
 
       eventSource.addEventListener(WORKSPACE_EVENT.MAP_RENAMED, e => {
-        console.log('map renamed');
+        const data = JSON.parse(e.data);
+        console.log(WORKSPACE_EVENT.MAP_RENAMED, data);
         dispatch(api.util.invalidateTags(['MapInfo', 'TabInfo']));
-        console.log('payload:', JSON.parse(e.data));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.MAP_DATA_UPDATED, e => {
-        const mapInfo = JSON.parse(e.data) as { mapInfo: MapInfo };
+        const data = JSON.parse(e.data);
+        console.log(WORKSPACE_EVENT.MAP_DATA_UPDATED, data);
+        const mapInfo = data as { mapInfo: MapInfo };
         dispatch(actions.updateMapFromSSE(mapInfo));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.MAP_DELETED, e => {
-        console.log('payload:', JSON.parse(e.data));
-        console.log('map deleted');
+        const data = JSON.parse(e.data);
+        console.log(WORKSPACE_EVENT.MAP_DELETED, data);
         dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.TAB_UPDATED, e => {
-        console.log('payload:', JSON.parse(e.data));
+        const data = JSON.parse(e.data);
+        console.log(WORKSPACE_EVENT.TAB_UPDATED, data);
         dispatch(api.util.invalidateTags(['TabInfo']));
       });
 
       eventSource.addEventListener(WORKSPACE_EVENT.SHARE_CREATED, e => {
-        console.log('payload:', JSON.parse(e.data));
+        const data = JSON.parse(e.data);
+        console.log(WORKSPACE_EVENT.SHARE_CREATED, data);
+        dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
-      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_RECEIVED, e => {
-        console.log('payload:', JSON.parse(e.data));
+      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_ACCEPTED, e => {
+        const data = JSON.parse(e.data);
+        console.log(WORKSPACE_EVENT.SHARE_ACCEPTED, data);
+        dispatch(api.util.invalidateTags(['ShareInfo']));
+      });
+
+      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_WITHDREW, e => {
+        const data = JSON.parse(e.data);
+        console.log(WORKSPACE_EVENT.SHARE_WITHDREW, data);
+        dispatch(api.util.invalidateTags(['ShareInfo']));
+      });
+
+      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_REJECTED, e => {
+        const data = JSON.parse(e.data);
+        console.log(WORKSPACE_EVENT.SHARE_REJECTED, data);
+        dispatch(api.util.invalidateTags(['ShareInfo']));
+      });
+
+      eventSource.addEventListener(WORKSPACE_EVENT.SHARE_ACCESS_MODIFIED, e => {
+        const data = JSON.parse(e.data);
+        console.log(WORKSPACE_EVENT.SHARE_ACCESS_MODIFIED, data);
+        dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
       return () => {

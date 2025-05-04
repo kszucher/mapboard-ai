@@ -80,7 +80,7 @@ export class MapService {
 
     await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMapId });
 
-    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
       type: WORKSPACE_EVENT.TAB_UPDATED,
@@ -188,7 +188,7 @@ export class MapService {
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
-    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
     await this.workspaceService.removeMapFromWorkspaces({ mapId });

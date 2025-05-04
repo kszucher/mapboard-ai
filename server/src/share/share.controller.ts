@@ -1,10 +1,10 @@
 import { Request, Response, Router } from 'express';
 import {
+  AcceptShareRequestDto,
   CreateShareRequestDto,
   GetShareInfoQueryResponseDto,
+  ModifyShareAccessRequestDto,
   RejectShareRequestDto,
-  UpdateShareAccessRequestDto,
-  UpdateShareStatusAcceptedRequestDto,
   WithdrawShareRequestDto,
 } from '../../../shared/src/api/api-types-share';
 import { shareService } from '../server';
@@ -26,29 +26,27 @@ router.post('/create-share', checkJwt, getUserIdAndWorkspaceId, async (req: Requ
   res.json();
 });
 
-router.post('/update-share-access', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { shareId, shareAccess }: UpdateShareAccessRequestDto = req.body;
-  await shareService.updateShareAccess({ shareId, shareAccess });
-  res.json();
-});
-
-router.post('/update-share-status-accepted', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { shareId }: UpdateShareStatusAcceptedRequestDto = req.body;
-  await shareService.updateShareStatusAccepted({ shareId });
+router.post('/accept-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { shareId }: AcceptShareRequestDto = req.body;
+  await shareService.acceptShare({ shareId });
   res.json();
 });
 
 router.post('/withdraw-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = (req as any);
   const { shareId }: WithdrawShareRequestDto = req.body;
-  // TODO
+  await shareService.withdrawShare({ shareId });
   res.json();
 });
 
 router.post('/reject-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = (req as any);
   const { shareId }: RejectShareRequestDto = req.body;
-  // TODO
+  await shareService.rejectShare({ shareId });
+  res.json();
+});
+
+router.post('/modify-share-access', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { shareId, shareAccess }: ModifyShareAccessRequestDto = req.body;
+  await shareService.modifyShareAccess({ shareId, shareAccess });
   res.json();
 });
 

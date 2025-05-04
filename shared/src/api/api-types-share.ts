@@ -1,3 +1,9 @@
+export const ShareStatus = {
+  WAITING: 'WAITING',
+  ACCEPTED: 'ACCEPTED',
+} as const;
+export type ShareStatus = (typeof ShareStatus)[keyof typeof ShareStatus];
+
 export const ShareAccess = {
   UNAUTHORIZED: 'UNAUTHORIZED',
   VIEW: 'VIEW',
@@ -5,12 +11,6 @@ export const ShareAccess = {
 } as const;
 
 export type ShareAccess = (typeof ShareAccess)[keyof typeof ShareAccess];
-
-export const ShareStatus = {
-  WAITING: 'WAITING',
-  ACCEPTED: 'ACCEPTED',
-} as const;
-export type ShareStatus = (typeof ShareStatus)[keyof typeof ShareStatus];
 
 export interface ShareInfo {
   SharesByMe: {
@@ -47,12 +47,7 @@ export type CreateShareRequestDto = {
   shareAccess: ShareAccess
 }
 
-export type UpdateShareAccessRequestDto = {
-  shareId: number
-  shareAccess: ShareAccess
-}
-
-export type UpdateShareStatusAcceptedRequestDto = {
+export type AcceptShareRequestDto = {
   shareId: number
 }
 
@@ -62,4 +57,9 @@ export type WithdrawShareRequestDto = {
 
 export type RejectShareRequestDto = {
   shareId: number
+}
+
+export type ModifyShareAccessRequestDto = {
+  shareId: number
+  shareAccess: ShareAccess
 }

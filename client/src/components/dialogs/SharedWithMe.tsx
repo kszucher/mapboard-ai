@@ -37,7 +37,7 @@ export const SharedWithMe = () => {
                     variant="solid"
                     onClick={() =>
                       dispatch(
-                        api.endpoints.updateShareStatusAccepted.initiate({
+                        api.endpoints.acceptShare.initiate({
                           shareId: el.id,
                         })
                       )

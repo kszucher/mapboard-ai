@@ -173,9 +173,11 @@ export const slice = createSlice({
         api.endpoints.moveUpMapInTab.matchPending,
         api.endpoints.moveDownMapInTab.matchPending,
         api.endpoints.deleteMap.matchPending,
-        api.endpoints.updateShareStatusAccepted.matchPending,
+        api.endpoints.createShare.matchPending,
+        api.endpoints.acceptShare.matchPending,
         api.endpoints.withdrawShare.matchPending,
         api.endpoints.rejectShare.matchPending,
+        api.endpoints.modifyShareAccess.matchPending,
         api.endpoints.deleteAccount.matchPending
       ),
       state => {

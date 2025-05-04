@@ -66,13 +66,13 @@ enum ColorMode {
   LIGHT
 }
 
+enum ShareStatus {
+  WAITING
+  ACCEPTED
+}
+
 enum ShareAccess {
   UNAUTHORIZED
   VIEW
   EDIT
-}
-
-enum ShareStatus {
-  WAITING
-  ACCEPTED
 }

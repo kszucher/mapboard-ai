@@ -62,7 +62,7 @@ export class TabService {
       data: { mapIds },
     });
 
-    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser, {
       type: WORKSPACE_EVENT.TAB_UPDATED,
@@ -86,7 +86,7 @@ export class TabService {
       data: { mapIds },
     });
 
-    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdOfUser({ userId });
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser, {
       type: WORKSPACE_EVENT.TAB_UPDATED,
