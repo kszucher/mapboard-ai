@@ -148,7 +148,7 @@ export class MapService {
   async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number, mapId: number, mapData: object }) {
     console.time('Save Map');
 
-    this.prisma.map.update({
+    await this.prisma.map.update({
       where: { id: mapId },
       data: { data: mapData },
     });
