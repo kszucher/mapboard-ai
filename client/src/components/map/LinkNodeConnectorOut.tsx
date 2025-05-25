@@ -14,9 +14,13 @@ export const LinkNodeConnectorOut: FC = () => {
     linkHelpersVisible &&
     mR(m)
       .filter(ri =>
-        [ControlType.FILE, ControlType.INGESTION, ControlType.TEXT_INPUT, ControlType.EXTRACTION].includes(
-          ri.controlType
-        )
+        [
+          ControlType.FILE,
+          ControlType.INGESTION,
+          ControlType.TEXT_INPUT,
+          ControlType.EXTRACTION,
+          ControlType.VECTOR_DATABASE,
+        ].includes(ri.controlType)
       )
       .map(ri => (
         <circle

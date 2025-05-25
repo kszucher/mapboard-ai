@@ -80,7 +80,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
             </Button>
           )}
 
-          {file && !ri.isProcessing && !ri.fileHash && (
+          {mapId && file && !ri.isProcessing && !ri.fileHash && (
             <Button
               size="1"
               color="gray"

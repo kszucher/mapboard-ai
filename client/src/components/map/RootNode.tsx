@@ -11,6 +11,7 @@ import { FileUpload } from './rootNodeType/FileUpload.tsx';
 import { Ingestion } from './rootNodeType/Ingestion.tsx';
 import { TextInput } from './rootNodeType/TextInput.tsx';
 import { TextOutput } from './rootNodeType/TextOutput.tsx';
+import { VectorDatabase } from './rootNodeType/VectorDatabase.tsx';
 
 export const RootNode: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
@@ -72,6 +73,7 @@ export const RootNode: FC = () => {
       {ri.controlType === ControlType.FILE && <FileUpload ri={ri} />}
       {ri.controlType === ControlType.INGESTION && <Ingestion ri={ri} />}
       {ri.controlType === ControlType.EXTRACTION && <Extraction ri={ri} />}
+      {ri.controlType === ControlType.VECTOR_DATABASE && <VectorDatabase ri={ri} />}
       {ri.controlType === ControlType.TEXT_INPUT && <TextInput ri={ri} />}
       {ri.controlType === ControlType.TEXT_OUTPUT && <TextOutput ri={ri} />}
     </div>

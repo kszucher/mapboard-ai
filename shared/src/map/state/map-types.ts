@@ -6,6 +6,7 @@ export enum Side {
 export enum ControlType {
   FILE = 'FILE',
   INGESTION = 'INGESTION',
+  VECTOR_DATABASE = 'VECTOR_DATABASE',
   EXTRACTION = 'EXTRACTION',
   TEXT_INPUT = 'TEXT_INPUT',
   TEXT_OUTPUT = 'TEXT_OUTPUT',
@@ -22,7 +23,8 @@ export interface GSaveAlways {
   nodeId: string;
 }
 
-export interface GSaveOptional {}
+export interface GSaveOptional {
+}
 
 export interface GSaveNever {
   selfW: number;
@@ -43,7 +45,8 @@ export interface LSaveOptional {
   lineWidth: number;
 }
 
-export interface LSaveNever {}
+export interface LSaveNever {
+}
 
 export interface RSaveAlways {
   path: PR;

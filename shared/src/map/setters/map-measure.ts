@@ -23,6 +23,10 @@ export const mapMeasure = (m: M) => {
         ri.selfW = 200;
         ri.selfH = 210;
         break;
+      case ControlType.VECTOR_DATABASE:
+        ri.selfW = 160;
+        ri.selfH = 60;
+        break;
       case ControlType.TEXT_INPUT:
         ri.selfW = 200;
         ri.selfH = 200;
