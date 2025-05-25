@@ -8,7 +8,7 @@ import { actions } from '../../../data/reducer.ts';
 import { AppDispatch } from '../../../data/store.ts';
 import { shrinkString } from '../../../utils/utils.ts';
 
-export const FileUpload = ({ ri }: { ri: R }) => {
+export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -18,7 +18,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
   useEffect(() => {
     if (isError) {
       reset();
-      dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: false } }));
+      dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: false } }));
     }
   }, [isError]);
 
@@ -34,7 +34,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(actions.deleteLR({ nodeId: ri.nodeId }));
+                dispatch(actions.deleteLR({ nodeId }));
               }}
             >
               {'Delete'}
@@ -45,7 +45,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
-            {ri.path.join('').toUpperCase()}
+            {'R' + ri.iid}
           </Badge>
           <Badge color="yellow" size="2">
             {'File Upload'}
@@ -62,7 +62,7 @@ export const FileUpload = ({ ri }: { ri: R }) => {
               if (e.target.files) {
                 const currFile = e.target.files[0];
                 setFile(currFile);
-                dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { fileName: currFile.name } }));
+                dispatch(actions.setRAttributes({ nodeId, attributes: { fileName: currFile.name } }));
               }
             }}
             ref={hiddenFileInput}
@@ -85,8 +85,8 @@ export const FileUpload = ({ ri }: { ri: R }) => {
               size="1"
               color="gray"
               onClick={() => {
-                dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
-                executeUploadFile({ file, mapId, nodeId: ri.nodeId });
+                dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: true } }));
+                executeUploadFile({ file, mapId, nodeId });
               }}
             >
               {'Upload File'}

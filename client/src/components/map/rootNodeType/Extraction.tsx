@@ -8,17 +8,17 @@ import { api, useGetMapInfoQuery } from '../../../data/api.ts';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 
-export const Extraction = ({ ri }: { ri: R }) => {
+export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const inputNodes = getInputNodes(m, ri.nodeId);
+  const inputNodes = getInputNodes(m, nodeId);
   const [executeExtraction, { isError, reset }] = api.useExecuteExtractionMutation();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (isError) {
       reset();
-      dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: false } }));
+      dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: false } }));
     }
   }, [isError]);
 
@@ -34,7 +34,7 @@ export const Extraction = ({ ri }: { ri: R }) => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(actions.deleteLR({ nodeId: ri.nodeId }));
+                dispatch(actions.deleteLR({ nodeId }));
               }}
             >
               {'Delete'}
@@ -43,7 +43,7 @@ export const Extraction = ({ ri }: { ri: R }) => {
               onClick={() => {
                 dispatch(
                   actions.setRAttributes({
-                    nodeId: ri.nodeId,
+                    nodeId,
                     attributes: { extractionPrompt: '', extractionHash: '', isProcessing: false },
                   })
                 );
@@ -57,7 +57,7 @@ export const Extraction = ({ ri }: { ri: R }) => {
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
-            {ri.path.join('').toUpperCase()}
+            {'R' + ri.iid}
           </Badge>
           <Badge color="jade" size="2">
             {'Extraction'}
@@ -66,7 +66,7 @@ export const Extraction = ({ ri }: { ri: R }) => {
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="4" align="start" content="center">
-          <Text size="2">{`Inputs: ${inputNodes?.map(ri => ri.path.join('').toUpperCase())}`}</Text>
+          <Text size="2">{`Inputs: ${Object.values(inputNodes).map(ri => 'R' + ri.iid)}`}</Text>
 
           <TextArea
             disabled={ri.extractionHash !== ''}
@@ -81,7 +81,7 @@ export const Extraction = ({ ri }: { ri: R }) => {
             }}
             value={ri.extractionPrompt}
             onChange={e => {
-              dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { extractionPrompt: e.target.value } }));
+              dispatch(actions.setRAttributes({ nodeId, attributes: { extractionPrompt: e.target.value } }));
             }}
           />
 
@@ -92,11 +92,11 @@ export const Extraction = ({ ri }: { ri: R }) => {
               radius="full"
               color="gray"
               onClick={() => {
-                dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
+                dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: true } }));
                 mapId &&
                   executeExtraction({
                     mapId,
-                    nodeId: ri.nodeId,
+                    nodeId,
                   });
               }}
             >

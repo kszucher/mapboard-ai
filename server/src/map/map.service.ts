@@ -1,7 +1,6 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
-import { mapArrayToObject, mapObjectToArray } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
-import { M } from '../../../shared/src/map/state/map-types';
+import { ControlType, M } from '../../../shared/src/map/state/map-types';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
@@ -50,8 +49,9 @@ export class MapService {
 
   private createNewMapData() {
     return {
-      [global.crypto.randomUUID().slice(-8)]: { path: 'g' },
-      [global.crypto.randomUUID().slice(-8)]: { path: 'r,0' },
+      g: {},
+      l: {},
+      r: { [global.crypto.randomUUID().slice(-8)]: { controlType: ControlType.TEXT_INPUT, iid: 0 } },
     };
   }
 
@@ -102,13 +102,9 @@ export class MapService {
       select: { id: true, name: true, data: true },
     });
 
-    const mapDataObject = mapObjectToArray(map.data as M);
+    const newMapData = mapCopy(map.data as unknown as M, () => global.crypto.randomUUID().slice(-8));
 
-    const newMapDataArray = mapCopy(mapDataObject, () => global.crypto.randomUUID().slice(-8));
-
-    const newMapDataObject = mapArrayToObject(newMapDataArray);
-
-    const newMap = await this.createMap({ userId, mapName: map.name + 'Copy', mapData: newMapDataObject });
+    const newMap = await this.createMap({ userId, mapName: map.name + 'Copy', mapData: newMapData });
 
     await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
 

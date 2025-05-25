@@ -12,15 +12,7 @@ export enum ControlType {
   TEXT_OUTPUT = 'TEXT_OUTPUT',
 }
 
-export type PG = ['g'];
-export type PL = ['l', number];
-export type PR = ['r', number];
-
-export type P = PG | PL | PR;
-
 export interface GSaveAlways {
-  path: PG;
-  nodeId: string;
 }
 
 export interface GSaveOptional {
@@ -32,8 +24,6 @@ export interface GSaveNever {
 }
 
 export interface LSaveAlways {
-  path: PL;
-  nodeId: string;
   fromNodeId: string;
   fromNodeSide: Side;
   toNodeId: string;
@@ -49,8 +39,7 @@ export interface LSaveNever {
 }
 
 export interface RSaveAlways {
-  path: PR;
-  nodeId: string;
+  iid: number;
 }
 
 export interface RSaveOptional {
@@ -77,12 +66,9 @@ export interface RSaveNever {
 export type G = GSaveAlways & GSaveOptional & GSaveNever;
 export type L = LSaveAlways & LSaveOptional & LSaveNever;
 export type R = RSaveAlways & RSaveOptional & RSaveNever;
-export type T = L | R;
-export type N = G | L | R;
-export type M = N[];
+export type M = { g: G, l: Record<string, L>, r: Record<string, R> };
 
 export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>;
 export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<LSaveNever>;
 export type RPartial = Required<RSaveAlways> & Partial<RSaveOptional> & Partial<RSaveNever>;
-export type NPartial = GPartial | LPartial | RPartial;
-export type MPartial = NPartial[];
+export type MPartial = { g: GPartial, l: Record<string, LPartial>, r: Record<string, RPartial> };

@@ -6,7 +6,7 @@ import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch } from '../../../data/store.ts';
 
-export const VectorDatabase = ({ ri }: { ri: R }) => {
+export const VectorDatabase = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -21,7 +21,7 @@ export const VectorDatabase = ({ ri }: { ri: R }) => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(actions.deleteLR({ nodeId: ri.nodeId }));
+                dispatch(actions.deleteLR({ nodeId }));
               }}
             >
               {'Delete'}
@@ -32,7 +32,7 @@ export const VectorDatabase = ({ ri }: { ri: R }) => {
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
-            {ri.path.join('').toUpperCase()}
+            {'R' + ri.iid}
           </Badge>
           <Badge color="brown" size="2">
             {'Vector Database'}

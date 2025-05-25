@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { isExistingLink, mR } from '../../../../shared/src/map/getters/map-queries.ts';
+import { isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
 import { ControlType, L, Side } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -13,15 +13,15 @@ export const LinkNodeConnectorIn: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   return (
     linkHelpersVisible &&
-    mR(m)
-      .filter(ri =>
+    Object.entries(m.r)
+      .filter(([, ri]) =>
         [ControlType.INGESTION, ControlType.EXTRACTION, ControlType.VECTOR_DATABASE, ControlType.TEXT_OUTPUT].includes(
           ri.controlType
         )
       )
-      .map(ri => (
+      .map(([nodeId, ri]) => (
         <circle
-          key={`${ri.nodeId}_${Side.L}_rc`}
+          key={`${nodeId}_${Side.L}_rc`}
           viewBox="0 0 24 24"
           width="24"
           height="24"
@@ -39,12 +39,12 @@ export const LinkNodeConnectorIn: FC = () => {
             e.stopPropagation();
             const newLink: Partial<L> = {
               ...connectionStart,
-              toNodeId: ri.nodeId,
+              toNodeId: nodeId,
               toNodeSide: Side.L,
             };
             if (
               connectionStart.fromNodeId !== '' &&
-              connectionStart.fromNodeId !== ri.nodeId &&
+              connectionStart.fromNodeId !== nodeId &&
               !isExistingLink(m, newLink)
             ) {
               dispatch(actions.insertL({ lPartial: newLink }));

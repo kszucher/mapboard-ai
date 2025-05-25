@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { mR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { ControlType, Side } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -12,8 +11,8 @@ export const LinkNodeConnectorOut: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   return (
     linkHelpersVisible &&
-    mR(m)
-      .filter(ri =>
+    Object.entries(m.r)
+      .filter(([, ri]) =>
         [
           ControlType.FILE,
           ControlType.INGESTION,
@@ -22,9 +21,9 @@ export const LinkNodeConnectorOut: FC = () => {
           ControlType.VECTOR_DATABASE,
         ].includes(ri.controlType)
       )
-      .map(ri => (
+      .map(([nodeId, ri]) => (
         <circle
-          key={`${ri.nodeId}_${Side.R}_rc`}
+          key={`${nodeId}_${Side.R}_rc`}
           viewBox="0 0 24 24"
           width="24"
           height="24"
@@ -42,7 +41,7 @@ export const LinkNodeConnectorOut: FC = () => {
             e.stopPropagation();
             dispatch(
               actions.setConnectionStart({
-                fromNodeId: ri.nodeId,
+                fromNodeId: nodeId,
                 fromNodeSide: Side.R,
               })
             );

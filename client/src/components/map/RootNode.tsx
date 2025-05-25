@@ -1,7 +1,6 @@
 import { Box, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { mR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
@@ -16,10 +15,10 @@ import { VectorDatabase } from './rootNodeType/VectorDatabase.tsx';
 export const RootNode: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
-  return mR(m).map(ri => (
+  return Object.entries(m.r).map(([nodeId, ri]) => (
     <div
-      key={ri.nodeId}
-      id={ri.nodeId}
+      key={nodeId}
+      id={nodeId}
       ref={ref => ref && ref.focus()}
       style={{
         position: 'absolute',
@@ -60,7 +59,7 @@ export const RootNode: FC = () => {
                 abortController.abort();
                 e.preventDefault();
                 if (didMove) {
-                  dispatch(actions.offsetLR({ nodeId: ri.nodeId }));
+                  dispatch(actions.offsetLR({ nodeId }));
                 }
               },
               { signal }
@@ -70,12 +69,12 @@ export const RootNode: FC = () => {
           <GripVertical />
         </IconButton>
       </Box>
-      {ri.controlType === ControlType.FILE && <FileUpload ri={ri} />}
-      {ri.controlType === ControlType.INGESTION && <Ingestion ri={ri} />}
-      {ri.controlType === ControlType.EXTRACTION && <Extraction ri={ri} />}
-      {ri.controlType === ControlType.VECTOR_DATABASE && <VectorDatabase ri={ri} />}
-      {ri.controlType === ControlType.TEXT_INPUT && <TextInput ri={ri} />}
-      {ri.controlType === ControlType.TEXT_OUTPUT && <TextOutput ri={ri} />}
+      {ri.controlType === ControlType.FILE && <FileUpload ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.INGESTION && <Ingestion ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.EXTRACTION && <Extraction ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.VECTOR_DATABASE && <VectorDatabase ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.TEXT_INPUT && <TextInput ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.TEXT_OUTPUT && <TextOutput ri={ri} nodeId={nodeId} />}
     </div>
   ));
 };

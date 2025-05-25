@@ -1,5 +1,3 @@
-import { genId } from '../../../../client/src/utils/utils';
-import { isG, isL, isR } from '../getters/path-queries';
 import {
   gSaveAlways,
   gSaveNever,
@@ -11,45 +9,38 @@ import {
   rSaveNever,
   rSaveOptional,
 } from '../state/map-defaults';
-import { G, L, MPartial, R } from '../state/map-types';
+import { MPartial } from '../state/map-types';
 import { excludeEntries } from '../utils/object-utils';
 
 export const mapInit = (m: MPartial) => {
-  m.forEach(ni => {
-    switch (true) {
-      case isG(ni.path):
-        Object.assign(
-          <G>ni,
-          structuredClone({
-            ...excludeEntries(gSaveAlways, Object.keys(ni)),
-            ...excludeEntries(gSaveOptional, Object.keys(ni)),
-            ...gSaveNever,
-          }),
-          { nodeId: ni.nodeId || genId() },
-        );
-        break;
-      case isL(ni.path):
-        Object.assign(
-          <L>ni,
-          structuredClone({
-            ...excludeEntries(lSaveAlways, Object.keys(ni)),
-            ...excludeEntries(lSaveOptional, Object.keys(ni)),
-            ...lSaveNever,
-          }),
-          { nodeId: ni.nodeId || genId() },
-        );
-        break;
-      case isR(ni.path):
-        Object.assign(
-          <R>ni,
-          structuredClone({
-            ...excludeEntries(rSaveAlways, Object.keys(ni)),
-            ...excludeEntries(rSaveOptional, Object.keys(ni)),
-            ...rSaveNever,
-          }),
-          { nodeId: ni.nodeId || genId() },
-        );
-        break;
-    }
+  Object.assign(
+    m.g,
+    structuredClone({
+      ...excludeEntries(gSaveAlways, Object.keys(m.g)),
+      ...excludeEntries(gSaveOptional, Object.keys(m.g)),
+      ...gSaveNever,
+    }),
+  );
+
+  Object.values(m.l).forEach(li => {
+    Object.assign(
+      li,
+      structuredClone({
+        ...excludeEntries(lSaveAlways, Object.keys(li)),
+        ...excludeEntries(lSaveOptional, Object.keys(li)),
+        ...lSaveNever,
+      }),
+    );
+  });
+  
+  Object.values(m.r).forEach(ri => {
+    Object.assign(
+      ri,
+      structuredClone({
+        ...excludeEntries(rSaveAlways, Object.keys(ri)),
+        ...excludeEntries(rSaveOptional, Object.keys(ri)),
+        ...rSaveNever,
+      }),
+    );
   });
 };

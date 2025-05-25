@@ -1,7 +1,6 @@
 import { IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { mL } from '../../../../shared/src/map/getters/map-queries.ts';
 import Trash from '../../../assets/trash.svg?react';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -14,9 +13,9 @@ export const LinkNodeDelete: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   return (
     linkHelpersVisible &&
-    mL(m).map(li => (
+    Object.entries(m.l).map(([nodeId, li]) => (
       <IconButton
-        key={`${li.nodeId}_inter_root_bezier_trash`}
+        key={`${nodeId}_inter_root_bezier_trash`}
         variant="solid"
         color="gray"
         size="1"
@@ -32,7 +31,7 @@ export const LinkNodeDelete: FC = () => {
           e.stopPropagation();
         }}
         onClick={() => {
-          dispatch(actions.deleteL({ nodeId: li.nodeId }));
+          dispatch(actions.deleteL({ nodeId }));
         }}
       >
         <Trash />

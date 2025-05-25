@@ -1,30 +1,21 @@
-import { isL } from '../getters/path-queries';
-import { L, M } from '../state/map-types';
+import { M } from '../state/map-types';
 
-export const mapCopy = (originalArray: M, generateNodeId: Function): M => {
-  const newArray: M = [];
+export const mapCopy = (m: M, genId: Function): M => {
 
-  const idMapping: { [oldId: string]: string } = {};
+  const lIdMapping = new Map(Object.keys(m.l).map(id => [id, genId()]));
+  const rIdMapping = new Map(Object.keys(m.r).map(id => [id, genId()]));
 
-  originalArray.forEach(node => {
-    const oldId = node.nodeId;
-    const newId = generateNodeId();
-    idMapping[oldId] = newId;
-    const newNode = { ...node, nodeId: newId };
-    newArray.push(newNode);
+  return structuredClone({
+    g: m.g,
+    l: Object.fromEntries(
+      Object.entries(m.l).map(([nodeId, li]) => [lIdMapping.get(nodeId), {
+        ...li,
+        fromNodeId: rIdMapping.get(li.fromNodeId),
+        toNodeId: rIdMapping.get(li.toNodeId),
+      }]),
+    ),
+    r: Object.fromEntries(
+      Object.entries(m.r).map(([nodeId, ri]) => [rIdMapping.get(nodeId), ri]),
+    ),
   });
-
-  newArray.forEach(node => {
-    if (isL(node.path)) {
-      const lNode = node as L;
-      if (lNode.toNodeId) {
-        lNode.toNodeId = idMapping[lNode.toNodeId];
-      }
-      if (lNode.fromNodeId) {
-        lNode.fromNodeId = idMapping[lNode.fromNodeId];
-      }
-    }
-  });
-
-  return newArray;
 };

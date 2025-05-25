@@ -6,7 +6,7 @@ import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch } from '../../../data/store.ts';
 
-export const TextInput = ({ ri }: { ri: R }) => {
+export const TextInput = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -21,7 +21,7 @@ export const TextInput = ({ ri }: { ri: R }) => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(actions.deleteLR({ nodeId: ri.nodeId }));
+                dispatch(actions.deleteLR({ nodeId }));
               }}
             >
               {'Delete'}
@@ -32,7 +32,7 @@ export const TextInput = ({ ri }: { ri: R }) => {
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
-            {ri.path.join('').toUpperCase()}
+            {'R' + ri.iid}
           </Badge>
           <Badge color="violet" size="2">
             {'Text Input'}
@@ -53,7 +53,7 @@ export const TextInput = ({ ri }: { ri: R }) => {
             }}
             value={ri.textInput}
             onChange={e => {
-              dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { textInput: e.target.value } }));
+              dispatch(actions.setRAttributes({ nodeId, attributes: { textInput: e.target.value } }));
             }}
           />
         </Flex>

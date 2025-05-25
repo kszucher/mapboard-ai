@@ -7,7 +7,6 @@ import {
   RenameMapRequestDto,
 } from '../../../shared/src/api/api-types-map.ts';
 import { mapPrune } from '../../../shared/src/map/getters/map-prune.ts';
-import { mapArrayToObject } from '../../../shared/src/map/getters/map-queries.ts';
 import { timeoutId } from '../components/window/Window.tsx';
 import { RootState } from './store.ts';
 
@@ -52,7 +51,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
       clearTimeout(timeoutId);
       const SAVE_ENABLED = true;
       if (SAVE_ENABLED) {
-        const mapData = mapArrayToObject(mapPrune(slice.commitList[slice.commitIndex]));
+        const mapData = mapPrune(slice.commitList[slice.commitIndex]);
         try {
           const { data } = await baseQuery({
             url: 'save-map',

@@ -1,4 +1,3 @@
-import { sortNode } from '../setters/map-sort';
 import {
   gSaveAlways,
   gSaveOptional,
@@ -7,31 +6,44 @@ import {
   rSaveAlways,
   rSaveOptional,
 } from '../state/map-defaults';
-import { M } from '../state/map-types';
+import { LPartial, M, MPartial, RPartial } from '../state/map-types';
 import { getNonDefaultEntries, includeEntries } from '../utils/object-utils';
-import { mG, mL, mR } from './map-queries';
 
-export const mapPrune = (m: M) => {
-  return (
-    [
-      ...mG(m).map(gi => ({
-        ...includeEntries(gi, [
-          ...Object.keys(gSaveAlways),
-          ...getNonDefaultEntries(includeEntries(gi, Object.keys(gSaveOptional)), gSaveOptional),
+export const mapPrune = (m: M): MPartial => {
+  return {
+    g: includeEntries(m.g, [
+      ...Object.keys(gSaveAlways),
+      ...getNonDefaultEntries(
+        includeEntries(m.g, Object.keys(gSaveOptional)),
+        gSaveOptional,
+      ),
+    ]),
+    l: Object.fromEntries(
+      Object.entries(m.l)
+        .map(([nodeId, li]) => [
+          nodeId,
+
+          includeEntries(li, [
+            ...Object.keys(lSaveAlways),
+            ...getNonDefaultEntries(
+              includeEntries(li, Object.keys(lSaveOptional)),
+              lSaveOptional,
+            ),
+          ]) as LPartial,
         ]),
-      })),
-      ...mL(m).map(li => ({
-        ...includeEntries(li, [
-          ...Object.keys(lSaveAlways),
-          ...getNonDefaultEntries(includeEntries(li, Object.keys(lSaveOptional)), lSaveOptional),
+    ),
+    r: Object.fromEntries(
+      Object.entries(m.r)
+        .map(([nodeId, ri]) => [
+          nodeId,
+          includeEntries(ri, [
+            ...Object.keys(rSaveAlways),
+            ...getNonDefaultEntries(
+              includeEntries(ri, Object.keys(rSaveOptional)),
+              rSaveOptional,
+            ),
+          ]) as RPartial,
         ]),
-      })),
-      ...mR(m).map(ri => ({
-        ...includeEntries(ri, [
-          ...Object.keys(rSaveAlways),
-          ...getNonDefaultEntries(includeEntries(ri, Object.keys(rSaveOptional)), rSaveOptional),
-        ]),
-      })),
-    ] as M
-  ).sort(sortNode);
+    ),
+  };
 };

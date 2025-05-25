@@ -1,7 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ColorMode } from '../../../../shared/src/api/api-types-user.ts';
-import { getG } from '../../../../shared/src/map/getters/map-queries.ts';
 import { useGetMapInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { MidMouseMode } from '../../data/state-types.ts';
@@ -22,7 +21,6 @@ export const Map: FC = () => {
   const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const g = getG(m);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -38,7 +36,7 @@ export const Map: FC = () => {
         originY: 0,
       })
     );
-    setScrollLeft((window.innerWidth + g.selfW) / 2);
+    setScrollLeft((window.innerWidth + m.g.selfW) / 2);
     setScrollTop(window.innerHeight - 40 * 2);
   };
 
@@ -52,7 +50,7 @@ export const Map: FC = () => {
     window.addEventListener(
       'resize',
       () => {
-        setScrollLeft((window.innerWidth + g.selfW) / 2);
+        setScrollLeft((window.innerWidth + m.g.selfW) / 2);
       },
       { signal }
     );
@@ -71,8 +69,8 @@ export const Map: FC = () => {
         overflow: 'auto',
         display: 'grid',
         backgroundColor: colorMode === ColorMode.DARK ? '#404040' : '#dddddd',
-        gridTemplateRows: `100vh ${g.selfH}px 100vh`,
-        gridTemplateColumns: `100vw ${g.selfW}px 100vw`,
+        gridTemplateRows: `100vh ${m.g.selfH}px 100vh`,
+        gridTemplateColumns: `100vw ${m.g.selfW}px 100vw`,
         outline: 'none',
       }}
       ref={mainMapDiv}
@@ -126,7 +124,7 @@ export const Map: FC = () => {
           transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`,
         }}
       >
-        <svg key={g.nodeId} width={g.selfW} height={g.selfH} style={{ transition: '0.3s ease-out' }}>
+        <svg width={m.g.selfW} height={m.g.selfH} style={{ transition: '0.3s ease-out' }}>
           <RootNodeBackground />
           <RootNodeFrame />
           <LinkNodeBezier />

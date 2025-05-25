@@ -1,11 +1,11 @@
-import { getG, mR } from '../getters/map-queries';
 import { M_PADDING, R_PADDING } from '../state/map-consts';
 import { ControlType, M } from '../state/map-types';
 
 export const mapMeasure = (m: M) => {
-  const minOffsetW = Math.min(...mR(m).map(ri => ri.offsetW));
-  const minOffsetH = Math.min(...mR(m).map(ri => ri.offsetH));
-  mR(m).forEach(ri => {
+  const rl = Object.values(m.r);
+  const minOffsetW = Math.min(...rl.map(ri => ri.offsetW));
+  const minOffsetH = Math.min(...rl.map(ri => ri.offsetH));
+  rl.forEach(ri => {
     Object.assign(ri, {
       offsetW: ri.offsetW - minOffsetW,
       offsetH: ri.offsetH - minOffsetH,
@@ -38,8 +38,7 @@ export const mapMeasure = (m: M) => {
     }
     ri.selfW += 2 * R_PADDING;
     ri.selfH += 2 * R_PADDING;
-    const g = getG(m);
-    g.selfW = Math.max(...mR(m).map(ri => ri.offsetW + ri.selfW)) + 2 * M_PADDING;
-    g.selfH = Math.max(...mR(m).map(ri => ri.offsetH + ri.selfH)) + 2 * M_PADDING;
+    m.g.selfW = Math.max(...rl.map(ri => ri.offsetW + ri.selfW)) + 2 * M_PADDING;
+    m.g.selfH = Math.max(...rl.map(ri => ri.offsetH + ri.selfH)) + 2 * M_PADDING;
   });
 };

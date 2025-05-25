@@ -1,5 +1,3 @@
-export const hasTrues = (array: any[]): boolean => array.length > 0 && array.every(el => el === true);
-
 export const genId = () => crypto.randomUUID().slice(-8);
 
 export const adjust = (x: number) => (Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5);

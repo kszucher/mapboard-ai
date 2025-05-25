@@ -1,15 +1,14 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { mR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
 import { adjust } from '../../utils/utils.ts';
 import { getLinearLinePath, pathCommonProps } from './UtilsSvg.ts';
 
 export const RootNodeSeparator: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  return mR(m).map(ri => (
+  return Object.entries(m.r).map(([nodeId, ri]) => (
     <path
-      key={`${ri.nodeId}_separator`}
+      key={`${nodeId}_separator`}
       d={getLinearLinePath({
         x1: adjust(ri.nodeStartX),
         x2: adjust(ri.nodeStartX + ri.selfW),

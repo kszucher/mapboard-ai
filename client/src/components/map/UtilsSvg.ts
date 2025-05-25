@@ -1,4 +1,3 @@
-import { idToR } from '../../../../shared/src/map/getters/map-queries.ts';
 import { L, M, R, Side } from '../../../../shared/src/map/state/map-types.ts';
 
 export const pathCommonProps = {
@@ -47,9 +46,7 @@ const getCoordinatesForSide = (node: R, side: Side): { x: number; y: number; cx:
 
 export const getRootLinePath = (m: M, l: L) => {
   const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l;
-  const fromNode = idToR(m, fromNodeId);
-  const toNode = idToR(m, toNodeId);
-  const { x: sx, y: sy, cx: c1x, cy: c1y } = getCoordinatesForSide(fromNode, fromNodeSide);
-  const { x: ex, y: ey, cx: c2x, cy: c2y } = getCoordinatesForSide(toNode, toNodeSide);
+  const { x: sx, y: sy, cx: c1x, cy: c1y } = getCoordinatesForSide(m.r[fromNodeId], fromNodeSide);
+  const { x: ex, y: ey, cx: c2x, cy: c2y } = getCoordinatesForSide(m.r[toNodeId], toNodeSide);
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey];
 };

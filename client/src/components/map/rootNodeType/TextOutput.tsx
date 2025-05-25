@@ -1,24 +1,24 @@
 import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text, TextArea } from '@radix-ui/themes';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInputNode } from '../../../../../shared/src/map/getters/map-queries.ts';
+import { getInputNodes } from '../../../../../shared/src/map/getters/map-queries.ts';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
 import Dots from '../../../../assets/dots.svg?react';
 import { api, useGetMapInfoQuery } from '../../../data/api.ts';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 
-export const TextOutput = ({ ri }: { ri: R }) => {
+export const TextOutput = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const inputNode = getInputNode(m, ri.nodeId);
+  const inputNode = Object.values(getInputNodes(m, nodeId))[0];
   const [executeTextOutput, { isError, reset }] = api.useExecuteTextOutputMutation();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (isError) {
       reset();
-      dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: false } }));
+      dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: false } }));
     }
   }, [isError]);
 
@@ -34,7 +34,7 @@ export const TextOutput = ({ ri }: { ri: R }) => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(actions.deleteLR({ nodeId: ri.nodeId }));
+                dispatch(actions.deleteLR({ nodeId }));
               }}
             >
               {'Delete'}
@@ -45,7 +45,7 @@ export const TextOutput = ({ ri }: { ri: R }) => {
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
-            {ri.path.join('').toUpperCase()}
+            {'R' + ri.iid}
           </Badge>
           <Badge color="lime" size="2">
             {'Text Output'}
@@ -54,15 +54,15 @@ export const TextOutput = ({ ri }: { ri: R }) => {
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="4" align="start" content="center">
-          <Text size="2">{`Input: ${inputNode?.path.join('').toUpperCase()}`}</Text>
+          <Text size="2">{`Input: ${'R' + inputNode?.iid}`}</Text>
 
           <Button
             disabled={!inputNode?.extractionHash || ri.textOutput !== ''}
             size="1"
             color="gray"
             onClick={() => {
-              dispatch(actions.setRAttributes({ nodeId: ri.nodeId, attributes: { isProcessing: true } }));
-              mapId && executeTextOutput({ mapId, nodeId: ri.nodeId });
+              dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: true } }));
+              mapId && executeTextOutput({ mapId, nodeId });
             }}
           >
             {'Show'}

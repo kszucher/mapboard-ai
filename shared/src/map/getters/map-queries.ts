@@ -1,34 +1,9 @@
-import { G, L, M, N, R } from '../state/map-types';
-import { excludeEntries } from '../utils/object-utils';
-import { isG, isL, isR } from './path-queries';
+import { L, M, R } from '../state/map-types';
 
-export const mapArrayToObject = (m: M): object =>
-  Object.fromEntries(m.map(n => [n.nodeId, { path: n.path.join(','), ...excludeEntries(n, ['nodeId', 'path']) }]));
-
-export const mapObjectToArray = (obj: object): M => Object.entries(obj).map(el => ({
-  nodeId: el[0],
-  path: el[1].path.split(','),
-  ...excludeEntries(el[1], ['path']),
-}) as N);
-
-export const mG = (m: M): G[] => <G[]>m.filter(n => isG(n.path));
-
-export const mL = (m: M): L[] => <L[]>m.filter(n => isL(n.path));
-
-export const mR = (m: M): R[] => <R[]>m.filter(n => isR(n.path));
-
-export const idToL = (m: M, nodeId: string) => <L>mL(m).find(li => li.nodeId === nodeId);
-
-export const idToR = (m: M, nodeId: string) => <R>mR(m).find(ri => ri.nodeId === nodeId);
-
-export const getG = (m: M): G => <G>mG(m).at(0);
-
-export const getLastIndexL = (m: M): number => Math.max(-1, ...mL(m).map(li => <number>li.path.at(-1)));
-
-export const getLastIndexR = (m: M): number => Math.max(-1, ...mR(m).map(ri => <number>ri.path.at(-1)));
+export const getLastIndexR = (m: M): number => Math.max(-1, ...Object.values(m.r).map(ri => ri.iid));
 
 export const isExistingLink = (m: M, partialL: Partial<L>): boolean =>
-  mL(m).some(
+  Object.values(m.l).some(
     li =>
       partialL.fromNodeId === li.fromNodeId &&
       partialL.toNodeId === li.toNodeId &&
@@ -36,18 +11,7 @@ export const isExistingLink = (m: M, partialL: Partial<L>): boolean =>
       partialL.toNodeSide === li.toNodeSide,
   );
 
-export const getInputNode = (m: M, nodeId: string) => {
-  const inputLink = mL(m).find(li => li.toNodeId === nodeId);
-  if (!inputLink) return null;
-  const inputNode = mR(m).find(ri => ri.nodeId === inputLink.fromNodeId);
-  if (!inputNode) return null;
-  return inputNode;
-};
-
-export const getInputNodes = (m: M, nodeId: string) => {
-  const inputLinks = mL(m).filter(li => li.toNodeId === nodeId);
-  if (!inputLinks) return null;
-  const inputNodes = mR(m).filter(ri => inputLinks.some(li => li.fromNodeId === ri.nodeId));
-  if (!inputNodes) return null;
-  return inputNodes;
+export const getInputNodes = (m: M, rNodeId: string): Record<string, R> => {
+  const ll = Object.values(m.l).filter(li => li.toNodeId === rNodeId);
+  return Object.fromEntries(Object.entries(m.r).filter(([nodeId]) => ll.some(li => li.fromNodeId === nodeId)));
 };

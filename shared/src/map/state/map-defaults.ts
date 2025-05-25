@@ -6,19 +6,13 @@ import {
   LSaveAlways,
   LSaveNever,
   LSaveOptional,
-  PG,
-  PL,
-  PR,
   RSaveAlways,
   RSaveNever,
   RSaveOptional,
   Side,
 } from './map-types';
 
-export const gSaveAlways: GSaveAlways = {
-  path: <PG>['g'],
-  nodeId: '',
-};
+export const gSaveAlways: GSaveAlways = {};
 
 export const gSaveOptional: GSaveOptional = {};
 
@@ -28,8 +22,6 @@ export const gSaveNever: GSaveNever = {
 };
 
 export const lSaveAlways: LSaveAlways = {
-  path: <PL>(<unknown>[]),
-  nodeId: '',
   fromNodeId: '',
   fromNodeSide: Side.L,
   toNodeSide: Side.R,
@@ -44,8 +36,7 @@ export const lSaveOptional: LSaveOptional = {
 export const lSaveNever: LSaveNever = {};
 
 export const rSaveAlways: RSaveAlways = {
-  path: <PR>(<unknown>[]),
-  nodeId: '',
+  iid: -1,
 };
 
 export const rSaveOptional: RSaveOptional = {

@@ -1,21 +1,19 @@
-import { getG, getLastIndexL, getLastIndexR } from '../getters/map-queries';
+import { getLastIndexR } from '../getters/map-queries';
 import { ControlType, L, M, R } from '../state/map-types';
 
 export const mapInsert = {
-  L: (m: M, partialL: Partial<L>) => {
-    m.push(<L>{
-      path: ['l', getLastIndexL(m) + 1],
+  L: (m: M, partialL: Partial<L>, genId: Function) => Object.assign(m.l, {
+    [genId()]: <L>{
       ...partialL,
-    });
-  },
+    },
+  }),
 
-  R: (m: M, controlType: ControlType) => {
-    const lastIndexR = getLastIndexR(m);
-    m.push(<R>{
-      path: ['r', lastIndexR + 1],
+  R: (m: M, controlType: ControlType, genId: Function) => Object.assign(m.r, {
+    [genId()]: <R>{
+      iid: getLastIndexR(m) + 1,
       controlType,
-      offsetW: getG(m).selfW,
-      offsetH: getG(m).selfH,
-    });
-  },
+      offsetW: m.g.selfW,
+      offsetH: m.g.selfH,
+    },
+  }),
 };
