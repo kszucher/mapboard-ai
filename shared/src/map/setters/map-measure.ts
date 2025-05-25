@@ -32,8 +32,8 @@ export const mapMeasure = (m: M) => {
         ri.selfH = 200;
         break;
       case ControlType.TEXT_OUTPUT:
-        ri.selfW = 400;
-        ri.selfH = 430;
+        ri.selfW = 200;
+        ri.selfH = 200;
         break;
     }
     ri.selfW += 2 * R_PADDING;

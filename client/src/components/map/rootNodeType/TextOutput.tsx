@@ -76,7 +76,7 @@ export const TextOutput = ({ ri }: { ri: R }) => {
             variant="soft"
             style={{
               width: ri.selfW - 32,
-              minHeight: 360,
+              minHeight: 130,
               outline: 'none',
               pointerEvents: 'auto',
             }}
