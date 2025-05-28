@@ -1,4 +1,4 @@
-import { Badge, Box, DropdownMenu, Flex, IconButton } from '@radix-ui/themes';
+import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
@@ -37,6 +37,7 @@ export const VectorDatabase = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
           <Badge color="brown" size="2">
             {'Vector Database'}
           </Badge>
+          {ri.isProcessing && <Spinner m="1" />}
         </Flex>
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">

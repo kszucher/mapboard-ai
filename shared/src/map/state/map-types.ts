@@ -12,63 +12,35 @@ export enum ControlType {
   TEXT_OUTPUT = 'TEXT_OUTPUT',
 }
 
-export interface GSaveAlways {
+export interface G {
+  isLocked: boolean;
 }
 
-export interface GSaveOptional {
-}
-
-export interface GSaveNever {
-  selfW: number;
-  selfH: number;
-}
-
-export interface LSaveAlways {
+export interface L {
   fromNodeId: string;
   fromNodeSide: Side;
   toNodeId: string;
   toNodeSide: Side;
-}
-
-export interface LSaveOptional {
   lineColor: string;
   lineWidth: number;
 }
 
-export interface LSaveNever {
-}
-
-export interface RSaveAlways {
+export interface R {
   iid: number;
-}
-
-export interface RSaveOptional {
   controlType: ControlType;
   offsetW: number;
   offsetH: number;
-  fileHash: string;
-  fileName: string;
-  ingestionHash: string;
-  extractionHash: string;
-  extractionPrompt: string;
-  textInput: string;
-  textOutput: string;
+  selfW: number;
+  selfH: number;
+  fileHash?: string;
+  fileName?: string;
+  ingestionHash?: string;
+  extractionHash?: string;
+  extractionPrompt?: string;
+  textInput?: string;
+  textOutput?: string;
   isProcessing: boolean;
 }
 
-export interface RSaveNever {
-  selfW: number;
-  selfH: number;
-  nodeStartX: number;
-  nodeStartY: number;
-}
-
-export type G = GSaveAlways & GSaveOptional & GSaveNever;
-export type L = LSaveAlways & LSaveOptional & LSaveNever;
-export type R = RSaveAlways & RSaveOptional & RSaveNever;
 export type M = { g: G, l: Record<string, L>, r: Record<string, R> };
-
-export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>;
-export type LPartial = Required<LSaveAlways> & Partial<LSaveOptional> & Partial<LSaveNever>;
-export type RPartial = Required<RSaveAlways> & Partial<RSaveOptional> & Partial<RSaveNever>;
-export type MPartial = { g: GPartial, l: Record<string, LPartial>, r: Record<string, RPartial> };
+export type MDelta = { g?: Partial<G>, l?: Record<string, Partial<L>>, r?: Record<string, Partial<R>> };

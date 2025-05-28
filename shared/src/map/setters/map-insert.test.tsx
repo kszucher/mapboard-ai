@@ -1,19 +1,29 @@
-import { ControlType, M, MPartial } from '../state/map-types';
+import { R_PADDING } from '../state/map-consts';
+import { rDefault } from '../state/map-defaults';
+import { M } from '../state/map-types';
 import { mapInsert } from './map-insert';
 
 describe('MapInsertTests', () => {
   test('insertR', () => {
-    const test: MPartial = {
-      g: {},
+    const test: M = {
+      g: { isLocked: false },
       l: {},
-      r: { a: { iid: 0 } },
+      r: { a: { ...rDefault, iid: 0 } },
     };
-    const result: MPartial = {
-      g: {},
+    const result: M = {
+      g: { isLocked: false },
       l: {},
-      r: { a: { iid: 0 }, b: { iid: 1 } },
+      r: {
+        a: { ...rDefault, iid: 0 },
+        b: {
+          ...rDefault,
+          iid: 1,
+          offsetW: rDefault.selfW + 2 * R_PADDING,
+          offsetH: rDefault.selfH + 2 * R_PADDING,
+        },
+      },
     };
-    mapInsert.R(test as M, ControlType.FILE, () => 'b');
+    mapInsert.R(test, rDefault.controlType, () => 'b');
     expect(test).toMatchObject(result);
   });
 });

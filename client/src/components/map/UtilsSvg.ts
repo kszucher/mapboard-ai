@@ -1,3 +1,4 @@
+import { getNodeStartX, getNodeStartY } from '../../../../shared/src/map/getters/map-queries.ts';
 import { L, M, R, Side } from '../../../../shared/src/map/state/map-types.ts';
 
 export const pathCommonProps = {
@@ -23,23 +24,24 @@ export const getLinearLinePath = ({ x1, x2, y1, y2 }: { x1: number; x2: number; 
 export const getBezierLinePath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) =>
   `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
 
-const getCoordinatesForSide = (node: R, side: Side): { x: number; y: number; cx: number; cy: number } => {
-  const { nodeStartX, nodeStartY, selfW, selfH } = node;
+const getCoordinatesForSide = (r: R, side: Side): { x: number; y: number; cx: number; cy: number } => {
   const offset = 100;
+  const nodeStartX = getNodeStartX(r);
+  const nodeStartY = getNodeStartY(r);
   switch (side) {
     case Side.R:
       return {
-        x: nodeStartX + selfW,
-        y: nodeStartY + selfH / 2,
-        cx: nodeStartX + selfW + offset,
-        cy: nodeStartY + selfH / 2,
+        x: nodeStartX + r.selfW,
+        y: nodeStartY + r.selfH / 2,
+        cx: nodeStartX + r.selfW + offset,
+        cy: nodeStartY + r.selfH / 2,
       };
     case Side.L:
       return {
         x: nodeStartX,
-        y: nodeStartY + selfH / 2,
+        y: nodeStartY + r.selfH / 2,
         cx: nodeStartX - offset,
-        cy: nodeStartY + selfH / 2,
+        cy: nodeStartY + r.selfH / 2,
       };
   }
 };

@@ -1,6 +1,9 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
+import { getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
-import { ControlType, M } from '../../../shared/src/map/state/map-types';
+import { rDefault } from '../../../shared/src/map/state/map-defaults';
+import { ControlType, M, MDelta } from '../../../shared/src/map/state/map-types';
+import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
@@ -38,7 +41,7 @@ export class MapService {
   }
 
   async getLastMap({ userId }: { userId: number }) {
-    return this.prisma.map.findFirst({
+    return this.prisma.map.findFirstOrThrow({
       where: { userId },
       orderBy: {
         updatedAt: 'desc',
@@ -47,11 +50,11 @@ export class MapService {
     });
   }
 
-  private createNewMapData() {
+  private createNewMapData(): M {
     return {
-      g: {},
+      g: { isLocked: false },
       l: {},
-      r: { [global.crypto.randomUUID().slice(-8)]: { controlType: ControlType.TEXT_INPUT, iid: 0 } },
+      r: { [global.crypto.randomUUID().slice(-8)]: { ...rDefault, iid: 0 } },
     };
   }
 
@@ -142,8 +145,6 @@ export class MapService {
   }
 
   async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number, mapId: number, mapData: object }) {
-    console.time('Save Map');
-
     await this.prisma.map.update({
       where: { id: mapId },
       data: { data: mapData },
@@ -157,15 +158,67 @@ export class MapService {
     });
   }
 
-  async updateMapByServer({ mapId, mapDataDelta }: { mapId: number, mapDataDelta: object }) {
-    await this.prisma.$executeRawUnsafe(`
-        UPDATE "Map"
-        SET "data" = jsonb_merge_recurse(
-            "Map"."data",
-            $1::jsonb
-        )
-      WHERE id = $2
-    `, JSON.stringify(mapDataDelta), mapId);
+  async updateMapByServer({ mapId, mapDelta }: { mapId: number, mapDelta: MDelta }) {
+    const map = await this.prisma.map.findFirstOrThrow({
+      where: { id: mapId },
+      select: { data: true },
+    });
+
+    const mapData = map.data as unknown as M;
+
+    const newMapData = jsonMerge(mapData, mapDelta);
+
+    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+
+    await this.distributionService.publish(workspaceIdsOfMap, {
+      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
+      payload: { mapInfo: { id: mapId, data: newMapData } },
+    });
+  }
+
+  async executeMap({ mapId }: { mapId: number }) {
+    const map = await this.prisma.map.findFirstOrThrow({
+      where: { id: mapId },
+      select: { id: true, name: true, data: true },
+    });
+
+    const m = map.data as unknown as M;
+
+    const topologicalSort = getTopologicalSort(m);
+
+    if (!topologicalSort) {
+      throw new Error('topological sort error');
+    }
+
+    await this.updateMapByServer({ mapId, mapDelta: { g: { isLocked: true } } });
+
+    for (const nodeId of topologicalSort) {
+      const ri = m.r[nodeId];
+
+      if (ri.controlType !== ControlType.TEXT_INPUT && ri.controlType !== ControlType.FILE) {
+        await this.updateMapByServer({ mapId, mapDelta: { r: { [nodeId]: { isProcessing: true } } } });
+      }
+
+      if (ri.controlType === ControlType.TEXT_INPUT) {
+
+      } else if (ri.controlType === ControlType.FILE) {
+
+      } else if (ri.controlType === ControlType.INGESTION) {
+        await new Promise(r => setTimeout(r, 3000));
+      } else if (ri.controlType === ControlType.VECTOR_DATABASE) {
+        await new Promise(r => setTimeout(r, 3000));
+      } else if (ri.controlType === ControlType.EXTRACTION) {
+        await new Promise(r => setTimeout(r, 3000));
+      } else if (ri.controlType === ControlType.TEXT_OUTPUT) {
+        await new Promise(r => setTimeout(r, 3000));
+      }
+
+      if (ri.controlType !== ControlType.TEXT_INPUT && ri.controlType !== ControlType.FILE) {
+        await this.updateMapByServer({ mapId, mapDelta: { r: { [nodeId]: { isProcessing: false } } } });
+      }
+    }
+
+    await this.updateMapByServer({ mapId, mapDelta: { g: { isLocked: false } } });
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {

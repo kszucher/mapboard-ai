@@ -3,6 +3,7 @@ import {
   CreateMapInTabDuplicateRequestDto,
   CreateMapInTabRequestDto,
   DeleteMapRequestDto,
+  ExecuteMapRequestDto,
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
 } from '../../../shared/src/api/api-types-map';
@@ -48,11 +49,11 @@ router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request,
 
 // TODO executeUploadFile
 
-// TODO executeIngestion
-
-// TODO executeExtraction
-
-// TODO executeTextOutput
+router.post('/execute-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { mapId }: ExecuteMapRequestDto = req.body;
+  await mapService.executeMap({ mapId });
+  res.json();
+});
 
 router.post('/delete-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId } = (req as any);

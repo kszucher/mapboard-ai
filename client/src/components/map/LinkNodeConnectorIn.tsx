@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getNodeStartX, getNodeStartY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
 import { ControlType, L, Side } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -27,7 +27,7 @@ export const LinkNodeConnectorIn: FC = () => {
           height="24"
           r={8}
           fill={'#666666'}
-          transform={`translate(${adjustIcon(ri.nodeStartX)}, ${adjustIcon(ri.nodeStartY + ri.selfH / 2)})`}
+          transform={`translate(${adjustIcon(getNodeStartX(ri))}, ${adjustIcon(getNodeStartY(ri) + ri.selfH / 2)})`}
           {...{ vectorEffect: 'non-scaling-stroke' }}
           style={{
             transition: 'all 0.3s',

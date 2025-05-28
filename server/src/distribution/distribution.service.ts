@@ -84,9 +84,6 @@ export class DistributionService {
   private broadcast(message: RedisEventMessage) {
     for (const { res, workspaceId } of this.clients.values()) {
       if (workspaceId === message.workspaceId) {
-        if (message.event.type === WORKSPACE_EVENT.UPDATE_MAP_DATA) {
-          console.timeEnd('Save Map');
-        }
         res.write(`event: ${message.event.type}\n`);
         res.write(`data: ${JSON.stringify(message.event.payload)}\n\n`);
       }

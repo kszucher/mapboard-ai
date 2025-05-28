@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { getMapSelfH, getMapSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
 
 export const RootNodeFrame: FC = () => {
@@ -8,11 +9,11 @@ export const RootNodeFrame: FC = () => {
   return (
     rootFrameVisible && (
       <rect
-        key={'svg_map_backgroun'}
+        key={'svg_map_background'}
         x={0}
         y={0}
-        width={m.g.selfW}
-        height={m.g.selfH}
+        width={getMapSelfW(m)}
+        height={getMapSelfH(m)}
         rx={0}
         ry={0}
         fill={'none'}

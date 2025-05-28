@@ -3,6 +3,7 @@ import { ConfigMouse } from './ConfigMouse.tsx';
 import { ConfigView } from './ConfigView.tsx';
 import { Logo } from './Logo.tsx';
 import { MapSelector } from './MapSelector.tsx';
+import { NodeExecute } from './NodeExecute.tsx';
 import { NodeInsert } from './NodeInsert.tsx';
 import { NodeRedo } from './NodeRedo.tsx';
 import { NodeUndo } from './NodeUndo.tsx';
@@ -16,6 +17,7 @@ export const AppBar: FC = () => {
       <div className="fixed flex right-1 gap-6 h-[40px]">
         <div className="flex items-center gap-1">
           <NodeInsert />
+          <NodeExecute />
         </div>
         <div className="flex flex-row items-center gap-1">
           <NodeUndo />

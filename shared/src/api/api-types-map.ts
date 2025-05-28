@@ -25,6 +25,10 @@ export type RenameMapRequestDto = {
   mapName: string
 }
 
+export type ExecuteMapRequestDto = {
+  mapId: number
+}
+
 export type DeleteMapRequestDto = {
   mapId: number
 }

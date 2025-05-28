@@ -1,48 +1,22 @@
-import {
-  ControlType,
-  GSaveAlways,
-  GSaveNever,
-  GSaveOptional,
-  LSaveAlways,
-  LSaveNever,
-  LSaveOptional,
-  RSaveAlways,
-  RSaveNever,
-  RSaveOptional,
-  Side,
-} from './map-types';
+import { getControlTypeDimensions } from './map-consts';
+import { ControlType, L, R, Side } from './map-types';
 
-export const gSaveAlways: GSaveAlways = {};
-
-export const gSaveOptional: GSaveOptional = {};
-
-export const gSaveNever: GSaveNever = {
-  selfW: 0,
-  selfH: 0,
-};
-
-export const lSaveAlways: LSaveAlways = {
+export const lDefault: L = {
   fromNodeId: '',
   fromNodeSide: Side.L,
   toNodeSide: Side.R,
   toNodeId: '',
-};
-
-export const lSaveOptional: LSaveOptional = {
   lineColor: '#bbbbbb',
   lineWidth: 1,
 };
 
-export const lSaveNever: LSaveNever = {};
-
-export const rSaveAlways: RSaveAlways = {
+export const rDefault: R = {
   iid: -1,
-};
-
-export const rSaveOptional: RSaveOptional = {
-  controlType: ControlType.FILE,
+  controlType: ControlType.TEXT_INPUT,
   offsetW: 0,
   offsetH: 0,
+  selfW: getControlTypeDimensions(ControlType.TEXT_INPUT).w,
+  selfH: getControlTypeDimensions(ControlType.TEXT_INPUT).h,
   fileHash: '',
   fileName: '',
   ingestionHash: '',
@@ -51,11 +25,4 @@ export const rSaveOptional: RSaveOptional = {
   textInput: '',
   textOutput: '',
   isProcessing: false,
-};
-
-export const rSaveNever: RSaveNever = {
-  selfW: 0,
-  selfH: 0,
-  nodeStartX: 0,
-  nodeStartY: 0,
 };

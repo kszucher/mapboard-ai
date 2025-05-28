@@ -3,10 +3,10 @@ import {
   CreateMapInTabDuplicateRequestDto,
   CreateMapInTabRequestDto,
   DeleteMapRequestDto,
+  ExecuteMapRequestDto,
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
 } from '../../../shared/src/api/api-types-map.ts';
-import { mapPrune } from '../../../shared/src/map/getters/map-prune.ts';
 import { timeoutId } from '../components/window/Window.tsx';
 import { RootState } from './store.ts';
 
@@ -51,7 +51,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
       clearTimeout(timeoutId);
       const SAVE_ENABLED = true;
       if (SAVE_ENABLED) {
-        const mapData = mapPrune(slice.commitList[slice.commitIndex]);
+        const mapData = slice.commitList[slice.commitIndex];
         try {
           const { data } = await baseQuery({
             url: 'save-map',
@@ -85,29 +85,11 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     invalidatesTags: [],
   }),
 
-  executeIngestion: builder.mutation<void, { mapId: number; nodeId: string }>({
-    query: ({ mapId, nodeId }) => ({
-      url: 'execute-ingestion',
+  executeMap: builder.mutation<void, ExecuteMapRequestDto>({
+    query: ({ mapId }) => ({
+      url: 'execute-map',
       method: 'POST',
-      body: { mapId, nodeId },
-    }),
-    invalidatesTags: [],
-  }),
-
-  executeExtraction: builder.mutation<void, { mapId: number; nodeId: string }>({
-    query: ({ mapId, nodeId }) => ({
-      url: 'execute-extraction',
-      method: 'POST',
-      body: { mapId, nodeId },
-    }),
-    invalidatesTags: [],
-  }),
-
-  executeTextOutput: builder.mutation<void, { mapId: number; nodeId: string }>({
-    query: ({ mapId, nodeId }) => ({
-      url: 'execute-text-output',
-      method: 'POST',
-      body: { mapId, nodeId },
+      body: { mapId },
     }),
     invalidatesTags: [],
   }),

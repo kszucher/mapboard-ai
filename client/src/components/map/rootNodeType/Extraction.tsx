@@ -1,26 +1,16 @@
-import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text, TextArea } from '@radix-ui/themes';
-import React, { useEffect } from 'react';
+import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner, Text, TextArea } from '@radix-ui/themes';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInputNodes } from '../../../../../shared/src/map/getters/map-queries.ts';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
 import Dots from '../../../../assets/dots.svg?react';
-import { api, useGetMapInfoQuery } from '../../../data/api.ts';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 
 export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const inputNodes = getInputNodes(m, nodeId);
-  const [executeExtraction, { isError, reset }] = api.useExecuteExtractionMutation();
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    if (isError) {
-      reset();
-      dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: false } }));
-    }
-  }, [isError]);
 
   return (
     <React.Fragment>
@@ -62,6 +52,7 @@ export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
           <Badge color="jade" size="2">
             {'Extraction'}
           </Badge>
+          {ri.isProcessing && <Spinner m="1" />}
         </Flex>
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
@@ -75,7 +66,7 @@ export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             variant="soft"
             style={{
               width: ri.selfW - 32,
-              minHeight: 140,
+              minHeight: 180,
               outline: 'none',
               pointerEvents: 'auto',
             }}
@@ -85,26 +76,7 @@ export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             }}
           />
 
-          <Flex direction="row" gap="4" align="start" content="center">
-            <Button
-              disabled={!ri.extractionPrompt || !inputNodes?.length || ri.isProcessing}
-              size="1"
-              radius="full"
-              color="gray"
-              onClick={() => {
-                dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: true } }));
-                mapId &&
-                  executeExtraction({
-                    mapId,
-                    nodeId,
-                  });
-              }}
-            >
-              {'Execute Prompt'}
-            </Button>
-
-            {ri.isProcessing && !ri.extractionHash && <Spinner size="3" />}
-          </Flex>
+          <Flex direction="row" gap="4" align="start" content="center"></Flex>
         </Flex>
       </Box>
     </React.Fragment>

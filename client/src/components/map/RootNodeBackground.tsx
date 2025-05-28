@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import colors from 'tailwindcss/colors';
+import { getNodeStartX, getNodeStartY } from '../../../../shared/src/map/getters/map-queries.ts';
 import { useGetUserInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 
@@ -10,8 +11,8 @@ export const RootNodeBackground: FC = () => {
   return Object.entries(m.r).map(([nodeId, ri]) => (
     <rect
       key={`${nodeId}_rb`}
-      x={ri.nodeStartX + 0.5}
-      y={ri.nodeStartY + 0.5}
+      x={getNodeStartX(ri) + 0.5}
+      y={getNodeStartY(ri) + 0.5}
       width={ri.selfW}
       height={ri.selfH}
       rx={16}

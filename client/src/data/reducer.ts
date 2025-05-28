@@ -1,8 +1,7 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { MapInfo } from '../../../shared/src/api/api-types-map.ts';
-import { mapPrune } from '../../../shared/src/map/getters/map-prune.ts';
-import { mapBuild } from '../../../shared/src/map/setters/map-build.ts';
+import { mapAlign } from '../../../shared/src/map/setters/map-align.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
 import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
 import { ControlType, L, R, Side } from '../../../shared/src/map/state/map-types.ts';
@@ -99,28 +98,26 @@ export const slice = createSlice({
     insertL(state, { payload: { lPartial } }: PayloadAction<{ lPartial: Partial<L> }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       mapInsert.L(m, lPartial, genId);
-      mapBuild(m);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
     insertR(state, { payload: { controlType } }: PayloadAction<{ controlType: ControlType }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       mapInsert.R(m, controlType, genId);
-      mapBuild(m);
+      mapAlign(m);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
     deleteL(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       mapDelete.L(m, nodeId);
-      mapBuild(m);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
     deleteLR(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       mapDelete.LR(m, nodeId);
-      mapBuild(m);
+      mapAlign(m);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
@@ -130,7 +127,7 @@ export const slice = createSlice({
         offsetW: state.rOffsetCoords[0],
         offsetH: state.rOffsetCoords[1],
       });
-      mapBuild(m);
+      mapAlign(m);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
       state.rOffsetCoords = [];
@@ -141,17 +138,15 @@ export const slice = createSlice({
     ) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       Object.assign(m.r[nodeId], attributes);
-      mapBuild(m);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
     updateMapFromSSE(state, { payload }: PayloadAction<{ mapInfo: MapInfo }>) {
       console.log('map updated from server...');
       const newServerMap = payload.mapInfo.data;
-      const clientMap = mapPrune(current(state.commitList[state.commitIndex]));
+      const clientMap = current(state.commitList[state.commitIndex]);
       const serverMap = current(state.serverMap);
       const newClientMap = jsonMerge(clientMap, jsonDiff(newServerMap, serverMap));
-      mapBuild(newClientMap);
       state.commitList = [newClientMap];
       state.commitIndex = 0;
       state.serverMap = newServerMap;
@@ -189,7 +184,6 @@ export const slice = createSlice({
       const isValid = true;
       if (isValid) {
         const m = structuredClone(payload.mapInfo.data);
-        mapBuild(m);
         state.commitList = [m];
         state.commitIndex = 0;
         state.serverMap = payload.mapInfo.data;
