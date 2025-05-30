@@ -11,12 +11,5 @@ export const mapDelete = {
       .forEach(([nodeId]) => delete m.l[nodeId]);
 
     delete m.r[nodeId];
-
-    const nonSelectedMinOffsetW = Math.min(...Object.values(m.r).map(ri => ri.offsetW));
-    const nonSelectedMinOffsetH = Math.min(...Object.values(m.r).map(ri => ri.offsetH));
-    Object.values(m.r).map(ri => {
-      ri.offsetW -= nonSelectedMinOffsetW;
-      ri.offsetH -= nonSelectedMinOffsetH;
-    });
   },
 };

@@ -33,20 +33,14 @@ describe('MapDeleteTests', () => {
         r0: {
           ...rDefault,
           iid: 0,
-          offsetW: 120,
-          offsetH: 230,
         },
         r1: {
           ...rDefault,
           iid: 1,
-          offsetW: 340,
-          offsetH: 450,
         },
         r2: {
           ...rDefault,
           iid: 2,
-          offsetW: 560,
-          offsetH: 780,
         },
       },
     };
@@ -69,8 +63,6 @@ describe('MapDeleteTests', () => {
         r2: {
           ...rDefault,
           iid: 2,
-          offsetW: 440,
-          offsetH: 550,
         },
       },
     };
