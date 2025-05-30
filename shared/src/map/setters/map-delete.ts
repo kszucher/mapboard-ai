@@ -7,7 +7,7 @@ export const mapDelete = {
 
   LR: (m: M, nodeId: string) => {
     Object.entries(m.l)
-      .filter(([nodeId, li]) => [li.fromNodeId, li.toNodeId].includes(nodeId))
+      .filter(([, li]) => [li.fromNodeId, li.toNodeId].includes(nodeId))
       .forEach(([nodeId]) => delete m.l[nodeId]);
 
     delete m.r[nodeId];
