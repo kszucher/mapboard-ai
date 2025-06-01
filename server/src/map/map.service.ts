@@ -1,7 +1,7 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { getInputL, getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
-import { rDefault } from '../../../shared/src/map/state/map-defaults';
+import { createNewMapData } from '../../../shared/src/map/setters/map-create';
 import { ControlType, M, MDelta } from '../../../shared/src/map/state/map-types';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
 import { DistributionService } from '../distribution/distribution.service';
@@ -64,6 +64,8 @@ export class MapService {
     return workspace.Map;
   }
 
+  private genId = () => global.crypto.randomUUID().slice(-8);
+
   async getLastMap({ userId }: { userId: number }) {
     return this.prisma.map.findFirstOrThrow({
       where: { userId },
@@ -74,15 +76,7 @@ export class MapService {
     });
   }
 
-  private createNewMapData(): M {
-    return {
-      g: { isLocked: false },
-      l: {},
-      r: { [global.crypto.randomUUID().slice(-8)]: { ...rDefault, iid: 0 } },
-    };
-  }
-
-  async createMap({ userId, mapName, mapData = this.createNewMapData() }: {
+  async createMap({ userId, mapName, mapData = createNewMapData(this.genId) }: {
     userId: number,
     mapName: string,
     mapData?: object
@@ -129,7 +123,7 @@ export class MapService {
       select: { id: true, name: true, data: true },
     });
 
-    const newMapData = mapCopy(map.data as unknown as M, () => global.crypto.randomUUID().slice(-8));
+    const newMapData = mapCopy(map.data as unknown as M, this.genId);
 
     const newMap = await this.createMap({ userId, mapName: map.name + 'Copy', mapData: newMapData });
 
