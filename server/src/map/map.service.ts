@@ -54,6 +54,8 @@ export class MapService {
     return this.getExtractionService();
   }
 
+  private genId = () => global.crypto.randomUUID().slice(-8);
+
   async getMap({ workspaceId }: { workspaceId: number }) {
     const workspace = await this.prisma.workspace.findFirstOrThrow({
       where: { id: workspaceId },
@@ -63,8 +65,6 @@ export class MapService {
     });
     return workspace.Map;
   }
-
-  private genId = () => global.crypto.randomUUID().slice(-8);
 
   async getLastMap({ userId }: { userId: number }) {
     return this.prisma.map.findFirstOrThrow({
