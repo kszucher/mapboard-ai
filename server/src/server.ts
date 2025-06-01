@@ -36,7 +36,7 @@ export const mapService: MapService = new MapService(
 );
 export const mapUploadService: MapFileUploadService = new MapFileUploadService(
   process.env.PINATA_API_KEY!,
-  process.env.PINATA_SECRET_KEY!,
+  process.env.PINATA_SECRET_API_KEY!,
 );
 export const mapIngestionService: MapIngestionService = new MapIngestionService(
   process.env.UNSTRUCTURED_API_KEY!,

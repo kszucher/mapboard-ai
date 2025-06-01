@@ -194,6 +194,12 @@ export class MapService {
     });
   }
 
+  async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
+    // TODO set isProcessing true
+    await this.uploadService.upload(file);
+    // TODO set isProcessing false
+  }
+
   async executeMap({ mapId }: { mapId: number }) {
     const map = await this.prisma.map.findFirstOrThrow({
       where: { id: mapId },

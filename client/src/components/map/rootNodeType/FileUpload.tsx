@@ -12,13 +12,12 @@ export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [executeUploadFile, { isError, reset }] = api.useExecuteUploadFileMutation();
+  const [executeMapUploadFile, { isError, reset }] = api.useExecuteMapUploadFileMutation();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (isError) {
       reset();
-      dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: false } }));
     }
   }, [isError]);
 
@@ -62,7 +61,7 @@ export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
               if (e.target.files) {
                 const currFile = e.target.files[0];
                 setFile(currFile);
-                dispatch(actions.setRAttributes({ nodeId, attributes: { fileName: currFile.name } }));
+                // dispatch(actions.setRAttributes({ nodeId, attributes: { fileName: currFile.name } }));
               }
             }}
             ref={hiddenFileInput}
@@ -85,8 +84,8 @@ export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
               size="1"
               color="gray"
               onClick={() => {
-                dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: true } }));
-                executeUploadFile({ file, mapId, nodeId });
+                // dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: true } }));
+                executeMapUploadFile({ file, mapId, nodeId });
               }}
             >
               {'Upload File'}

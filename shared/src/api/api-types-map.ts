@@ -25,6 +25,11 @@ export type RenameMapRequestDto = {
   mapName: string
 }
 
+export type ExecuteMapFileUploadDto = {
+  mapId: number
+  nodeId: string
+}
+
 export type ExecuteMapRequestDto = {
   mapId: number
 }

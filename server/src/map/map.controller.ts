@@ -1,16 +1,22 @@
 import { Request, Response, Router } from 'express';
+import multer from 'multer';
 import {
   CreateMapInTabDuplicateRequestDto,
   CreateMapInTabRequestDto,
   DeleteMapRequestDto,
+  ExecuteMapFileUploadDto,
   ExecuteMapRequestDto,
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
 } from '../../../shared/src/api/api-types-map';
+
 import { mapService } from '../server';
 import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
 
 const router = Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 
 router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
@@ -42,12 +48,16 @@ router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Reques
 router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
   const { mapId, mapData } = req.body;
-
   await mapService.updateMapByClient({ workspaceId, mapId, mapData });
   res.json();
 });
 
-// TODO executeUploadFile
+router.post('/execute-map-upload-file', checkJwt, getUserIdAndWorkspaceId, upload.single('file'), async (req: Request, res: Response) => {
+  const file = req.file as Express.Multer.File;
+  const { mapId, nodeId }: ExecuteMapFileUploadDto = req.body;
+  await mapService.executeMapUploadFile(mapId, nodeId, file);
+  res.json();
+});
 
 router.post('/execute-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { mapId }: ExecuteMapRequestDto = req.body;
