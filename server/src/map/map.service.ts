@@ -223,11 +223,7 @@ export class MapService {
         });
       }
 
-      if (ri.controlType === ControlType.TEXT_INPUT) {
-
-      } else if (ri.controlType === ControlType.FILE) {
-
-      } else if (ri.controlType === ControlType.INGESTION) {
+      if (ri.controlType === ControlType.INGESTION) {
         await new Promise(r => setTimeout(r, 3000));
       } else if (ri.controlType === ControlType.VECTOR_DATABASE) {
         await new Promise(r => setTimeout(r, 3000));
