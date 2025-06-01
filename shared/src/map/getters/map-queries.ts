@@ -25,7 +25,11 @@ export const isExistingLink = (m: M, partialL: Partial<L>): boolean =>
       partialL.toNodeSide === li.toNodeSide,
   );
 
-export const getInputNodes = (m: M, rNodeId: string): Record<string, R> => {
+export const getInputL = (m: M, rNodeId: string): Record<string, L> => {
+  return Object.fromEntries(Object.entries(m.l).filter(([, li]) => li.toNodeId === rNodeId));
+};
+
+export const getInputR = (m: M, rNodeId: string): Record<string, R> => {
   const ll = Object.values(m.l).filter(li => li.toNodeId === rNodeId);
   return Object.fromEntries(Object.entries(m.r).filter(([nodeId]) => ll.some(li => li.fromNodeId === nodeId)));
 };

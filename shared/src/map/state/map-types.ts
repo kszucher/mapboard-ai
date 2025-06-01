@@ -23,6 +23,7 @@ export interface L {
   toNodeSide: Side;
   lineColor: string;
   lineWidth: number;
+  isProcessing: boolean;
 }
 
 export interface R {

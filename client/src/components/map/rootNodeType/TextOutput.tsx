@@ -1,7 +1,7 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInputNodes } from '../../../../../shared/src/map/getters/map-queries.ts';
+import { getInputR } from '../../../../../shared/src/map/getters/map-queries.ts';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
 import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from '../../../data/store.ts';
 
 export const TextOutput = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const inputNode = Object.values(getInputNodes(m, nodeId))[0];
+  const inputNode = Object.values(getInputR(m, nodeId))[0];
   const dispatch = useDispatch<AppDispatch>();
 
   return (

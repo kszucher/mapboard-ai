@@ -1,5 +1,5 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
-import { getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
+import { getInputL, getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { rDefault } from '../../../shared/src/map/state/map-defaults';
 import { ControlType, M, MDelta } from '../../../shared/src/map/state/map-types';
@@ -194,9 +194,15 @@ export class MapService {
 
     for (const nodeId of topologicalSort) {
       const ri = m.r[nodeId];
+      const inputLinks = getInputL(m, nodeId);
 
       if (ri.controlType !== ControlType.TEXT_INPUT && ri.controlType !== ControlType.FILE) {
-        await this.updateMapByServer({ mapId, mapDelta: { r: { [nodeId]: { isProcessing: true } } } });
+        await this.updateMapByServer({
+          mapId, mapDelta: {
+            r: { [nodeId]: { isProcessing: true } },
+            l: Object.fromEntries(Object.entries(inputLinks).map(([lid]) => [lid, { isProcessing: true }])),
+          },
+        });
       }
 
       if (ri.controlType === ControlType.TEXT_INPUT) {
@@ -214,7 +220,12 @@ export class MapService {
       }
 
       if (ri.controlType !== ControlType.TEXT_INPUT && ri.controlType !== ControlType.FILE) {
-        await this.updateMapByServer({ mapId, mapDelta: { r: { [nodeId]: { isProcessing: false } } } });
+        await this.updateMapByServer({
+          mapId, mapDelta: {
+            r: { [nodeId]: { isProcessing: false } },
+            l: Object.fromEntries(Object.entries(inputLinks).map(([lid]) => [lid, { isProcessing: false }])),
+          },
+        });
       }
     }
 
