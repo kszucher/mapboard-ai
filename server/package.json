@@ -1,10 +1,14 @@
 {
   "dependencies": {
+    "@pinecone-database/pinecone": "^6.1.0",
     "@prisma/client": "^6.6.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-oauth2-jwt-bearer": "^1.6.1",
-    "redis": "^4.7.0"
+    "openai": "^5.0.1",
+    "pinata": "^2.4.3",
+    "redis": "^4.7.0",
+    "unstructured-client": "^0.24.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

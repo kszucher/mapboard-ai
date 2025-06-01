@@ -8,6 +8,10 @@ import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
+import { MapExtractionService } from './map-extraction.service';
+import { MapFileUploadService } from './map-file-upload.service';
+import { MapIngestionService } from './map-ingestion.service';
+import { MapVectorDatabaseService } from './map-vector-database.service';
 
 export class MapService {
   constructor(
@@ -15,6 +19,10 @@ export class MapService {
     private getTabService: () => TabService,
     private getWorkspaceService: () => WorkspaceService,
     private getDistributionService: () => DistributionService,
+    private getFileUploadService: () => MapFileUploadService,
+    private getIngestionService: () => MapIngestionService,
+    private getVectorDatabaseService: () => MapVectorDatabaseService,
+    private getExtractionService: () => MapExtractionService,
   ) {
   }
 
@@ -28,6 +36,22 @@ export class MapService {
 
   get distributionService(): DistributionService {
     return this.getDistributionService();
+  }
+
+  get uploadService(): MapFileUploadService {
+    return this.getFileUploadService();
+  }
+
+  get ingestionService(): MapIngestionService {
+    return this.getIngestionService();
+  }
+
+  get vectorDatabaseService(): MapVectorDatabaseService {
+    return this.getVectorDatabaseService();
+  }
+
+  get extractionService(): MapExtractionService {
+    return this.getExtractionService();
   }
 
   async getMap({ workspaceId }: { workspaceId: number }) {
