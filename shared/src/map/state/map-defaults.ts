@@ -8,6 +8,7 @@ export const lDefault: L = {
   toNodeId: '',
   lineColor: '#bbbbbb',
   lineWidth: 1,
+  isProcessing: false,
 };
 
 export const rDefault: R = {

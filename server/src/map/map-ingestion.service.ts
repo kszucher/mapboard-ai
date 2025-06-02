@@ -1,14 +1,9 @@
 export class MapIngestionService {
-  private readonly unstructuredApiKey: string;
-
-  constructor(
-    unstructuredApiKey: string,
-  ) {
-    this.unstructuredApiKey = unstructuredApiKey;
-  }
-
-  async ingest() {
+  constructor() {
 
   }
 
+  async ingest(file: ArrayBuffer, fileName: string) {
+    console.log('ingestion simulated');
+  }
 }

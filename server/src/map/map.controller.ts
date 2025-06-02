@@ -55,7 +55,7 @@ router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request,
 router.post('/execute-map-upload-file', checkJwt, getUserIdAndWorkspaceId, upload.single('file'), async (req: Request, res: Response) => {
   const file = req.file as Express.Multer.File;
   const { mapId, nodeId }: ExecuteMapFileUploadDto = req.body;
-  await mapService.executeMapUploadFile(mapId, nodeId, file);
+  await mapService.executeMapUploadFile(parseInt(mapId), nodeId, file);
   res.json();
 });
 

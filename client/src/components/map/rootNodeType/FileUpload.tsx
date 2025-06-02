@@ -61,7 +61,6 @@ export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
               if (e.target.files) {
                 const currFile = e.target.files[0];
                 setFile(currFile);
-                // dispatch(actions.setRAttributes({ nodeId, attributes: { fileName: currFile.name } }));
               }
             }}
             ref={hiddenFileInput}
@@ -84,7 +83,6 @@ export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
               size="1"
               color="gray"
               onClick={() => {
-                // dispatch(actions.setRAttributes({ nodeId, attributes: { isProcessing: true } }));
                 executeMapUploadFile({ file, mapId, nodeId });
               }}
             >
@@ -92,7 +90,7 @@ export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             </Button>
           )}
 
-          {ri.isProcessing && !ri.fileHash && <Spinner size="3" />}
+          {ri.isProcessing && <Spinner size="3" />}
         </Flex>
       </Box>
     </React.Fragment>

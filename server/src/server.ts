@@ -4,8 +4,8 @@ import distributionController from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
 import { PrismaClient } from './generated/client';
 import { MapExtractionService } from './map/map-extraction.service';
-import { MapIngestionService } from './map/map-ingestion.service';
 import { MapFileUploadService } from './map/map-file-upload.service';
+import { MapIngestionService } from './map/map-ingestion.service';
 import { MapVectorDatabaseService } from './map/map-vector-database.service';
 import mapController from './map/map.controller';
 import { MapService } from './map/map.service';
@@ -39,7 +39,6 @@ export const mapUploadService: MapFileUploadService = new MapFileUploadService(
   process.env.PINATA_SECRET_API_KEY!,
 );
 export const mapIngestionService: MapIngestionService = new MapIngestionService(
-  process.env.UNSTRUCTURED_API_KEY!,
 );
 export const mapVectorDatabaseService: MapVectorDatabaseService = new MapVectorDatabaseService(
   process.env.PINECONE_API_KEY!,

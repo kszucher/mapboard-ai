@@ -1,5 +1,5 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
-import { getInputL, getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
+import { getInputL, getInputR, getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { createNewMapData } from '../../../shared/src/map/setters/map-create';
 import { ControlType, M, MDelta } from '../../../shared/src/map/state/map-types';
@@ -186,6 +186,11 @@ export class MapService {
 
     const newMapData = jsonMerge(mapData, mapDelta);
 
+    await this.prisma.map.update({
+      where: { id: mapId },
+      data: { data: newMapData },
+    });
+
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
@@ -195,9 +200,14 @@ export class MapService {
   }
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
-    // TODO set isProcessing true
-    await this.uploadService.upload(file);
-    // TODO set isProcessing false
+    await this.updateMapByServer({
+      mapId, mapDelta: { r: { [nodeId]: { isProcessing: true } } },
+    });
+    const fileHash = await this.uploadService.upload(file);
+    await this.updateMapByServer({
+      mapId,
+      mapDelta: { r: { [nodeId]: { isProcessing: false, fileName: file.originalname, fileHash: fileHash ?? '' } } },
+    });
   }
 
   async executeMap({ mapId }: { mapId: number }) {
@@ -218,32 +228,44 @@ export class MapService {
 
     for (const nodeId of topologicalSort) {
       const ri = m.r[nodeId];
-      const inputLinks = getInputL(m, nodeId);
+      const inputL = getInputL(m, nodeId);
+      const inputR = getInputR(m, nodeId);
 
       if (ri.controlType !== ControlType.TEXT_INPUT && ri.controlType !== ControlType.FILE) {
         await this.updateMapByServer({
           mapId, mapDelta: {
             r: { [nodeId]: { isProcessing: true } },
-            l: Object.fromEntries(Object.entries(inputLinks).map(([lid]) => [lid, { isProcessing: true }])),
+            l: Object.fromEntries(Object.entries(inputL).map(([lid]) => [lid, { isProcessing: true }])),
           },
         });
       }
 
-      if (ri.controlType === ControlType.INGESTION) {
-        await new Promise(r => setTimeout(r, 3000));
-      } else if (ri.controlType === ControlType.VECTOR_DATABASE) {
-        await new Promise(r => setTimeout(r, 3000));
-      } else if (ri.controlType === ControlType.EXTRACTION) {
-        await new Promise(r => setTimeout(r, 3000));
-      } else if (ri.controlType === ControlType.TEXT_OUTPUT) {
-        await new Promise(r => setTimeout(r, 3000));
+      switch (ri.controlType) {
+        case ControlType.INGESTION: {
+          const { fileHash, fileName } = Object.values(inputR)[0];
+          const file = await this.uploadService.download(fileHash!);
+          await this.ingestionService.ingest(file!, fileName!);
+          break;
+        }
+        case ControlType.VECTOR_DATABASE: {
+          await new Promise(r => setTimeout(r, 3000));
+          break;
+        }
+        case ControlType.EXTRACTION: {
+          await new Promise(r => setTimeout(r, 3000));
+          break;
+        }
+        case ControlType.TEXT_OUTPUT: {
+          await new Promise(r => setTimeout(r, 3000));
+          break;
+        }
       }
 
       if (ri.controlType !== ControlType.TEXT_INPUT && ri.controlType !== ControlType.FILE) {
         await this.updateMapByServer({
           mapId, mapDelta: {
             r: { [nodeId]: { isProcessing: false } },
-            l: Object.fromEntries(Object.entries(inputLinks).map(([lid]) => [lid, { isProcessing: false }])),
+            l: Object.fromEntries(Object.entries(inputL).map(([lid]) => [lid, { isProcessing: false }])),
           },
         });
       }
