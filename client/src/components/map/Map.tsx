@@ -127,7 +127,7 @@ export const Map: FC = () => {
           transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`,
         }}
       >
-        <svg width={mapSelfW} height={mapSelfH} style={{ transition: '0.3s ease-out' }}>
+        <svg width={mapSelfW} height={mapSelfH}>
           <RootNodeBackground />
           <RootNodeFrame />
           <LinkNodeBezier />

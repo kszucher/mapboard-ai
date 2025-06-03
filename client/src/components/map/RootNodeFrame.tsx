@@ -19,7 +19,6 @@ export const RootNodeFrame: FC = () => {
         fill={'none'}
         stroke={'#aaaaaa'}
         strokeWidth={0.5}
-        style={{ transition: '0.3s ease-out' }}
       />
     )
   );
