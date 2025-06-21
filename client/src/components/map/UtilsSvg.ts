@@ -34,7 +34,7 @@ const getCoordinatesForSide = (
   cx: number;
   cy: number;
 } => {
-  const offset = 100 + sideIndex * 20;
+  const offset = 100;
   const nodeStartX = getNodeStartX(r);
   const nodeStartY = getNodeStartY(r);
   switch (side) {
@@ -48,7 +48,7 @@ const getCoordinatesForSide = (
     case Side.L:
       return {
         x: nodeStartX,
-        y: nodeStartY + r.selfH / 2,
+        y: nodeStartY + r.selfH / 2 + sideIndex * 20,
         cx: nodeStartX - offset,
         cy: nodeStartY + r.selfH / 2,
       };

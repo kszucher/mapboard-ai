@@ -43,6 +43,7 @@ export const LinkNodeConnectorTo: FC = () => {
               ...connectionStart,
               toNodeId: nodeId,
               toNodeSide: Side.L,
+              toNodeSideIndex: index,
             };
             if (
               connectionStart.fromNodeId !== '' &&
