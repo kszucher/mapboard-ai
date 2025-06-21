@@ -19,7 +19,7 @@ export const getControlTypeDimensions = (controlType: ControlType): { w: number,
       w = 200;
       h = 200;
       break;
-    case ControlType.PROMPT:
+    case ControlType.QUESTION:
       w = 200;
       h = 200;
       break;

@@ -61,7 +61,7 @@ export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
 
           <TextArea
             disabled
-            placeholder="Your Prompt…"
+            placeholder=""
             color="gray"
             variant="soft"
             style={{

@@ -10,7 +10,7 @@ import { Extraction } from './rootNodeType/Extraction.tsx';
 import { FileUpload } from './rootNodeType/FileUpload.tsx';
 import { Ingestion } from './rootNodeType/Ingestion.tsx';
 import { TextInput } from './rootNodeType/TextInput.tsx';
-import { Prompt } from './rootNodeType/Prompt.tsx';
+import { Question } from './rootNodeType/Question.tsx';
 import { VectorDatabase } from './rootNodeType/VectorDatabase.tsx';
 
 export const RootNode: FC = () => {
@@ -73,7 +73,7 @@ export const RootNode: FC = () => {
       {ri.controlType === ControlType.FILE && <FileUpload ri={ri} nodeId={nodeId} />}
       {ri.controlType === ControlType.INGESTION && <Ingestion ri={ri} nodeId={nodeId} />}
       {ri.controlType === ControlType.TEXT_INPUT && <TextInput ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.PROMPT && <Prompt ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.QUESTION && <Question ri={ri} nodeId={nodeId} />}
       {ri.controlType === ControlType.VECTOR_DATABASE && <VectorDatabase ri={ri} nodeId={nodeId} />}
       {ri.controlType === ControlType.EXTRACTION && <Extraction ri={ri} nodeId={nodeId} />}
     </div>

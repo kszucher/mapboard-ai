@@ -6,7 +6,7 @@ import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch } from '../../../data/store.ts';
 
-export const Prompt = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+export const Question = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -35,7 +35,7 @@ export const Prompt = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             {'R' + ri.iid}
           </Badge>
           <Badge color="lime" size="2">
-            {'Prompt'}
+            {'Question'}
           </Badge>
           {ri.isProcessing && <Spinner m="1" />}
         </Flex>
@@ -52,7 +52,7 @@ export const Prompt = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={'test prompt'}
+            value={'test question'}
             onChange={() => {}}
           />
         </Flex>

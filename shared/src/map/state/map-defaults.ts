@@ -29,6 +29,6 @@ export const rDefault: R = {
   ingestionHash: '',
   extractionHash: '',
   textInput: '',
-  prompt: '',
+  question: '',
   isProcessing: false,
 };

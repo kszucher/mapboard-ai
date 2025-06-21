@@ -7,7 +7,7 @@ export enum ControlType {
   FILE = 'FILE',
   INGESTION = 'INGESTION',
   TEXT_INPUT = 'TEXT_INPUT',
-  PROMPT = 'PROMPT',
+  QUESTION = 'QUESTION',
   VECTOR_DATABASE = 'VECTOR_DATABASE',
   EXTRACTION = 'EXTRACTION',
 }
@@ -40,7 +40,7 @@ export interface R {
   ingestionHash?: string;
   extractionHash?: string;
   textInput?: string;
-  prompt?: string;
+  question?: string;
   isProcessing: boolean;
 }
 

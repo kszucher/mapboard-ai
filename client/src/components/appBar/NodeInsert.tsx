@@ -24,8 +24,8 @@ export const NodeInsert = () => {
         <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.TEXT_INPUT }))}>
           {'Text Input'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.PROMPT }))}>
-          {'Prompt'}
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.QUESTION }))}>
+          {'Question'}
         </DropdownMenu.Item>
         <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.VECTOR_DATABASE }))}>
           {'Vector Database'}
