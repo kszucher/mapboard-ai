@@ -19,16 +19,16 @@ export const lDefault: L = {
 
 export const rDefault: R = {
   iid: -1,
-  controlType: ControlType.CONTEXT,
   offsetW: 0,
   offsetH: 0,
   selfW: getControlTypeDimensions(ControlType.CONTEXT).w,
   selfH: getControlTypeDimensions(ControlType.CONTEXT).h,
+  controlType: ControlType.CONTEXT,
+  isProcessing: false,
   fileHash: '',
   fileName: '',
   ingestionHash: '',
   extractionHash: '',
   context: '',
   question: '',
-  isProcessing: false,
 };

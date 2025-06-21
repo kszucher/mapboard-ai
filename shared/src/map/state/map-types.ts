@@ -30,18 +30,18 @@ export interface L {
 
 export interface R {
   iid: number;
-  controlType: ControlType;
   offsetW: number;
   offsetH: number;
   selfW: number;
   selfH: number;
+  controlType: ControlType;
+  isProcessing: boolean;
   fileHash?: string;
   fileName?: string;
   ingestionHash?: string;
   extractionHash?: string;
   context?: string;
   question?: string;
-  isProcessing: boolean;
 }
 
 export type M = { g: G, l: Record<string, L>, r: Record<string, R> };
