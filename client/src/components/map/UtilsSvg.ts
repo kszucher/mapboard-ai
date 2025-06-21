@@ -24,8 +24,17 @@ export const getLinearLinePath = ({ x1, x2, y1, y2 }: { x1: number; x2: number; 
 export const getBezierLinePath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) =>
   `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
 
-const getCoordinatesForSide = (r: R, side: Side): { x: number; y: number; cx: number; cy: number } => {
-  const offset = 100;
+const getCoordinatesForSide = (
+  r: R,
+  side: Side,
+  sideIndex: number
+): {
+  x: number;
+  y: number;
+  cx: number;
+  cy: number;
+} => {
+  const offset = 100 + sideIndex * 20;
   const nodeStartX = getNodeStartX(r);
   const nodeStartY = getNodeStartY(r);
   switch (side) {
@@ -47,8 +56,8 @@ const getCoordinatesForSide = (r: R, side: Side): { x: number; y: number; cx: nu
 };
 
 export const getRootLinePath = (m: M, l: L) => {
-  const { fromNodeId, fromNodeSide, toNodeId, toNodeSide } = l;
-  const { x: sx, y: sy, cx: c1x, cy: c1y } = getCoordinatesForSide(m.r[fromNodeId], fromNodeSide);
-  const { x: ex, y: ey, cx: c2x, cy: c2y } = getCoordinatesForSide(m.r[toNodeId], toNodeSide);
+  const { fromNodeId, fromNodeSide, fromNodeSideIndex, toNodeId, toNodeSide, toNodeSideIndex } = l;
+  const { x: sx, y: sy, cx: c1x, cy: c1y } = getCoordinatesForSide(m.r[fromNodeId], fromNodeSide, fromNodeSideIndex);
+  const { x: ex, y: ey, cx: c2x, cy: c2y } = getCoordinatesForSide(m.r[toNodeId], toNodeSide, toNodeSideIndex);
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey];
 };

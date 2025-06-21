@@ -6,7 +6,7 @@ import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { adjustIcon } from '../../utils/utils.ts';
 
-export const LinkNodeConnectorOut: FC = () => {
+export const LinkNodeConnectorFrom: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
   return Object.entries(m.r)

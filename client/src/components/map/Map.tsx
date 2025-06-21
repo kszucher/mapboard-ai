@@ -7,8 +7,8 @@ import { actions } from '../../data/reducer.ts';
 import { MidMouseMode } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { LinkNodeBezier } from './LinkNodeBezier.tsx';
-import { LinkNodeConnectorIn } from './LinkNodeConnectorIn.tsx';
-import { LinkNodeConnectorOut } from './LinkNodeConnectorOut.tsx';
+import { LinkNodeConnectorTo } from './LinkNodeConnectorTo.tsx';
+import { LinkNodeConnectorFrom } from './LinkNodeConnectorFrom.tsx';
 import { LinkNodeDelete } from './LinkNodeDelete.tsx';
 import { RootNode } from './RootNode.tsx';
 import { RootNodeBackground } from './RootNodeBackground.tsx';
@@ -133,8 +133,8 @@ export const Map: FC = () => {
           <LinkNodeBezier />
           <RootNodeSeparator />
           <RootNodeMovePreview />
-          <LinkNodeConnectorOut />
-          <LinkNodeConnectorIn />
+          <LinkNodeConnectorFrom />
+          <LinkNodeConnectorTo />
         </svg>
         <RootNode />
         <LinkNodeDelete />
