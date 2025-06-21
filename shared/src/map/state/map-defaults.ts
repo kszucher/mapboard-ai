@@ -28,8 +28,7 @@ export const rDefault: R = {
   fileName: '',
   ingestionHash: '',
   extractionHash: '',
-  extractionPrompt: '',
   textInput: '',
-  textOutput: '',
+  prompt: '',
   isProcessing: false,
 };

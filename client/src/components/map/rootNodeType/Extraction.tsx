@@ -34,7 +34,7 @@ export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
                 dispatch(
                   actions.setRAttributes({
                     nodeId,
-                    attributes: { extractionPrompt: '', extractionHash: '', isProcessing: false },
+                    attributes: { isProcessing: false },
                   })
                 );
               }}
@@ -60,7 +60,7 @@ export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
           <Text size="2">{`Inputs: ${Object.values(inputNodes).map(ri => 'R' + ri.iid)}`}</Text>
 
           <TextArea
-            disabled={ri.extractionHash !== ''}
+            disabled
             placeholder="Your Prompt…"
             color="gray"
             variant="soft"
@@ -70,10 +70,8 @@ export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ri.extractionPrompt}
-            onChange={e => {
-              dispatch(actions.setRAttributes({ nodeId, attributes: { extractionPrompt: e.target.value } }));
-            }}
+            value={'test extraction'}
+            onChange={() => {}}
           />
 
           <Flex direction="row" gap="4" align="start" content="center"></Flex>

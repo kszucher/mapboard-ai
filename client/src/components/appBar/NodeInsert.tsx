@@ -21,17 +21,17 @@ export const NodeInsert = () => {
         <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.INGESTION }))}>
           {'Ingestion'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.EXTRACTION }))}>
-          {'Extraction'}
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.TEXT_INPUT }))}>
+          {'Text Input'}
+        </DropdownMenu.Item>
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.PROMPT }))}>
+          {'Prompt'}
         </DropdownMenu.Item>
         <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.VECTOR_DATABASE }))}>
           {'Vector Database'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.TEXT_INPUT }))}>
-          {'Text Input'}
-        </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.TEXT_OUTPUT }))}>
-          {'Text Output'}
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.EXTRACTION }))}>
+          {'Extraction'}
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

@@ -6,10 +6,10 @@ export enum Side {
 export enum ControlType {
   FILE = 'FILE',
   INGESTION = 'INGESTION',
+  TEXT_INPUT = 'TEXT_INPUT',
+  PROMPT = 'PROMPT',
   VECTOR_DATABASE = 'VECTOR_DATABASE',
   EXTRACTION = 'EXTRACTION',
-  TEXT_INPUT = 'TEXT_INPUT',
-  TEXT_OUTPUT = 'TEXT_OUTPUT',
 }
 
 export interface G {
@@ -39,9 +39,8 @@ export interface R {
   fileName?: string;
   ingestionHash?: string;
   extractionHash?: string;
-  extractionPrompt?: string;
   textInput?: string;
-  textOutput?: string;
+  prompt?: string;
   isProcessing: boolean;
 }
 

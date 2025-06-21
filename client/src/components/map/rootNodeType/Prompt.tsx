@@ -1,15 +1,12 @@
-import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner, Text, TextArea } from '@radix-ui/themes';
+import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner, TextArea } from '@radix-ui/themes';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getInputR } from '../../../../../shared/src/map/getters/map-queries.ts';
+import { useDispatch } from 'react-redux';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
 import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
-import { AppDispatch, RootState } from '../../../data/store.ts';
+import { AppDispatch } from '../../../data/store.ts';
 
-export const TextOutput = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
-  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const inputNode = Object.values(getInputR(m, nodeId))[0];
+export const Prompt = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -38,25 +35,25 @@ export const TextOutput = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             {'R' + ri.iid}
           </Badge>
           <Badge color="lime" size="2">
-            {'Text Output'}
+            {'Prompt'}
           </Badge>
           {ri.isProcessing && <Spinner m="1" />}
         </Flex>
       </Box>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="4" align="start" content="center">
-          <Text size="2">{`Input: ${'R' + inputNode?.iid}`}</Text>
           <TextArea
-            disabled={true}
+            disabled={false}
             color="gray"
             variant="soft"
             style={{
               width: ri.selfW - 32,
-              minHeight: 170,
+              minHeight: 210,
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ri.textOutput}
+            value={'test prompt'}
+            onChange={() => {}}
           />
         </Flex>
       </Box>

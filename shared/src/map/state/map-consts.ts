@@ -15,21 +15,21 @@ export const getControlTypeDimensions = (controlType: ControlType): { w: number,
       w = 160;
       h = 90;
       break;
-    case ControlType.EXTRACTION:
+    case ControlType.TEXT_INPUT:
       w = 200;
-      h = 210;
+      h = 200;
+      break;
+    case ControlType.PROMPT:
+      w = 200;
+      h = 200;
       break;
     case ControlType.VECTOR_DATABASE:
       w = 180;
       h = 60;
       break;
-    case ControlType.TEXT_INPUT:
+    case ControlType.EXTRACTION:
       w = 200;
-      h = 200;
-      break;
-    case ControlType.TEXT_OUTPUT:
-      w = 200;
-      h = 200;
+      h = 210;
       break;
   }
   w += 2 * R_PADDING;

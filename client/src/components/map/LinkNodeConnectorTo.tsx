@@ -13,9 +13,7 @@ export const LinkNodeConnectorTo: FC = () => {
 
   return Object.entries(m.r)
     .filter(([, ri]) =>
-      [ControlType.INGESTION, ControlType.EXTRACTION, ControlType.VECTOR_DATABASE, ControlType.TEXT_OUTPUT].includes(
-        ri.controlType
-      )
+      [ControlType.INGESTION, ControlType.EXTRACTION, ControlType.VECTOR_DATABASE].includes(ri.controlType)
     )
     .flatMap(([nodeId, ri]) => {
       const baseX = adjustIcon(getNodeStartX(ri));

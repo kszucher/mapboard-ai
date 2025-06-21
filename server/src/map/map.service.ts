@@ -259,7 +259,13 @@ export class MapService {
       const inputL = getInputL(m, nodeId);
       const inputR = getInputR(m, nodeId);
 
-      if (ri.controlType !== ControlType.TEXT_INPUT && ri.controlType !== ControlType.FILE) {
+      const shouldProcess = [
+        ControlType.INGESTION,
+        ControlType.VECTOR_DATABASE,
+        ControlType.EXTRACTION,
+      ].includes(ri.controlType);
+
+      if (shouldProcess) {
         await this.updateMapByServer({
           mapId, mapDelta: {
             r: { [nodeId]: { isProcessing: true } },
@@ -283,13 +289,9 @@ export class MapService {
           await new Promise(r => setTimeout(r, 3000));
           break;
         }
-        case ControlType.TEXT_OUTPUT: {
-          await new Promise(r => setTimeout(r, 3000));
-          break;
-        }
       }
 
-      if (ri.controlType !== ControlType.TEXT_INPUT && ri.controlType !== ControlType.FILE) {
+      if (shouldProcess) {
         await this.updateMapByServer({
           mapId, mapDelta: {
             r: { [nodeId]: { isProcessing: false } },
