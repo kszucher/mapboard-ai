@@ -14,7 +14,7 @@ export const LinkNodeConnectorFrom: FC = () => {
       [
         ControlType.FILE,
         ControlType.INGESTION,
-        ControlType.TEXT_INPUT,
+        ControlType.CONTEXT,
         ControlType.QUESTION,
         ControlType.VECTOR_DATABASE,
       ].includes(ri.controlType)

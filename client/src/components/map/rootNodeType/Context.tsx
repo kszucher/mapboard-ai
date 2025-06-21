@@ -6,7 +6,7 @@ import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch } from '../../../data/store.ts';
 
-export const TextInput = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+export const Context = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -35,7 +35,7 @@ export const TextInput = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             {'R' + ri.iid}
           </Badge>
           <Badge color="violet" size="2">
-            {'Text Input'}
+            {'Context'}
           </Badge>
         </Flex>
       </Box>
@@ -51,9 +51,9 @@ export const TextInput = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ri.textInput}
+            value={ri.context}
             onChange={e => {
-              dispatch(actions.setRAttributes({ nodeId, attributes: { textInput: e.target.value } }));
+              dispatch(actions.setRAttributes({ nodeId, attributes: { context: e.target.value } }));
             }}
           />
         </Flex>

@@ -15,7 +15,7 @@ export const getControlTypeDimensions = (controlType: ControlType): { w: number,
       w = 160;
       h = 90;
       break;
-    case ControlType.TEXT_INPUT:
+    case ControlType.CONTEXT:
       w = 200;
       h = 200;
       break;

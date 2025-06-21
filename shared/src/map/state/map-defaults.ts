@@ -19,16 +19,16 @@ export const lDefault: L = {
 
 export const rDefault: R = {
   iid: -1,
-  controlType: ControlType.TEXT_INPUT,
+  controlType: ControlType.CONTEXT,
   offsetW: 0,
   offsetH: 0,
-  selfW: getControlTypeDimensions(ControlType.TEXT_INPUT).w,
-  selfH: getControlTypeDimensions(ControlType.TEXT_INPUT).h,
+  selfW: getControlTypeDimensions(ControlType.CONTEXT).w,
+  selfH: getControlTypeDimensions(ControlType.CONTEXT).h,
   fileHash: '',
   fileName: '',
   ingestionHash: '',
   extractionHash: '',
-  textInput: '',
+  context: '',
   question: '',
   isProcessing: false,
 };

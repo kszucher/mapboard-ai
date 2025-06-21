@@ -6,7 +6,7 @@ export enum Side {
 export enum ControlType {
   FILE = 'FILE',
   INGESTION = 'INGESTION',
-  TEXT_INPUT = 'TEXT_INPUT',
+  CONTEXT = 'CONTEXT',
   QUESTION = 'QUESTION',
   VECTOR_DATABASE = 'VECTOR_DATABASE',
   EXTRACTION = 'EXTRACTION',
@@ -39,7 +39,7 @@ export interface R {
   fileName?: string;
   ingestionHash?: string;
   extractionHash?: string;
-  textInput?: string;
+  context?: string;
   question?: string;
   isProcessing: boolean;
 }
