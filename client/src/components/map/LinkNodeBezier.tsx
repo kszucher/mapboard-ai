@@ -34,24 +34,18 @@ export const LinkNodeBezier: FC = () => {
 
         return (
           <>
-            <style>
-              {`
-          @keyframes dashMove {
-            to {
-              stroke-dashoffset: -${dashCycle};
-            }
-          }
-        `}
-            </style>
-            <path
-              key={`${nodeId}_l`}
-              d={getBezierLinePath('M', getRootLinePath(m, li))}
-              strokeWidth={1}
-              stroke="#ffffff"
-              fill="none"
-              {...pathCommonProps}
-              style={mergedStyle}
-            />
+            <>
+              <style>{`@keyframes dashMove { to { stroke-dashoffset: -${dashCycle} } } `}</style>
+              <path
+                key={`${nodeId}_l`}
+                d={getBezierLinePath('M', getRootLinePath(m, li))}
+                strokeWidth={1}
+                stroke="#ffffff"
+                fill="none"
+                {...pathCommonProps}
+                style={mergedStyle}
+              />
+            </>
           </>
         );
       })}
