@@ -8,6 +8,3 @@ print(result.document.export_to_dict())  # output: "## Docling Technical Report[
 # ingestion: file link --> JSON { docling }
 # vectorDatabase: JSON [], text [], question --> válasz amit a vector db ad
 # extraction: question, vectorDb válasz --> szöveg
-
-# text input
-# text output --> prompt
