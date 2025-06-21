@@ -39,9 +39,9 @@ export interface R {
   fileHash?: string;
   fileName?: string;
   ingestionHash?: string;
-  extractionHash?: string;
   context?: string;
   question?: string;
+  extractionHash?: string;
 }
 
 export type M = { g: G, l: Record<string, L>, r: Record<string, R> };

@@ -28,7 +28,7 @@ export const rDefault: R = {
   fileHash: '',
   fileName: '',
   ingestionHash: '',
-  extractionHash: '',
   context: '',
   question: '',
+  extractionHash: '',
 };
