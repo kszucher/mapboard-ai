@@ -19,8 +19,10 @@ export interface G {
 export interface L {
   fromNodeId: string;
   fromNodeSide: Side;
+  fromNodeSideIndex: number;
   toNodeId: string;
   toNodeSide: Side;
+  toNodeSideIndex: number;
   lineColor: string;
   lineWidth: number;
   isProcessing: boolean;

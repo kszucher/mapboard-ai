@@ -2,16 +2,18 @@ import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution'
 import { getInputL, getInputR, getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { createNewMapData } from '../../../shared/src/map/setters/map-create';
+import { normalizeM } from '../../../shared/src/map/setters/map-normalize';
 import { ControlType, M, MDelta } from '../../../shared/src/map/state/map-types';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
 import { DistributionService } from '../distribution/distribution.service';
-import { PrismaClient } from '../generated/client';
+import { Prisma, PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
 import { MapExtractionService } from './map-extraction.service';
 import { MapFileUploadService } from './map-file-upload.service';
 import { MapIngestionService } from './map-ingestion.service';
 import { MapVectorDatabaseService } from './map-vector-database.service';
+import InputJsonValue = Prisma.InputJsonValue;
 
 export class MapService {
   constructor(
@@ -55,6 +57,32 @@ export class MapService {
   }
 
   private genId = () => global.crypto.randomUUID().slice(-8);
+
+  async normalize() {
+    const oldMaps = await this.prisma.map.findMany({});
+
+    await this.prisma.map.deleteMany({});
+
+    const newMaps = [];
+
+    for (const map of oldMaps) {
+      newMaps.push({
+        id: map.id,
+        name: map.name,
+        userId: map.userId,
+        data: normalizeM(map.data as unknown),
+      });
+    }
+
+    await this.prisma.map.createMany({
+      data: newMaps.map(el => ({
+        id: el.id,
+        name: el.name,
+        userId: el.userId,
+        data: el.data as unknown as InputJsonValue,
+      })),
+    });
+  }
 
   async getMap({ workspaceId }: { workspaceId: number }) {
     const workspace = await this.prisma.workspace.findFirstOrThrow({

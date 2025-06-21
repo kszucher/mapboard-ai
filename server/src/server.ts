@@ -67,7 +67,8 @@ export const distributionService: DistributionService = new DistributionService(
 );
 
 (async () => {
-  await prismaClient.workspace.deleteMany({});
+  await workspaceService.deleteWorkspaces();
+  await mapService.normalize();
   await distributionService.connectAndSubscribe();
 })();
 

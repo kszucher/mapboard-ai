@@ -112,4 +112,8 @@ export class WorkspaceService {
       console.error('delete workspace error');
     }
   }
+
+  async deleteWorkspaces() {
+    await this.prisma.workspace.deleteMany();
+  }
 }
