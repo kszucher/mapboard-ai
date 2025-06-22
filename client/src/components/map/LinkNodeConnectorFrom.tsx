@@ -4,7 +4,6 @@ import { getNodeStartX, getNodeStartY } from '../../../../shared/src/map/getters
 import { ControlType, Side } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { adjustIcon } from '../../utils/utils.ts';
 
 export const LinkNodeConnectorFrom: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
@@ -25,9 +24,9 @@ export const LinkNodeConnectorFrom: FC = () => {
         viewBox="0 0 24 24"
         width="24"
         height="24"
-        r={8}
+        r={4}
         fill={'#666666'}
-        transform={`translate(${adjustIcon(getNodeStartX(ri) + ri.selfW)}, ${adjustIcon(getNodeStartY(ri) + ri.selfH / 2)})`}
+        transform={`translate(${getNodeStartX(ri) + ri.selfW - 8}, ${getNodeStartY(ri) + 60})`}
         {...{ vectorEffect: 'non-scaling-stroke' }}
         style={{
           transition: 'all 0.3s',

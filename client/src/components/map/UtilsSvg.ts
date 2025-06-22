@@ -24,6 +24,14 @@ export const getLinearLinePath = ({ x1, x2, y1, y2 }: { x1: number; x2: number; 
 export const getBezierLinePath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) =>
   `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
 
+const getControlPoint = (x: number, y: number, side: Side): { cx: number; cy: number } => {
+  const controlOffset = 100;
+  return {
+    cx: side === Side.R ? x + controlOffset : x - controlOffset,
+    cy: y,
+  };
+};
+
 const getCoordinatesForSide = (
   r: R,
   side: Side,
@@ -31,33 +39,26 @@ const getCoordinatesForSide = (
 ): {
   x: number;
   y: number;
-  cx: number;
-  cy: number;
 } => {
-  const offset = 100;
+  const yBaseOffset = 60;
+  const yOffset = 20;
   const nodeStartX = getNodeStartX(r);
   const nodeStartY = getNodeStartY(r);
-  switch (side) {
-    case Side.R:
-      return {
-        x: nodeStartX + r.selfW,
-        y: nodeStartY + r.selfH / 2,
-        cx: nodeStartX + r.selfW + offset,
-        cy: nodeStartY + r.selfH / 2,
-      };
-    case Side.L:
-      return {
-        x: nodeStartX,
-        y: nodeStartY + r.selfH / 2 + sideIndex * 20,
-        cx: nodeStartX - offset,
-        cy: nodeStartY + r.selfH / 2,
-      };
-  }
+  const y = nodeStartY + yBaseOffset + sideIndex * yOffset;
+
+  const x = side === Side.R ? nodeStartX + r.selfW - 10 : nodeStartX + 10;
+
+  return { x, y };
 };
 
 export const getRootLinePath = (m: M, l: L) => {
   const { fromNodeId, fromNodeSide, fromNodeSideIndex, toNodeId, toNodeSide, toNodeSideIndex } = l;
-  const { x: sx, y: sy, cx: c1x, cy: c1y } = getCoordinatesForSide(m.r[fromNodeId], fromNodeSide, fromNodeSideIndex);
-  const { x: ex, y: ey, cx: c2x, cy: c2y } = getCoordinatesForSide(m.r[toNodeId], toNodeSide, toNodeSideIndex);
+
+  const { x: sx, y: sy } = getCoordinatesForSide(m.r[fromNodeId], fromNodeSide, fromNodeSideIndex);
+  const { x: ex, y: ey } = getCoordinatesForSide(m.r[toNodeId], toNodeSide, toNodeSideIndex);
+
+  const { cx: c1x, cy: c1y } = getControlPoint(sx, sy, fromNodeSide);
+  const { cx: c2x, cy: c2y } = getControlPoint(ex, ey, toNodeSide);
+
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey];
 };
