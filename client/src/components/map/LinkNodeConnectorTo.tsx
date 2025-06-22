@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNodeStartX, getNodeStartY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getRootLeftX, getRootTopY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
 import { ControlType, L, Side } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -13,9 +13,6 @@ export const LinkNodeConnectorTo: FC = () => {
   return Object.entries(m.r)
     .filter(([, ri]) => [ControlType.INGESTION, ControlType.LLM, ControlType.VECTOR_DATABASE].includes(ri.controlType))
     .flatMap(([nodeId, ri]) => {
-      const baseX = getNodeStartX(ri) + 10;
-      const baseY = getNodeStartY(ri) + 60;
-
       const makeCircle = (offsetY: number, index: number) => (
         <circle
           key={`${nodeId}_${Side.L}_rc_${index}`}
@@ -24,7 +21,7 @@ export const LinkNodeConnectorTo: FC = () => {
           height="24"
           r={4}
           fill={'#666666'}
-          transform={`translate(${baseX}, ${baseY + offsetY})`}
+          transform={`translate(${getRootLeftX(ri) + 10}, ${getRootTopY(ri) + 60 + offsetY})`}
           {...{ vectorEffect: 'non-scaling-stroke' }}
           style={{
             transition: 'all 0.3s',
@@ -55,8 +52,8 @@ export const LinkNodeConnectorTo: FC = () => {
         return [0, 20, 40].map((offset, idx) => makeCircle(offset, idx));
       } else if (ri.controlType === ControlType.LLM) {
         return [0, 20].map((offset, idx) => makeCircle(offset, idx));
+      } else {
+        return [makeCircle(0, 0)];
       }
-
-      return [makeCircle(0, 0)];
     });
 };

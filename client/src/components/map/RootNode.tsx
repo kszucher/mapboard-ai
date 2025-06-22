@@ -1,7 +1,7 @@
 import { Box, IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNodeStartX, getNodeStartY } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getRootLeftX, getRootTopY } from '../../../../shared/src/map/getters/map-queries.ts';
 import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
@@ -23,8 +23,8 @@ export const RootNode: FC = () => {
       ref={ref => ref && ref.focus()}
       style={{
         position: 'absolute',
-        left: getNodeStartX(ri),
-        top: getNodeStartY(ri),
+        left: getRootLeftX(ri),
+        top: getRootTopY(ri),
         transition: 'left 0.3s, top 0.3s',
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
         minWidth: ri.selfW,

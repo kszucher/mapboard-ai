@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { getLineCoords } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
-import { getBezierLinePath, getRootLinePath, pathCommonProps } from './UtilsSvg.ts';
+import { getBezierLineCoords, getBezierLinePath, pathCommonProps } from './UtilsSvg.ts';
 
 export const LinkNodeBezier: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
@@ -34,7 +35,7 @@ export const LinkNodeBezier: FC = () => {
       <g key={nodeId}>
         <style>{`@keyframes dashMove { to { stroke-dashoffset: -${dashCycle} } } `}</style>
         <path
-          d={getBezierLinePath(getRootLinePath(m, li))}
+          d={getBezierLinePath(getBezierLineCoords(getLineCoords(m, li)))}
           strokeWidth={1}
           stroke="#ffffff"
           fill="none"

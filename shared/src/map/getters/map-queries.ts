@@ -11,8 +11,16 @@ export const getMapSelfH = (m: M) => {
   return Math.max(...rl.map(ri => ri.offsetH + ri.selfH)) + 2 * M_PADDING;
 };
 
-export const getNodeStartX = (r: R) => r.offsetW + M_PADDING;
-export const getNodeStartY = (r: R) => r.offsetH + M_PADDING;
+export const getRootLeftX = (r: R) => r.offsetW + M_PADDING;
+export const getRootRightX = (r: R) => r.offsetW + M_PADDING + r.selfW;
+export const getRootTopY = (r: R) => r.offsetH + M_PADDING;
+
+export const getLineCoords = (m: M, l: L) => [
+  getRootRightX(m.r[l.fromNodeId]),
+  getRootTopY(m.r[l.fromNodeId]) + 60 + l.fromNodeSideIndex * 20,
+  getRootLeftX(m.r[l.toNodeId]),
+  getRootTopY(m.r[l.toNodeId]) + 60 + l.toNodeSideIndex * 20,
+];
 
 export const getLastIndexR = (m: M): number => Math.max(-1, ...Object.values(m.r).map(ri => ri.iid));
 
