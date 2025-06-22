@@ -2,7 +2,7 @@ import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/t
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRootLeftX, getRootTopY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
-import { ControlType, L } from '../../../../shared/src/map/state/map-types.ts';
+import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
@@ -36,6 +36,15 @@ export const RootNode: FC = () => {
     [ControlType.LLM]: 'LLM',
   } as const;
 
+  const allowedTargetMap = {
+    [ControlType.FILE]: [ControlType.INGESTION],
+    [ControlType.INGESTION]: [ControlType.VECTOR_DATABASE],
+    [ControlType.CONTEXT]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
+    [ControlType.QUESTION]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
+    [ControlType.VECTOR_DATABASE]: [ControlType.LLM],
+    [ControlType.LLM]: [],
+  } as const;
+
   type BadgeColor = (typeof colorMap)[keyof typeof colorMap];
 
   const resolveBadgeColor = (controlType: ControlType): BadgeColor => {
@@ -46,15 +55,22 @@ export const RootNode: FC = () => {
     return badgeTextMap[controlType];
   };
 
+  const getAllowedTargets = (controlType: ControlType): readonly ControlType[] => {
+    return allowedTargetMap[controlType];
+  };
+
   const insertL = (fromNodeId: string, toNodeId: string) => {
-    const newLink: Partial<L> = {
-      fromNodeId,
-      fromNodeSideIndex: 0,
-      toNodeId,
-      toNodeSideIndex: 0,
-    };
-    if (!isExistingLink(m, newLink)) {
-      dispatch(actions.insertL({ lPartial: newLink }));
+    if (!isExistingLink(m, fromNodeId, toNodeId)) {
+      dispatch(
+        actions.insertL({
+          lPartial: {
+            fromNodeId,
+            fromNodeSideIndex: 0,
+            toNodeId,
+            toNodeSideIndex: 0,
+          },
+        })
+      );
     }
   };
 
@@ -75,7 +91,7 @@ export const RootNode: FC = () => {
         pointerEvents: 'none',
       }}
     >
-      {/* IID, BADGE, SPINNER */}
+      {/* IID BADGE, CONTROL TYPE BADGE, IS PROCESSING SPINNER */}
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
@@ -127,7 +143,7 @@ export const RootNode: FC = () => {
         </IconButton>
       </Box>
 
-      {/* GRIP */}
+      {/* DOTS */}
       <Box position="absolute" top="0" right="0" pt="2" pr="2">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
@@ -150,28 +166,19 @@ export const RootNode: FC = () => {
               </DropdownMenu.SubTrigger>
               <DropdownMenu.SubContent>
                 {Object.entries(m.r)
-                  .filter(([, ri]) => ri.controlType === ControlType.VECTOR_DATABASE)
-                  .map(([toNodeId, ri]) => (
+                  .filter(
+                    ([toNodeId, toRi]) =>
+                      getAllowedTargets(ri.controlType).includes(toRi.controlType) &&
+                      !isExistingLink(m, nodeId, toNodeId)
+                  )
+                  .map(([toNodeId, toRi]) => (
                     <DropdownMenu.Item
                       key={toNodeId}
                       onClick={() => {
                         insertL(nodeId, toNodeId);
                       }}
                     >
-                      {'Vector Database R' + ri.iid}
-                    </DropdownMenu.Item>
-                  ))}
-                <DropdownMenu.Separator />
-                {Object.entries(m.r)
-                  .filter(([, ri]) => ri.controlType === ControlType.LLM)
-                  .map(([toNodeId, ri]) => (
-                    <DropdownMenu.Item
-                      key={toNodeId}
-                      onClick={() => {
-                        insertL(nodeId, toNodeId);
-                      }}
-                    >
-                      {'LLM R' + ri.iid}
+                      {toRi.controlType + ' R' + toRi.iid}
                     </DropdownMenu.Item>
                   ))}
               </DropdownMenu.SubContent>

@@ -24,12 +24,8 @@ export const getLineCoords = (m: M, l: L) => [
 
 export const getLastIndexR = (m: M): number => Math.max(-1, ...Object.values(m.r).map(ri => ri.iid));
 
-export const isExistingLink = (m: M, partialL: Partial<L>): boolean =>
-  Object.values(m.l).some(
-    li =>
-      partialL.fromNodeId === li.fromNodeId &&
-      partialL.toNodeId === li.toNodeId,
-  );
+export const isExistingLink = (m: M, fromNodeId: string, toNodeId: string): boolean =>
+  Object.values(m.l).some(li => li.fromNodeId === fromNodeId && li.toNodeId === toNodeId);
 
 export const getInputL = (m: M, rNodeId: string): Record<string, L> => {
   return Object.fromEntries(Object.entries(m.l).filter(([, li]) => li.toNodeId === rNodeId));
