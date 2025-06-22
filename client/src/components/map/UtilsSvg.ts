@@ -21,8 +21,8 @@ export const getCoordsMidBezier = ([sx, sy, c1x, c1y, c2x, c2y, ex, ey]: number[
 export const getLinearLinePath = ({ x1, x2, y1, y2 }: { x1: number; x2: number; y1: number; y2: number }) =>
   `M${x1},${y1} L${x2},${y2}`;
 
-export const getBezierLinePath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) =>
-  `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
+export const getBezierLinePath = ([x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) =>
+  `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
 
 const getControlPoint = (x: number, y: number, side: Side): { cx: number; cy: number } => {
   const controlOffset = 100;
@@ -61,4 +61,9 @@ export const getRootLinePath = (m: M, l: L) => {
   const { cx: c2x, cy: c2y } = getControlPoint(ex, ey, toNodeSide);
 
   return [sx, sy, c1x, c1y, c2x, c2y, ex, ey];
+};
+
+export const getBezierCoords = (m: M, l: L) => {
+  const coords = getRootLinePath(m, l);
+  return getCoordsMidBezier(coords);
 };

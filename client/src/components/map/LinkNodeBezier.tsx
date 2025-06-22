@@ -34,7 +34,7 @@ export const LinkNodeBezier: FC = () => {
       <g key={nodeId}>
         <style>{`@keyframes dashMove { to { stroke-dashoffset: -${dashCycle} } } `}</style>
         <path
-          d={getBezierLinePath('M', getRootLinePath(m, li))}
+          d={getBezierLinePath(getRootLinePath(m, li))}
           strokeWidth={1}
           stroke="#ffffff"
           fill="none"
