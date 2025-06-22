@@ -1,5 +1,5 @@
 import { getControlTypeDimensions } from './map-consts';
-import { ControlType, G, L, R, Side } from './map-types';
+import { ControlType, G, L, R } from './map-types';
 
 export const gDefault: G = {
   isLocked: false,
@@ -7,10 +7,8 @@ export const gDefault: G = {
 
 export const lDefault: L = {
   fromNodeId: '',
-  fromNodeSide: Side.L,
   fromNodeSideIndex: 0,
   toNodeId: '',
-  toNodeSide: Side.R,
   toNodeSideIndex: 0,
   lineColor: '#bbbbbb',
   lineWidth: 1,

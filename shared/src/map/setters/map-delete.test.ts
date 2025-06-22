@@ -1,5 +1,5 @@
 import { lDefault, rDefault } from '../state/map-defaults';
-import { M, Side } from '../state/map-types';
+import { M } from '../state/map-types';
 import { mapDelete } from './map-delete';
 
 describe('MapDeleteTests', () => {
@@ -10,23 +10,17 @@ describe('MapDeleteTests', () => {
         l0: {
           ...lDefault,
           fromNodeId: 'r0',
-          fromNodeSide: Side.L,
           toNodeId: 'r1',
-          toNodeSide: Side.R,
         },
         l1: {
           ...lDefault,
           fromNodeId: 'r0',
-          fromNodeSide: Side.L,
           toNodeId: 'r2',
-          toNodeSide: Side.R,
         },
         l2: {
           ...lDefault,
           fromNodeId: 'r1',
-          fromNodeSide: Side.L,
           toNodeId: 'r2',
-          toNodeSide: Side.R,
         },
       },
       r: {
@@ -50,9 +44,7 @@ describe('MapDeleteTests', () => {
         l1: {
           ...lDefault,
           fromNodeId: 'r0',
-          fromNodeSide: Side.L,
           toNodeId: 'r2',
-          toNodeSide: Side.R,
         },
       },
       r: {

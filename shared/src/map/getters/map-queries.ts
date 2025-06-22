@@ -28,9 +28,7 @@ export const isExistingLink = (m: M, partialL: Partial<L>): boolean =>
   Object.values(m.l).some(
     li =>
       partialL.fromNodeId === li.fromNodeId &&
-      partialL.toNodeId === li.toNodeId &&
-      partialL.fromNodeSide === li.fromNodeSide &&
-      partialL.toNodeSide === li.toNodeSide,
+      partialL.toNodeId === li.toNodeId,
   );
 
 export const getInputL = (m: M, rNodeId: string): Record<string, L> => {

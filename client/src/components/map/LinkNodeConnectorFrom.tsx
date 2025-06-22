@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRootLeftX, getRootTopY } from '../../../../shared/src/map/getters/map-queries.ts';
-import { ControlType, Side } from '../../../../shared/src/map/state/map-types.ts';
+import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
@@ -20,7 +20,7 @@ export const LinkNodeConnectorFrom: FC = () => {
     )
     .map(([nodeId, ri]) => (
       <circle
-        key={`${nodeId}_${Side.R}_rc`}
+        key={`${nodeId}_from`}
         viewBox="0 0 24 24"
         width="24"
         height="24"
@@ -39,7 +39,6 @@ export const LinkNodeConnectorFrom: FC = () => {
           dispatch(
             actions.setConnectionStart({
               fromNodeId: nodeId,
-              fromNodeSide: Side.R,
             })
           );
         }}

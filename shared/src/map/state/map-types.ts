@@ -1,8 +1,3 @@
-export enum Side {
-  L = 'left',
-  R = 'right',
-}
-
 export enum ControlType {
   FILE = 'FILE',
   INGESTION = 'INGESTION',
@@ -18,10 +13,8 @@ export interface G {
 
 export interface L {
   fromNodeId: string;
-  fromNodeSide: Side;
   fromNodeSideIndex: number;
   toNodeId: string;
-  toNodeSide: Side;
   toNodeSideIndex: number;
   lineColor: string;
   lineWidth: number;

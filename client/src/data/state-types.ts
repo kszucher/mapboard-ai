@@ -1,4 +1,4 @@
-import { M, Side } from '../../../shared/src/map/state/map-types.ts';
+import { M } from '../../../shared/src/map/state/map-types.ts';
 
 export interface State {
   token: string;
@@ -27,7 +27,6 @@ export interface State {
   rootFrameVisible: boolean;
   connectionStart: {
     fromNodeId: string;
-    fromNodeSide: Side;
   };
 }
 

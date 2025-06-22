@@ -1,4 +1,3 @@
-import { Side } from '../../../shared/src/map/state/map-types.ts';
 import { AlertDialogState, DialogState, MidMouseMode, PageState, State } from './state-types.ts';
 
 export const stateDefaults: State = {
@@ -28,7 +27,6 @@ export const stateDefaults: State = {
   rootFrameVisible: false,
   connectionStart: {
     fromNodeId: '',
-    fromNodeSide: Side.R,
   },
 };
 

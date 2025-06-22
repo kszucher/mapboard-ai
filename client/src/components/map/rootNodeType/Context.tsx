@@ -2,7 +2,7 @@ import { Badge, Box, DropdownMenu, Flex, IconButton, TextArea } from '@radix-ui/
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isExistingLink } from '../../../../../shared/src/map/getters/map-queries.ts';
-import { ControlType, L, R, Side } from '../../../../../shared/src/map/state/map-types.ts';
+import { ControlType, L, R } from '../../../../../shared/src/map/state/map-types.ts';
 import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
@@ -14,10 +14,8 @@ export const Context = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const insertL = (fromNodeId: string, toNodeId: string) => {
     const newLink: Partial<L> = {
       fromNodeId,
-      fromNodeSide: Side.R,
       fromNodeSideIndex: 0,
       toNodeId,
-      toNodeSide: Side.L,
       toNodeSideIndex: 0,
     };
     if (!isExistingLink(m, newLink)) {

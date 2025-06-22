@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRootLeftX, getRootTopY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
-import { ControlType, L, Side } from '../../../../shared/src/map/state/map-types.ts';
+import { ControlType, L } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
@@ -15,7 +15,7 @@ export const LinkNodeConnectorTo: FC = () => {
     .flatMap(([nodeId, ri]) => {
       const makeCircle = (offsetY: number, index: number) => (
         <circle
-          key={`${nodeId}_${Side.L}_rc_${index}`}
+          key={`${nodeId}_to_${index}`}
           viewBox="0 0 24 24"
           width="24"
           height="24"
@@ -34,7 +34,6 @@ export const LinkNodeConnectorTo: FC = () => {
             const newLink: Partial<L> = {
               ...connectionStart,
               toNodeId: nodeId,
-              toNodeSide: Side.L,
               toNodeSideIndex: index,
             };
             if (
