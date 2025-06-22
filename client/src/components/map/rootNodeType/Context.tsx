@@ -1,13 +1,29 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, TextArea } from '@radix-ui/themes';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { R } from '../../../../../shared/src/map/state/map-types.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { isExistingLink } from '../../../../../shared/src/map/getters/map-queries.ts';
+import { ControlType, L, R, Side } from '../../../../../shared/src/map/state/map-types.ts';
 import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
-import { AppDispatch } from '../../../data/store.ts';
+import { AppDispatch, RootState } from '../../../data/store.ts';
 
 export const Context = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
+
+  const insertL = (fromNodeId: string, toNodeId: string) => {
+    const newLink: Partial<L> = {
+      fromNodeId,
+      fromNodeSide: Side.R,
+      fromNodeSideIndex: 0,
+      toNodeId,
+      toNodeSide: Side.L,
+      toNodeSideIndex: 0,
+    };
+    if (!isExistingLink(m, newLink)) {
+      dispatch(actions.insertL({ lPartial: newLink }));
+    }
+  };
 
   return (
     <React.Fragment>
@@ -26,6 +42,39 @@ export const Context = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             >
               {'Delete'}
             </DropdownMenu.Item>
+            <DropdownMenu.Sub>
+              <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
+                {'Connect To...'}
+                <div className="RightSlot"></div>
+              </DropdownMenu.SubTrigger>
+              <DropdownMenu.SubContent>
+                {Object.entries(m.r)
+                  .filter(([, ri]) => ri.controlType === ControlType.VECTOR_DATABASE)
+                  .map(([toNodeId, ri]) => (
+                    <DropdownMenu.Item
+                      key={toNodeId}
+                      onClick={() => {
+                        insertL(nodeId, toNodeId);
+                      }}
+                    >
+                      {'Vector Database R' + ri.iid}
+                    </DropdownMenu.Item>
+                  ))}
+                <DropdownMenu.Separator />
+                {Object.entries(m.r)
+                  .filter(([, ri]) => ri.controlType === ControlType.LLM)
+                  .map(([toNodeId, ri]) => (
+                    <DropdownMenu.Item
+                      key={toNodeId}
+                      onClick={() => {
+                        insertL(nodeId, toNodeId);
+                      }}
+                    >
+                      {'LLM R' + ri.iid}
+                    </DropdownMenu.Item>
+                  ))}
+              </DropdownMenu.SubContent>
+            </DropdownMenu.Sub>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </Box>
