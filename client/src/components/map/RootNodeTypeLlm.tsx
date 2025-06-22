@@ -1,10 +1,10 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { R } from '../../../../../shared/src/map/state/map-types.ts';
-import { RootState } from '../../../data/store.ts';
+import { R } from '../../../../shared/src/map/state/map-types.ts';
+import { RootState } from '../../data/store.ts';
 
-export const Llm = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+export const RootNodeTypeLlm = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   return (

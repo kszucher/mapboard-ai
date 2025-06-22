@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
-import { R } from '../../../../../shared/src/map/state/map-types.ts';
-import { api, useGetMapInfoQuery } from '../../../data/api.ts';
-import { shrinkString } from '../../../utils/utils.ts';
+import { R } from '../../../../shared/src/map/state/map-types.ts';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
+import { shrinkString } from '../../utils/utils.ts';
 
-export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+export const RootNodeTypeFileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);

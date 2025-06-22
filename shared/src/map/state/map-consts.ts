@@ -48,9 +48,9 @@ export const controlColors = {
 
 export const controlTexts = {
   [ControlType.FILE]: 'File Upload',
-  [ControlType.INGESTION]: 'Ingestion',
+  [ControlType.INGESTION]: 'RootNodeTypeIngestion',
   [ControlType.CONTEXT]: 'Context',
-  [ControlType.QUESTION]: 'Question',
+  [ControlType.QUESTION]: 'RootNodeTypeQuestion',
   [ControlType.VECTOR_DATABASE]: 'Vector Database',
   [ControlType.LLM]: 'LLM',
 } as const;

@@ -13,12 +13,12 @@ import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { Context } from './rootNodeType/Context.tsx';
-import { FileUpload } from './rootNodeType/FileUpload.tsx';
-import { Ingestion } from './rootNodeType/Ingestion.tsx';
-import { Llm } from './rootNodeType/Llm.tsx';
-import { Question } from './rootNodeType/Question.tsx';
-import { VectorDatabase } from './rootNodeType/VectorDatabase.tsx';
+import { RootNodeTypeContext } from './RootNodeTypeContext.tsx';
+import { RootNodeTypeFileUpload } from './RootNodeTypeFileUpload.tsx';
+import { RootNodeTypeIngestion } from './RootNodeTypeIngestion.tsx';
+import { RootNodeTypeLlm } from './RootNodeTypeLlm.tsx';
+import { RootNodeTypeQuestion } from './RootNodeTypeQuestion.tsx';
+import { RootNodeTypeVectorDatabase } from './RootNodeTypeVectorDatabase.tsx';
 
 export const RootNode: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
@@ -170,12 +170,12 @@ export const RootNode: FC = () => {
         </DropdownMenu.Root>
       </Box>
 
-      {ri.controlType === ControlType.FILE && <FileUpload ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.INGESTION && <Ingestion ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.CONTEXT && <Context ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.QUESTION && <Question ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.VECTOR_DATABASE && <VectorDatabase ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.LLM && <Llm ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.FILE && <RootNodeTypeFileUpload ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.INGESTION && <RootNodeTypeIngestion ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.CONTEXT && <RootNodeTypeContext ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.QUESTION && <RootNodeTypeQuestion ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.VECTOR_DATABASE && <RootNodeTypeVectorDatabase ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.LLM && <RootNodeTypeLlm ri={ri} nodeId={nodeId} />}
     </div>
   ));
 };

@@ -1,11 +1,11 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { R } from '../../../../../shared/src/map/state/map-types.ts';
-import { actions } from '../../../data/reducer.ts';
-import { AppDispatch } from '../../../data/store.ts';
+import { R } from '../../../../shared/src/map/state/map-types.ts';
+import { actions } from '../../data/reducer.ts';
+import { AppDispatch } from '../../data/store.ts';
 
-export const Context = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+export const RootNodeTypeQuestion = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
