@@ -1,4 +1,4 @@
-import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner, TextArea } from '@radix-ui/themes';
+import { Box, DropdownMenu, Flex, IconButton, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
@@ -11,18 +11,6 @@ export const Question = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
 
   return (
     <React.Fragment>
-      <Box position="absolute" top="0" left="0" pt="2" pl="2">
-        <Flex direction="row" gap="2" align="start" content="center">
-          <Badge color="gray" size="2">
-            {'R' + ri.iid}
-          </Badge>
-          <Badge color="lime" size="2">
-            {'Question'}
-          </Badge>
-          {ri.isProcessing && <Spinner m="1" />}
-        </Flex>
-      </Box>
-
       <Box position="absolute" top="0" right="0" pt="2" pr="7">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>

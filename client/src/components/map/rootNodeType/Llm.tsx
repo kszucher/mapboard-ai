@@ -1,4 +1,4 @@
-import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner, Text, TextArea } from '@radix-ui/themes';
+import { Box, DropdownMenu, Flex, IconButton, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInputR } from '../../../../../shared/src/map/getters/map-queries.ts';
@@ -14,18 +14,6 @@ export const Llm = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
 
   return (
     <React.Fragment>
-      <Box position="absolute" top="0" left="0" pt="2" pl="2">
-        <Flex direction="row" gap="2" align="start" content="center">
-          <Badge color="gray" size="2">
-            {'R' + ri.iid}
-          </Badge>
-          <Badge color="jade" size="2">
-            {'LLM'}
-          </Badge>
-          {ri.isProcessing && <Spinner m="1" />}
-        </Flex>
-      </Box>
-
       <Box position="absolute" top="0" right="0" pt="2" pr="7">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>

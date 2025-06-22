@@ -1,4 +1,4 @@
-import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
+import { Box, DropdownMenu, Flex, IconButton, Text } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInputR } from '../../../../../shared/src/map/getters/map-queries.ts';
@@ -12,20 +12,10 @@ export const Ingestion = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const inputNode = Object.values(getInputR(m, nodeId))[0];
   const dispatch = useDispatch<AppDispatch>();
 
+  console.log(ri);
+
   return (
     <React.Fragment>
-      <Box position="absolute" top="0" left="0" pt="2" pl="2">
-        <Flex direction="row" gap="2" align="start" content="center">
-          <Badge color="gray" size="2">
-            {'R' + ri.iid}
-          </Badge>
-          <Badge color="cyan" size="2">
-            {'Ingestion'}
-          </Badge>
-          {ri.isProcessing && <Spinner m="1" />}
-        </Flex>
-      </Box>
-
       <Box position="absolute" top="0" right="0" pt="2" pr="7">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>

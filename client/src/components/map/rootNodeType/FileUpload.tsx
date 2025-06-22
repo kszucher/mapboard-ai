@@ -1,4 +1,4 @@
-import { Badge, Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
+import { Box, Button, DropdownMenu, Flex, IconButton, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { R } from '../../../../../shared/src/map/state/map-types.ts';
@@ -23,17 +23,6 @@ export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
 
   return (
     <React.Fragment>
-      <Box position="absolute" top="0" left="0" pt="2" pl="2">
-        <Flex direction="row" gap="2" align="start" content="center">
-          <Badge color="gray" size="2">
-            {'R' + ri.iid}
-          </Badge>
-          <Badge color="yellow" size="2">
-            {'File Upload'}
-          </Badge>
-        </Flex>
-      </Box>
-
       <Box position="absolute" top="0" right="0" pt="2" pr="7">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>

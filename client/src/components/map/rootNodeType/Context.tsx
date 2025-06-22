@@ -1,4 +1,4 @@
-import { Badge, Box, DropdownMenu, Flex, IconButton, TextArea } from '@radix-ui/themes';
+import { Box, DropdownMenu, Flex, IconButton, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isExistingLink } from '../../../../../shared/src/map/getters/map-queries.ts';
@@ -76,16 +76,7 @@ export const Context = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </Box>
-      <Box position="absolute" top="0" left="0" pt="2" pl="2">
-        <Flex direction="row" gap="2" align="start" content="center">
-          <Badge color="gray" size="2">
-            {'R' + ri.iid}
-          </Badge>
-          <Badge color="violet" size="2">
-            {'Context'}
-          </Badge>
-        </Flex>
-      </Box>
+
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="4" align="start" content="center">
           <TextArea

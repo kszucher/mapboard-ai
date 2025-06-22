@@ -1,4 +1,4 @@
-import { Box, IconButton } from '@radix-ui/themes';
+import { Badge, Box, Flex, IconButton, Spinner } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRootLeftX, getRootTopY } from '../../../../shared/src/map/getters/map-queries.ts';
@@ -6,16 +6,45 @@ import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { Llm } from './rootNodeType/Llm.tsx';
+import { Context } from './rootNodeType/Context.tsx';
 import { FileUpload } from './rootNodeType/FileUpload.tsx';
 import { Ingestion } from './rootNodeType/Ingestion.tsx';
-import { Context } from './rootNodeType/Context.tsx';
+import { Llm } from './rootNodeType/Llm.tsx';
 import { Question } from './rootNodeType/Question.tsx';
 import { VectorDatabase } from './rootNodeType/VectorDatabase.tsx';
 
 export const RootNode: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
+
+  const colorMap = {
+    [ControlType.FILE]: 'yellow',
+    [ControlType.INGESTION]: 'cyan',
+    [ControlType.CONTEXT]: 'violet',
+    [ControlType.QUESTION]: 'lime',
+    [ControlType.VECTOR_DATABASE]: 'brown',
+    [ControlType.LLM]: 'jade',
+  } as const;
+
+  const badgeTextMap = {
+    [ControlType.FILE]: 'File Upload',
+    [ControlType.INGESTION]: 'Ingestion',
+    [ControlType.CONTEXT]: 'Context',
+    [ControlType.QUESTION]: 'Question',
+    [ControlType.VECTOR_DATABASE]: 'Vector Database',
+    [ControlType.LLM]: 'LLM',
+  } as const;
+
+  type BadgeColor = (typeof colorMap)[keyof typeof colorMap];
+
+  const resolveBadgeColor = (controlType: ControlType): BadgeColor => {
+    return colorMap[controlType];
+  };
+
+  const resolveBadgeText = (controlType: ControlType): string => {
+    return badgeTextMap[controlType];
+  };
+
   return Object.entries(m.r).map(([nodeId, ri]) => (
     <div
       key={nodeId}
@@ -70,6 +99,19 @@ export const RootNode: FC = () => {
           <GripVertical />
         </IconButton>
       </Box>
+
+      <Box position="absolute" top="0" left="0" pt="2" pl="2">
+        <Flex direction="row" gap="2" align="start" content="center">
+          <Badge color="gray" size="2">
+            {'R' + ri.iid}
+          </Badge>
+          <Badge color={resolveBadgeColor(ri.controlType)} size="2">
+            {resolveBadgeText(ri.controlType)}
+          </Badge>
+          {ri.isProcessing && <Spinner m="1" />}
+        </Flex>
+      </Box>
+
       {ri.controlType === ControlType.FILE && <FileUpload ri={ri} nodeId={nodeId} />}
       {ri.controlType === ControlType.INGESTION && <Ingestion ri={ri} nodeId={nodeId} />}
       {ri.controlType === ControlType.CONTEXT && <Context ri={ri} nodeId={nodeId} />}
