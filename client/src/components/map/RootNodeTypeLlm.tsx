@@ -12,7 +12,6 @@ export const RootNodeTypeLlm = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
       <Box position="absolute" top="7" mt="2" ml="3" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="4" align="start" content="center">
           <TextArea
-            disabled
             placeholder=""
             color="gray"
             variant="soft"
