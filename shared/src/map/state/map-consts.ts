@@ -36,3 +36,39 @@ export const getControlTypeDimensions = (controlType: ControlType): { w: number,
   h += 2 * R_PADDING;
   return { w, h };
 };
+
+export const controlColors = {
+  [ControlType.FILE]: 'yellow',
+  [ControlType.INGESTION]: 'cyan',
+  [ControlType.CONTEXT]: 'violet',
+  [ControlType.QUESTION]: 'lime',
+  [ControlType.VECTOR_DATABASE]: 'brown',
+  [ControlType.LLM]: 'jade',
+} as const;
+
+export const controlTexts = {
+  [ControlType.FILE]: 'File Upload',
+  [ControlType.INGESTION]: 'Ingestion',
+  [ControlType.CONTEXT]: 'Context',
+  [ControlType.QUESTION]: 'Question',
+  [ControlType.VECTOR_DATABASE]: 'Vector Database',
+  [ControlType.LLM]: 'LLM',
+} as const;
+
+export const allowedTargetControls = {
+  [ControlType.FILE]: [ControlType.INGESTION],
+  [ControlType.INGESTION]: [ControlType.VECTOR_DATABASE],
+  [ControlType.CONTEXT]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
+  [ControlType.QUESTION]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
+  [ControlType.VECTOR_DATABASE]: [ControlType.LLM],
+  [ControlType.LLM]: [],
+} as const;
+
+export const allowedSourceControls = {
+  [ControlType.FILE]: [],
+  [ControlType.INGESTION]: [ControlType.FILE],
+  [ControlType.CONTEXT]: [],
+  [ControlType.QUESTION]: [],
+  [ControlType.VECTOR_DATABASE]: [ControlType.INGESTION, ControlType.CONTEXT, ControlType.QUESTION],
+  [ControlType.LLM]: [ControlType.VECTOR_DATABASE, ControlType.CONTEXT, ControlType.QUESTION],
+};

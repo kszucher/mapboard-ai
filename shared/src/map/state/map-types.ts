@@ -1,3 +1,5 @@
+import { controlColors } from './map-consts';
+
 export enum ControlType {
   FILE = 'FILE',
   INGESTION = 'INGESTION',
@@ -39,3 +41,5 @@ export interface R {
 
 export type M = { g: G, l: Record<string, L>, r: Record<string, R> };
 export type MDelta = { g?: Partial<G>, l?: Record<string, Partial<L>>, r?: Record<string, Partial<R>> };
+
+export type ControlColor = (typeof controlColors)[keyof typeof controlColors];

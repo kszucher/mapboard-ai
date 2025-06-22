@@ -2,7 +2,13 @@ import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/t
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRootLeftX, getRootTopY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
-import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
+import {
+  allowedSourceControls,
+  allowedTargetControls,
+  controlColors,
+  controlTexts,
+} from '../../../../shared/src/map/state/map-consts.ts';
+import { ControlColor, ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
@@ -18,58 +24,20 @@ export const RootNode: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
 
-  const colorMap = {
-    [ControlType.FILE]: 'yellow',
-    [ControlType.INGESTION]: 'cyan',
-    [ControlType.CONTEXT]: 'violet',
-    [ControlType.QUESTION]: 'lime',
-    [ControlType.VECTOR_DATABASE]: 'brown',
-    [ControlType.LLM]: 'jade',
-  } as const;
-
-  const badgeTextMap = {
-    [ControlType.FILE]: 'File Upload',
-    [ControlType.INGESTION]: 'Ingestion',
-    [ControlType.CONTEXT]: 'Context',
-    [ControlType.QUESTION]: 'Question',
-    [ControlType.VECTOR_DATABASE]: 'Vector Database',
-    [ControlType.LLM]: 'LLM',
-  } as const;
-
-  const allowedTargetMap = {
-    [ControlType.FILE]: [ControlType.INGESTION],
-    [ControlType.INGESTION]: [ControlType.VECTOR_DATABASE],
-    [ControlType.CONTEXT]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
-    [ControlType.QUESTION]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
-    [ControlType.VECTOR_DATABASE]: [ControlType.LLM],
-    [ControlType.LLM]: [],
-  } as const;
-
-  const allowedSourceMap = {
-    [ControlType.FILE]: [],
-    [ControlType.INGESTION]: [ControlType.FILE],
-    [ControlType.CONTEXT]: [],
-    [ControlType.QUESTION]: [],
-    [ControlType.VECTOR_DATABASE]: [ControlType.INGESTION, ControlType.CONTEXT, ControlType.QUESTION],
-    [ControlType.LLM]: [ControlType.VECTOR_DATABASE, ControlType.CONTEXT, ControlType.QUESTION],
-  };
-
-  type BadgeColor = (typeof colorMap)[keyof typeof colorMap];
-
-  const resolveBadgeColor = (controlType: ControlType): BadgeColor => {
-    return colorMap[controlType];
+  const resolveBadgeColor = (controlType: ControlType): ControlColor => {
+    return controlColors[controlType];
   };
 
   const resolveBadgeText = (controlType: ControlType): string => {
-    return badgeTextMap[controlType];
+    return controlTexts[controlType];
   };
 
   const getAllowedTargets = (controlType: ControlType): readonly ControlType[] => {
-    return allowedTargetMap[controlType];
+    return allowedTargetControls[controlType];
   };
 
   const getAllowedSources = (controlType: ControlType): readonly ControlType[] => {
-    return allowedSourceMap[controlType];
+    return allowedSourceControls[controlType];
   };
 
   const insertL = (fromNodeId: string, fromNodeSideIndex: number, toNodeId: string, toNodeSideIndex: number) => {
@@ -104,7 +72,7 @@ export const RootNode: FC = () => {
         pointerEvents: 'none',
       }}
     >
-      {/* IID BADGE, CONTROL TYPE BADGE, IS PROCESSING SPINNER */}
+      {/* IID, CONTROL_TYPE, IS_PROCESSING */}
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
