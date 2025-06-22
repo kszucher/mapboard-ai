@@ -30,7 +30,7 @@ export const LinkNodeConnectorTo: FC = () => {
       if (ri.controlType === ControlType.VECTOR_DATABASE) {
         return [0, 20, 40].map((offset, idx) => makeCircle(offset, idx));
       } else if (ri.controlType === ControlType.LLM) {
-        return [0, 20].map((offset, idx) => makeCircle(offset, idx));
+        return [0, 20, 40].map((offset, idx) => makeCircle(offset, idx));
       } else {
         return [makeCircle(0, 0)];
       }

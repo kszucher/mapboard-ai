@@ -51,7 +51,7 @@ export const RootNode: FC = () => {
     [ControlType.CONTEXT]: [],
     [ControlType.QUESTION]: [],
     [ControlType.VECTOR_DATABASE]: [ControlType.INGESTION, ControlType.CONTEXT, ControlType.QUESTION],
-    [ControlType.LLM]: [ControlType.CONTEXT, ControlType.QUESTION],
+    [ControlType.LLM]: [ControlType.VECTOR_DATABASE, ControlType.CONTEXT, ControlType.QUESTION],
   };
 
   type BadgeColor = (typeof colorMap)[keyof typeof colorMap];
