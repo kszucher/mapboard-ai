@@ -23,6 +23,17 @@ export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
 
   return (
     <React.Fragment>
+      <Box position="absolute" top="0" left="0" pt="2" pl="2">
+        <Flex direction="row" gap="2" align="start" content="center">
+          <Badge color="gray" size="2">
+            {'R' + ri.iid}
+          </Badge>
+          <Badge color="yellow" size="2">
+            {'File Upload'}
+          </Badge>
+        </Flex>
+      </Box>
+
       <Box position="absolute" top="0" right="0" pt="2" pr="7">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
@@ -41,16 +52,7 @@ export const FileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </Box>
-      <Box position="absolute" top="0" left="0" pt="2" pl="2">
-        <Flex direction="row" gap="2" align="start" content="center">
-          <Badge color="gray" size="2">
-            {'R' + ri.iid}
-          </Badge>
-          <Badge color="yellow" size="2">
-            {'File Upload'}
-          </Badge>
-        </Flex>
-      </Box>
+
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="2" align="start" content="center">
           {ri.fileName && <Text size="2">{`File: ${shrinkString(ri.fileName, 24)}`}</Text>}
