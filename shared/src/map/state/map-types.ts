@@ -9,7 +9,7 @@ export enum ControlType {
   CONTEXT = 'CONTEXT',
   QUESTION = 'QUESTION',
   VECTOR_DATABASE = 'VECTOR_DATABASE',
-  EXTRACTION = 'EXTRACTION',
+  LLM = 'LLM',
 }
 
 export interface G {
@@ -41,7 +41,7 @@ export interface R {
   ingestionHash?: string;
   context?: string;
   question?: string;
-  extractionHash?: string;
+  llmHash?: string;
 }
 
 export type M = { g: G, l: Record<string, L>, r: Record<string, R> };

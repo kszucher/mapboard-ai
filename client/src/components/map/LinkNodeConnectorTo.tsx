@@ -12,9 +12,7 @@ export const LinkNodeConnectorTo: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   return Object.entries(m.r)
-    .filter(([, ri]) =>
-      [ControlType.INGESTION, ControlType.EXTRACTION, ControlType.VECTOR_DATABASE].includes(ri.controlType)
-    )
+    .filter(([, ri]) => [ControlType.INGESTION, ControlType.LLM, ControlType.VECTOR_DATABASE].includes(ri.controlType))
     .flatMap(([nodeId, ri]) => {
       const baseX = adjustIcon(getNodeStartX(ri));
       const baseY = adjustIcon(getNodeStartY(ri) + ri.selfH / 2);
@@ -56,7 +54,7 @@ export const LinkNodeConnectorTo: FC = () => {
 
       if (ri.controlType === ControlType.VECTOR_DATABASE) {
         return [0, 20, 40].map((offset, idx) => makeCircle(offset, idx));
-      } else if (ri.controlType === ControlType.EXTRACTION) {
+      } else if (ri.controlType === ControlType.LLM) {
         return [0, 20].map((offset, idx) => makeCircle(offset, idx));
       }
 

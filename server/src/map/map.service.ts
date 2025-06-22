@@ -9,7 +9,7 @@ import { DistributionService } from '../distribution/distribution.service';
 import { Prisma, PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
-import { MapExtractionService } from './map-extraction.service';
+import { MapLlmService } from './map-llm.service';
 import { MapFileUploadService } from './map-file-upload.service';
 import { MapIngestionService } from './map-ingestion.service';
 import { MapVectorDatabaseService } from './map-vector-database.service';
@@ -24,7 +24,7 @@ export class MapService {
     private getFileUploadService: () => MapFileUploadService,
     private getIngestionService: () => MapIngestionService,
     private getVectorDatabaseService: () => MapVectorDatabaseService,
-    private getExtractionService: () => MapExtractionService,
+    private getLlmService: () => MapLlmService,
   ) {
   }
 
@@ -52,8 +52,8 @@ export class MapService {
     return this.getVectorDatabaseService();
   }
 
-  get extractionService(): MapExtractionService {
-    return this.getExtractionService();
+  get llmService(): MapLlmService {
+    return this.getLlmService();
   }
 
   private genId = () => global.crypto.randomUUID().slice(-8);
@@ -262,7 +262,7 @@ export class MapService {
       const shouldProcess = [
         ControlType.INGESTION,
         ControlType.VECTOR_DATABASE,
-        ControlType.EXTRACTION,
+        ControlType.LLM,
       ].includes(ri.controlType);
 
       if (shouldProcess) {
@@ -285,7 +285,7 @@ export class MapService {
           await new Promise(r => setTimeout(r, 3000));
           break;
         }
-        case ControlType.EXTRACTION: {
+        case ControlType.LLM: {
           await new Promise(r => setTimeout(r, 3000));
           break;
         }

@@ -1,4 +1,4 @@
-export class MapExtractionService {
+export class MapLlmService {
   private readonly openAiApiKey: string;
 
   constructor(

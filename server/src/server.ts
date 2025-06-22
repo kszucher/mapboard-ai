@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express';
 import distributionController from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
 import { PrismaClient } from './generated/client';
-import { MapExtractionService } from './map/map-extraction.service';
+import { MapLlmService } from './map/map-llm.service';
 import { MapFileUploadService } from './map/map-file-upload.service';
 import { MapIngestionService } from './map/map-ingestion.service';
 import { MapVectorDatabaseService } from './map/map-vector-database.service';
@@ -32,7 +32,7 @@ export const mapService: MapService = new MapService(
   () => mapUploadService,
   () => mapIngestionService,
   () => mapVectorDatabaseService,
-  () => mapExtractionService,
+  () => mapLlmService,
 );
 export const mapUploadService: MapFileUploadService = new MapFileUploadService(
   process.env.PINATA_API_KEY!,
@@ -43,7 +43,7 @@ export const mapIngestionService: MapIngestionService = new MapIngestionService(
 export const mapVectorDatabaseService: MapVectorDatabaseService = new MapVectorDatabaseService(
   process.env.PINECONE_API_KEY!,
 );
-export const mapExtractionService: MapExtractionService = new MapExtractionService(
+export const mapLlmService: MapLlmService = new MapLlmService(
   process.env.OPENAI_API_KEY!,
 );
 export const tabService: TabService = new TabService(

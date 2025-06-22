@@ -7,7 +7,7 @@ import Dots from '../../../../assets/dots.svg?react';
 import { actions } from '../../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../../data/store.ts';
 
-export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+export const Llm = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const inputNodes = getInputR(m, nodeId);
   const dispatch = useDispatch<AppDispatch>();
@@ -50,7 +50,7 @@ export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             {'R' + ri.iid}
           </Badge>
           <Badge color="jade" size="2">
-            {'Extraction'}
+            {'LLM'}
           </Badge>
           {ri.isProcessing && <Spinner m="1" />}
         </Flex>
@@ -70,7 +70,7 @@ export const Extraction = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={'test extraction'}
+            value={'test text'}
             onChange={() => {}}
           />
 

@@ -6,7 +6,7 @@ import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { Extraction } from './rootNodeType/Extraction.tsx';
+import { Llm } from './rootNodeType/Llm.tsx';
 import { FileUpload } from './rootNodeType/FileUpload.tsx';
 import { Ingestion } from './rootNodeType/Ingestion.tsx';
 import { Context } from './rootNodeType/Context.tsx';
@@ -75,7 +75,7 @@ export const RootNode: FC = () => {
       {ri.controlType === ControlType.CONTEXT && <Context ri={ri} nodeId={nodeId} />}
       {ri.controlType === ControlType.QUESTION && <Question ri={ri} nodeId={nodeId} />}
       {ri.controlType === ControlType.VECTOR_DATABASE && <VectorDatabase ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.EXTRACTION && <Extraction ri={ri} nodeId={nodeId} />}
+      {ri.controlType === ControlType.LLM && <Llm ri={ri} nodeId={nodeId} />}
     </div>
   ));
 };

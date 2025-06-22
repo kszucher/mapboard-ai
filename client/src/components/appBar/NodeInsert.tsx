@@ -30,8 +30,8 @@ export const NodeInsert = () => {
         <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.VECTOR_DATABASE }))}>
           {'Vector Database'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.EXTRACTION }))}>
-          {'Extraction'}
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.LLM }))}>
+          {'LLM'}
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

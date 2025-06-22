@@ -30,5 +30,5 @@ export const rDefault: R = {
   ingestionHash: '',
   context: '',
   question: '',
-  extractionHash: '',
+  llmHash: '',
 };

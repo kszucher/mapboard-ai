@@ -27,7 +27,7 @@ export const getControlTypeDimensions = (controlType: ControlType): { w: number,
       w = 180;
       h = 60;
       break;
-    case ControlType.EXTRACTION:
+    case ControlType.LLM:
       w = 200;
       h = 210;
       break;
