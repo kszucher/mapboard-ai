@@ -1,13 +1,11 @@
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getRootLeftX, getRootTopY } from '../../../../shared/src/map/getters/map-queries.ts';
 import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
-import { actions } from '../../data/reducer.ts';
-import { AppDispatch, RootState } from '../../data/store.ts';
+import { RootState } from '../../data/store.ts';
 
 export const LinkNodeConnectorFrom: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const dispatch = useDispatch<AppDispatch>();
   return Object.entries(m.r)
     .filter(([, ri]) =>
       [
@@ -32,15 +30,6 @@ export const LinkNodeConnectorFrom: FC = () => {
           transition: 'all 0.3s',
           transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
           transitionProperty: 'all',
-        }}
-        onMouseDown={e => {
-          e.preventDefault();
-          e.stopPropagation();
-          dispatch(
-            actions.setConnectionStart({
-              fromNodeId: nodeId,
-            })
-          );
         }}
       />
     ));

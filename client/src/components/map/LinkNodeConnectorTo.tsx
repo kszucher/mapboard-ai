@@ -1,15 +1,11 @@
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getRootLeftX, getRootTopY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
-import { ControlType, L } from '../../../../shared/src/map/state/map-types.ts';
-import { actions } from '../../data/reducer.ts';
-import { AppDispatch, RootState } from '../../data/store.ts';
+import { useSelector } from 'react-redux';
+import { getRootLeftX, getRootTopY } from '../../../../shared/src/map/getters/map-queries.ts';
+import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
+import { RootState } from '../../data/store.ts';
 
 export const LinkNodeConnectorTo: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const connectionStart = useSelector((state: RootState) => state.slice.connectionStart);
-  const dispatch = useDispatch<AppDispatch>();
-
   return Object.entries(m.r)
     .filter(([, ri]) => [ControlType.INGESTION, ControlType.LLM, ControlType.VECTOR_DATABASE].includes(ri.controlType))
     .flatMap(([nodeId, ri]) => {
@@ -27,22 +23,6 @@ export const LinkNodeConnectorTo: FC = () => {
             transition: 'all 0.3s',
             transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
             transitionProperty: 'all',
-          }}
-          onMouseUp={e => {
-            e.preventDefault();
-            e.stopPropagation();
-            const newLink: Partial<L> = {
-              ...connectionStart,
-              toNodeId: nodeId,
-              toNodeSideIndex: index,
-            };
-            if (
-              connectionStart.fromNodeId !== '' &&
-              connectionStart.fromNodeId !== nodeId &&
-              !isExistingLink(m, newLink)
-            ) {
-              dispatch(actions.insertL({ lPartial: newLink }));
-            }
           }}
         />
       );

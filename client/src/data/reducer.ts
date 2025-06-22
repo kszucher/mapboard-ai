@@ -47,9 +47,6 @@ export const slice = createSlice({
     setRootFrameVisible(state, { payload }: PayloadAction<boolean>) {
       state.rootFrameVisible = payload;
     },
-    setConnectionStart(state, action: PayloadAction<State['connectionStart']>) {
-      state.connectionStart = action.payload;
-    },
     clearConnectionStart(state) {
       state.connectionStart = { fromNodeId: '' };
     },
