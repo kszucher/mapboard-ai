@@ -45,6 +45,15 @@ export const RootNode: FC = () => {
     [ControlType.LLM]: [],
   } as const;
 
+  const allowedSourceMap = {
+    [ControlType.FILE]: [],
+    [ControlType.INGESTION]: [ControlType.FILE],
+    [ControlType.CONTEXT]: [],
+    [ControlType.QUESTION]: [],
+    [ControlType.VECTOR_DATABASE]: [ControlType.INGESTION, ControlType.CONTEXT, ControlType.QUESTION],
+    [ControlType.LLM]: [ControlType.CONTEXT, ControlType.QUESTION],
+  };
+
   type BadgeColor = (typeof colorMap)[keyof typeof colorMap];
 
   const resolveBadgeColor = (controlType: ControlType): BadgeColor => {
@@ -59,15 +68,19 @@ export const RootNode: FC = () => {
     return allowedTargetMap[controlType];
   };
 
-  const insertL = (fromNodeId: string, toNodeId: string) => {
+  const getAllowedSources = (controlType: ControlType): readonly ControlType[] => {
+    return allowedSourceMap[controlType];
+  };
+
+  const insertL = (fromNodeId: string, fromNodeSideIndex: number, toNodeId: string, toNodeSideIndex: number) => {
     if (!isExistingLink(m, fromNodeId, toNodeId)) {
       dispatch(
         actions.insertL({
           lPartial: {
             fromNodeId,
-            fromNodeSideIndex: 0,
+            fromNodeSideIndex,
             toNodeId,
-            toNodeSideIndex: 0,
+            toNodeSideIndex,
           },
         })
       );
@@ -160,10 +173,7 @@ export const RootNode: FC = () => {
               {'Delete'}
             </DropdownMenu.Item>
             <DropdownMenu.Sub>
-              <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
-                {'Connect To...'}
-                <div className="RightSlot"></div>
-              </DropdownMenu.SubTrigger>
+              <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">{'Connect To...'}</DropdownMenu.SubTrigger>
               <DropdownMenu.SubContent>
                 {Object.entries(m.r)
                   .filter(
@@ -175,7 +185,12 @@ export const RootNode: FC = () => {
                     <DropdownMenu.Item
                       key={toNodeId}
                       onClick={() => {
-                        insertL(nodeId, toNodeId);
+                        insertL(
+                          nodeId,
+                          0,
+                          toNodeId,
+                          getAllowedSources(toRi.controlType).findIndex(ct => ct === ri.controlType)
+                        );
                       }}
                     >
                       {toRi.controlType + ' R' + toRi.iid}

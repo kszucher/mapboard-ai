@@ -17,8 +17,8 @@ export const Llm = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             color="gray"
             variant="soft"
             style={{
-              width: ri.selfW - 32,
-              minHeight: 180,
+              width: ri.selfW - 38,
+              minHeight: 220,
               outline: 'none',
               pointerEvents: 'auto',
             }}

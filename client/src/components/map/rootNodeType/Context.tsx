@@ -10,14 +10,14 @@ export const Context = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
 
   return (
     <React.Fragment>
-      <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
+      <Box position="absolute" top="7" mt="2" ml="3" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="4" align="start" content="center">
           <TextArea
             placeholder="Type Here…"
             color="gray"
             variant="soft"
             style={{
-              width: ri.selfW - 32,
+              width: ri.selfW - 38,
               minHeight: 210,
               outline: 'none',
               pointerEvents: 'auto',
