@@ -16,9 +16,9 @@ export const getRootRightX = (r: R) => r.offsetW + M_PADDING + r.selfW;
 export const getRootTopY = (r: R) => r.offsetH + M_PADDING;
 
 export const getLineCoords = (m: M, l: L) => [
-  getRootRightX(m.r[l.fromNodeId]),
+  getRootRightX(m.r[l.fromNodeId]) - 10,
   getRootTopY(m.r[l.fromNodeId]) + 60 + l.fromNodeSideIndex * 20,
-  getRootLeftX(m.r[l.toNodeId]),
+  getRootLeftX(m.r[l.toNodeId]) + 10,
   getRootTopY(m.r[l.toNodeId]) + 60 + l.toNodeSideIndex * 20,
 ];
 
