@@ -61,6 +61,11 @@ model Workspace {
   Map    Map? @relation(fields: [mapId], references: [id])
 }
 
+model Ingestion {
+  id   Int  @id @default(autoincrement())
+  data Json
+}
+
 enum ColorMode {
   DARK
   LIGHT

@@ -1,3 +1,5 @@
+import { brown, cyan, jade, lime, violet, yellow } from '@radix-ui/colors';
+
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
   style: {
@@ -5,6 +7,15 @@ export const pathCommonProps = {
     transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
     transitionProperty: 'd, fill, stroke-width',
   },
+};
+
+export const radixColorMap: Record<string, string> = {
+  yellow: yellow.yellow5,
+  cyan: cyan.cyan9,
+  violet: violet.violet9,
+  lime: lime.lime9,
+  brown: brown.brown9,
+  jade: jade.jade9,
 };
 
 export const getLinearLinePath = ({ x1, x2, y1, y2 }: { x1: number; x2: number; y1: number; y2: number }) =>

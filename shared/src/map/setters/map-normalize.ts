@@ -1,20 +1,28 @@
 import { gDefault, lDefault, rDefault } from '../state/map-defaults';
 import { G, L, M, R } from '../state/map-types';
 
-const normalizeToG = (g: unknown): G =>
-  typeof g === 'object' && g !== null
-    ? { ...gDefault, ...g as Record<string, any> }
-    : { ...gDefault };
+// Strict normalizer that filters unknown fields
+function strictNormalize<T extends object>(input: unknown, defaults: T): T {
+  const result = {} as T;
 
-const normalizeToL = (l: unknown): L =>
-  typeof l === 'object' && l !== null
-    ? { ...lDefault, ...l as Record<string, any> }
-    : { ...lDefault };
+  if (typeof input === 'object' && input !== null) {
+    for (const key in defaults) {
+      if (Object.prototype.hasOwnProperty.call(input, key)) {
+        result[key] = (input as Record<string, unknown>)[key] as T[typeof key];
+      } else {
+        result[key] = defaults[key];
+      }
+    }
+  } else {
+    return { ...defaults };
+  }
 
-const normalizeToR = (r: unknown): R =>
-  typeof r === 'object' && r !== null
-    ? { ...rDefault, ...r as Record<string, any> }
-    : { ...rDefault };
+  return result;
+}
+
+const normalizeToG = (g: unknown): G => strictNormalize(g, gDefault);
+const normalizeToL = (l: unknown): L => strictNormalize(l, lDefault);
+const normalizeToR = (r: unknown): R => strictNormalize(r, rDefault);
 
 export const normalizeM = (overlap: unknown): M => {
   const o = typeof overlap === 'object' && overlap !== null

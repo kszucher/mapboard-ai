@@ -33,7 +33,7 @@ export interface R {
   isProcessing: boolean;
   fileHash?: string;
   fileName?: string;
-  ingestionHash?: string;
+  ingestionId?: number;
   context?: string;
   question?: string;
   llmHash?: string;

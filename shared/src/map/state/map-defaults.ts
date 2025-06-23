@@ -25,7 +25,7 @@ export const rDefault: R = {
   isProcessing: false,
   fileHash: '',
   fileName: '',
-  ingestionHash: '',
+  ingestionId: -1,
   context: '',
   question: '',
   llmHash: '',

@@ -9,9 +9,9 @@ import { DistributionService } from '../distribution/distribution.service';
 import { Prisma, PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
-import { MapLlmService } from './map-llm.service';
 import { MapFileUploadService } from './map-file-upload.service';
 import { MapIngestionService } from './map-ingestion.service';
+import { MapLlmService } from './map-llm.service';
 import { MapVectorDatabaseService } from './map-vector-database.service';
 import InputJsonValue = Prisma.InputJsonValue;
 
@@ -92,6 +92,13 @@ export class MapService {
       },
     });
     return workspace.Map;
+  }
+
+  async getMapById({ mapId }: { mapId: number }) {
+    return this.prisma.map.findFirstOrThrow({
+      where: { id: mapId },
+      select: { id: true, name: true, data: true },
+    });
   }
 
   async getLastMap({ userId }: { userId: number }) {
@@ -239,69 +246,119 @@ export class MapService {
   }
 
   async executeMap({ mapId }: { mapId: number }) {
-    const map = await this.prisma.map.findFirstOrThrow({
-      where: { id: mapId },
-      select: { id: true, name: true, data: true },
-    });
-
-    const m = map.data as unknown as M;
+    const m = (await this.getMapById({ mapId })).data as unknown as M;
 
     const topologicalSort = getTopologicalSort(m);
-
     if (!topologicalSort) {
       throw new Error('topological sort error');
     }
 
-    await this.updateMapByServer({ mapId, mapDelta: { g: { isLocked: true } } });
+    await this.updateMapByServer({
+      mapId, mapDelta: {
+        g: { isLocked: true },
+      },
+    });
 
     for (const nodeId of topologicalSort) {
+
+      const m = (await this.getMapById({ mapId })).data as unknown as M;
       const ri = m.r[nodeId];
-      const inputL = getInputL(m, nodeId);
-      const inputR = getInputR(m, nodeId);
 
-      const shouldProcess = [
-        ControlType.INGESTION,
-        ControlType.VECTOR_DATABASE,
-        ControlType.LLM,
-      ].includes(ri.controlType);
-
-      if (shouldProcess) {
-        await this.updateMapByServer({
-          mapId, mapDelta: {
-            r: { [nodeId]: { isProcessing: true } },
-            l: Object.fromEntries(Object.entries(inputL).map(([lid]) => [lid, { isProcessing: true }])),
-          },
-        });
+      if ([ControlType.FILE, ControlType.CONTEXT, ControlType.QUESTION].includes(ri.controlType)) {
+        continue;
       }
+
+      const inputR = getInputR(m, nodeId);
+      const inputL = getInputL(m, nodeId);
+
+      await this.updateMapByServer({
+        mapId, mapDelta: {
+          r: { [nodeId]: { isProcessing: true } },
+          l: Object.fromEntries(Object.entries(inputL).map(([lid]) => [lid, {
+            isProcessing: true,
+          }])),
+        },
+      });
 
       switch (ri.controlType) {
         case ControlType.INGESTION: {
-          const { fileHash, fileName } = Object.values(inputR)[0];
-          const file = await this.uploadService.download(fileHash!);
-          await this.ingestionService.ingest(file!, fileName!);
+          console.log(ri);
+
+          const { fileHash } = Object.values(inputR)[0];
+          if (!fileHash) {
+            console.log('no fileHash');
+            break;
+          }
+
+          const ingestionJson = await this.ingestionService.ingest(fileHash);
+          if (!ingestionJson) {
+            console.log('no ingestionJson');
+            break;
+          }
+
+          const ingestion = await this.prisma.ingestion.create({
+            data: { data: ingestionJson as any },
+            select: { id: true },
+          });
+
+          await this.updateMapByServer({
+            mapId, mapDelta: {
+              r: { [nodeId]: { ingestionId: ingestion.id } },
+            },
+          });
           break;
         }
         case ControlType.VECTOR_DATABASE: {
+
+          const ingestionIdList = Object.values(inputL)
+            .filter(el => el.toNodeSideIndex === 0)
+            .map(el => m.r[el.fromNodeId].ingestionId!);
+
+          const contextList = Object.values(inputL)
+            .filter(el => el.toNodeSideIndex === 1)
+            .map(el => m.r[el.fromNodeId].context);
+
+          const questionList = Object.values(inputL)
+            .filter(el => el.toNodeSideIndex === 2)
+            .map(el => m.r[el.fromNodeId].question);
+
+          console.log(ingestionIdList, contextList, questionList);
+
           await new Promise(r => setTimeout(r, 3000));
+
+          const ingestions = await this.prisma.ingestion.findMany({
+            where: { id: { in: ingestionIdList } },
+          });
+
+          // TODO implement the VECTOR DATABASE service (in TypeScript) and observe the result it provides
+
           break;
         }
         case ControlType.LLM: {
+
           await new Promise(r => setTimeout(r, 3000));
+
+          // TODO
+
           break;
         }
       }
 
-      if (shouldProcess) {
-        await this.updateMapByServer({
-          mapId, mapDelta: {
-            r: { [nodeId]: { isProcessing: false } },
-            l: Object.fromEntries(Object.entries(inputL).map(([lid]) => [lid, { isProcessing: false }])),
-          },
-        });
-      }
+      await this.updateMapByServer({
+        mapId, mapDelta: {
+          r: { [nodeId]: { isProcessing: false } },
+          l: Object.fromEntries(Object.entries(inputL).map(([lid]) => [lid, {
+            isProcessing: false,
+          }])),
+        },
+      });
     }
 
-    await this.updateMapByServer({ mapId, mapDelta: { g: { isLocked: false } } });
+    await this.updateMapByServer({
+      mapId, mapDelta: {
+        g: { isLocked: false },
+      },
+    });
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {

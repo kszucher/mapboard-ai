@@ -11,7 +11,7 @@ export const RootNodeTypeIngestion = ({ nodeId, ri }: { nodeId: string; ri: R })
     <React.Fragment>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="2" align="start" content="center">
-          {ri.ingestionHash}
+          {ri.ingestionId !== -1}
         </Flex>
       </Box>
     </React.Fragment>

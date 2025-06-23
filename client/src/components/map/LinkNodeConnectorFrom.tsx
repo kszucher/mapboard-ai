@@ -1,8 +1,10 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { getRootLeftX, getRootTopY } from '../../../../shared/src/map/getters/map-queries.ts';
+import { controlColors } from '../../../../shared/src/map/state/map-consts.ts';
 import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import { RootState } from '../../data/store.ts';
+import { radixColorMap } from './UtilsSvg.ts';
 
 export const LinkNodeConnectorFrom: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
@@ -22,8 +24,8 @@ export const LinkNodeConnectorFrom: FC = () => {
         viewBox="0 0 24 24"
         width="24"
         height="24"
-        r={4}
-        fill={'#666666'}
+        r={3}
+        fill={radixColorMap[controlColors[ri.controlType]]}
         transform={`translate(${getRootLeftX(ri) + ri.selfW - 8}, ${getRootTopY(ri) + 60})`}
         {...{ vectorEffect: 'non-scaling-stroke' }}
         style={{

@@ -37,7 +37,7 @@ export const LinkNodeBezier: FC = () => {
         <path
           d={getBezierLinePath(getBezierLineCoords(getLineCoords(m, li)))}
           strokeWidth={1}
-          stroke="#ffffff"
+          stroke="#dddddd"
           fill="none"
           {...pathCommonProps}
           style={mergedStyle}
