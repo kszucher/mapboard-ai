@@ -1,4 +1,4 @@
-export class MapFileUploadService {
+export class FileService {
   private readonly pinataApiKey: string;
   private readonly pinataSecretKey: string;
 

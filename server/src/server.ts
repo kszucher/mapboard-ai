@@ -1,14 +1,12 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
+import { AiService } from './ai/ai.service';
 import distributionController from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
 import { PrismaClient } from './generated/client';
-import { MapLlmService } from './map/map-llm.service';
-import { MapFileUploadService } from './map/map-file-upload.service';
-import { MapIngestionService } from './map/map-ingestion.service';
-import { MapVectorDatabaseService } from './map/map-vector-database.service';
 import mapController from './map/map.controller';
 import { MapService } from './map/map.service';
+import { FileService } from './resource/file.service';
 import shareController from './share/share.controller';
 import { ShareService } from './share/share.service';
 import tabController from './tab/tab.controller';
@@ -19,6 +17,10 @@ import workspaceController from './workspace/workspace.controller';
 import { WorkspaceService } from './workspace/workspace.service';
 
 export const prismaClient = new PrismaClient();
+export const aiService: AiService = new AiService(
+  process.env.NODE_PY_SECRET!,
+  process.env.PYTHON_URL!,
+);
 export const userService: UserService = new UserService(
   prismaClient,
   () => workspaceService,
@@ -29,22 +31,12 @@ export const mapService: MapService = new MapService(
   () => tabService,
   () => workspaceService,
   () => distributionService,
-  () => mapUploadService,
-  () => mapIngestionService,
-  () => mapVectorDatabaseService,
-  () => mapLlmService,
+  () => fileService,
+  () => aiService,
 );
-export const mapUploadService: MapFileUploadService = new MapFileUploadService(
+export const fileService: FileService = new FileService(
   process.env.PINATA_API_KEY!,
   process.env.PINATA_SECRET_API_KEY!,
-);
-export const mapIngestionService: MapIngestionService = new MapIngestionService(
-);
-export const mapVectorDatabaseService: MapVectorDatabaseService = new MapVectorDatabaseService(
-  process.env.PINECONE_API_KEY!,
-);
-export const mapLlmService: MapLlmService = new MapLlmService(
-  process.env.OPENAI_API_KEY!,
 );
 export const tabService: TabService = new TabService(
   prismaClient,

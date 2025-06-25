@@ -5,14 +5,12 @@ import { createNewMapData } from '../../../shared/src/map/setters/map-create';
 import { normalizeM } from '../../../shared/src/map/setters/map-normalize';
 import { ControlType, M, MDelta } from '../../../shared/src/map/state/map-types';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
+import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
 import { Prisma, PrismaClient } from '../generated/client';
+import { FileService } from '../resource/file.service';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
-import { MapFileUploadService } from './map-file-upload.service';
-import { MapIngestionService } from './map-ingestion.service';
-import { MapLlmService } from './map-llm.service';
-import { MapVectorDatabaseService } from './map-vector-database.service';
 import InputJsonValue = Prisma.InputJsonValue;
 
 export class MapService {
@@ -21,10 +19,8 @@ export class MapService {
     private getTabService: () => TabService,
     private getWorkspaceService: () => WorkspaceService,
     private getDistributionService: () => DistributionService,
-    private getFileUploadService: () => MapFileUploadService,
-    private getIngestionService: () => MapIngestionService,
-    private getVectorDatabaseService: () => MapVectorDatabaseService,
-    private getLlmService: () => MapLlmService,
+    private getFileService: () => FileService,
+    private getAiService: () => AiService,
   ) {
   }
 
@@ -40,20 +36,12 @@ export class MapService {
     return this.getDistributionService();
   }
 
-  get uploadService(): MapFileUploadService {
-    return this.getFileUploadService();
+  get fileService(): FileService {
+    return this.getFileService();
   }
 
-  get ingestionService(): MapIngestionService {
-    return this.getIngestionService();
-  }
-
-  get vectorDatabaseService(): MapVectorDatabaseService {
-    return this.getVectorDatabaseService();
-  }
-
-  get llmService(): MapLlmService {
-    return this.getLlmService();
+  get aiService(): AiService {
+    return this.getAiService();
   }
 
   private genId = () => global.crypto.randomUUID().slice(-8);
@@ -238,7 +226,7 @@ export class MapService {
     await this.updateMapByServer({
       mapId, mapDelta: { r: { [nodeId]: { isProcessing: true } } },
     });
-    const fileHash = await this.uploadService.upload(file);
+    const fileHash = await this.fileService.upload(file);
     await this.updateMapByServer({
       mapId,
       mapDelta: { r: { [nodeId]: { isProcessing: false, fileName: file.originalname, fileHash: fileHash ?? '' } } },
@@ -290,7 +278,10 @@ export class MapService {
             break;
           }
 
-          const ingestionJson = await this.ingestionService.ingest(fileHash);
+          await new Promise(r => setTimeout(r, 3000));
+
+          // TODO wrap with a try catch and if the service is unavailable, update the map
+          const ingestionJson = await this.aiService.ingestion(fileHash);
           if (!ingestionJson) {
             console.log('no ingestionJson');
             break;
@@ -300,6 +291,7 @@ export class MapService {
             data: { data: ingestionJson as any },
             select: { id: true },
           });
+
 
           await this.updateMapByServer({
             mapId, mapDelta: {
@@ -316,21 +308,21 @@ export class MapService {
 
           const contextList = Object.values(inputL)
             .filter(el => el.toNodeSideIndex === 1)
-            .map(el => m.r[el.fromNodeId].context);
+            .map(el => m.r[el.fromNodeId].context!);
 
           const questionList = Object.values(inputL)
             .filter(el => el.toNodeSideIndex === 2)
-            .map(el => m.r[el.fromNodeId].question);
+            .map(el => m.r[el.fromNodeId].question!);
 
-          console.log(ingestionIdList, contextList, questionList);
+          const ingestionDataList = await this.prisma.ingestion.findMany({
+            where: { id: { in: ingestionIdList } },
+            select: { data: true },
+          });
 
           await new Promise(r => setTimeout(r, 3000));
 
-          const ingestions = await this.prisma.ingestion.findMany({
-            where: { id: { in: ingestionIdList } },
-          });
-
-          // TODO implement the VECTOR DATABASE service (in TypeScript) and observe the result it provides
+          // TODO wrap with a try catch and if the service is unavailable, update the map
+          // await this.aiService.vectorDatabase(ingestionDataList.map(el => el.data), contextList, questionList[0]);
 
           break;
         }
@@ -338,7 +330,11 @@ export class MapService {
 
           await new Promise(r => setTimeout(r, 3000));
 
-          // TODO
+          await this.updateMapByServer({
+            mapId, mapDelta: {
+              r: { [nodeId]: { llmHash: 'this is what the llm responded' } },
+            },
+          });
 
           break;
         }
