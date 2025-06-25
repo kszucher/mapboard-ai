@@ -26,6 +26,7 @@ export const rDefault: R = {
   fileHash: '',
   fileName: '',
   ingestionId: -1,
+  vectorDatabaseId: -1,
   context: '',
   question: '',
   llmHash: '',

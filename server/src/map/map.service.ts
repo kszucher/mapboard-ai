@@ -324,6 +324,12 @@ export class MapService {
           // TODO wrap with a try catch and if the service is unavailable, update the map
           // await this.aiService.vectorDatabase(ingestionDataList.map(el => el.data), contextList, questionList[0]);
 
+          await this.updateMapByServer({
+            mapId, mapDelta: {
+              r: { [nodeId]: { vectorDatabaseId: 0 } }, // use the id provided by the python service - index or namespace
+            },
+          });
+
           break;
         }
         case ControlType.LLM: {

@@ -34,6 +34,7 @@ export interface R {
   fileHash?: string;
   fileName?: string;
   ingestionId?: number;
+  vectorDatabaseId?: number;
   context?: string;
   question?: string;
   llmHash?: string;
