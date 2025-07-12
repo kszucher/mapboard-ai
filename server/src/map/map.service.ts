@@ -386,12 +386,12 @@ export class MapService {
         }
       }
 
-      await this.prisma.mapNode.update({
-        where: { id: nodeId },
+      await this.prisma.mapNode.updateMany({
+        where: { mapId },
         data: { isProcessing: false },
       });
       await this.prisma.mapLink.updateMany({
-        where: { id: { in: inputLinks.map(el => el.id) } },
+        where: { mapId },
         data: { isProcessing: false },
       });
 
