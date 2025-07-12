@@ -263,6 +263,7 @@ export class MapService {
       // const m = mapInfo.data;
 
       // here we will gain speed: no need to re-fetch the whole map during execution!!!
+      // also we can OMIT ingestion hash, so there will be NO NEED anymore to create SEPARATE linked entries for jobs
 
       const ri = m.r[nodeId];
 
