@@ -243,8 +243,12 @@ export class MapService {
   }
 
   async executeMap({ mapId }: { mapId: number }) {
-    const mapInfo = await this.getMapInfo({ mapId });
-    const m = mapInfo.data;
+    const [mapNodes, mapLinks] = await Promise.all([
+      this.prisma.mapNode.findMany({ where: { mapId } }),
+      this.prisma.mapLink.findMany({ where: { mapId } }),
+    ]);
+
+    const m = this.getMapData(mapLinks, mapNodes);
 
     const topologicalSort = getTopologicalSort(m);
     if (!topologicalSort) {
@@ -261,9 +265,6 @@ export class MapService {
 
       // const mapInfo = await this.getMapInfo({ mapId });
       // const m = mapInfo.data;
-
-      // here we will gain speed: no need to re-fetch the whole map during execution!!!
-      // also we can OMIT ingestion hash, so there will be NO NEED anymore to create SEPARATE linked entries for jobs
 
       const ri = m.r[nodeId];
 
