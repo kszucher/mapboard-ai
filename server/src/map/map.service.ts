@@ -1,6 +1,7 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { MapInfo } from '../../../shared/src/api/api-types-map';
 import { getInputL, getInputR, getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
+import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { ControlType, M, MDelta } from '../../../shared/src/map/state/map-types';
 import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
@@ -40,9 +41,11 @@ export class MapService {
     return this.getAiService();
   }
 
+  private genId = () => global.crypto.randomUUID();
+
   private getMapData = (mapLinks: MapLink[], mapNodes: MapNode[]): M => {
-    const l = Object.fromEntries(mapLinks.map((link) => [link.id, link]));
-    const r = Object.fromEntries(mapNodes.map((node) => [node.id, node]));
+    const l = Object.fromEntries(mapLinks.map(({ id, mapId, ...rest }) => [id, rest]));
+    const r = Object.fromEntries(mapNodes.map(({ id, mapId, ...rest }) => [id, rest]));
     return { l, r };
   };
 
@@ -91,10 +94,10 @@ export class MapService {
     return this.getMapInfo({ mapId: map.id });
   }
 
-  async createMap({ userId, mapName }: {
+  async createMap({ userId, mapName, newMapData }: {
     userId: number,
     mapName: string,
-    mapData?: object
+    newMapData?: M,
   }) {
     const map = await this.prisma.map.create({
       data: {
@@ -108,7 +111,17 @@ export class MapService {
       },
     });
 
-    await this.tabService.addMapToTab({ userId, mapId: map.id });
+    if (newMapData) {
+      await this.prisma.$transaction(async (prisma) => {
+        await prisma.mapNode.createMany({
+          data: Object.entries(newMapData.r).map(([id, r]) => ({ id, ...r, mapId: map.id })),
+        });
+        await prisma.mapLink.createMany({
+          data: Object.entries(newMapData.l).map(([id, l]) => ({ id, ...l, mapId: map.id })),
+        });
+        await this.tabService.addMapToTab({ userId, mapId: map.id });
+      });
+    }
 
     return map;
   }
@@ -135,18 +148,13 @@ export class MapService {
     workspaceId: number,
     mapId: number
   }): Promise<void> {
-    // TODO implement copy...
+    const mapInfo = await this.getMapInfo({ mapId });
 
-    // const map = await this.prisma.map.findFirstOrThrow({
-    //   where: { id: mapId },
-    //   select: { id: true, name: true, data: true },
-    // });
+    const newMapData = mapCopy(mapInfo.data, this.genId);
+    
+    const newMap = await this.createMap({ userId, mapName: mapInfo.name + 'Copy', newMapData });
 
-    // const newMapData = mapCopy(map.data as unknown as M, this.genId);
-    //
-    // const newMap = await this.createMap({ userId, mapName: map.name + 'Copy', mapData: newMapData });
-
-    // await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
+    await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
 
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
