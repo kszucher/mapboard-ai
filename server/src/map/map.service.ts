@@ -244,6 +244,42 @@ export class MapService {
 
   }
 
+  private async isProcessingSet({ mapId, nodeId }: { mapId: number, nodeId: string }) {
+    await this.prisma.$transaction([
+      this.prisma.mapNode.update({
+        where: { id: nodeId },
+        data: { isProcessing: true },
+      }),
+      this.prisma.mapNode.updateMany({
+        where: { id: { not: nodeId } },
+        data: { isProcessing: false },
+      }),
+      this.prisma.mapLink.updateMany({
+        where: { toNodeId: nodeId },
+        data: { isProcessing: true },
+      }),
+      this.prisma.mapLink.updateMany({
+        where: { toNodeId: { not: nodeId } },
+        data: { isProcessing: false },
+      }),
+    ]);
+    await this.distributeMapChange({ mapId });
+  }
+
+  private async isProcessingClear({ mapId }: { mapId: number }) {
+    await this.prisma.$transaction([
+      this.prisma.mapNode.updateMany({
+        where: { mapId },
+        data: { isProcessing: false },
+      }),
+      this.prisma.mapLink.updateMany({
+        where: { mapId },
+        data: { isProcessing: false },
+      }),
+    ]);
+    await this.distributeMapChange({ mapId });
+  }
+
   async executeMap({ mapId }: { mapId: number }) {
     const [mapNodes, mapLinks] = await Promise.all([
       this.prisma.mapNode.findMany({ where: { mapId } }),
@@ -257,12 +293,6 @@ export class MapService {
       throw new Error('topological sort error');
     }
 
-    // await this.updateMapByServer({
-    //   mapId, mapDelta: {
-    //     g: { isLocked: true },
-    //   },
-    // });
-
     executionLoop: for (const nodeId of topologicalSort) {
 
       const ri = m.r[nodeId];
@@ -272,18 +302,7 @@ export class MapService {
         continue;
       }
 
-      await this.prisma.$transaction([
-        this.prisma.mapNode.update({
-          where: { id: nodeId },
-          data: { isProcessing: true },
-        }),
-        this.prisma.mapLink.updateMany({
-          where: { toNodeId: nodeId },
-          data: { isProcessing: true },
-        }),
-      ]);
-
-      await this.distributeMapChange({ mapId });
+      await this.isProcessingSet({ mapId, nodeId });
 
       switch (ri.controlType) {
         case ControlType.INGESTION: {
@@ -295,38 +314,38 @@ export class MapService {
             select: { id: true, fromNodeId: true },
           });
 
-          const inputNodeFileUpload = await this.prisma.mapNode.findFirstOrThrow({
-            where: { id: inputLink.fromNodeId },
-            select: { fileHash: true },
-          });
+          // const inputNodeFileUpload = await this.prisma.mapNode.findFirstOrThrow({
+          //   where: { id: inputLink.fromNodeId },
+          //   select: { fileHash: true },
+          // });
+          //
+          // if (!inputNodeFileUpload.fileHash) {
+          //   console.error('no fileHash');
+          //   break executionLoop;
+          // }
 
-          if (!inputNodeFileUpload.fileHash) {
-            console.error('no fileHash');
-            break executionLoop;
-          }
-
-          try {
-            const ingestionJson = await this.aiService.ingestion(inputNodeFileUpload.fileHash!);
-            if (!ingestionJson) {
-              console.error('no ingestionJson');
-              break executionLoop;
-            }
-
-            const ingestion = await this.prisma.ingestion.create({
-              data: { data: ingestionJson as any },
-              select: { id: true },
-            });
-
-            // TODO add this relation to prisma
-            // await this.prisma.mapNode.update({
-            //   where: { id: inputLink.fromNodeId },
-            //   select: { ingestionId: ingestion.id },
-            // });
-
-          } catch (e) {
-            console.error('ingestion error', e);
-            break executionLoop;
-          }
+          // try {
+          //   const ingestionJson = await this.aiService.ingestion(inputNodeFileUpload.fileHash!);
+          //   if (!ingestionJson) {
+          //     console.error('no ingestionJson');
+          //     break executionLoop;
+          //   }
+          //
+          //   const ingestion = await this.prisma.ingestion.create({
+          //     data: { data: ingestionJson as any },
+          //     select: { id: true },
+          //   });
+          //
+          //   // TODO add this relation to prisma
+          //   // await this.prisma.mapNode.update({
+          //   //   where: { id: inputLink.fromNodeId },
+          //   //   select: { ingestionId: ingestion.id },
+          //   // });
+          //
+          // } catch (e) {
+          //   console.error('ingestion error', e);
+          //   break executionLoop;
+          // }
 
           break;
         }
@@ -360,7 +379,6 @@ export class MapService {
           //   },
           // });
 
-
           break;
         }
         case ControlType.LLM: {
@@ -371,40 +389,9 @@ export class MapService {
         }
       }
 
-      await this.prisma.$transaction([
-        this.prisma.mapNode.updateMany({
-          where: { mapId },
-          data: { isProcessing: false },
-        }),
-        this.prisma.mapLink.updateMany({
-          where: { mapId },
-          data: { isProcessing: false },
-        }),
-      ]);
-
-      await this.distributeMapChange({ mapId });
-
     }
 
-    await this.prisma.$transaction([
-      this.prisma.mapNode.updateMany({
-        where: { mapId },
-        data: { isProcessing: false },
-      }),
-      this.prisma.mapLink.updateMany({
-        where: { mapId },
-        data: { isProcessing: false },
-      }),
-    ]);
-
-    await this.distributeMapChange({ mapId });
-
-
-    // await this.updateMapByServer({
-    //   mapId, mapDelta: {
-    //     g: { isLocked: false },
-    //   },
-    // });
+    await this.isProcessingClear({ mapId });
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
