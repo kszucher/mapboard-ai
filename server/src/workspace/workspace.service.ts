@@ -46,7 +46,12 @@ export class WorkspaceService {
     await this.userService.incrementSignInCount({ userId });
 
     let map;
-    const lastMap = await this.mapService.getLastMap({ userId });
+    let lastMap;
+    try {
+      lastMap = await this.mapService.getUserLastMapInfo({ userId });
+    } catch {
+      lastMap = null;
+    }
     if (lastMap) {
       map = lastMap;
     } else {
@@ -75,10 +80,15 @@ export class WorkspaceService {
     if (mapId) {
       map = await this.prisma.map.findFirstOrThrow({
         where: { id: mapId },
-        select: { id: true, data: true, userId: true },
+        select: { id: true },
       });
     } else {
-      const lastMap = await this.mapService.getLastMap({ userId });
+      let lastMap;
+      try {
+        lastMap = await this.mapService.getUserLastMapInfo({ userId });
+      } catch {
+        lastMap = null;
+      }
       if (lastMap) {
         map = lastMap;
       } else {

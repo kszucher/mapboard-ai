@@ -1,17 +1,13 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
+import { MapInfo } from '../../../shared/src/api/api-types-map';
 import { getInputL, getInputR, getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
-import { mapCopy } from '../../../shared/src/map/setters/map-copy';
-import { createNewMapData } from '../../../shared/src/map/setters/map-create';
-import { normalizeM } from '../../../shared/src/map/setters/map-normalize';
 import { ControlType, M, MDelta } from '../../../shared/src/map/state/map-types';
-import { jsonMerge } from '../../../shared/src/map/utils/json-merge';
 import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
-import { Prisma, PrismaClient } from '../generated/client';
+import { MapLink, MapNode, PrismaClient } from '../generated/client';
 import { FileService } from '../resource/file.service';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
-import InputJsonValue = Prisma.InputJsonValue;
 
 export class MapService {
   constructor(
@@ -44,62 +40,58 @@ export class MapService {
     return this.getAiService();
   }
 
-  private genId = () => global.crypto.randomUUID().slice(-8);
+  private getMapData = (mapLinks: MapLink[], mapNodes: MapNode[]): M => {
+    const l = Object.fromEntries(mapLinks.map((link) => [link.id, link]));
+    const r = Object.fromEntries(mapNodes.map((node) => [node.id, node]));
+    return { l, r };
+  };
 
-  async normalize() {
-    const oldMaps = await this.prisma.map.findMany({});
-
-    await this.prisma.map.deleteMany({});
-
-    const newMaps = [];
-
-    for (const map of oldMaps) {
-      newMaps.push({
-        id: map.id,
-        name: map.name,
-        userId: map.userId,
-        data: normalizeM(map.data as unknown),
-      });
-    }
-
-    await this.prisma.map.createMany({
-      data: newMaps.map(el => ({
-        id: el.id,
-        name: el.name,
-        userId: el.userId,
-        data: el.data as unknown as InputJsonValue,
-      })),
-    });
-  }
-
-  async getMap({ workspaceId }: { workspaceId: number }) {
-    const workspace = await this.prisma.workspace.findFirstOrThrow({
-      where: { id: workspaceId },
+  private async getMapInfo({ mapId }: { mapId: number }): Promise<MapInfo> {
+    const map = await this.prisma.map.findUniqueOrThrow({
+      where: { id: mapId },
       select: {
-        Map: { select: { id: true, name: true, data: true, userId: true } },
+        id: true,
+        name: true,
+        MapLinks: true,
+        MapNodes: true,
       },
     });
-    return workspace.Map;
+
+    return {
+      id: map.id,
+      name: map.name,
+      data: this.getMapData(map.MapLinks, map.MapNodes),
+    };
   }
 
-  async getMapById({ mapId }: { mapId: number }) {
-    return this.prisma.map.findFirstOrThrow({
-      where: { id: mapId },
-      select: { id: true, name: true, data: true },
+  async getWorkspaceMapInfo({ workspaceId }: { workspaceId: number }): Promise<MapInfo> {
+    const workspace = await this.prisma.workspace.findUniqueOrThrow({
+      where: { id: workspaceId },
+      select: {
+        mapId: true,
+      },
     });
+
+    if (!workspace.mapId) {
+      throw new Error('workspace has no map');
+    } else {
+      return await this.getMapInfo({ mapId: workspace.mapId });
+    }
   }
 
-  async getLastMap({ userId }: { userId: number }) {
-    return this.prisma.map.findFirstOrThrow({
+  async getUserLastMapInfo({ userId }: { userId: number }): Promise<MapInfo> {
+    const map = await this.prisma.map.findFirstOrThrow({
       where: { userId },
       orderBy: {
         updatedAt: 'desc',
       },
-      select: { id: true, data: true, userId: true },
+      select: { id: true },
     });
+
+    return this.getMapInfo({ mapId: map.id });
   }
 
-  async createMap({ userId, mapName, mapData = createNewMapData(this.genId) }: {
+  async createMap({ userId, mapName }: {
     userId: number,
     mapName: string,
     mapData?: object
@@ -108,12 +100,10 @@ export class MapService {
       data: {
         userId,
         name: mapName,
-        data: mapData,
       },
       select: {
         id: true,
         name: true,
-        data: true,
         userId: true,
       },
     });
@@ -123,7 +113,11 @@ export class MapService {
     return map;
   }
 
-  async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number, workspaceId: number, mapName: string }) {
+  async createMapInTabNew({ userId, workspaceId, mapName }: {
+    userId: number,
+    workspaceId: number,
+    mapName: string
+  }): Promise<void> {
     const newMap = await this.createMap({ userId, mapName });
 
     await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
@@ -140,17 +134,19 @@ export class MapService {
     userId: number,
     workspaceId: number,
     mapId: number
-  }) {
-    const map = await this.prisma.map.findFirstOrThrow({
-      where: { id: mapId },
-      select: { id: true, name: true, data: true },
-    });
+  }): Promise<void> {
+    // TODO implement copy...
 
-    const newMapData = mapCopy(map.data as unknown as M, this.genId);
+    // const map = await this.prisma.map.findFirstOrThrow({
+    //   where: { id: mapId },
+    //   select: { id: true, name: true, data: true },
+    // });
 
-    const newMap = await this.createMap({ userId, mapName: map.name + 'Copy', mapData: newMapData });
+    // const newMapData = mapCopy(map.data as unknown as M, this.genId);
+    //
+    // const newMap = await this.createMap({ userId, mapName: map.name + 'Copy', mapData: newMapData });
 
-    await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
+    // await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
 
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
@@ -185,10 +181,14 @@ export class MapService {
     });
   }
 
-  async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number, mapId: number, mapData: object }) {
-    await this.prisma.map.update({
-      where: { id: mapId },
-      data: { data: mapData },
+  async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number; mapId: number; mapData: M }) {
+
+    this.prisma.$transaction(async (prisma) => {
+      await prisma.mapLink.deleteMany({ where: { mapId } });
+      await prisma.mapNode.deleteMany({ where: { mapId } });
+
+      await prisma.mapNode.createMany({ data: Object.entries(mapData.r).map(([id, r]) => ({ id, mapId, ...r })) });
+      await prisma.mapLink.createMany({ data: Object.entries(mapData.l).map(([id, l]) => ({ id, mapId, ...l })) });
     });
 
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
@@ -200,26 +200,26 @@ export class MapService {
   }
 
   async updateMapByServer({ mapId, mapDelta }: { mapId: number, mapDelta: MDelta }) {
-    const map = await this.prisma.map.findFirstOrThrow({
-      where: { id: mapId },
-      select: { data: true },
-    });
-
-    const mapData = map.data as unknown as M;
-
-    const newMapData = jsonMerge(mapData, mapDelta);
-
-    await this.prisma.map.update({
-      where: { id: mapId },
-      data: { data: newMapData },
-    });
-
-    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
-
-    await this.distributionService.publish(workspaceIdsOfMap, {
-      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
-      payload: { mapInfo: { id: mapId, data: newMapData } },
-    });
+    // const map = await this.prisma.map.findFirstOrThrow({
+    //   where: { id: mapId },
+    //   select: { data: true },
+    // });
+    //
+    // const mapData = map.data as unknown as M;
+    //
+    // const newMapData = jsonMerge(mapData, mapDelta);
+    //
+    // await this.prisma.map.update({
+    //   where: { id: mapId },
+    //   data: { data: newMapData },
+    // });
+    //
+    // const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+    //
+    // await this.distributionService.publish(workspaceIdsOfMap, {
+    //   type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
+    //   payload: { mapInfo: { id: mapId, data: newMapData } },
+    // });
   }
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
@@ -234,25 +234,29 @@ export class MapService {
   }
 
   async executeMap({ mapId }: { mapId: number }) {
-    const m = (await this.getMapById({ mapId })).data as unknown as M;
+    const mapInfo = await this.getMapInfo({ mapId });
+    const m = mapInfo.data;
 
     const topologicalSort = getTopologicalSort(m);
     if (!topologicalSort) {
       throw new Error('topological sort error');
     }
 
-    await this.updateMapByServer({
-      mapId, mapDelta: {
-        g: { isLocked: true },
-      },
-    });
+    // await this.updateMapByServer({
+    //   mapId, mapDelta: {
+    //     g: { isLocked: true },
+    //   },
+    // });
 
     for (const nodeId of topologicalSort) {
 
-      const m = (await this.getMapById({ mapId })).data as unknown as M;
+      const mapInfo = await this.getMapInfo({ mapId });
+      const m = mapInfo.data;
+
       const ri = m.r[nodeId];
 
-      if ([ControlType.FILE, ControlType.CONTEXT, ControlType.QUESTION].includes(ri.controlType)) {
+      const skipControlTypes: ControlType[] = [ControlType.FILE, ControlType.CONTEXT, ControlType.QUESTION];
+      if (skipControlTypes.includes(ri.controlType)) {
         continue;
       }
 
@@ -356,11 +360,11 @@ export class MapService {
       });
     }
 
-    await this.updateMapByServer({
-      mapId, mapDelta: {
-        g: { isLocked: false },
-      },
-    });
+    // await this.updateMapByServer({
+    //   mapId, mapDelta: {
+    //     g: { isLocked: false },
+    //   },
+    // });
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
@@ -383,6 +387,8 @@ export class MapService {
     await this.prisma.map.delete({
       where: { id: mapId },
     });
+
+    // TODO delete links and nodes too
 
     await this.distributionService.publish(workspaceIdsOfUsers, {
       type: WORKSPACE_EVENT.DELETE_MAP,

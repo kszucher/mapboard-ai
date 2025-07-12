@@ -20,8 +20,8 @@ const upload = multer({ storage });
 
 router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
-  const map = await mapService.getMap({ workspaceId });
-  const response: GetMapInfoQueryResponseDto = { mapInfo: map! };
+  const map = await mapService.getWorkspaceMapInfo({ workspaceId });
+  const response: GetMapInfoQueryResponseDto = { mapInfo: map };
   res.json(response);
 });
 

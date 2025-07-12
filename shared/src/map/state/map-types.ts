@@ -1,17 +1,17 @@
 import { controlColors } from './map-consts';
 
-export enum ControlType {
-  FILE = 'FILE',
-  INGESTION = 'INGESTION',
-  CONTEXT = 'CONTEXT',
-  QUESTION = 'QUESTION',
-  VECTOR_DATABASE = 'VECTOR_DATABASE',
-  LLM = 'LLM',
-}
+export type ControlColor = (typeof controlColors)[keyof typeof controlColors];
 
-export interface G {
-  isLocked: boolean;
-}
+export const ControlType = {
+  FILE: 'FILE',
+  INGESTION: 'INGESTION',
+  CONTEXT: 'CONTEXT',
+  QUESTION: 'QUESTION',
+  VECTOR_DATABASE: 'VECTOR_DATABASE',
+  LLM: 'LLM',
+} as const;
+
+export type ControlType = (typeof ControlType)[keyof typeof ControlType];
 
 export interface L {
   fromNodeId: string;
@@ -31,16 +31,15 @@ export interface R {
   selfH: number;
   controlType: ControlType;
   isProcessing: boolean;
-  fileHash?: string;
-  fileName?: string;
-  ingestionId?: number;
-  vectorDatabaseId?: number;
-  context?: string;
-  question?: string;
-  llmHash?: string;
+  fileHash: string | null;
+  fileName: string | null;
+  ingestionId: number | null;
+  vectorDatabaseId: number | null;
+  context: string | null;
+  question: string | null;
+  llmHash: string | null;
 }
 
-export type M = { g: G, l: Record<string, L>, r: Record<string, R> };
-export type MDelta = { g?: Partial<G>, l?: Record<string, Partial<L>>, r?: Record<string, Partial<R>> };
+export type M = { l: Record<string, L>, r: Record<string, R> };
 
-export type ControlColor = (typeof controlColors)[keyof typeof controlColors];
+export type MDelta = { l?: Record<string, Partial<L>>, r?: Record<string, Partial<R>> };

@@ -1,9 +1,4 @@
-import { getControlTypeDimensions } from './map-consts';
-import { ControlType, G, L, R } from './map-types';
-
-export const gDefault: G = {
-  isLocked: false,
-};
+import { L, R } from './map-types';
 
 export const lDefault: L = {
   fromNodeId: '',
@@ -15,13 +10,12 @@ export const lDefault: L = {
   isProcessing: false,
 };
 
-export const rDefault: R = {
+export const rDefault: Partial<R> = {
   iid: -1,
   offsetW: 0,
   offsetH: 0,
-  selfW: getControlTypeDimensions(ControlType.CONTEXT).w,
-  selfH: getControlTypeDimensions(ControlType.CONTEXT).h,
-  controlType: ControlType.CONTEXT,
+  selfW: 0,
+  selfH: 0,
   isProcessing: false,
   fileHash: '',
   fileName: '',

@@ -3,12 +3,14 @@ import { L, M, R } from '../state/map-types';
 
 export const getMapSelfW = (m: M) => {
   const rl = Object.values(m.r);
-  return Math.max(...rl.map(ri => ri.offsetW + ri.selfW)) + 2 * M_PADDING;
+  const max = Math.max(...rl.map(ri => ri.offsetW + ri.selfW));
+  return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
 export const getMapSelfH = (m: M) => {
   const rl = Object.values(m.r);
-  return Math.max(...rl.map(ri => ri.offsetH + ri.selfH)) + 2 * M_PADDING;
+  const max = Math.max(...rl.map(ri => ri.offsetH + ri.selfH));
+  return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
 export const getRootLeftX = (r: R) => r.offsetW + M_PADDING;
