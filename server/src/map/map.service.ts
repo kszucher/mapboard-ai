@@ -208,14 +208,14 @@ export class MapService {
   }
 
   async distributeMapChange({ mapId }: { mapId: number }) {
-    // Run all database queries concurrently
-    const [mapNodes, mapLinks, workspaceIdsOfMap] = await Promise.all([
+    const [mapNodes, mapLinks] = await Promise.all([
       this.prisma.mapNode.findMany({ where: { mapId } }),
       this.prisma.mapLink.findMany({ where: { mapId } }),
-      this.workspaceService.getWorkspaceIdsOfMap({ mapId }),
     ]);
 
     const newMapData = this.getMapData(mapLinks, mapNodes);
+
+    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
@@ -259,8 +259,10 @@ export class MapService {
 
     for (const nodeId of topologicalSort) {
 
-      const mapInfo = await this.getMapInfo({ mapId });
-      const m = mapInfo.data;
+      // const mapInfo = await this.getMapInfo({ mapId });
+      // const m = mapInfo.data;
+
+      // here we will gain speed: no need to re-fetch the whole map during execution!!!
 
       const ri = m.r[nodeId];
 
@@ -271,25 +273,27 @@ export class MapService {
 
       console.time('exec');
 
+
+      await this.prisma.$transaction([
+        this.prisma.mapNode.update({
+          where: { id: nodeId },
+          data: { isProcessing: true },
+        }),
+        this.prisma.mapLink.updateMany({
+          where: { toNodeId: nodeId },
+          data: { isProcessing: true },
+        }),
+      ]);
+
+      await this.distributeMapChange({ mapId });
+
+      console.timeEnd('exec');
+
+
       const inputLinks = await this.prisma.mapLink.findMany({
         where: { mapId, toNodeId: nodeId },
         select: { id: true, fromNodeId: true },
       });
-
-      await this.prisma.mapNode.update({
-        where: { id: nodeId },
-        data: { isProcessing: true },
-      });
-
-      await this.prisma.mapLink.updateMany({
-        where: { id: { in: inputLinks.map(el => el.id) } },
-        data: { isProcessing: true },
-      });
-
-      await this.distributeMapChange({ mapId });
-
-
-      console.timeEnd('exec');
 
       // const inputNodes = await this.prisma.mapNode.findMany({
       //   where: { mapId, id: { in: inputLinks.map(el => el.fromNodeId) } },
@@ -386,14 +390,16 @@ export class MapService {
         }
       }
 
-      await this.prisma.mapNode.updateMany({
-        where: { mapId },
-        data: { isProcessing: false },
-      });
-      await this.prisma.mapLink.updateMany({
-        where: { mapId },
-        data: { isProcessing: false },
-      });
+      await this.prisma.$transaction([
+        this.prisma.mapNode.updateMany({
+          where: { mapId },
+          data: { isProcessing: false },
+        }),
+        this.prisma.mapLink.updateMany({
+          where: { mapId },
+          data: { isProcessing: false },
+        }),
+      ]);
 
       await this.distributeMapChange({ mapId });
 
