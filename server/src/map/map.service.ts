@@ -223,27 +223,6 @@ export class MapService {
     });
   }
 
-  async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
-
-    // TODO
-    // await this.updateMapByServer({
-    //   mapId, mapDelta: { r: { [nodeId]: { isProcessing: true } } },
-    // });
-
-    await this.distributeMapChange({ mapId });
-
-    const fileHash = await this.fileService.upload(file);
-
-    // TODO
-    // await this.updateMapByServer({
-    //   mapId,
-    //   mapDelta: { r: { [nodeId]: { isProcessing: false, fileName: file.originalname, fileHash: fileHash ?? '' } } },
-    // });
-
-    await this.distributeMapChange({ mapId });
-
-  }
-
   private async isProcessingSet({ mapId, nodeId }: { mapId: number, nodeId: string }) {
     await this.prisma.$transaction([
       this.prisma.mapNode.update({
@@ -278,6 +257,27 @@ export class MapService {
       }),
     ]);
     await this.distributeMapChange({ mapId });
+  }
+
+  async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
+
+    // TODO
+    // await this.updateMapByServer({
+    //   mapId, mapDelta: { r: { [nodeId]: { isProcessing: true } } },
+    // });
+
+    await this.distributeMapChange({ mapId });
+
+    const fileHash = await this.fileService.upload(file);
+
+    // TODO
+    // await this.updateMapByServer({
+    //   mapId,
+    //   mapDelta: { r: { [nodeId]: { isProcessing: false, fileName: file.originalname, fileHash: fileHash ?? '' } } },
+    // });
+
+    await this.distributeMapChange({ mapId });
+
   }
 
   async executeMap({ mapId }: { mapId: number }) {
