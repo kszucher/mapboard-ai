@@ -19,8 +19,6 @@ export const rDefault: Partial<R> = {
   isProcessing: false,
   fileHash: '',
   fileName: '',
-  ingestionId: -1,
-  vectorDatabaseId: -1,
   context: '',
   question: '',
   llmHash: '',

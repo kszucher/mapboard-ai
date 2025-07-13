@@ -282,10 +282,10 @@ export class MapService {
 
     executionLoop: for (const nodeId of topologicalSort) {
 
-      const ri = m.r[nodeId];
+      const currentNode = m.r[nodeId];
 
       const skipControlTypes: ControlType[] = [ControlType.FILE, ControlType.CONTEXT, ControlType.QUESTION];
-      if (skipControlTypes.includes(ri.controlType)) {
+      if (skipControlTypes.includes(currentNode.controlType)) {
         continue;
       }
 
@@ -293,7 +293,7 @@ export class MapService {
       const mapGraphDataBefore = await this.getMapGraph({ mapId });
       await this.distributeMapGraphChangeToAll({ mapId, mapData: mapGraphDataBefore });
 
-      switch (ri.controlType) {
+      switch (currentNode.controlType) {
         case ControlType.INGESTION: {
 
           const inputLink = await this.prisma.mapLink.findFirstOrThrow({
@@ -310,6 +310,12 @@ export class MapService {
             console.error('no fileHash');
             break executionLoop;
           }
+          
+          if (currentNode.ingestionId) {
+            await new Promise(r => setTimeout(r, 1000));
+            console.log(currentNode.fileName + ' already ingested');
+            continue;
+          }
 
           try {
             const ingestionJson = await this.aiService.ingestion(inputNodeFileUpload.fileHash!);
@@ -323,11 +329,10 @@ export class MapService {
               select: { id: true },
             });
 
-            // TODO add this relation to prisma
-            // await this.prisma.mapNode.update({
-            //   where: { id: inputLink.fromNodeId },
-            //   select: { ingestionId: ingestion.id },
-            // });
+            await this.prisma.mapNode.update({
+              where: { id: nodeId },
+              data: { ingestionId: ingestion.id },
+            });
 
           } catch (e) {
             console.error('ingestion error', e);
