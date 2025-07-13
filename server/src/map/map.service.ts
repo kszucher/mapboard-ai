@@ -189,24 +189,6 @@ export class MapService {
     });
   }
 
-  async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number; mapId: number; mapData: M }) {
-
-    this.prisma.$transaction(async (prisma) => {
-      await prisma.mapLink.deleteMany({ where: { mapId } });
-      await prisma.mapNode.deleteMany({ where: { mapId } });
-
-      await prisma.mapNode.createMany({ data: Object.entries(mapData.r).map(([id, r]) => ({ id, mapId, ...r })) });
-      await prisma.mapLink.createMany({ data: Object.entries(mapData.l).map(([id, l]) => ({ id, mapId, ...l })) });
-    });
-
-    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
-
-    await this.distributionService.publish(workspaceIdsOfMap.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
-      payload: { mapInfo: { id: mapId, data: mapData } },
-    });
-  }
-
   private async updateMapGraphIsProcessingSet({ mapId, nodeId }: { mapId: number, nodeId: string }) {
     await this.prisma.$transaction([
       this.prisma.mapNode.update({
@@ -241,6 +223,24 @@ export class MapService {
     ]);
   }
 
+  async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number; mapId: number; mapData: M }) {
+
+    this.prisma.$transaction(async (prisma) => {
+      await prisma.mapLink.deleteMany({ where: { mapId } });
+      await prisma.mapNode.deleteMany({ where: { mapId } });
+
+      await prisma.mapNode.createMany({ data: Object.entries(mapData.r).map(([id, r]) => ({ id, mapId, ...r })) });
+      await prisma.mapLink.createMany({ data: Object.entries(mapData.l).map(([id, l]) => ({ id, mapId, ...l })) });
+    });
+
+    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+
+    await this.distributionService.publish(workspaceIdsOfMap.filter(el => el !== workspaceId), {
+      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
+      payload: { mapInfo: { id: mapId, data: mapData } },
+    });
+  }
+
   async distributeMapChange({ mapId }: { mapId: number }) {
     const [mapNodes, mapLinks] = await Promise.all([
       this.prisma.mapNode.findMany({ where: { mapId } }),
@@ -259,11 +259,7 @@ export class MapService {
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
 
-    // TODO
-    // await this.updateMapByServer({
-    //   mapId, mapDelta: { r: { [nodeId]: { isProcessing: true } } },
-    // });
-
+    await this.updateMapGraphIsProcessingSet({ mapId, nodeId });
     await this.distributeMapChange({ mapId });
 
     const fileHash = await this.fileService.upload(file);
@@ -274,6 +270,7 @@ export class MapService {
     //   mapDelta: { r: { [nodeId]: { isProcessing: false, fileName: file.originalname, fileHash: fileHash ?? '' } } },
     // });
 
+    await this.updateMapGraphIsProcessingClear({ mapId });
     await this.distributeMapChange({ mapId });
 
   }
