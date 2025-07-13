@@ -35,21 +35,6 @@ model Map {
   MapNodes   MapNode[]
 }
 
-model MapLink {
-  id                String  @id @default(uuid())
-  mapId             Int
-  Map               Map     @relation(fields: [mapId], references: [id])
-  fromNodeId        String
-  FromNode          MapNode @relation("FromLinks", fields: [fromNodeId], references: [id])
-  toNodeId          String
-  ToNode            MapNode @relation("ToLinks", fields: [toNodeId], references: [id])
-  fromNodeSideIndex Int
-  toNodeSideIndex   Int
-  lineColor         String
-  lineWidth         Int
-  isProcessing      Boolean @default(false)
-}
-
 model MapNode {
   id               String      @id @default(uuid())
   mapId            Int
@@ -70,6 +55,21 @@ model MapNode {
   llmHash          String?
   FromLinks        MapLink[]   @relation("FromLinks")
   ToLinks          MapLink[]   @relation("ToLinks")
+}
+
+model MapLink {
+  id                String  @id @default(uuid())
+  mapId             Int
+  Map               Map     @relation(fields: [mapId], references: [id])
+  fromNodeId        String
+  FromNode          MapNode @relation("FromLinks", fields: [fromNodeId], references: [id])
+  toNodeId          String
+  ToNode            MapNode @relation("ToLinks", fields: [toNodeId], references: [id])
+  fromNodeSideIndex Int
+  toNodeSideIndex   Int
+  lineColor         String
+  lineWidth         Int
+  isProcessing      Boolean @default(false)
 }
 
 model Tab {
