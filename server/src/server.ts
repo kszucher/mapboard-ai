@@ -60,6 +60,7 @@ export const distributionService: DistributionService = new DistributionService(
 
 (async () => {
   await workspaceService.deleteWorkspaces();
+  await mapService.terminateProcesses();
   await distributionService.connectAndSubscribe();
 })();
 

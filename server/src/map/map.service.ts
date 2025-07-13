@@ -5,7 +5,7 @@ import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { ControlType, M } from '../../../shared/src/map/state/map-types';
 import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
-import { PrismaClient } from '../generated/client';
+import { Prisma, PrismaClient } from '../generated/client';
 import { FileService } from '../resource/file.service';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
@@ -238,16 +238,32 @@ export class MapService {
   }
 
   async saveMap({ workspaceId, mapId, mapData }: { workspaceId: number; mapId: number; mapData: M }) {
+    const m = await this.getMapGraph({ mapId });
 
-    this.prisma.$transaction(async (prisma) => {
-      await prisma.mapLink.deleteMany({ where: { mapId } });
-      await prisma.mapNode.deleteMany({ where: { mapId } });
+    if (this.hasProcessing(m)) {
+      console.log('map is processing, should be reverting local changes...');
+      return;
+    }
 
-      await prisma.mapNode.createMany({ data: Object.entries(mapData.r).map(([id, r]) => ({ id, mapId, ...r })) });
-      await prisma.mapLink.createMany({ data: Object.entries(mapData.l).map(([id, l]) => ({ id, mapId, ...l })) });
-    });
+    try {
+      await this.prisma.$transaction(async (prisma) => {
+        await prisma.mapLink.deleteMany({ where: { mapId } });
+        await prisma.mapNode.deleteMany({ where: { mapId } });
 
-    await this.distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData });
+        await prisma.mapNode.createMany({
+          data: Object.entries(mapData.r).map(([id, r]) => ({ id, mapId, ...r })),
+        });
+
+        await prisma.mapLink.createMany({
+          data: Object.entries(mapData.l).map(([id, l]) => ({ id, mapId, ...l })),
+        });
+      }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+
+      await this.distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData });
+    } catch (error) {
+      console.error('Failed to save map:', error);
+      throw error;
+    }
   }
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
@@ -310,7 +326,7 @@ export class MapService {
             console.error('no fileHash');
             break executionLoop;
           }
-          
+
           if (currentNode.ingestionId) {
             await new Promise(r => setTimeout(r, 1000));
             console.log(currentNode.fileName + ' already ingested');
@@ -449,5 +465,10 @@ export class MapService {
       type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
       payload: { mapInfo: { id: mapId, data: mapData } },
     });
+  }
+
+  async terminateProcesses() {
+    await this.prisma.mapNode.updateMany({ data: { isProcessing: false } });
+    await this.prisma.mapLink.updateMany({ data: { isProcessing: false } });
   }
 }
