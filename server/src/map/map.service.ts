@@ -226,7 +226,6 @@ export class MapService {
         data: { isProcessing: false },
       }),
     ]);
-    await this.distributeMapChange({ mapId });
   }
 
   private async updateMapGraphIsProcessingClear({ mapId }: { mapId: number }) {
@@ -240,7 +239,6 @@ export class MapService {
         data: { isProcessing: false },
       }),
     ]);
-    await this.distributeMapChange({ mapId });
   }
 
   async distributeMapChange({ mapId }: { mapId: number }) {
@@ -303,6 +301,7 @@ export class MapService {
       }
 
       await this.updateMapGraphIsProcessingSet({ mapId, nodeId });
+      await this.distributeMapChange({ mapId });
 
       switch (ri.controlType) {
         case ControlType.INGESTION: {
@@ -392,6 +391,7 @@ export class MapService {
     }
 
     await this.updateMapGraphIsProcessingClear({ mapId });
+    await this.distributeMapChange({ mapId });
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
