@@ -207,23 +207,7 @@ export class MapService {
     });
   }
 
-  async distributeMapChange({ mapId }: { mapId: number }) {
-    const [mapNodes, mapLinks] = await Promise.all([
-      this.prisma.mapNode.findMany({ where: { mapId } }),
-      this.prisma.mapLink.findMany({ where: { mapId } }),
-    ]);
-
-    const newMapData = this.getMapData(mapLinks, mapNodes);
-
-    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
-
-    await this.distributionService.publish(workspaceIdsOfMap, {
-      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
-      payload: { mapInfo: { id: mapId, data: newMapData } },
-    });
-  }
-
-  private async isProcessingSet({ mapId, nodeId }: { mapId: number, nodeId: string }) {
+  private async updateMapGraphIsProcessingSet({ mapId, nodeId }: { mapId: number, nodeId: string }) {
     await this.prisma.$transaction([
       this.prisma.mapNode.update({
         where: { id: nodeId },
@@ -245,7 +229,7 @@ export class MapService {
     await this.distributeMapChange({ mapId });
   }
 
-  private async isProcessingClear({ mapId }: { mapId: number }) {
+  private async updateMapGraphIsProcessingClear({ mapId }: { mapId: number }) {
     await this.prisma.$transaction([
       this.prisma.mapNode.updateMany({
         where: { mapId },
@@ -257,6 +241,22 @@ export class MapService {
       }),
     ]);
     await this.distributeMapChange({ mapId });
+  }
+
+  async distributeMapChange({ mapId }: { mapId: number }) {
+    const [mapNodes, mapLinks] = await Promise.all([
+      this.prisma.mapNode.findMany({ where: { mapId } }),
+      this.prisma.mapLink.findMany({ where: { mapId } }),
+    ]);
+
+    const newMapData = this.getMapData(mapLinks, mapNodes);
+
+    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+
+    await this.distributionService.publish(workspaceIdsOfMap, {
+      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
+      payload: { mapInfo: { id: mapId, data: newMapData } },
+    });
   }
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
@@ -302,7 +302,7 @@ export class MapService {
         continue;
       }
 
-      await this.isProcessingSet({ mapId, nodeId });
+      await this.updateMapGraphIsProcessingSet({ mapId, nodeId });
 
       switch (ri.controlType) {
         case ControlType.INGESTION: {
@@ -391,7 +391,7 @@ export class MapService {
 
     }
 
-    await this.isProcessingClear({ mapId });
+    await this.updateMapGraphIsProcessingClear({ mapId });
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
