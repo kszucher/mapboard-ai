@@ -400,6 +400,11 @@ export class MapService {
 
     await this.tabService.removeMapFromTab({ userId, mapId });
 
+    const shares = await this.prisma.share.findMany({
+      where: { mapId },
+      select: { shareUserId: true },
+    });
+
     await this.prisma.share.deleteMany({
       where: { mapId },
     });
@@ -414,11 +419,6 @@ export class MapService {
 
     await this.prisma.map.delete({
       where: { id: mapId },
-    });
-
-    const shares = await this.prisma.share.findMany({
-      where: { mapId },
-      select: { shareUserId: true },
     });
 
     const userIds = [userId, ...shares.map(share => share.shareUserId)];
