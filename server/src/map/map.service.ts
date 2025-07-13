@@ -251,11 +251,10 @@ export class MapService {
 
     const fileHash = await this.fileService.upload(file);
 
-    // TODO
-    // await this.updateMapByServer({
-    //   mapId,
-    //   mapDelta: { r: { [nodeId]: { isProcessing: false, fileName: file.originalname, fileHash: fileHash ?? '' } } },
-    // });
+    await this.prisma.mapNode.update({
+      where: { id: nodeId },
+      data: { fileName: file.originalname, fileHash: fileHash ?? '' },
+    });
 
     await this.updateMapGraphIsProcessingClear({ mapId });
     const mapGraphDataAfter = await this.getMapGraph({ mapId });
@@ -293,38 +292,38 @@ export class MapService {
             select: { id: true, fromNodeId: true },
           });
 
-          // const inputNodeFileUpload = await this.prisma.mapNode.findFirstOrThrow({
-          //   where: { id: inputLink.fromNodeId },
-          //   select: { fileHash: true },
-          // });
-          //
-          // if (!inputNodeFileUpload.fileHash) {
-          //   console.error('no fileHash');
-          //   break executionLoop;
-          // }
+          const inputNodeFileUpload = await this.prisma.mapNode.findFirstOrThrow({
+            where: { id: inputLink.fromNodeId },
+            select: { fileHash: true },
+          });
 
-          // try {
-          //   const ingestionJson = await this.aiService.ingestion(inputNodeFileUpload.fileHash!);
-          //   if (!ingestionJson) {
-          //     console.error('no ingestionJson');
-          //     break executionLoop;
-          //   }
-          //
-          //   const ingestion = await this.prisma.ingestion.create({
-          //     data: { data: ingestionJson as any },
-          //     select: { id: true },
-          //   });
-          //
-          //   // TODO add this relation to prisma
-          //   // await this.prisma.mapNode.update({
-          //   //   where: { id: inputLink.fromNodeId },
-          //   //   select: { ingestionId: ingestion.id },
-          //   // });
-          //
-          // } catch (e) {
-          //   console.error('ingestion error', e);
-          //   break executionLoop;
-          // }
+          if (!inputNodeFileUpload.fileHash) {
+            console.error('no fileHash');
+            break executionLoop;
+          }
+
+          try {
+            const ingestionJson = await this.aiService.ingestion(inputNodeFileUpload.fileHash!);
+            if (!ingestionJson) {
+              console.error('no ingestionJson');
+              break executionLoop;
+            }
+
+            const ingestion = await this.prisma.ingestion.create({
+              data: { data: ingestionJson as any },
+              select: { id: true },
+            });
+
+            // TODO add this relation to prisma
+            // await this.prisma.mapNode.update({
+            //   where: { id: inputLink.fromNodeId },
+            //   select: { ingestionId: ingestion.id },
+            // });
+
+          } catch (e) {
+            console.error('ingestion error', e);
+            break executionLoop;
+          }
 
           break;
         }
