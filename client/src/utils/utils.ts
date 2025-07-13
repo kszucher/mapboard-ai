@@ -1,4 +1,4 @@
-export const genId = () => crypto.randomUUID().slice(-8);
+export const genId = () => crypto.randomUUID();
 
 export const adjust = (x: number) => (Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5);
 

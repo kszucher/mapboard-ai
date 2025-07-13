@@ -20,8 +20,8 @@ const upload = multer({ storage });
 
 router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
-  const map = await mapService.getMap({ workspaceId });
-  const response: GetMapInfoQueryResponseDto = { mapInfo: map! };
+  const map = await mapService.getWorkspaceMapInfo({ workspaceId });
+  const response: GetMapInfoQueryResponseDto = { mapInfo: map };
   res.json(response);
 });
 
@@ -48,7 +48,7 @@ router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Reques
 router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
   const { mapId, mapData } = req.body;
-  await mapService.updateMapByClient({ workspaceId, mapId, mapData });
+  await mapService.saveMap({ workspaceId, mapId, mapData });
   res.json();
 });
 

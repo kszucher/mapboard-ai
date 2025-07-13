@@ -5,7 +5,6 @@ export const mapCopy = (m: M, genId: Function): M => {
   const rIdMapping = new Map(Object.keys(m.r).map(id => [id, genId()]));
 
   return structuredClone({
-    g: m.g,
     l: Object.fromEntries(
       Object.entries(m.l).map(([nodeId, li]) => [lIdMapping.get(nodeId), {
         ...li,

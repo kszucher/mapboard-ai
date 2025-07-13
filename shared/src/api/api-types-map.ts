@@ -1,14 +1,16 @@
+import { M } from '../map/state/map-types';
+
 export type MapInfo = {
   id: number
   name: string
-  data: object | any
+  data: M
 }
 
 export type GetMapInfoQueryResponseDto = {
   mapInfo: {
     id: number,
     name: string,
-    data: object | any
+    data: M
   };
 };
 

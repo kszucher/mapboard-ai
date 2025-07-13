@@ -23,15 +23,53 @@ model User {
 }
 
 model Map {
-  id        Int         @id @default(autoincrement())
-  data      Json
-  name      String
-  openCount Int         @default(0)
-  userId    Int
-  User      User        @relation("Maps", fields: [userId], references: [id])
-  Shares    Share[]     @relation("Shares")
-  Workspace Workspace[]
-  updatedAt DateTime    @updatedAt
+  id         Int         @id @default(autoincrement())
+  name       String
+  openCount  Int         @default(0)
+  userId     Int
+  User       User        @relation("Maps", fields: [userId], references: [id])
+  Shares     Share[]     @relation("Shares")
+  Workspaces Workspace[]
+  updatedAt  DateTime    @updatedAt
+  MapLinks   MapLink[]
+  MapNodes   MapNode[]
+}
+
+model MapNode {
+  id               String      @id @default(uuid())
+  mapId            Int
+  Map              Map         @relation(fields: [mapId], references: [id])
+  iid              Int
+  offsetW          Int
+  offsetH          Int
+  selfW            Int
+  selfH            Int
+  controlType      ControlType
+  isProcessing     Boolean     @default(false)
+  fileHash         String?
+  fileName         String?
+  ingestionId      Int?
+  vectorDatabaseId Int?
+  context          String?
+  question         String?
+  llmHash          String?
+  FromLinks        MapLink[]   @relation("FromLinks")
+  ToLinks          MapLink[]   @relation("ToLinks")
+}
+
+model MapLink {
+  id                String  @id @default(uuid())
+  mapId             Int
+  Map               Map     @relation(fields: [mapId], references: [id])
+  fromNodeId        String
+  FromNode          MapNode @relation("FromLinks", fields: [fromNodeId], references: [id])
+  toNodeId          String
+  ToNode            MapNode @relation("ToLinks", fields: [toNodeId], references: [id])
+  fromNodeSideIndex Int
+  toNodeSideIndex   Int
+  lineColor         String
+  lineWidth         Int
+  isProcessing      Boolean @default(false)
 }
 
 model Tab {
@@ -69,6 +107,15 @@ model Ingestion {
 enum ColorMode {
   DARK
   LIGHT
+}
+
+enum ControlType {
+  FILE
+  INGESTION
+  CONTEXT
+  QUESTION
+  VECTOR_DATABASE
+  LLM
 }
 
 enum ShareStatus {
