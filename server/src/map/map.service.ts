@@ -43,6 +43,13 @@ export class MapService {
 
   private genId = () => global.crypto.randomUUID();
 
+  private hasProcessing = (m: M): boolean => {
+    return (
+      Object.values(m.l).some(link => link.isProcessing) ||
+      Object.values(m.r).some(node => node.isProcessing)
+    );
+  };
+
   private async getMapGraph({ mapId }: { mapId: number }): Promise<M> {
     const [mapNodes, mapLinks] = await Promise.all([
       this.prisma.mapNode.findMany({ where: { mapId } }),
@@ -264,6 +271,10 @@ export class MapService {
   async executeMap({ mapId }: { mapId: number }) {
     const m = await this.getMapGraph({ mapId });
 
+    if (this.hasProcessing(m)) {
+      throw new Error('map is processing');
+    }
+
     const topologicalSort = getTopologicalSort(m);
     if (!topologicalSort) {
       throw new Error('topological sort error');
@@ -284,8 +295,6 @@ export class MapService {
 
       switch (ri.controlType) {
         case ControlType.INGESTION: {
-
-          await new Promise(r => setTimeout(r, 3000));
 
           const inputLink = await this.prisma.mapLink.findFirstOrThrow({
             where: { toNodeId: nodeId },
