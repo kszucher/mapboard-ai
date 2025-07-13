@@ -48,7 +48,7 @@ router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Reques
 router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = (req as any);
   const { mapId, mapData } = req.body;
-  await mapService.updateMapByClient({ workspaceId, mapId, mapData });
+  await mapService.saveMap({ workspaceId, mapId, mapData });
   res.json();
 });
 

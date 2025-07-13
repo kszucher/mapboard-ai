@@ -5,7 +5,7 @@ import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { ControlType, M } from '../../../shared/src/map/state/map-types';
 import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
-import { MapLink, MapNode, PrismaClient } from '../generated/client';
+import { PrismaClient } from '../generated/client';
 import { FileService } from '../resource/file.service';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
@@ -43,7 +43,12 @@ export class MapService {
 
   private genId = () => global.crypto.randomUUID();
 
-  private getMapData = (mapLinks: MapLink[], mapNodes: MapNode[]): M => {
+  private async getMapGraph({ mapId }: { mapId: number }): Promise<M> {
+    const [mapNodes, mapLinks] = await Promise.all([
+      this.prisma.mapNode.findMany({ where: { mapId } }),
+      this.prisma.mapLink.findMany({ where: { mapId } }),
+    ]);
+
     const l = Object.fromEntries(mapLinks.map(({ id, mapId, ...rest }) => [id, rest]));
     const r = Object.fromEntries(mapNodes.map(({ id, mapId, ...rest }) => [id, rest]));
     return { l, r };
@@ -60,10 +65,12 @@ export class MapService {
       },
     });
 
+    const mapGraph = await this.getMapGraph({ mapId });
+
     return {
       id: map.id,
       name: map.name,
-      data: this.getMapData(map.MapLinks, map.MapNodes),
+      data: mapGraph,
     };
   }
 
@@ -223,7 +230,7 @@ export class MapService {
     ]);
   }
 
-  async updateMapByClient({ workspaceId, mapId, mapData }: { workspaceId: number; mapId: number; mapData: M }) {
+  async saveMap({ workspaceId, mapId, mapData }: { workspaceId: number; mapId: number; mapData: M }) {
 
     this.prisma.$transaction(async (prisma) => {
       await prisma.mapLink.deleteMany({ where: { mapId } });
@@ -233,34 +240,14 @@ export class MapService {
       await prisma.mapLink.createMany({ data: Object.entries(mapData.l).map(([id, l]) => ({ id, mapId, ...l })) });
     });
 
-    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
-
-    await this.distributionService.publish(workspaceIdsOfMap.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
-      payload: { mapInfo: { id: mapId, data: mapData } },
-    });
-  }
-
-  async distributeMapChange({ mapId }: { mapId: number }) {
-    const [mapNodes, mapLinks] = await Promise.all([
-      this.prisma.mapNode.findMany({ where: { mapId } }),
-      this.prisma.mapLink.findMany({ where: { mapId } }),
-    ]);
-
-    const newMapData = this.getMapData(mapLinks, mapNodes);
-
-    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
-
-    await this.distributionService.publish(workspaceIdsOfMap, {
-      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
-      payload: { mapInfo: { id: mapId, data: newMapData } },
-    });
+    await this.distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData });
   }
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
 
     await this.updateMapGraphIsProcessingSet({ mapId, nodeId });
-    await this.distributeMapChange({ mapId });
+    const mapGraphDataBefore = await this.getMapGraph({ mapId });
+    await this.distributeMapGraphChangeToAll({ mapId, mapData: mapGraphDataBefore });
 
     const fileHash = await this.fileService.upload(file);
 
@@ -271,17 +258,12 @@ export class MapService {
     // });
 
     await this.updateMapGraphIsProcessingClear({ mapId });
-    await this.distributeMapChange({ mapId });
-
+    const mapGraphDataAfter = await this.getMapGraph({ mapId });
+    await this.distributeMapGraphChangeToAll({ mapId, mapData: mapGraphDataAfter });
   }
 
   async executeMap({ mapId }: { mapId: number }) {
-    const [mapNodes, mapLinks] = await Promise.all([
-      this.prisma.mapNode.findMany({ where: { mapId } }),
-      this.prisma.mapLink.findMany({ where: { mapId } }),
-    ]);
-
-    const m = this.getMapData(mapLinks, mapNodes);
+    const m = await this.getMapGraph({ mapId });
 
     const topologicalSort = getTopologicalSort(m);
     if (!topologicalSort) {
@@ -298,7 +280,8 @@ export class MapService {
       }
 
       await this.updateMapGraphIsProcessingSet({ mapId, nodeId });
-      await this.distributeMapChange({ mapId });
+      const mapGraphDataBefore = await this.getMapGraph({ mapId });
+      await this.distributeMapGraphChangeToAll({ mapId, mapData: mapGraphDataBefore });
 
       switch (ri.controlType) {
         case ControlType.INGESTION: {
@@ -388,7 +371,8 @@ export class MapService {
     }
 
     await this.updateMapGraphIsProcessingClear({ mapId });
-    await this.distributeMapChange({ mapId });
+    const mapGraphDataBefore = await this.getMapGraph({ mapId });
+    await this.distributeMapGraphChangeToAll({ mapId, mapData: mapGraphDataBefore });
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
@@ -425,6 +409,32 @@ export class MapService {
     await this.distributionService.publish(workspaceIdsOfUsers, {
       type: WORKSPACE_EVENT.DELETE_MAP,
       payload: { mapId },
+    });
+  }
+
+
+  async distributeMapGraphChangeToAll({ mapId, mapData }: {
+    mapId: number,
+    mapData: M
+  }) {
+    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+
+    await this.distributionService.publish(workspaceIdsOfMap, {
+      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
+      payload: { mapInfo: { id: mapId, data: mapData } },
+    });
+  }
+
+  async distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData }: {
+    workspaceId: number,
+    mapId: number,
+    mapData: M
+  }) {
+    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+
+    await this.distributionService.publish(workspaceIdsOfMap.filter(el => el !== workspaceId), {
+      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
+      payload: { mapInfo: { id: mapId, data: mapData } },
     });
   }
 }
