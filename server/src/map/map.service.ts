@@ -5,7 +5,7 @@ import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { ControlType, M } from '../../../shared/src/map/state/map-types';
 import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
-import { Prisma, PrismaClient } from '../generated/client';
+import { PrismaClient } from '../generated/client';
 import { FileService } from '../resource/file.service';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
@@ -133,9 +133,10 @@ export class MapService {
         await prisma.mapLink.createMany({
           data: Object.entries(newMapData.l).map(([id, l]) => ({ id, ...l, mapId: map.id })),
         });
-        await this.tabService.addMapToTab({ userId, mapId: map.id });
       });
     }
+
+    await this.tabService.addMapToTab({ userId, mapId: map.id });
 
     return map;
   }
@@ -257,7 +258,7 @@ export class MapService {
         await prisma.mapLink.createMany({
           data: Object.entries(mapData.l).map(([id, l]) => ({ id, mapId, ...l })),
         });
-      }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+      });
 
       await this.distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData });
     } catch (error) {
@@ -269,8 +270,7 @@ export class MapService {
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
 
     await this.updateMapGraphIsProcessingSet({ mapId, nodeId });
-    const mapGraphDataBefore = await this.getMapGraph({ mapId });
-    await this.distributeMapGraphChangeToAll({ mapId, mapData: mapGraphDataBefore });
+    await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
     const fileHash = await this.fileService.upload(file);
 
@@ -280,8 +280,7 @@ export class MapService {
     });
 
     await this.updateMapGraphIsProcessingClear({ mapId });
-    const mapGraphDataAfter = await this.getMapGraph({ mapId });
-    await this.distributeMapGraphChangeToAll({ mapId, mapData: mapGraphDataAfter });
+    await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
   }
 
   async executeMap({ mapId }: { mapId: number }) {
@@ -306,8 +305,7 @@ export class MapService {
       }
 
       await this.updateMapGraphIsProcessingSet({ mapId, nodeId });
-      const mapGraphDataBefore = await this.getMapGraph({ mapId });
-      await this.distributeMapGraphChangeToAll({ mapId, mapData: mapGraphDataBefore });
+      await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
       switch (currentNode.controlType) {
         case ControlType.INGESTION: {
@@ -393,6 +391,13 @@ export class MapService {
 
           await new Promise(r => setTimeout(r, 3000));
 
+          await this.prisma.mapNode.update({
+            where: { id: nodeId },
+            data: { llmHash: 'LLM answer' },
+          });
+
+          await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
+
           break;
         }
       }
@@ -400,8 +405,7 @@ export class MapService {
     }
 
     await this.updateMapGraphIsProcessingClear({ mapId });
-    const mapGraphDataBefore = await this.getMapGraph({ mapId });
-    await this.distributeMapGraphChangeToAll({ mapId, mapData: mapGraphDataBefore });
+    await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
   }
 
   async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
