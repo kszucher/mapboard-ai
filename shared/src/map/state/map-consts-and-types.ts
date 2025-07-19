@@ -50,8 +50,6 @@ export const controlColors = {
   [ControlType.LLM]: 'jade',
 } as const;
 
-export type ControlColor = (typeof controlColors)[keyof typeof controlColors];
-
 export const controlTexts = {
   [ControlType.FILE]: 'File Upload',
   [ControlType.INGESTION]: 'Ingestion',

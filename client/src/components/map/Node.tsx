@@ -5,7 +5,6 @@ import { getNodeLeft, getNodeTop, isExistingLink } from '../../../../shared/src/
 import {
   allowedSourceControls,
   allowedTargetControls,
-  ControlColor,
   controlColors,
   controlTexts,
   ControlType,
@@ -24,14 +23,6 @@ import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
 export const Node: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
-
-  const resolveBadgeColor = (controlType: ControlType): ControlColor => {
-    return controlColors[controlType];
-  };
-
-  const resolveBadgeText = (controlType: ControlType): string => {
-    return controlTexts[controlType];
-  };
 
   const getAllowedTargets = (controlType: ControlType): readonly ControlType[] => {
     return allowedTargetControls[controlType];
@@ -79,8 +70,8 @@ export const Node: FC = () => {
           <Badge color="gray" size="2">
             {'N' + ni.iid}
           </Badge>
-          <Badge color={resolveBadgeColor(ni.controlType)} size="2">
-            {resolveBadgeText(ni.controlType)}
+          <Badge color={controlColors[ni.controlType]} size="2">
+            {controlTexts[ni.controlType]}
           </Badge>
           {ni.isProcessing && <Spinner m="1" />}
         </Flex>
