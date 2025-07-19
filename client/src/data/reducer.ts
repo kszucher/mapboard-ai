@@ -90,7 +90,7 @@ export const slice = createSlice({
       const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
       const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetW;
       const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetH;
-      state.rOffsetCoords = [toX, toY, n.selfW, n.selfH];
+      state.nodeOffsetCoords = [toX, toY, n.selfW, n.selfH];
     },
     insertLink(state, { payload: { lPartial } }: PayloadAction<{ lPartial: Partial<L> }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
@@ -121,13 +121,13 @@ export const slice = createSlice({
     offsetNodeLink(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       Object.assign(m.n[nodeId], {
-        offsetW: state.rOffsetCoords[0],
-        offsetH: state.rOffsetCoords[1],
+        offsetW: state.nodeOffsetCoords[0],
+        offsetH: state.nodeOffsetCoords[1],
       });
       mapAlign(m);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
-      state.rOffsetCoords = [];
+      state.nodeOffsetCoords = [];
     },
     setNodeAttributes(
       state,

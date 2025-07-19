@@ -11,7 +11,7 @@ export interface State {
   commitList: M[];
   commitIndex: number;
   serverMap: object;
-  rOffsetCoords: number[];
+  nodeOffsetCoords: number[];
   zoomInfo: {
     fromX: number;
     fromY: number;
