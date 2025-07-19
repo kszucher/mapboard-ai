@@ -4,7 +4,7 @@ import { MapInfo } from '../../../shared/src/api/api-types-map.ts';
 import { mapAlign } from '../../../shared/src/map/setters/map-align.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
 import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
-import { ControlType, L, N } from '../../../shared/src/map/state/map-types.ts';
+import { ControlType, L, N } from '../../../shared/src/map/state/map-consts-and-types.ts';
 import { jsonDiff } from '../../../shared/src/map/utils/json-diff.ts';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';

@@ -1,7 +1,7 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { N } from '../../../../shared/src/map/state/map-types.ts';
+import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 

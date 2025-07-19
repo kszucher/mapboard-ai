@@ -1,7 +1,7 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { N } from '../../../../shared/src/map/state/map-types.ts';
+import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import { RootState } from '../../data/store.ts';
 
 export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {

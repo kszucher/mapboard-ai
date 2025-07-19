@@ -1,4 +1,4 @@
-import { M } from '../state/map-types';
+import { M } from '../state/map-consts-and-types';
 
 export const mapAlign = (m: M) => {
   const nl = Object.values(m.n);

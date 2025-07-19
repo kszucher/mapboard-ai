@@ -1,4 +1,4 @@
-import { M } from '../../../shared/src/map/state/map-types.ts';
+import { M } from '../../../shared/src/map/state/map-consts-and-types.ts';
 
 export interface State {
   token: string;

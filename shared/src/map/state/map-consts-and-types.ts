@@ -1,41 +1,45 @@
-import { ControlType } from './map-types';
-
 export const M_PADDING = 40;
 export const N_PADDING = 40;
 
-export const getControlTypeDimensions = (controlType: ControlType): { w: number, h: number } => {
-  let w;
-  let h;
-  switch (controlType) {
-    case ControlType.FILE:
-      w = 160;
-      h = 90;
-      break;
-    case ControlType.INGESTION:
-      w = 160;
-      h = 90;
-      break;
-    case ControlType.CONTEXT:
-      w = 200;
-      h = 200;
-      break;
-    case ControlType.QUESTION:
-      w = 200;
-      h = 200;
-      break;
-    case ControlType.VECTOR_DATABASE:
-      w = 180;
-      h = 60;
-      break;
-    case ControlType.LLM:
-      w = 200;
-      h = 210;
-      break;
-  }
-  w += 2 * N_PADDING;
-  h += 2 * N_PADDING;
-  return { w, h };
-};
+export type M = { l: Record<string, L>, n: Record<string, N> };
+
+export interface L {
+  fromNodeId: string;
+  fromNodeSideIndex: number;
+  toNodeId: string;
+  toNodeSideIndex: number;
+  lineColor: string;
+  lineWidth: number;
+  isProcessing: boolean;
+}
+
+export interface N {
+  iid: number;
+  offsetW: number;
+  offsetH: number;
+  selfW: number;
+  selfH: number;
+  controlType: ControlType;
+  isProcessing: boolean;
+  fileHash: string | null;
+  fileName: string | null;
+  ingestionId: number | null;
+  vectorDatabaseId: number | null;
+  context: string | null;
+  question: string | null;
+  llmHash: string | null;
+}
+
+export const ControlType = {
+  FILE: 'FILE',
+  INGESTION: 'INGESTION',
+  CONTEXT: 'CONTEXT',
+  QUESTION: 'QUESTION',
+  VECTOR_DATABASE: 'VECTOR_DATABASE',
+  LLM: 'LLM',
+} as const;
+
+export type ControlType = (typeof ControlType)[keyof typeof ControlType];
 
 export const controlColors = {
   [ControlType.FILE]: 'yellow',
@@ -45,6 +49,8 @@ export const controlColors = {
   [ControlType.VECTOR_DATABASE]: 'brown',
   [ControlType.LLM]: 'jade',
 } as const;
+
+export type ControlColor = (typeof controlColors)[keyof typeof controlColors];
 
 export const controlTexts = {
   [ControlType.FILE]: 'File Upload',

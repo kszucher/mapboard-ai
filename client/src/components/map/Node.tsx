@@ -5,10 +5,11 @@ import { getNodeLeft, getNodeTop, isExistingLink } from '../../../../shared/src/
 import {
   allowedSourceControls,
   allowedTargetControls,
+  ControlColor,
   controlColors,
   controlTexts,
-} from '../../../../shared/src/map/state/map-consts.ts';
-import { ControlColor, ControlType } from '../../../../shared/src/map/state/map-types.ts';
+  ControlType,
+} from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';

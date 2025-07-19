@@ -1,5 +1,5 @@
-import { getControlTypeDimensions } from './map-consts';
-import { ControlType, L, N } from './map-types';
+import { getControlTypeDimensions } from '../getters/map-queries';
+import { ControlType, L, N } from './map-consts-and-types';
 
 export const lDefault: L = {
   fromNodeId: '',

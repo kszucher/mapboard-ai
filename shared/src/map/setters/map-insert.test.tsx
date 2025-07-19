@@ -1,6 +1,5 @@
-import { N_PADDING } from '../state/map-consts';
+import { M, N_PADDING } from '../state/map-consts-and-types';
 import { nDefault } from '../state/map-defaults';
-import { M } from '../state/map-types';
 import { mapInsert } from './map-insert';
 
 describe('MapInsertTests', () => {

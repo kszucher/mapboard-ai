@@ -1,5 +1,5 @@
+import { M } from '../state/map-consts-and-types';
 import { lDefault, nDefault } from '../state/map-defaults';
-import { M } from '../state/map-types';
 import { mapDelete } from './map-delete';
 
 describe('MapDeleteTests', () => {

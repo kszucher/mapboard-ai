@@ -1,4 +1,4 @@
-import { M } from '../state/map-types';
+import { M } from '../state/map-consts-and-types';
 
 export const mapDelete = {
   L: (m: M, lNodeId: string) => {

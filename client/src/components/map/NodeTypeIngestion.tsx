@@ -1,6 +1,6 @@
 import { Box, Flex } from '@radix-ui/themes';
 import React from 'react';
-import { N } from '../../../../shared/src/map/state/map-types.ts';
+import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 
 export const NodeTypeIngestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
   const x = { nodeId, ni };

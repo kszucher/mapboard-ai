@@ -2,7 +2,7 @@ import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution'
 import { MapInfo } from '../../../shared/src/api/api-types-map';
 import { getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
-import { ControlType, M } from '../../../shared/src/map/state/map-types';
+import { ControlType, M } from '../../../shared/src/map/state/map-consts-and-types';
 import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';

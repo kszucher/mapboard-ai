@@ -1,5 +1,4 @@
-import { M_PADDING } from '../state/map-consts';
-import { L, M, N } from '../state/map-types';
+import { ControlType, L, M, M_PADDING, N, N_PADDING } from '../state/map-consts-and-types';
 
 export const getMapSelfW = (m: M) => {
   const nl = Object.values(m.n);
@@ -79,4 +78,38 @@ export const getTopologicalSort = (m: M): string[] | null => {
   }
 
   return order;
+};
+
+export const getControlTypeDimensions = (controlType: ControlType): { w: number, h: number } => {
+  let w;
+  let h;
+  switch (controlType) {
+    case ControlType.FILE:
+      w = 160;
+      h = 90;
+      break;
+    case ControlType.INGESTION:
+      w = 160;
+      h = 90;
+      break;
+    case ControlType.CONTEXT:
+      w = 200;
+      h = 200;
+      break;
+    case ControlType.QUESTION:
+      w = 200;
+      h = 200;
+      break;
+    case ControlType.VECTOR_DATABASE:
+      w = 180;
+      h = 60;
+      break;
+    case ControlType.LLM:
+      w = 200;
+      h = 210;
+      break;
+  }
+  w += 2 * N_PADDING;
+  h += 2 * N_PADDING;
+  return { w, h };
 };

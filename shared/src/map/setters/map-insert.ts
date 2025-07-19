@@ -1,7 +1,6 @@
-import { getLastIndexN, getMapSelfH, getMapSelfW } from '../getters/map-queries';
-import { getControlTypeDimensions } from '../state/map-consts';
+import { getControlTypeDimensions, getLastIndexN, getMapSelfH, getMapSelfW } from '../getters/map-queries';
+import { ControlType, L, M, N } from '../state/map-consts-and-types';
 import { lDefault, nDefault } from '../state/map-defaults';
-import { ControlType, L, M, N } from '../state/map-types';
 
 export const mapInsert = {
   L: (m: M, partialL: Partial<L>, genId: Function) => Object.assign(m.l, {

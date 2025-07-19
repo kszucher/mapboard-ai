@@ -1,4 +1,4 @@
-import { M } from '../state/map-types';
+import { M } from '../state/map-consts-and-types';
 
 export const mapCopy = (m: M, genId: Function): M => {
   const lIdMapping = new Map(Object.keys(m.l).map(id => [id, genId()]));
