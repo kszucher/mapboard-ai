@@ -24,14 +24,6 @@ export const Node: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
 
-  const getAllowedTargets = (controlType: ControlType): readonly ControlType[] => {
-    return allowedTargetControls[controlType];
-  };
-
-  const getAllowedSources = (controlType: ControlType): readonly ControlType[] => {
-    return allowedSourceControls[controlType];
-  };
-
   return Object.entries(m.n).map(([nodeId, ni]) => (
     <div
       key={nodeId}
@@ -123,7 +115,7 @@ export const Node: FC = () => {
                 {Object.entries(m.n)
                   .filter(
                     ([toNodeId, toRi]) =>
-                      getAllowedTargets(ni.controlType).includes(toRi.controlType) &&
+                      allowedTargetControls[ni.controlType].includes(toRi.controlType) &&
                       !isExistingLink(m, nodeId, toNodeId)
                   )
                   .map(([toNodeId, toRi]) => (
@@ -136,7 +128,7 @@ export const Node: FC = () => {
                               fromNodeId: nodeId,
                               fromNodeSideIndex: 0,
                               toNodeId,
-                              toNodeSideIndex: getAllowedSources(toRi.controlType).findIndex(
+                              toNodeSideIndex: allowedSourceControls[toRi.controlType].findIndex(
                                 ct => ct === ni.controlType
                               ),
                             },

@@ -59,16 +59,16 @@ export const controlTexts = {
   [ControlType.LLM]: 'LLM',
 } as const;
 
-export const allowedTargetControls = {
+export const allowedTargetControls: Record<ControlType, ControlType[]> = {
   [ControlType.FILE]: [ControlType.INGESTION],
   [ControlType.INGESTION]: [ControlType.VECTOR_DATABASE],
   [ControlType.CONTEXT]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
   [ControlType.QUESTION]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
   [ControlType.VECTOR_DATABASE]: [ControlType.LLM],
   [ControlType.LLM]: [],
-} as const;
+};
 
-export const allowedSourceControls = {
+export const allowedSourceControls: Record<ControlType, ControlType[]> = {
   [ControlType.FILE]: [],
   [ControlType.INGESTION]: [ControlType.FILE],
   [ControlType.CONTEXT]: [],
