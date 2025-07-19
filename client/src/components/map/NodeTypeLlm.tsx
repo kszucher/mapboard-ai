@@ -1,32 +1,31 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { N } from '../../../../shared/src/map/state/map-types.ts';
-import { actions } from '../../data/reducer.ts';
-import { AppDispatch } from '../../data/store.ts';
+import { RootState } from '../../data/store.ts';
 
-export const RootNodeTypeContext = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
-  const dispatch = useDispatch<AppDispatch>();
+export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
+  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   return (
     <React.Fragment>
       <Box position="absolute" top="7" mt="2" ml="3" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="4" align="start" content="center">
           <TextArea
-            placeholder="Type Here…"
+            placeholder=""
             color="gray"
             variant="soft"
             style={{
               width: ni.selfW - 38,
-              minHeight: 210,
+              minHeight: 220,
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ni.context ?? ''}
-            onChange={e => {
-              dispatch(actions.setNodeAttributes({ nodeId, attributes: { context: e.target.value } }));
-            }}
+            value={m.n[nodeId].llmHash ?? ''}
+            onChange={() => {}}
           />
+
+          <Flex direction="row" gap="4" align="start" content="center"></Flex>
         </Flex>
       </Box>
     </React.Fragment>

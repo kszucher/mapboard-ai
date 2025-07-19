@@ -4,7 +4,7 @@ import { N } from '../../../../shared/src/map/state/map-types.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { shrinkString } from '../../utils/utils.ts';
 
-export const RootNodeTypeFileUpload = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
+export const NodeTypeFileUpload = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);

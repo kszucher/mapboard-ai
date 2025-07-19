@@ -6,15 +6,15 @@ import { useGetMapInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { MidMouseMode } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { LinkNodeBezier } from './LinkNodeBezier.tsx';
-import { LinkNodeConnectorTo } from './LinkNodeConnectorTo.tsx';
-import { LinkNodeConnectorFrom } from './LinkNodeConnectorFrom.tsx';
-import { LinkNodeDelete } from './LinkNodeDelete.tsx';
-import { RootNode } from './RootNode.tsx';
-import { RootNodeBackground } from './RootNodeBackground.tsx';
-import { RootNodeFrame } from './RootNodeFrame.tsx';
-import { RootNodeMovePreview } from './RootNodeMovePreview.tsx';
-import { RootNodeSeparator } from './RootNodeSeparator.tsx';
+import { LinkBezier } from './LinkBezier.tsx';
+import { LinkConnectorTo } from './LinkConnectorTo.tsx';
+import { LinkConnectorFrom } from './LinkConnectorFrom.tsx';
+import { LinkDelete } from './LinkDelete.tsx';
+import { Node } from './Node.tsx';
+import { MapBackground } from './MapBackground.tsx';
+import { MapFrame } from './MapFrame.tsx';
+import { NodeMovePreview } from './NodeMovePreview.tsx';
+import { NodeSeparator } from './NodeSeparator.tsx';
 
 export const Map: FC = () => {
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
@@ -128,16 +128,16 @@ export const Map: FC = () => {
         }}
       >
         <svg width={mapSelfW} height={mapSelfH}>
-          <RootNodeBackground />
-          <RootNodeFrame />
-          <LinkNodeBezier />
-          <RootNodeSeparator />
-          <RootNodeMovePreview />
-          <LinkNodeConnectorFrom />
-          <LinkNodeConnectorTo />
+          <MapBackground />
+          <MapFrame />
+          <LinkBezier />
+          <NodeSeparator />
+          <NodeMovePreview />
+          <LinkConnectorFrom />
+          <LinkConnectorTo />
         </svg>
-        <RootNode />
-        <LinkNodeDelete />
+        <Node />
+        <LinkDelete />
       </div>
       <div />
       <div />

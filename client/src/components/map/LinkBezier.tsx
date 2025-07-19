@@ -4,7 +4,7 @@ import { getLineCoords } from '../../../../shared/src/map/getters/map-queries.ts
 import { RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLinePath, pathCommonProps } from './UtilsSvg.ts';
 
-export const LinkNodeBezier: FC = () => {
+export const LinkBezier: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   const dashLength = 6;

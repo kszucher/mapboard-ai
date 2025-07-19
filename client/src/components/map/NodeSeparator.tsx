@@ -5,7 +5,7 @@ import { RootState } from '../../data/store.ts';
 import { adjust } from '../../utils/utils.ts';
 import { getLinearLinePath, pathCommonProps } from './UtilsSvg.ts';
 
-export const RootNodeSeparator: FC = () => {
+export const NodeSeparator: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   return Object.entries(m.n).map(([nodeId, ni]) => (
     <path

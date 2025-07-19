@@ -2,7 +2,7 @@ import { Box, Flex } from '@radix-ui/themes';
 import React from 'react';
 import { N } from '../../../../shared/src/map/state/map-types.ts';
 
-export const RootNodeTypeIngestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
+export const NodeTypeIngestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
   const x = { nodeId, ni };
   if (!x) {
     window.alert('missing props');

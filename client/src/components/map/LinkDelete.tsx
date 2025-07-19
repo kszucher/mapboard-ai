@@ -7,7 +7,7 @@ import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLineCoordsMid } from './UtilsSvg.ts';
 
-export const LinkNodeDelete: FC = () => {
+export const LinkDelete: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const linkHelpersVisible = useSelector((state: RootState) => state.slice.linkHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();
@@ -15,7 +15,7 @@ export const LinkNodeDelete: FC = () => {
     linkHelpersVisible &&
     Object.entries(m.l).map(([nodeId, li]) => (
       <IconButton
-        key={`${nodeId}_inter_root_bezier_trash`}
+        key={`${nodeId}_inter_node_bezier_trash`}
         variant="solid"
         color="gray"
         size="1"

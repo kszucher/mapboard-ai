@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { N_PADDING } from '../../../../shared/src/map/state/map-consts.ts';
 import { RootState } from '../../data/store.ts';
 
-export const RootNodeMovePreview: FC = () => {
+export const NodeMovePreview: FC = () => {
   const rOffsetCoords = useSelector((state: RootState) => state.slice.rOffsetCoords);
   return (
     rOffsetCoords.length && (

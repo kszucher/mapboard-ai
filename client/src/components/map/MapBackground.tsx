@@ -5,7 +5,7 @@ import { getNodeLeftX, getNodeTopY } from '../../../../shared/src/map/getters/ma
 import { useGetUserInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 
-export const RootNodeBackground: FC = () => {
+export const MapBackground: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
   return Object.entries(m.n).map(([nodeId, ni]) => (

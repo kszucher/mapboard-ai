@@ -13,14 +13,14 @@ import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { RootNodeTypeContext } from './RootNodeTypeContext.tsx';
-import { RootNodeTypeFileUpload } from './RootNodeTypeFileUpload.tsx';
-import { RootNodeTypeIngestion } from './RootNodeTypeIngestion.tsx';
-import { RootNodeTypeLlm } from './RootNodeTypeLlm.tsx';
-import { RootNodeTypeQuestion } from './RootNodeTypeQuestion.tsx';
-import { RootNodeTypeVectorDatabase } from './RootNodeTypeVectorDatabase.tsx';
+import { NodeTypeContext } from './NodeTypeContext.tsx';
+import { NodeTypeFileUpload } from './NodeTypeFileUpload.tsx';
+import { NodeTypeIngestion } from './NodeTypeIngestion.tsx';
+import { NodeTypeLlm } from './NodeTypeLlm.tsx';
+import { NodeTypeQuestion } from './NodeTypeQuestion.tsx';
+import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
 
-export const RootNode: FC = () => {
+export const Node: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -170,12 +170,12 @@ export const RootNode: FC = () => {
         </DropdownMenu.Root>
       </Box>
 
-      {ni.controlType === ControlType.FILE && <RootNodeTypeFileUpload ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.INGESTION && <RootNodeTypeIngestion ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.CONTEXT && <RootNodeTypeContext ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.QUESTION && <RootNodeTypeQuestion ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.VECTOR_DATABASE && <RootNodeTypeVectorDatabase ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.LLM && <RootNodeTypeLlm ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.FILE && <NodeTypeFileUpload ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.INGESTION && <NodeTypeIngestion ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.CONTEXT && <NodeTypeContext ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.QUESTION && <NodeTypeQuestion ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.VECTOR_DATABASE && <NodeTypeVectorDatabase ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.LLM && <NodeTypeLlm ni={ni} nodeId={nodeId} />}
     </div>
   ));
 };

@@ -5,7 +5,7 @@ import { N } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 
-export const RootNodeTypeQuestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
+export const NodeTypeQuestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (

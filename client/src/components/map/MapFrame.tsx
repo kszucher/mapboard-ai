@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { getMapSelfH, getMapSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
 
-export const RootNodeFrame: FC = () => {
+export const MapFrame: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const mapFrameVisible = useSelector((state: RootState) => state.slice.mapFrameVisible);
   return (

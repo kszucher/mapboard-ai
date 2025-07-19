@@ -6,7 +6,7 @@ import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import { RootState } from '../../data/store.ts';
 import { radixColorMap } from './UtilsSvg.ts';
 
-export const LinkNodeConnectorFrom: FC = () => {
+export const LinkConnectorFrom: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const allowedControlTypes: ControlType[] = [
     ControlType.FILE,
