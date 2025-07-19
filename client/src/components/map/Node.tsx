@@ -32,21 +32,6 @@ export const Node: FC = () => {
     return allowedSourceControls[controlType];
   };
 
-  const insertL = (fromNodeId: string, fromNodeSideIndex: number, toNodeId: string, toNodeSideIndex: number) => {
-    if (!isExistingLink(m, fromNodeId, toNodeId)) {
-      dispatch(
-        actions.insertLink({
-          lPartial: {
-            fromNodeId,
-            fromNodeSideIndex,
-            toNodeId,
-            toNodeSideIndex,
-          },
-        })
-      );
-    }
-  };
-
   return Object.entries(m.n).map(([nodeId, ni]) => (
     <div
       key={nodeId}
@@ -145,11 +130,17 @@ export const Node: FC = () => {
                     <DropdownMenu.Item
                       key={toNodeId}
                       onClick={() => {
-                        insertL(
-                          nodeId,
-                          0,
-                          toNodeId,
-                          getAllowedSources(toRi.controlType).findIndex(ct => ct === ni.controlType)
+                        dispatch(
+                          actions.insertLink({
+                            lPartial: {
+                              fromNodeId: nodeId,
+                              fromNodeSideIndex: 0,
+                              toNodeId,
+                              toNodeSideIndex: getAllowedSources(toRi.controlType).findIndex(
+                                ct => ct === ni.controlType
+                              ),
+                            },
+                          })
                         );
                       }}
                     >
