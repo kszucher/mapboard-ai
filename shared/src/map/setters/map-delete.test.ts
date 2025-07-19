@@ -3,7 +3,7 @@ import { M } from '../state/map-types';
 import { mapDelete } from './map-delete';
 
 describe('MapDeleteTests', () => {
-  test('deleteLR', () => {
+  test('deleteNL', () => {
     const test: M = {
       l: {
         l0: {
@@ -23,15 +23,15 @@ describe('MapDeleteTests', () => {
         },
       },
       n: {
-        [0]: {
+        n0: {
           ...nDefault,
           iid: 0,
         },
-        r1: {
+        n1: {
           ...nDefault,
           iid: 1,
         },
-        r2: {
+        n2: {
           ...nDefault,
           iid: 2,
         },
@@ -46,17 +46,17 @@ describe('MapDeleteTests', () => {
         },
       },
       n: {
-        r0: {
+        n0: {
           ...nDefault,
           iid: 0,
         },
-        r2: {
+        n2: {
           ...nDefault,
           iid: 2,
         },
       },
     };
-    mapDelete.NL(test, 'r1');
+    mapDelete.NL(test, 'n1');
     expect(test).toMatchObject(result);
   });
 });
