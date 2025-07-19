@@ -105,7 +105,7 @@ export class MapService {
       select: { id: true },
     });
 
-    return this.getMapInfo({ mapId: map.id });
+    return await this.getMapInfo({ mapId: map.id });
   }
 
   async createMap({ userId, mapName, newMapData }: {
