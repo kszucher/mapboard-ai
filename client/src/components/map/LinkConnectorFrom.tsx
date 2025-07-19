@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { getNodeLeftX, getNodeTopY } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getNodeLeft, getNodeTop } from '../../../../shared/src/map/getters/map-queries.ts';
 import { controlColors } from '../../../../shared/src/map/state/map-consts.ts';
 import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import { RootState } from '../../data/store.ts';
@@ -26,7 +26,7 @@ export const LinkConnectorFrom: FC = () => {
         height="24"
         r={3}
         fill={radixColorMap[controlColors[ni.controlType]]}
-        transform={`translate(${getNodeLeftX(ni) + ni.selfW - 8}, ${getNodeTopY(ni) + 60})`}
+        transform={`translate(${getNodeLeft(ni) + ni.selfW - 8}, ${getNodeTop(ni) + 60})`}
         {...{ vectorEffect: 'non-scaling-stroke' }}
         style={{
           transition: 'all 0.3s',

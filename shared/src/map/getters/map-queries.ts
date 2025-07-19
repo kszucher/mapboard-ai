@@ -13,15 +13,15 @@ export const getMapSelfH = (m: M) => {
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getNodeLeftX = (n: N) => n.offsetW + M_PADDING;
-export const getNodeRightX = (n: N) => n.offsetW + M_PADDING + n.selfW;
-export const getNodeTopY = (n: N) => n.offsetH + M_PADDING;
+export const getNodeLeft = (n: N) => n.offsetW + M_PADDING;
+export const getNodeRight = (n: N) => n.offsetW + M_PADDING + n.selfW;
+export const getNodeTop = (n: N) => n.offsetH + M_PADDING;
 
 export const getLineCoords = (m: M, l: L) => [
-  getNodeRightX(m.n[l.fromNodeId]) - 10,
-  getNodeTopY(m.n[l.fromNodeId]) + 60 + l.fromNodeSideIndex * 20,
-  getNodeLeftX(m.n[l.toNodeId]) + 10,
-  getNodeTopY(m.n[l.toNodeId]) + 60 + l.toNodeSideIndex * 20,
+  getNodeRight(m.n[l.fromNodeId]) - 10,
+  getNodeTop(m.n[l.fromNodeId]) + 60 + l.fromNodeSideIndex * 20,
+  getNodeLeft(m.n[l.toNodeId]) + 10,
+  getNodeTop(m.n[l.toNodeId]) + 60 + l.toNodeSideIndex * 20,
 ];
 
 export const getLastIndexN = (m: M): number => Math.max(-1, ...Object.values(m.n).map(ni => ni.iid));
