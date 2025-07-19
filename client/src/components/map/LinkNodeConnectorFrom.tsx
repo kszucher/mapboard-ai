@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { getRootLeftX, getRootTopY } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getNodeLeftX, getNodeTopY } from '../../../../shared/src/map/getters/map-queries.ts';
 import { controlColors } from '../../../../shared/src/map/state/map-consts.ts';
 import { ControlType } from '../../../../shared/src/map/state/map-types.ts';
 import { RootState } from '../../data/store.ts';
@@ -8,25 +8,25 @@ import { radixColorMap } from './UtilsSvg.ts';
 
 export const LinkNodeConnectorFrom: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  return Object.entries(m.r)
-    .filter(([, ri]) =>
-      [
-        ControlType.FILE,
-        ControlType.INGESTION,
-        ControlType.CONTEXT,
-        ControlType.QUESTION,
-        ControlType.VECTOR_DATABASE,
-      ].includes(ri.controlType)
-    )
-    .map(([nodeId, ri]) => (
+  const allowedControlTypes: ControlType[] = [
+    ControlType.FILE,
+    ControlType.INGESTION,
+    ControlType.CONTEXT,
+    ControlType.QUESTION,
+    ControlType.VECTOR_DATABASE,
+  ];
+
+  return Object.entries(m.n)
+    .filter(([, ni]) => allowedControlTypes.includes(ni.controlType))
+    .map(([nodeId, ni]) => (
       <circle
         key={`${nodeId}_from`}
         viewBox="0 0 24 24"
         width="24"
         height="24"
         r={3}
-        fill={radixColorMap[controlColors[ri.controlType]]}
-        transform={`translate(${getRootLeftX(ri) + ri.selfW - 8}, ${getRootTopY(ri) + 60})`}
+        fill={radixColorMap[controlColors[ni.controlType]]}
+        transform={`translate(${getNodeLeftX(ni) + ni.selfW - 8}, ${getNodeTopY(ni) + 60})`}
         {...{ vectorEffect: 'non-scaling-stroke' }}
         style={{
           transition: 'all 0.3s',

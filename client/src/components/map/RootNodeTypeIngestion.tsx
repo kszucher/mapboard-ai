@@ -1,9 +1,9 @@
 import { Box, Flex } from '@radix-ui/themes';
 import React from 'react';
-import { R } from '../../../../shared/src/map/state/map-types.ts';
+import { N } from '../../../../shared/src/map/state/map-types.ts';
 
-export const RootNodeTypeIngestion = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
-  const x = { nodeId, ri };
+export const RootNodeTypeIngestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
+  const x = { nodeId, ni };
   if (!x) {
     window.alert('missing props');
   }
@@ -11,7 +11,7 @@ export const RootNodeTypeIngestion = ({ nodeId, ri }: { nodeId: string; ri: R })
     <React.Fragment>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="2" align="start" content="center">
-          {ri.ingestionId !== null}
+          {ni.ingestionId !== null}
         </Flex>
       </Box>
     </React.Fragment>

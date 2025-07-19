@@ -1,7 +1,7 @@
 import { ControlType } from './map-types';
 
 export const M_PADDING = 40;
-export const R_PADDING = 40;
+export const N_PADDING = 40;
 
 export const getControlTypeDimensions = (controlType: ControlType): { w: number, h: number } => {
   let w;
@@ -32,8 +32,8 @@ export const getControlTypeDimensions = (controlType: ControlType): { w: number,
       h = 210;
       break;
   }
-  w += 2 * R_PADDING;
-  h += 2 * R_PADDING;
+  w += 2 * N_PADDING;
+  h += 2 * N_PADDING;
   return { w, h };
 };
 

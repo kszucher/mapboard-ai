@@ -15,22 +15,22 @@ export const NodeInsert = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.FILE }))}>
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertNode({ controlType: ControlType.FILE }))}>
           {'File Upload'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.INGESTION }))}>
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertNode({ controlType: ControlType.INGESTION }))}>
           {'Ingestion'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.CONTEXT }))}>
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertNode({ controlType: ControlType.CONTEXT }))}>
           {'Context'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.QUESTION }))}>
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertNode({ controlType: ControlType.QUESTION }))}>
           {'Question'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.VECTOR_DATABASE }))}>
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertNode({ controlType: ControlType.VECTOR_DATABASE }))}>
           {'Vector Database'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.insertR({ controlType: ControlType.LLM }))}>
+        <DropdownMenu.Item onClick={() => dispatch(actions.insertNode({ controlType: ControlType.LLM }))}>
           {'LLM'}
         </DropdownMenu.Item>
       </DropdownMenu.Content>

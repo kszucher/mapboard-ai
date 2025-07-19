@@ -1,7 +1,7 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRootLeftX, getRootTopY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getNodeLeftX, getNodeTopY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
 import {
   allowedSourceControls,
   allowedTargetControls,
@@ -43,7 +43,7 @@ export const RootNode: FC = () => {
   const insertL = (fromNodeId: string, fromNodeSideIndex: number, toNodeId: string, toNodeSideIndex: number) => {
     if (!isExistingLink(m, fromNodeId, toNodeId)) {
       dispatch(
-        actions.insertL({
+        actions.insertLink({
           lPartial: {
             fromNodeId,
             fromNodeSideIndex,
@@ -55,19 +55,19 @@ export const RootNode: FC = () => {
     }
   };
 
-  return Object.entries(m.r).map(([nodeId, ri]) => (
+  return Object.entries(m.n).map(([nodeId, ni]) => (
     <div
       key={nodeId}
       id={nodeId}
       ref={ref => ref && ref.focus()}
       style={{
         position: 'absolute',
-        left: getRootLeftX(ri),
-        top: getRootTopY(ri),
+        left: getNodeLeftX(ni),
+        top: getNodeTopY(ni),
         transition: 'left 0.3s, top 0.3s',
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-        minWidth: ri.selfW,
-        minHeight: ri.selfH,
+        minWidth: ni.selfW,
+        minHeight: ni.selfH,
         margin: 0,
         pointerEvents: 'none',
       }}
@@ -76,12 +76,12 @@ export const RootNode: FC = () => {
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
-            {'R' + ri.iid}
+            {'N' + ni.iid}
           </Badge>
-          <Badge color={resolveBadgeColor(ri.controlType)} size="2">
-            {resolveBadgeText(ri.controlType)}
+          <Badge color={resolveBadgeColor(ni.controlType)} size="2">
+            {resolveBadgeText(ni.controlType)}
           </Badge>
-          {ri.isProcessing && <Spinner m="1" />}
+          {ni.isProcessing && <Spinner m="1" />}
         </Flex>
       </Box>
 
@@ -103,7 +103,7 @@ export const RootNode: FC = () => {
               e => {
                 e.preventDefault();
                 didMove = true;
-                dispatch(actions.offsetRByDragPreview({ r: ri, e }));
+                dispatch(actions.offsetNodeByDragPreview({ n: ni, e }));
               },
               { signal }
             );
@@ -113,7 +113,7 @@ export const RootNode: FC = () => {
                 abortController.abort();
                 e.preventDefault();
                 if (didMove) {
-                  dispatch(actions.offsetLR({ nodeId }));
+                  dispatch(actions.offsetNodeLink({ nodeId }));
                 }
               },
               { signal }
@@ -135,7 +135,7 @@ export const RootNode: FC = () => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(actions.deleteLR({ nodeId }));
+                dispatch(actions.deleteNodeLink({ nodeId }));
               }}
             >
               {'Delete'}
@@ -143,10 +143,10 @@ export const RootNode: FC = () => {
             <DropdownMenu.Sub>
               <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">{'Connect To...'}</DropdownMenu.SubTrigger>
               <DropdownMenu.SubContent>
-                {Object.entries(m.r)
+                {Object.entries(m.n)
                   .filter(
                     ([toNodeId, toRi]) =>
-                      getAllowedTargets(ri.controlType).includes(toRi.controlType) &&
+                      getAllowedTargets(ni.controlType).includes(toRi.controlType) &&
                       !isExistingLink(m, nodeId, toNodeId)
                   )
                   .map(([toNodeId, toRi]) => (
@@ -157,11 +157,11 @@ export const RootNode: FC = () => {
                           nodeId,
                           0,
                           toNodeId,
-                          getAllowedSources(toRi.controlType).findIndex(ct => ct === ri.controlType)
+                          getAllowedSources(toRi.controlType).findIndex(ct => ct === ni.controlType)
                         );
                       }}
                     >
-                      {toRi.controlType + ' R' + toRi.iid}
+                      {toRi.controlType + ' N' + toRi.iid}
                     </DropdownMenu.Item>
                   ))}
               </DropdownMenu.SubContent>
@@ -170,12 +170,12 @@ export const RootNode: FC = () => {
         </DropdownMenu.Root>
       </Box>
 
-      {ri.controlType === ControlType.FILE && <RootNodeTypeFileUpload ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.INGESTION && <RootNodeTypeIngestion ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.CONTEXT && <RootNodeTypeContext ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.QUESTION && <RootNodeTypeQuestion ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.VECTOR_DATABASE && <RootNodeTypeVectorDatabase ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.LLM && <RootNodeTypeLlm ri={ri} nodeId={nodeId} />}
+      {ni.controlType === ControlType.FILE && <RootNodeTypeFileUpload ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.INGESTION && <RootNodeTypeIngestion ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.CONTEXT && <RootNodeTypeContext ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.QUESTION && <RootNodeTypeQuestion ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.VECTOR_DATABASE && <RootNodeTypeVectorDatabase ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.LLM && <RootNodeTypeLlm ni={ni} nodeId={nodeId} />}
     </div>
   ));
 };

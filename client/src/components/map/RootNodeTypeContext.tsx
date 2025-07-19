@@ -1,11 +1,11 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { R } from '../../../../shared/src/map/state/map-types.ts';
+import { N } from '../../../../shared/src/map/state/map-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 
-export const RootNodeTypeContext = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+export const RootNodeTypeContext = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -17,14 +17,14 @@ export const RootNodeTypeContext = ({ nodeId, ri }: { nodeId: string; ri: R }) =
             color="gray"
             variant="soft"
             style={{
-              width: ri.selfW - 38,
+              width: ni.selfW - 38,
               minHeight: 210,
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ri.context}
+            value={ni.context ?? ''}
             onChange={e => {
-              dispatch(actions.setRAttributes({ nodeId, attributes: { context: e.target.value } }));
+              dispatch(actions.setNodeAttributes({ nodeId, attributes: { context: e.target.value } }));
             }}
           />
         </Flex>

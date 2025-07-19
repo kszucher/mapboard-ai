@@ -5,9 +5,9 @@ import { RootState } from '../../data/store.ts';
 
 export const RootNodeFrame: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const rootFrameVisible = useSelector((state: RootState) => state.slice.rootFrameVisible);
+  const mapFrameVisible = useSelector((state: RootState) => state.slice.mapFrameVisible);
   return (
-    rootFrameVisible && (
+    mapFrameVisible && (
       <rect
         key={'svg_map_background'}
         x={0}

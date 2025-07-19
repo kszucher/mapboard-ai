@@ -1,11 +1,10 @@
-import { lDefault, rDefault } from '../state/map-defaults';
+import { lDefault, nDefault } from '../state/map-defaults';
 import { M } from '../state/map-types';
 import { mapDelete } from './map-delete';
 
 describe('MapDeleteTests', () => {
   test('deleteLR', () => {
     const test: M = {
-      g: { isLocked: false },
       l: {
         l0: {
           ...lDefault,
@@ -23,23 +22,22 @@ describe('MapDeleteTests', () => {
           toNodeId: 'r2',
         },
       },
-      r: {
-        r0: {
-          ...rDefault,
+      n: {
+        [0]: {
+          ...nDefault,
           iid: 0,
         },
         r1: {
-          ...rDefault,
+          ...nDefault,
           iid: 1,
         },
         r2: {
-          ...rDefault,
+          ...nDefault,
           iid: 2,
         },
       },
     };
     const result: M = {
-      g: { isLocked: false },
       l: {
         l1: {
           ...lDefault,
@@ -47,18 +45,18 @@ describe('MapDeleteTests', () => {
           toNodeId: 'r2',
         },
       },
-      r: {
+      n: {
         r0: {
-          ...rDefault,
+          ...nDefault,
           iid: 0,
         },
         r2: {
-          ...rDefault,
+          ...nDefault,
           iid: 2,
         },
       },
     };
-    mapDelete.LR(test, 'r1');
+    mapDelete.NL(test, 'r1');
     expect(test).toMatchObject(result);
   });
 });

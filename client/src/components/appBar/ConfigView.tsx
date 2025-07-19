@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const ConfigView = () => {
   const linkHelpersVisible = useSelector((state: RootState) => state.slice.linkHelpersVisible);
-  const rootFrameVisible = useSelector((state: RootState) => state.slice.rootFrameVisible);
+  const mapFrameVisible = useSelector((state: RootState) => state.slice.mapFrameVisible);
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -20,8 +20,8 @@ export const ConfigView = () => {
         <DropdownMenu.Item onClick={() => dispatch(actions.setLinkHelpersVisible(!linkHelpersVisible))}>
           {linkHelpersVisible ? 'Hide Link Helpers' : 'Show Link Helpers'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => dispatch(actions.setRootFrameVisible(!rootFrameVisible))}>
-          {rootFrameVisible ? 'Hide Frame' : 'Show Frame'}
+        <DropdownMenu.Item onClick={() => dispatch(actions.setRootFrameVisible(!mapFrameVisible))}>
+          {mapFrameVisible ? 'Hide Frame' : 'Show Frame'}
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

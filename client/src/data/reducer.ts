@@ -4,7 +4,7 @@ import { MapInfo } from '../../../shared/src/api/api-types-map.ts';
 import { mapAlign } from '../../../shared/src/map/setters/map-align.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
 import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
-import { ControlType, L, R } from '../../../shared/src/map/state/map-types.ts';
+import { ControlType, L, N } from '../../../shared/src/map/state/map-types.ts';
 import { jsonDiff } from '../../../shared/src/map/utils/json-diff.ts';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
@@ -45,7 +45,7 @@ export const slice = createSlice({
       state.linkHelpersVisible = payload;
     },
     setRootFrameVisible(state, { payload }: PayloadAction<boolean>) {
-      state.rootFrameVisible = payload;
+      state.mapFrameVisible = payload;
     },
     clearConnectionStart(state) {
       state.connectionStart = { fromNodeId: '' };
@@ -85,42 +85,42 @@ export const slice = createSlice({
       state.zoomInfo.fromX = originX + (getMapX(e) - prevMapX) / scale;
       state.zoomInfo.fromY = originY + (getMapY(e) - prevMapY) / scale;
     },
-    offsetRByDragPreview(state, action: PayloadAction<{ r: R; e: MouseEvent }>) {
-      const { r, e } = action.payload;
+    offsetNodeByDragPreview(state, action: PayloadAction<{ n: N; e: MouseEvent }>) {
+      const { n, e } = action.payload;
       const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
-      const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + r.offsetW;
-      const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + r.offsetH;
-      state.rOffsetCoords = [toX, toY, r.selfW, r.selfH];
+      const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetW;
+      const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetH;
+      state.rOffsetCoords = [toX, toY, n.selfW, n.selfH];
     },
-    insertL(state, { payload: { lPartial } }: PayloadAction<{ lPartial: Partial<L> }>) {
+    insertLink(state, { payload: { lPartial } }: PayloadAction<{ lPartial: Partial<L> }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       mapInsert.L(m, lPartial, genId);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
-    insertR(state, { payload: { controlType } }: PayloadAction<{ controlType: ControlType }>) {
+    insertNode(state, { payload: { controlType } }: PayloadAction<{ controlType: ControlType }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      mapInsert.R(m, controlType, genId);
+      mapInsert.N(m, controlType, genId);
       mapAlign(m);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
-    deleteL(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+    deleteLink(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       mapDelete.L(m, nodeId);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
-    deleteLR(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+    deleteNodeLink(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      mapDelete.LR(m, nodeId);
+      mapDelete.NL(m, nodeId);
       mapAlign(m);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
-    offsetLR(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+    offsetNodeLink(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      Object.assign(m.r[nodeId], {
+      Object.assign(m.n[nodeId], {
         offsetW: state.rOffsetCoords[0],
         offsetH: state.rOffsetCoords[1],
       });
@@ -129,12 +129,12 @@ export const slice = createSlice({
       state.commitIndex = state.commitIndex + 1;
       state.rOffsetCoords = [];
     },
-    setRAttributes(
+    setNodeAttributes(
       state,
-      { payload: { nodeId, attributes } }: PayloadAction<{ nodeId: string; attributes: Partial<R> }>
+      { payload: { nodeId, attributes } }: PayloadAction<{ nodeId: string; attributes: Partial<N> }>
     ) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      Object.assign(m.r[nodeId], attributes);
+      Object.assign(m.n[nodeId], attributes);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },

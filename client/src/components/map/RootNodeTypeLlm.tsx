@@ -1,10 +1,10 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { R } from '../../../../shared/src/map/state/map-types.ts';
+import { N } from '../../../../shared/src/map/state/map-types.ts';
 import { RootState } from '../../data/store.ts';
 
-export const RootNodeTypeLlm = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+export const RootNodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   return (
@@ -16,12 +16,12 @@ export const RootNodeTypeLlm = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
             color="gray"
             variant="soft"
             style={{
-              width: ri.selfW - 38,
+              width: ni.selfW - 38,
               minHeight: 220,
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={m.r[nodeId].llmHash}
+            value={m.n[nodeId].llmHash ?? ''}
             onChange={() => {}}
           />
 

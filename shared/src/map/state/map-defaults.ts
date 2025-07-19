@@ -1,4 +1,4 @@
-import { L, R } from './map-types';
+import { ControlType, L, N } from './map-types';
 
 export const lDefault: L = {
   fromNodeId: '',
@@ -10,13 +10,16 @@ export const lDefault: L = {
   isProcessing: false,
 };
 
-export const rDefault: Partial<R> = {
+export const nDefault: N = {
   iid: -1,
   offsetW: 0,
   offsetH: 0,
   selfW: 0,
   selfH: 0,
   isProcessing: false,
+  controlType: ControlType.FILE,
+  ingestionId: null,
+  vectorDatabaseId: null,
   fileHash: '',
   fileName: '',
   context: '',

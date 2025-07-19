@@ -1,7 +1,7 @@
-import { getLastIndexR, getMapSelfH, getMapSelfW } from '../getters/map-queries';
+import { getLastIndexN, getMapSelfH, getMapSelfW } from '../getters/map-queries';
 import { getControlTypeDimensions } from '../state/map-consts';
-import { lDefault, rDefault } from '../state/map-defaults';
-import { ControlType, L, M, R } from '../state/map-types';
+import { lDefault, nDefault } from '../state/map-defaults';
+import { ControlType, L, M, N } from '../state/map-types';
 
 export const mapInsert = {
   L: (m: M, partialL: Partial<L>, genId: Function) => Object.assign(m.l, {
@@ -11,10 +11,10 @@ export const mapInsert = {
     },
   }),
 
-  R: (m: M, controlType: ControlType, genId: Function) => Object.assign(m.r, {
-    [genId()]: <R>{
-      ...rDefault,
-      iid: getLastIndexR(m) + 1,
+  N: (m: M, controlType: ControlType, genId: Function) => Object.assign(m.n, {
+    [genId()]: <N>{
+      ...nDefault,
+      iid: getLastIndexN(m) + 1,
       controlType,
       offsetW: getMapSelfW(m),
       offsetH: getMapSelfH(m),

@@ -1,11 +1,11 @@
 import { M } from '../state/map-types';
 
 export const mapAlign = (m: M) => {
-  const rl = Object.values(m.r);
-  const minOffsetW = Math.min(...rl.map(ri => ri.offsetW));
-  const minOffsetH = Math.min(...rl.map(ri => ri.offsetH));
-  Object.values(m.r).map(ri => {
-    ri.offsetW -= minOffsetW;
-    ri.offsetH -= minOffsetH;
+  const nl = Object.values(m.n);
+  const minOffsetW = Math.min(...nl.map(ni => ni.offsetW));
+  const minOffsetH = Math.min(...nl.map(ni => ni.offsetH));
+  Object.values(m.n).map(ni => {
+    ni.offsetW -= minOffsetW;
+    ni.offsetH -= minOffsetH;
   });
 };

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { R_PADDING } from '../../../../shared/src/map/state/map-consts.ts';
+import { N_PADDING } from '../../../../shared/src/map/state/map-consts.ts';
 import { RootState } from '../../data/store.ts';
 
 export const RootNodeMovePreview: FC = () => {
@@ -8,8 +8,8 @@ export const RootNodeMovePreview: FC = () => {
   return (
     rOffsetCoords.length && (
       <rect
-        x={rOffsetCoords[0] + R_PADDING}
-        y={rOffsetCoords[1] + R_PADDING}
+        x={rOffsetCoords[0] + N_PADDING}
+        y={rOffsetCoords[1] + N_PADDING}
         width={rOffsetCoords[2]}
         height={rOffsetCoords[3]}
         rx={8}

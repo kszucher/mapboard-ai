@@ -23,7 +23,7 @@ export interface L {
   isProcessing: boolean;
 }
 
-export interface R {
+export interface N {
   iid: number;
   offsetW: number;
   offsetH: number;
@@ -40,6 +40,4 @@ export interface R {
   llmHash: string | null;
 }
 
-export type M = { l: Record<string, L>, r: Record<string, R> };
-
-export type MDelta = { l?: Record<string, Partial<L>>, r?: Record<string, Partial<R>> };
+export type M = { l: Record<string, L>, n: Record<string, N> };

@@ -46,7 +46,7 @@ export class MapService {
   private hasProcessing = (m: M): boolean => {
     return (
       Object.values(m.l).some(link => link.isProcessing) ||
-      Object.values(m.r).some(node => node.isProcessing)
+      Object.values(m.n).some(node => node.isProcessing)
     );
   };
 
@@ -57,8 +57,8 @@ export class MapService {
     ]);
 
     const l = Object.fromEntries(mapLinks.map(({ id, mapId, ...rest }) => [id, rest]));
-    const r = Object.fromEntries(mapNodes.map(({ id, mapId, ...rest }) => [id, rest]));
-    return { l, r };
+    const n = Object.fromEntries(mapNodes.map(({ id, mapId, ...rest }) => [id, rest]));
+    return { l, n };
   };
 
   private async getMapInfo({ mapId }: { mapId: number }): Promise<MapInfo> {
@@ -128,7 +128,7 @@ export class MapService {
     if (newMapData) {
       await this.prisma.$transaction(async (prisma) => {
         await prisma.mapNode.createMany({
-          data: Object.entries(newMapData.r).map(([id, r]) => ({ id, ...r, mapId: map.id })),
+          data: Object.entries(newMapData.n).map(([id, n]) => ({ id, ...n, mapId: map.id })),
         });
         await prisma.mapLink.createMany({
           data: Object.entries(newMapData.l).map(([id, l]) => ({ id, ...l, mapId: map.id })),
@@ -252,7 +252,7 @@ export class MapService {
         await prisma.mapNode.deleteMany({ where: { mapId } });
 
         await prisma.mapNode.createMany({
-          data: Object.entries(mapData.r).map(([id, r]) => ({ id, mapId, ...r })),
+          data: Object.entries(mapData.n).map(([id, n]) => ({ id, mapId, ...n })),
         });
 
         await prisma.mapLink.createMany({
@@ -297,7 +297,7 @@ export class MapService {
 
     executionLoop: for (const nodeId of topologicalSort) {
 
-      const currentNode = m.r[nodeId];
+      const currentNode = m.n[nodeId];
 
       const skipControlTypes: ControlType[] = [ControlType.FILE, ControlType.CONTEXT, ControlType.QUESTION];
       if (skipControlTypes.includes(currentNode.controlType)) {
@@ -326,7 +326,7 @@ export class MapService {
           }
 
           if (currentNode.ingestionId) {
-            await new Promise(r => setTimeout(r, 1000));
+            await new Promise(el => setTimeout(el, 1000));
             console.log(currentNode.fileName + ' already ingested');
             continue;
           }
@@ -359,29 +359,29 @@ export class MapService {
 
           // const ingestionIdList = Object.values(inputL)
           //   .filter(el => el.toNodeSideIndex === 0)
-          //   .map(el => m.r[el.fromNodeId].ingestionId!);
+          //   .map(el => m.n[el.fromNodeId].ingestionId!);
           //
           // const contextList = Object.values(inputL)
           //   .filter(el => el.toNodeSideIndex === 1)
-          //   .map(el => m.r[el.fromNodeId].context!);
+          //   .map(el => m.n[el.fromNodeId].context!);
           //
           // const questionList = Object.values(inputL)
           //   .filter(el => el.toNodeSideIndex === 2)
-          //   .map(el => m.r[el.fromNodeId].question!);
+          //   .map(el => m.n[el.fromNodeId].question!);
           //
           // const ingestionDataList = await this.prisma.ingestion.findMany({
           //   where: { id: { in: ingestionIdList } },
           //   select: { data: true },
           // });
 
-          await new Promise(r => setTimeout(r, 3000));
+          await new Promise(n => setTimeout(n, 3000));
 
           // TODO wrap with a try catch and if the service is unavailable, update the map
           // await this.aiService.vectorDatabase(ingestionDataList.map(el => el.data), contextList, questionList[0]);
 
           // await this.updateMapByServer({
           //   mapId, mapDelta: {
-          //     r: { [nodeId]: { vectorDatabaseId: 0 } }, // use the id provided by the python service - index or namespace
+          //     n: { [nodeId]: { vectorDatabaseId: 0 } }, // use the id provided by the python service - index or namespace
           //   },
           // });
 
@@ -389,7 +389,7 @@ export class MapService {
         }
         case ControlType.LLM: {
 
-          await new Promise(r => setTimeout(r, 3000));
+          await new Promise(el => setTimeout(el, 3000));
 
           await this.prisma.mapNode.update({
             where: { id: nodeId },

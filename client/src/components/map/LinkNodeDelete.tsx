@@ -31,7 +31,7 @@ export const LinkNodeDelete: FC = () => {
           e.stopPropagation();
         }}
         onClick={() => {
-          dispatch(actions.deleteL({ nodeId }));
+          dispatch(actions.deleteLink({ nodeId }));
         }}
       >
         <Trash />
