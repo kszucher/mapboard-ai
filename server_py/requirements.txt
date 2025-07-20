@@ -7,3 +7,4 @@ docling  # Replace with a version specifier if needed, e.g., docling>=0.1.0
 pyjwt
 openai==1.91.0
 pinecone==7.2.0
+tiktoken>=0.5.0
