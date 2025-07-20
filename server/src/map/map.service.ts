@@ -6,7 +6,7 @@ import { allowedSourceControls, ControlType, M } from '../../../shared/src/map/s
 import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
-import { FileService } from '../resource/file.service';
+import { FileService } from '../file/file.service';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
 
