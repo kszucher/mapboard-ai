@@ -1,29 +1,28 @@
-import { R_PADDING } from '../state/map-consts';
-import { rDefault } from '../state/map-defaults';
-import { M } from '../state/map-types';
+import { M, N_PADDING } from '../state/map-consts-and-types';
+import { nDefault } from '../state/map-defaults';
 import { mapInsert } from './map-insert';
 
 describe('MapInsertTests', () => {
-  test('insertR', () => {
+  test('insertN', () => {
     const test: M = {
-      g: { isLocked: false },
       l: {},
-      r: { a: { ...rDefault, iid: 0 } },
+      n: { n0: { ...nDefault, iid: 0 } },
     };
     const result: M = {
-      g: { isLocked: false },
       l: {},
-      r: {
-        a: { ...rDefault, iid: 0 },
-        b: {
-          ...rDefault,
+      n: {
+        n0: { ...nDefault, iid: 0 },
+        n1: {
+          ...nDefault,
           iid: 1,
-          offsetW: rDefault.selfW + 2 * R_PADDING,
-          offsetH: rDefault.selfH + 2 * R_PADDING,
+          offsetW: nDefault.selfW + 2 * N_PADDING,
+          offsetH: nDefault.selfH + 2 * N_PADDING,
+          selfW: nDefault.selfW,
+          selfH: nDefault.selfH,
         },
       },
     };
-    mapInsert.R(test, rDefault.controlType, () => 'b');
+    mapInsert.N(test, nDefault.controlType, () => 'n1');
     expect(test).toMatchObject(result);
   });
 });

@@ -36,7 +36,6 @@ export const Landing: FC = () => {
   useEffect(() => {
     if (token !== '') {
       dispatch(api.endpoints.createWorkspace.initiate());
-      // dispatch(state.util.invalidateTags(['MapInfo']));
     }
   }, [token]);
 

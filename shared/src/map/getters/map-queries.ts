@@ -1,30 +1,37 @@
-import { M_PADDING } from '../state/map-consts';
-import { L, M, R } from '../state/map-types';
+import { controlBaseSizes, ControlType, L, M, M_PADDING, N, N_PADDING } from '../state/map-consts-and-types';
 
 export const getMapSelfW = (m: M) => {
-  const rl = Object.values(m.r);
-  const max = Math.max(...rl.map(ri => ri.offsetW + ri.selfW));
+  const nl = Object.values(m.n);
+  const max = Math.max(...nl.map(ni => ni.offsetW + ni.selfW));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
 export const getMapSelfH = (m: M) => {
-  const rl = Object.values(m.r);
-  const max = Math.max(...rl.map(ri => ri.offsetH + ri.selfH));
+  const nl = Object.values(m.n);
+  const max = Math.max(...nl.map(ni => ni.offsetH + ni.selfH));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getRootLeftX = (r: R) => r.offsetW + M_PADDING;
-export const getRootRightX = (r: R) => r.offsetW + M_PADDING + r.selfW;
-export const getRootTopY = (r: R) => r.offsetH + M_PADDING;
+export const getNodeLeft = (n: N) => n.offsetW + M_PADDING;
+export const getNodeRight = (n: N) => n.offsetW + M_PADDING + n.selfW;
+export const getNodeTop = (n: N) => n.offsetH + M_PADDING;
 
 export const getLineCoords = (m: M, l: L) => [
-  getRootRightX(m.r[l.fromNodeId]) - 10,
-  getRootTopY(m.r[l.fromNodeId]) + 60 + l.fromNodeSideIndex * 20,
-  getRootLeftX(m.r[l.toNodeId]) + 10,
-  getRootTopY(m.r[l.toNodeId]) + 60 + l.toNodeSideIndex * 20,
+  getNodeRight(m.n[l.fromNodeId]) - 10,
+  getNodeTop(m.n[l.fromNodeId]) + 60 + l.fromNodeSideIndex * 20,
+  getNodeLeft(m.n[l.toNodeId]) + 10,
+  getNodeTop(m.n[l.toNodeId]) + 60 + l.toNodeSideIndex * 20,
 ];
 
-export const getLastIndexR = (m: M): number => Math.max(-1, ...Object.values(m.r).map(ri => ri.iid));
+export const getControlTypeDimensions = (controlType: ControlType): { w: number, h: number } => {
+  const { w, h } = controlBaseSizes[controlType];
+  return {
+    w: w + 2 * N_PADDING,
+    h: h + 2 * N_PADDING,
+  };
+};
+
+export const getLastIndexN = (m: M): number => Math.max(-1, ...Object.values(m.n).map(ni => ni.iid));
 
 export const isExistingLink = (m: M, fromNodeId: string, toNodeId: string): boolean =>
   Object.values(m.l).some(li => li.fromNodeId === fromNodeId && li.toNodeId === toNodeId);
@@ -33,18 +40,18 @@ export const getInputL = (m: M, rNodeId: string): Record<string, L> => {
   return Object.fromEntries(Object.entries(m.l).filter(([, li]) => li.toNodeId === rNodeId));
 };
 
-export const getInputR = (m: M, rNodeId: string): Record<string, R> => {
+export const getInputR = (m: M, rNodeId: string): Record<string, N> => {
   const ll = Object.values(m.l).filter(li => li.toNodeId === rNodeId);
-  return Object.fromEntries(Object.entries(m.r).filter(([nodeId]) => ll.some(li => li.fromNodeId === nodeId)));
+  return Object.fromEntries(Object.entries(m.n).filter(([nodeId]) => ll.some(li => li.fromNodeId === nodeId)));
 };
 
 export const getTopologicalSort = (m: M): string[] | null => {
   // Kahn's algorithm
-  const { r, l } = m;
+  const { n, l } = m;
   const graph = new Map<string, Set<string>>();
   const inDegree = new Map<string, number>();
 
-  for (const nodeId of Object.keys(r)) {
+  for (const nodeId of Object.keys(n)) {
     graph.set(nodeId, new Set());
     inDegree.set(nodeId, 0);
   }
@@ -74,7 +81,7 @@ export const getTopologicalSort = (m: M): string[] | null => {
     }
   }
 
-  if (order.length !== Object.keys(r).length) {
+  if (order.length !== Object.keys(n).length) {
     return null;
   }
 

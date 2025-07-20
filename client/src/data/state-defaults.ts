@@ -11,7 +11,7 @@ export const stateDefaults: State = {
   commitList: [],
   commitIndex: 0,
   serverMap: {},
-  rOffsetCoords: [],
+  nodeOffsetCoords: [],
   zoomInfo: {
     fromX: 0,
     fromY: 0,
@@ -24,7 +24,7 @@ export const stateDefaults: State = {
     originY: 0,
   },
   linkHelpersVisible: false,
-  rootFrameVisible: false,
+  mapFrameVisible: false,
   connectionStart: {
     fromNodeId: '',
   },

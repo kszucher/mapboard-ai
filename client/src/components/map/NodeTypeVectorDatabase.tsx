@@ -1,9 +1,9 @@
 import { Box, Flex } from '@radix-ui/themes';
 import React from 'react';
-import { R } from '../../../../shared/src/map/state/map-types.ts';
+import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 
-export const RootNodeTypeVectorDatabase = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
-  const x = { nodeId, ri };
+export const NodeTypeVectorDatabase = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
+  const x = { nodeId, ni };
   if (!x) {
     window.alert('missing props');
   }

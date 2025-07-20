@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Spinner, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
-import { R } from '../../../../shared/src/map/state/map-types.ts';
+import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { shrinkString } from '../../utils/utils.ts';
 
-export const RootNodeTypeFileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }) => {
+export const NodeTypeFileUpload = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -20,7 +20,7 @@ export const RootNodeTypeFileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }
     <React.Fragment>
       <Box position="absolute" top="7" mt="2" ml="2" pt="2" pl="2" className="pointer-events-auto">
         <Flex direction="column" gap="2" align="start" content="center">
-          {ri.fileName && <Text size="2">{`File: ${shrinkString(ri.fileName, 16)}`}</Text>}
+          {ni.fileName && <Text size="2">{`File: ${shrinkString(ni.fileName, 16)}`}</Text>}
 
           <input
             type="file"
@@ -34,7 +34,7 @@ export const RootNodeTypeFileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }
             style={{ display: 'none' }}
           />
 
-          {!ri.isProcessing && !ri.fileHash && (
+          {!ni.isProcessing && !ni.fileHash && (
             <Button
               size="1"
               radius="full"
@@ -45,7 +45,7 @@ export const RootNodeTypeFileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }
             </Button>
           )}
 
-          {mapId && file && !ri.isProcessing && !ri.fileHash && (
+          {mapId && file && !ni.isProcessing && !ni.fileHash && (
             <Button
               size="1"
               color="gray"
@@ -57,7 +57,7 @@ export const RootNodeTypeFileUpload = ({ nodeId, ri }: { nodeId: string; ri: R }
             </Button>
           )}
 
-          {ri.isProcessing && <Spinner size="3" />}
+          {ni.isProcessing && <Spinner size="3" />}
         </Flex>
       </Box>
     </React.Fragment>

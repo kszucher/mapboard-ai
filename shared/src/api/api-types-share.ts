@@ -75,8 +75,6 @@ export type WithdrawShareEvent = {
 }
 
 export type RejectShareRequestDto = {
-  shareUserId: number
-  mapId: number
   shareId: number
 }
 

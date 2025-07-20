@@ -1,4 +1,4 @@
-import { M } from '../../../shared/src/map/state/map-types.ts';
+import { M } from '../../../shared/src/map/state/map-consts-and-types.ts';
 
 export interface State {
   token: string;
@@ -11,7 +11,7 @@ export interface State {
   commitList: M[];
   commitIndex: number;
   serverMap: object;
-  rOffsetCoords: number[];
+  nodeOffsetCoords: number[];
   zoomInfo: {
     fromX: number;
     fromY: number;
@@ -24,7 +24,7 @@ export interface State {
     originY: number;
   };
   linkHelpersVisible: boolean;
-  rootFrameVisible: boolean;
+  mapFrameVisible: boolean;
   connectionStart: {
     fromNodeId: string;
   };

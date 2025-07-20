@@ -1,73 +1,42 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRootLeftX, getRootTopY, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getNodeLeft, getNodeTop, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
 import {
   allowedSourceControls,
   allowedTargetControls,
   controlColors,
   controlTexts,
-} from '../../../../shared/src/map/state/map-consts.ts';
-import { ControlColor, ControlType } from '../../../../shared/src/map/state/map-types.ts';
+  ControlType,
+} from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { RootNodeTypeContext } from './RootNodeTypeContext.tsx';
-import { RootNodeTypeFileUpload } from './RootNodeTypeFileUpload.tsx';
-import { RootNodeTypeIngestion } from './RootNodeTypeIngestion.tsx';
-import { RootNodeTypeLlm } from './RootNodeTypeLlm.tsx';
-import { RootNodeTypeQuestion } from './RootNodeTypeQuestion.tsx';
-import { RootNodeTypeVectorDatabase } from './RootNodeTypeVectorDatabase.tsx';
+import { NodeTypeContext } from './NodeTypeContext.tsx';
+import { NodeTypeFileUpload } from './NodeTypeFileUpload.tsx';
+import { NodeTypeIngestion } from './NodeTypeIngestion.tsx';
+import { NodeTypeLlm } from './NodeTypeLlm.tsx';
+import { NodeTypeQuestion } from './NodeTypeQuestion.tsx';
+import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
 
-export const RootNode: FC = () => {
+export const Node: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
 
-  const resolveBadgeColor = (controlType: ControlType): ControlColor => {
-    return controlColors[controlType];
-  };
-
-  const resolveBadgeText = (controlType: ControlType): string => {
-    return controlTexts[controlType];
-  };
-
-  const getAllowedTargets = (controlType: ControlType): readonly ControlType[] => {
-    return allowedTargetControls[controlType];
-  };
-
-  const getAllowedSources = (controlType: ControlType): readonly ControlType[] => {
-    return allowedSourceControls[controlType];
-  };
-
-  const insertL = (fromNodeId: string, fromNodeSideIndex: number, toNodeId: string, toNodeSideIndex: number) => {
-    if (!isExistingLink(m, fromNodeId, toNodeId)) {
-      dispatch(
-        actions.insertL({
-          lPartial: {
-            fromNodeId,
-            fromNodeSideIndex,
-            toNodeId,
-            toNodeSideIndex,
-          },
-        })
-      );
-    }
-  };
-
-  return Object.entries(m.r).map(([nodeId, ri]) => (
+  return Object.entries(m.n).map(([nodeId, ni]) => (
     <div
       key={nodeId}
       id={nodeId}
       ref={ref => ref && ref.focus()}
       style={{
         position: 'absolute',
-        left: getRootLeftX(ri),
-        top: getRootTopY(ri),
+        left: getNodeLeft(ni),
+        top: getNodeTop(ni),
         transition: 'left 0.3s, top 0.3s',
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-        minWidth: ri.selfW,
-        minHeight: ri.selfH,
+        minWidth: ni.selfW,
+        minHeight: ni.selfH,
         margin: 0,
         pointerEvents: 'none',
       }}
@@ -76,12 +45,12 @@ export const RootNode: FC = () => {
       <Box position="absolute" top="0" left="0" pt="2" pl="2">
         <Flex direction="row" gap="2" align="start" content="center">
           <Badge color="gray" size="2">
-            {'R' + ri.iid}
+            {'N' + ni.iid}
           </Badge>
-          <Badge color={resolveBadgeColor(ri.controlType)} size="2">
-            {resolveBadgeText(ri.controlType)}
+          <Badge color={controlColors[ni.controlType]} size="2">
+            {controlTexts[ni.controlType]}
           </Badge>
-          {ri.isProcessing && <Spinner m="1" />}
+          {ni.isProcessing && <Spinner m="1" />}
         </Flex>
       </Box>
 
@@ -103,7 +72,7 @@ export const RootNode: FC = () => {
               e => {
                 e.preventDefault();
                 didMove = true;
-                dispatch(actions.offsetRByDragPreview({ r: ri, e }));
+                dispatch(actions.offsetNodeByDragPreview({ n: ni, e }));
               },
               { signal }
             );
@@ -113,7 +82,7 @@ export const RootNode: FC = () => {
                 abortController.abort();
                 e.preventDefault();
                 if (didMove) {
-                  dispatch(actions.offsetLR({ nodeId }));
+                  dispatch(actions.offsetNodeLink({ nodeId }));
                 }
               },
               { signal }
@@ -135,7 +104,7 @@ export const RootNode: FC = () => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(actions.deleteLR({ nodeId }));
+                dispatch(actions.deleteNodeLink({ nodeId }));
               }}
             >
               {'Delete'}
@@ -143,25 +112,31 @@ export const RootNode: FC = () => {
             <DropdownMenu.Sub>
               <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">{'Connect To...'}</DropdownMenu.SubTrigger>
               <DropdownMenu.SubContent>
-                {Object.entries(m.r)
+                {Object.entries(m.n)
                   .filter(
                     ([toNodeId, toRi]) =>
-                      getAllowedTargets(ri.controlType).includes(toRi.controlType) &&
+                      allowedTargetControls[ni.controlType].includes(toRi.controlType) &&
                       !isExistingLink(m, nodeId, toNodeId)
                   )
                   .map(([toNodeId, toRi]) => (
                     <DropdownMenu.Item
                       key={toNodeId}
                       onClick={() => {
-                        insertL(
-                          nodeId,
-                          0,
-                          toNodeId,
-                          getAllowedSources(toRi.controlType).findIndex(ct => ct === ri.controlType)
+                        dispatch(
+                          actions.insertLink({
+                            lPartial: {
+                              fromNodeId: nodeId,
+                              fromNodeSideIndex: 0,
+                              toNodeId,
+                              toNodeSideIndex: allowedSourceControls[toRi.controlType].findIndex(
+                                controlType => controlType === ni.controlType
+                              ),
+                            },
+                          })
                         );
                       }}
                     >
-                      {toRi.controlType + ' R' + toRi.iid}
+                      {toRi.controlType + ' N' + toRi.iid}
                     </DropdownMenu.Item>
                   ))}
               </DropdownMenu.SubContent>
@@ -170,12 +145,12 @@ export const RootNode: FC = () => {
         </DropdownMenu.Root>
       </Box>
 
-      {ri.controlType === ControlType.FILE && <RootNodeTypeFileUpload ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.INGESTION && <RootNodeTypeIngestion ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.CONTEXT && <RootNodeTypeContext ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.QUESTION && <RootNodeTypeQuestion ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.VECTOR_DATABASE && <RootNodeTypeVectorDatabase ri={ri} nodeId={nodeId} />}
-      {ri.controlType === ControlType.LLM && <RootNodeTypeLlm ri={ri} nodeId={nodeId} />}
+      {ni.controlType === ControlType.FILE && <NodeTypeFileUpload ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.INGESTION && <NodeTypeIngestion ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.CONTEXT && <NodeTypeContext ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.QUESTION && <NodeTypeQuestion ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.VECTOR_DATABASE && <NodeTypeVectorDatabase ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.LLM && <NodeTypeLlm ni={ni} nodeId={nodeId} />}
     </div>
   ));
 };

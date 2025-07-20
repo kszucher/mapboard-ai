@@ -1,4 +1,5 @@
-import { L, R } from './map-types';
+import { getControlTypeDimensions } from '../getters/map-queries';
+import { ControlType, L, N } from './map-consts-and-types';
 
 export const lDefault: L = {
   fromNodeId: '',
@@ -10,17 +11,18 @@ export const lDefault: L = {
   isProcessing: false,
 };
 
-export const rDefault: Partial<R> = {
+export const nDefault: N = {
   iid: -1,
   offsetW: 0,
   offsetH: 0,
-  selfW: 0,
-  selfH: 0,
+  selfW: getControlTypeDimensions(ControlType.FILE).w,
+  selfH: getControlTypeDimensions(ControlType.FILE).h,
+  controlType: ControlType.FILE,
   isProcessing: false,
   fileHash: '',
   fileName: '',
-  ingestionId: -1,
-  vectorDatabaseId: -1,
+  ingestionId: null,
+  vectorDatabaseId: null,
   context: '',
   question: '',
   llmHash: '',

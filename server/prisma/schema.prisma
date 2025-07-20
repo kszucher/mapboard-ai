@@ -20,6 +20,8 @@ model User {
   SharesByMe   Share[]     @relation("SharesByMe")
   SharesWithMe Share[]     @relation("SharesWithMe")
   Workspaces   Workspace[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now()) @updatedAt
 }
 
 model Map {
@@ -30,9 +32,10 @@ model Map {
   User       User        @relation("Maps", fields: [userId], references: [id])
   Shares     Share[]     @relation("Shares")
   Workspaces Workspace[]
-  updatedAt  DateTime    @updatedAt
   MapLinks   MapLink[]
   MapNodes   MapNode[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now()) @updatedAt
 }
 
 model MapNode {
@@ -49,34 +52,41 @@ model MapNode {
   fileHash         String?
   fileName         String?
   ingestionId      Int?
+  Ingestion        Ingestion?  @relation(fields: [ingestionId], references: [id], onDelete: SetNull)
   vectorDatabaseId Int?
   context          String?
   question         String?
   llmHash          String?
   FromLinks        MapLink[]   @relation("FromLinks")
   ToLinks          MapLink[]   @relation("ToLinks")
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @default(now()) @updatedAt
 }
 
 model MapLink {
-  id                String  @id @default(uuid())
+  id                String   @id @default(uuid())
   mapId             Int
-  Map               Map     @relation(fields: [mapId], references: [id])
+  Map               Map      @relation(fields: [mapId], references: [id])
   fromNodeId        String
-  FromNode          MapNode @relation("FromLinks", fields: [fromNodeId], references: [id])
+  FromNode          MapNode  @relation("FromLinks", fields: [fromNodeId], references: [id])
   toNodeId          String
-  ToNode            MapNode @relation("ToLinks", fields: [toNodeId], references: [id])
+  ToNode            MapNode  @relation("ToLinks", fields: [toNodeId], references: [id])
   fromNodeSideIndex Int
   toNodeSideIndex   Int
   lineColor         String
   lineWidth         Int
-  isProcessing      Boolean @default(false)
+  isProcessing      Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
 }
 
 model Tab {
-  id     Int   @id @default(autoincrement())
-  userId Int   @unique
-  User   User  @relation("UserTab", fields: [userId], references: [id])
-  mapIds Int[]
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  User      User     @relation("UserTab", fields: [userId], references: [id])
+  mapIds    Int[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Share {
@@ -89,19 +99,26 @@ model Share {
   Map         Map         @relation("Shares", fields: [mapId], references: [id])
   access      ShareAccess
   status      ShareStatus
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now()) @updatedAt
 }
 
 model Workspace {
-  id     Int  @id @default(autoincrement())
-  userId Int
-  User   User @relation(fields: [userId], references: [id])
-  mapId  Int?
-  Map    Map? @relation(fields: [mapId], references: [id])
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  User      User     @relation(fields: [userId], references: [id])
+  mapId     Int?
+  Map       Map?     @relation(fields: [mapId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Ingestion {
-  id   Int  @id @default(autoincrement())
-  data Json
+  id        Int       @id @default(autoincrement())
+  data      Json
+  MapNode   MapNode[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
 }
 
 enum ColorMode {

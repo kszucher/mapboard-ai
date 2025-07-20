@@ -1,4 +1,4 @@
-import { M } from '../map/state/map-types';
+import { M } from '../map/state/map-consts-and-types';
 
 export type MapInfo = {
   id: number

@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { getMapSelfH, getMapSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
 
-export const RootNodeFrame: FC = () => {
+export const MapFrame: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const rootFrameVisible = useSelector((state: RootState) => state.slice.rootFrameVisible);
+  const mapFrameVisible = useSelector((state: RootState) => state.slice.mapFrameVisible);
   return (
-    rootFrameVisible && (
+    mapFrameVisible && (
       <rect
         key={'svg_map_background'}
         x={0}
