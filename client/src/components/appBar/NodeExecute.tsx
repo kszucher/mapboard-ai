@@ -19,7 +19,6 @@ export const NodeExecute = () => {
             window.alert('circular dependency detected');
             return;
           }
-          console.log(getTopologicalSort(m)!.map(nodeId => m.n[nodeId].iid));
           dispatch(api.endpoints.executeMap.initiate({ mapId }));
         }}
       />

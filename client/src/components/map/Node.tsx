@@ -129,7 +129,7 @@ export const Node: FC = () => {
                               fromNodeSideIndex: 0,
                               toNodeId,
                               toNodeSideIndex: allowedSourceControls[toRi.controlType].findIndex(
-                                ct => ct === ni.controlType
+                                controlType => controlType === ni.controlType
                               ),
                             },
                           })

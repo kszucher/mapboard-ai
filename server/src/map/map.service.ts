@@ -2,7 +2,7 @@ import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution'
 import { MapInfo } from '../../../shared/src/api/api-types-map';
 import { getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
-import { ControlType, M } from '../../../shared/src/map/state/map-consts-and-types';
+import { allowedSourceControls, ControlType, M } from '../../../shared/src/map/state/map-consts-and-types';
 import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
@@ -307,32 +307,53 @@ export class MapService {
       await this.updateMapGraphIsProcessingSet({ nodeId });
       await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
+      const inputNodes = await this.prisma.mapNode.findMany({
+        where: {
+          controlType: { in: allowedSourceControls[currentNode.controlType] },
+          FromLinks: {
+            some: {
+              toNodeId: nodeId,
+              ToNode: {
+                controlType: currentNode.controlType,
+              },
+            },
+          },
+        },
+        select: {
+          controlType: true,
+          fileHash: true,
+          fileName: true,
+          ingestionId: true,
+          Ingestion: {
+            select: {
+              data: true,
+            },
+          },
+          vectorDatabaseId: true,
+          context: true,
+          question: true,
+          llmHash: true,
+        },
+      });
+
       switch (currentNode.controlType) {
         case ControlType.INGESTION: {
 
-          const inputLink = await this.prisma.mapLink.findFirstOrThrow({
-            where: { toNodeId: nodeId },
-            select: { id: true, fromNodeId: true },
-          });
-
-          const inputNodeFileUpload = await this.prisma.mapNode.findFirstOrThrow({
-            where: { id: inputLink.fromNodeId },
-            select: { fileHash: true },
-          });
-
-          if (!inputNodeFileUpload.fileHash) {
-            console.error('no fileHash');
-            break executionLoop;
-          }
-
           if (currentNode.ingestionId) {
             await new Promise(el => setTimeout(el, 1000));
-            console.log(currentNode.fileName + ' already ingested');
+            console.log(currentNode.fileName + ' already processed ingestion');
             continue;
           }
 
+          const inputNodeFileUploadFileHash = inputNodes.find(el => el.controlType === ControlType.FILE)?.fileHash;
+
+          if (!inputNodeFileUploadFileHash) {
+            console.error('no input file hash');
+            break executionLoop;
+          }
+
           try {
-            const ingestionJson = await this.aiService.ingestion(inputNodeFileUpload.fileHash!);
+            const ingestionJson = await this.aiService.ingestion(inputNodeFileUploadFileHash);
             if (!ingestionJson) {
               console.error('no ingestionJson');
               break executionLoop;
@@ -357,34 +378,31 @@ export class MapService {
         }
         case ControlType.VECTOR_DATABASE: {
 
-          // const ingestionIdList = Object.values(inputL)
-          //   .filter(el => el.toNodeSideIndex === 0)
-          //   .map(el => m.n[el.fromNodeId].ingestionId!);
-          //
-          // const contextList = Object.values(inputL)
-          //   .filter(el => el.toNodeSideIndex === 1)
-          //   .map(el => m.n[el.fromNodeId].context!);
-          //
-          // const questionList = Object.values(inputL)
-          //   .filter(el => el.toNodeSideIndex === 2)
-          //   .map(el => m.n[el.fromNodeId].question!);
-          //
-          // const ingestionDataList = await this.prisma.ingestion.findMany({
-          //   where: { id: { in: ingestionIdList } },
-          //   select: { data: true },
-          // });
+          if (currentNode.vectorDatabaseId) {
+            await new Promise(el => setTimeout(el, 1000));
+            console.log(currentNode.fileName + ' already processed vector database');
+            continue;
+          }
 
-          await new Promise(n => setTimeout(n, 3000));
+          const ingestionDataList = inputNodes.filter(el => el.controlType === ControlType.INGESTION).map(el => el.Ingestion?.data);
+          const contextList = inputNodes.filter(el => el.controlType === ControlType.CONTEXT).map(el => el.context ?? '');
+          const question = inputNodes.find(el => el.controlType === ControlType.QUESTION)?.question ?? '';
 
-          // TODO wrap with a try catch and if the service is unavailable, update the map
-          // await this.aiService.vectorDatabase(ingestionDataList.map(el => el.data), contextList, questionList[0]);
+          try {
+            const vectorDatabaseId = await this.aiService.vectorDatabase(ingestionDataList, contextList, question);
+            if (!vectorDatabaseId) {
+              console.error('no vectorDatabaseId');
+              break executionLoop;
+            }
 
-          // await this.updateMapByServer({
-          //   mapId, mapDelta: {
-          //     n: { [nodeId]: { vectorDatabaseId: 0 } }, // use the id provided by the python service - index or namespace
-          //   },
-          // });
-
+            await this.prisma.mapNode.update({
+              where: { id: nodeId },
+              data: { vectorDatabaseId },
+            });
+          } catch (e) {
+            console.error('vector database error', e);
+            break executionLoop;
+          }
           break;
         }
         case ControlType.LLM: {
@@ -401,7 +419,6 @@ export class MapService {
           break;
         }
       }
-
     }
 
     await this.updateMapGraphIsProcessingClear({ mapId });
