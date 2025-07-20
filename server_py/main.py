@@ -64,7 +64,8 @@ async def ingest_doc(request: IngestionRequest, token_payload: dict = Depends(ve
 @app.post("/vector-database")
 async def vector_database(request: VectorDatabaseRequest, token_payload: dict = Depends(verify_jwt)):
     try:
-        pass
+        print(request)
+        return 8 # TODO change this to the actual id or namespace created
 
 
     except Exception as e:
