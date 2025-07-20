@@ -204,7 +204,7 @@ export class MapService {
     });
   }
 
-  private async updateMapGraphIsProcessingSet({ mapId, nodeId }: { mapId: number, nodeId: string }) {
+  private async updateMapGraphIsProcessingSet({ nodeId }: { nodeId: string }) {
     await this.prisma.$transaction([
       this.prisma.mapNode.update({
         where: { id: nodeId },
@@ -269,7 +269,7 @@ export class MapService {
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
 
-    await this.updateMapGraphIsProcessingSet({ mapId, nodeId });
+    await this.updateMapGraphIsProcessingSet({ nodeId });
     await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
     const fileHash = await this.fileService.upload(file);
@@ -304,7 +304,7 @@ export class MapService {
         continue;
       }
 
-      await this.updateMapGraphIsProcessingSet({ mapId, nodeId });
+      await this.updateMapGraphIsProcessingSet({ nodeId });
       await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
       switch (currentNode.controlType) {
