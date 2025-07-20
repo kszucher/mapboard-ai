@@ -25,7 +25,7 @@ export interface N {
   fileHash: string | null;
   fileName: string | null;
   ingestionId: number | null;
-  vectorDatabaseId: number | null;
+  vectorDatabaseId: string | null;
   context: string | null;
   question: string | null;
   llmHash: string | null;

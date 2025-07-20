@@ -53,7 +53,7 @@ model MapNode {
   fileName         String?
   ingestionId      Int?
   Ingestion        Ingestion?  @relation(fields: [ingestionId], references: [id], onDelete: SetNull)
-  vectorDatabaseId Int?
+  vectorDatabaseId String?
   context          String?
   question         String?
   llmHash          String?
