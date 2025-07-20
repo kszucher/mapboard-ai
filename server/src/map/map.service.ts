@@ -389,7 +389,10 @@ export class MapService {
           const question = inputNodes.find(el => el.controlType === ControlType.QUESTION)?.question ?? '';
 
           try {
-            const vectorDatabaseId = await this.aiService.vectorDatabase(ingestionDataList, contextList, question);
+            // const vectorDatabaseId = await this.aiService.vectorDatabase(ingestionDataList, contextList, question);
+            await new Promise(el => setTimeout(el, 3000));
+
+            const vectorDatabaseId = 'mockId'; // TODO: rework this in TS
             if (!vectorDatabaseId) {
               console.error('no vectorDatabaseId');
               break executionLoop;
