@@ -52,6 +52,10 @@ export class AiService {
 
     const mastra = new Mastra({
       workflows: { dynamicWorkflow },
+      telemetry: {
+        serviceName: 'my-app',
+        enabled: false,
+      },
     });
 
     const run = await mastra.getWorkflow('dynamicWorkflow').createRunAsync();
