@@ -17,14 +17,11 @@ import workspaceController from './workspace/workspace.controller';
 import { WorkspaceService } from './workspace/workspace.service';
 
 export const prismaClient = new PrismaClient();
-export const aiService: AiService = new AiService(
-  process.env.NODE_PY_SECRET!,
-  process.env.PYTHON_URL!,
-);
+export const aiService: AiService = new AiService();
 export const userService: UserService = new UserService(
   prismaClient,
   () => workspaceService,
-  () => distributionService,
+  () => distributionService
 );
 export const mapService: MapService = new MapService(
   prismaClient,
@@ -32,30 +29,30 @@ export const mapService: MapService = new MapService(
   () => workspaceService,
   () => distributionService,
   () => fileService,
-  () => aiService,
+  () => aiService
 );
 export const fileService: FileService = new FileService(
   process.env.PINATA_API_KEY!,
-  process.env.PINATA_SECRET_API_KEY!,
+  process.env.PINATA_SECRET_API_KEY!
 );
 export const tabService: TabService = new TabService(
   prismaClient,
   () => workspaceService,
-  () => distributionService,
+  () => distributionService
 );
 export const shareService: ShareService = new ShareService(
   prismaClient,
   () => workspaceService,
-  () => distributionService,
+  () => distributionService
 );
 export const workspaceService: WorkspaceService = new WorkspaceService(
   prismaClient,
   () => userService,
-  () => mapService,
+  () => mapService
 );
 export const distributionService: DistributionService = new DistributionService(
   () => workspaceService,
-  process.env.REDIS_MAIN!,
+  process.env.REDIS_MAIN!
 );
 
 (async () => {
@@ -79,7 +76,6 @@ app.get('/ping', async (req: Request, res: Response) => {
   console.log('ping');
   res.json('ping');
 });
-
 
 const PORT = process.env.PORT || 8083;
 app.listen(PORT, () => {
