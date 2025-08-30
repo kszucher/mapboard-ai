@@ -1,9 +1,6 @@
 import { openai } from '@ai-sdk/openai';
-import { Mastra } from '@mastra/core';
 import { Agent } from '@mastra/core/agent';
-import { createStep, createWorkflow } from '@mastra/core/workflows';
 import { z } from 'zod';
-import { ControlType } from '../../../shared/src/map/state/map-consts-and-types';
 
 export class AiService {
   constructor() {}
@@ -21,47 +18,28 @@ export class AiService {
       model: openai('gpt-4o'),
     });
 
-    const step1 = createStep(dynamicAgent);
+    // Format the input data into a prompt
+    const { LLM, VECTOR_DATABASE, DATAFRAME, CONTEXT, QUESTION } = llmInputJson;
 
-    const dynamicWorkflow = createWorkflow({
-      id: 'agent-step-workflow',
-      inputSchema: z.object({
-        [ControlType.LLM]: z.array(z.tuple([z.string(), z.any()])), // llm output can be any
-        [ControlType.VECTOR_DATABASE]: z.array(z.tuple([z.string(), z.string()])),
-        [ControlType.CONTEXT]: z.array(z.tuple([z.string(), z.string()])),
-        [ControlType.DATAFRAME]: z.array(z.tuple([z.string(), z.string()])),
-        [ControlType.QUESTION]: z.array(z.tuple([z.string(), z.string()])),
-      }),
-      outputSchema: z.object({}),
-    })
-      .map(async ({ inputData }) => {
-        const { LLM, VECTOR_DATABASE, DATAFRAME, CONTEXT, QUESTION } = inputData;
-        return {
-          prompt: `You are an agent that may have one or more of the following inputs:
-            ${LLM} - input from another agent
-            ${VECTOR_DATABASE} - result of a vector database query
-            ${DATAFRAME} - result of a dataframe query
-            ${CONTEXT} - user context
-            ${QUESTION} - user question
-            Follow user instructions: ${llmInstructions}.
-          `,
-        };
-      })
-      .then(step1)
-      .commit();
+    const prompt = `You are an agent that may have one or more of the following inputs:
+      ${LLM ? `LLM input: ${LLM}` : ''}
+      ${VECTOR_DATABASE ? `Vector database result: ${VECTOR_DATABASE}` : ''}
+      ${DATAFRAME ? `Dataframe result: ${DATAFRAME}` : ''}
+      ${CONTEXT ? `Context: ${CONTEXT}` : ''}
+      ${QUESTION ? `Question: ${QUESTION}` : ''}
+      Follow user instructions: ${llmInstructions}.
+    `;
 
-    const mastra = new Mastra({
-      workflows: { dynamicWorkflow },
-      telemetry: {
-        serviceName: 'my-app',
-        enabled: false,
+    // Use generateVNext with structured output for v2 models like gpt-4o
+    const result = await dynamicAgent.generateVNext(prompt, {
+      structuredOutput: {
+        schema: z.object({
+          text: z.string(),
+        }),
+        model: openai('gpt-4o'), // Model is required for structured output
       },
     });
 
-    const run = await mastra.getWorkflow('dynamicWorkflow').createRunAsync();
-
-    return await run.start({
-      inputData: llmInputJson,
-    });
+    return result.object; // The structured output is in result.object
   }
 }
