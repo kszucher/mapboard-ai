@@ -23,9 +23,9 @@ export const NodeTypeQuestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ni.context ?? ''}
+            value={ni.contextOutputText ?? ''}
             onChange={e => {
-              dispatch(actions.setNodeAttributes({ nodeId, attributes: { context: e.target.value } }));
+              dispatch(actions.setNodeAttributes({ nodeId, attributes: { contextOutputText: e.target.value } }));
             }}
           />
         </Flex>

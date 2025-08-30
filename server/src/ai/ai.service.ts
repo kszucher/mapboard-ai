@@ -30,6 +30,8 @@ export class AiService {
       Follow user instructions: ${llmInstructions}.
     `;
 
+    console.log(prompt);
+
     // Use generateVNext with structured output for v2 models like gpt-4o
     const result = await dynamicAgent.generateVNext(prompt, {
       structuredOutput: {
