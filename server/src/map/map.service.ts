@@ -412,6 +412,8 @@ export class MapService {
 
           await new Promise(el => setTimeout(el, 3000));
 
+          // TODO implement mastra step and execute it
+
           await this.prisma.mapNode.update({
             where: { id: nodeId },
             data: { llmInstruction: 'LLM answer' },

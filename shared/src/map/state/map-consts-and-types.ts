@@ -49,9 +49,9 @@ export const controlBaseSizes: Record<ControlType, { w: number; h: number }> = {
   [ControlType.CONTEXT]: { w: 200, h: 160 },
   [ControlType.QUESTION]: { w: 200, h: 200 },
   [ControlType.VECTOR_DATABASE]: { w: 180, h: 60 },
-  [ControlType.DATAFRAME]: { w: 180, h: 60 },
-  [ControlType.LLM]: { w: 200, h: 260 },
-  [ControlType.VISUALIZER]: { w: 200, h: 120 },
+  [ControlType.DATAFRAME]: { w: 200, h: 100 },
+  [ControlType.LLM]: { w: 200, h: 200 },
+  [ControlType.VISUALIZER]: { w: 200, h: 160 },
 };
 
 export const controlColors: Record<ControlType, NonNullable<BadgeProps['color']>> = {

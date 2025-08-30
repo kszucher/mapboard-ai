@@ -1,4 +1,4 @@
-import { Box, Flex, Text, TextArea } from '@radix-ui/themes';
+import { Box, Button, Flex, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { getNodeSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
@@ -20,7 +20,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
             variant="soft"
             style={{
               width: getNodeSelfW(ni) - 40,
-              minHeight: 100,
+              minHeight: 120,
               outline: 'none',
               pointerEvents: 'auto',
             }}
@@ -29,23 +29,10 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
               dispatch(actions.setNodeAttributes({ nodeId, attributes: { llmInstruction: e.target.value } }));
             }}
           />
-          <Text size="2">{`Output Schema (Optional)`}</Text>
-          <TextArea
-            placeholder=""
-            color="gray"
-            variant="soft"
-            style={{
-              width: getNodeSelfW(ni) - 40,
-              minHeight: 100,
-              outline: 'none',
-              pointerEvents: 'auto',
-            }}
-            value={ni.llmOutputSchema ?? ''}
-            onChange={e => {
-              dispatch(actions.setNodeAttributes({ nodeId, attributes: { llmOutputSchema: e.target.value } }));
-            }}
-          />
-          <Flex direction="row" gap="4" align="start" content="center"></Flex>
+          <Text size="2">{`Output Schema`}</Text>
+          <Button size="1" color="gray" onClick={() => {}}>
+            {'Show'}
+          </Button>
         </Flex>
       </Box>
     </React.Fragment>
