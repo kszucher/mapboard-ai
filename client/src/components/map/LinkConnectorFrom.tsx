@@ -1,37 +1,35 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { getNodeLeft, getNodeTop } from '../../../../shared/src/map/getters/map-queries.ts';
-import { controlColors, ControlType } from '../../../../shared/src/map/state/map-consts-and-types.ts';
+import { allowedTargetControls, controlColors } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import { RootState } from '../../data/store.ts';
 import { radixColorMap } from './UtilsSvg.ts';
 
 export const LinkConnectorFrom: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const allowedControlTypes: ControlType[] = [
-    ControlType.FILE,
-    ControlType.INGESTION,
-    ControlType.CONTEXT,
-    ControlType.QUESTION,
-    ControlType.VECTOR_DATABASE,
-  ];
 
-  return Object.entries(m.n)
-    .filter(([, ni]) => allowedControlTypes.includes(ni.controlType))
-    .map(([nodeId, ni]) => (
-      <circle
-        key={`${nodeId}_from`}
-        viewBox="0 0 24 24"
-        width="24"
-        height="24"
-        r={3}
-        fill={radixColorMap[controlColors[ni.controlType]]}
-        transform={`translate(${getNodeLeft(ni) + ni.selfW - 8}, ${getNodeTop(ni) + 60})`}
-        {...{ vectorEffect: 'non-scaling-stroke' }}
-        style={{
-          transition: 'all 0.3s',
-          transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-          transitionProperty: 'all',
-        }}
-      />
-    ));
+  return Object.entries(m.n).flatMap(([nodeId, ni]) =>
+    allowedTargetControls[ni.controlType].map((targetControlType, idx) => {
+      const isConnected = Object.values(m.l).some(
+        l => l.fromNodeId === nodeId && m.n[l.toNodeId] && m.n[l.toNodeId].controlType === targetControlType
+      );
+
+      return (
+        <circle
+          key={`${nodeId}_from_${idx}`}
+          r={3}
+          fill={isConnected ? radixColorMap[controlColors[ni.controlType]] : 'none'}
+          stroke={radixColorMap[controlColors[ni.controlType]]}
+          strokeWidth={1.5}
+          transform={`translate(${getNodeLeft(ni) + ni.selfW}, ${getNodeTop(ni) + 60})`}
+          vectorEffect="non-scaling-stroke"
+          style={{
+            transition: 'all 0.3s',
+            transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
+            transitionProperty: 'all',
+          }}
+        />
+      );
+    })
+  );
 };

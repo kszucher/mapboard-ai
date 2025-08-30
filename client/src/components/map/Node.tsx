@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNodeLeft, getNodeTop, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
 import {
-  allowedSourceControls,
   allowedTargetControls,
   controlColors,
   controlTexts,
@@ -14,11 +13,13 @@ import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { NodeTypeContext } from './NodeTypeContext.tsx';
+import { NodeTypeDataFrame } from './NodeTypeDataFrame.tsx';
 import { NodeTypeFileUpload } from './NodeTypeFileUpload.tsx';
 import { NodeTypeIngestion } from './NodeTypeIngestion.tsx';
 import { NodeTypeLlm } from './NodeTypeLlm.tsx';
 import { NodeTypeQuestion } from './NodeTypeQuestion.tsx';
 import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
+import { NodeTypeVisualizer } from './NodeTypeVisualizer.tsx';
 
 export const Node: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
@@ -126,11 +127,7 @@ export const Node: FC = () => {
                           actions.insertLink({
                             lPartial: {
                               fromNodeId: nodeId,
-                              fromNodeSideIndex: 0,
                               toNodeId,
-                              toNodeSideIndex: allowedSourceControls[toRi.controlType].findIndex(
-                                controlType => controlType === ni.controlType
-                              ),
                             },
                           })
                         );
@@ -150,7 +147,9 @@ export const Node: FC = () => {
       {ni.controlType === ControlType.CONTEXT && <NodeTypeContext ni={ni} nodeId={nodeId} />}
       {ni.controlType === ControlType.QUESTION && <NodeTypeQuestion ni={ni} nodeId={nodeId} />}
       {ni.controlType === ControlType.VECTOR_DATABASE && <NodeTypeVectorDatabase ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.DATAFRAME && <NodeTypeDataFrame ni={ni} nodeId={nodeId} />}
       {ni.controlType === ControlType.LLM && <NodeTypeLlm ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.VISUALIZER && <NodeTypeVisualizer ni={ni} nodeId={nodeId} />}
     </div>
   ));
 };

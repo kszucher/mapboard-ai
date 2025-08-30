@@ -51,7 +51,7 @@ export const Landing: FC = () => {
             style={{ fontFamily: 'Comfortaa' }}
             className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8"
           >
-            {'visual process mapping with ai'}
+            {'visual ai agent workflow builder'}
           </div>
           <div className="min-h-0">
             {isWaiting && <Spinner size="3" />}

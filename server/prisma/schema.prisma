@@ -64,20 +64,18 @@ model MapNode {
 }
 
 model MapLink {
-  id                String   @id @default(uuid())
-  mapId             Int
-  Map               Map      @relation(fields: [mapId], references: [id])
-  fromNodeId        String
-  FromNode          MapNode  @relation("FromLinks", fields: [fromNodeId], references: [id])
-  toNodeId          String
-  ToNode            MapNode  @relation("ToLinks", fields: [toNodeId], references: [id])
-  fromNodeSideIndex Int
-  toNodeSideIndex   Int
-  lineColor         String
-  lineWidth         Int
-  isProcessing      Boolean  @default(false)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now()) @updatedAt
+  id           String   @id @default(uuid())
+  mapId        Int
+  Map          Map      @relation(fields: [mapId], references: [id])
+  fromNodeId   String
+  FromNode     MapNode  @relation("FromLinks", fields: [fromNodeId], references: [id])
+  toNodeId     String
+  ToNode       MapNode  @relation("ToLinks", fields: [toNodeId], references: [id])
+  lineColor    String
+  lineWidth    Int
+  isProcessing Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
 }
 
 model Tab {
@@ -132,7 +130,9 @@ enum ControlType {
   CONTEXT
   QUESTION
   VECTOR_DATABASE
+  DATAFRAME
   LLM
+  VISUALIZER
 }
 
 enum ShareStatus {

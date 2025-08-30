@@ -1,4 +1,5 @@
-import { brown, cyan, jade, lime, violet, yellow } from '@radix-ui/colors';
+import { brown, crimson, cyan, gold, jade, lime, violet, yellow } from '@radix-ui/colors';
+import { BadgeProps } from '@radix-ui/themes';
 
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -9,13 +10,15 @@ export const pathCommonProps = {
   },
 };
 
-export const radixColorMap: Record<string, string> = {
+export const radixColorMap: Partial<Record<NonNullable<BadgeProps['color']>, string>> = {
   yellow: yellow.yellow5,
   cyan: cyan.cyan9,
   violet: violet.violet9,
   lime: lime.lime9,
   brown: brown.brown9,
   jade: jade.jade9,
+  crimson: crimson.crimson9,
+  gold: gold.gold9,
 };
 
 export const getLinearLinePath = ({ x1, x2, y1, y2 }: { x1: number; x2: number; y1: number; y2: number }) =>

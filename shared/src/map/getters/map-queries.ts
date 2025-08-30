@@ -1,4 +1,13 @@
-import { controlBaseSizes, ControlType, L, M, M_PADDING, N, N_PADDING } from '../state/map-consts-and-types';
+import {
+  allowedSourceControls,
+  controlBaseSizes,
+  ControlType,
+  L,
+  M,
+  M_PADDING,
+  N,
+  N_PADDING,
+} from '../state/map-consts-and-types';
 
 export const getMapSelfW = (m: M) => {
   const nl = Object.values(m.n);
@@ -13,15 +22,10 @@ export const getMapSelfH = (m: M) => {
 };
 
 export const getNodeLeft = (n: N) => n.offsetW + M_PADDING;
-export const getNodeRight = (n: N) => n.offsetW + M_PADDING + n.selfW;
-export const getNodeTop = (n: N) => n.offsetH + M_PADDING;
 
-export const getLineCoords = (m: M, l: L) => [
-  getNodeRight(m.n[l.fromNodeId]) - 10,
-  getNodeTop(m.n[l.fromNodeId]) + 60 + l.fromNodeSideIndex * 20,
-  getNodeLeft(m.n[l.toNodeId]) + 10,
-  getNodeTop(m.n[l.toNodeId]) + 60 + l.toNodeSideIndex * 20,
-];
+export const getNodeRight = (n: N) => n.offsetW + M_PADDING + n.selfW;
+
+export const getNodeTop = (n: N) => n.offsetH + M_PADDING;
 
 export const getControlTypeDimensions = (controlType: ControlType): { w: number, h: number } => {
   const { w, h } = controlBaseSizes[controlType];
@@ -36,13 +40,53 @@ export const getLastIndexN = (m: M): number => Math.max(-1, ...Object.values(m.n
 export const isExistingLink = (m: M, fromNodeId: string, toNodeId: string): boolean =>
   Object.values(m.l).some(li => li.fromNodeId === fromNodeId && li.toNodeId === toNodeId);
 
-export const getInputL = (m: M, rNodeId: string): Record<string, L> => {
+export const getInputLinkOfNode = (m: M, rNodeId: string): Record<string, L> => {
   return Object.fromEntries(Object.entries(m.l).filter(([, li]) => li.toNodeId === rNodeId));
 };
 
-export const getInputR = (m: M, rNodeId: string): Record<string, N> => {
+export const getOutputLinkOfNode = (m: M, rNodeId: string): Record<string, L> => {
+  return Object.fromEntries(Object.entries(m.l).filter(([, li]) => li.fromNodeId === rNodeId));
+};
+
+export const getInputNodesOfNode = (m: M, rNodeId: string): Record<string, N> => {
   const ll = Object.values(m.l).filter(li => li.toNodeId === rNodeId);
   return Object.fromEntries(Object.entries(m.n).filter(([nodeId]) => ll.some(li => li.fromNodeId === nodeId)));
+};
+
+export const getOutputNodesOfNode = (m: M, rNodeId: string): Record<string, N> => {
+  const ll = Object.values(m.l).filter(li => li.fromNodeId === rNodeId);
+  return Object.fromEntries(Object.entries(m.n).filter(([nodeId]) => ll.some(li => li.toNodeId === nodeId)));
+};
+
+export const getInputNodeOfLink = (m: M, l: L): N => {
+  const inputNode = m.n[l.fromNodeId];
+  if (!inputNode) {
+    throw new Error(`Input node with id "${l.fromNodeId}" not found`);
+  }
+  return inputNode;
+};
+
+export const getOutputNodeOfLink = (m: M, l: L): N => {
+  const outputNode = m.n[l.toNodeId];
+  if (!outputNode) {
+    throw new Error(`Output node with id "${l.toNodeId}" not found`);
+  }
+  return outputNode;
+};
+
+export const getLineCoords = (m: M, l: L) => {
+  const fromNode = getInputNodeOfLink(m, l);
+  const toNode = getOutputNodeOfLink(m, l);
+
+  const leftIndex = allowedSourceControls[toNode.controlType].findIndex(controlType => controlType === fromNode.controlType);
+  const rightIndex = 0;
+
+  return [
+    getNodeRight(m.n[l.fromNodeId]),
+    getNodeTop(m.n[l.fromNodeId]) + 60 + rightIndex * 20,
+    getNodeLeft(m.n[l.toNodeId]),
+    getNodeTop(m.n[l.toNodeId]) + 60 + leftIndex * 20,
+  ];
 };
 
 export const getTopologicalSort = (m: M): string[] | null => {

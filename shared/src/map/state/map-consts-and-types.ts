@@ -6,9 +6,7 @@ export type M = { l: Record<string, L>, n: Record<string, N> };
 
 export interface L {
   fromNodeId: string;
-  fromNodeSideIndex: number;
   toNodeId: string;
-  toNodeSideIndex: number;
   lineColor: string;
   lineWidth: number;
   isProcessing: boolean;
@@ -37,7 +35,9 @@ export const ControlType = {
   CONTEXT: 'CONTEXT',
   QUESTION: 'QUESTION',
   VECTOR_DATABASE: 'VECTOR_DATABASE',
+  DATAFRAME: 'DATAFRAME',
   LLM: 'LLM',
+  VISUALIZER: 'VISUALIZER',
 } as const;
 
 export type ControlType = (typeof ControlType)[keyof typeof ControlType];
@@ -48,16 +48,20 @@ export const controlBaseSizes: Record<ControlType, { w: number; h: number }> = {
   [ControlType.CONTEXT]: { w: 200, h: 200 },
   [ControlType.QUESTION]: { w: 200, h: 200 },
   [ControlType.VECTOR_DATABASE]: { w: 180, h: 60 },
-  [ControlType.LLM]: { w: 200, h: 210 },
+  [ControlType.DATAFRAME]: { w: 180, h: 60 },
+  [ControlType.LLM]: { w: 200, h: 270 },
+  [ControlType.VISUALIZER]: { w: 200, h: 210 },
 };
 
-export const controlColors: Record<ControlType, BadgeProps['color']> = {
+export const controlColors: Record<ControlType, NonNullable<BadgeProps['color']>> = {
   [ControlType.FILE]: 'yellow',
   [ControlType.INGESTION]: 'cyan',
   [ControlType.CONTEXT]: 'violet',
   [ControlType.QUESTION]: 'lime',
   [ControlType.VECTOR_DATABASE]: 'brown',
+  [ControlType.DATAFRAME]: 'crimson',
   [ControlType.LLM]: 'jade',
+  [ControlType.VISUALIZER]: 'lime',
 };
 
 export const controlTexts: Record<ControlType, string> = {
@@ -66,16 +70,20 @@ export const controlTexts: Record<ControlType, string> = {
   [ControlType.CONTEXT]: 'Context',
   [ControlType.QUESTION]: 'Question',
   [ControlType.VECTOR_DATABASE]: 'Vector Database',
+  [ControlType.DATAFRAME]: 'Data Frame',
   [ControlType.LLM]: 'LLM',
+  [ControlType.VISUALIZER]: 'Visualizer',
 };
 
 export const allowedTargetControls: Record<ControlType, ControlType[]> = {
-  [ControlType.FILE]: [ControlType.INGESTION],
+  [ControlType.FILE]: [ControlType.INGESTION, ControlType.DATAFRAME],
   [ControlType.INGESTION]: [ControlType.VECTOR_DATABASE],
   [ControlType.CONTEXT]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
   [ControlType.QUESTION]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
   [ControlType.VECTOR_DATABASE]: [ControlType.LLM],
-  [ControlType.LLM]: [],
+  [ControlType.DATAFRAME]: [ControlType.LLM, ControlType.VISUALIZER],
+  [ControlType.LLM]: [ControlType.LLM, ControlType.DATAFRAME, ControlType.VISUALIZER],
+  [ControlType.VISUALIZER]: [],
 };
 
 export const allowedSourceControls: Record<ControlType, ControlType[]> = {
@@ -84,5 +92,7 @@ export const allowedSourceControls: Record<ControlType, ControlType[]> = {
   [ControlType.CONTEXT]: [],
   [ControlType.QUESTION]: [],
   [ControlType.VECTOR_DATABASE]: [ControlType.INGESTION, ControlType.CONTEXT, ControlType.QUESTION],
-  [ControlType.LLM]: [ControlType.VECTOR_DATABASE, ControlType.CONTEXT, ControlType.QUESTION],
+  [ControlType.DATAFRAME]: [ControlType.FILE, ControlType.LLM],
+  [ControlType.LLM]: [ControlType.LLM, ControlType.VECTOR_DATABASE, ControlType.CONTEXT, ControlType.DATAFRAME, ControlType.QUESTION],
+  [ControlType.VISUALIZER]: [ControlType.LLM, ControlType.DATAFRAME],
 };

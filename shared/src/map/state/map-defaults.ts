@@ -3,9 +3,7 @@ import { ControlType, L, N } from './map-consts-and-types';
 
 export const lDefault: L = {
   fromNodeId: '',
-  fromNodeSideIndex: 0,
   toNodeId: '',
-  toNodeSideIndex: 0,
   lineColor: '#bbbbbb',
   lineWidth: 1,
   isProcessing: false,
