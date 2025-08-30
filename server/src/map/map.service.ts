@@ -435,9 +435,7 @@ export class MapService {
               .filter(el => el.controlType === ControlType.QUESTION)
               .map(el => [el.iid, el.questionOutputText]),
           };
-
-          console.log(inputNodes);
-
+          
           try {
             const llmOutputJson = await this.aiService.llm({ llmInstructions: ni.llmInstructions ?? '', llmInputJson });
 
@@ -448,7 +446,7 @@ export class MapService {
           } catch {
             break executionLoop;
           }
-          
+
           await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
           break;
