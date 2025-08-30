@@ -37,7 +37,7 @@ export class AiService {
       .map(async ({ inputData }) => {
         const { LLM, VECTOR_DATABASE, DATAFRAME, CONTEXT, QUESTION } = inputData;
         return {
-          prompt: `You are an agent that has the following inputs:
+          prompt: `You are an agent that may have one or more of the following inputs:
             ${LLM} - input from another agent
             ${VECTOR_DATABASE} - result of a vector database query
             ${DATAFRAME} - result of a dataframe query
