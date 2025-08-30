@@ -18,7 +18,7 @@ export const NodeTypeQuestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: getNodeSelfW(ni) - 38,
+              width: getNodeSelfW(ni) - 40,
               minHeight: 210,
               outline: 'none',
               pointerEvents: 'auto',

@@ -19,7 +19,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: getNodeSelfW(ni) - 38,
+              width: getNodeSelfW(ni) - 40,
               minHeight: 100,
               outline: 'none',
               pointerEvents: 'auto',
@@ -35,7 +35,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: getNodeSelfW(ni) - 38,
+              width: getNodeSelfW(ni) - 40,
               minHeight: 100,
               outline: 'none',
               pointerEvents: 'auto',

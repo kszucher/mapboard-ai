@@ -18,7 +18,7 @@ export const NodeTypeContext = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: getNodeSelfW(ni) - 38,
+              width: getNodeSelfW(ni) - 40,
               minHeight: getNodeSelfH(ni) - 70,
               outline: 'none',
               pointerEvents: 'auto',
