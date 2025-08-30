@@ -436,13 +436,19 @@ export class MapService {
               .map(el => [el.iid, el.questionOutputText]),
           };
 
-          const llmOutputJson = await this.aiService.llm({ llmInstructions: ni.llmInstructions ?? '', llmInputJson });
+          console.log(inputNodes);
 
-          await this.prisma.mapNode.update({
-            where: { id: nodeId },
-            data: { llmInputJson, llmOutputJson },
-          });
+          try {
+            const llmOutputJson = await this.aiService.llm({ llmInstructions: ni.llmInstructions ?? '', llmInputJson });
 
+            await this.prisma.mapNode.update({
+              where: { id: nodeId },
+              data: { llmInputJson, llmOutputJson },
+            });
+          } catch {
+            break executionLoop;
+          }
+          
           await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
           break;

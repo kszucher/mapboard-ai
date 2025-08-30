@@ -1,7 +1,7 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { getNodeSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getNodeSelfH, getNodeSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
 import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
@@ -19,13 +19,13 @@ export const NodeTypeQuestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
             variant="soft"
             style={{
               width: getNodeSelfW(ni) - 40,
-              minHeight: 210,
+              minHeight: getNodeSelfH(ni) - 70,
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ni.contextOutputText ?? ''}
+            value={ni.questionOutputText ?? ''}
             onChange={e => {
-              dispatch(actions.setNodeAttributes({ nodeId, attributes: { contextOutputText: e.target.value } }));
+              dispatch(actions.setNodeAttributes({ nodeId, attributes: { questionOutputText: e.target.value } }));
             }}
           />
         </Flex>
