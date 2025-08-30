@@ -1,6 +1,7 @@
+import { BadgeProps } from '@radix-ui/themes';
+
 export const M_PADDING = 40;
 export const N_PADDING = 40;
-import type { BadgeProps } from '@radix-ui/themes';
 
 export type M = { l: Record<string, L>, n: Record<string, N> };
 
@@ -20,14 +21,17 @@ export interface N {
   isProcessing: boolean;
   fileHash: string | null;
   fileName: string | null;
-  ingestionId: number | null;
+  ingestionOutputJson: any | null;
   vectorDatabaseId: string | null;
-  context: string | null;
-  question: string | null;
-  llmInstruction: string | null;
-  llmInputSchema: string | null;
-  llmOutputSchema: string | null;
-  visualizerOutputText: string | null;
+  vectorDatabaseOutputText: string | null;
+  dataFrameInputJson: any | null;
+  dataFrameOutputText: string | null;
+  contextOutputText: string | null;
+  questionOutputText: string | null;
+  llmInstructions: string | null;
+  llmInputJson: any | null;
+  llmOutputJson: any | null;
+  visualizerInputText: string | null;
 }
 
 export const ControlType = {

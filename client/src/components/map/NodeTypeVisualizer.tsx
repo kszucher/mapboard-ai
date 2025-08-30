@@ -28,9 +28,9 @@ export const NodeTypeVisualizer = ({ nodeId, ni }: { nodeId: string; ni: N }) =>
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ni.visualizerOutputText ?? ''}
+            value={ni.visualizerInputText ?? ''}
             onChange={e => {
-              dispatch(actions.setNodeAttributes({ nodeId, attributes: { visualizerOutputText: e.target.value } }));
+              dispatch(actions.setNodeAttributes({ nodeId, attributes: { visualizerInputText: e.target.value } }));
             }}
           />
         </Flex>

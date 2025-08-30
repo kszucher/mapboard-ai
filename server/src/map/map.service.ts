@@ -17,9 +17,8 @@ export class MapService {
     private getWorkspaceService: () => WorkspaceService,
     private getDistributionService: () => DistributionService,
     private getFileService: () => FileService,
-    private getAiService: () => AiService,
-  ) {
-  }
+    private getAiService: () => AiService
+  ) {}
 
   get tabService(): TabService {
     return this.getTabService();
@@ -44,10 +43,7 @@ export class MapService {
   private genId = () => global.crypto.randomUUID();
 
   private hasProcessing = (m: M): boolean => {
-    return (
-      Object.values(m.l).some(link => link.isProcessing) ||
-      Object.values(m.n).some(node => node.isProcessing)
-    );
+    return Object.values(m.l).some(link => link.isProcessing) || Object.values(m.n).some(node => node.isProcessing);
   };
 
   private async getMapGraph({ mapId }: { mapId: number }): Promise<M> {
@@ -59,7 +55,7 @@ export class MapService {
     const l = Object.fromEntries(mapLinks.map(({ id, mapId, ...rest }) => [id, rest]));
     const n = Object.fromEntries(mapNodes.map(({ id, mapId, ...rest }) => [id, rest]));
     return { l, n };
-  };
+  }
 
   private async getMapInfo({ mapId }: { mapId: number }): Promise<MapInfo> {
     const map = await this.prisma.map.findUniqueOrThrow({
@@ -108,11 +104,7 @@ export class MapService {
     return await this.getMapInfo({ mapId: map.id });
   }
 
-  async createMap({ userId, mapName, newMapData }: {
-    userId: number,
-    mapName: string,
-    newMapData?: M,
-  }) {
+  async createMap({ userId, mapName, newMapData }: { userId: number; mapName: string; newMapData?: M }) {
     const map = await this.prisma.map.create({
       data: {
         userId,
@@ -126,7 +118,7 @@ export class MapService {
     });
 
     if (newMapData) {
-      await this.prisma.$transaction(async (prisma) => {
+      await this.prisma.$transaction(async prisma => {
         await prisma.mapNode.createMany({
           data: Object.entries(newMapData.n).map(([id, n]) => ({ id, ...n, mapId: map.id })),
         });
@@ -141,10 +133,14 @@ export class MapService {
     return map;
   }
 
-  async createMapInTabNew({ userId, workspaceId, mapName }: {
-    userId: number,
-    workspaceId: number,
-    mapName: string
+  async createMapInTabNew({
+    userId,
+    workspaceId,
+    mapName,
+  }: {
+    userId: number;
+    workspaceId: number;
+    mapName: string;
   }): Promise<void> {
     const newMap = await this.createMap({ userId, mapName });
 
@@ -152,16 +148,23 @@ export class MapService {
 
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.UPDATE_TAB,
-      payload: {},
-    });
+    await this.distributionService.publish(
+      workspaceIdsOfUser.filter(el => el !== workspaceId),
+      {
+        type: WORKSPACE_EVENT.UPDATE_TAB,
+        payload: {},
+      }
+    );
   }
 
-  async createMapInTabDuplicate({ userId, workspaceId, mapId }: {
-    userId: number,
-    workspaceId: number,
-    mapId: number
+  async createMapInTabDuplicate({
+    userId,
+    workspaceId,
+    mapId,
+  }: {
+    userId: number;
+    workspaceId: number;
+    mapId: number;
   }): Promise<void> {
     const mapInfo = await this.getMapInfo({ mapId });
 
@@ -173,13 +176,16 @@ export class MapService {
 
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.UPDATE_TAB,
-      payload: {},
-    });
+    await this.distributionService.publish(
+      workspaceIdsOfUser.filter(el => el !== workspaceId),
+      {
+        type: WORKSPACE_EVENT.UPDATE_TAB,
+        payload: {},
+      }
+    );
   }
 
-  async renameMap({ mapId, mapName }: { mapId: number, mapName: string }) {
+  async renameMap({ mapId, mapName }: { mapId: number; mapName: string }) {
     await this.prisma.map.update({
       where: { id: mapId },
       data: { name: mapName },
@@ -247,7 +253,7 @@ export class MapService {
     }
 
     try {
-      await this.prisma.$transaction(async (prisma) => {
+      await this.prisma.$transaction(async prisma => {
         await prisma.mapLink.deleteMany({ where: { mapId } });
         await prisma.mapNode.deleteMany({ where: { mapId } });
 
@@ -268,7 +274,6 @@ export class MapService {
   }
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
-
     await this.updateMapGraphIsProcessingSet({ nodeId });
     await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
@@ -296,11 +301,10 @@ export class MapService {
     }
 
     executionLoop: for (const nodeId of topologicalSort) {
-
-      const currentNode = m.n[nodeId];
+      const ni = m.n[nodeId];
 
       const skipControlTypes: ControlType[] = [ControlType.FILE, ControlType.CONTEXT, ControlType.QUESTION];
-      if (skipControlTypes.includes(currentNode.controlType)) {
+      if (skipControlTypes.includes(ni.controlType)) {
         continue;
       }
 
@@ -309,39 +313,38 @@ export class MapService {
 
       const inputNodes = await this.prisma.mapNode.findMany({
         where: {
-          controlType: { in: allowedSourceControls[currentNode.controlType] },
+          controlType: { in: allowedSourceControls[ni.controlType] },
           FromLinks: {
             some: {
               toNodeId: nodeId,
               ToNode: {
-                controlType: currentNode.controlType,
+                controlType: ni.controlType,
               },
             },
           },
         },
         select: {
+          iid: true,
           controlType: true,
           fileHash: true,
           fileName: true,
-          ingestionId: true,
-          Ingestion: {
-            select: {
-              data: true,
-            },
-          },
+          ingestionOutputJson: true,
           vectorDatabaseId: true,
-          context: true,
-          question: true,
-          llmInstruction: true,
+          vectorDatabaseOutputText: true,
+          contextOutputText: true,
+          questionOutputText: true,
+          dataFrameOutputText: true,
+          llmInstructions: true,
+          llmOutputJson: true,
+          visualizerInputText: true,
         },
       });
 
-      switch (currentNode.controlType) {
+      switch (ni.controlType) {
         case ControlType.INGESTION: {
-
-          if (currentNode.ingestionId) {
+          if (ni.ingestionOutputJson) {
             await new Promise(el => setTimeout(el, 1000));
-            console.log(currentNode.fileName + ' already processed ingestion');
+            console.log(ni.fileName + ' already processed ingestion');
             continue;
           }
 
@@ -359,16 +362,10 @@ export class MapService {
               break executionLoop;
             }
 
-            const ingestion = await this.prisma.ingestion.create({
-              data: { data: ingestionJson as any },
-              select: { id: true },
-            });
-
             await this.prisma.mapNode.update({
               where: { id: nodeId },
-              data: { ingestionId: ingestion.id },
+              data: { ingestionOutputJson: {} },
             });
-
           } catch (e) {
             console.error('ingestion error', e);
             break executionLoop;
@@ -377,19 +374,25 @@ export class MapService {
           break;
         }
         case ControlType.VECTOR_DATABASE: {
-
-          if (currentNode.vectorDatabaseId) {
+          if (ni.vectorDatabaseId) {
             await new Promise(el => setTimeout(el, 1000));
-            console.log(currentNode.fileName + ' already processed vector database');
+            console.log(ni.fileName + ' already processed vector database');
             continue;
           }
 
-          const ingestionDataList = inputNodes.filter(el => el.controlType === ControlType.INGESTION).map(el => el.Ingestion?.data);
-          const contextList = inputNodes.filter(el => el.controlType === ControlType.CONTEXT).map(el => el.context ?? '');
-          const question = inputNodes.find(el => el.controlType === ControlType.QUESTION)?.question ?? '';
+          const ingestionOutputJsonList = inputNodes
+            .filter(el => el.controlType === ControlType.INGESTION)
+            .map(el => el.ingestionOutputJson);
+
+          const contextOutputTextList = inputNodes
+            .filter(el => el.controlType === ControlType.CONTEXT)
+            .map(el => el.contextOutputText ?? '');
+
+          const questionOutputText =
+            inputNodes.find(el => el.controlType === ControlType.QUESTION)?.questionOutputText ?? '';
 
           try {
-            // const vectorDatabaseId = await this.aiService.vectorDatabase(ingestionDataList, contextList, question);
+            // const vectorDatabaseId = await this.aiService.vectorDatabase(ingestionOutputJsonList, contextOutputTextList, questionOutputText);
             await new Promise(el => setTimeout(el, 3000));
 
             const vectorDatabaseId = 'mockId'; // TODO: rework this in TS
@@ -408,15 +411,36 @@ export class MapService {
           }
           break;
         }
-        case ControlType.LLM: {
+        case ControlType.DATAFRAME: {
+          break;
+        }
 
+        case ControlType.LLM: {
           await new Promise(el => setTimeout(el, 3000));
 
-          // TODO implement mastra step and execute it
+          const llmInputJson = {
+            [ControlType.LLM]: inputNodes
+              .filter(el => el.controlType === ControlType.LLM)
+              .map(el => [el.iid, el.llmOutputJson]),
+            [ControlType.VECTOR_DATABASE]: inputNodes
+              .filter(el => el.controlType === ControlType.VECTOR_DATABASE)
+              .map(el => [el.iid, el.vectorDatabaseOutputText]),
+            [ControlType.CONTEXT]: inputNodes
+              .filter(el => el.controlType === ControlType.CONTEXT)
+              .map(el => [el.iid, el.contextOutputText]),
+            [ControlType.DATAFRAME]: inputNodes
+              .filter(el => el.controlType === ControlType.DATAFRAME)
+              .map(el => [el.iid, el.dataFrameOutputText]),
+            [ControlType.QUESTION]: inputNodes
+              .filter(el => el.controlType === ControlType.QUESTION)
+              .map(el => [el.iid, el.questionOutputText]),
+          };
+
+          const llmOutputJson = await this.aiService.llm({ llmInstructions: ni.llmInstructions ?? '', llmInputJson });
 
           await this.prisma.mapNode.update({
             where: { id: nodeId },
-            data: { llmInstruction: 'LLM answer' },
+            data: { llmInputJson, llmOutputJson },
           });
 
           await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
@@ -430,8 +454,7 @@ export class MapService {
     await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
   }
 
-  async deleteMap({ userId, mapId }: { userId: number, mapId: number }) {
-
+  async deleteMap({ userId, mapId }: { userId: number; mapId: number }) {
     await this.workspaceService.removeMapFromWorkspaces({ mapId });
 
     await this.tabService.removeMapFromTab({ userId, mapId });
@@ -467,11 +490,7 @@ export class MapService {
     });
   }
 
-
-  async distributeMapGraphChangeToAll({ mapId, mapData }: {
-    mapId: number,
-    mapData: M
-  }) {
+  async distributeMapGraphChangeToAll({ mapId, mapData }: { mapId: number; mapData: M }) {
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
@@ -480,17 +499,24 @@ export class MapService {
     });
   }
 
-  async distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData }: {
-    workspaceId: number,
-    mapId: number,
-    mapData: M
+  async distributeMapGraphChangeToOthers({
+    workspaceId,
+    mapId,
+    mapData,
+  }: {
+    workspaceId: number;
+    mapId: number;
+    mapData: M;
   }) {
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
-    await this.distributionService.publish(workspaceIdsOfMap.filter(el => el !== workspaceId), {
-      type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
-      payload: { mapInfo: { id: mapId, data: mapData } },
-    });
+    await this.distributionService.publish(
+      workspaceIdsOfMap.filter(el => el !== workspaceId),
+      {
+        type: WORKSPACE_EVENT.UPDATE_MAP_DATA,
+        payload: { mapInfo: { id: mapId, data: mapData } },
+      }
+    );
   }
 
   async terminateProcesses() {

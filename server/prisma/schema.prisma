@@ -39,29 +39,32 @@ model Map {
 }
 
 model MapNode {
-  id                   String      @id @default(uuid())
-  mapId                Int
-  Map                  Map         @relation(fields: [mapId], references: [id])
-  iid                  Int
-  offsetW              Int
-  offsetH              Int
-  controlType          ControlType
-  isProcessing         Boolean     @default(false)
-  fileHash             String?
-  fileName             String?
-  ingestionId          Int?
-  Ingestion            Ingestion?  @relation(fields: [ingestionId], references: [id], onDelete: SetNull)
-  vectorDatabaseId     String?
-  context              String?
-  question             String?
-  llmInstruction       String?
-  llmInputSchema       String?
-  llmOutputSchema      String?
-  visualizerOutputText String?
-  FromLinks            MapLink[]   @relation("FromLinks")
-  ToLinks              MapLink[]   @relation("ToLinks")
-  createdAt            DateTime    @default(now())
-  updatedAt            DateTime    @default(now()) @updatedAt
+  id                       String      @id @default(uuid())
+  mapId                    Int
+  Map                      Map         @relation(fields: [mapId], references: [id])
+  iid                      Int
+  offsetW                  Int
+  offsetH                  Int
+  controlType              ControlType
+  isProcessing             Boolean     @default(false)
+  fileHash                 String?
+  fileName                 String?
+  ingestionModel           String?
+  ingestionOutputJson      Json?
+  vectorDatabaseId         String?
+  vectorDatabaseOutputText String?
+  dataFrameInputJson       Json?
+  dataFrameOutputText      String?
+  contextOutputText        String?
+  questionOutputText       String?
+  llmInstructions          String?
+  llmInputJson             Json?
+  llmOutputJson            Json?
+  visualizerInputText      String?
+  FromLinks                MapLink[]   @relation("FromLinks")
+  ToLinks                  MapLink[]   @relation("ToLinks")
+  createdAt                DateTime    @default(now())
+  updatedAt                DateTime    @default(now()) @updatedAt
 }
 
 model MapLink {
@@ -110,14 +113,6 @@ model Workspace {
   Map       Map?     @relation(fields: [mapId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-}
-
-model Ingestion {
-  id        Int       @id @default(autoincrement())
-  data      Json
-  MapNode   MapNode[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
 }
 
 enum ColorMode {

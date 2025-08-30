@@ -24,9 +24,9 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ni.llmInstruction ?? ''}
+            value={ni.llmInstructions ?? ''}
             onChange={e => {
-              dispatch(actions.setNodeAttributes({ nodeId, attributes: { llmInstruction: e.target.value } }));
+              dispatch(actions.setNodeAttributes({ nodeId, attributes: { llmInstructions: e.target.value } }));
             }}
           />
           <Text size="2">{`Output Schema`}</Text>
