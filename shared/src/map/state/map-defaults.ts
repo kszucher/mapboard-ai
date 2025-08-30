@@ -23,5 +23,8 @@ export const nDefault: N = {
   vectorDatabaseId: null,
   context: '',
   question: '',
-  llmHash: '',
+  llmInstruction: '',
+  llmInputSchema: '',
+  llmOutputSchema: '',
+  visualizerOutputText: '',
 };

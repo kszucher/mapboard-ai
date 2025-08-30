@@ -26,7 +26,10 @@ export interface N {
   vectorDatabaseId: string | null;
   context: string | null;
   question: string | null;
-  llmHash: string | null;
+  llmInstruction: string | null;
+  llmInputSchema: string | null;
+  llmOutputSchema: string | null;
+  visualizerOutputText: string | null;
 }
 
 export const ControlType = {
@@ -50,7 +53,7 @@ export const controlBaseSizes: Record<ControlType, { w: number; h: number }> = {
   [ControlType.VECTOR_DATABASE]: { w: 180, h: 60 },
   [ControlType.DATAFRAME]: { w: 180, h: 60 },
   [ControlType.LLM]: { w: 200, h: 270 },
-  [ControlType.VISUALIZER]: { w: 200, h: 210 },
+  [ControlType.VISUALIZER]: { w: 200, h: 160 },
 };
 
 export const controlColors: Record<ControlType, NonNullable<BadgeProps['color']>> = {

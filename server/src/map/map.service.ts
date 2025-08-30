@@ -332,7 +332,7 @@ export class MapService {
           vectorDatabaseId: true,
           context: true,
           question: true,
-          llmHash: true,
+          llmInstruction: true,
         },
       });
 
@@ -414,7 +414,7 @@ export class MapService {
 
           await this.prisma.mapNode.update({
             where: { id: nodeId },
-            data: { llmHash: 'LLM answer' },
+            data: { llmInstruction: 'LLM answer' },
           });
 
           await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });

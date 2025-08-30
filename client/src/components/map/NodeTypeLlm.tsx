@@ -23,9 +23,9 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ni.llmHash ?? ''}
+            value={ni.llmInstruction ?? ''}
             onChange={e => {
-              dispatch(actions.setNodeAttributes({ nodeId, attributes: { llmHash: e.target.value } }));
+              dispatch(actions.setNodeAttributes({ nodeId, attributes: { llmInstruction: e.target.value } }));
             }}
           />
           <Text size="2">{`Output Schema (Optional)`}</Text>
@@ -39,10 +39,9 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
               outline: 'none',
               pointerEvents: 'auto',
             }}
-            value={ni.llmHash ?? ''}
-            onChange={_ => {
-              // TODO setting schema as a Z-string
-              // dispatch(actions.setNodeAttributes({ nodeId, attributes: { llmHash: e.target.value } }));
+            value={ni.llmOutputSchema ?? ''}
+            onChange={e => {
+              dispatch(actions.setNodeAttributes({ nodeId, attributes: { llmOutputSchema: e.target.value } }));
             }}
           />
           <Flex direction="row" gap="4" align="start" content="center"></Flex>

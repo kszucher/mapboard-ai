@@ -39,28 +39,31 @@ model Map {
 }
 
 model MapNode {
-  id               String      @id @default(uuid())
-  mapId            Int
-  Map              Map         @relation(fields: [mapId], references: [id])
-  iid              Int
-  offsetW          Int
-  offsetH          Int
-  selfW            Int
-  selfH            Int
-  controlType      ControlType
-  isProcessing     Boolean     @default(false)
-  fileHash         String?
-  fileName         String?
-  ingestionId      Int?
-  Ingestion        Ingestion?  @relation(fields: [ingestionId], references: [id], onDelete: SetNull)
-  vectorDatabaseId String?
-  context          String?
-  question         String?
-  llmHash          String?
-  FromLinks        MapLink[]   @relation("FromLinks")
-  ToLinks          MapLink[]   @relation("ToLinks")
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @default(now()) @updatedAt
+  id                   String      @id @default(uuid())
+  mapId                Int
+  Map                  Map         @relation(fields: [mapId], references: [id])
+  iid                  Int
+  offsetW              Int
+  offsetH              Int
+  selfW                Int
+  selfH                Int
+  controlType          ControlType
+  isProcessing         Boolean     @default(false)
+  fileHash             String?
+  fileName             String?
+  ingestionId          Int?
+  Ingestion            Ingestion?  @relation(fields: [ingestionId], references: [id], onDelete: SetNull)
+  vectorDatabaseId     String?
+  context              String?
+  question             String?
+  llmInstruction       String?
+  llmInputSchema       String?
+  llmOutputSchema      String?
+  visualizerOutputText String?
+  FromLinks            MapLink[]   @relation("FromLinks")
+  ToLinks              MapLink[]   @relation("ToLinks")
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @default(now()) @updatedAt
 }
 
 model MapLink {
