@@ -1,39 +1,31 @@
-import {
-  allowedSourceControls,
-  controlBaseSizes,
-  ControlType,
-  L,
-  M,
-  M_PADDING,
-  N,
-  N_PADDING,
-} from '../state/map-consts-and-types';
+import { allowedSourceControls, controlBaseSizes, L, M, M_PADDING, N, N_PADDING } from '../state/map-consts-and-types';
+
+export const getNodeSelfW = (n: N) => {
+  return controlBaseSizes[n.controlType].w + 2 * N_PADDING;
+};
+
+export const getNodeSelfH = (n: N) => {
+  return controlBaseSizes[n.controlType].h + 2 * N_PADDING;
+};
 
 export const getMapSelfW = (m: M) => {
   const nl = Object.values(m.n);
-  const max = Math.max(...nl.map(ni => ni.offsetW + ni.selfW));
+  const max = Math.max(...nl.map(ni => ni.offsetW + getNodeSelfW(ni)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
 export const getMapSelfH = (m: M) => {
   const nl = Object.values(m.n);
-  const max = Math.max(...nl.map(ni => ni.offsetH + ni.selfH));
+  const max = Math.max(...nl.map(ni => ni.offsetH + getNodeSelfH(ni)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
+
 export const getNodeLeft = (n: N) => n.offsetW + M_PADDING;
 
-export const getNodeRight = (n: N) => n.offsetW + M_PADDING + n.selfW;
+export const getNodeRight = (n: N) => n.offsetW + M_PADDING + getNodeSelfW(n);
 
 export const getNodeTop = (n: N) => n.offsetH + M_PADDING;
-
-export const getControlTypeDimensions = (controlType: ControlType): { w: number, h: number } => {
-  const { w, h } = controlBaseSizes[controlType];
-  return {
-    w: w + 2 * N_PADDING,
-    h: h + 2 * N_PADDING,
-  };
-};
 
 export const getLastIndexN = (m: M): number => Math.max(-1, ...Object.values(m.n).map(ni => ni.iid));
 

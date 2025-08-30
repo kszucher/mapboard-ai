@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import colors from 'tailwindcss/colors';
-import { getNodeLeft, getNodeTop } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getNodeLeft, getNodeSelfH, getNodeSelfW, getNodeTop } from '../../../../shared/src/map/getters/map-queries.ts';
 import { useGetUserInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 
@@ -13,8 +13,8 @@ export const MapBackground: FC = () => {
       key={`${nodeId}_rb`}
       x={getNodeLeft(ni) + 0.5}
       y={getNodeTop(ni) + 0.5}
-      width={ni.selfW}
-      height={ni.selfH}
+      width={getNodeSelfW(ni)}
+      height={getNodeSelfH(ni)}
       rx={16}
       ry={16}
       fill={colorMode === 'DARK' ? colors.zinc[800] : colors.zinc[50]}

@@ -1,3 +1,4 @@
+import { getNodeSelfH, getNodeSelfW } from '../getters/map-queries';
 import { M, N_PADDING } from '../state/map-consts-and-types';
 import { nDefault } from '../state/map-defaults';
 import { mapInsert } from './map-insert';
@@ -15,10 +16,8 @@ describe('MapInsertTests', () => {
         n1: {
           ...nDefault,
           iid: 1,
-          offsetW: nDefault.selfW + 2 * N_PADDING,
-          offsetH: nDefault.selfH + 2 * N_PADDING,
-          selfW: nDefault.selfW,
-          selfH: nDefault.selfH,
+          offsetW: getNodeSelfW(nDefault) + 2 * N_PADDING,
+          offsetH: getNodeSelfH(nDefault) + 2 * N_PADDING,
         },
       },
     };

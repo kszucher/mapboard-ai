@@ -1,7 +1,13 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNodeLeft, getNodeTop, isExistingLink } from '../../../../shared/src/map/getters/map-queries.ts';
+import {
+  getNodeLeft,
+  getNodeSelfH,
+  getNodeSelfW,
+  getNodeTop,
+  isExistingLink,
+} from '../../../../shared/src/map/getters/map-queries.ts';
 import {
   allowedTargetControls,
   controlColors,
@@ -36,8 +42,8 @@ export const Node: FC = () => {
         top: getNodeTop(ni),
         transition: 'left 0.3s, top 0.3s',
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-        minWidth: ni.selfW,
-        minHeight: ni.selfH,
+        minWidth: getNodeSelfW(ni),
+        minHeight: getNodeSelfH(ni),
         margin: 0,
         pointerEvents: 'none',
       }}

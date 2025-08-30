@@ -45,8 +45,6 @@ model MapNode {
   iid                  Int
   offsetW              Int
   offsetH              Int
-  selfW                Int
-  selfH                Int
   controlType          ControlType
   isProcessing         Boolean     @default(false)
   fileHash             String?

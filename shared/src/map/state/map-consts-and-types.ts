@@ -16,8 +16,6 @@ export interface N {
   iid: number;
   offsetW: number;
   offsetH: number;
-  selfW: number;
-  selfH: number;
   controlType: ControlType;
   isProcessing: boolean;
   fileHash: string | null;
@@ -48,12 +46,12 @@ export type ControlType = (typeof ControlType)[keyof typeof ControlType];
 export const controlBaseSizes: Record<ControlType, { w: number; h: number }> = {
   [ControlType.FILE]: { w: 160, h: 90 },
   [ControlType.INGESTION]: { w: 160, h: 90 },
-  [ControlType.CONTEXT]: { w: 200, h: 200 },
+  [ControlType.CONTEXT]: { w: 200, h: 160 },
   [ControlType.QUESTION]: { w: 200, h: 200 },
   [ControlType.VECTOR_DATABASE]: { w: 180, h: 60 },
   [ControlType.DATAFRAME]: { w: 180, h: 60 },
-  [ControlType.LLM]: { w: 200, h: 270 },
-  [ControlType.VISUALIZER]: { w: 200, h: 160 },
+  [ControlType.LLM]: { w: 200, h: 260 },
+  [ControlType.VISUALIZER]: { w: 200, h: 120 },
 };
 
 export const controlColors: Record<ControlType, NonNullable<BadgeProps['color']>> = {

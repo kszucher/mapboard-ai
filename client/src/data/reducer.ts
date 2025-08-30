@@ -1,6 +1,7 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { MapInfo } from '../../../shared/src/api/api-types-map.ts';
+import { getNodeSelfH, getNodeSelfW } from '../../../shared/src/map/getters/map-queries.ts';
 import { mapAlign } from '../../../shared/src/map/setters/map-align.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
 import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
@@ -90,7 +91,7 @@ export const slice = createSlice({
       const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
       const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetW;
       const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetH;
-      state.nodeOffsetCoords = [toX, toY, n.selfW, n.selfH];
+      state.nodeOffsetCoords = [toX, toY, getNodeSelfW(n), getNodeSelfH(n)];
     },
     insertLink(state, { payload: { lPartial } }: PayloadAction<{ lPartial: Partial<L> }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));

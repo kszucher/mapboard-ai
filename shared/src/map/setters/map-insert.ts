@@ -1,4 +1,4 @@
-import { getControlTypeDimensions, getLastIndexN, getMapSelfH, getMapSelfW } from '../getters/map-queries';
+import { getLastIndexN, getMapSelfH, getMapSelfW } from '../getters/map-queries';
 import { ControlType, L, M, N } from '../state/map-consts-and-types';
 import { lDefault, nDefault } from '../state/map-defaults';
 
@@ -17,8 +17,6 @@ export const mapInsert = {
       controlType,
       offsetW: getMapSelfW(m),
       offsetH: getMapSelfH(m),
-      selfW: getControlTypeDimensions(controlType).w,
-      selfH: getControlTypeDimensions(controlType).h,
     },
   }),
 };

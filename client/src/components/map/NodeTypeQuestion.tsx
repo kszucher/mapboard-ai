@@ -1,6 +1,7 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { getNodeSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
 import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
@@ -17,7 +18,7 @@ export const NodeTypeQuestion = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: ni.selfW - 38,
+              width: getNodeSelfW(ni) - 38,
               minHeight: 210,
               outline: 'none',
               pointerEvents: 'auto',

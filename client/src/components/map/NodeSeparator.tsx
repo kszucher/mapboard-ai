@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { getNodeLeft, getNodeTop } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getNodeLeft, getNodeSelfW, getNodeTop } from '../../../../shared/src/map/getters/map-queries.ts';
 import { RootState } from '../../data/store.ts';
 import { adjust } from '../../utils/utils.ts';
 import { getLinearLinePath, pathCommonProps } from './UtilsSvg.ts';
@@ -12,7 +12,7 @@ export const NodeSeparator: FC = () => {
       key={`${nodeId}_separator`}
       d={getLinearLinePath({
         x1: adjust(getNodeLeft(ni)),
-        x2: adjust(getNodeLeft(ni) + ni.selfW),
+        x2: adjust(getNodeLeft(ni) + getNodeSelfW(ni)),
         y1: adjust(getNodeTop(ni) + 40),
         y2: adjust(getNodeTop(ni) + 40),
       })}
