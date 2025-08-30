@@ -6,7 +6,7 @@ export const mapCopy = (m: M, genId: Function): M => {
 
   return structuredClone({
     l: Object.fromEntries(
-      Object.entries(m.l).map(([nodeId, li]) => [lIdMapping.get(nodeId), {
+      Object.entries(m.l).map(([linkId, li]) => [lIdMapping.get(linkId), {
         ...li,
         fromNodeId: nIdMapping.get(li.fromNodeId),
         toNodeId: nIdMapping.get(li.toNodeId),

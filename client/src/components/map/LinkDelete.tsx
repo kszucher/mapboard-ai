@@ -13,9 +13,9 @@ export const LinkDelete: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   return (
     linkHelpersVisible &&
-    Object.entries(m.l).map(([nodeId, li]) => (
+    Object.entries(m.l).map(([linkId, li]) => (
       <IconButton
-        key={`${nodeId}_inter_node_bezier_trash`}
+        key={`${linkId}_inter_node_bezier_trash`}
         variant="solid"
         color="gray"
         size="1"
@@ -31,7 +31,7 @@ export const LinkDelete: FC = () => {
           e.stopPropagation();
         }}
         onClick={() => {
-          dispatch(actions.deleteLink({ nodeId }));
+          dispatch(actions.deleteLink({ linkId }));
         }}
       >
         <Trash />

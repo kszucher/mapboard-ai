@@ -105,9 +105,9 @@ export const slice = createSlice({
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
-    deleteLink(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+    deleteLink(state, { payload: { linkId } }: PayloadAction<{ linkId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      mapDelete.L(m, nodeId);
+      mapDelete.L(m, linkId);
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },

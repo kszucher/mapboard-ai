@@ -11,7 +11,7 @@ export const LinkBezier: FC = () => {
   const gapLength = 6;
   const dashCycle = dashLength + gapLength;
 
-  return Object.entries(m.l).map(([nodeId, li]) => {
+  return Object.entries(m.l).map(([linkId, li]) => {
     const animated = li.isProcessing;
 
     const animationStyle = animated
@@ -32,7 +32,7 @@ export const LinkBezier: FC = () => {
     };
 
     return (
-      <g key={nodeId}>
+      <g key={linkId}>
         <style>{`@keyframes dashMove { to { stroke-dashoffset: -${dashCycle} } } `}</style>
         <path
           d={getBezierLinePath(getBezierLineCoords(getLineCoords(m, li)))}
