@@ -14,7 +14,7 @@ export class LlmService {
 
     const prompt = `
       You are an agent that have the following inputs:
-      ${llmInputJson}
+      ${JSON.stringify(llmInputJson)}
       Follow user instructions:
       ${llmInstructions}
     `;
@@ -23,6 +23,7 @@ export class LlmService {
 
     const result = await dynamicAgent.generateVNext(prompt, {
       structuredOutput: {
+        // TODO: adaptive schema
         schema: z.object({
           text: z.string(),
         }),
