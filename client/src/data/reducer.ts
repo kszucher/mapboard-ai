@@ -78,13 +78,13 @@ export const slice = createSlice({
       state.zoomInfo.originX = x;
       state.zoomInfo.originY = y;
     },
-    saveFromCoordinates(state, action: PayloadAction<{ e: React.MouseEvent }>) {
+    moveNodeByDragInit(state, action: PayloadAction<{ e: React.MouseEvent }>) {
       const { e } = action.payload;
       const { scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
       state.zoomInfo.fromX = originX + (getMapX(e) - prevMapX) / scale;
       state.zoomInfo.fromY = originY + (getMapY(e) - prevMapY) / scale;
     },
-    offsetNodeByDragPreview(state, action: PayloadAction<{ n: N; e: MouseEvent }>) {
+    moveNodeByDragUpdate(state, action: PayloadAction<{ n: N; e: MouseEvent }>) {
       const { n, e } = action.payload;
       const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
       const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetW;
@@ -98,14 +98,8 @@ export const slice = createSlice({
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
-    deleteNodeLink(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      mapDelete.NL(m, nodeId);
-      mapAlign(m);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-      state.commitIndex = state.commitIndex + 1;
-    },
-    offsetNodeLink(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+
+    moveNodeOptimistic(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       Object.assign(m.n[nodeId], {
         offsetW: state.nodeOffsetCoords[0],

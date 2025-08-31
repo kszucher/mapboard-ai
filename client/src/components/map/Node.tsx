@@ -77,7 +77,7 @@ export const Node: FC = () => {
           onMouseDown={e => {
             let didMove = false;
             e.stopPropagation();
-            dispatch(actions.saveFromCoordinates({ e }));
+            dispatch(actions.moveNodeByDragInit({ e }));
             const abortController = new AbortController();
             const { signal } = abortController;
             window.addEventListener(
@@ -85,7 +85,7 @@ export const Node: FC = () => {
               e => {
                 e.preventDefault();
                 didMove = true;
-                dispatch(actions.offsetNodeByDragPreview({ n: ni, e }));
+                dispatch(actions.moveNodeByDragUpdate({ n: ni, e }));
               },
               { signal }
             );
@@ -95,7 +95,7 @@ export const Node: FC = () => {
                 abortController.abort();
                 e.preventDefault();
                 if (didMove) {
-                  dispatch(actions.offsetNodeLink({ nodeId }));
+                  dispatch(actions.moveNodeOptimistic({ nodeId }));
                   dispatch(
                     api.endpoints.updateMap.initiate({
                       mapId: mapId!,
