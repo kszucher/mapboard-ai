@@ -2,10 +2,7 @@ export class FileService {
   private readonly pinataApiKey: string;
   private readonly pinataSecretKey: string;
 
-  constructor(
-    pinataApiKey: string,
-    pinataSecretKey: string,
-  ) {
+  constructor(pinataApiKey: string, pinataSecretKey: string) {
     this.pinataApiKey = pinataApiKey;
     this.pinataSecretKey = pinataSecretKey;
   }
@@ -24,8 +21,8 @@ export class FileService {
       const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
         method: 'POST',
         headers: {
-          'pinata_api_key': this.pinataApiKey,
-          'pinata_secret_api_key': this.pinataSecretKey,
+          pinata_api_key: this.pinataApiKey,
+          pinata_secret_api_key: this.pinataSecretKey,
         },
         body: formData,
       });

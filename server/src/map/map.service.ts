@@ -3,11 +3,14 @@ import { MapInfo } from '../../../shared/src/api/api-types-map';
 import { getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { allowedSourceControls, ControlType, M } from '../../../shared/src/map/state/map-consts-and-types';
-import { AiService } from '../ai/ai.service';
 import { DistributionService } from '../distribution/distribution.service';
-import { FileService } from '../file/file.service';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
+import { DataFrameService } from '../workflow/data-frame.service';
+import { FileService } from '../workflow/file.service';
+import { IngestionService } from '../workflow/ingestion.service';
+import { LlmService } from '../workflow/llm.service';
+import { VectorDatabaseService } from '../workflow/vector-database.service';
 import { WorkspaceService } from '../workspace/workspace.service';
 
 export class MapService {
@@ -17,7 +20,10 @@ export class MapService {
     private getWorkspaceService: () => WorkspaceService,
     private getDistributionService: () => DistributionService,
     private getFileService: () => FileService,
-    private getAiService: () => AiService
+    private getIngestionService: () => IngestionService,
+    private getVectorDatabaseService: () => VectorDatabaseService,
+    private getDataFrameService: () => DataFrameService,
+    private getLlmService: () => LlmService
   ) {}
 
   get tabService(): TabService {
@@ -36,8 +42,20 @@ export class MapService {
     return this.getFileService();
   }
 
-  get aiService(): AiService {
-    return this.getAiService();
+  get ingestionService(): IngestionService {
+    return this.getIngestionService();
+  }
+
+  get vectorDatabaseService(): VectorDatabaseService {
+    return this.getVectorDatabaseService();
+  }
+
+  get dataFrameService(): DataFrameService {
+    return this.getDataFrameService();
+  }
+
+  get llmService(): LlmService {
+    return this.getLlmService();
   }
 
   private genId = () => global.crypto.randomUUID();
@@ -356,7 +374,7 @@ export class MapService {
           }
 
           try {
-            const ingestionJson = await this.aiService.ingestion(inputNodeFileUploadFileHash);
+            const ingestionJson = null; // await this.ingestionService(inputNodeFileUploadFileHash);
             if (!ingestionJson) {
               console.error('no ingestionJson');
               break executionLoop;
@@ -429,7 +447,10 @@ export class MapService {
           };
 
           try {
-            const llmOutputJson = await this.aiService.llm({ llmInstructions: ni.llmInstructions ?? '', llmInputJson });
+            const llmOutputJson = await this.llmService.llm({
+              llmInstructions: ni.llmInstructions ?? '',
+              llmInputJson,
+            });
 
             await this.prisma.mapNode.update({
               where: { id: nodeId },

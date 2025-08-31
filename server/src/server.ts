@@ -1,9 +1,7 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
-import { AiService } from './ai/ai.service';
 import distributionController from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
-import { FileService } from './file/file.service';
 import { PrismaClient } from './generated/client';
 import mapController from './map/map.controller';
 import { MapService } from './map/map.service';
@@ -13,11 +11,19 @@ import tabController from './tab/tab.controller';
 import { TabService } from './tab/tab.service';
 import userController from './user/user.controller';
 import { UserService } from './user/user.service';
+import { DataFrameService } from './workflow/data-frame.service';
+import { FileService } from './workflow/file.service';
+import { IngestionService } from './workflow/ingestion.service';
+import { LlmService } from './workflow/llm.service';
+import { VectorDatabaseService } from './workflow/vector-database.service';
 import workspaceController from './workspace/workspace.controller';
 import { WorkspaceService } from './workspace/workspace.service';
 
 export const prismaClient = new PrismaClient();
-export const aiService: AiService = new AiService();
+export const vectorDatabaseService: VectorDatabaseService = new VectorDatabaseService();
+export const ingestionService: IngestionService = new IngestionService();
+export const dataFrameService: DataFrameService = new DataFrameService();
+export const llmService: LlmService = new LlmService();
 export const userService: UserService = new UserService(
   prismaClient,
   () => workspaceService,
@@ -29,7 +35,10 @@ export const mapService: MapService = new MapService(
   () => workspaceService,
   () => distributionService,
   () => fileService,
-  () => aiService
+  () => ingestionService,
+  () => vectorDatabaseService,
+  () => dataFrameService,
+  () => llmService
 );
 export const fileService: FileService = new FileService(
   process.env.PINATA_API_KEY!,
