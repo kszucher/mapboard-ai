@@ -18,21 +18,15 @@ export class AiService {
       model: openai('gpt-4o'),
     });
 
-    // Format the input data into a prompt
-    const { LLM, VECTOR_DATABASE, DATAFRAME, CONTEXT, QUESTION } = llmInputJson;
-
-    const prompt = `You are an agent that may have one or more of the following inputs:
-      ${LLM ? `LLM input: ${LLM}` : ''}
-      ${VECTOR_DATABASE ? `Vector database result: ${VECTOR_DATABASE}` : ''}
-      ${DATAFRAME ? `Dataframe result: ${DATAFRAME}` : ''}
-      ${CONTEXT ? `Context: ${CONTEXT}` : ''}
-      ${QUESTION ? `Question: ${QUESTION}` : ''}
-      Follow user instructions: ${llmInstructions}.
+    const prompt = `
+      You are an agent that have the following inputs:
+      ${llmInputJson}
+      Follow user instructions:
+      ${llmInstructions}
     `;
 
     console.log(prompt);
 
-    // Use generateVNext with structured output for v2 models like gpt-4o
     const result = await dynamicAgent.generateVNext(prompt, {
       structuredOutput: {
         schema: z.object({
