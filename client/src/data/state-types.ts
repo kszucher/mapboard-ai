@@ -26,7 +26,7 @@ export interface State {
   linkHelpersVisible: boolean;
   mapFrameVisible: boolean;
   connectionStart: {
-    fromNodeId: string;
+    fromNodeId: number | null;
   };
 }
 

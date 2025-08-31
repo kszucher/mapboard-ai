@@ -34,7 +34,7 @@ export type UpdateMapRequestDto = {
 
 export type ExecuteMapFileUploadDto = {
   mapId: string
-  nodeId: string
+  nodeId: number
 }
 
 export type ExecuteMapRequestDto = {
@@ -56,8 +56,8 @@ export enum MapOpType {
 
 export type MapOp =
   | { type: MapOpType.INSERT_NODE; payload: { controlType: ControlType } }
-  | { type: MapOpType.INSERT_LINK; payload: { fromNodeId: string, toNodeId: string } }
-  | { type: MapOpType.DELETE_NODE; payload: { nodeId: string } }
-  | { type: MapOpType.DELETE_LINK; payload: { linkId: string } }
-  | { type: MapOpType.MOVE_NODE; payload: { nodeId: string, offsetX: number, offsetY: number } }
-  | { type: MapOpType.UPDATE_NODE; payload: { nodeId: string, data: Partial<N> } }
+  | { type: MapOpType.INSERT_LINK; payload: { fromNodeId: number, toNodeId: number } }
+  | { type: MapOpType.DELETE_NODE; payload: { nodeId: number } }
+  | { type: MapOpType.DELETE_LINK; payload: { linkId: number } }
+  | { type: MapOpType.MOVE_NODE; payload: { nodeId: number, offsetX: number, offsetY: number } }
+  | { type: MapOpType.UPDATE_NODE; payload: { nodeId: number, data: Partial<N> } }

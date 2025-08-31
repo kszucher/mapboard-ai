@@ -46,7 +46,7 @@ export const slice = createSlice({
       state.mapFrameVisible = payload;
     },
     clearConnectionStart(state) {
-      state.connectionStart = { fromNodeId: '' };
+      state.connectionStart = { fromNodeId: null };
     },
     undo(state) {
       state.commitIndex = state.commitIndex > 0 ? state.commitIndex - 1 : state.commitIndex;
@@ -90,7 +90,7 @@ export const slice = createSlice({
       const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetH;
       state.nodeOffsetCoords = [toX, toY, getNodeSelfW(n), getNodeSelfH(n)];
     },
-    moveNodeOptimistic(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
+    moveNodeOptimistic(state, { payload: { nodeId } }: PayloadAction<{ nodeId: number }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       Object.assign(m.n[nodeId], {
         offsetW: state.nodeOffsetCoords[0],
@@ -102,7 +102,7 @@ export const slice = createSlice({
     },
     updateNodeOptimistic(
       state,
-      { payload: { nodeId, attributes } }: PayloadAction<{ nodeId: string; attributes: Partial<N> }>
+      { payload: { nodeId, attributes } }: PayloadAction<{ nodeId: number; attributes: Partial<N> }>
     ) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       Object.assign(m.n[nodeId], attributes);

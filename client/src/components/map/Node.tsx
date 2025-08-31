@@ -95,14 +95,14 @@ export const Node: FC = () => {
                 abortController.abort();
                 e.preventDefault();
                 if (didMove) {
-                  dispatch(actions.moveNodeOptimistic({ nodeId }));
+                  dispatch(actions.moveNodeOptimistic({ nodeId: Number(nodeId) }));
                   dispatch(
                     api.endpoints.updateMap.initiate({
                       mapId: mapId!,
                       mapOp: {
                         type: MapOpType.MOVE_NODE,
                         payload: {
-                          nodeId,
+                          nodeId: Number(nodeId),
                           offsetX: nodeOffsetCoordsRef.current[0],
                           offsetY: nodeOffsetCoordsRef.current[1],
                         },
@@ -135,7 +135,7 @@ export const Node: FC = () => {
                     mapId: mapId!,
                     mapOp: {
                       type: MapOpType.DELETE_NODE,
-                      payload: { nodeId },
+                      payload: { nodeId: Number(nodeId) },
                     },
                   })
                 );
@@ -150,7 +150,7 @@ export const Node: FC = () => {
                   .filter(
                     ([toNodeId, toRi]) =>
                       allowedTargetControls[ni.controlType].includes(toRi.controlType) &&
-                      !isExistingLink(m, nodeId, toNodeId)
+                      !isExistingLink(m, Number(nodeId), Number(toNodeId))
                   )
                   .map(([toNodeId, toRi]) => (
                     <DropdownMenu.Item
@@ -162,8 +162,8 @@ export const Node: FC = () => {
                             mapOp: {
                               type: MapOpType.INSERT_LINK,
                               payload: {
-                                fromNodeId: nodeId,
-                                toNodeId,
+                                fromNodeId: Number(nodeId),
+                                toNodeId: Number(toNodeId),
                               },
                             },
                           })
@@ -179,14 +179,14 @@ export const Node: FC = () => {
         </DropdownMenu.Root>
       </Box>
 
-      {ni.controlType === ControlType.FILE && <NodeTypeFileUpload ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.INGESTION && <NodeTypeIngestion ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.CONTEXT && <NodeTypeContext ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.QUESTION && <NodeTypeQuestion ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.VECTOR_DATABASE && <NodeTypeVectorDatabase ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.DATAFRAME && <NodeTypeDataFrame ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.LLM && <NodeTypeLlm ni={ni} nodeId={nodeId} />}
-      {ni.controlType === ControlType.VISUALIZER && <NodeTypeVisualizer ni={ni} nodeId={nodeId} />}
+      {ni.controlType === ControlType.FILE && <NodeTypeFileUpload ni={ni} nodeId={Number(nodeId)} />}
+      {ni.controlType === ControlType.INGESTION && <NodeTypeIngestion ni={ni} nodeId={Number(nodeId)} />}
+      {ni.controlType === ControlType.CONTEXT && <NodeTypeContext ni={ni} nodeId={Number(nodeId)} />}
+      {ni.controlType === ControlType.QUESTION && <NodeTypeQuestion ni={ni} nodeId={Number(nodeId)} />}
+      {ni.controlType === ControlType.VECTOR_DATABASE && <NodeTypeVectorDatabase ni={ni} nodeId={Number(nodeId)} />}
+      {ni.controlType === ControlType.DATAFRAME && <NodeTypeDataFrame ni={ni} nodeId={Number(nodeId)} />}
+      {ni.controlType === ControlType.LLM && <NodeTypeLlm ni={ni} nodeId={Number(nodeId)} />}
+      {ni.controlType === ControlType.VISUALIZER && <NodeTypeVisualizer ni={ni} nodeId={Number(nodeId)} />}
     </div>
   ));
 };

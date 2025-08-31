@@ -51,12 +51,12 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     invalidatesTags: [],
   }),
 
-  executeMapUploadFile: builder.mutation<void, { file: File; mapId: number; nodeId: string }>({
+  executeMapUploadFile: builder.mutation<void, { file: File; mapId: number; nodeId: number }>({
     query: ({ file, mapId, nodeId }) => {
       const bodyFormData = new FormData();
       bodyFormData.append('file', file);
       bodyFormData.append('mapId', mapId.toString());
-      bodyFormData.append('nodeId', nodeId);
+      bodyFormData.append('nodeId', nodeId.toString());
       return {
         url: 'execute-map-upload-file',
         method: 'POST',

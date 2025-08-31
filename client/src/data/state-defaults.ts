@@ -26,7 +26,7 @@ export const stateDefaults: State = {
   linkHelpersVisible: false,
   mapFrameVisible: false,
   connectionStart: {
-    fromNodeId: '',
+    fromNodeId: null,
   },
 };
 

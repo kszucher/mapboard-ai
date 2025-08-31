@@ -8,7 +8,7 @@ import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 
-export const NodeTypeContext = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
+export const NodeTypeContext = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const dispatch = useDispatch<AppDispatch>();
 

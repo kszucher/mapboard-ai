@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from '@radix-ui/themes';
 import React from 'react';
 import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 
-export const NodeTypeDataFrame = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
+export const NodeTypeDataFrame = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
   const x = { nodeId, ni };
   if (!x) {
     window.alert('missing props');

@@ -29,25 +29,25 @@ export const getNodeTop = (n: N) => n.offsetH + M_PADDING;
 
 export const getLastIndexN = (m: M): number => Math.max(-1, ...Object.values(m.n).map(ni => ni.iid));
 
-export const isExistingLink = (m: M, fromNodeId: string, toNodeId: string): boolean =>
+export const isExistingLink = (m: M, fromNodeId: number, toNodeId: number): boolean =>
   Object.values(m.l).some(li => li.fromNodeId === fromNodeId && li.toNodeId === toNodeId);
 
-export const getInputLinkOfNode = (m: M, rNodeId: string): Record<string, L> => {
+export const getInputLinkOfNode = (m: M, rNodeId: number): Record<number, L> => {
   return Object.fromEntries(Object.entries(m.l).filter(([, li]) => li.toNodeId === rNodeId));
 };
 
-export const getOutputLinkOfNode = (m: M, rNodeId: string): Record<string, L> => {
+export const getOutputLinkOfNode = (m: M, rNodeId: number): Record<number, L> => {
   return Object.fromEntries(Object.entries(m.l).filter(([, li]) => li.fromNodeId === rNodeId));
 };
 
-export const getInputNodesOfNode = (m: M, rNodeId: string): Record<string, N> => {
+export const getInputNodesOfNode = (m: M, rNodeId: number): Record<number, N> => {
   const ll = Object.values(m.l).filter(li => li.toNodeId === rNodeId);
-  return Object.fromEntries(Object.entries(m.n).filter(([nodeId]) => ll.some(li => li.fromNodeId === nodeId)));
+  return Object.fromEntries(Object.entries(m.n).filter(([nodeId]) => ll.some(li => li.fromNodeId === Number(nodeId))));
 };
 
-export const getOutputNodesOfNode = (m: M, rNodeId: string): Record<string, N> => {
+export const getOutputNodesOfNode = (m: M, rNodeId: number): Record<number, N> => {
   const ll = Object.values(m.l).filter(li => li.fromNodeId === rNodeId);
-  return Object.fromEntries(Object.entries(m.n).filter(([nodeId]) => ll.some(li => li.toNodeId === nodeId)));
+  return Object.fromEntries(Object.entries(m.n).filter(([nodeId]) => ll.some(li => li.toNodeId === Number(nodeId))));
 };
 
 export const getInputNodeOfLink = (m: M, l: L): N => {
@@ -81,13 +81,13 @@ export const getLineCoords = (m: M, l: L) => {
   ];
 };
 
-export const getTopologicalSort = (m: M): string[] | null => {
+export const getTopologicalSort = (m: M): number[] | null => {
   // Kahn's algorithm
   const { n, l } = m;
-  const graph = new Map<string, Set<string>>();
-  const inDegree = new Map<string, number>();
+  const graph = new Map<number, Set<number>>();
+  const inDegree = new Map<number, number>();
 
-  for (const nodeId of Object.keys(n)) {
+  for (const nodeId of Object.keys(n).map(Number)) {
     graph.set(nodeId, new Set());
     inDegree.set(nodeId, 0);
   }
@@ -98,12 +98,12 @@ export const getTopologicalSort = (m: M): string[] | null => {
     inDegree.set(to, inDegree.get(to)! + 1);
   }
 
-  const queue: string[] = [];
+  const queue: number[] = [];
   for (const [nodeId, degree] of inDegree.entries()) {
     if (degree === 0) queue.push(nodeId);
   }
 
-  const order: string[] = [];
+  const order: number[] = [];
 
   while (queue.length > 0) {
     const current = queue.shift()!;

@@ -139,10 +139,10 @@ export class MapService {
     if (newMapData) {
       await this.prisma.$transaction(async prisma => {
         await prisma.mapNode.createMany({
-          data: Object.entries(newMapData.n).map(([id, n]) => ({ id, ...n, mapId: map.id })),
+          data: Object.entries(newMapData.n).map(([id, n]) => ({ id: Number(id), ...n, mapId: map.id })),
         });
         await prisma.mapLink.createMany({
-          data: Object.entries(newMapData.l).map(([id, l]) => ({ id, ...l, mapId: map.id })),
+          data: Object.entries(newMapData.l).map(([id, l]) => ({ id: Number(id), ...l, mapId: map.id })),
         });
       });
     }
@@ -229,7 +229,7 @@ export class MapService {
     });
   }
 
-  private async updateMapGraphIsProcessingSet({ nodeId }: { nodeId: string }) {
+  private async updateMapGraphIsProcessingSet({ nodeId }: { nodeId: number }) {
     await this.prisma.$transaction([
       this.prisma.mapNode.update({
         where: { id: nodeId },
@@ -264,6 +264,8 @@ export class MapService {
   }
 
   async updateMap({ workspaceId, mapId, mapOp }: { workspaceId: number; mapId: number; mapOp: MapOp }) {
+    console.log(mapOp);
+
     const m = await this.getMapGraph({ mapId });
 
     switch (mapOp.type) {
@@ -309,14 +311,14 @@ export class MapService {
               offsetW: {
                 increment: -Math.min(
                   ...Object.entries(m.n)
-                    .filter(([k]) => k !== nodeId)
+                    .filter(([k]) => Number(k) !== nodeId)
                     .map(([, ni]) => ni.offsetW)
                 ),
               },
               offsetH: {
                 increment: -Math.min(
                   ...Object.entries(m.n)
-                    .filter(([k]) => k !== nodeId)
+                    .filter(([k]) => Number(k) !== nodeId)
                     .map(([, ni]) => ni.offsetH)
                 ),
               },
@@ -353,7 +355,7 @@ export class MapService {
                 increment: -Math.min(
                   offsetX,
                   ...Object.entries(m.n)
-                    .filter(([k]) => k !== nodeId)
+                    .filter(([k]) => Number(k) !== nodeId)
                     .map(([, ni]) => ni.offsetW)
                 ),
               },
@@ -361,7 +363,7 @@ export class MapService {
                 increment: -Math.min(
                   offsetY,
                   ...Object.entries(m.n)
-                    .filter(([k]) => k !== nodeId)
+                    .filter(([k]) => Number(k) !== nodeId)
                     .map(([, ni]) => ni.offsetH)
                 ),
               },
@@ -386,7 +388,7 @@ export class MapService {
     }
   }
 
-  async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {
+  async executeMapUploadFile(mapId: number, nodeId: number, file: Express.Multer.File) {
     await this.updateMapGraphIsProcessingSet({ nodeId });
     await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
