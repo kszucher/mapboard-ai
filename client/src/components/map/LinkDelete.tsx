@@ -1,13 +1,15 @@
 import { IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { MapOpType } from '../../../../shared/src/api/api-types-map.ts';
 import { getLineCoords } from '../../../../shared/src/map/getters/map-queries.ts';
 import Trash from '../../../assets/trash.svg?react';
-import { actions } from '../../data/reducer.ts';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLineCoordsMid } from './UtilsSvg.ts';
 
 export const LinkDelete: FC = () => {
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const linkHelpersVisible = useSelector((state: RootState) => state.slice.linkHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();
@@ -31,7 +33,15 @@ export const LinkDelete: FC = () => {
           e.stopPropagation();
         }}
         onClick={() => {
-          dispatch(actions.deleteLink({ linkId }));
+          dispatch(
+            api.endpoints.updateMap.initiate({
+              mapId: mapId!,
+              mapOp: {
+                type: MapOpType.DELETE_LINK,
+                payload: { linkId },
+              },
+            })
+          );
         }}
       >
         <Trash />

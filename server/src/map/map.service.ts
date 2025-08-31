@@ -298,7 +298,7 @@ export class MapService {
 
   async updateMap({ workspaceId, mapId, mapOp }: { workspaceId: number; mapId: number; mapOp: MapOp }) {
     const m = await this.getMapGraph({ mapId });
-    
+
     switch (mapOp.type) {
       case MapOpType.INSERT_NODE: {
         await this.prisma.mapNode.create({
@@ -321,6 +321,7 @@ export class MapService {
             toNodeId: mapOp.payload.toNodeId,
           },
         });
+        await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
         break;
       }
       case MapOpType.DELETE_NODE: {
@@ -358,7 +359,15 @@ export class MapService {
         await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
         break;
       }
+      case MapOpType.DELETE_LINK: {
+        const { linkId } = mapOp.payload;
 
+        await this.prisma.mapLink.delete({
+          where: { id: linkId },
+        });
+        await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
+        break;
+      }
       case MapOpType.MOVE_NODE: {
         const { nodeId, offsetX, offsetY } = mapOp.payload;
 

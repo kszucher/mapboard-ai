@@ -3,7 +3,6 @@ import React from 'react';
 import { MapInfo } from '../../../shared/src/api/api-types-map.ts';
 import { getNodeSelfH, getNodeSelfW } from '../../../shared/src/map/getters/map-queries.ts';
 import { mapAlign } from '../../../shared/src/map/setters/map-align.ts';
-import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
 import { N } from '../../../shared/src/map/state/map-consts-and-types.ts';
 import { jsonDiff } from '../../../shared/src/map/utils/json-diff.ts';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge.ts';
@@ -91,14 +90,6 @@ export const slice = createSlice({
       const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetH;
       state.nodeOffsetCoords = [toX, toY, getNodeSelfW(n), getNodeSelfH(n)];
     },
-
-    deleteLink(state, { payload: { linkId } }: PayloadAction<{ linkId: string }>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      mapDelete.L(m, linkId);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-      state.commitIndex = state.commitIndex + 1;
-    },
-
     moveNodeOptimistic(state, { payload: { nodeId } }: PayloadAction<{ nodeId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       Object.assign(m.n[nodeId], {
