@@ -114,7 +114,15 @@ export const Node: FC = () => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(actions.deleteNodeLink({ nodeId }));
+                dispatch(
+                  api.endpoints.updateMap.initiate({
+                    mapId: mapId!,
+                    mapOp: {
+                      type: MapOpType.DELETE_NODE,
+                      payload: { nodeId },
+                    },
+                  })
+                );
               }}
             >
               {'Delete'}

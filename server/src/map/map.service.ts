@@ -320,6 +320,41 @@ export class MapService {
             toNodeId: mapOp.payload.toNodeId,
           },
         });
+        break;
+      }
+      case MapOpType.DELETE_NODE: {
+        const { nodeId } = mapOp.payload;
+
+        await this.prisma.$transaction(async tx => {
+          await tx.mapLink.deleteMany({
+            where: {
+              OR: [{ fromNodeId: nodeId }, { toNodeId: nodeId }],
+            },
+          });
+          await tx.mapNode.delete({
+            where: { id: nodeId },
+          });
+          await tx.mapNode.updateMany({
+            where: { mapId },
+            data: {
+              offsetW: {
+                increment: -Math.min(
+                  ...Object.entries(m.n)
+                    .filter(([k]) => k !== nodeId)
+                    .map(([, ni]) => ni.offsetW)
+                ),
+              },
+              offsetH: {
+                increment: -Math.min(
+                  ...Object.entries(m.n)
+                    .filter(([k]) => k !== nodeId)
+                    .map(([, ni]) => ni.offsetH)
+                ),
+              },
+            },
+          });
+        });
+        break;
       }
     }
 
