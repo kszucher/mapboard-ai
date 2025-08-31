@@ -4,12 +4,10 @@ import { MapInfo } from '../../../shared/src/api/api-types-map.ts';
 import { getNodeSelfH, getNodeSelfW } from '../../../shared/src/map/getters/map-queries.ts';
 import { mapAlign } from '../../../shared/src/map/setters/map-align.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
-import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
-import { L, N } from '../../../shared/src/map/state/map-consts-and-types.ts';
+import { N } from '../../../shared/src/map/state/map-consts-and-types.ts';
 import { jsonDiff } from '../../../shared/src/map/utils/json-diff.ts';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
-import { genId } from '../utils/utils.ts';
 import { api } from './api.ts';
 import { stateDefault, stateDefaults } from './state-defaults.ts';
 import { AlertDialogState, DialogState, MidMouseMode, PageState, State } from './state-types.ts';
@@ -93,19 +91,7 @@ export const slice = createSlice({
       const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetH;
       state.nodeOffsetCoords = [toX, toY, getNodeSelfW(n), getNodeSelfH(n)];
     },
-    insertLink(state, { payload: { lPartial } }: PayloadAction<{ lPartial: Partial<L> }>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      mapInsert.L(m, lPartial, genId);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-      state.commitIndex = state.commitIndex + 1;
-    },
-    // insertNode(state, { payload: { controlType } }: PayloadAction<{ controlType: ControlType }>) {
-    //   const m = structuredClone(current(state.commitList[state.commitIndex]));
-    //   mapInsert.N(m, controlType, genId);
-    //   mapAlign(m);
-    //   state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-    //   state.commitIndex = state.commitIndex + 1;
-    // },
+
     deleteLink(state, { payload: { linkId } }: PayloadAction<{ linkId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       mapDelete.L(m, linkId);

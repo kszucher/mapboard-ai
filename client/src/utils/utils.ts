@@ -1,8 +1,4 @@
-export const genId = () => crypto.randomUUID();
-
 export const adjust = (x: number) => (Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5);
-
-export const adjustIcon = (x: number) => (!Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5);
 
 export const shrinkString = (original: string, maxLength: number) => {
   if (original.length <= maxLength) return original;

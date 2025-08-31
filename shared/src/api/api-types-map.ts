@@ -52,4 +52,4 @@ export enum MapOpType {
 
 export type MapOp =
   | { type: MapOpType.INSERT_NODE; payload: { controlType: ControlType } }
-  | { type: MapOpType.INSERT_LINK; payload: {} };
+  | { type: MapOpType.INSERT_LINK; payload: { fromNodeId: string, toNodeId: string } };

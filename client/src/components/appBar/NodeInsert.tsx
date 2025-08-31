@@ -7,7 +7,7 @@ import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeInsert = () => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id!;
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -24,7 +24,7 @@ export const NodeInsert = () => {
             onClick={() =>
               dispatch(
                 api.endpoints.updateMap.initiate({
-                  mapId,
+                  mapId: mapId!,
                   mapOp: {
                     type: MapOpType.INSERT_NODE,
                     payload: { controlType },

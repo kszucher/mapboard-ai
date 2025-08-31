@@ -1,6 +1,7 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { MapOpType } from '../../../../shared/src/api/api-types-map.ts';
 import {
   getNodeLeft,
   getNodeSelfH,
@@ -16,6 +17,7 @@ import {
 } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { NodeTypeContext } from './NodeTypeContext.tsx';
@@ -28,6 +30,7 @@ import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
 import { NodeTypeVisualizer } from './NodeTypeVisualizer.tsx';
 
 export const Node: FC = () => {
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -130,10 +133,14 @@ export const Node: FC = () => {
                       key={toNodeId}
                       onClick={() => {
                         dispatch(
-                          actions.insertLink({
-                            lPartial: {
-                              fromNodeId: nodeId,
-                              toNodeId,
+                          api.endpoints.updateMap.initiate({
+                            mapId: mapId!,
+                            mapOp: {
+                              type: MapOpType.INSERT_LINK,
+                              payload: {
+                                fromNodeId: nodeId,
+                                toNodeId,
+                              },
                             },
                           })
                         );

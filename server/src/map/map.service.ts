@@ -312,6 +312,15 @@ export class MapService {
         });
         break;
       }
+      case MapOpType.INSERT_LINK: {
+        await this.prisma.mapLink.create({
+          data: {
+            mapId,
+            fromNodeId: mapOp.payload.fromNodeId,
+            toNodeId: mapOp.payload.toNodeId,
+          },
+        });
+      }
     }
 
     await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });

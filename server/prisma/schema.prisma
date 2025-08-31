@@ -75,8 +75,8 @@ model MapLink {
   FromNode     MapNode  @relation("FromLinks", fields: [fromNodeId], references: [id])
   toNodeId     String
   ToNode       MapNode  @relation("ToLinks", fields: [toNodeId], references: [id])
-  lineColor    String
-  lineWidth    Int
+  lineColor    String   @default("#bbbbbb")
+  lineWidth    Int      @default(1)
   isProcessing Boolean  @default(false)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
