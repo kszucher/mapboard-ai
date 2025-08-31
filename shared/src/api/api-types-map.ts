@@ -46,12 +46,14 @@ export type DeleteMapRequestDto = {
 }
 
 export enum MapOpType {
-  INSERT_NODE,
-  INSERT_LINK,
-  DELETE_NODE,
+  INSERT_NODE = 'INSERT_NODE',
+  INSERT_LINK = 'INSERT_LINK',
+  DELETE_NODE = 'DELETE_NODE',
+  MOVE_NODE = 'MOVE_NODE',
 }
 
 export type MapOp =
   | { type: MapOpType.INSERT_NODE; payload: { controlType: ControlType } }
   | { type: MapOpType.INSERT_LINK; payload: { fromNodeId: string, toNodeId: string } }
   | { type: MapOpType.DELETE_NODE; payload: { nodeId: string } }
+  | { type: MapOpType.MOVE_NODE; payload: { nodeId: string, offsetX: number, offsetY: number } }

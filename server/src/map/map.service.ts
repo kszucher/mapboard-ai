@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { MapInfo, MapOp, MapOpType } from '../../../shared/src/api/api-types-map';
 import {
@@ -299,6 +300,8 @@ export class MapService {
   async updateMap({ mapId, mapOp }: { mapId: number; mapOp: MapOp }) {
     const m = await this.getMapGraph({ mapId });
 
+    console.log(mapOp);
+
     switch (mapOp.type) {
       case MapOpType.INSERT_NODE: {
         await this.prisma.mapNode.create({
@@ -354,6 +357,44 @@ export class MapService {
             },
           });
         });
+
+        break;
+      }
+
+      case MapOpType.MOVE_NODE: {
+        const { nodeId, offsetX, offsetY } = mapOp.payload;
+
+        await this.prisma.$transaction(async tx => {
+          await tx.mapNode.update({
+            where: { id: nodeId },
+            data: {
+              offsetW: offsetX,
+              offsetH: offsetY,
+            },
+          });
+          await tx.mapNode.updateMany({
+            where: { mapId },
+            data: {
+              offsetW: {
+                increment: -Math.min(
+                  offsetX,
+                  ...Object.entries(m.n)
+                    .filter(([k]) => k !== nodeId)
+                    .map(([, ni]) => ni.offsetW)
+                ),
+              },
+              offsetH: {
+                increment: -Math.min(
+                  offsetY,
+                  ...Object.entries(m.n)
+                    .filter(([k]) => k !== nodeId)
+                    .map(([, ni]) => ni.offsetH)
+                ),
+              },
+            },
+          });
+        });
+
         break;
       }
     }

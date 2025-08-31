@@ -1,5 +1,5 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/themes';
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MapOpType } from '../../../../shared/src/api/api-types-map.ts';
 import {
@@ -31,8 +31,15 @@ import { NodeTypeVisualizer } from './NodeTypeVisualizer.tsx';
 
 export const Node: FC = () => {
   const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const nodeOffsetCoords = useSelector((state: RootState) => state.slice.nodeOffsetCoords);
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
+
+  const nodeOffsetCoordsRef = useRef(nodeOffsetCoords);
+
+  useEffect(() => {
+    nodeOffsetCoordsRef.current = nodeOffsetCoords;
+  }, [nodeOffsetCoords]);
 
   return Object.entries(m.n).map(([nodeId, ni]) => (
     <div
@@ -92,7 +99,20 @@ export const Node: FC = () => {
                 abortController.abort();
                 e.preventDefault();
                 if (didMove) {
-                  dispatch(actions.offsetNodeLink({ nodeId }));
+                  dispatch(
+                    api.endpoints.updateMap.initiate({
+                      mapId: mapId!,
+                      mapOp: {
+                        type: MapOpType.MOVE_NODE,
+                        payload: {
+                          nodeId,
+                          offsetX: nodeOffsetCoordsRef.current[0],
+                          offsetY: nodeOffsetCoordsRef.current[1],
+                        },
+                      },
+                    })
+                  );
+                  dispatch(actions.resetNodeOffset());
                 }
               },
               { signal }
