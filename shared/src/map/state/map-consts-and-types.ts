@@ -98,6 +98,6 @@ export const allowedSourceControls: Record<ControlType, ControlType[]> = {
   [ControlType.QUESTION]: [],
   [ControlType.VECTOR_DATABASE]: [ControlType.INGESTION, ControlType.CONTEXT, ControlType.QUESTION],
   [ControlType.DATAFRAME]: [ControlType.FILE, ControlType.LLM],
-  [ControlType.LLM]: [ControlType.LLM, ControlType.VECTOR_DATABASE, ControlType.CONTEXT, ControlType.DATAFRAME, ControlType.QUESTION],
+  [ControlType.LLM]: [ControlType.LLM, ControlType.VECTOR_DATABASE, ControlType.DATAFRAME, ControlType.CONTEXT, ControlType.QUESTION],
   [ControlType.VISUALIZER]: [ControlType.LLM, ControlType.DATAFRAME],
 };
