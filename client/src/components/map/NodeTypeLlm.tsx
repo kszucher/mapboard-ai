@@ -1,12 +1,15 @@
 import { Box, Flex, Select, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { MapOpType } from '../../../../shared/src/api/api-types-map.ts';
 import { getNodeSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
 import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -26,7 +29,24 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
             }}
             value={ni.llmInstructions ?? ''}
             onChange={e => {
-              dispatch(actions.setNodeAttributes({ nodeId, attributes: { llmInstructions: e.target.value } }));
+              dispatch(
+                actions.updateNodeOptimistic({
+                  nodeId,
+                  attributes: { llmInstructions: e.target.value },
+                })
+              );
+              dispatch(
+                api.endpoints.updateMap.initiate({
+                  mapId: mapId!,
+                  mapOp: {
+                    type: MapOpType.UPDATE_NODE,
+                    payload: {
+                      nodeId,
+                      data: { llmInstructions: e.target.value },
+                    },
+                  },
+                })
+              );
             }}
           />
           <Text size="2">{`Output Schema`}</Text>

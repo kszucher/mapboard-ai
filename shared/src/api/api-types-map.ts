@@ -1,4 +1,4 @@
-import { ControlType, M } from '../map/state/map-consts-and-types';
+import { ControlType, M, N } from '../map/state/map-consts-and-types';
 
 export type MapInfo = {
   id: number
@@ -51,6 +51,7 @@ export enum MapOpType {
   DELETE_NODE = 'DELETE_NODE',
   DELETE_LINK = 'DELETE_LINK',
   MOVE_NODE = 'MOVE_NODE',
+  UPDATE_NODE = 'UPDATE_NODE',
 }
 
 export type MapOp =
@@ -59,3 +60,4 @@ export type MapOp =
   | { type: MapOpType.DELETE_NODE; payload: { nodeId: string } }
   | { type: MapOpType.DELETE_LINK; payload: { linkId: string } }
   | { type: MapOpType.MOVE_NODE; payload: { nodeId: string, offsetX: number, offsetY: number } }
+  | { type: MapOpType.UPDATE_NODE; payload: { nodeId: string, data: Partial<N> } }

@@ -100,14 +100,14 @@ export const slice = createSlice({
       state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
       state.nodeOffsetCoords = [];
     },
-    setNodeAttributes(
+    updateNodeOptimistic(
       state,
       { payload: { nodeId, attributes } }: PayloadAction<{ nodeId: string; attributes: Partial<N> }>
     ) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       Object.assign(m.n[nodeId], attributes);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-      state.commitIndex = state.commitIndex + 1;
+      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
+      // state.commitIndex = state.commitIndex + 1;
     },
     updateMapFromSSE(state, { payload }: PayloadAction<{ mapInfo: MapInfo }>) {
       console.log('map updated from server...');

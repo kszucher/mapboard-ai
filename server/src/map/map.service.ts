@@ -404,6 +404,18 @@ export class MapService {
         await this.distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData: await this.getMapGraph({ mapId }) });
         break;
       }
+
+      case MapOpType.UPDATE_NODE: {
+        const { nodeId } = mapOp.payload;
+
+        await this.prisma.mapNode.update({
+          where: { id: nodeId },
+          data: { ...mapOp.payload.data },
+        });
+        
+        await this.distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData: await this.getMapGraph({ mapId }) });
+        break;
+      }
     }
   }
 
