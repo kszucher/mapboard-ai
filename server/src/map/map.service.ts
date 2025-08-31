@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { MapInfo, MapOp, MapOpType } from '../../../shared/src/api/api-types-map';
 import {
