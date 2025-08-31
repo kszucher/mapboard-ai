@@ -27,9 +27,6 @@ export const Window: FC = () => {
   const pageState = useSelector((state: RootState) => state.slice.pageState);
   const dialogState = useSelector((state: RootState) => state.slice.dialogState);
   const alertDialogState = useSelector((state: RootState) => state.slice.alertDialogState);
-  const commitList = useSelector((state: RootState) => state.slice.commitList);
-  const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const mExists = m && Object.keys(m).length;
   const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
   const access = sharesWithUser?.find(el => el.id === mapId)?.access || AccessType.EDIT;
   const dispatch = useDispatch<AppDispatch>();
@@ -100,15 +97,6 @@ export const Window: FC = () => {
       }
     };
   }, [midMouseMode]);
-
-  useEffect(() => {
-    if (mExists) {
-      if (commitList.length > 1) {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => mapId && dispatch(api.endpoints.saveMap.initiate({ mapId })), 250);
-      }
-    }
-  }, [m]);
 
   useEffect(() => {
     if (workspaceId) {

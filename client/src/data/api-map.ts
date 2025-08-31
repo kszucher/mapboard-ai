@@ -8,8 +8,6 @@ import {
   RenameMapRequestDto,
   UpdateMapRequestDto,
 } from '../../../shared/src/api/api-types-map.ts';
-import { timeoutId } from '../components/window/Window.tsx';
-import { RootState } from './store.ts';
 
 export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   getMapInfo: builder.query<GetMapInfoQueryResponseDto, void>({
@@ -41,32 +39,6 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
       method: 'POST',
       body: { mapId, mapName },
     }),
-    invalidatesTags: [],
-  }),
-
-  saveMap: builder.mutation<void, { mapId: number }>({
-    queryFn: async ({ mapId }, { getState }, _extraOptions, baseQuery) => {
-      const slice = (getState() as unknown as RootState).slice;
-      // if (slice.commitList.length > 1) {
-      console.log('saving');
-      clearTimeout(timeoutId);
-      const SAVE_ENABLED = true;
-      if (SAVE_ENABLED) {
-        const mapData = slice.commitList[slice.commitIndex];
-        try {
-          const { data } = await baseQuery({
-            url: 'save-map',
-            method: 'POST',
-            body: { mapId, mapData },
-          });
-          return { data } as { data: void };
-        } catch (error) {
-          return { error };
-        }
-      }
-      // }
-      return { error: 'no map' };
-    },
     invalidatesTags: [],
   }),
 

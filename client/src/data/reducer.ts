@@ -107,7 +107,6 @@ export const slice = createSlice({
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       Object.assign(m.n[nodeId], attributes);
       state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
-      // state.commitIndex = state.commitIndex + 1;
     },
     updateMapFromSSE(state, { payload }: PayloadAction<{ mapInfo: MapInfo }>) {
       console.log('map updated from server...');

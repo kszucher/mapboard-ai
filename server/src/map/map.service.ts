@@ -65,10 +65,6 @@ export class MapService {
 
   private genId = () => global.crypto.randomUUID();
 
-  private hasProcessing = (m: M): boolean => {
-    return Object.values(m.l).some(link => link.isProcessing) || Object.values(m.n).some(node => node.isProcessing);
-  };
-
   private async getMapGraph({ mapId }: { mapId: number }): Promise<M> {
     const [mapNodes, mapLinks] = await Promise.all([
       this.prisma.mapNode.findMany({ where: { mapId } }),
@@ -267,35 +263,6 @@ export class MapService {
     ]);
   }
 
-  async saveMap({ workspaceId, mapId, mapData }: { workspaceId: number; mapId: number; mapData: M }) {
-    const m = await this.getMapGraph({ mapId });
-
-    if (this.hasProcessing(m)) {
-      console.log('map is processing, should be reverting local changes...');
-      return;
-    }
-
-    try {
-      await this.prisma.$transaction(async prisma => {
-        await prisma.mapLink.deleteMany({ where: { mapId } });
-        await prisma.mapNode.deleteMany({ where: { mapId } });
-
-        await prisma.mapNode.createMany({
-          data: Object.entries(mapData.n).map(([id, n]) => ({ id, mapId, ...n })),
-        });
-
-        await prisma.mapLink.createMany({
-          data: Object.entries(mapData.l).map(([id, l]) => ({ id, mapId, ...l })),
-        });
-      });
-
-      await this.distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData });
-    } catch (error) {
-      console.error('Failed to save map:', error);
-      throw error;
-    }
-  }
-
   async updateMap({ workspaceId, mapId, mapOp }: { workspaceId: number; mapId: number; mapOp: MapOp }) {
     const m = await this.getMapGraph({ mapId });
 
@@ -412,7 +379,7 @@ export class MapService {
           where: { id: nodeId },
           data: { ...mapOp.payload.data },
         });
-        
+
         await this.distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData: await this.getMapGraph({ mapId }) });
         break;
       }
@@ -436,10 +403,6 @@ export class MapService {
 
   async executeMap({ mapId }: { mapId: number }) {
     const m = await this.getMapGraph({ mapId });
-
-    if (this.hasProcessing(m)) {
-      throw new Error('map is processing');
-    }
 
     const topologicalSort = getTopologicalSort(m);
     if (!topologicalSort) {
