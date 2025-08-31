@@ -1,5 +1,5 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
-import { MapInfo } from '../../../shared/src/api/api-types-map';
+import { MapInfo, MapOp, MapOpType } from '../../../shared/src/api/api-types-map';
 import {
   getLastIndexN,
   getMapSelfH,
@@ -296,11 +296,11 @@ export class MapService {
     }
   }
 
-  async updateMap({ mapId, mapOp }: { mapId: number; mapOp: { type: string; payload: any } }) {
+  async updateMap({ mapId, mapOp }: { mapId: number; mapOp: MapOp }) {
     const m = await this.getMapGraph({ mapId });
 
     switch (mapOp.type) {
-      case 'insertNode': {
+      case MapOpType.INSERT_NODE: {
         await this.prisma.mapNode.create({
           data: {
             mapId,

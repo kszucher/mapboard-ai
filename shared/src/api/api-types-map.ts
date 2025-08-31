@@ -1,4 +1,4 @@
-import { M } from '../map/state/map-consts-and-types';
+import { ControlType, M } from '../map/state/map-consts-and-types';
 
 export type MapInfo = {
   id: number
@@ -29,10 +29,7 @@ export type RenameMapRequestDto = {
 
 export type UpdateMapRequestDto = {
   mapId: number
-  mapOp: {
-    type: string
-    payload: object
-  }
+  mapOp: MapOp
 }
 
 export type ExecuteMapFileUploadDto = {
@@ -47,3 +44,12 @@ export type ExecuteMapRequestDto = {
 export type DeleteMapRequestDto = {
   mapId: number
 }
+
+export enum MapOpType {
+  INSERT_NODE,
+  INSERT_LINK,
+}
+
+export type MapOp =
+  | { type: MapOpType.INSERT_NODE; payload: { controlType: ControlType } }
+  | { type: MapOpType.INSERT_LINK; payload: {} };

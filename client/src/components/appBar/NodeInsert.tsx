@@ -1,5 +1,6 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
+import { MapOpType } from '../../../../shared/src/api/api-types-map.ts';
 import { controlTexts, ControlType } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import Plus from '../../../assets/plus.svg?react';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
@@ -25,7 +26,7 @@ export const NodeInsert = () => {
                 api.endpoints.updateMap.initiate({
                   mapId,
                   mapOp: {
-                    type: 'insertNode',
+                    type: MapOpType.INSERT_NODE,
                     payload: { controlType },
                   },
                 })
