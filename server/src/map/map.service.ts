@@ -367,51 +367,43 @@ export class MapService {
               data: { ingestionOutputJson: {} },
             });
           } catch (e) {
-            console.error('ingestion error', e);
+            console.error(ni.controlType + 'error', e);
             break executionLoop;
           }
 
           break;
         }
         case ControlType.VECTOR_DATABASE: {
+          await new Promise(el => setTimeout(el, 3000));
+
           if (ni.vectorDatabaseId) {
-            await new Promise(el => setTimeout(el, 1000));
             console.log(ni.fileName + ' already processed vector database');
             continue;
           }
 
-          const ingestionOutputJsonList = inputNodes
-            .filter(el => el.controlType === ControlType.INGESTION)
-            .map(el => el.ingestionOutputJson);
-
-          const contextOutputTextList = inputNodes
-            .filter(el => el.controlType === ControlType.CONTEXT)
-            .map(el => el.contextOutputText ?? '');
-
-          const questionOutputText =
-            inputNodes.find(el => el.controlType === ControlType.QUESTION)?.questionOutputText ?? '';
+          const vectorDatabaseInputJson = {
+            [ControlType.INGESTION]: inputNodes
+              .filter(el => el.controlType === ControlType.INGESTION)
+              .map(el => [`N${el.iid}`, el.ingestionOutputJson]),
+            [ControlType.CONTEXT]: inputNodes
+              .filter(el => el.controlType === ControlType.CONTEXT)
+              .map(el => [`N${el.iid}`, el.contextOutputText]),
+            [ControlType.QUESTION]: inputNodes
+              .filter(el => el.controlType === ControlType.QUESTION)
+              .map(el => [`N${el.iid}`, el.questionOutputText]),
+          };
 
           try {
-            // const vectorDatabaseId = await this.aiService.vectorDatabase(ingestionOutputJsonList, contextOutputTextList, questionOutputText);
-            await new Promise(el => setTimeout(el, 3000));
-
-            const vectorDatabaseId = 'mockId'; // TODO: rework this in TS
-            if (!vectorDatabaseId) {
-              console.error('no vectorDatabaseId');
-              break executionLoop;
-            }
+            // TODO
 
             await this.prisma.mapNode.update({
               where: { id: nodeId },
-              data: { vectorDatabaseId },
+              data: {},
             });
           } catch (e) {
-            console.error('vector database error', e);
+            console.error(ni.controlType + 'error', e);
             break executionLoop;
           }
-          break;
-        }
-        case ControlType.DATAFRAME: {
           break;
         }
 
@@ -443,13 +435,32 @@ export class MapService {
               where: { id: nodeId },
               data: { llmInputJson, llmOutputJson },
             });
-          } catch {
+          } catch (e) {
+            console.error(ni.controlType + 'error', e);
             break executionLoop;
           }
 
           await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
           break;
+        }
+
+        case ControlType.DATAFRAME: {
+          await new Promise(el => setTimeout(el, 3000));
+
+          const dataFrameInputJson = {
+            [ControlType.FILE]: inputNodes
+              .filter(el => el.controlType === ControlType.FILE)
+              .map(el => [`N${el.iid}`, el.fileHash]),
+            [ControlType.LLM]: inputNodes
+              .filter(el => el.controlType === ControlType.LLM)
+              .map(el => [`N${el.iid}`, el.llmOutputJson]),
+          };
+
+          // 1 read csv into polars dataframe
+          // 2 save json
+          // 3 query against json
+          // 4 save query
         }
       }
     }

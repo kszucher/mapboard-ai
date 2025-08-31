@@ -44,4 +44,8 @@ export class AiService {
 
     return result.object; // The structured output is in result.object
   }
+
+  async dataFrame() {
+    // TODO query against the dataFrame
+  }
 }
