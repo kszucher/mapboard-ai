@@ -112,19 +112,7 @@ export const slice = createSlice({
         offsetH: state.nodeOffsetCoords[1],
       });
       mapAlign(m);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-      state.commitIndex = state.commitIndex + 1;
-      state.nodeOffsetCoords = [];
-    },
-    resetNodeOffset(state) {
-      // const m = structuredClone(current(state.commitList[state.commitIndex]));
-      // Object.assign(m.n[nodeId], {
-      //   offsetW: state.nodeOffsetCoords[0],
-      //   offsetH: state.nodeOffsetCoords[1],
-      // });
-      // mapAlign(m);
-      // state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-      // state.commitIndex = state.commitIndex + 1;
+      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
       state.nodeOffsetCoords = [];
     },
     setNodeAttributes(
