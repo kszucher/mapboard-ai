@@ -421,21 +421,21 @@ export class MapService {
           const llmInputJson = {
             [ControlType.LLM]: inputNodes
               .filter(el => el.controlType === ControlType.LLM)
-              .map(el => [el.iid, el.llmOutputJson]),
+              .map(el => [`N${el.iid}`, el.llmOutputJson]),
             [ControlType.VECTOR_DATABASE]: inputNodes
               .filter(el => el.controlType === ControlType.VECTOR_DATABASE)
-              .map(el => [el.iid, el.vectorDatabaseOutputText]),
+              .map(el => [`N${el.iid}`, el.vectorDatabaseOutputText]),
             [ControlType.CONTEXT]: inputNodes
               .filter(el => el.controlType === ControlType.CONTEXT)
-              .map(el => [el.iid, el.contextOutputText]),
+              .map(el => [`N${el.iid}`, el.contextOutputText]),
             [ControlType.DATAFRAME]: inputNodes
               .filter(el => el.controlType === ControlType.DATAFRAME)
-              .map(el => [el.iid, el.dataFrameOutputText]),
+              .map(el => [`N${el.iid}`, el.dataFrameOutputText]),
             [ControlType.QUESTION]: inputNodes
               .filter(el => el.controlType === ControlType.QUESTION)
-              .map(el => [el.iid, el.questionOutputText]),
+              .map(el => [`N${el.iid}`, el.questionOutputText]),
           };
-          
+
           try {
             const llmOutputJson = await this.aiService.llm({ llmInstructions: ni.llmInstructions ?? '', llmInputJson });
 
