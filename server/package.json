@@ -10,6 +10,7 @@
     "jsonwebtoken": "9.0.2",
     "mastra": "^0.11.2",
     "multer": "2.0.2",
+    "nodejs-polars": "^0.21.1",
     "redis": "^5.8.2",
     "zod": "^4.1.5"
   },
