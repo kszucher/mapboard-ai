@@ -16,10 +16,6 @@ export const NodeTypeDataFrame = ({ nodeId, ni }: { nodeId: string; ni: N }) => 
           <Button size="1" color="gray" onClick={() => {}}>
             {'Show'}
           </Button>
-          <Text size="2">{`Input Schema (Query)`}</Text>
-          <Button size="1" color="gray" onClick={() => {}}>
-            {'Show'}
-          </Button>
         </Flex>
       </Box>
     </React.Fragment>

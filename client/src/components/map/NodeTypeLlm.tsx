@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, TextArea } from '@radix-ui/themes';
+import { Box, Flex, Select, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { getNodeSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
@@ -30,9 +30,14 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: string; ni: N }) => {
             }}
           />
           <Text size="2">{`Output Schema`}</Text>
-          <Button size="1" color="gray" onClick={() => {}}>
-            {'Show'}
-          </Button>
+          <Select.Root size="1" defaultValue="Text">
+            <Select.Trigger variant={'soft'} color={'gray'} />
+            <Select.Content>
+              <Select.Item value="Text">Text</Select.Item>
+              <Select.Item value="Vector Database Query">Vector Database Query</Select.Item>
+              <Select.Item value="Data Frame Query">Data Frame Query</Select.Item>
+            </Select.Content>
+          </Select.Root>
         </Flex>
       </Box>
     </React.Fragment>
