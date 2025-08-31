@@ -296,11 +296,9 @@ export class MapService {
     }
   }
 
-  async updateMap({ mapId, mapOp }: { mapId: number; mapOp: MapOp }) {
+  async updateMap({ workspaceId, mapId, mapOp }: { workspaceId: number; mapId: number; mapOp: MapOp }) {
     const m = await this.getMapGraph({ mapId });
-
-    console.log(mapOp);
-
+    
     switch (mapOp.type) {
       case MapOpType.INSERT_NODE: {
         await this.prisma.mapNode.create({
@@ -312,6 +310,7 @@ export class MapService {
             offsetH: getMapSelfH(m),
           },
         });
+        await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
         break;
       }
       case MapOpType.INSERT_LINK: {
@@ -356,7 +355,7 @@ export class MapService {
             },
           });
         });
-
+        await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
         break;
       }
 
@@ -393,12 +392,10 @@ export class MapService {
             },
           });
         });
-
+        await this.distributeMapGraphChangeToOthers({ workspaceId, mapId, mapData: await this.getMapGraph({ mapId }) });
         break;
       }
     }
-
-    await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
   }
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {

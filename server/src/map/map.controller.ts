@@ -52,8 +52,9 @@ router.post('/save-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request,
 });
 
 router.post('/update-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { workspaceId } = req as any;
   const { mapId, mapOp } = req.body;
-  await mapService.updateMap({ mapId, mapOp });
+  await mapService.updateMap({ workspaceId, mapId, mapOp });
   res.json();
 });
 
