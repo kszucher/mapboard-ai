@@ -1,6 +1,11 @@
 import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { MapInfo } from '../../../shared/src/api/api-types-map';
-import { getTopologicalSort } from '../../../shared/src/map/getters/map-queries';
+import {
+  getLastIndexN,
+  getMapSelfH,
+  getMapSelfW,
+  getTopologicalSort,
+} from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
 import { allowedSourceControls, ControlType, M } from '../../../shared/src/map/state/map-consts-and-types';
 import { DistributionService } from '../distribution/distribution.service';
@@ -289,6 +294,27 @@ export class MapService {
       console.error('Failed to save map:', error);
       throw error;
     }
+  }
+
+  async updateMap({ mapId, mapOp }: { mapId: number; mapOp: { type: string; payload: any } }) {
+    const m = await this.getMapGraph({ mapId });
+
+    switch (mapOp.type) {
+      case 'insertNode': {
+        await this.prisma.mapNode.create({
+          data: {
+            mapId,
+            iid: getLastIndexN(m) + 1,
+            controlType: mapOp.payload.controlType,
+            offsetW: getMapSelfW(m),
+            offsetH: getMapSelfH(m),
+          },
+        });
+        break;
+      }
+    }
+
+    await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
   }
 
   async executeMapUploadFile(mapId: number, nodeId: string, file: Express.Multer.File) {

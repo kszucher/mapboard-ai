@@ -6,6 +6,7 @@ import {
   ExecuteMapRequestDto,
   GetMapInfoQueryResponseDto,
   RenameMapRequestDto,
+  UpdateMapRequestDto,
 } from '../../../shared/src/api/api-types-map.ts';
 import { timeoutId } from '../components/window/Window.tsx';
 import { RootState } from './store.ts';
@@ -66,6 +67,15 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
       // }
       return { error: 'no map' };
     },
+    invalidatesTags: [],
+  }),
+
+  updateMap: builder.mutation<void, UpdateMapRequestDto>({
+    query: ({ mapId, mapOp }) => ({
+      url: 'update-map',
+      method: 'POST',
+      body: { mapId, mapOp },
+    }),
     invalidatesTags: [],
   }),
 

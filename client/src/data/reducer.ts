@@ -5,7 +5,7 @@ import { getNodeSelfH, getNodeSelfW } from '../../../shared/src/map/getters/map-
 import { mapAlign } from '../../../shared/src/map/setters/map-align.ts';
 import { mapDelete } from '../../../shared/src/map/setters/map-delete.ts';
 import { mapInsert } from '../../../shared/src/map/setters/map-insert.ts';
-import { ControlType, L, N } from '../../../shared/src/map/state/map-consts-and-types.ts';
+import { L, N } from '../../../shared/src/map/state/map-consts-and-types.ts';
 import { jsonDiff } from '../../../shared/src/map/utils/json-diff.ts';
 import { jsonMerge } from '../../../shared/src/map/utils/json-merge.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
@@ -99,13 +99,13 @@ export const slice = createSlice({
       state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
       state.commitIndex = state.commitIndex + 1;
     },
-    insertNode(state, { payload: { controlType } }: PayloadAction<{ controlType: ControlType }>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      mapInsert.N(m, controlType, genId);
-      mapAlign(m);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
-      state.commitIndex = state.commitIndex + 1;
-    },
+    // insertNode(state, { payload: { controlType } }: PayloadAction<{ controlType: ControlType }>) {
+    //   const m = structuredClone(current(state.commitList[state.commitIndex]));
+    //   mapInsert.N(m, controlType, genId);
+    //   mapAlign(m);
+    //   state.commitList = [...state.commitList.slice(0, state.commitIndex + 1), m];
+    //   state.commitIndex = state.commitIndex + 1;
+    // },
     deleteLink(state, { payload: { linkId } }: PayloadAction<{ linkId: string }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       mapDelete.L(m, linkId);

@@ -2,10 +2,11 @@ import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
 import { controlTexts, ControlType } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import Plus from '../../../assets/plus.svg?react';
-import { actions } from '../../data/reducer.ts';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeInsert = () => {
+  const mapId = useGetMapInfoQuery().data?.mapInfo.id!;
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -17,7 +18,20 @@ export const NodeInsert = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
         {Object.values(ControlType).map(controlType => (
-          <DropdownMenu.Item key={controlType} onClick={() => dispatch(actions.insertNode({ controlType }))}>
+          <DropdownMenu.Item
+            key={controlType}
+            onClick={() =>
+              dispatch(
+                api.endpoints.updateMap.initiate({
+                  mapId,
+                  mapOp: {
+                    type: 'insertNode',
+                    payload: { controlType },
+                  },
+                })
+              )
+            }
+          >
             {controlTexts[controlType]}
           </DropdownMenu.Item>
         ))}
