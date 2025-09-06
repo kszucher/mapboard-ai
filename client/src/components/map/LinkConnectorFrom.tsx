@@ -11,7 +11,7 @@ export const LinkConnectorFrom: FC = () => {
   return Object.entries(m.n).flatMap(([nodeId, ni]) =>
     allowedTargetControls[ni.controlType].map((targetControlType, idx) => {
       const isConnected = Object.values(m.l).some(
-        l => l.fromNodeId === nodeId && m.n[l.toNodeId] && m.n[l.toNodeId].controlType === targetControlType
+        l => l.fromNodeId === Number(nodeId) && m.n[l.toNodeId] && m.n[l.toNodeId].controlType === targetControlType
       );
 
       return (
