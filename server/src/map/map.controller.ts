@@ -59,7 +59,7 @@ router.post(
   async (req: Request, res: Response) => {
     const file = req.file as Express.Multer.File;
     const { mapId, nodeId }: ExecuteMapFileUploadDto = req.body;
-    await mapService.executeMapUploadFile(parseInt(mapId), nodeId, file);
+    await mapService.executeMapUploadFile({ mapId: Number(mapId), nodeId: Number(nodeId), file });
     res.json();
   }
 );

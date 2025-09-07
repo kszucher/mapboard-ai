@@ -3,24 +3,18 @@ import { auth } from 'express-oauth2-jwt-bearer';
 import { prismaClient } from './server';
 
 export const checkJwt = auth({
-  audience: process.env.NODE_ENV
-    ? process.env.AUTH0_REMOTE_URL
-    : process.env.AUTH0_LOCAL_URL,
+  audience: process.env.NODE_ENV ? process.env.AUTH0_REMOTE_URL : process.env.AUTH0_LOCAL_URL,
   issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
 });
 
-export const getUserIdAndWorkspaceId = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
+export const getUserIdAndWorkspaceId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const user = await prismaClient.user.findFirstOrThrow({
       where: { sub: req.auth?.payload.sub ?? '' },
       select: { id: true },
     });
 
-    const workspaceId = parseInt(req.headers['workspace-id'] as string);
+    const workspaceId = Number(req.headers['workspace-id']);
 
     (req as any).userId = user.id;
     (req as any).workspaceId = workspaceId;

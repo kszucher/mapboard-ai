@@ -33,7 +33,7 @@ export type UpdateMapRequestDto = {
 }
 
 export type ExecuteMapFileUploadDto = {
-  mapId: string
+  mapId: number
   nodeId: number
 }
 

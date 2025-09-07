@@ -59,7 +59,7 @@ model MapNode {
   llmInstructions          String?
   llmOutputSchema          LlmOutputSchema?
   llmOutputJson            Json?
-  visualizerInputText      String?
+  visualizerOutputText     String?
   FromLinks                MapLink[]        @relation("FromLinks")
   ToLinks                  MapLink[]        @relation("ToLinks")
   createdAt                DateTime         @default(now())

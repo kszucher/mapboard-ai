@@ -50,7 +50,7 @@ export const LlmOutputSchema = {
   TEXT: 'TEXT',
   VECTOR_DATABASE_QUERY: 'VECTOR_DATABASE_QUERY',
   DATA_FRAME_QUERY: 'DATA_FRAME_QUERY',
-};
+} as const;
 
 export type LlmOutputSchema = (typeof LlmOutputSchema)[keyof typeof LlmOutputSchema];
 

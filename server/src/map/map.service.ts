@@ -397,7 +397,7 @@ export class MapService {
     }
   }
 
-  async executeMapUploadFile(mapId: number, nodeId: number, file: Express.Multer.File) {
+  async executeMapUploadFile({ mapId, nodeId, file }: { mapId: number; nodeId: number; file: Express.Multer.File }) {
     await this.updateMapGraphIsProcessingSet({ nodeId });
     await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
