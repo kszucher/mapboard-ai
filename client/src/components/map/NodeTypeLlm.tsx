@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { MapOpType } from '../../../../shared/src/api/api-types-map.ts';
 import { getNodeSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
-import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
+import { LlmOutputSchema, N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
@@ -50,12 +50,40 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             }}
           />
           <Text size="2">{`Output Schema`}</Text>
-          <Select.Root size="1" defaultValue="Text">
-            <Select.Trigger variant={'soft'} color={'gray'} />
+          <Select.Root
+            size="1"
+            defaultValue={LlmOutputSchema.TEXT}
+            onValueChange={(value: LlmOutputSchema) => {
+              dispatch(
+                actions.updateNodeOptimistic({
+                  nodeId,
+                  attributes: { llmOutputSchema: value },
+                })
+              );
+              dispatch(
+                api.endpoints.updateMap.initiate({
+                  mapId: mapId!,
+                  mapOp: {
+                    type: MapOpType.UPDATE_NODE,
+                    payload: {
+                      nodeId,
+                      data: { llmOutputSchema: value },
+                    },
+                  },
+                })
+              );
+            }}
+          >
+            <Select.Trigger variant="soft" color="gray" />
             <Select.Content>
-              <Select.Item value="Text">Text</Select.Item>
-              <Select.Item value="Vector Database Query">Vector Database Query</Select.Item>
-              <Select.Item value="Data Frame Query">Data Frame Query</Select.Item>
+              {Object.values(LlmOutputSchema).map(value => (
+                <Select.Item key={value} value={value}>
+                  {value
+                    .replace(/_/g, ' ')
+                    .toLowerCase()
+                    .replace(/\b\w/g, c => c.toUpperCase())}
+                </Select.Item>
+              ))}
             </Select.Content>
           </Select.Root>
         </Flex>
