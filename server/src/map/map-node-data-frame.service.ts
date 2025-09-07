@@ -1,7 +1,7 @@
 import * as pl from 'nodejs-polars';
 import { LlmOutputSchema } from '../../../shared/src/map/state/map-consts-and-types';
 import { PrismaClient } from '../generated/client';
-import { DataFrameQuerySchemaType } from './map-node-data-frame.types';
+import { DataFrameQuerySchema, DataFrameQuerySchemaType } from './map-node-data-frame.types';
 import { MapNodeFileService } from './map-node-file.service';
 import { MapNodeService } from './map-node.service';
 
@@ -60,7 +60,7 @@ export class MapNodeDataFrameService {
 
     const dataFrameInputJson = inputLlmNode.llmOutputJson;
 
-    const result = this.buildPolarsQuery(df, dataFrameInputJson as DataFrameQuerySchemaType);
+    const result = this.buildPolarsQuerySimple(df, dataFrameInputJson as DataFrameQuerySchemaType);
 
     const dataFrameOutputText = result.toString();
 
@@ -72,76 +72,78 @@ export class MapNodeDataFrameService {
     });
   }
 
-  private buildPolarsQuery(df: pl.DataFrame, schema: DataFrameQuerySchemaType): pl.DataFrame {
+  private buildPolarsQuerySimple(df: pl.DataFrame, schema: DataFrameQuerySchemaType): pl.DataFrame {
     let q = df;
 
-    // Columns are required, so no need to check optional
-    q = q.select(...schema.columns.map(c => pl.col(c)));
+    // columns required
+    q = q.select(...schema.columns.map((c: string) => pl.col(c)));
 
-    // Apply filters if defined
-    if (schema.filters?.length) {
-      schema.filters.forEach(f => {
-        let expr: pl.Expr;
-        switch (f.operator) {
-          case '=':
-            expr = pl.col(f.column).eq(f.value);
-            break;
-          case '!=':
-            expr = pl.col(f.column).neq(f.value);
-            break;
-          case '>':
-            expr = pl.col(f.column).gt(f.value);
-            break;
-          case '<':
-            expr = pl.col(f.column).lt(f.value);
-            break;
-          case '>=':
-            expr = pl.col(f.column).gtEq(f.value);
-            break;
-          case '<=':
-            expr = pl.col(f.column).ltEq(f.value);
-            break;
-          case 'contains':
-            expr = pl.col(f.column).str.contains(f.value);
-            break;
-          case 'in':
-            expr = pl.col(f.column).isIn(f.value);
-            break;
-          default:
-            throw new Error(`Unsupported operator: ${f.operator}`);
-        }
-        q = q.filter(expr);
-      });
+    // filter
+    if (schema.filterColumn && schema.filterOperator && schema.filterValue !== undefined) {
+      let expr: pl.Expr;
+      switch (schema.filterOperator) {
+        case '=':
+          expr = pl.col(schema.filterColumn).eq(schema.filterValue);
+          break;
+        case '!=':
+          expr = pl.col(schema.filterColumn).neq(schema.filterValue);
+          break;
+        case '>':
+          expr = pl.col(schema.filterColumn).gt(schema.filterValue);
+          break;
+        case '<':
+          expr = pl.col(schema.filterColumn).lt(schema.filterValue);
+          break;
+        case '>=':
+          expr = pl.col(schema.filterColumn).gtEq(schema.filterValue);
+          break;
+        case '<=':
+          expr = pl.col(schema.filterColumn).ltEq(schema.filterValue);
+          break;
+        case 'contains':
+          expr = pl.col(schema.filterColumn).str.contains(schema.filterValue);
+          break;
+        case 'in':
+          expr = pl.col(schema.filterColumn).isIn(schema.filterValue);
+          break;
+        default:
+          throw new Error('Unsupported operator');
+      }
+      q = q.filter(expr);
     }
 
-    // Group and aggregate if both defined
-    if (schema.groupBy?.length && schema.aggregations?.length) {
-      const aggExprs = schema.aggregations.map(a => {
-        const col = pl.col(a.column);
-        switch (a.operation) {
-          case 'sum':
-            return col.sum();
-          case 'mean':
-            return col.mean();
-          case 'count':
-            return col.count();
-          case 'min':
-            return col.min();
-          case 'max':
-            return col.max();
-          default:
-            throw new Error(`Unsupported aggregation: ${a.operation}`);
-        }
-      });
-      q = q.groupBy(schema.groupBy).agg(...aggExprs);
+    // group + aggregate
+    if (schema.groupBy?.length && schema.aggregationColumn && schema.aggregationOperation) {
+      const col = pl.col(schema.aggregationColumn);
+      let aggExpr: pl.Expr;
+      switch (schema.aggregationOperation) {
+        case 'sum':
+          aggExpr = col.sum();
+          break;
+        case 'mean':
+          aggExpr = col.mean();
+          break;
+        case 'count':
+          aggExpr = col.count();
+          break;
+        case 'min':
+          aggExpr = col.min();
+          break;
+        case 'max':
+          aggExpr = col.max();
+          break;
+        default:
+          throw new Error('Unsupported aggregation');
+      }
+      q = q.groupBy(schema.groupBy).agg(aggExpr);
     }
 
-    // Sort if defined
-    if (schema.sort) {
-      q = q.sort(schema.sort.column, schema.sort.direction === 'desc');
+    // sort
+    if (schema.sortColumn) {
+      q = q.sort(schema.sortColumn, schema.sortDirection === 'desc');
     }
 
-    // Limit if defined
+    // limit
     if (schema.limit != null) {
       q = q.head(schema.limit);
     }

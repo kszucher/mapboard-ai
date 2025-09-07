@@ -52,6 +52,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
           <Text size="2">{`Output Schema`}</Text>
           <Select.Root
             size="1"
+            value={ni.llmOutputSchema ?? LlmOutputSchema.TEXT}
             defaultValue={LlmOutputSchema.TEXT}
             onValueChange={(value: LlmOutputSchema) => {
               dispatch(
