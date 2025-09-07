@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
-import { PrismaClient } from '../generated/client';
 import { z } from 'zod';
+import { PrismaClient } from '../generated/client';
 import { MapNodeService } from './map-node.service';
 
 export class MapNodeLlmService {
