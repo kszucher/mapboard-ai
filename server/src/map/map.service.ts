@@ -7,16 +7,19 @@ import {
   getTopologicalSort,
 } from '../../../shared/src/map/getters/map-queries';
 import { mapCopy } from '../../../shared/src/map/setters/map-copy';
-import { allowedSourceControls, ControlType, M } from '../../../shared/src/map/state/map-consts-and-types';
+import { ControlType, M } from '../../../shared/src/map/state/map-consts-and-types';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
+import { WorkspaceService } from '../workspace/workspace.service';
+import { MapExecuteContextService } from './map-execute-context.service';
 import { MapExecuteDataFrameService } from './map-execute-data-frame.service';
 import { MapExecuteFileService } from './map-execute-file.service';
 import { MapExecuteIngestionService } from './map-execute-ingestion.service';
 import { MapExecuteLlmService } from './map-execute-llm.service';
+import { MapExecuteQuestionService } from './map-execute-question.service';
 import { MapExecuteVectorDatabaseService } from './map-execute-vector-database.service';
-import { WorkspaceService } from '../workspace/workspace.service';
+import { MapExecuteVisualizerService } from './map-execute-visualizer.service';
 
 export class MapService {
   constructor(
@@ -26,9 +29,12 @@ export class MapService {
     private getDistributionService: () => DistributionService,
     private getFileService: () => MapExecuteFileService,
     private getIngestionService: () => MapExecuteIngestionService,
+    private getContextService: () => MapExecuteContextService,
+    private getQuestionService: () => MapExecuteQuestionService,
     private getVectorDatabaseService: () => MapExecuteVectorDatabaseService,
     private getDataFrameService: () => MapExecuteDataFrameService,
-    private getLlmService: () => MapExecuteLlmService
+    private getLlmService: () => MapExecuteLlmService,
+    private getVisualizerService: () => MapExecuteVisualizerService
   ) {}
 
   get tabService(): TabService {
@@ -51,6 +57,14 @@ export class MapService {
     return this.getIngestionService();
   }
 
+  get contextService(): MapExecuteContextService {
+    return this.getContextService();
+  }
+
+  get questionService(): MapExecuteQuestionService {
+    return this.getQuestionService();
+  }
+
   get vectorDatabaseService(): MapExecuteVectorDatabaseService {
     return this.getVectorDatabaseService();
   }
@@ -63,7 +77,9 @@ export class MapService {
     return this.getLlmService();
   }
 
-  private genId = () => global.crypto.randomUUID();
+  get visualizerService(): MapExecuteVisualizerService {
+    return this.getVisualizerService();
+  }
 
   private async getMapGraph({ mapId }: { mapId: number }): Promise<M> {
     const [mapNodes, mapLinks] = await Promise.all([
@@ -152,15 +168,7 @@ export class MapService {
     return map;
   }
 
-  async createMapInTabNew({
-    userId,
-    workspaceId,
-    mapName,
-  }: {
-    userId: number;
-    workspaceId: number;
-    mapName: string;
-  }): Promise<void> {
+  async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number; workspaceId: number; mapName: string }) {
     const newMap = await this.createMap({ userId, mapName });
 
     await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
@@ -184,14 +192,16 @@ export class MapService {
     userId: number;
     workspaceId: number;
     mapId: number;
-  }): Promise<void> {
+  }) {
+    // TODO rework
+
     const mapInfo = await this.getMapInfo({ mapId });
 
-    const newMapData = mapCopy(mapInfo.data, this.genId);
+    // const newMapData = mapCopy(mapInfo.data, this.genId);
 
-    const newMap = await this.createMap({ userId, mapName: mapInfo.name + 'Copy', newMapData });
+    // const newMap = await this.createMap({ userId, mapName: mapInfo.name + 'Copy', newMapData });
 
-    await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
+    // await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
 
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
@@ -411,171 +421,54 @@ export class MapService {
       throw new Error('topological sort error');
     }
 
-    executionLoop: for (const nodeId of topologicalSort) {
+    for (const nodeId of topologicalSort) {
       const ni = m.n[nodeId];
-
-      const skipControlTypes: ControlType[] = [ControlType.FILE, ControlType.CONTEXT, ControlType.QUESTION];
-      if (skipControlTypes.includes(ni.controlType)) {
-        continue;
-      }
 
       await this.updateMapGraphIsProcessingSet({ nodeId });
       await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
-      const inputNodes = await this.prisma.mapNode.findMany({
-        where: {
-          controlType: { in: allowedSourceControls[ni.controlType] },
-          FromLinks: {
-            some: {
-              toNodeId: nodeId,
-              ToNode: {
-                controlType: ni.controlType,
-              },
-            },
-          },
-        },
-        select: {
-          iid: true,
-          controlType: true,
-          fileHash: true,
-          fileName: true,
-          ingestionOutputJson: true,
-          vectorDatabaseId: true,
-          vectorDatabaseOutputText: true,
-          contextOutputText: true,
-          questionOutputText: true,
-          dataFrameOutputText: true,
-          llmInstructions: true,
-          llmOutputJson: true,
-          visualizerInputText: true,
-        },
-      });
+      await new Promise(el => setTimeout(el, 2000));
 
-      switch (ni.controlType) {
-        case ControlType.INGESTION: {
-          if (ni.ingestionOutputJson) {
-            await new Promise(el => setTimeout(el, 1000));
-            console.log(ni.fileName + ' already processed ingestion');
-            continue;
+      try {
+        switch (ni.controlType) {
+          case ControlType.FILE: {
+            await this.fileService.execute({ mapId, nodeId });
+            break;
           }
-
-          const inputNodeFileUploadFileHash = inputNodes.find(el => el.controlType === ControlType.FILE)?.fileHash;
-
-          if (!inputNodeFileUploadFileHash) {
-            console.error('no input file hash');
-            break executionLoop;
+          case ControlType.INGESTION: {
+            await this.ingestionService.execute({ mapId, nodeId });
+            break;
           }
-
-          try {
-            const ingestionJson = null; // await this.ingestionService(inputNodeFileUploadFileHash);
-            if (!ingestionJson) {
-              console.error('no ingestionJson');
-              break executionLoop;
-            }
-
-            await this.prisma.mapNode.update({
-              where: { id: nodeId },
-              data: { ingestionOutputJson: {} },
-            });
-          } catch (e) {
-            console.error(ni.controlType + 'error', e);
-            break executionLoop;
+          case ControlType.CONTEXT: {
+            await this.contextService.execute({ mapId, nodeId });
+            break;
           }
-
-          break;
-        }
-        case ControlType.VECTOR_DATABASE: {
-          await new Promise(el => setTimeout(el, 3000));
-
-          if (ni.vectorDatabaseId) {
-            console.log(ni.fileName + ' already processed vector database');
-            continue;
+          case ControlType.QUESTION: {
+            await this.questionService.execute({ mapId, nodeId });
+            break;
           }
-
-          const vectorDatabaseInputJson = {
-            [ControlType.INGESTION]: inputNodes
-              .filter(el => el.controlType === ControlType.INGESTION)
-              .map(el => [`N${el.iid}`, el.ingestionOutputJson]),
-            [ControlType.CONTEXT]: inputNodes
-              .filter(el => el.controlType === ControlType.CONTEXT)
-              .map(el => [`N${el.iid}`, el.contextOutputText]),
-            [ControlType.QUESTION]: inputNodes
-              .filter(el => el.controlType === ControlType.QUESTION)
-              .map(el => [`N${el.iid}`, el.questionOutputText]),
-          };
-
-          try {
-            // TODO
-
-            await this.prisma.mapNode.update({
-              where: { id: nodeId },
-              data: {},
-            });
-          } catch (e) {
-            console.error(ni.controlType + 'error', e);
-            break executionLoop;
+          case ControlType.VECTOR_DATABASE: {
+            await this.vectorDatabaseService.execute({ mapId, nodeId });
+            break;
           }
-          break;
+          case ControlType.DATAFRAME: {
+            await this.dataFrameService.execute({ mapId, nodeId });
+            break;
+          }
+          case ControlType.LLM: {
+            await this.llmService.execute({ mapId, nodeId });
+            break;
+          }
+          case ControlType.VISUALIZER: {
+            await this.visualizerService.execute({ mapId, nodeId });
+            break;
+          }
         }
 
-        case ControlType.LLM: {
-          await new Promise(el => setTimeout(el, 3000));
-
-          const llmInputJson = {
-            [ControlType.LLM]: inputNodes
-              .filter(el => el.controlType === ControlType.LLM)
-              .map(el => [`N${el.iid}`, el.llmOutputJson]),
-            [ControlType.VECTOR_DATABASE]: inputNodes
-              .filter(el => el.controlType === ControlType.VECTOR_DATABASE)
-              .map(el => [`N${el.iid}`, el.vectorDatabaseOutputText]),
-            [ControlType.CONTEXT]: inputNodes
-              .filter(el => el.controlType === ControlType.CONTEXT)
-              .map(el => [`N${el.iid}`, el.contextOutputText]),
-            [ControlType.DATAFRAME]: inputNodes
-              .filter(el => el.controlType === ControlType.DATAFRAME)
-              .map(el => [`N${el.iid}`, el.dataFrameOutputText]),
-            [ControlType.QUESTION]: inputNodes
-              .filter(el => el.controlType === ControlType.QUESTION)
-              .map(el => [`N${el.iid}`, el.questionOutputText]),
-          };
-
-          try {
-            const llmOutputJson = await this.llmService.llm({
-              llmInstructions: ni.llmInstructions ?? '',
-              llmInputJson,
-            });
-
-            await this.prisma.mapNode.update({
-              where: { id: nodeId },
-              data: { llmInputJson, llmOutputJson },
-            });
-          } catch (e) {
-            console.error(ni.controlType + 'error', e);
-            break executionLoop;
-          }
-
-          await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
-
-          break;
-        }
-
-        case ControlType.DATAFRAME: {
-          await new Promise(el => setTimeout(el, 3000));
-
-          const dataFrameInputJson = {
-            [ControlType.FILE]: inputNodes
-              .filter(el => el.controlType === ControlType.FILE)
-              .map(el => [`N${el.iid}`, el.fileHash]),
-            [ControlType.LLM]: inputNodes
-              .filter(el => el.controlType === ControlType.LLM)
-              .map(el => [`N${el.iid}`, el.llmOutputJson]),
-          };
-
-          // 1 read csv into polars dataframe
-          // 2 save json
-          // 3 query against json
-          // 4 save query
-        }
+        await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
+      } catch (e) {
+        console.error(ni.controlType + 'error', e);
+        break;
       }
     }
 

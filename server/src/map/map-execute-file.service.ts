@@ -1,10 +1,16 @@
+import { PrismaClient } from '../generated/client';
+import { MapNodeService } from './map-node.service';
+
 export class MapExecuteFileService {
   private readonly pinataApiKey: string;
   private readonly pinataSecretKey: string;
 
-  constructor(pinataApiKey: string, pinataSecretKey: string) {
-    this.pinataApiKey = pinataApiKey;
-    this.pinataSecretKey = pinataSecretKey;
+  constructor(
+    private prisma: PrismaClient,
+    private getMapNodeService: () => MapNodeService
+  ) {
+    this.pinataApiKey = process.env.PINATA_API_KEY!;
+    this.pinataSecretKey = process.env.PINATA_SECRET_API_KEY!;
   }
 
   async upload(file: Express.Multer.File): Promise<string | null> {
@@ -59,6 +65,14 @@ export class MapExecuteFileService {
     } catch (error) {
       console.error('Error downloading file:', error);
       return null;
+    }
+  }
+
+  async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
+    const node = await this.getMapNodeService().getNode({ mapId, nodeId });
+
+    if (!node.fileName || !node.fileHash) {
+      throw new Error('no file name or hash');
     }
   }
 }
