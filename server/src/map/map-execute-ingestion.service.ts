@@ -1,4 +1,4 @@
-export class IngestionService {
+export class MapExecuteIngestionService {
   constructor() {}
 
   async ingestion(): Promise<any> {}

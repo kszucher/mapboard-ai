@@ -2,7 +2,7 @@ import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { z } from 'zod';
 
-export class LlmService {
+export class MapExecuteLlmService {
   constructor() {}
 
   async llm({ llmInstructions, llmInputJson }: { llmInstructions: string; llmInputJson: any }): Promise<any> {

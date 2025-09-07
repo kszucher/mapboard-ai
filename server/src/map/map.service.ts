@@ -11,11 +11,11 @@ import { allowedSourceControls, ControlType, M } from '../../../shared/src/map/s
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
-import { DataFrameService } from '../workflow/data-frame.service';
-import { FileService } from '../workflow/file.service';
-import { IngestionService } from '../workflow/ingestion.service';
-import { LlmService } from '../workflow/llm.service';
-import { VectorDatabaseService } from '../workflow/vector-database.service';
+import { MapExecuteDataFrameService } from './map-execute-data-frame.service';
+import { MapExecuteFileService } from './map-execute-file.service';
+import { MapExecuteIngestionService } from './map-execute-ingestion.service';
+import { MapExecuteLlmService } from './map-execute-llm.service';
+import { MapExecuteVectorDatabaseService } from './map-execute-vector-database.service';
 import { WorkspaceService } from '../workspace/workspace.service';
 
 export class MapService {
@@ -24,11 +24,11 @@ export class MapService {
     private getTabService: () => TabService,
     private getWorkspaceService: () => WorkspaceService,
     private getDistributionService: () => DistributionService,
-    private getFileService: () => FileService,
-    private getIngestionService: () => IngestionService,
-    private getVectorDatabaseService: () => VectorDatabaseService,
-    private getDataFrameService: () => DataFrameService,
-    private getLlmService: () => LlmService
+    private getFileService: () => MapExecuteFileService,
+    private getIngestionService: () => MapExecuteIngestionService,
+    private getVectorDatabaseService: () => MapExecuteVectorDatabaseService,
+    private getDataFrameService: () => MapExecuteDataFrameService,
+    private getLlmService: () => MapExecuteLlmService
   ) {}
 
   get tabService(): TabService {
@@ -43,23 +43,23 @@ export class MapService {
     return this.getDistributionService();
   }
 
-  get fileService(): FileService {
+  get fileService(): MapExecuteFileService {
     return this.getFileService();
   }
 
-  get ingestionService(): IngestionService {
+  get ingestionService(): MapExecuteIngestionService {
     return this.getIngestionService();
   }
 
-  get vectorDatabaseService(): VectorDatabaseService {
+  get vectorDatabaseService(): MapExecuteVectorDatabaseService {
     return this.getVectorDatabaseService();
   }
 
-  get dataFrameService(): DataFrameService {
+  get dataFrameService(): MapExecuteDataFrameService {
     return this.getDataFrameService();
   }
 
-  get llmService(): LlmService {
+  get llmService(): MapExecuteLlmService {
     return this.getLlmService();
   }
 
