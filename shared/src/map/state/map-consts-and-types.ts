@@ -30,7 +30,7 @@ export interface N {
   llmInstructions: string | null;
   llmOutputSchema: LlmOutputSchema | null;
   llmOutputJson: any | null;
-  visualizerInputText: string | null;
+  visualizerOutputText: string | null;
 }
 
 export const ControlType = {
