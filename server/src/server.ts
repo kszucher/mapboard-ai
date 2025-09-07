@@ -3,14 +3,14 @@ import express, { Request, Response } from 'express';
 import distributionController from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
 import { PrismaClient } from './generated/client';
-import { MapExecuteContextService } from './map/map-execute-context.service';
-import { MapExecuteDataFrameService } from './map/map-execute-data-frame.service';
-import { MapExecuteFileService } from './map/map-execute-file.service';
-import { MapExecuteIngestionService } from './map/map-execute-ingestion.service';
-import { MapExecuteLlmService } from './map/map-execute-llm.service';
-import { MapExecuteQuestionService } from './map/map-execute-question.service';
-import { MapExecuteVectorDatabaseService } from './map/map-execute-vector-database.service';
-import { MapExecuteVisualizerService } from './map/map-execute-visualizer.service';
+import { MapNodeContextService } from './map/map-node-context.service';
+import { MapNodeDataFrameService } from './map/map-node-data-frame.service';
+import { MapNodeFileService } from './map/map-node-file.service';
+import { MapNodeIngestionService } from './map/map-node-ingestion.service';
+import { MapNodeLlmService } from './map/map-node-llm.service';
+import { MapNodeQuestionService } from './map/map-node-question.service';
+import { MapNodeVectorDatabaseService } from './map/map-node-vector-database.service';
+import { MapNodeVisualizerService } from './map/map-node-visualizer.service';
 import { MapNodeService } from './map/map-node.service';
 import mapController from './map/map.controller';
 import { MapService } from './map/map.service';
@@ -35,51 +35,48 @@ export const mapService: MapService = new MapService(
   () => tabService,
   () => workspaceService,
   () => distributionService,
-  () => mapExecuteFileService,
-  () => mapExecuteIngestionService,
-  () => mapExecuteContextService,
-  () => mapExecuteQuestionService,
-  () => mapExecuteVectorDatabaseService,
-  () => mapExecuteDataFrameService,
-  () => mapExecuteLlmService,
-  () => mapExecuteVisualizerService
+  () => mapNodeFileService,
+  () => mapNodeIngestionService,
+  () => mapNodeContextService,
+  () => mapNodeQuestionService,
+  () => mapNodeVectorDatabaseService,
+  () => mapNodeDataFrameService,
+  () => mapNodeLlmService,
+  () => mapNodeVisualizerService
 );
 
 export const mapNodeService: MapNodeService = new MapNodeService(prismaClient);
 
-export const mapExecuteFileService: MapExecuteFileService = new MapExecuteFileService(
+export const mapNodeFileService: MapNodeFileService = new MapNodeFileService(prismaClient, () => mapNodeService);
+
+export const mapNodeIngestionService: MapNodeIngestionService = new MapNodeIngestionService(
   prismaClient,
   () => mapNodeService
 );
 
-export const mapExecuteIngestionService: MapExecuteIngestionService = new MapExecuteIngestionService(
+export const mapNodeContextService: MapNodeContextService = new MapNodeContextService(
   prismaClient,
   () => mapNodeService
 );
 
-export const mapExecuteContextService: MapExecuteContextService = new MapExecuteContextService(
+export const mapNodeQuestionService: MapNodeQuestionService = new MapNodeQuestionService(
   prismaClient,
   () => mapNodeService
 );
 
-export const mapExecuteQuestionService: MapExecuteQuestionService = new MapExecuteQuestionService(
+export const mapNodeVectorDatabaseService: MapNodeVectorDatabaseService = new MapNodeVectorDatabaseService(
   prismaClient,
   () => mapNodeService
 );
 
-export const mapExecuteVectorDatabaseService: MapExecuteVectorDatabaseService = new MapExecuteVectorDatabaseService(
+export const mapNodeDataFrameService: MapNodeDataFrameService = new MapNodeDataFrameService(
   prismaClient,
   () => mapNodeService
 );
 
-export const mapExecuteDataFrameService: MapExecuteDataFrameService = new MapExecuteDataFrameService(
-  prismaClient,
-  () => mapNodeService
-);
+export const mapNodeLlmService: MapNodeLlmService = new MapNodeLlmService(prismaClient, () => mapNodeService);
 
-export const mapExecuteLlmService: MapExecuteLlmService = new MapExecuteLlmService(prismaClient, () => mapNodeService);
-
-export const mapExecuteVisualizerService: MapExecuteVisualizerService = new MapExecuteVisualizerService(
+export const mapNodeVisualizerService: MapNodeVisualizerService = new MapNodeVisualizerService(
   prismaClient,
   () => mapNodeService
 );

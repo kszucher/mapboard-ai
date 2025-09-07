@@ -1,7 +1,7 @@
 import { PrismaClient } from '../generated/client';
 import { MapNodeService } from './map-node.service';
 
-export class MapExecuteVectorDatabaseService {
+export class MapNodeVectorDatabaseService {
   constructor(
     private prisma: PrismaClient,
     private getMapNodeService: () => MapNodeService

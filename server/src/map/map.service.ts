@@ -12,14 +12,14 @@ import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
-import { MapExecuteContextService } from './map-execute-context.service';
-import { MapExecuteDataFrameService } from './map-execute-data-frame.service';
-import { MapExecuteFileService } from './map-execute-file.service';
-import { MapExecuteIngestionService } from './map-execute-ingestion.service';
-import { MapExecuteLlmService } from './map-execute-llm.service';
-import { MapExecuteQuestionService } from './map-execute-question.service';
-import { MapExecuteVectorDatabaseService } from './map-execute-vector-database.service';
-import { MapExecuteVisualizerService } from './map-execute-visualizer.service';
+import { MapNodeContextService } from './map-node-context.service';
+import { MapNodeDataFrameService } from './map-node-data-frame.service';
+import { MapNodeFileService } from './map-node-file.service';
+import { MapNodeIngestionService } from './map-node-ingestion.service';
+import { MapNodeLlmService } from './map-node-llm.service';
+import { MapNodeQuestionService } from './map-node-question.service';
+import { MapNodeVectorDatabaseService } from './map-node-vector-database.service';
+import { MapNodeVisualizerService } from './map-node-visualizer.service';
 
 export class MapService {
   constructor(
@@ -27,14 +27,14 @@ export class MapService {
     private getTabService: () => TabService,
     private getWorkspaceService: () => WorkspaceService,
     private getDistributionService: () => DistributionService,
-    private getFileService: () => MapExecuteFileService,
-    private getIngestionService: () => MapExecuteIngestionService,
-    private getContextService: () => MapExecuteContextService,
-    private getQuestionService: () => MapExecuteQuestionService,
-    private getVectorDatabaseService: () => MapExecuteVectorDatabaseService,
-    private getDataFrameService: () => MapExecuteDataFrameService,
-    private getLlmService: () => MapExecuteLlmService,
-    private getVisualizerService: () => MapExecuteVisualizerService
+    private getMapNodeFileService: () => MapNodeFileService,
+    private getMapNodeIngestionService: () => MapNodeIngestionService,
+    private getMapNodeContextService: () => MapNodeContextService,
+    private getMapNodeQuestionService: () => MapNodeQuestionService,
+    private getMapNodeVectorDatabaseService: () => MapNodeVectorDatabaseService,
+    private getMapNodeDataFrameService: () => MapNodeDataFrameService,
+    private getMapNodeLlmService: () => MapNodeLlmService,
+    private getMapNodeVisualizerService: () => MapNodeVisualizerService
   ) {}
 
   get tabService(): TabService {
@@ -49,36 +49,36 @@ export class MapService {
     return this.getDistributionService();
   }
 
-  get fileService(): MapExecuteFileService {
-    return this.getFileService();
+  get mapNodeFileService(): MapNodeFileService {
+    return this.getMapNodeFileService();
   }
 
-  get ingestionService(): MapExecuteIngestionService {
-    return this.getIngestionService();
+  get mapNodeIngestionService(): MapNodeIngestionService {
+    return this.getMapNodeIngestionService();
   }
 
-  get contextService(): MapExecuteContextService {
-    return this.getContextService();
+  get mapNodeContextService(): MapNodeContextService {
+    return this.getMapNodeContextService();
   }
 
-  get questionService(): MapExecuteQuestionService {
-    return this.getQuestionService();
+  get mapNodeQuestionService(): MapNodeQuestionService {
+    return this.getMapNodeQuestionService();
   }
 
-  get vectorDatabaseService(): MapExecuteVectorDatabaseService {
-    return this.getVectorDatabaseService();
+  get mapNodeVectorDatabaseService(): MapNodeVectorDatabaseService {
+    return this.getMapNodeVectorDatabaseService();
   }
 
-  get dataFrameService(): MapExecuteDataFrameService {
-    return this.getDataFrameService();
+  get mapNodeDataFrameService(): MapNodeDataFrameService {
+    return this.getMapNodeDataFrameService();
   }
 
-  get llmService(): MapExecuteLlmService {
-    return this.getLlmService();
+  get mapNodeLlmService(): MapNodeLlmService {
+    return this.getMapNodeLlmService();
   }
 
-  get visualizerService(): MapExecuteVisualizerService {
-    return this.getVisualizerService();
+  get mapNodeVisualizerService(): MapNodeVisualizerService {
+    return this.getMapNodeVisualizerService();
   }
 
   private async getMapGraph({ mapId }: { mapId: number }): Promise<M> {
@@ -402,7 +402,7 @@ export class MapService {
     await this.updateMapGraphIsProcessingSet({ nodeId });
     await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
-    const fileHash = await this.fileService.upload(file);
+    const fileHash = await this.mapNodeFileService.upload(file);
 
     await this.prisma.mapNode.update({
       where: { id: nodeId },
@@ -432,35 +432,35 @@ export class MapService {
       try {
         switch (ni.controlType) {
           case ControlType.FILE: {
-            await this.fileService.execute({ mapId, nodeId });
+            await this.mapNodeFileService.execute({ mapId, nodeId });
             break;
           }
           case ControlType.INGESTION: {
-            await this.ingestionService.execute({ mapId, nodeId });
+            await this.mapNodeIngestionService.execute({ mapId, nodeId });
             break;
           }
           case ControlType.CONTEXT: {
-            await this.contextService.execute({ mapId, nodeId });
+            await this.mapNodeContextService.execute({ mapId, nodeId });
             break;
           }
           case ControlType.QUESTION: {
-            await this.questionService.execute({ mapId, nodeId });
+            await this.mapNodeQuestionService.execute({ mapId, nodeId });
             break;
           }
           case ControlType.VECTOR_DATABASE: {
-            await this.vectorDatabaseService.execute({ mapId, nodeId });
+            await this.mapNodeVectorDatabaseService.execute({ mapId, nodeId });
             break;
           }
           case ControlType.DATAFRAME: {
-            await this.dataFrameService.execute({ mapId, nodeId });
+            await this.mapNodeDataFrameService.execute({ mapId, nodeId });
             break;
           }
           case ControlType.LLM: {
-            await this.llmService.execute({ mapId, nodeId });
+            await this.mapNodeLlmService.execute({ mapId, nodeId });
             break;
           }
           case ControlType.VISUALIZER: {
-            await this.visualizerService.execute({ mapId, nodeId });
+            await this.mapNodeVisualizerService.execute({ mapId, nodeId });
             break;
           }
         }

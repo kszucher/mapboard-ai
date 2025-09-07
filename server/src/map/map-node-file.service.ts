@@ -1,7 +1,7 @@
 import { PrismaClient } from '../generated/client';
 import { MapNodeService } from './map-node.service';
 
-export class MapExecuteFileService {
+export class MapNodeFileService {
   private readonly pinataApiKey: string;
   private readonly pinataSecretKey: string;
 

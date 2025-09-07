@@ -4,7 +4,7 @@ import { PrismaClient } from '../generated/client';
 import { z } from 'zod';
 import { MapNodeService } from './map-node.service';
 
-export class MapExecuteLlmService {
+export class MapNodeLlmService {
   constructor(
     private prisma: PrismaClient,
     private getMapNodeService: () => MapNodeService
