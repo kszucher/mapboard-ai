@@ -28,7 +28,7 @@ export interface N {
   contextOutputText: string | null;
   questionOutputText: string | null;
   llmInstructions: string | null;
-  llmOutputSchema: any | null;
+  llmOutputSchema: LlmOutputSchema | null;
   llmOutputJson: any | null;
   visualizerInputText: string | null;
 }
