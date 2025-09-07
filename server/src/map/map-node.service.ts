@@ -104,7 +104,7 @@ export class MapNodeService {
     return this.prisma.mapNode.findFirst({
       where: {
         mapId,
-        controlType: ControlType.DATAFRAME,
+        controlType: ControlType.DATA_FRAME,
         FromLinks: {
           some: {
             toNodeId: nodeId,
@@ -131,7 +131,7 @@ export class MapNodeService {
       },
       select: {
         llmInstructions: true,
-        llmInputJson: true,
+        llmOutputSchema: true,
         llmOutputJson: true,
       },
     });

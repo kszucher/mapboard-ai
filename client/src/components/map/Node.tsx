@@ -184,7 +184,7 @@ export const Node: FC = () => {
       {ni.controlType === ControlType.CONTEXT && <NodeTypeContext ni={ni} nodeId={Number(nodeId)} />}
       {ni.controlType === ControlType.QUESTION && <NodeTypeQuestion ni={ni} nodeId={Number(nodeId)} />}
       {ni.controlType === ControlType.VECTOR_DATABASE && <NodeTypeVectorDatabase ni={ni} nodeId={Number(nodeId)} />}
-      {ni.controlType === ControlType.DATAFRAME && <NodeTypeDataFrame ni={ni} nodeId={Number(nodeId)} />}
+      {ni.controlType === ControlType.DATA_FRAME && <NodeTypeDataFrame ni={ni} nodeId={Number(nodeId)} />}
       {ni.controlType === ControlType.LLM && <NodeTypeLlm ni={ni} nodeId={Number(nodeId)} />}
       {ni.controlType === ControlType.VISUALIZER && <NodeTypeVisualizer ni={ni} nodeId={Number(nodeId)} />}
     </div>

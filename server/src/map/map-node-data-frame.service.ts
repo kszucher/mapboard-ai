@@ -22,7 +22,13 @@ export class MapNodeDataFrameService {
       throw new Error('no input llm node');
     }
 
-    const dataFrameInputJson = inputLlmNode.llmOutputJson ?? undefined; // check with ZOD if schema is a match!!!
+    if (!inputLlmNode.llmOutputJson) {
+      throw new Error('no input llm output json');
+    }
+
+    // TODO add schema check enum
+
+    const dataFrameInputJson = inputLlmNode.llmOutputJson;
 
     // TODO
     // 1 read csv into polars dataframe

@@ -45,7 +45,7 @@ export class MapNodeLlmService {
 
     const prompt = `
       You are an agent that have the following inputs:
-      ${JSON.stringify(node.llmInputJson)}
+      ${JSON.stringify(llmInputJson)}
       Follow user instructions:
       ${node.llmInstructions}
     `;
@@ -66,7 +66,7 @@ export class MapNodeLlmService {
 
     await this.prisma.mapNode.update({
       where: { id: nodeId },
-      data: { llmInputJson, llmOutputJson },
+      data: { llmOutputJson },
     });
   }
 }

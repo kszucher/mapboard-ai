@@ -39,14 +39,14 @@ model Map {
 }
 
 model MapNode {
-  id                       Int         @id @default(autoincrement())
+  id                       Int              @id @default(autoincrement())
   mapId                    Int
-  Map                      Map         @relation(fields: [mapId], references: [id])
+  Map                      Map              @relation(fields: [mapId], references: [id])
   iid                      Int
   offsetW                  Int
   offsetH                  Int
   controlType              ControlType
-  isProcessing             Boolean     @default(false)
+  isProcessing             Boolean          @default(false)
   fileHash                 String?
   fileName                 String?
   ingestionModel           String?
@@ -58,13 +58,13 @@ model MapNode {
   contextOutputText        String?
   questionOutputText       String?
   llmInstructions          String?
-  llmInputJson             Json?
+  llmOutputSchema          LlmOutputSchema?
   llmOutputJson            Json?
   visualizerInputText      String?
-  FromLinks                MapLink[]   @relation("FromLinks")
-  ToLinks                  MapLink[]   @relation("ToLinks")
-  createdAt                DateTime    @default(now())
-  updatedAt                DateTime    @default(now()) @updatedAt
+  FromLinks                MapLink[]        @relation("FromLinks")
+  ToLinks                  MapLink[]        @relation("ToLinks")
+  createdAt                DateTime         @default(now())
+  updatedAt                DateTime         @default(now()) @updatedAt
 }
 
 model MapLink {
@@ -126,7 +126,7 @@ enum ControlType {
   CONTEXT
   QUESTION
   VECTOR_DATABASE
-  DATAFRAME
+  DATA_FRAME
   LLM
   VISUALIZER
 }
@@ -140,4 +140,10 @@ enum ShareAccess {
   UNAUTHORIZED
   VIEW
   EDIT
+}
+
+enum LlmOutputSchema {
+  TEXT
+  VECTOR_DATABASE_QUERY
+  DATA_FRAME_QUERY
 }

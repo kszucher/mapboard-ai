@@ -450,7 +450,7 @@ export class MapService {
             await this.mapNodeVectorDatabaseService.execute({ mapId, nodeId });
             break;
           }
-          case ControlType.DATAFRAME: {
+          case ControlType.DATA_FRAME: {
             await this.mapNodeDataFrameService.execute({ mapId, nodeId });
             break;
           }
