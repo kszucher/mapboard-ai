@@ -24,7 +24,6 @@ export interface N {
   ingestionOutputJson: any | null;
   vectorDatabaseId: string | null;
   vectorDatabaseOutputText: string | null;
-  dataFrameInputJson: any | null;
   dataFrameOutputText: string | null;
   contextOutputText: string | null;
   questionOutputText: string | null;
@@ -46,6 +45,14 @@ export const ControlType = {
 } as const;
 
 export type ControlType = (typeof ControlType)[keyof typeof ControlType];
+
+export const LlmOutputSchema = {
+  TEXT: 'TEXT',
+  VECTOR_DATABASE_QUERY: 'VECTOR_DATABASE_QUERY',
+  DATA_FRAME_QUERY: 'DATA_FRAME_QUERY',
+};
+
+export type LlmOutputSchema = (typeof LlmOutputSchema)[keyof typeof LlmOutputSchema];
 
 export const controlBaseSizes: Record<ControlType, { w: number; h: number }> = {
   [ControlType.FILE]: { w: 160, h: 90 },

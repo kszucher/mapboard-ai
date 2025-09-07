@@ -53,7 +53,6 @@ model MapNode {
   ingestionOutputJson      Json?
   vectorDatabaseId         String?
   vectorDatabaseOutputText String?
-  dataFrameInputJson       Json?
   dataFrameOutputText      String?
   contextOutputText        String?
   questionOutputText       String?

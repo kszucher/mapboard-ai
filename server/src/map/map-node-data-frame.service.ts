@@ -1,3 +1,4 @@
+import { LlmOutputSchema } from '../../../shared/src/map/state/map-consts-and-types';
 import { PrismaClient } from '../generated/client';
 import { MapNodeService } from './map-node.service';
 
@@ -26,7 +27,13 @@ export class MapNodeDataFrameService {
       throw new Error('no input llm output json');
     }
 
-    // TODO add schema check enum
+    if (!inputLlmNode.llmOutputSchema) {
+      throw new Error('no input llm output schema');
+    }
+
+    if (inputLlmNode.llmOutputSchema !== LlmOutputSchema.DATA_FRAME_QUERY) {
+      throw new Error('input llm output schema is not data frame query');
+    }
 
     const dataFrameInputJson = inputLlmNode.llmOutputJson;
 
@@ -39,7 +46,6 @@ export class MapNodeDataFrameService {
     await this.prisma.mapNode.update({
       where: { id: nodeId },
       data: {
-        dataFrameInputJson,
         dataFrameOutputText,
       },
     });

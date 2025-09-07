@@ -112,7 +112,6 @@ export class MapNodeService {
         },
       },
       select: {
-        dataFrameInputJson: true,
         dataFrameOutputText: true,
       },
     });
