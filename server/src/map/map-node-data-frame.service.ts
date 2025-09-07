@@ -75,36 +75,39 @@ export class MapNodeDataFrameService {
   private buildPolarsQuerySimple(df: pl.DataFrame, schema: DataFrameQuerySchemaType): pl.DataFrame {
     let q = df;
 
-    // columns required
-    q = q.select(...schema.columns.map((c: string) => pl.col(c)));
-
-    // filter
+    // filter FIRST (before selecting columns)
     if (schema.filterColumn && schema.filterOperator && schema.filterValue !== undefined) {
+      // Convert filterValue to appropriate type if it's a string number
+      let filterValue = schema.filterValue;
+      if (typeof filterValue === 'string' && !isNaN(Number(filterValue)) && schema.filterOperator !== 'contains') {
+        filterValue = Number(filterValue);
+      }
+
       let expr: pl.Expr;
       switch (schema.filterOperator) {
         case '=':
-          expr = pl.col(schema.filterColumn).eq(schema.filterValue);
+          expr = pl.col(schema.filterColumn).eq(filterValue);
           break;
         case '!=':
-          expr = pl.col(schema.filterColumn).neq(schema.filterValue);
+          expr = pl.col(schema.filterColumn).neq(filterValue);
           break;
         case '>':
-          expr = pl.col(schema.filterColumn).gt(schema.filterValue);
+          expr = pl.col(schema.filterColumn).gt(filterValue);
           break;
         case '<':
-          expr = pl.col(schema.filterColumn).lt(schema.filterValue);
+          expr = pl.col(schema.filterColumn).lt(filterValue);
           break;
         case '>=':
-          expr = pl.col(schema.filterColumn).gtEq(schema.filterValue);
+          expr = pl.col(schema.filterColumn).gtEq(filterValue);
           break;
         case '<=':
-          expr = pl.col(schema.filterColumn).ltEq(schema.filterValue);
+          expr = pl.col(schema.filterColumn).ltEq(filterValue);
           break;
         case 'contains':
           expr = pl.col(schema.filterColumn).str.contains(schema.filterValue);
           break;
         case 'in':
-          expr = pl.col(schema.filterColumn).isIn(schema.filterValue);
+          expr = pl.col(schema.filterColumn).isIn(filterValue);
           break;
         default:
           throw new Error('Unsupported operator');
@@ -112,7 +115,7 @@ export class MapNodeDataFrameService {
       q = q.filter(expr);
     }
 
-    // group + aggregate
+    // group + aggregate (before column selection if needed)
     if (schema.groupBy?.length && schema.aggregationColumn && schema.aggregationOperation) {
       const col = pl.col(schema.aggregationColumn);
       let aggExpr: pl.Expr;
@@ -138,9 +141,24 @@ export class MapNodeDataFrameService {
       q = q.groupBy(schema.groupBy).agg(aggExpr);
     }
 
-    // sort
+    // sort (before column selection if sort column isn't in selected columns)
     if (schema.sortColumn) {
       q = q.sort(schema.sortColumn, schema.sortDirection === 'desc');
+    }
+
+    // columns required (do this AFTER filtering, grouping, and sorting)
+    // Include sort column temporarily if it's not in the selected columns
+    let columnsToSelect = [...schema.columns];
+    const needsSortColumn = schema.sortColumn && !schema.columns.includes(schema.sortColumn);
+    if (needsSortColumn && schema.sortColumn) {
+      columnsToSelect.push(schema.sortColumn);
+    }
+
+    q = q.select(...columnsToSelect.map((c: string) => pl.col(c)));
+
+    // Remove the temporarily added sort column after sorting
+    if (needsSortColumn) {
+      q = q.select(...schema.columns.map((c: string) => pl.col(c)));
     }
 
     // limit
