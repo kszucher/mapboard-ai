@@ -7,5 +7,7 @@ export class MapNodeVisualizerService {
     private getMapNodeService: () => MapNodeService
   ) {}
 
-  async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {}
+  async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
+    // TODO save the result!
+  }
 }

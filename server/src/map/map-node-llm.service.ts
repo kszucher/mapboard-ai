@@ -1,6 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { z } from 'zod';
+import { LlmOutputSchema } from '../../../shared/src/map/state/map-consts-and-types';
 import { PrismaClient } from '../generated/client';
 import { MapNodeService } from './map-node.service';
 
@@ -29,6 +30,23 @@ export class MapNodeLlmService {
       throw new Error('no llm instructions or input json');
     }
 
+    if (!node.llmOutputSchema) {
+      throw new Error('no llm output schema set');
+    }
+
+    const schema = {
+      [LlmOutputSchema.TEXT]: z.object({
+        text: z.string(),
+      }),
+      [LlmOutputSchema.VECTOR_DATABASE_QUERY]: z.object({
+        text: z.string(),
+      }),
+      [LlmOutputSchema.DATA_FRAME_QUERY]: z.object({
+        // TODO adjust
+        text: z.string(),
+      }),
+    }[node.llmOutputSchema];
+
     const llmInputJson = {
       inputLlmNode,
       inputVectorDatabaseNode,
@@ -36,12 +54,6 @@ export class MapNodeLlmService {
       inputContextNode,
       inputQuestionNode,
     };
-
-    const dynamicAgent = new Agent({
-      name: 'dynamicAgent',
-      instructions: node.llmInstructions,
-      model: openai('gpt-4o'),
-    });
 
     const prompt = `
       You are an agent that have the following inputs:
@@ -52,17 +64,20 @@ export class MapNodeLlmService {
 
     console.log(prompt);
 
-    const result = await dynamicAgent.generateVNext(prompt, {
+    const agent = new Agent({
+      name: 'agent',
+      instructions: node.llmInstructions,
+      model: openai('gpt-4o'),
+    });
+
+    const result = await agent.generateVNext(prompt, {
       structuredOutput: {
-        // TODO: adaptive schema
-        schema: z.object({
-          text: z.string(),
-        }),
-        model: openai('gpt-4o'), // Model is required for structured output
+        schema,
+        model: openai('gpt-4o'),
       },
     });
 
-    const llmOutputJson = result.object; // The structured output is in result.object
+    const llmOutputJson = result.object;
 
     await this.prisma.mapNode.update({
       where: { id: nodeId },
