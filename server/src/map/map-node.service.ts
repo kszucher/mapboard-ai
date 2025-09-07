@@ -25,6 +25,7 @@ export class MapNodeService {
         },
       },
       select: {
+        iid: true,
         fileHash: true,
         fileName: true,
       },
@@ -43,6 +44,7 @@ export class MapNodeService {
         },
       },
       select: {
+        iid: true,
         ingestionOutputJson: true,
       },
     });
@@ -60,6 +62,7 @@ export class MapNodeService {
         },
       },
       select: {
+        iid: true,
         contextOutputText: true,
       },
     });
@@ -77,6 +80,7 @@ export class MapNodeService {
         },
       },
       select: {
+        iid: true,
         questionOutputText: true,
       },
     });
@@ -94,6 +98,7 @@ export class MapNodeService {
         },
       },
       select: {
+        iid: true,
         vectorDatabaseId: true,
         vectorDatabaseOutputText: true,
       },
@@ -112,6 +117,7 @@ export class MapNodeService {
         },
       },
       select: {
+        iid: true,
         dataFrameOutputText: true,
       },
     });
@@ -129,6 +135,7 @@ export class MapNodeService {
         },
       },
       select: {
+        iid: true,
         llmInstructions: true,
         llmOutputSchema: true,
         llmOutputJson: true,
