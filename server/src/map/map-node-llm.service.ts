@@ -3,6 +3,7 @@ import { Agent } from '@mastra/core/agent';
 import { z } from 'zod';
 import { LlmOutputSchema } from '../../../shared/src/map/state/map-consts-and-types';
 import { PrismaClient } from '../generated/client';
+import { DataFrameQuerySchema, DataFrameQuerySchemaType } from './map-node-data-frame.types';
 import { MapNodeService } from './map-node.service';
 
 export class MapNodeLlmService {
@@ -41,10 +42,7 @@ export class MapNodeLlmService {
       [LlmOutputSchema.VECTOR_DATABASE_QUERY]: z.object({
         text: z.string(),
       }),
-      [LlmOutputSchema.DATA_FRAME_QUERY]: z.object({
-        // TODO adjust, and then see it happen!!!
-        text: z.string(),
-      }),
+      [LlmOutputSchema.DATA_FRAME_QUERY]: DataFrameQuerySchema,
     }[node.llmOutputSchema];
 
     const llmInputJson = {

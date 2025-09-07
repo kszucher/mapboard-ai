@@ -71,7 +71,8 @@ export const mapNodeVectorDatabaseService: MapNodeVectorDatabaseService = new Ma
 
 export const mapNodeDataFrameService: MapNodeDataFrameService = new MapNodeDataFrameService(
   prismaClient,
-  () => mapNodeService
+  () => mapNodeService,
+  () => mapNodeFileService
 );
 
 export const mapNodeLlmService: MapNodeLlmService = new MapNodeLlmService(prismaClient, () => mapNodeService);
