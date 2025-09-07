@@ -42,7 +42,7 @@ export class MapNodeLlmService {
         text: z.string(),
       }),
       [LlmOutputSchema.DATA_FRAME_QUERY]: z.object({
-        // TODO adjust
+        // TODO adjust, and then see it happen!!!
         text: z.string(),
       }),
     }[node.llmOutputSchema];
