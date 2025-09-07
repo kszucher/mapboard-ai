@@ -1,7 +1,7 @@
 import * as pl from 'nodejs-polars';
 import { LlmOutputSchema } from '../../../shared/src/map/state/map-consts-and-types';
 import { PrismaClient } from '../generated/client';
-import { DataFrameQuerySchema, DataFrameQuerySchemaType } from './map-node-data-frame.types';
+import { DataFrameQuerySchemaType } from './map-node-data-frame.types';
 import { MapNodeFileService } from './map-node-file.service';
 import { MapNodeService } from './map-node.service';
 
@@ -62,7 +62,7 @@ export class MapNodeDataFrameService {
 
     const result = this.buildPolarsQuerySimple(df, dataFrameInputJson as DataFrameQuerySchemaType);
 
-    const dataFrameOutputText = result.toString();
+    const dataFrameOutputText = JSON.stringify(result.toObject());
 
     await this.prisma.mapNode.update({
       where: { id: nodeId },

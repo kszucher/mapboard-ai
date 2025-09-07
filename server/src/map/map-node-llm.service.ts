@@ -3,7 +3,7 @@ import { Agent } from '@mastra/core/agent';
 import { z } from 'zod';
 import { LlmOutputSchema } from '../../../shared/src/map/state/map-consts-and-types';
 import { PrismaClient } from '../generated/client';
-import { DataFrameQuerySchema, DataFrameQuerySchemaType } from './map-node-data-frame.types';
+import { DataFrameQuerySchema } from './map-node-data-frame.types';
 import { MapNodeService } from './map-node.service';
 
 export class MapNodeLlmService {
@@ -59,8 +59,6 @@ export class MapNodeLlmService {
       Follow user instructions:
       ${node.llmInstructions}
     `;
-
-    console.log(prompt);
 
     const agent = new Agent({
       name: 'agent',
