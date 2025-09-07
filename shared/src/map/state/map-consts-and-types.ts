@@ -87,7 +87,7 @@ export const allowedTargetControls: Record<ControlType, ControlType[]> = {
   [ControlType.QUESTION]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
   [ControlType.VECTOR_DATABASE]: [ControlType.LLM],
   [ControlType.DATAFRAME]: [ControlType.LLM, ControlType.VISUALIZER],
-  [ControlType.LLM]: [ControlType.LLM, ControlType.DATAFRAME, ControlType.VISUALIZER],
+  [ControlType.LLM]: [ControlType.LLM, ControlType.VECTOR_DATABASE, ControlType.DATAFRAME, ControlType.VISUALIZER],
   [ControlType.VISUALIZER]: [],
 };
 
@@ -96,7 +96,7 @@ export const allowedSourceControls: Record<ControlType, ControlType[]> = {
   [ControlType.INGESTION]: [ControlType.FILE],
   [ControlType.CONTEXT]: [],
   [ControlType.QUESTION]: [],
-  [ControlType.VECTOR_DATABASE]: [ControlType.INGESTION, ControlType.CONTEXT, ControlType.QUESTION],
+  [ControlType.VECTOR_DATABASE]: [ControlType.INGESTION, ControlType.CONTEXT, ControlType.LLM],
   [ControlType.DATAFRAME]: [ControlType.FILE, ControlType.LLM],
   [ControlType.LLM]: [ControlType.LLM, ControlType.VECTOR_DATABASE, ControlType.DATAFRAME, ControlType.CONTEXT, ControlType.QUESTION],
   [ControlType.VISUALIZER]: [ControlType.LLM, ControlType.DATAFRAME],
