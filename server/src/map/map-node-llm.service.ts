@@ -60,6 +60,8 @@ export class MapNodeLlmService {
       ${node.llmInstructions}
     `;
 
+    console.log(prompt);
+
     const agent = new Agent({
       name: 'agent',
       instructions: node.llmInstructions,
