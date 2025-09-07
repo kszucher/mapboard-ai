@@ -38,7 +38,7 @@ export const LinkDelete: FC = () => {
               mapId: mapId!,
               mapOp: {
                 type: MapOpType.DELETE_LINK,
-                payload: { linkId },
+                payload: { linkId: Number(linkId) },
               },
             })
           );
