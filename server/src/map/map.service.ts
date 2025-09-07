@@ -426,11 +426,10 @@ export class MapService {
       await this.updateMapGraphIsProcessingSet({ nodeId });
       await this.distributeMapGraphChangeToAll({ mapId, mapData: await this.getMapGraph({ mapId }) });
 
-      await new Promise(el => setTimeout(el, 2000));
-
       try {
         switch (ni.controlType) {
           case ControlType.FILE: {
+            await new Promise(el => setTimeout(el, 2000));
             await this.mapNodeFileService.execute({ mapId, nodeId });
             break;
           }
@@ -439,10 +438,12 @@ export class MapService {
             break;
           }
           case ControlType.CONTEXT: {
+            await new Promise(el => setTimeout(el, 2000));
             await this.mapNodeContextService.execute({ mapId, nodeId });
             break;
           }
           case ControlType.QUESTION: {
+            await new Promise(el => setTimeout(el, 2000));
             await this.mapNodeQuestionService.execute({ mapId, nodeId });
             break;
           }
