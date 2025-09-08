@@ -8,7 +8,7 @@ import {
 } from '../../../shared/src/map/getters/map-queries';
 import { ControlType, M } from '../../../shared/src/map/state/map-consts-and-types';
 import { DistributionService } from '../distribution/distribution.service';
-import { PrismaClient } from '../generated/client';
+import { Prisma, PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
 import { MapNodeContextService } from './map-node-context.service';
@@ -19,6 +19,8 @@ import { MapNodeLlmService } from './map-node-llm.service';
 import { MapNodeQuestionService } from './map-node-question.service';
 import { MapNodeVectorDatabaseService } from './map-node-vector-database.service';
 import { MapNodeVisualizerService } from './map-node-visualizer.service';
+
+const normalizeJson = (val: Prisma.JsonValue) => (val === null ? Prisma.JsonNull : (val as Prisma.InputJsonValue));
 
 export class MapService {
   constructor(
@@ -192,15 +194,48 @@ export class MapService {
     workspaceId: number;
     mapId: number;
   }) {
-    // TODO rework
+    const originalMap = await this.prisma.map.findUniqueOrThrow({
+      where: { id: mapId },
+      select: { name: true },
+    });
 
-    const mapInfo = await this.getMapInfo({ mapId });
+    const originalMapNodes = await this.prisma.mapNode.findMany({ where: { mapId } });
+    const originalMapLinks = await this.prisma.mapLink.findMany({ where: { mapId } });
 
-    // const newMapData = mapCopy(mapInfo.data, this.genId);
+    const newMap = await this.prisma.map.create({
+      data: {
+        name: originalMap.name + ' (Copy)',
+        userId,
+      },
+      select: { id: true },
+    });
 
-    // const newMap = await this.createMap({ userId, mapName: mapInfo.name + 'Copy', newMapData });
+    const newMapNodes = await this.prisma.mapNode.createManyAndReturn({
+      data: originalMapNodes.map(({ id, mapId, createdAt, updatedAt, ...rest }) => ({
+        ...rest,
+        mapId: newMap.id,
+        ingestionOutputJson: normalizeJson(rest.ingestionOutputJson),
+        llmOutputJson: normalizeJson(rest.llmOutputJson),
+      })),
+      select: {
+        id: true,
+      },
+    });
 
-    // await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
+    const idMap = new Map(originalMapNodes.map((n, i) => [n.id, newMapNodes[i].id]));
+
+    await this.prisma.mapLink.createMany({
+      data: originalMapLinks.map(({ id, mapId, fromNodeId, toNodeId, createdAt, updatedAt, ...rest }) => ({
+        ...rest,
+        mapId: newMap.id,
+        fromNodeId: idMap.get(fromNodeId)!,
+        toNodeId: idMap.get(toNodeId)!,
+      })),
+    });
+
+    await this.tabService.addMapToTab({ userId, mapId: newMap.id });
+
+    await this.workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId: newMap.id });
 
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
