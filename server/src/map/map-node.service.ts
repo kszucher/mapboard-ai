@@ -118,7 +118,7 @@ export class MapNodeService {
       },
       select: {
         iid: true,
-        dataFrameOutputText: true,
+        dataFrameOutputJson: true,
       },
     });
   }

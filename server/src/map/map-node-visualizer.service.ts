@@ -18,9 +18,14 @@ export class MapNodeVisualizerService {
       this.mapNodeService.getNode({ mapId, nodeId }),
     ]);
 
-    const visualizerOutputText =
-      (inputLlmNode?.llmOutputJson as { text?: string })?.text ?? inputDataFrameNode?.dataFrameOutputText ?? '';
-
+    let visualizerOutputText = '';
+    if (inputLlmNode && inputLlmNode.llmOutputJson) {
+      visualizerOutputText = JSON.stringify(inputLlmNode.llmOutputJson);
+    }
+    if (inputDataFrameNode && inputDataFrameNode.dataFrameOutputJson) {
+      visualizerOutputText = JSON.stringify(inputDataFrameNode.dataFrameOutputJson);
+    }
+    
     await this.prisma.mapNode.update({
       where: { id: nodeId },
       data: { visualizerOutputText },

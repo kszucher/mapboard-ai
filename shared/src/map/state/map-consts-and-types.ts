@@ -24,7 +24,7 @@ export interface N {
   ingestionOutputJson: any | null;
   vectorDatabaseId: string | null;
   vectorDatabaseOutputText: string | null;
-  dataFrameOutputText: string | null;
+  dataFrameOutputJson: any | null;
   contextOutputText: string | null;
   questionOutputText: string | null;
   llmInstructions: string | null;

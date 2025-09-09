@@ -20,8 +20,6 @@ import { MapNodeQuestionService } from './map-node-question.service';
 import { MapNodeVectorDatabaseService } from './map-node-vector-database.service';
 import { MapNodeVisualizerService } from './map-node-visualizer.service';
 
-const normalizeJson = (val: Prisma.JsonValue) => (val === null ? Prisma.JsonNull : (val as Prisma.InputJsonValue));
-
 export class MapService {
   constructor(
     private prisma: PrismaClient,
@@ -214,8 +212,9 @@ export class MapService {
       data: originalMapNodes.map(({ id, mapId, createdAt, updatedAt, ...rest }) => ({
         ...rest,
         mapId: newMap.id,
-        ingestionOutputJson: normalizeJson(rest.ingestionOutputJson),
-        llmOutputJson: normalizeJson(rest.llmOutputJson),
+        ingestionOutputJson: rest.ingestionOutputJson ?? Prisma.JsonNull,
+        dataFrameOutputJson: rest.dataFrameOutputJson ?? Prisma.JsonNull,
+        llmOutputJson: rest.llmOutputJson ?? Prisma.JsonNull,
       })),
       select: {
         id: true,

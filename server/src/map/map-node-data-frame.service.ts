@@ -62,13 +62,14 @@ export class MapNodeDataFrameService {
 
     const result = this.buildPolarsQuerySimple(df, dataFrameInputJson as DataFrameQuerySchemaType);
 
-    const dataFrameOutputText = JSON.stringify(result.toObject());
+    const dataFrameOutputJson = {
+      query: (inputLlmNode.llmOutputJson as { text: string }).text,
+      result: JSON.parse(JSON.stringify(result.toObject(), (_, v) => (typeof v === 'bigint' ? v.toString() : v))),
+    };
 
     await this.prisma.mapNode.update({
       where: { id: nodeId },
-      data: {
-        dataFrameOutputText,
-      },
+      data: { dataFrameOutputJson },
     });
   }
 

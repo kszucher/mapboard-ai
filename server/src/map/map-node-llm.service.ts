@@ -68,14 +68,21 @@ export class MapNodeLlmService {
       model: openai('gpt-4o'),
     });
 
-    const result = await agent.generateVNext(prompt, {
-      structuredOutput: {
-        schema,
-        model: openai('gpt-4o'),
-      },
-    });
+    const isText = node.llmOutputSchema === LlmOutputSchema.TEXT;
 
-    const llmOutputJson = result.object;
+    const result = await agent.generateVNext(
+      prompt,
+      isText
+        ? undefined
+        : {
+            structuredOutput: {
+              schema,
+              model: openai('gpt-4o'),
+            },
+          }
+    );
+
+    const llmOutputJson = isText ? { text: result.text } : result.object;
 
     await this.prisma.mapNode.update({
       where: { id: nodeId },
