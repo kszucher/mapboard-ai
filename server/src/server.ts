@@ -1,3 +1,5 @@
+console.time('startup');
+
 import 'reflect-metadata';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
@@ -101,5 +103,6 @@ app.get('/ping', async (req: Request, res: Response) => {
 
 const PORT = process.env.PORT || 8083;
 app.listen(PORT, () => {
+  console.timeEnd('startup');
   console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -17,8 +17,8 @@ type ClientInfo = {
 
 @injectable()
 export class DistributionService {
-  private publisher?: RedisClientType;
-  private subscriber?: RedisClientType;
+  private publisher?: any;
+  private subscriber?: any;
   private clients = new Map<string, ClientInfo>();
   private readonly channel = 'workspace_updates';
 
