@@ -100,10 +100,7 @@ export class MapService {
 
     const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser, {
-      type: SSE_EVENT_TYPE.UPDATE_TAB,
-      payload: {},
-    });
+    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
 
     await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
   }
@@ -161,10 +158,7 @@ export class MapService {
 
     const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser, {
-      type: SSE_EVENT_TYPE.UPDATE_TAB,
-      payload: {},
-    });
+    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
 
     await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
   }
@@ -389,10 +383,7 @@ export class MapService {
 
     const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser, {
-      type: SSE_EVENT_TYPE.UPDATE_TAB,
-      payload: {},
-    });
+    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
 
     const shares = await this.prisma.share.findMany({ where: { mapId }, select: { shareUserId: true } });
 

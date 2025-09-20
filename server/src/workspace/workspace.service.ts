@@ -42,10 +42,7 @@ export class WorkspaceService {
 
       const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
-      await this.distributionService.publish(workspaceIdsOfUser, {
-        type: SSE_EVENT_TYPE.UPDATE_TAB,
-        payload: {},
-      });
+      await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
     }
 
     await this.workspaceRepository.addMapToWorkspace({ workspaceId: newWorkspace.id, mapId: map.id });
@@ -86,10 +83,7 @@ export class WorkspaceService {
 
         const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
-        await this.distributionService.publish(workspaceIdsOfUser, {
-          type: SSE_EVENT_TYPE.UPDATE_TAB,
-          payload: {},
-        });
+        await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
       }
     }
 
