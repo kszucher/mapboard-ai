@@ -4,15 +4,14 @@ import {
   DeleteNodeRequestDto,
   InsertLinkRequestDto,
   InsertNodeRequestDto,
-  M,
   MapInfo,
   MoveNodeRequestDto,
   UpdateNodeRequestDto,
 } from '../../../shared/src/api/api-types-map';
+import { ControlType, LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
 import { getLastIndexN, getMapSelfH, getMapSelfW, getTopologicalSort } from '../../../shared/src/map/map-getters';
-import { ControlType } from '../../../shared/src/api/api-types-map-node';
 import { DistributionService } from '../distribution/distribution.service';
-import { $Enums, Prisma, PrismaClient } from '../generated/client';
+import { Prisma, PrismaClient } from '../generated/client';
 import { TabService } from '../tab/tab.service';
 import { WorkspaceService } from '../workspace/workspace.service';
 import { MapNodeContextService } from './map-node-context.service';
@@ -23,7 +22,6 @@ import { MapNodeLlmService } from './map-node-llm.service';
 import { MapNodeQuestionService } from './map-node-question.service';
 import { MapNodeVectorDatabaseService } from './map-node-vector-database.service';
 import { MapNodeVisualizerService } from './map-node-visualizer.service';
-import LlmOutputSchema = $Enums.LlmOutputSchema;
 
 export class MapService {
   constructor(
