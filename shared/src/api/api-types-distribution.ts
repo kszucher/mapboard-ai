@@ -22,13 +22,13 @@ export enum SSE_EVENT_TYPE {
 
 export type RenameMapEventPayload = { mapId: number; mapName: string };
 export type DeleteMapEventPayload = { mapId: number };
-export type InsertNodeEventPayload = { nodeId: number; node: N };
-export type InsertLinkEventPayload = { linkId: number; link: L };
+export type InsertNodeEventPayload = { node: N };
+export type InsertLinkEventPayload = { link: L };
 export type DeleteNodeEventPayload = { nodeId: number, linkIds: number[] };
 export type DeleteLinkEventPayload = { linkId: number };
 export type MoveNodeEventPayload = { nodeId: number; offsetX: number; offsetY: number };
-export type UpdateNodeEventPayload = { nodeId: number; node: Partial<N> };
-export type UpdateNodesEventPayload = { nodeId: number; node: Partial<N> }[];
+export type UpdateNodeEventPayload = { node: Partial<N> };
+export type UpdateNodesEventPayload = { nodes: Partial<N>[] };
 export type UpdateTabEventPayload = {};
 export type CreateShareEventPayload = { OwnerUser: { name: string }; Map: { name: string } };
 export type AcceptShareEventPayload = { ShareUser: { name: string }; Map: { name: string } };

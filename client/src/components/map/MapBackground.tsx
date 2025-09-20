@@ -8,9 +8,9 @@ import { RootState } from '../../data/store.ts';
 export const MapBackground: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
-  return Object.entries(m.n).map(([nodeId, ni]) => (
+  return m.n.map(ni => (
     <rect
-      key={`${nodeId}_rb`}
+      key={`${ni.id}_background`}
       x={getNodeLeft(ni) + 0.5}
       y={getNodeTop(ni) + 0.5}
       width={getNodeSelfW(ni)}

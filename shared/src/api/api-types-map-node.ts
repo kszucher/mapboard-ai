@@ -4,6 +4,7 @@ export const M_PADDING = 40;
 export const N_PADDING = 40;
 
 export interface N {
+  id: number;
   iid: number;
   offsetW: number;
   offsetH: number;

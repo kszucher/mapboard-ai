@@ -8,15 +8,14 @@ import { radixColorMap } from './UtilsSvg.ts';
 export const LinkConnectorTo: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
-  return Object.entries(m.n).flatMap(([nodeId, ni]) =>
+  return m.n.flatMap(ni =>
     allowedSourceControls[ni.controlType].map((sourceControlType, idx) => {
-      const isConnected = Object.values(m.l).some(
-        l => l.toNodeId === Number(nodeId) && m.n[l.fromNodeId] && m.n[l.fromNodeId].controlType === sourceControlType
+      const isConnected = m.l.some(
+        li => li.toNodeId === ni.id && m.n.find(nj => nj.id === li.fromNodeId)?.controlType === sourceControlType
       );
-
       return (
         <circle
-          key={`${nodeId}_to_${idx}`}
+          key={`${ni.id}_controlType_${sourceControlType}`}
           r={3}
           fill={isConnected ? radixColorMap[controlColors[sourceControlType]] : 'none'}
           stroke={radixColorMap[controlColors[sourceControlType]]}

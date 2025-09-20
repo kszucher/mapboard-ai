@@ -1,7 +1,7 @@
 import { L } from './api-types-map-link';
 import { ControlType, N } from './api-types-map-node';
 
-export type M = { l: Record<number, L>, n: Record<number, N> };
+export type M = { l: L[], n: N[] };
 
 export type MapInfo = {
   id: number

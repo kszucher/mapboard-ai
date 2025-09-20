@@ -6,12 +6,11 @@ import {
   InsertLinkEventPayload,
   InsertNodeEventPayload,
   MoveNodeEventPayload,
-  UpdateLinksEventPayload,
   UpdateNodeEventPayload,
   UpdateNodesEventPayload,
 } from '../../../shared/src/api/api-types-distribution.ts';
 import { getNodeSelfH, getNodeSelfW } from '../../../shared/src/map/map-getters.ts';
-import { mapSetters } from '../../../shared/src/map/map-setters.ts';
+import { alignNodes } from '../../../shared/src/map/map-setters.ts';
 import { N } from '../../../shared/src/api/api-types-map-node.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
 import { api } from './api.ts';
@@ -100,58 +99,59 @@ export const slice = createSlice({
     moveNodePreviewEnd(state) {
       state.nodeOffsetCoords = [];
     },
-    insertNode(state, { payload: { nodeId, node } }: PayloadAction<InsertNodeEventPayload>) {
+    insertNode(state, { payload: { node } }: PayloadAction<InsertNodeEventPayload>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      Object.assign(m.n, { [nodeId]: node });
+      m.n.push(node);
       state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
     },
-    insertLink(state, { payload: { linkId, link } }: PayloadAction<InsertLinkEventPayload>) {
+    insertLink(state, { payload: { link } }: PayloadAction<InsertLinkEventPayload>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      Object.assign(m.l, { [linkId]: link });
+      m.l.push(link);
       state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
     },
     deleteNode(state, { payload: { nodeId, linkIds } }: PayloadAction<DeleteNodeEventPayload>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      delete m.n[nodeId];
-      for (const linkId of linkIds) {
-        delete m.l[linkId];
-      }
-      mapSetters(m);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
+      const newM = {
+        n: m.n.filter(ni => ni.id !== nodeId),
+        l: m.l.filter(li => !linkIds.includes(li.id)),
+      };
+      alignNodes(newM);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
     deleteLink(state, { payload: { linkId } }: PayloadAction<DeleteLinkEventPayload>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      delete m.l[linkId];
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
+      const newM = {
+        n: m.n,
+        l: m.l.filter(li => li.id !== linkId),
+      };
+      state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
     moveNode(state, { payload: { nodeId, offsetX, offsetY } }: PayloadAction<MoveNodeEventPayload>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      Object.assign(m.n[nodeId], {
-        offsetW: offsetX,
-        offsetH: offsetY,
-      });
-      mapSetters(m);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
+      const newM = {
+        n: m.n.map(ni => (ni.id === nodeId ? { ...ni, offsetW: offsetX, offsetH: offsetY } : ni)),
+        l: m.l,
+      };
+      alignNodes(newM);
+      state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
-
-    updateNode(state, { payload: { nodeId, node } }: PayloadAction<UpdateNodeEventPayload>) {
+    updateNode(state, { payload: { node } }: PayloadAction<UpdateNodeEventPayload>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      Object.assign(m.n[nodeId], node);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
+      const newM = {
+        n: m.n.map(ni => (ni.id === node.id ? { ...ni, ...node } : ni)),
+        l: m.l,
+      };
+      state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
-    updateNodes(state, { payload }: PayloadAction<UpdateNodesEventPayload>) {
+    updateNodes(state, { payload: { nodes } }: PayloadAction<UpdateNodesEventPayload>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
-      for (const node of payload) {
-        Object.assign(m.n[node.nodeId], node.node);
-      }
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
-    },
-    updateLinks(state, { payload }: PayloadAction<UpdateLinksEventPayload>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      for (const link of payload) {
-        Object.assign(m.l[link.linkId], link.link);
-      }
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
+      const newM = {
+        n: m.n.map(ni =>
+          nodes.map(nj => nj.id).includes(ni.id) ? { ...ni, ...nodes.find(el => el.id === ni.id) } : ni
+        ),
+        l: m.l,
+      };
+      state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
   },
   extraReducers: builder => {

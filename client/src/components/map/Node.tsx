@@ -36,10 +36,10 @@ export const Node: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const dispatch = useDispatch<AppDispatch>();
 
-  return Object.entries(m.n).map(([nodeId, ni]) => (
+  return m.n.map(ni => (
     <div
-      key={nodeId}
-      id={nodeId}
+      key={ni.id}
+      id={'' + ni.id}
       ref={ref => ref && ref.focus()}
       style={{
         position: 'absolute',
@@ -96,7 +96,7 @@ export const Node: FC = () => {
                 if (didMove) {
                   dispatch(
                     actions.moveNode({
-                      nodeId: Number(nodeId),
+                      nodeId: ni.id,
                       offsetX: nodeOffsetCoordsRef.current[0],
                       offsetY: nodeOffsetCoordsRef.current[1],
                     })
@@ -104,7 +104,7 @@ export const Node: FC = () => {
                   dispatch(
                     api.endpoints.moveNode.initiate({
                       mapId,
-                      nodeId: Number(nodeId),
+                      nodeId: ni.id,
                       offsetX: nodeOffsetCoordsRef.current[0],
                       offsetY: nodeOffsetCoordsRef.current[1],
                     })
@@ -131,7 +131,7 @@ export const Node: FC = () => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(api.endpoints.deleteNode.initiate({ mapId, nodeId: Number(nodeId) }));
+                dispatch(api.endpoints.deleteNode.initiate({ mapId, nodeId: ni.id }));
               }}
             >
               {'Delete'}
@@ -139,26 +139,26 @@ export const Node: FC = () => {
             <DropdownMenu.Sub>
               <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">{'Connect To...'}</DropdownMenu.SubTrigger>
               <DropdownMenu.SubContent>
-                {Object.entries(m.n)
+                {m.n
                   .filter(
-                    ([toNodeId, toRi]) =>
-                      allowedTargetControls[ni.controlType].includes(toRi.controlType) &&
-                      !isExistingLink(m, Number(nodeId), Number(toNodeId))
+                    toNi =>
+                      allowedTargetControls[ni.controlType].includes(toNi.controlType) &&
+                      !isExistingLink(m, ni.id, toNi.id)
                   )
-                  .map(([toNodeId, toRi]) => (
+                  .map(toNi => (
                     <DropdownMenu.Item
-                      key={toNodeId}
+                      key={toNi.id}
                       onClick={() => {
                         dispatch(
                           api.endpoints.insertLink.initiate({
                             mapId,
-                            fromNodeId: Number(nodeId),
-                            toNodeId: Number(toNodeId),
+                            fromNodeId: ni.id,
+                            toNodeId: toNi.id,
                           })
                         );
                       }}
                     >
-                      {toRi.controlType + ' N' + toRi.iid}
+                      {toNi.controlType + ' N' + toNi.iid}
                     </DropdownMenu.Item>
                   ))}
               </DropdownMenu.SubContent>
@@ -167,14 +167,14 @@ export const Node: FC = () => {
         </DropdownMenu.Root>
       </Box>
 
-      {ni.controlType === ControlType.FILE && <NodeTypeFileUpload ni={ni} nodeId={Number(nodeId)} />}
-      {ni.controlType === ControlType.INGESTION && <NodeTypeIngestion ni={ni} nodeId={Number(nodeId)} />}
-      {ni.controlType === ControlType.CONTEXT && <NodeTypeContext ni={ni} nodeId={Number(nodeId)} />}
-      {ni.controlType === ControlType.QUESTION && <NodeTypeQuestion ni={ni} nodeId={Number(nodeId)} />}
-      {ni.controlType === ControlType.VECTOR_DATABASE && <NodeTypeVectorDatabase ni={ni} nodeId={Number(nodeId)} />}
-      {ni.controlType === ControlType.DATA_FRAME && <NodeTypeDataFrame ni={ni} nodeId={Number(nodeId)} />}
-      {ni.controlType === ControlType.LLM && <NodeTypeLlm ni={ni} nodeId={Number(nodeId)} />}
-      {ni.controlType === ControlType.VISUALIZER && <NodeTypeVisualizer ni={ni} nodeId={Number(nodeId)} />}
+      {ni.controlType === ControlType.FILE && <NodeTypeFileUpload ni={ni} nodeId={ni.id} />}
+      {ni.controlType === ControlType.INGESTION && <NodeTypeIngestion ni={ni} nodeId={ni.id} />}
+      {ni.controlType === ControlType.CONTEXT && <NodeTypeContext ni={ni} nodeId={ni.id} />}
+      {ni.controlType === ControlType.QUESTION && <NodeTypeQuestion ni={ni} nodeId={ni.id} />}
+      {ni.controlType === ControlType.VECTOR_DATABASE && <NodeTypeVectorDatabase ni={ni} nodeId={ni.id} />}
+      {ni.controlType === ControlType.DATA_FRAME && <NodeTypeDataFrame ni={ni} nodeId={ni.id} />}
+      {ni.controlType === ControlType.LLM && <NodeTypeLlm ni={ni} nodeId={ni.id} />}
+      {ni.controlType === ControlType.VISUALIZER && <NodeTypeVisualizer ni={ni} nodeId={ni.id} />}
     </div>
   ));
 };

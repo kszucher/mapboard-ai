@@ -7,9 +7,9 @@ import { getLinearLinePath, pathCommonProps } from './UtilsSvg.ts';
 
 export const NodeSeparator: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  return Object.entries(m.n).map(([nodeId, ni]) => (
+  return m.n.map(ni => (
     <path
-      key={`${nodeId}_separator`}
+      key={`${ni.id}_separator`}
       d={getLinearLinePath({
         x1: adjust(getNodeLeft(ni)),
         x2: adjust(getNodeLeft(ni) + getNodeSelfW(ni)),

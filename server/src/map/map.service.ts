@@ -90,8 +90,8 @@ export class MapService {
       this.prisma.mapLink.findMany({ where: { mapId } }),
     ]);
 
-    const l = Object.fromEntries(mapLinks.map(({ id, mapId, ...rest }) => [id, rest]));
-    const n = Object.fromEntries(mapNodes.map(({ id, mapId, ...rest }) => [id, rest]));
+    const l = mapLinks.map(({ createdAt, updatedAt, ...rest }) => rest);
+    const n = mapNodes.map(({ createdAt, updatedAt, ...rest }) => rest);
     return { l, n };
   }
 
@@ -100,12 +100,12 @@ export class MapService {
       this.prisma.mapNode.update({
         where: { id: nodeId },
         data: { isProcessing: true },
-        select: { id: true },
+        select: { id: true, isProcessing: true },
       }),
       this.prisma.mapNode.updateManyAndReturn({
         where: { id: { not: nodeId }, mapId },
         data: { isProcessing: false },
-        select: { id: true },
+        select: { id: true, isProcessing: true },
       }),
     ]);
 
@@ -113,10 +113,7 @@ export class MapService {
 
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: SSE_EVENT_TYPE.UPDATE_NODES,
-      payload: [
-        { nodeId: activeNode.id, node: { isProcessing: true } },
-        ...inactiveNodes.map(n => ({ nodeId: n.id, node: { isProcessing: false } })),
-      ],
+      payload: { nodes: [activeNode, ...inactiveNodes] },
     });
   }
 
@@ -124,14 +121,14 @@ export class MapService {
     const mapNodes = await this.prisma.mapNode.updateManyAndReturn({
       where: { mapId },
       data: { isProcessing: false },
-      select: { id: true },
+      select: { id: true, isProcessing: true },
     });
 
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: SSE_EVENT_TYPE.UPDATE_NODES,
-      payload: mapNodes.map(n => ({ nodeId: n.id, node: { isProcessing: false } })),
+      payload: { nodes: mapNodes },
     });
   }
 
@@ -146,23 +143,22 @@ export class MapService {
         llmOutputJson: Prisma.JsonNull,
         visualizerOutputText: null,
       },
+      select: {
+        id: true,
+        ingestionOutputJson: true,
+        vectorDatabaseId: true,
+        vectorDatabaseOutputText: true,
+        dataFrameOutputJson: true,
+        llmOutputJson: true,
+        visualizerOutputText: true,
+      },
     });
 
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: SSE_EVENT_TYPE.UPDATE_NODES,
-      payload: mapNodes.map(n => ({
-        nodeId: n.id,
-        node: {
-          ingestionOutputJson: null,
-          vectorDatabaseId: null,
-          vectorDatabaseOutputText: null,
-          dataFrameOutputJson: null,
-          llmOutputJson: null,
-          visualizerOutputText: null,
-        },
-      })),
+      payload: { nodes: mapNodes },
     });
   }
 
@@ -338,7 +334,7 @@ export class MapService {
 
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: SSE_EVENT_TYPE.INSERT_NODE,
-      payload: { nodeId: mapNode.id, node: mapNode },
+      payload: { node: mapNode },
     });
   }
 
@@ -351,7 +347,7 @@ export class MapService {
 
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: SSE_EVENT_TYPE.INSERT_LINK,
-      payload: { linkId: mapLink.id, link: mapLink },
+      payload: { link: mapLink },
     });
   }
 
@@ -426,7 +422,7 @@ export class MapService {
       workspaceIdsOfMap.filter(el => el !== workspaceId),
       {
         type: SSE_EVENT_TYPE.UPDATE_NODE,
-        payload: { nodeId, node: node },
+        payload: { node },
       }
     );
   }
@@ -455,7 +451,7 @@ export class MapService {
     }
 
     for (const nodeId of topologicalSort) {
-      const ni = m.n[nodeId];
+      const ni = m.n.find(ni => ni.id === nodeId)!;
 
       await this.setProcessing({ mapId, nodeId });
 

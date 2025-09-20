@@ -93,15 +93,16 @@ export class MapNodeLlmService {
 
     const llmOutputJson = isText ? { text: result.text } : result.object;
 
-    await this.prisma.mapNode.update({
+    const mapNode = await this.prisma.mapNode.update({
       where: { id: nodeId },
       data: { llmOutputJson },
+      select: { id: true, llmOutputJson: true },
     });
 
     const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: SSE_EVENT_TYPE.UPDATE_NODE,
-      payload: { nodeId, node: { llmOutputJson } },
+      payload: { node: mapNode },
     });
   }
 }
