@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
-import { createClient, RedisClientType } from 'redis';
+import { createClient } from 'redis';
 import { injectable } from 'tsyringe';
 import { SSE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
@@ -25,8 +25,6 @@ export class DistributionService {
   constructor(private workspaceRepository: WorkspaceRepository) {}
 
   async connectAndSubscribe() {
-    console.log('attempt');
-    // Create clients lazily
     this.publisher = createClient({ url: process.env.REDIS_MAIN! });
     this.subscriber = this.publisher.duplicate();
 

@@ -1,5 +1,3 @@
-console.time('startup');
-
 import 'reflect-metadata';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
@@ -58,19 +56,7 @@ container.registerSingleton(MapService);
 
 export const workspaceRepository = container.resolve(WorkspaceRepository);
 export const mapRepository = container.resolve(MapRepository);
-export const tabRepository = container.resolve(TabRepository);
-export const userRepository = container.resolve(UserRepository);
-
 export const distributionService = container.resolve(DistributionService);
-export const mapNodeService = container.resolve(MapNodeRepository);
-export const mapNodeFileService = container.resolve(MapNodeFileService);
-export const mapNodeIngestionService = container.resolve(MapNodeIngestionService);
-export const mapNodeContextService = container.resolve(MapNodeContextService);
-export const mapNodeQuestionService = container.resolve(MapNodeQuestionService);
-export const mapNodeVectorDatabaseService = container.resolve(MapNodeVectorDatabaseService);
-export const mapNodeDataFrameService = container.resolve(MapNodeDataFrameService);
-export const mapNodeLlmService = container.resolve(MapNodeLlmService);
-export const mapNodeVisualizerService = container.resolve(MapNodeVisualizerService);
 export const shareService = container.resolve(ShareService);
 export const tabService = container.resolve(TabService);
 export const userService = container.resolve(UserService);
@@ -103,6 +89,5 @@ app.get('/ping', async (req: Request, res: Response) => {
 
 const PORT = process.env.PORT || 8083;
 app.listen(PORT, () => {
-  console.timeEnd('startup');
   console.log(`Server is running on http://localhost:${PORT}`);
 });
