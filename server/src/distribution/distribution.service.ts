@@ -17,18 +17,19 @@ type ClientInfo = {
 
 @injectable()
 export class DistributionService {
-  private publisher: RedisClientType;
-  private subscriber: RedisClientType;
+  private publisher?: RedisClientType;
+  private subscriber?: RedisClientType;
   private clients = new Map<string, ClientInfo>();
-  private readonly channel: string;
+  private readonly channel = 'workspace_updates';
 
-  constructor(private workspaceRepository: WorkspaceRepository) {
-    this.publisher = createClient({ url: process.env.REDIS_MAIN! });
-    this.subscriber = this.publisher.duplicate();
-    this.channel = 'workspace_updates';
-  }
+  constructor(private workspaceRepository: WorkspaceRepository) {}
 
   async connectAndSubscribe() {
+    console.log('attempt');
+    // Create clients lazily
+    this.publisher = createClient({ url: process.env.REDIS_MAIN! });
+    this.subscriber = this.publisher.duplicate();
+
     await this.publisher.connect();
     await this.subscriber.connect();
 
@@ -43,6 +44,10 @@ export class DistributionService {
   }
 
   async publish(workspaceIds: number[], event: SSE_EVENT) {
+    if (!this.publisher) {
+      throw new Error('Redis publisher not initialized. Call connectAndSubscribe first.');
+    }
+
     for (const workspaceId of workspaceIds) {
       const msg: RedisEventMessage = { workspaceId, event };
       await this.publisher.publish(this.channel, JSON.stringify(msg));
@@ -58,14 +63,16 @@ export class DistributionService {
       Connection: 'keep-alive',
     });
     res.flushHeaders?.();
-    // initial heartbeat & retry interval
+
+    // Initial heartbeat & retry interval
     res.write(':\n\n');
     res.write('retry: 5000\n\n');
 
     this.clients.set(clientId, { res, workspaceId });
+
     req.on('close', async () => {
       console.log('killing workspace ', workspaceId);
-      await this.workspaceRepository.deleteWorkspace({ workspaceId }); // is this really necessary here?
+      await this.workspaceRepository.deleteWorkspace({ workspaceId }); // optional, depends on your logic
       this.clients.delete(clientId);
     });
   }
@@ -73,7 +80,6 @@ export class DistributionService {
   private broadcast(message: RedisEventMessage) {
     for (const { res, workspaceId } of this.clients.values()) {
       if (workspaceId === message.workspaceId) {
-        // res.write(`event: ${message.event.type}\n`);
         res.write(`data: ${JSON.stringify(message.event)}\n\n`);
       }
     }
