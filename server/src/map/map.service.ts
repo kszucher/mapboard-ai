@@ -84,17 +84,6 @@ export class MapService {
     return this.getMapNodeVisualizerService();
   }
 
-  private async getMapGraph({ mapId }: { mapId: number }): Promise<M> {
-    const [mapNodes, mapLinks] = await Promise.all([
-      this.prisma.mapNode.findMany({ where: { mapId } }),
-      this.prisma.mapLink.findMany({ where: { mapId } }),
-    ]);
-
-    const l = mapLinks.map(({ createdAt, updatedAt, ...rest }) => rest);
-    const n = mapNodes.map(({ createdAt, updatedAt, ...rest }) => rest);
-    return { l, n };
-  }
-
   private async setProcessing({ mapId, nodeId }: { mapId: number; nodeId: number }) {
     const [activeNode, inactiveNodes] = await this.prisma.$transaction([
       this.prisma.mapNode.update({
@@ -198,12 +187,15 @@ export class MapService {
         },
       });
 
-      const mapGraph = await this.getMapGraph({ mapId: workspace.mapId });
+      const [mapNodes, mapLinks] = await Promise.all([
+        this.prisma.mapNode.findMany({ where: { mapId: workspace.mapId }, omit: { createdAt: true, updatedAt: true } }),
+        this.prisma.mapLink.findMany({ where: { mapId: workspace.mapId }, omit: { createdAt: true, updatedAt: true } }),
+      ]);
 
       return {
         id: map.id,
         name: map.name,
-        data: mapGraph,
+        data: { n: mapNodes, l: mapLinks },
       };
     }
   }
@@ -318,7 +310,18 @@ export class MapService {
   }
 
   async insertNode({ mapId, controlType }: InsertNodeRequestDto) {
-    const m = await this.getMapGraph({ mapId });
+    const [mapNodes, mapLinks] = await Promise.all([
+      this.prisma.mapNode.findMany({
+        where: { mapId },
+        select: { iid: true, controlType: true, offsetW: true, offsetH: true },
+      }),
+      this.prisma.mapLink.findMany({
+        where: { mapId },
+        select: { id: true, fromNodeId: true, toNodeId: true },
+      }),
+    ]);
+
+    const m = { n: mapNodes, l: mapLinks };
 
     const mapNode = await this.prisma.mapNode.create({
       data: {
@@ -441,7 +444,12 @@ export class MapService {
   }
 
   async executeMap({ mapId }: { mapId: number }) {
-    const m = await this.getMapGraph({ mapId });
+    const [mapNodes, mapLinks] = await Promise.all([
+      this.prisma.mapNode.findMany({ where: { mapId }, select: { id: true, controlType: true } }),
+      this.prisma.mapLink.findMany({ where: { mapId }, select: { fromNodeId: true, toNodeId: true } }),
+    ]);
+
+    const m = { n: mapNodes, l: mapLinks };
 
     await this.clearResults({ mapId });
 

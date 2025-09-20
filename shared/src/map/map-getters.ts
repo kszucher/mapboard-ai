@@ -2,16 +2,16 @@ import { M } from '../api/api-types-map';
 import { L } from '../api/api-types-map-link';
 import { allowedSourceControls, controlBaseSizes, M_PADDING, N, N_PADDING } from '../api/api-types-map-node';
 
-export const getNodeSelfW = (n: N) => controlBaseSizes[n.controlType].w + 2 * N_PADDING;
+export const getNodeSelfW = (n: Pick<N, 'controlType'>) => controlBaseSizes[n.controlType].w + 2 * N_PADDING;
 
-export const getNodeSelfH = (n: N) => controlBaseSizes[n.controlType].h + 2 * N_PADDING;
+export const getNodeSelfH = (n: Pick<N, 'controlType'>) => controlBaseSizes[n.controlType].h + 2 * N_PADDING;
 
-export const getMapSelfW = (m: M) => {
+export const getMapSelfW = (m: { n: Pick<N, 'offsetW' | 'controlType'>[] }) => {
   const max = Math.max(...m.n.map(ni => ni.offsetW + getNodeSelfW(ni)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getMapSelfH = (m: M) => {
+export const getMapSelfH = (m: { n: Pick<N, 'offsetH' | 'controlType'>[] }) => {
   const max = Math.max(...m.n.map(ni => ni.offsetH + getNodeSelfH(ni)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
@@ -22,7 +22,7 @@ export const getNodeRight = (n: N) => n.offsetW + M_PADDING + getNodeSelfW(n);
 
 export const getNodeTop = (n: N) => n.offsetH + M_PADDING;
 
-export const getLastIndexN = (m: M): number => Math.max(-1, ...m.n.map(ni => ni.iid));
+export const getLastIndexN = (m: { n: Pick<N, 'iid'>[] }): number => Math.max(-1, ...m.n.map(ni => ni.iid));
 
 export const isExistingLink = (m: M, fromNodeId: number, toNodeId: number): boolean =>
   m.l.some(li => li.fromNodeId === fromNodeId && li.toNodeId === toNodeId);
@@ -58,7 +58,10 @@ export const getLineCoords = (m: M, l: L) => {
   ];
 };
 
-export const getTopologicalSort = (m: M): number[] | null => {
+export const getTopologicalSort = (m: {
+  n: Pick<N, 'id'>[],
+  l: Pick<L, 'fromNodeId' | 'toNodeId'>[]
+}): number[] | null => {
   // Kahn's algorithm
   const { n, l } = m;
   const graph = new Map<number, Set<number>>();
