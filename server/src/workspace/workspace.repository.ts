@@ -1,7 +1,9 @@
+import { inject, injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
 
+@injectable()
 export class WorkspaceRepository {
-  constructor(private prisma: PrismaClient) {}
+  constructor(@inject('PrismaClient') private prisma: PrismaClient) {}
 
   async getWorkspaceIdsOfUser({ userId }: { userId: number }) {
     const workspaces = await this.prisma.workspace.findMany({

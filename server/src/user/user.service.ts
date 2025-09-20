@@ -1,15 +1,13 @@
+import { inject, injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
 import { UserRepository } from './user.repository';
 
+@injectable()
 export class UserService {
   constructor(
-    private prisma: PrismaClient,
-    private getUserRepository: () => UserRepository
+    @inject('PrismaClient') private prisma: PrismaClient,
+    private userRepository: UserRepository
   ) {}
-
-  get userRepository(): UserRepository {
-    return this.getUserRepository();
-  }
 
   async getUser({ userId }: { userId: number }) {
     return this.userRepository.getUser({ userId });

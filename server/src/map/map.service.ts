@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import {
   DeleteLinkRequestDto,
@@ -25,75 +26,24 @@ import { MapNodeVectorDatabaseService } from './map-node-vector-database.service
 import { MapNodeVisualizerService } from './map-node-visualizer.service';
 import { MapRepository } from './map.repository';
 
+@injectable()
 export class MapService {
   constructor(
-    private prisma: PrismaClient,
-    private getMapRepository: () => MapRepository,
-    private getTabRepository: () => TabRepository,
-    private getTabService: () => TabService,
-    private getWorkspaceRepository: () => WorkspaceRepository,
-    private getDistributionService: () => DistributionService,
-    private getMapNodeFileService: () => MapNodeFileService,
-    private getMapNodeIngestionService: () => MapNodeIngestionService,
-    private getMapNodeContextService: () => MapNodeContextService,
-    private getMapNodeQuestionService: () => MapNodeQuestionService,
-    private getMapNodeVectorDatabaseService: () => MapNodeVectorDatabaseService,
-    private getMapNodeDataFrameService: () => MapNodeDataFrameService,
-    private getMapNodeLlmService: () => MapNodeLlmService,
-    private getMapNodeVisualizerService: () => MapNodeVisualizerService
+    @inject('PrismaClient') private prisma: PrismaClient,
+    private mapRepository: MapRepository,
+    private tabRepository: TabRepository,
+    private tabService: TabService,
+    private workspaceRepository: WorkspaceRepository,
+    private distributionService: DistributionService,
+    private mapNodeFileService: MapNodeFileService,
+    private mapNodeIngestionService: MapNodeIngestionService,
+    private mapNodeContextService: MapNodeContextService,
+    private mapNodeQuestionService: MapNodeQuestionService,
+    private mapNodeVectorDatabaseService: MapNodeVectorDatabaseService,
+    private mapNodeDataFrameService: MapNodeDataFrameService,
+    private mapNodeLlmService: MapNodeLlmService,
+    private mapNodeVisualizerService: MapNodeVisualizerService
   ) {}
-
-  get mapRepository(): MapRepository {
-    return this.getMapRepository();
-  }
-
-  get tabRepository(): TabRepository {
-    return this.getTabRepository();
-  }
-
-  get tabService(): TabService {
-    return this.getTabService();
-  }
-
-  get workspaceRepository(): WorkspaceRepository {
-    return this.getWorkspaceRepository();
-  }
-
-  get distributionService(): DistributionService {
-    return this.getDistributionService();
-  }
-
-  get mapNodeFileService(): MapNodeFileService {
-    return this.getMapNodeFileService();
-  }
-
-  get mapNodeIngestionService(): MapNodeIngestionService {
-    return this.getMapNodeIngestionService();
-  }
-
-  get mapNodeContextService(): MapNodeContextService {
-    return this.getMapNodeContextService();
-  }
-
-  get mapNodeQuestionService(): MapNodeQuestionService {
-    return this.getMapNodeQuestionService();
-  }
-
-  get mapNodeVectorDatabaseService(): MapNodeVectorDatabaseService {
-    return this.getMapNodeVectorDatabaseService();
-  }
-
-  get mapNodeDataFrameService(): MapNodeDataFrameService {
-    return this.getMapNodeDataFrameService();
-  }
-
-  get mapNodeLlmService(): MapNodeLlmService {
-    return this.getMapNodeLlmService();
-  }
-
-  get mapNodeVisualizerService(): MapNodeVisualizerService {
-    return this.getMapNodeVisualizerService();
-  }
 
   private async setProcessing({ mapId, nodeId }: { mapId: number; nodeId: number }) {
     const [activeNode, inactiveNodes] = await this.mapRepository.setProcessing({ mapId, nodeId });

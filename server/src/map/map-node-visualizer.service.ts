@@ -1,28 +1,18 @@
+import { inject, injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
-import { MapNodeService } from './map-node.service';
+import { MapNodeRepository } from './map-node.repository';
 
+@injectable()
 export class MapNodeVisualizerService {
   constructor(
-    private prisma: PrismaClient,
-    private getMapNodeService: () => MapNodeService,
-    private getWorkspaceRepository: () => WorkspaceRepository,
-    private getDistributionService: () => DistributionService
+    @inject('PrismaClient') private prisma: PrismaClient,
+    private mapNodeService: MapNodeRepository,
+    private workspaceRepository: WorkspaceRepository,
+    private distributionService: DistributionService
   ) {}
-
-  get mapNodeService(): MapNodeService {
-    return this.getMapNodeService();
-  }
-
-  get workspaceRepository(): WorkspaceRepository {
-    return this.getWorkspaceRepository();
-  }
-
-  get distributionService(): DistributionService {
-    return this.getDistributionService();
-  }
 
   async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
     const [inputLlmNode, inputDataFrameNode, node] = await Promise.all([

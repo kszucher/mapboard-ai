@@ -1,24 +1,18 @@
 import * as pl from 'nodejs-polars';
+import { inject, injectable } from 'tsyringe';
 import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
 import { PrismaClient } from '../generated/client';
 import { DataFrameQuerySchemaType } from './map-node-data-frame.types';
 import { MapNodeFileService } from './map-node-file.service';
-import { MapNodeService } from './map-node.service';
+import { MapNodeRepository } from './map-node.repository';
 
+@injectable()
 export class MapNodeDataFrameService {
   constructor(
-    private prisma: PrismaClient,
-    private getMapNodeService: () => MapNodeService,
-    private getMapNodeFileService: () => MapNodeFileService
+    @inject('PrismaClient') private prisma: PrismaClient,
+    private mapNodeService: MapNodeRepository,
+    private mapNodeFileService: MapNodeFileService
   ) {}
-
-  get mapNodeService(): MapNodeService {
-    return this.getMapNodeService();
-  }
-
-  get mapNodeFileService(): MapNodeFileService {
-    return this.getMapNodeFileService();
-  }
 
   async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
     const [inputFileNode, inputLlmNode, node] = await Promise.all([

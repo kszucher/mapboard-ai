@@ -1,33 +1,19 @@
+import { inject, injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
 import { MapRepository } from '../map/map.repository';
 import { TabRepository } from '../tab/tab.repository';
 import { UserRepository } from '../user/user.repository';
 import { WorkspaceRepository } from './workspace.repository';
 
+@injectable()
 export class WorkspaceService {
   constructor(
-    private prisma: PrismaClient,
-    private getWorkspaceRepository: () => WorkspaceRepository,
-    private getUserRepository: () => UserRepository,
-    private getMapRepository: () => MapRepository,
-    private getTabRepository: () => TabRepository
+    @inject('PrismaClient') private prisma: PrismaClient,
+    private workspaceRepository: WorkspaceRepository,
+    private userRepository: UserRepository,
+    private mapRepository: MapRepository,
+    private tabRepository: TabRepository
   ) {}
-
-  get workspaceRepository(): WorkspaceRepository {
-    return this.getWorkspaceRepository();
-  }
-
-  get userRepository(): UserRepository {
-    return this.getUserRepository();
-  }
-
-  get mapRepository(): MapRepository {
-    return this.getMapRepository();
-  }
-
-  get tabRepository(): TabRepository {
-    return this.getTabRepository();
-  }
 
   async createWorkspace({ userId }: { userId: number }) {
     await this.userRepository.incrementSignInCount({ userId });

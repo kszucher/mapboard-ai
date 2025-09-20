@@ -1,5 +1,6 @@
 import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
+import { inject, injectable } from 'tsyringe';
 import { z } from 'zod';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
@@ -7,27 +8,16 @@ import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { DataFrameQuerySchema } from './map-node-data-frame.types';
-import { MapNodeService } from './map-node.service';
+import { MapNodeRepository } from './map-node.repository';
 
+@injectable()
 export class MapNodeLlmService {
   constructor(
-    private prisma: PrismaClient,
-    private getMapNodeService: () => MapNodeService,
-    private getWorkspaceRepository: () => WorkspaceRepository,
-    private getDistributionService: () => DistributionService
+    @inject('PrismaClient') private prisma: PrismaClient,
+    private mapNodeService: MapNodeRepository,
+    private workspaceRepository: WorkspaceRepository,
+    private distributionService: DistributionService
   ) {}
-
-  get mapNodeService(): MapNodeService {
-    return this.getMapNodeService();
-  }
-
-  get workspaceRepository(): WorkspaceRepository {
-    return this.getWorkspaceRepository();
-  }
-
-  get distributionService(): DistributionService {
-    return this.getDistributionService();
-  }
 
   async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
     const [inputLlmNode, inputVectorDatabaseNode, inputDataFrameNode, inputContextNode, inputQuestionNode, node] =

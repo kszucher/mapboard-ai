@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { $Enums, PrismaClient } from '../generated/client';
@@ -5,20 +6,13 @@ import { WorkspaceRepository } from '../workspace/workspace.repository';
 import ShareAccess = $Enums.ShareAccess;
 import ShareStatus = $Enums.ShareStatus;
 
+@injectable()
 export class ShareService {
   constructor(
-    private prisma: PrismaClient,
-    private getWorkspaceRepository: () => WorkspaceRepository,
-    private getDistributionService: () => DistributionService
+    @inject('PrismaClient') private prisma: PrismaClient,
+    private workspaceRepository: WorkspaceRepository,
+    private distributionService: DistributionService
   ) {}
-
-  get workspaceRepository() {
-    return this.getWorkspaceRepository();
-  }
-
-  get distributionService() {
-    return this.getDistributionService();
-  }
 
   async getShareInfo({ userId }: { userId: number }) {
     return this.prisma.user.findFirstOrThrow({

@@ -1,6 +1,7 @@
+import 'reflect-metadata';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
-import distributionController from './distribution/distribution.controller';
+import { container } from 'tsyringe';
 import { DistributionService } from './distribution/distribution.service';
 import { PrismaClient } from './generated/client';
 import { MapNodeContextService } from './map/map-node-context.service';
@@ -11,120 +12,64 @@ import { MapNodeLlmService } from './map/map-node-llm.service';
 import { MapNodeQuestionService } from './map/map-node-question.service';
 import { MapNodeVectorDatabaseService } from './map/map-node-vector-database.service';
 import { MapNodeVisualizerService } from './map/map-node-visualizer.service';
-import { MapNodeService } from './map/map-node.service';
-import mapController from './map/map.controller';
+import { MapNodeRepository } from './map/map-node.repository';
 import { MapRepository } from './map/map.repository';
 import { MapService } from './map/map.service';
-import shareController from './share/share.controller';
 import { ShareService } from './share/share.service';
-import tabController from './tab/tab.controller';
 import { TabRepository } from './tab/tab.repository';
 import { TabService } from './tab/tab.service';
-import userController from './user/user.controller';
 import { UserRepository } from './user/user.repository';
 import { UserService } from './user/user.service';
-import workspaceController from './workspace/workspace.controller';
 import { WorkspaceRepository } from './workspace/workspace.repository';
 import { WorkspaceService } from './workspace/workspace.service';
 
 export const prismaClient = new PrismaClient();
 
-export const distributionService: DistributionService = new DistributionService(
-  () => workspaceRepository,
-  process.env.REDIS_MAIN!
-);
+container.registerInstance('PrismaClient', prismaClient);
 
-export const mapService: MapService = new MapService(
-  prismaClient,
-  () => mapRepository,
-  () => tabRepository,
-  () => tabService,
-  () => workspaceRepository,
-  () => distributionService,
-  () => mapNodeFileService,
-  () => mapNodeIngestionService,
-  () => mapNodeContextService,
-  () => mapNodeQuestionService,
-  () => mapNodeVectorDatabaseService,
-  () => mapNodeDataFrameService,
-  () => mapNodeLlmService,
-  () => mapNodeVisualizerService
-);
+container.registerSingleton(WorkspaceRepository);
+container.registerSingleton(MapRepository);
+container.registerSingleton(TabRepository);
+container.registerSingleton(UserRepository);
 
-export const mapRepository: MapRepository = new MapRepository(prismaClient);
+container.registerSingleton(DistributionService);
+container.registerSingleton(MapNodeRepository);
+container.registerSingleton(MapNodeFileService);
+container.registerSingleton(MapNodeIngestionService);
+container.registerSingleton(MapNodeContextService);
+container.registerSingleton(MapNodeQuestionService);
+container.registerSingleton(MapNodeVectorDatabaseService);
+container.registerSingleton(MapNodeDataFrameService);
+container.registerSingleton(MapNodeLlmService);
+container.registerSingleton(MapNodeVisualizerService);
+container.registerSingleton(ShareService);
+container.registerSingleton(TabService);
+container.registerSingleton(UserService);
+container.registerSingleton(WorkspaceService);
+container.registerSingleton(MapService);
 
-export const mapNodeService: MapNodeService = new MapNodeService(prismaClient);
+export const workspaceRepository = container.resolve(WorkspaceRepository);
+export const mapRepository = container.resolve(MapRepository);
+export const tabRepository = container.resolve(TabRepository);
+export const userRepository = container.resolve(UserRepository);
 
-export const mapNodeFileService: MapNodeFileService = new MapNodeFileService(prismaClient, () => mapNodeService);
+export const distributionService = container.resolve(DistributionService);
+export const mapNodeService = container.resolve(MapNodeRepository);
+export const mapNodeFileService = container.resolve(MapNodeFileService);
+export const mapNodeIngestionService = container.resolve(MapNodeIngestionService);
+export const mapNodeContextService = container.resolve(MapNodeContextService);
+export const mapNodeQuestionService = container.resolve(MapNodeQuestionService);
+export const mapNodeVectorDatabaseService = container.resolve(MapNodeVectorDatabaseService);
+export const mapNodeDataFrameService = container.resolve(MapNodeDataFrameService);
+export const mapNodeLlmService = container.resolve(MapNodeLlmService);
+export const mapNodeVisualizerService = container.resolve(MapNodeVisualizerService);
+export const shareService = container.resolve(ShareService);
+export const tabService = container.resolve(TabService);
+export const userService = container.resolve(UserService);
+export const workspaceService = container.resolve(WorkspaceService);
+export const mapService = container.resolve(MapService);
 
-export const mapNodeIngestionService: MapNodeIngestionService = new MapNodeIngestionService(
-  prismaClient,
-  () => mapNodeService
-);
-
-export const mapNodeContextService: MapNodeContextService = new MapNodeContextService(
-  prismaClient,
-  () => mapNodeService
-);
-
-export const mapNodeQuestionService: MapNodeQuestionService = new MapNodeQuestionService(
-  prismaClient,
-  () => mapNodeService
-);
-
-export const mapNodeVectorDatabaseService: MapNodeVectorDatabaseService = new MapNodeVectorDatabaseService(
-  prismaClient,
-  () => mapNodeService
-);
-
-export const mapNodeDataFrameService: MapNodeDataFrameService = new MapNodeDataFrameService(
-  prismaClient,
-  () => mapNodeService,
-  () => mapNodeFileService
-);
-
-export const mapNodeLlmService: MapNodeLlmService = new MapNodeLlmService(
-  prismaClient,
-  () => mapNodeService,
-  () => workspaceRepository,
-  () => distributionService
-);
-
-export const mapNodeVisualizerService: MapNodeVisualizerService = new MapNodeVisualizerService(
-  prismaClient,
-  () => mapNodeService,
-  () => workspaceRepository,
-  () => distributionService
-);
-
-export const shareService: ShareService = new ShareService(
-  prismaClient,
-  () => workspaceRepository,
-  () => distributionService
-);
-
-export const tabService: TabService = new TabService(
-  prismaClient,
-  () => tabRepository,
-  () => workspaceRepository,
-  () => distributionService
-);
-
-export const tabRepository: TabRepository = new TabRepository(prismaClient);
-
-export const userService: UserService = new UserService(prismaClient, () => userRepository);
-
-export const userRepository: UserRepository = new UserRepository(prismaClient);
-
-export const workspaceService: WorkspaceService = new WorkspaceService(
-  prismaClient,
-  () => workspaceRepository,
-  () => userRepository,
-  () => mapRepository,
-  () => tabRepository
-);
-
-export const workspaceRepository: WorkspaceRepository = new WorkspaceRepository(prismaClient);
+export { container };
 
 (async () => {
   await workspaceRepository.deleteWorkspaces();
@@ -133,6 +78,13 @@ export const workspaceRepository: WorkspaceRepository = new WorkspaceRepository(
 })();
 
 const app = express();
+
+import distributionController from './distribution/distribution.controller';
+import mapController from './map/map.controller';
+import shareController from './share/share.controller';
+import tabController from './tab/tab.controller';
+import userController from './user/user.controller';
+import workspaceController from './workspace/workspace.controller';
 
 app.use(cors());
 app.use(express.json());

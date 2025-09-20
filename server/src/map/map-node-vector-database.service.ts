@@ -1,15 +1,13 @@
+import { inject, injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
-import { MapNodeService } from './map-node.service';
+import { MapNodeRepository } from './map-node.repository';
 
+@injectable()
 export class MapNodeVectorDatabaseService {
   constructor(
-    private prisma: PrismaClient,
-    private getMapNodeService: () => MapNodeService
+    @inject('PrismaClient') private prisma: PrismaClient,
+    private mapNodeService: MapNodeRepository
   ) {}
-
-  get mapNodeService(): MapNodeService {
-    return this.getMapNodeService();
-  }
 
   async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
     const [inputIngestionNodes, inputContextNode, inputQuestionNode, node] = await Promise.all([

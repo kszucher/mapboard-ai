@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { createClient, RedisClientType } from 'redis';
+import { injectable } from 'tsyringe';
 import { SSE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 
@@ -14,24 +15,17 @@ type ClientInfo = {
   workspaceId: number;
 };
 
+@injectable()
 export class DistributionService {
   private publisher: RedisClientType;
   private subscriber: RedisClientType;
   private clients = new Map<string, ClientInfo>();
   private readonly channel: string;
 
-  constructor(
-    private getWorkspaceRepository: () => WorkspaceRepository,
-    redisUrl: string,
-    channel = 'workspace_updates'
-  ) {
-    this.publisher = createClient({ url: redisUrl });
+  constructor(private workspaceRepository: WorkspaceRepository) {
+    this.publisher = createClient({ url: process.env.REDIS_MAIN! });
     this.subscriber = this.publisher.duplicate();
-    this.channel = channel;
-  }
-
-  get workspaceRepository() {
-    return this.getWorkspaceRepository();
+    this.channel = 'workspace_updates';
   }
 
   async connectAndSubscribe() {

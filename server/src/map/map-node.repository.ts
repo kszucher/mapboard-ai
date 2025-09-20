@@ -1,8 +1,10 @@
+import { inject, injectable } from 'tsyringe';
 import { ControlType } from '../../../shared/src/api/api-types-map-node';
 import { PrismaClient } from '../generated/client';
 
-export class MapNodeService {
-  constructor(private prisma: PrismaClient) {}
+@injectable()
+export class MapNodeRepository {
+  constructor(@inject('PrismaClient') private prisma: PrismaClient) {}
 
   async getNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
     return this.prisma.mapNode.findFirstOrThrow({

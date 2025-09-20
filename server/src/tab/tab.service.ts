@@ -1,28 +1,18 @@
+import { inject, injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { TabRepository } from './tab.repository';
 
+@injectable()
 export class TabService {
   constructor(
-    private prisma: PrismaClient,
-    private getTabRepository: () => TabRepository,
-    private getWorkspaceRepository: () => WorkspaceRepository,
-    private getDistributionService: () => DistributionService
+    @inject('PrismaClient') private prisma: PrismaClient,
+    private tabRepository: TabRepository,
+    private workspaceRepository: WorkspaceRepository,
+    private distributionService: DistributionService
   ) {}
-
-  get tabRepository() {
-    return this.getTabRepository();
-  }
-
-  get workspaceRepository() {
-    return this.getWorkspaceRepository();
-  }
-
-  get distributionService() {
-    return this.getDistributionService();
-  }
 
   async getMapsOfTab({ userId }: { userId: number }) {
     const tab = await this.prisma.tab.findFirstOrThrow({

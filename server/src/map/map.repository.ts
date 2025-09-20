@@ -1,8 +1,10 @@
+import { inject, injectable } from 'tsyringe';
 import { MapInfo } from '../../../shared/src/api/api-types-map';
 import { Prisma, PrismaClient } from '../generated/client';
 
+@injectable()
 export class MapRepository {
-  constructor(private prisma: PrismaClient) {}
+  constructor(@inject('PrismaClient') private prisma: PrismaClient) {}
 
   async getMapinfo({ mapId }: { mapId: number }): Promise<MapInfo> {
     const map = await this.prisma.map.findUniqueOrThrow({
