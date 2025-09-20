@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import distributionController from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
 import { PrismaClient } from './generated/client';
 import { MapNodeContextService } from './map/map-node-context.service';
@@ -13,13 +14,18 @@ import { MapNodeQuestionService } from './map/map-node-question.service';
 import { MapNodeVectorDatabaseService } from './map/map-node-vector-database.service';
 import { MapNodeVisualizerService } from './map/map-node-visualizer.service';
 import { MapNodeRepository } from './map/map-node.repository';
+import mapController from './map/map.controller';
 import { MapRepository } from './map/map.repository';
 import { MapService } from './map/map.service';
+import shareController from './share/share.controller';
 import { ShareService } from './share/share.service';
+import tabController from './tab/tab.controller';
 import { TabRepository } from './tab/tab.repository';
 import { TabService } from './tab/tab.service';
+import userController from './user/user.controller';
 import { UserRepository } from './user/user.repository';
 import { UserService } from './user/user.service';
+import workspaceController from './workspace/workspace.controller';
 import { WorkspaceRepository } from './workspace/workspace.repository';
 import { WorkspaceService } from './workspace/workspace.service';
 
@@ -78,13 +84,6 @@ export { container };
 })();
 
 const app = express();
-
-import distributionController from './distribution/distribution.controller';
-import mapController from './map/map.controller';
-import shareController from './share/share.controller';
-import tabController from './tab/tab.controller';
-import userController from './user/user.controller';
-import workspaceController from './workspace/workspace.controller';
 
 app.use(cors());
 app.use(express.json());
