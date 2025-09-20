@@ -13,14 +13,14 @@ import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
 const router = Router();
 
 router.post('/get-share-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = (req as any);
+  const { userId } = req as any;
   const shareInfo = await shareService.getShareInfo({ userId });
   const response: GetShareInfoQueryResponseDto = { shareInfo };
   res.json(response);
 });
 
 router.post('/create-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = (req as any);
+  const { userId } = req as any;
   const { mapId, shareEmail, shareAccess }: CreateShareRequestDto = req.body;
   await shareService.createShare({ userId, mapId, shareEmail, shareAccess });
   res.json();

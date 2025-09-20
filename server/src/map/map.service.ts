@@ -1,4 +1,4 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import {
   DeleteLinkRequestDto,
@@ -29,7 +29,7 @@ import { MapRepository } from './map.repository';
 @injectable()
 export class MapService {
   constructor(
-    @inject('PrismaClient') private prisma: PrismaClient,
+    private prisma: PrismaClient,
     private mapRepository: MapRepository,
     private tabRepository: TabRepository,
     private tabService: TabService,

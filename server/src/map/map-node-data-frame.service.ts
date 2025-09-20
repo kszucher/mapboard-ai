@@ -1,5 +1,5 @@
 import * as pl from 'nodejs-polars';
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
 import { PrismaClient } from '../generated/client';
 import { DataFrameQuerySchemaType } from './map-node-data-frame.types';
@@ -9,7 +9,7 @@ import { MapNodeRepository } from './map-node.repository';
 @injectable()
 export class MapNodeDataFrameService {
   constructor(
-    @inject('PrismaClient') private prisma: PrismaClient,
+    private prisma: PrismaClient,
     private mapNodeService: MapNodeRepository,
     private mapNodeFileService: MapNodeFileService
   ) {}

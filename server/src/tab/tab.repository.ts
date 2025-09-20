@@ -1,9 +1,9 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
 
 @injectable()
 export class TabRepository {
-  constructor(@inject('PrismaClient') private prisma: PrismaClient) {}
+  constructor(private prisma: PrismaClient) {}
 
   async addMapToTab({ userId, mapId }: { userId: number; mapId: number }) {
     await this.prisma.tab.update({

@@ -16,9 +16,9 @@ router.post('/create-workspace', checkJwt, async (req: Request, res: Response) =
 });
 
 router.post('/update-workspace-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId, userId } = (req as any);
+  const { workspaceId, userId } = req as any;
   const { mapId }: UpdateWorkspaceMapRequestDto = req.body;
-  await workspaceService.updateWorkspaceMap(({ workspaceId, userId, mapId }));
+  await workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId });
   res.json();
 });
 

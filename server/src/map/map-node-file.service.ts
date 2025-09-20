@@ -1,4 +1,4 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
 import { MapNodeRepository } from './map-node.repository';
 
@@ -8,7 +8,7 @@ export class MapNodeFileService {
   private readonly pinataSecretKey: string;
 
   constructor(
-    @inject('PrismaClient') private prisma: PrismaClient,
+    private prisma: PrismaClient,
     private mapNodeService: MapNodeRepository
   ) {
     this.pinataApiKey = process.env.PINATA_API_KEY!;

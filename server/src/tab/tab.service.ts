@@ -1,4 +1,4 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
@@ -8,7 +8,7 @@ import { TabRepository } from './tab.repository';
 @injectable()
 export class TabService {
   constructor(
-    @inject('PrismaClient') private prisma: PrismaClient,
+    private prisma: PrismaClient,
     private tabRepository: TabRepository,
     private workspaceRepository: WorkspaceRepository,
     private distributionService: DistributionService

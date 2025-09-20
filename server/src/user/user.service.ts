@@ -1,11 +1,11 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
 import { UserRepository } from './user.repository';
 
 @injectable()
 export class UserService {
   constructor(
-    @inject('PrismaClient') private prisma: PrismaClient,
+    private prisma: PrismaClient,
     private userRepository: UserRepository
   ) {}
 

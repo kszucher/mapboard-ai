@@ -1,4 +1,4 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { $Enums, PrismaClient } from '../generated/client';
@@ -9,7 +9,7 @@ import ShareStatus = $Enums.ShareStatus;
 @injectable()
 export class ShareService {
   constructor(
-    @inject('PrismaClient') private prisma: PrismaClient,
+    private prisma: PrismaClient,
     private workspaceRepository: WorkspaceRepository,
     private distributionService: DistributionService
   ) {}

@@ -31,7 +31,7 @@ import { WorkspaceService } from './workspace/workspace.service';
 
 export const prismaClient = new PrismaClient();
 
-container.registerInstance('PrismaClient', prismaClient);
+container.registerInstance(PrismaClient, prismaClient);
 
 container.registerSingleton(WorkspaceRepository);
 container.registerSingleton(MapRepository);

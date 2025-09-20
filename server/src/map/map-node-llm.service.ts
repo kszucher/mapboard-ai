@@ -1,6 +1,6 @@
 import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { z } from 'zod';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
@@ -13,7 +13,7 @@ import { MapNodeRepository } from './map-node.repository';
 @injectable()
 export class MapNodeLlmService {
   constructor(
-    @inject('PrismaClient') private prisma: PrismaClient,
+    private prisma: PrismaClient,
     private mapNodeService: MapNodeRepository,
     private workspaceRepository: WorkspaceRepository,
     private distributionService: DistributionService

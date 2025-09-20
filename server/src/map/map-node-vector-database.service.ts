@@ -1,11 +1,11 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
 import { MapNodeRepository } from './map-node.repository';
 
 @injectable()
 export class MapNodeVectorDatabaseService {
   constructor(
-    @inject('PrismaClient') private prisma: PrismaClient,
+    private prisma: PrismaClient,
     private mapNodeService: MapNodeRepository
   ) {}
 

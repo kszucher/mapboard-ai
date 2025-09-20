@@ -1,7 +1,7 @@
 import * as pl from 'nodejs-polars';
+import { PrismaClient } from '../generated/client';
 import { MapNodeDataFrameService } from './map-node-data-frame.service';
 import { DataFrameQuerySchemaType } from './map-node-data-frame.types';
-import { PrismaClient } from '../generated/client';
 
 const prisma = {} as unknown as PrismaClient;
 const getMapNodeService = jest.fn();

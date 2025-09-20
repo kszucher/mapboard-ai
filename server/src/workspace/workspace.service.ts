@@ -1,4 +1,4 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
 import { MapRepository } from '../map/map.repository';
 import { TabRepository } from '../tab/tab.repository';
@@ -8,7 +8,7 @@ import { WorkspaceRepository } from './workspace.repository';
 @injectable()
 export class WorkspaceService {
   constructor(
-    @inject('PrismaClient') private prisma: PrismaClient,
+    private prisma: PrismaClient,
     private workspaceRepository: WorkspaceRepository,
     private userRepository: UserRepository,
     private mapRepository: MapRepository,
