@@ -1,4 +1,6 @@
 import { injectable } from 'tsyringe';
+import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
+import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { MapRepository } from '../map/map.repository';
 import { TabRepository } from '../tab/tab.repository';
@@ -12,7 +14,8 @@ export class WorkspaceService {
     private workspaceRepository: WorkspaceRepository,
     private userRepository: UserRepository,
     private mapRepository: MapRepository,
-    private tabRepository: TabRepository
+    private tabRepository: TabRepository,
+    private distributionService: DistributionService
   ) {}
 
   async createWorkspace({ userId }: { userId: number }) {
@@ -37,7 +40,12 @@ export class WorkspaceService {
 
       await this.tabRepository.addMapToTab({ userId, mapId: map.id });
 
-      // TODO distribute
+      const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
+
+      await this.distributionService.publish(workspaceIdsOfUser, {
+        type: SSE_EVENT_TYPE.UPDATE_TAB,
+        payload: {},
+      });
     }
 
     await this.workspaceRepository.addMapToWorkspace({ workspaceId: newWorkspace.id, mapId: map.id });
@@ -76,7 +84,12 @@ export class WorkspaceService {
 
         await this.tabRepository.addMapToTab({ userId, mapId: map.id });
 
-        // TODO distribute
+        const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
+
+        await this.distributionService.publish(workspaceIdsOfUser, {
+          type: SSE_EVENT_TYPE.UPDATE_TAB,
+          payload: {},
+        });
       }
     }
 

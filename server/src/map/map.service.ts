@@ -98,7 +98,12 @@ export class MapService {
 
     await this.tabService.addMapToTab({ userId, mapId: newMap.id });
 
-    // TODO distribute
+    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
+
+    await this.distributionService.publish(workspaceIdsOfUser, {
+      type: SSE_EVENT_TYPE.UPDATE_TAB,
+      payload: {},
+    });
 
     await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
   }
@@ -154,7 +159,12 @@ export class MapService {
 
     await this.tabService.addMapToTab({ userId, mapId: newMap.id });
 
-    // TODO distribute
+    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
+
+    await this.distributionService.publish(workspaceIdsOfUser, {
+      type: SSE_EVENT_TYPE.UPDATE_TAB,
+      payload: {},
+    });
 
     await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
   }
@@ -377,7 +387,12 @@ export class MapService {
 
     await this.tabRepository.removeMapFromTab({ userId, mapId });
 
-    // TODO distribute
+    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
+
+    await this.distributionService.publish(workspaceIdsOfUser, {
+      type: SSE_EVENT_TYPE.UPDATE_TAB,
+      payload: {},
+    });
 
     const shares = await this.prisma.share.findMany({ where: { mapId }, select: { shareUserId: true } });
 
