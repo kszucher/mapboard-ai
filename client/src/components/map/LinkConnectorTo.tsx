@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { getNodeLeft, getNodeTop } from '../../../../shared/src/map/getters/map-queries.ts';
-import { allowedSourceControls, controlColors } from '../../../../shared/src/map/state/map-consts-and-types.ts';
+import { getNodeLeft, getNodeTop } from '../../../../shared/src/map/map-getters.ts';
+import { allowedSourceControls, controlColors } from '../../../../shared/src/api/api-types-map-node.ts';
 import { RootState } from '../../data/store.ts';
 import { radixColorMap } from './UtilsSvg.ts';
 

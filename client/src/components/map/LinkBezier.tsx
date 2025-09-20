@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { getLineCoords } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getLineCoords, getOutputNodeOfLink } from '../../../../shared/src/map/map-getters.ts';
 import { RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLinePath, pathCommonProps } from './UtilsSvg.ts';
 
@@ -12,7 +12,7 @@ export const LinkBezier: FC = () => {
   const dashCycle = dashLength + gapLength;
 
   return Object.entries(m.l).map(([linkId, li]) => {
-    const animated = li.isProcessing;
+    const animated = getOutputNodeOfLink(m, li).isProcessing;
 
     const animationStyle = animated
       ? {

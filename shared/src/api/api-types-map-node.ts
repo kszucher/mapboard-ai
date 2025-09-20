@@ -3,16 +3,6 @@ import { BadgeProps } from '@radix-ui/themes';
 export const M_PADDING = 40;
 export const N_PADDING = 40;
 
-export type M = { l: Record<number, L>, n: Record<number, N> };
-
-export interface L {
-  fromNodeId: number;
-  toNodeId: number;
-  lineColor: string;
-  lineWidth: number;
-  isProcessing: boolean;
-}
-
 export interface N {
   iid: number;
   offsetW: number;

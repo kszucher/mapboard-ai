@@ -49,40 +49,16 @@ export type CreateShareRequestDto = {
   shareAccess: ShareAccess
 }
 
-export type CreateShareEvent = {
-  OwnerUser: { name: string }
-  Map: { name: string }
-}
-
 export type AcceptShareRequestDto = {
   shareId: number
-}
-
-export type AcceptShareEvent = {
-  ShareUser: { name: string }
-  Map: { name: string }
 }
 
 export type WithdrawShareRequestDto = {
   shareId: number
 }
 
-export type WithdrawShareEvent = {
-  shareUserId: number
-  mapId: number
-  OwnerUser: { name: string }
-  Map: { name: string }
-}
-
 export type RejectShareRequestDto = {
   shareId: number
-}
-
-export type RejectShareEvent = {
-  shareUserId: number
-  mapId: number
-  ShareUser: { name: string }
-  Map: { name: string }
 }
 
 export type ModifyShareAccessRequestDto = {
@@ -90,8 +66,3 @@ export type ModifyShareAccessRequestDto = {
   shareAccess: ShareAccess
 }
 
-export type ModifyShareAccessEvent = {
-  access: ShareAccess
-  OwnerUser: { name: string }
-  Map: { name: string }
-}

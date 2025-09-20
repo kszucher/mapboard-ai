@@ -1,4 +1,7 @@
-import { ControlType, M, N } from '../map/state/map-consts-and-types';
+import { L } from './api-types-map-link';
+import { ControlType, N } from './api-types-map-node';
+
+export type M = { l: Record<number, L>, n: Record<number, N> };
 
 export type MapInfo = {
   id: number
@@ -7,11 +10,9 @@ export type MapInfo = {
 }
 
 export type GetMapInfoQueryResponseDto = {
-  mapInfo: {
-    id: number,
-    name: string,
-    data: M
-  };
+  id: number,
+  name: string,
+  data: M
 };
 
 export type CreateMapInTabRequestDto = {
@@ -27,9 +28,42 @@ export type RenameMapRequestDto = {
   mapName: string
 }
 
-export type UpdateMapRequestDto = {
+export type DeleteMapRequestDto = {
   mapId: number
-  mapOp: MapOp
+}
+
+export type InsertNodeRequestDto = {
+  mapId: number
+  controlType: ControlType
+}
+
+export type InsertLinkRequestDto = {
+  mapId: number
+  fromNodeId: number
+  toNodeId: number
+}
+
+export type DeleteNodeRequestDto = {
+  mapId: number
+  nodeId: number
+}
+
+export type DeleteLinkRequestDto = {
+  mapId: number
+  linkId: number
+}
+
+export type MoveNodeRequestDto = {
+  mapId: number
+  nodeId: number
+  offsetX: number
+  offsetY: number
+}
+
+export type UpdateNodeRequestDto = {
+  mapId: number
+  nodeId: number
+  node: Partial<N>
 }
 
 export type ExecuteMapFileUploadDto = {
@@ -40,24 +74,3 @@ export type ExecuteMapFileUploadDto = {
 export type ExecuteMapRequestDto = {
   mapId: number
 }
-
-export type DeleteMapRequestDto = {
-  mapId: number
-}
-
-export enum MapOpType {
-  INSERT_NODE = 'INSERT_NODE',
-  INSERT_LINK = 'INSERT_LINK',
-  DELETE_NODE = 'DELETE_NODE',
-  DELETE_LINK = 'DELETE_LINK',
-  MOVE_NODE = 'MOVE_NODE',
-  UPDATE_NODE = 'UPDATE_NODE',
-}
-
-export type MapOp =
-  | { type: MapOpType.INSERT_NODE; payload: { controlType: ControlType } }
-  | { type: MapOpType.INSERT_LINK; payload: { fromNodeId: number, toNodeId: number } }
-  | { type: MapOpType.DELETE_NODE; payload: { nodeId: number } }
-  | { type: MapOpType.DELETE_LINK; payload: { linkId: number } }
-  | { type: MapOpType.MOVE_NODE; payload: { nodeId: number, offsetX: number, offsetY: number } }
-  | { type: MapOpType.UPDATE_NODE; payload: { nodeId: number, data: Partial<N> } }

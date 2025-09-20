@@ -1,12 +1,10 @@
-import { allowedSourceControls, controlBaseSizes, L, M, M_PADDING, N, N_PADDING } from '../state/map-consts-and-types';
+import { M } from '../api/api-types-map';
+import { L } from '../api/api-types-map-link';
+import { allowedSourceControls, controlBaseSizes, M_PADDING, N, N_PADDING } from '../api/api-types-map-node';
 
-export const getNodeSelfW = (n: N) => {
-  return controlBaseSizes[n.controlType].w + 2 * N_PADDING;
-};
+export const getNodeSelfW = (n: N) => controlBaseSizes[n.controlType].w + 2 * N_PADDING;
 
-export const getNodeSelfH = (n: N) => {
-  return controlBaseSizes[n.controlType].h + 2 * N_PADDING;
-};
+export const getNodeSelfH = (n: N) => controlBaseSizes[n.controlType].h + 2 * N_PADDING;
 
 export const getMapSelfW = (m: M) => {
   const nl = Object.values(m.n);
@@ -20,7 +18,6 @@ export const getMapSelfH = (m: M) => {
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-
 export const getNodeLeft = (n: N) => n.offsetW + M_PADDING;
 
 export const getNodeRight = (n: N) => n.offsetW + M_PADDING + getNodeSelfW(n);
@@ -31,24 +28,6 @@ export const getLastIndexN = (m: M): number => Math.max(-1, ...Object.values(m.n
 
 export const isExistingLink = (m: M, fromNodeId: number, toNodeId: number): boolean =>
   Object.values(m.l).some(li => li.fromNodeId === fromNodeId && li.toNodeId === toNodeId);
-
-export const getInputLinkOfNode = (m: M, rNodeId: number): Record<number, L> => {
-  return Object.fromEntries(Object.entries(m.l).filter(([, li]) => li.toNodeId === rNodeId));
-};
-
-export const getOutputLinkOfNode = (m: M, rNodeId: number): Record<number, L> => {
-  return Object.fromEntries(Object.entries(m.l).filter(([, li]) => li.fromNodeId === rNodeId));
-};
-
-export const getInputNodesOfNode = (m: M, rNodeId: number): Record<number, N> => {
-  const ll = Object.values(m.l).filter(li => li.toNodeId === rNodeId);
-  return Object.fromEntries(Object.entries(m.n).filter(([nodeId]) => ll.some(li => li.fromNodeId === Number(nodeId))));
-};
-
-export const getOutputNodesOfNode = (m: M, rNodeId: number): Record<number, N> => {
-  const ll = Object.values(m.l).filter(li => li.fromNodeId === rNodeId);
-  return Object.fromEntries(Object.entries(m.n).filter(([nodeId]) => ll.some(li => li.toNodeId === Number(nodeId))));
-};
 
 export const getInputNodeOfLink = (m: M, l: L): N => {
   const inputNode = m.n[l.fromNodeId];

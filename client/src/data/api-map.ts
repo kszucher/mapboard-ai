@@ -2,11 +2,16 @@ import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
   CreateMapInTabDuplicateRequestDto,
   CreateMapInTabRequestDto,
+  DeleteLinkRequestDto,
   DeleteMapRequestDto,
+  DeleteNodeRequestDto,
   ExecuteMapRequestDto,
   GetMapInfoQueryResponseDto,
+  InsertLinkRequestDto,
+  InsertNodeRequestDto,
+  MoveNodeRequestDto,
   RenameMapRequestDto,
-  UpdateMapRequestDto,
+  UpdateNodeRequestDto,
 } from '../../../shared/src/api/api-types-map.ts';
 
 export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
@@ -16,38 +21,52 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
   }),
 
   createMapInTab: builder.mutation<void, CreateMapInTabRequestDto>({
-    query: ({ mapName }) => ({
-      url: 'create-map-in-tab',
-      method: 'POST',
-      body: { mapName },
-    }),
+    query: params => ({ url: 'create-map-in-tab', method: 'POST', body: params }),
     invalidatesTags: ['MapInfo', 'TabInfo'],
   }),
 
   createMapInTabDuplicate: builder.mutation<void, CreateMapInTabDuplicateRequestDto>({
-    query: ({ mapId }) => ({
-      url: 'create-map-in-tab-duplicate',
-      method: 'POST',
-      body: { mapId },
-    }),
+    query: params => ({ url: 'create-map-in-tab-duplicate', method: 'POST', body: params }),
     invalidatesTags: ['MapInfo', 'TabInfo'],
   }),
 
   renameMap: builder.mutation<void, RenameMapRequestDto>({
-    query: ({ mapId, mapName }) => ({
-      url: 'rename-map',
-      method: 'POST',
-      body: { mapId, mapName },
-    }),
+    query: params => ({ url: 'rename-map', method: 'POST', body: params }),
     invalidatesTags: [],
   }),
 
-  updateMap: builder.mutation<void, UpdateMapRequestDto>({
-    query: ({ mapId, mapOp }) => ({
-      url: 'update-map',
-      method: 'POST',
-      body: { mapId, mapOp },
-    }),
+  deleteMap: builder.mutation<void, DeleteMapRequestDto>({
+    query: params => ({ url: 'delete-map', method: 'POST', body: params }),
+    invalidatesTags: [],
+  }),
+
+  insertNode: builder.mutation<void, InsertNodeRequestDto>({
+    query: params => ({ url: 'insert-node', method: 'POST', body: params }),
+    invalidatesTags: [],
+  }),
+
+  insertLink: builder.mutation<void, InsertLinkRequestDto>({
+    query: params => ({ url: 'insert-link', method: 'POST', body: params }),
+    invalidatesTags: [],
+  }),
+
+  deleteNode: builder.mutation<void, DeleteNodeRequestDto>({
+    query: params => ({ url: 'delete-node', method: 'POST', body: params }),
+    invalidatesTags: [],
+  }),
+
+  deleteLink: builder.mutation<void, DeleteLinkRequestDto>({
+    query: params => ({ url: 'delete-link', method: 'POST', body: params }),
+    invalidatesTags: [],
+  }),
+
+  moveNode: builder.mutation<void, MoveNodeRequestDto>({
+    query: params => ({ url: 'move-node', method: 'POST', body: params }),
+    invalidatesTags: [],
+  }),
+
+  updateNode: builder.mutation<void, UpdateNodeRequestDto>({
+    query: params => ({ url: 'update-node', method: 'POST', body: params }),
     invalidatesTags: [],
   }),
 
@@ -68,20 +87,7 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
   }),
 
   executeMap: builder.mutation<void, ExecuteMapRequestDto>({
-    query: ({ mapId }) => ({
-      url: 'execute-map',
-      method: 'POST',
-      body: { mapId },
-    }),
-    invalidatesTags: [],
-  }),
-
-  deleteMap: builder.mutation<void, DeleteMapRequestDto>({
-    query: ({ mapId }) => ({
-      url: 'delete-map',
-      method: 'POST',
-      body: { mapId },
-    }),
+    query: ({ mapId }) => ({ url: 'execute-map', method: 'POST', body: { mapId } }),
     invalidatesTags: [],
   }),
 });

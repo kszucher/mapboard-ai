@@ -1,13 +1,12 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
-import { MapOpType } from '../../../../shared/src/api/api-types-map.ts';
-import { controlTexts, ControlType } from '../../../../shared/src/map/state/map-consts-and-types.ts';
+import { controlTexts, ControlType } from '../../../../shared/src/api/api-types-map-node.ts';
 import Plus from '../../../assets/plus.svg?react';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeInsert = () => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const mapId = useGetMapInfoQuery().data?.id!;
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -21,17 +20,7 @@ export const NodeInsert = () => {
         {Object.values(ControlType).map(controlType => (
           <DropdownMenu.Item
             key={controlType}
-            onClick={() =>
-              dispatch(
-                api.endpoints.updateMap.initiate({
-                  mapId: mapId!,
-                  mapOp: {
-                    type: MapOpType.INSERT_NODE,
-                    payload: { controlType },
-                  },
-                })
-              )
-            }
+            onClick={() => dispatch(api.endpoints.insertNode.initiate({ mapId, controlType }))}
           >
             {controlTexts[controlType]}
           </DropdownMenu.Item>

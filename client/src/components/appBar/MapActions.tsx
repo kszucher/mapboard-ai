@@ -7,7 +7,7 @@ import { DialogState } from '../../data/state-types.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const MapActions = () => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const mapId = useGetMapInfoQuery().data?.id!;
   const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
   const isShared = sharesWithUser?.find(el => el.id === mapId);
   const dispatch = useDispatch<AppDispatch>();

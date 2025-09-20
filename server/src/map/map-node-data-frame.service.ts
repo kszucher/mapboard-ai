@@ -1,5 +1,5 @@
 import * as pl from 'nodejs-polars';
-import { LlmOutputSchema } from '../../../shared/src/map/state/map-consts-and-types';
+import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
 import { PrismaClient } from '../generated/client';
 import { DataFrameQuerySchemaType } from './map-node-data-frame.types';
 import { MapNodeFileService } from './map-node-file.service';

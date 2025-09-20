@@ -75,11 +75,18 @@ export const mapNodeDataFrameService: MapNodeDataFrameService = new MapNodeDataF
   () => mapNodeFileService
 );
 
-export const mapNodeLlmService: MapNodeLlmService = new MapNodeLlmService(prismaClient, () => mapNodeService);
+export const mapNodeLlmService: MapNodeLlmService = new MapNodeLlmService(
+  prismaClient,
+  () => mapNodeService,
+  () => workspaceService,
+  () => distributionService
+);
 
 export const mapNodeVisualizerService: MapNodeVisualizerService = new MapNodeVisualizerService(
   prismaClient,
-  () => mapNodeService
+  () => mapNodeService,
+  () => workspaceService,
+  () => distributionService
 );
 
 export const shareService: ShareService = new ShareService(

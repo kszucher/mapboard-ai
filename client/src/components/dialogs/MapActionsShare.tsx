@@ -5,7 +5,7 @@ import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { AccessType } from '../../data/state-types.ts';
 
 export const MapActionsShare = () => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const mapId = useGetMapInfoQuery().data?.id!;
   const [createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset }] = api.useCreateShareMutation();
   const errorMessage = error && (error as { data: { detail: string } }).data.detail;
   const [shareEmail, setShareEmail] = useState('');
@@ -60,10 +60,7 @@ export const MapActionsShare = () => {
                 {'Cancel'}
               </Button>
             </Dialog.Close>
-            <Button
-              disabled={shareEmail === ''}
-              onClick={() => mapId && createShare({ mapId, shareEmail, shareAccess })}
-            >
+            <Button disabled={shareEmail === ''} onClick={() => createShare({ mapId, shareEmail, shareAccess })}>
               {'Share'}
             </Button>
           </Flex>

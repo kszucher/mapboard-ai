@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { getMapSelfH, getMapSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getMapSelfH, getMapSelfW } from '../../../../shared/src/map/map-getters.ts';
 import { RootState } from '../../data/store.ts';
 
 export const MapFrame: FC = () => {

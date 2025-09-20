@@ -8,7 +8,7 @@ import { AccessType } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const NodeUndo: FC = () => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const mapId = useGetMapInfoQuery().data?.id!;
   const commitIndex = useSelector((state: RootState) => state.slice.commitIndex);
   const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
   const access = sharesWithUser?.find(el => el.id === mapId)?.access || AccessType.EDIT;

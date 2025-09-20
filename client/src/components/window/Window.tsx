@@ -1,28 +1,19 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { WORKSPACE_EVENT } from '../../../../shared/src/api/api-types-distribution.ts';
-import { MapInfo } from '../../../../shared/src/api/api-types-map.ts';
-import {
-  AcceptShareEvent,
-  CreateShareEvent,
-  ModifyShareAccessEvent,
-  RejectShareEvent,
-  WithdrawShareEvent,
-} from '../../../../shared/src/api/api-types-share.ts';
+import { SSE_EVENT, SSE_EVENT_TYPE } from '../../../../shared/src/api/api-types-distribution.ts';
 import { api, useGetMapInfoQuery, useGetShareInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AccessType, AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { backendUrl } from '../../urls/Urls.ts';
 
-export let timeoutId: NodeJS.Timeout;
 let mapListener: AbortController;
 let midMouseListener: AbortController;
 
 export const Window: FC = () => {
   const workspaceId = useSelector((state: RootState) => state.slice.workspaceId);
   const userId = useGetUserInfoQuery().data?.userInfo.id;
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const mapId = useGetMapInfoQuery().data?.id!;
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const pageState = useSelector((state: RootState) => state.slice.pageState);
   const dialogState = useSelector((state: RootState) => state.slice.dialogState);
@@ -111,73 +102,89 @@ export const Window: FC = () => {
         console.error('SSE error', error);
       };
 
-      eventSource.addEventListener(WORKSPACE_EVENT.RENAME_MAP, e => {
-        const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.RENAME_MAP, data);
-        dispatch(api.util.invalidateTags(['MapInfo', 'TabInfo']));
-      });
-
-      eventSource.addEventListener(WORKSPACE_EVENT.UPDATE_MAP_DATA, e => {
-        const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.UPDATE_MAP_DATA, data);
-        const mapInfo = data as { mapInfo: MapInfo };
-        dispatch(actions.updateMapFromSSE(mapInfo));
-      });
-
-      eventSource.addEventListener(WORKSPACE_EVENT.DELETE_MAP, e => {
-        const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.DELETE_MAP, data);
-        if (data.mapId === mapIdRef.current) {
-          dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
+      eventSource.addEventListener('message', e => {
+        const { type, payload } = JSON.parse(e.data) as SSE_EVENT;
+        switch (type) {
+          case SSE_EVENT_TYPE.RENAME_MAP: {
+            dispatch(api.util.invalidateTags(['MapInfo', 'TabInfo']));
+            break;
+          }
+          case SSE_EVENT_TYPE.DELETE_MAP: {
+            if (payload.mapId === mapIdRef.current) {
+              dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
+            }
+            dispatch(api.util.invalidateTags(['TabInfo']));
+            break;
+          }
+          case SSE_EVENT_TYPE.INSERT_NODE: {
+            dispatch(actions.insertNode(payload));
+            break;
+          }
+          case SSE_EVENT_TYPE.INSERT_LINK: {
+            dispatch(actions.insertLink(payload));
+            break;
+          }
+          case SSE_EVENT_TYPE.DELETE_NODE: {
+            dispatch(actions.deleteNode(payload));
+            break;
+          }
+          case SSE_EVENT_TYPE.DELETE_LINK: {
+            dispatch(actions.deleteLink(payload));
+            break;
+          }
+          case SSE_EVENT_TYPE.MOVE_NODE: {
+            dispatch(actions.moveNode(payload));
+            break;
+          }
+          case SSE_EVENT_TYPE.UPDATE_NODE: {
+            dispatch(actions.updateNode(payload));
+            break;
+          }
+          case SSE_EVENT_TYPE.UPDATE_NODES: {
+            dispatch(actions.updateNodes(payload));
+            break;
+          }
+          case SSE_EVENT_TYPE.UPDATE_TAB: {
+            dispatch(api.util.invalidateTags(['TabInfo']));
+            break;
+          }
+          case SSE_EVENT_TYPE.CREATE_SHARE: {
+            const toastMessage = `${payload.OwnerUser.name} created share of map ${payload.Map.name}`;
+            console.log(toastMessage);
+            dispatch(api.util.invalidateTags(['ShareInfo']));
+            break;
+          }
+          case SSE_EVENT_TYPE.ACCEPT_SHARE: {
+            const toastMessage = `${payload.ShareUser.name} accepted share of map ${payload.Map.name}`;
+            console.log(toastMessage);
+            dispatch(api.util.invalidateTags(['ShareInfo']));
+            break;
+          }
+          case SSE_EVENT_TYPE.WITHDRAW_SHARE: {
+            const toastMessage = `${payload.OwnerUser.name} withdrew share of map ${payload.Map.name}`;
+            console.log(toastMessage);
+            if (payload.shareUserId === userIdRef.current && payload.mapId === mapIdRef.current) {
+              dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
+            }
+            dispatch(api.util.invalidateTags(['ShareInfo']));
+            break;
+          }
+          case SSE_EVENT_TYPE.REJECT_SHARE: {
+            const toastMessage = `${payload.ShareUser.name} rejected share of map ${payload.Map.name}`;
+            console.log(toastMessage);
+            if (payload.shareUserId === userIdRef.current && payload.mapId === mapIdRef.current) {
+              dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
+            }
+            dispatch(api.util.invalidateTags(['ShareInfo']));
+            break;
+          }
+          case SSE_EVENT_TYPE.MODIFY_SHARE_ACCESS: {
+            const toastMessage = `${payload.OwnerUser.name} changed access of map ${payload.Map.name} to ${payload.access}`;
+            console.log(toastMessage);
+            dispatch(api.util.invalidateTags(['ShareInfo']));
+            break;
+          }
         }
-        dispatch(api.util.invalidateTags(['TabInfo']));
-      });
-
-      eventSource.addEventListener(WORKSPACE_EVENT.UPDATE_TAB, e => {
-        const data = JSON.parse(e.data);
-        console.log(WORKSPACE_EVENT.UPDATE_TAB, data);
-        dispatch(api.util.invalidateTags(['TabInfo']));
-      });
-
-      eventSource.addEventListener(WORKSPACE_EVENT.CREATE_SHARE, e => {
-        const data = JSON.parse(e.data) as CreateShareEvent;
-        const toastMessage = `${data.OwnerUser.name} created share of map ${data.Map.name}`;
-        console.log(WORKSPACE_EVENT.CREATE_SHARE, data, toastMessage);
-        dispatch(api.util.invalidateTags(['ShareInfo']));
-      });
-
-      eventSource.addEventListener(WORKSPACE_EVENT.ACCEPT_SHARE, e => {
-        const data = JSON.parse(e.data) as AcceptShareEvent;
-        const toastMessage = `${data.ShareUser.name} accepted share of map ${data.Map.name}`;
-        console.log(WORKSPACE_EVENT.ACCEPT_SHARE, data, toastMessage);
-        dispatch(api.util.invalidateTags(['ShareInfo']));
-      });
-
-      eventSource.addEventListener(WORKSPACE_EVENT.WITHDRAW_SHARE, e => {
-        const data = JSON.parse(e.data) as WithdrawShareEvent;
-        const toastMessage = `${data.OwnerUser.name} withdrew share of map ${data.Map.name}`;
-        console.log(WORKSPACE_EVENT.WITHDRAW_SHARE, data, toastMessage);
-        if (data.shareUserId === userIdRef.current && data.mapId === mapIdRef.current) {
-          dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
-        }
-        dispatch(api.util.invalidateTags(['ShareInfo']));
-      });
-
-      eventSource.addEventListener(WORKSPACE_EVENT.REJECT_SHARE, e => {
-        const data = JSON.parse(e.data) as RejectShareEvent;
-        const toastMessage = `${data.ShareUser.name} rejected share of map ${data.Map.name}`;
-        console.log(WORKSPACE_EVENT.REJECT_SHARE, data, toastMessage);
-        if (data.shareUserId === userIdRef.current && data.mapId === mapIdRef.current) {
-          dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId: null }));
-        }
-        dispatch(api.util.invalidateTags(['ShareInfo']));
-      });
-
-      eventSource.addEventListener(WORKSPACE_EVENT.MODIFY_SHARE_ACCESS, e => {
-        const data = JSON.parse(e.data) as ModifyShareAccessEvent;
-        const toastMessage = `${data.OwnerUser.name} changed access of map ${data.Map.name} to ${data.access}`;
-        console.log(WORKSPACE_EVENT.MODIFY_SHARE_ACCESS, data, toastMessage);
-        dispatch(api.util.invalidateTags(['ShareInfo']));
       });
 
       return () => {

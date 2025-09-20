@@ -1,4 +1,4 @@
-import { ControlType } from '../../../shared/src/map/state/map-consts-and-types';
+import { ControlType } from '../../../shared/src/api/api-types-map-node';
 import { PrismaClient } from '../generated/client';
 
 export class MapNodeService {

@@ -67,18 +67,17 @@ model MapNode {
 }
 
 model MapLink {
-  id           Int      @id @default(autoincrement())
-  mapId        Int
-  Map          Map      @relation(fields: [mapId], references: [id])
-  fromNodeId   Int
-  FromNode     MapNode  @relation("FromLinks", fields: [fromNodeId], references: [id])
-  toNodeId     Int
-  ToNode       MapNode  @relation("ToLinks", fields: [toNodeId], references: [id])
-  lineColor    String   @default("#bbbbbb")
-  lineWidth    Int      @default(1)
-  isProcessing Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
+  id         Int      @id @default(autoincrement())
+  mapId      Int
+  Map        Map      @relation(fields: [mapId], references: [id])
+  fromNodeId Int
+  FromNode   MapNode  @relation("FromLinks", fields: [fromNodeId], references: [id])
+  toNodeId   Int
+  ToNode     MapNode  @relation("ToLinks", fields: [toNodeId], references: [id])
+  lineColor  String   @default("#bbbbbb")
+  lineWidth  Int      @default(1)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 }
 
 model Tab {

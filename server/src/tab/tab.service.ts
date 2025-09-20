@@ -1,4 +1,4 @@
-import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
+import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { WorkspaceService } from '../workspace/workspace.service';
@@ -7,9 +7,8 @@ export class TabService {
   constructor(
     private prisma: PrismaClient,
     private getWorkspaceService: () => WorkspaceService,
-    private getDistributionService: () => DistributionService,
-  ) {
-  }
+    private getDistributionService: () => DistributionService
+  ) {}
 
   get workspaceService() {
     return this.getWorkspaceService();
@@ -46,7 +45,7 @@ export class TabService {
     });
   }
 
-  async addMapToTab({ userId, mapId }: { userId: number, mapId: number }) {
+  async addMapToTab({ userId, mapId }: { userId: number; mapId: number }) {
     await this.prisma.tab.update({
       where: {
         userId,
@@ -57,9 +56,16 @@ export class TabService {
         },
       },
     });
+
+    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
+
+    await this.distributionService.publish(workspaceIdsOfUser, {
+      type: SSE_EVENT_TYPE.UPDATE_TAB,
+      payload: {},
+    });
   }
 
-  async moveUpMapInTab({ userId, mapId }: { userId: number, mapId: number }) {
+  async moveUpMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
     const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
       where: { User: { id: userId } },
       select: { id: true, mapIds: true },
@@ -78,12 +84,12 @@ export class TabService {
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser, {
-      type: WORKSPACE_EVENT.UPDATE_TAB,
+      type: SSE_EVENT_TYPE.UPDATE_TAB,
       payload: {},
     });
   }
 
-  async moveDownMapInTab({ userId, mapId }: { userId: number, mapId: number }) {
+  async moveDownMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
     const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
       where: { User: { id: userId } },
       select: { id: true, mapIds: true },
@@ -102,12 +108,12 @@ export class TabService {
     const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser, {
-      type: WORKSPACE_EVENT.UPDATE_TAB,
+      type: SSE_EVENT_TYPE.UPDATE_TAB,
       payload: {},
     });
   }
 
-  async removeMapFromTab({ userId, mapId }: { userId: number, mapId: number }) {
+  async removeMapFromTab({ userId, mapId }: { userId: number; mapId: number }) {
     const tab = await this.prisma.tab.findUniqueOrThrow({
       where: { userId },
       select: { mapIds: true },

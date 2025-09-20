@@ -6,9 +6,8 @@ export class WorkspaceService {
   constructor(
     private prisma: PrismaClient,
     private getUserService: () => UserService,
-    private getMapService: () => MapService,
-  ) {
-  }
+    private getMapService: () => MapService
+  ) {}
 
   get userService(): UserService {
     return this.getUserService();
@@ -45,36 +44,42 @@ export class WorkspaceService {
   async createWorkspace({ userId }: { userId: number }) {
     await this.userService.incrementSignInCount({ userId });
 
+    const newWorkspace = await this.prisma.workspace.create({
+      data: { userId },
+      select: { id: true },
+    });
+
     let map;
     let lastMap;
     try {
-      lastMap = await this.mapService.getUserLastMapInfo({ userId });
+      lastMap = await this.mapService.getLastMapOfUser({ userId });
     } catch {
       lastMap = null;
     }
     if (lastMap) {
       map = lastMap;
     } else {
-      map = await this.mapService.createMap({ userId, mapName: 'New Map' });
+      map = await this.mapService.createMapInTabNew({ userId, workspaceId: newWorkspace.id, mapName: 'New Map' });
     }
+
+    await this.prisma.workspace.update({
+      where: { id: newWorkspace.id },
+      data: { mapId: map.id },
+    });
 
     await this.mapService.updateOpenCount({ mapId: map.id });
 
-    return this.prisma.workspace.create({
-      data: {
-        User: { connect: { id: userId } },
-        Map: { connect: { id: map.id } },
-      },
-      select: {
-        id: true,
-      },
-    });
+    return newWorkspace;
   }
 
-  async updateWorkspaceMap({ workspaceId, userId, mapId }: {
-    workspaceId: number,
-    userId: number,
-    mapId: number | null
+  async updateWorkspaceMap({
+    workspaceId,
+    userId,
+    mapId,
+  }: {
+    workspaceId: number;
+    userId: number;
+    mapId: number | null;
   }): Promise<void> {
     let map;
     if (mapId) {
@@ -85,14 +90,14 @@ export class WorkspaceService {
     } else {
       let lastMap;
       try {
-        lastMap = await this.mapService.getUserLastMapInfo({ userId });
+        lastMap = await this.mapService.getLastMapOfUser({ userId });
       } catch {
         lastMap = null;
       }
       if (lastMap) {
         map = lastMap;
       } else {
-        map = await this.mapService.createMap({ userId, mapName: 'New Map' });
+        map = await this.mapService.createMapInTabNew({ userId, workspaceId, mapName: 'New Map' });
       }
     }
 
@@ -100,9 +105,7 @@ export class WorkspaceService {
 
     await this.prisma.workspace.update({
       where: { id: workspaceId },
-      data: {
-        Map: { connect: { id: map.id } },
-      },
+      data: { mapId: map.id },
     });
   }
 

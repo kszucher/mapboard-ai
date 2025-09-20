@@ -5,8 +5,8 @@ import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const MapActionsRename = () => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
-  const mapName = useGetMapInfoQuery().data?.mapInfo.name;
+  const mapId = useGetMapInfoQuery().data?.id!;
+  const mapName = useGetMapInfoQuery().data?.name;
   const [newMapName, setNewMapName] = useState(mapName ?? '');
   const dispatch = useDispatch<AppDispatch>();
   return (
@@ -35,7 +35,7 @@ export const MapActionsRename = () => {
           </Button>
         </Dialog.Close>
         <Dialog.Close>
-          <Button onClick={() => mapId && dispatch(api.endpoints.renameMap.initiate({ mapId, mapName: newMapName }))}>
+          <Button onClick={() => dispatch(api.endpoints.renameMap.initiate({ mapId, mapName: newMapName }))}>
             {'Save'}
           </Button>
         </Dialog.Close>

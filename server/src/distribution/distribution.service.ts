@@ -1,17 +1,12 @@
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { createClient, RedisClientType } from 'redis';
-import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
+import { SSE_EVENT } from '../../../shared/src/api/api-types-distribution';
 import { WorkspaceService } from '../workspace/workspace.service';
-
-export interface RedisEventPayload {
-  type: WORKSPACE_EVENT;
-  payload: Record<string, any>;
-}
 
 export interface RedisEventMessage {
   workspaceId: number;
-  event: RedisEventPayload;
+  event: SSE_EVENT;
 }
 
 type ClientInfo = {
@@ -28,7 +23,7 @@ export class DistributionService {
   constructor(
     private getWorkspaceService: () => WorkspaceService,
     redisUrl: string,
-    channel = 'workspace_updates',
+    channel = 'workspace_updates'
   ) {
     this.publisher = createClient({ url: redisUrl });
     this.subscriber = this.publisher.duplicate();
@@ -53,7 +48,7 @@ export class DistributionService {
     });
   }
 
-  async publish(workspaceIds: number[], event: RedisEventPayload) {
+  async publish(workspaceIds: number[], event: SSE_EVENT) {
     for (const workspaceId of workspaceIds) {
       const msg: RedisEventMessage = { workspaceId, event };
       await this.publisher.publish(this.channel, JSON.stringify(msg));
@@ -66,7 +61,7 @@ export class DistributionService {
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
+      Connection: 'keep-alive',
     });
     res.flushHeaders?.();
     // initial heartbeat & retry interval
@@ -76,7 +71,7 @@ export class DistributionService {
     this.clients.set(clientId, { res, workspaceId });
     req.on('close', async () => {
       console.log('killing workspace ', workspaceId);
-      await this.workspaceService.deleteWorkspace({ workspaceId });
+      await this.workspaceService.deleteWorkspace({ workspaceId }); // is this really necessary here?
       this.clients.delete(clientId);
     });
   }
@@ -84,8 +79,8 @@ export class DistributionService {
   private broadcast(message: RedisEventMessage) {
     for (const { res, workspaceId } of this.clients.values()) {
       if (workspaceId === message.workspaceId) {
-        res.write(`event: ${message.event.type}\n`);
-        res.write(`data: ${JSON.stringify(message.event.payload)}\n\n`);
+        // res.write(`event: ${message.event.type}\n`);
+        res.write(`data: ${JSON.stringify(message.event)}\n\n`);
       }
     }
   }

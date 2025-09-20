@@ -1,11 +1,11 @@
-import { Box, Button, Flex, Spinner, Text } from '@radix-ui/themes';
+import { Box, Button, Flex, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
-import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
+import { N } from '../../../../shared/src/api/api-types-map-node.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { shrinkString } from '../../utils/utils.ts';
 
 export const NodeTypeFileUpload = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const mapId = useGetMapInfoQuery().data?.id!;
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [executeMapUploadFile, { isError, reset }] = api.useExecuteMapUploadFileMutation();
@@ -56,8 +56,6 @@ export const NodeTypeFileUpload = ({ nodeId, ni }: { nodeId: number; ni: N }) =>
               {'Upload File'}
             </Button>
           )}
-
-          {ni.isProcessing && <Spinner size="3" />}
         </Flex>
       </Box>
     </React.Fragment>

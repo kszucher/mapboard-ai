@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import colors from 'tailwindcss/colors';
-import { getNodeLeft, getNodeSelfH, getNodeSelfW, getNodeTop } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getNodeLeft, getNodeSelfH, getNodeSelfW, getNodeTop } from '../../../../shared/src/map/map-getters.ts';
 import { useGetUserInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 

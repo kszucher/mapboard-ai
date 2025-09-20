@@ -1,11 +1,4 @@
-import { WORKSPACE_EVENT } from '../../../shared/src/api/api-types-distribution';
-import {
-  AcceptShareEvent,
-  CreateShareEvent,
-  ModifyShareAccessEvent,
-  RejectShareEvent,
-  WithdrawShareEvent,
-} from '../../../shared/src/api/api-types-share';
+import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { $Enums, PrismaClient } from '../generated/client';
 import { WorkspaceService } from '../workspace/workspace.service';
@@ -16,9 +9,8 @@ export class ShareService {
   constructor(
     private prisma: PrismaClient,
     private getWorkspaceService: () => WorkspaceService,
-    private getDistributionService: () => DistributionService,
-  ) {
-  }
+    private getDistributionService: () => DistributionService
+  ) {}
 
   get workspaceService() {
     return this.getWorkspaceService();
@@ -101,7 +93,7 @@ export class ShareService {
     }
 
     const userShare = workspace.Map!.Shares.find(
-      el => el.mapId === workspace.Map!.id && el.shareUserId === workspace.userId,
+      el => el.mapId === workspace.Map!.id && el.shareUserId === workspace.userId
     );
 
     if (userShare) {
@@ -111,11 +103,16 @@ export class ShareService {
     return ShareAccess.UNAUTHORIZED;
   }
 
-  async createShare({ userId, mapId, shareEmail, shareAccess }: {
-    userId: number
-    mapId: number,
-    shareEmail: string,
-    shareAccess: ShareAccess
+  async createShare({
+    userId,
+    mapId,
+    shareEmail,
+    shareAccess,
+  }: {
+    userId: number;
+    mapId: number;
+    shareEmail: string;
+    shareAccess: ShareAccess;
   }) {
     const shareUser = await this.prisma.user.findUniqueOrThrow({
       where: { email: shareEmail },
@@ -154,8 +151,8 @@ export class ShareService {
       userIds: [share.ownerUserId, share.shareUserId],
     });
     await this.distributionService.publish(workspaceIdsOfUsers, {
-      type: WORKSPACE_EVENT.CREATE_SHARE,
-      payload: share as CreateShareEvent,
+      type: SSE_EVENT_TYPE.CREATE_SHARE,
+      payload: share,
     });
   }
 
@@ -175,8 +172,8 @@ export class ShareService {
       userIds: [share.ownerUserId, share.shareUserId],
     });
     await this.distributionService.publish(workspaceIdsOfUsers, {
-      type: WORKSPACE_EVENT.ACCEPT_SHARE,
-      payload: share as AcceptShareEvent,
+      type: SSE_EVENT_TYPE.ACCEPT_SHARE,
+      payload: share,
     });
   }
 
@@ -198,8 +195,8 @@ export class ShareService {
       userIds: [share.ownerUserId, share.shareUserId],
     });
     await this.distributionService.publish(workspaceIdsOfUsers, {
-      type: WORKSPACE_EVENT.WITHDRAW_SHARE,
-      payload: share as WithdrawShareEvent,
+      type: SSE_EVENT_TYPE.WITHDRAW_SHARE,
+      payload: share,
     });
   }
 
@@ -221,12 +218,12 @@ export class ShareService {
       userIds: [share.ownerUserId, share.shareUserId],
     });
     await this.distributionService.publish(workspaceIdsOfUsers, {
-      type: WORKSPACE_EVENT.REJECT_SHARE,
-      payload: share as RejectShareEvent,
+      type: SSE_EVENT_TYPE.REJECT_SHARE,
+      payload: share,
     });
   }
 
-  async modifyShareAccess({ shareId, shareAccess }: { shareId: number, shareAccess: ShareAccess }) {
+  async modifyShareAccess({ shareId, shareAccess }: { shareId: number; shareAccess: ShareAccess }) {
     const share = await this.prisma.share.update({
       where: { id: shareId },
       data: { access: shareAccess },
@@ -243,8 +240,8 @@ export class ShareService {
       userIds: [share.ownerUserId, share.shareUserId],
     });
     await this.distributionService.publish(workspaceIdsOfUsers, {
-      type: WORKSPACE_EVENT.MODIFY_SHARE_ACCESS,
-      payload: share as ModifyShareAccessEvent,
+      type: SSE_EVENT_TYPE.MODIFY_SHARE_ACCESS,
+      payload: share,
     });
   }
 }

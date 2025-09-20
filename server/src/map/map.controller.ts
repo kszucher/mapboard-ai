@@ -3,11 +3,17 @@ import multer from 'multer';
 import {
   CreateMapInTabDuplicateRequestDto,
   CreateMapInTabRequestDto,
+  DeleteLinkRequestDto,
   DeleteMapRequestDto,
+  DeleteNodeRequestDto,
   ExecuteMapFileUploadDto,
   ExecuteMapRequestDto,
   GetMapInfoQueryResponseDto,
+  InsertLinkRequestDto,
+  InsertNodeRequestDto,
+  MoveNodeRequestDto,
   RenameMapRequestDto,
+  UpdateNodeRequestDto,
 } from '../../../shared/src/api/api-types-map';
 
 import { mapService } from '../server';
@@ -19,35 +25,65 @@ const upload = multer({ storage });
 
 router.post('/get-map-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = req as any;
-  const map = await mapService.getWorkspaceMapInfo({ workspaceId });
-  const response: GetMapInfoQueryResponseDto = { mapInfo: map };
+  const response: GetMapInfoQueryResponseDto = await mapService.getWorkspaceMapInfo({ workspaceId });
   res.json(response);
 });
 
 router.post('/create-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId, workspaceId } = req as any;
-  const { mapName }: CreateMapInTabRequestDto = req.body;
-  await mapService.createMapInTabNew({ userId, workspaceId, mapName });
+  const params: CreateMapInTabRequestDto = req.body;
+  await mapService.createMapInTabNew({ userId, workspaceId, ...params });
   res.json();
 });
 
 router.post('/create-map-in-tab-duplicate', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId, workspaceId } = req as any;
-  const { mapId }: CreateMapInTabDuplicateRequestDto = req.body;
-  await mapService.createMapInTabDuplicate({ userId, workspaceId, mapId });
+  const params: CreateMapInTabDuplicateRequestDto = req.body;
+  await mapService.createMapInTabDuplicate({ userId, workspaceId, ...params });
   res.json();
 });
 
 router.post('/rename-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { mapId, mapName }: RenameMapRequestDto = req.body;
-  await mapService.renameMap({ mapId, mapName });
+  const params: RenameMapRequestDto = req.body;
+  await mapService.renameMap(params);
   res.json();
 });
 
-router.post('/update-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+router.post('/insert-node', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const params: InsertNodeRequestDto = req.body;
+  await mapService.insertNode(params);
+  res.json();
+});
+
+router.post('/insert-link', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const params: InsertLinkRequestDto = req.body;
+  await mapService.insertLink(params);
+  res.json();
+});
+
+router.post('/delete-node', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const params: DeleteNodeRequestDto = req.body;
+  await mapService.deleteNode(params);
+  res.json();
+});
+
+router.post('/delete-link', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const params: DeleteLinkRequestDto = req.body;
+  await mapService.deleteLink(params);
+  res.json();
+});
+
+router.post('/move-node', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { workspaceId } = req as any;
-  const { mapId, mapOp } = req.body;
-  await mapService.updateMap({ workspaceId, mapId, mapOp });
+  const params: MoveNodeRequestDto = req.body;
+  await mapService.moveNode({ workspaceId, ...params });
+  res.json();
+});
+
+router.post('/update-node', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { workspaceId } = req as any;
+  const params: UpdateNodeRequestDto = req.body;
+  await mapService.updateNode({ workspaceId, ...params });
   res.json();
 });
 
@@ -65,15 +101,15 @@ router.post(
 );
 
 router.post('/execute-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { mapId }: ExecuteMapRequestDto = req.body;
-  await mapService.executeMap({ mapId });
+  const params: ExecuteMapRequestDto = req.body;
+  await mapService.executeMap(params);
   res.json();
 });
 
 router.post('/delete-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId } = req as any;
-  const { mapId }: DeleteMapRequestDto = req.body;
-  await mapService.deleteMap({ userId, mapId });
+  const params: DeleteMapRequestDto = req.body;
+  await mapService.deleteMap({ userId, ...params });
   res.json();
 });
 

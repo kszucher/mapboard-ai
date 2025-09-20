@@ -1,20 +1,19 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/themes';
 import { FC, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MapOpType } from '../../../../shared/src/api/api-types-map.ts';
 import {
   getNodeLeft,
   getNodeSelfH,
   getNodeSelfW,
   getNodeTop,
   isExistingLink,
-} from '../../../../shared/src/map/getters/map-queries.ts';
+} from '../../../../shared/src/map/map-getters.ts';
 import {
   allowedTargetControls,
   controlColors,
   controlTexts,
   ControlType,
-} from '../../../../shared/src/map/state/map-consts-and-types.ts';
+} from '../../../../shared/src/api/api-types-map-node.ts';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
@@ -30,7 +29,7 @@ import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
 import { NodeTypeVisualizer } from './NodeTypeVisualizer.tsx';
 
 export const Node: FC = () => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const mapId = useGetMapInfoQuery().data?.id!;
   const nodeOffsetCoords = useSelector((state: RootState) => state.slice.nodeOffsetCoords);
   const nodeOffsetCoordsRef = useRef(nodeOffsetCoords);
   nodeOffsetCoordsRef.current = nodeOffsetCoords;
@@ -77,7 +76,7 @@ export const Node: FC = () => {
           onMouseDown={e => {
             let didMove = false;
             e.stopPropagation();
-            dispatch(actions.moveNodeByDragInit({ e }));
+            dispatch(actions.moveNodePreviewStart({ e }));
             const abortController = new AbortController();
             const { signal } = abortController;
             window.addEventListener(
@@ -85,7 +84,7 @@ export const Node: FC = () => {
               e => {
                 e.preventDefault();
                 didMove = true;
-                dispatch(actions.moveNodeByDragUpdate({ n: ni, e }));
+                dispatch(actions.moveNodePreviewUpdate({ n: ni, e }));
               },
               { signal }
             );
@@ -95,20 +94,22 @@ export const Node: FC = () => {
                 abortController.abort();
                 e.preventDefault();
                 if (didMove) {
-                  dispatch(actions.moveNodeOptimistic({ nodeId: Number(nodeId) }));
                   dispatch(
-                    api.endpoints.updateMap.initiate({
-                      mapId: mapId!,
-                      mapOp: {
-                        type: MapOpType.MOVE_NODE,
-                        payload: {
-                          nodeId: Number(nodeId),
-                          offsetX: nodeOffsetCoordsRef.current[0],
-                          offsetY: nodeOffsetCoordsRef.current[1],
-                        },
-                      },
+                    actions.moveNode({
+                      nodeId: Number(nodeId),
+                      offsetX: nodeOffsetCoordsRef.current[0],
+                      offsetY: nodeOffsetCoordsRef.current[1],
                     })
                   );
+                  dispatch(
+                    api.endpoints.moveNode.initiate({
+                      mapId,
+                      nodeId: Number(nodeId),
+                      offsetX: nodeOffsetCoordsRef.current[0],
+                      offsetY: nodeOffsetCoordsRef.current[1],
+                    })
+                  );
+                  dispatch(actions.moveNodePreviewEnd());
                 }
               },
               { signal }
@@ -130,15 +131,7 @@ export const Node: FC = () => {
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
             <DropdownMenu.Item
               onClick={() => {
-                dispatch(
-                  api.endpoints.updateMap.initiate({
-                    mapId: mapId!,
-                    mapOp: {
-                      type: MapOpType.DELETE_NODE,
-                      payload: { nodeId: Number(nodeId) },
-                    },
-                  })
-                );
+                dispatch(api.endpoints.deleteNode.initiate({ mapId, nodeId: Number(nodeId) }));
               }}
             >
               {'Delete'}
@@ -157,15 +150,10 @@ export const Node: FC = () => {
                       key={toNodeId}
                       onClick={() => {
                         dispatch(
-                          api.endpoints.updateMap.initiate({
-                            mapId: mapId!,
-                            mapOp: {
-                              type: MapOpType.INSERT_LINK,
-                              payload: {
-                                fromNodeId: Number(nodeId),
-                                toNodeId: Number(toNodeId),
-                              },
-                            },
+                          api.endpoints.insertLink.initiate({
+                            mapId,
+                            fromNodeId: Number(nodeId),
+                            toNodeId: Number(toNodeId),
                           })
                         );
                       }}

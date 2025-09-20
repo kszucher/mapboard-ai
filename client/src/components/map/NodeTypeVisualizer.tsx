@@ -1,7 +1,7 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
-import { getNodeSelfH, getNodeSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
-import { N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
+import { getNodeSelfH, getNodeSelfW } from '../../../../shared/src/map/map-getters.ts';
+import { N } from '../../../../shared/src/api/api-types-map-node.ts';
 
 export const NodeTypeVisualizer = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
   const x = { nodeId, ni };

@@ -1,19 +1,32 @@
 import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { z } from 'zod';
-import { LlmOutputSchema } from '../../../shared/src/map/state/map-consts-and-types';
+import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
+import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
+import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
+import { WorkspaceService } from '../workspace/workspace.service';
 import { DataFrameQuerySchema } from './map-node-data-frame.types';
 import { MapNodeService } from './map-node.service';
 
 export class MapNodeLlmService {
   constructor(
     private prisma: PrismaClient,
-    private getMapNodeService: () => MapNodeService
+    private getMapNodeService: () => MapNodeService,
+    private getWorkspaceService: () => WorkspaceService,
+    private getDistributionService: () => DistributionService
   ) {}
 
   get mapNodeService(): MapNodeService {
     return this.getMapNodeService();
+  }
+
+  get workspaceService(): WorkspaceService {
+    return this.getWorkspaceService();
+  }
+
+  get distributionService(): DistributionService {
+    return this.getDistributionService();
   }
 
   async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
@@ -36,12 +49,8 @@ export class MapNodeLlmService {
     }
 
     const schema = {
-      [LlmOutputSchema.TEXT]: z.object({
-        text: z.string(),
-      }),
-      [LlmOutputSchema.VECTOR_DATABASE_QUERY]: z.object({
-        text: z.string(),
-      }),
+      [LlmOutputSchema.TEXT]: z.object({ text: z.string() }),
+      [LlmOutputSchema.VECTOR_DATABASE_QUERY]: z.object({ text: z.string() }),
       [LlmOutputSchema.DATA_FRAME_QUERY]: DataFrameQuerySchema,
     }[node.llmOutputSchema];
 
@@ -87,6 +96,12 @@ export class MapNodeLlmService {
     await this.prisma.mapNode.update({
       where: { id: nodeId },
       data: { llmOutputJson },
+    });
+
+    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+    await this.distributionService.publish(workspaceIdsOfMap, {
+      type: SSE_EVENT_TYPE.UPDATE_NODE,
+      payload: { nodeId, node: { llmOutputJson } },
     });
   }
 }

@@ -8,8 +8,8 @@ import { AppDispatch } from '../../data/store.ts';
 import { MapActions } from './MapActions.tsx';
 
 export const MapSelector: FC = () => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
-  const mapName = useGetMapInfoQuery().data?.mapInfo.name;
+  const mapId = useGetMapInfoQuery().data?.id!;
+  const mapName = useGetMapInfoQuery().data?.name;
   const tabMapInfo = useGetTabInfoQuery().data?.tabInfo;
   const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
   const dispatch = useDispatch<AppDispatch>();

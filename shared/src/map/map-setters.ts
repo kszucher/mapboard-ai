@@ -1,6 +1,6 @@
-import { M } from '../state/map-consts-and-types';
+import { M } from '../api/api-types-map';
 
-export const mapAlign = (m: M) => {
+export const mapSetters = (m: M) => {
   const nl = Object.values(m.n);
   const minOffsetW = Math.min(...nl.map(ni => ni.offsetW));
   const minOffsetH = Math.min(...nl.map(ni => ni.offsetH));

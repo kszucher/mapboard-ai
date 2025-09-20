@@ -1,15 +1,14 @@
 import { Box, Flex, Select, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { MapOpType } from '../../../../shared/src/api/api-types-map.ts';
-import { getNodeSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
-import { LlmOutputSchema, N } from '../../../../shared/src/map/state/map-consts-and-types.ts';
+import { getNodeSelfW } from '../../../../shared/src/map/map-getters.ts';
+import { LlmOutputSchema, N } from '../../../../shared/src/api/api-types-map-node.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const mapId = useGetMapInfoQuery().data?.id!;
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -29,24 +28,8 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             }}
             value={ni.llmInstructions ?? ''}
             onChange={e => {
-              dispatch(
-                actions.updateNodeOptimistic({
-                  nodeId,
-                  attributes: { llmInstructions: e.target.value },
-                })
-              );
-              dispatch(
-                api.endpoints.updateMap.initiate({
-                  mapId: mapId!,
-                  mapOp: {
-                    type: MapOpType.UPDATE_NODE,
-                    payload: {
-                      nodeId,
-                      data: { llmInstructions: e.target.value },
-                    },
-                  },
-                })
-              );
+              dispatch(actions.updateNode({ nodeId, node: { llmInstructions: e.target.value } }));
+              dispatch(api.endpoints.updateNode.initiate({ mapId, nodeId, node: { llmInstructions: e.target.value } }));
             }}
           />
           <Text size="2">{`Output Schema`}</Text>
@@ -55,24 +38,8 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             value={ni.llmOutputSchema ?? LlmOutputSchema.TEXT}
             defaultValue={LlmOutputSchema.TEXT}
             onValueChange={(value: LlmOutputSchema) => {
-              dispatch(
-                actions.updateNodeOptimistic({
-                  nodeId,
-                  attributes: { llmOutputSchema: value },
-                })
-              );
-              dispatch(
-                api.endpoints.updateMap.initiate({
-                  mapId: mapId!,
-                  mapOp: {
-                    type: MapOpType.UPDATE_NODE,
-                    payload: {
-                      nodeId,
-                      data: { llmOutputSchema: value },
-                    },
-                  },
-                })
-              );
+              dispatch(actions.updateNode({ nodeId, node: { llmOutputSchema: value } }));
+              dispatch(api.endpoints.updateNode.initiate({ mapId, nodeId, node: { llmOutputSchema: value } }));
             }}
           >
             <Select.Trigger variant="soft" color="gray" />

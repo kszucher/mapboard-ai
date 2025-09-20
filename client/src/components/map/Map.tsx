@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ColorMode } from '../../../../shared/src/api/api-types-user.ts';
-import { getMapSelfH, getMapSelfW } from '../../../../shared/src/map/getters/map-queries.ts';
+import { getMapSelfH, getMapSelfW } from '../../../../shared/src/map/map-getters.ts';
 import { useGetMapInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { MidMouseMode } from '../../data/state-types.ts';
@@ -20,7 +20,7 @@ export const Map: FC = () => {
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const zoomInfo = useSelector((state: RootState) => state.slice.zoomInfo);
   const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
-  const mapId = useGetMapInfoQuery().data?.mapInfo.id;
+  const mapId = useGetMapInfoQuery().data?.id!;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const mapSelfW = getMapSelfW(m);
   const mapSelfH = getMapSelfH(m);
