@@ -1,14 +1,14 @@
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
-import { WorkspaceService } from '../workspace/workspace.service';
+import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { MapNodeService } from './map-node.service';
 
 export class MapNodeVisualizerService {
   constructor(
     private prisma: PrismaClient,
     private getMapNodeService: () => MapNodeService,
-    private getWorkspaceService: () => WorkspaceService,
+    private getWorkspaceRepository: () => WorkspaceRepository,
     private getDistributionService: () => DistributionService
   ) {}
 
@@ -16,8 +16,8 @@ export class MapNodeVisualizerService {
     return this.getMapNodeService();
   }
 
-  get workspaceService(): WorkspaceService {
-    return this.getWorkspaceService();
+  get workspaceRepository(): WorkspaceRepository {
+    return this.getWorkspaceRepository();
   }
 
   get distributionService(): DistributionService {
@@ -39,15 +39,16 @@ export class MapNodeVisualizerService {
       visualizerOutputText = JSON.stringify(inputDataFrameNode.dataFrameOutputJson);
     }
 
-    await this.prisma.mapNode.update({
+    const mapNode = await this.prisma.mapNode.update({
       where: { id: nodeId },
       data: { visualizerOutputText },
+      select: { id: true, visualizerOutputText: true },
     });
 
-    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+    const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: SSE_EVENT_TYPE.UPDATE_NODE,
-      payload: { nodeId, node: { visualizerOutputText } },
+      payload: { node: mapNode },
     });
   }
 }

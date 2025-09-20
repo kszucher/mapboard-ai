@@ -1,19 +1,19 @@
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { $Enums, PrismaClient } from '../generated/client';
-import { WorkspaceService } from '../workspace/workspace.service';
+import { WorkspaceRepository } from '../workspace/workspace.repository';
 import ShareAccess = $Enums.ShareAccess;
 import ShareStatus = $Enums.ShareStatus;
 
 export class ShareService {
   constructor(
     private prisma: PrismaClient,
-    private getWorkspaceService: () => WorkspaceService,
+    private getWorkspaceRepository: () => WorkspaceRepository,
     private getDistributionService: () => DistributionService
   ) {}
 
-  get workspaceService() {
-    return this.getWorkspaceService();
+  get workspaceRepository() {
+    return this.getWorkspaceRepository();
   }
 
   get distributionService() {
@@ -147,9 +147,10 @@ export class ShareService {
       },
     });
 
-    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+    const workspaceIdsOfUsers = await this.workspaceRepository.getWorkspaceIdsOfUsers({
       userIds: [share.ownerUserId, share.shareUserId],
     });
+
     await this.distributionService.publish(workspaceIdsOfUsers, {
       type: SSE_EVENT_TYPE.CREATE_SHARE,
       payload: share,
@@ -168,9 +169,10 @@ export class ShareService {
       },
     });
 
-    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+    const workspaceIdsOfUsers = await this.workspaceRepository.getWorkspaceIdsOfUsers({
       userIds: [share.ownerUserId, share.shareUserId],
     });
+
     await this.distributionService.publish(workspaceIdsOfUsers, {
       type: SSE_EVENT_TYPE.ACCEPT_SHARE,
       payload: share,
@@ -191,9 +193,10 @@ export class ShareService {
 
     await this.prisma.share.delete({ where: { id: shareId } });
 
-    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+    const workspaceIdsOfUsers = await this.workspaceRepository.getWorkspaceIdsOfUsers({
       userIds: [share.ownerUserId, share.shareUserId],
     });
+
     await this.distributionService.publish(workspaceIdsOfUsers, {
       type: SSE_EVENT_TYPE.WITHDRAW_SHARE,
       payload: share,
@@ -214,9 +217,10 @@ export class ShareService {
 
     await this.prisma.share.delete({ where: { id: shareId } });
 
-    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+    const workspaceIdsOfUsers = await this.workspaceRepository.getWorkspaceIdsOfUsers({
       userIds: [share.ownerUserId, share.shareUserId],
     });
+
     await this.distributionService.publish(workspaceIdsOfUsers, {
       type: SSE_EVENT_TYPE.REJECT_SHARE,
       payload: share,
@@ -236,9 +240,10 @@ export class ShareService {
       },
     });
 
-    const workspaceIdsOfUsers = await this.workspaceService.getWorkspaceIdsOfUsers({
+    const workspaceIdsOfUsers = await this.workspaceRepository.getWorkspaceIdsOfUsers({
       userIds: [share.ownerUserId, share.shareUserId],
     });
+
     await this.distributionService.publish(workspaceIdsOfUsers, {
       type: SSE_EVENT_TYPE.MODIFY_SHARE_ACCESS,
       payload: share,

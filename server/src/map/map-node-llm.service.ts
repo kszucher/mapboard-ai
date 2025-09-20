@@ -5,7 +5,7 @@ import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
-import { WorkspaceService } from '../workspace/workspace.service';
+import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { DataFrameQuerySchema } from './map-node-data-frame.types';
 import { MapNodeService } from './map-node.service';
 
@@ -13,7 +13,7 @@ export class MapNodeLlmService {
   constructor(
     private prisma: PrismaClient,
     private getMapNodeService: () => MapNodeService,
-    private getWorkspaceService: () => WorkspaceService,
+    private getWorkspaceRepository: () => WorkspaceRepository,
     private getDistributionService: () => DistributionService
   ) {}
 
@@ -21,8 +21,8 @@ export class MapNodeLlmService {
     return this.getMapNodeService();
   }
 
-  get workspaceService(): WorkspaceService {
-    return this.getWorkspaceService();
+  get workspaceRepository(): WorkspaceRepository {
+    return this.getWorkspaceRepository();
   }
 
   get distributionService(): DistributionService {
@@ -99,7 +99,7 @@ export class MapNodeLlmService {
       select: { id: true, llmOutputJson: true },
     });
 
-    const workspaceIdsOfMap = await this.workspaceService.getWorkspaceIdsOfMap({ mapId });
+    const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
     await this.distributionService.publish(workspaceIdsOfMap, {
       type: SSE_EVENT_TYPE.UPDATE_NODE,
       payload: { node: mapNode },

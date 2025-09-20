@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { createClient, RedisClientType } from 'redis';
 import { SSE_EVENT } from '../../../shared/src/api/api-types-distribution';
-import { WorkspaceService } from '../workspace/workspace.service';
+import { WorkspaceRepository } from '../workspace/workspace.repository';
 
 export interface RedisEventMessage {
   workspaceId: number;
@@ -21,7 +21,7 @@ export class DistributionService {
   private readonly channel: string;
 
   constructor(
-    private getWorkspaceService: () => WorkspaceService,
+    private getWorkspaceRepository: () => WorkspaceRepository,
     redisUrl: string,
     channel = 'workspace_updates'
   ) {
@@ -30,8 +30,8 @@ export class DistributionService {
     this.channel = channel;
   }
 
-  get workspaceService() {
-    return this.getWorkspaceService();
+  get workspaceRepository() {
+    return this.getWorkspaceRepository();
   }
 
   async connectAndSubscribe() {
@@ -71,7 +71,7 @@ export class DistributionService {
     this.clients.set(clientId, { res, workspaceId });
     req.on('close', async () => {
       console.log('killing workspace ', workspaceId);
-      await this.workspaceService.deleteWorkspace({ workspaceId }); // is this really necessary here?
+      await this.workspaceRepository.deleteWorkspace({ workspaceId }); // is this really necessary here?
       this.clients.delete(clientId);
     });
   }

@@ -1,48 +1,36 @@
 import { PrismaClient } from '../generated/client';
-import { MapService } from '../map/map.service';
-import { UserService } from '../user/user.service';
+import { MapRepository } from '../map/map.repository';
+import { TabRepository } from '../tab/tab.repository';
+import { UserRepository } from '../user/user.repository';
+import { WorkspaceRepository } from './workspace.repository';
 
 export class WorkspaceService {
   constructor(
     private prisma: PrismaClient,
-    private getUserService: () => UserService,
-    private getMapService: () => MapService
+    private getWorkspaceRepository: () => WorkspaceRepository,
+    private getUserRepository: () => UserRepository,
+    private getMapRepository: () => MapRepository,
+    private getTabRepository: () => TabRepository
   ) {}
 
-  get userService(): UserService {
-    return this.getUserService();
+  get workspaceRepository(): WorkspaceRepository {
+    return this.getWorkspaceRepository();
   }
 
-  get mapService(): MapService {
-    return this.getMapService();
+  get userRepository(): UserRepository {
+    return this.getUserRepository();
   }
 
-  async getWorkspaceIdsOfUser({ userId }: { userId: number }) {
-    const workspaces = await this.prisma.workspace.findMany({
-      where: { User: { id: userId } },
-      select: { id: true },
-    });
-    return workspaces.map(el => el.id);
+  get mapRepository(): MapRepository {
+    return this.getMapRepository();
   }
 
-  async getWorkspaceIdsOfUsers({ userIds }: { userIds: number[] }) {
-    const workspaces = await this.prisma.workspace.findMany({
-      where: { User: { id: { in: userIds } } },
-      select: { id: true },
-    });
-    return workspaces.map(el => el.id);
-  }
-
-  async getWorkspaceIdsOfMap({ mapId }: { mapId: number }) {
-    const workspaces = await this.prisma.workspace.findMany({
-      where: { Map: { id: mapId } },
-      select: { id: true },
-    });
-    return workspaces.map(el => el.id);
+  get tabRepository(): TabRepository {
+    return this.getTabRepository();
   }
 
   async createWorkspace({ userId }: { userId: number }) {
-    await this.userService.incrementSignInCount({ userId });
+    await this.userRepository.incrementSignInCount({ userId });
 
     const newWorkspace = await this.prisma.workspace.create({
       data: { userId },
@@ -52,22 +40,23 @@ export class WorkspaceService {
     let map;
     let lastMap;
     try {
-      lastMap = await this.mapService.getLastMapOfUser({ userId });
+      lastMap = await this.mapRepository.getLastMapOfUser({ userId });
     } catch {
       lastMap = null;
     }
     if (lastMap) {
       map = lastMap;
     } else {
-      map = await this.mapService.createMapInTabNew({ userId, workspaceId: newWorkspace.id, mapName: 'New Map' });
+      map = await this.mapRepository.createMap({ userId, mapName: 'New Map' });
+
+      await this.tabRepository.addMapToTab({ userId, mapId: map.id });
+
+      // TODO distribute
     }
 
-    await this.prisma.workspace.update({
-      where: { id: newWorkspace.id },
-      data: { mapId: map.id },
-    });
+    await this.workspaceRepository.addMapToWorkspace({ workspaceId: newWorkspace.id, mapId: map.id });
 
-    await this.mapService.updateOpenCount({ mapId: map.id });
+    await this.mapRepository.updateOpenCount({ mapId: map.id });
 
     return newWorkspace;
   }
@@ -90,43 +79,23 @@ export class WorkspaceService {
     } else {
       let lastMap;
       try {
-        lastMap = await this.mapService.getLastMapOfUser({ userId });
+        lastMap = await this.mapRepository.getLastMapOfUser({ userId });
       } catch {
         lastMap = null;
       }
       if (lastMap) {
         map = lastMap;
       } else {
-        map = await this.mapService.createMapInTabNew({ userId, workspaceId, mapName: 'New Map' });
+        map = await this.mapRepository.createMap({ userId, mapName: 'New Map' });
+
+        await this.tabRepository.addMapToTab({ userId, mapId: map.id });
+
+        // TODO distribute
       }
     }
 
-    await this.mapService.updateOpenCount({ mapId: map.id });
+    await this.mapRepository.updateOpenCount({ mapId: map.id });
 
-    await this.prisma.workspace.update({
-      where: { id: workspaceId },
-      data: { mapId: map.id },
-    });
-  }
-
-  async removeMapFromWorkspaces({ mapId }: { mapId: number }): Promise<void> {
-    await this.prisma.workspace.updateMany({
-      where: { mapId },
-      data: {
-        mapId: undefined,
-      },
-    });
-  }
-
-  async deleteWorkspace({ workspaceId }: { workspaceId: number }) {
-    try {
-      await this.prisma.workspace.delete({ where: { id: workspaceId } });
-    } catch (e) {
-      console.error('delete workspace error');
-    }
-  }
-
-  async deleteWorkspaces() {
-    await this.prisma.workspace.deleteMany();
+    await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: map.id });
   }
 }

@@ -1,17 +1,23 @@
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
-import { WorkspaceService } from '../workspace/workspace.service';
+import { WorkspaceRepository } from '../workspace/workspace.repository';
+import { TabRepository } from './tab.repository';
 
 export class TabService {
   constructor(
     private prisma: PrismaClient,
-    private getWorkspaceService: () => WorkspaceService,
+    private getTabRepository: () => TabRepository,
+    private getWorkspaceRepository: () => WorkspaceRepository,
     private getDistributionService: () => DistributionService
   ) {}
 
-  get workspaceService() {
-    return this.getWorkspaceService();
+  get tabRepository() {
+    return this.getTabRepository();
+  }
+
+  get workspaceRepository() {
+    return this.getWorkspaceRepository();
   }
 
   get distributionService() {
@@ -46,18 +52,9 @@ export class TabService {
   }
 
   async addMapToTab({ userId, mapId }: { userId: number; mapId: number }) {
-    await this.prisma.tab.update({
-      where: {
-        userId,
-      },
-      data: {
-        mapIds: {
-          push: mapId,
-        },
-      },
-    });
+    await this.tabRepository.addMapToTab({ userId, mapId });
 
-    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
+    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser, {
       type: SSE_EVENT_TYPE.UPDATE_TAB,
@@ -66,22 +63,9 @@ export class TabService {
   }
 
   async moveUpMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
-    const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
-      where: { User: { id: userId } },
-      select: { id: true, mapIds: true },
-    });
+    await this.tabRepository.moveUpMapInTab({ userId, mapId });
 
-    const i = mapIds.indexOf(mapId);
-    if (i <= 0) return;
-
-    [mapIds[i], mapIds[i - 1]] = [mapIds[i - 1], mapIds[i]];
-
-    await this.prisma.tab.update({
-      where: { id },
-      data: { mapIds },
-    });
-
-    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
+    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser, {
       type: SSE_EVENT_TYPE.UPDATE_TAB,
@@ -90,44 +74,13 @@ export class TabService {
   }
 
   async moveDownMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
-    const { id, mapIds } = await this.prisma.tab.findFirstOrThrow({
-      where: { User: { id: userId } },
-      select: { id: true, mapIds: true },
-    });
+    await this.tabRepository.moveDownMapInTab({ userId, mapId });
 
-    const i = mapIds.indexOf(mapId);
-    if (i === -1 || i === mapIds.length - 1) return;
-
-    [mapIds[i], mapIds[i + 1]] = [mapIds[i + 1], mapIds[i]];
-
-    await this.prisma.tab.update({
-      where: { id },
-      data: { mapIds },
-    });
-
-    const workspaceIdsOfUser = await this.workspaceService.getWorkspaceIdsOfUser({ userId });
+    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
     await this.distributionService.publish(workspaceIdsOfUser, {
       type: SSE_EVENT_TYPE.UPDATE_TAB,
       payload: {},
-    });
-  }
-
-  async removeMapFromTab({ userId, mapId }: { userId: number; mapId: number }) {
-    const tab = await this.prisma.tab.findUniqueOrThrow({
-      where: { userId },
-      select: { mapIds: true },
-    });
-
-    const updatedMapIds = tab.mapIds.filter(id => id !== mapId);
-
-    await this.prisma.tab.update({
-      where: { userId },
-      data: {
-        mapIds: {
-          set: updatedMapIds,
-        },
-      },
     });
   }
 }
