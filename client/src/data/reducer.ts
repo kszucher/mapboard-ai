@@ -1,25 +1,17 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
-import {
-  DeleteLinkEventPayload,
-  DeleteNodeEventPayload,
-  InsertLinkEventPayload,
-  InsertNodeEventPayload,
-  MoveNodeEventPayload,
-  UpdateNodeEventPayload,
-  UpdateNodesEventPayload,
-} from '../../../shared/src/api/api-types-distribution.ts';
+import { UpdateMapGraphEventPayload } from '../../../shared/src/api/api-types-distribution.ts';
+import { N } from '../../../shared/src/api/api-types-map-node.ts';
 import { getNodeSelfH, getNodeSelfW } from '../../../shared/src/map/map-getters.ts';
 import { alignNodes } from '../../../shared/src/map/map-setters.ts';
-import { N } from '../../../shared/src/api/api-types-map-node.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
 import { api } from './api.ts';
-import { stateDefault, stateDefaults } from './state-defaults.ts';
+import { stateDefault, state } from './state-defaults.ts';
 import { AlertDialogState, DialogState, MidMouseMode, PageState, State } from './state-types.ts';
 
 export const slice = createSlice({
   name: 'slice',
-  initialState: stateDefaults,
+  initialState: state,
   reducers: {
     setToken(state, action: PayloadAction<string>) {
       state.token = action.payload;
@@ -99,34 +91,16 @@ export const slice = createSlice({
     moveNodePreviewEnd(state) {
       state.nodeOffsetCoords = [];
     },
-    insertNode(state, { payload: { node } }: PayloadAction<InsertNodeEventPayload>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      m.n.push(node);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
-    },
-    insertLink(state, { payload: { link } }: PayloadAction<InsertLinkEventPayload>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      m.l.push(link);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), m];
-    },
-    deleteNode(state, { payload: { nodeId, linkIds } }: PayloadAction<DeleteNodeEventPayload>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      const newM = {
-        n: m.n.filter(ni => ni.id !== nodeId),
-        l: m.l.filter(li => !linkIds.includes(li.id)),
-      };
-      alignNodes(newM);
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
-    },
-    deleteLink(state, { payload: { linkId } }: PayloadAction<DeleteLinkEventPayload>) {
-      const m = structuredClone(current(state.commitList[state.commitIndex]));
-      const newM = {
-        n: m.n,
-        l: m.l.filter(li => li.id !== linkId),
-      };
-      state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
-    },
-    moveNode(state, { payload: { nodeId, offsetX, offsetY } }: PayloadAction<MoveNodeEventPayload>) {
+    moveNodeOptimistic(
+      state,
+      {
+        payload: { nodeId, offsetX, offsetY },
+      }: PayloadAction<{
+        nodeId: number;
+        offsetX: number;
+        offsetY: number;
+      }>
+    ) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const newM = {
         n: m.n.map(ni => (ni.id === nodeId ? { ...ni, offsetW: offsetX, offsetH: offsetY } : ni)),
@@ -135,7 +109,7 @@ export const slice = createSlice({
       alignNodes(newM);
       state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
-    updateNode(state, { payload: { node } }: PayloadAction<UpdateNodeEventPayload>) {
+    updateNodeOptimistic(state, { payload: { node } }: PayloadAction<{ node: Partial<N> }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const newM = {
         n: m.n.map(ni => (ni.id === node.id ? { ...ni, ...node } : ni)),
@@ -143,21 +117,36 @@ export const slice = createSlice({
       };
       state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
-    updateNodes(state, { payload: { nodes } }: PayloadAction<UpdateNodesEventPayload>) {
+    updateMapGraphSse(state, { payload: { nodes, links } }: PayloadAction<UpdateMapGraphEventPayload>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
+      const { insert: nodeInsert = [], update: nodeUpdate = [], delete: nodeDelete = [] } = nodes ?? {};
+      const { insert: linkInsert = [], update: linkUpdate = [], delete: linkDelete = [] } = links ?? {};
       const newM = {
-        n: m.n.map(ni =>
-          nodes.map(nj => nj.id).includes(ni.id) ? { ...ni, ...nodes.find(el => el.id === ni.id) } : ni
-        ),
-        l: m.l,
+        n: [
+          ...m.n
+            .filter(ni => !nodeDelete.includes(ni.id))
+            .map(ni =>
+              nodeUpdate.some(nj => nj.id === ni.id) ? { ...ni, ...nodeUpdate.find(el => el.id === ni.id) } : ni
+            ),
+          ...nodeInsert,
+        ],
+        l: [
+          ...m.l
+            .filter(li => !linkDelete.includes(li.id))
+            .map(li =>
+              linkUpdate.some(lj => lj.id === li.id) ? { ...li, ...linkUpdate.find(el => el.id === li.id) } : li
+            ),
+          ...linkInsert,
+        ],
       };
+
       state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
   },
   extraReducers: builder => {
     builder.addMatcher(isAction, () => {});
     builder.addMatcher(api.endpoints.createWorkspace.matchFulfilled, (state, { payload }) => {
-      state.workspaceId = payload.workspaceInfo.workspaceId;
+      state.workspaceId = payload.workspaceId;
       state.pageState = PageState.WS;
     });
     builder.addMatcher(
@@ -188,7 +177,7 @@ export const slice = createSlice({
         const m = structuredClone(payload.data);
         state.commitList = [m];
         state.commitIndex = 0;
-        state.serverMap = payload.data;
+        state.mapShareAccess = payload.shareAccess;
       } else {
         window.alert('invalid map');
       }

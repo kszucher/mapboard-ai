@@ -28,16 +28,14 @@ export const NodeTypeContext = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             value={ni.contextOutputText ?? ''}
             onChange={e => {
               dispatch(
-                actions.updateNode({
-                  nodeId,
-                  node: { contextOutputText: e.target.value },
+                actions.updateNodeOptimistic({
+                  node: { id: nodeId, contextOutputText: e.target.value },
                 })
               );
               dispatch(
                 api.endpoints.updateNode.initiate({
                   mapId,
-                  nodeId,
-                  node: { contextOutputText: e.target.value },
+                  node: { id: nodeId, contextOutputText: e.target.value },
                 })
               );
             }}

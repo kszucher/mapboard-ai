@@ -18,6 +18,7 @@ import mapController from './map/map.controller';
 import { MapRepository } from './map/map.repository';
 import { MapService } from './map/map.service';
 import shareController from './share/share.controller';
+import { ShareRepository } from './share/share.repository';
 import { ShareService } from './share/share.service';
 import tabController from './tab/tab.controller';
 import { TabRepository } from './tab/tab.repository';
@@ -32,13 +33,10 @@ import { WorkspaceService } from './workspace/workspace.service';
 export const prismaClient = new PrismaClient();
 
 container.registerInstance(PrismaClient, prismaClient);
-
-container.registerSingleton(WorkspaceRepository);
-container.registerSingleton(MapRepository);
-container.registerSingleton(TabRepository);
+container.registerSingleton(UserService);
 container.registerSingleton(UserRepository);
-
-container.registerSingleton(DistributionService);
+container.registerSingleton(MapService);
+container.registerSingleton(MapRepository);
 container.registerSingleton(MapNodeRepository);
 container.registerSingleton(MapNodeFileService);
 container.registerSingleton(MapNodeIngestionService);
@@ -48,26 +46,24 @@ container.registerSingleton(MapNodeVectorDatabaseService);
 container.registerSingleton(MapNodeDataFrameService);
 container.registerSingleton(MapNodeLlmService);
 container.registerSingleton(MapNodeVisualizerService);
-container.registerSingleton(ShareService);
 container.registerSingleton(TabService);
-container.registerSingleton(UserService);
+container.registerSingleton(TabRepository);
+container.registerSingleton(ShareService);
+container.registerSingleton(ShareRepository);
 container.registerSingleton(WorkspaceService);
-container.registerSingleton(MapService);
+container.registerSingleton(WorkspaceRepository);
+container.registerSingleton(DistributionService);
 
-export const workspaceRepository = container.resolve(WorkspaceRepository);
-export const mapRepository = container.resolve(MapRepository);
-export const distributionService = container.resolve(DistributionService);
-export const shareService = container.resolve(ShareService);
-export const tabService = container.resolve(TabService);
 export const userService = container.resolve(UserService);
-export const workspaceService = container.resolve(WorkspaceService);
 export const mapService = container.resolve(MapService);
-
-export { container };
+export const tabService = container.resolve(TabService);
+export const shareService = container.resolve(ShareService);
+export const workspaceService = container.resolve(WorkspaceService);
+export const distributionService = container.resolve(DistributionService);
 
 (async () => {
-  await workspaceRepository.deleteWorkspaces();
-  await mapRepository.terminateProcesses();
+  await workspaceService.deleteWorkspaces();
+  await mapService.clearProcessingAll();
   await distributionService.connectAndSubscribe();
 })();
 
@@ -75,12 +71,12 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(distributionController);
-app.use(mapController);
-app.use(shareController);
-app.use(tabController);
 app.use(userController);
+app.use(mapController);
+app.use(tabController);
+app.use(shareController);
 app.use(workspaceController);
+app.use(distributionController);
 
 app.get('/ping', async (req: Request, res: Response) => {
   console.log('ping');

@@ -1,11 +1,11 @@
 import { Button, Dialog, Flex, Table } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
+import { ShareStatus } from '../../../../shared/src/api/api-types-share.ts';
 import { api, useGetShareInfoQuery } from '../../data/api.ts';
-import { StatusType } from '../../data/state-types.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const SharedWithMe = () => {
-  const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
+  const sharesWithUser = useGetShareInfoQuery().data?.SharesWithMe;
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>
@@ -30,7 +30,7 @@ export const SharedWithMe = () => {
               <Table.Cell>{el.OwnerUser.email}</Table.Cell>
               <Table.Cell>{el.access}</Table.Cell>
               <Table.Cell>{el.status}</Table.Cell>
-              {el.status === StatusType.WAITING && (
+              {el.status === ShareStatus.WAITING && (
                 <Table.Cell>
                   <Button
                     size="1"
@@ -47,7 +47,7 @@ export const SharedWithMe = () => {
                   </Button>
                 </Table.Cell>
               )}
-              {el.status === StatusType.ACCEPTED && (
+              {el.status === ShareStatus.ACCEPTED && (
                 <Table.Cell>
                   <Button
                     size="1"

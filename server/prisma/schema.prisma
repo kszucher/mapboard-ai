@@ -135,7 +135,6 @@ enum ShareStatus {
 }
 
 enum ShareAccess {
-  UNAUTHORIZED
   VIEW
   EDIT
 }

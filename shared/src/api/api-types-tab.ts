@@ -1,11 +1,7 @@
-export type TabMapInfo = {
+export type GetTabInfoQueryResponseDto = {
   id: number
   name: string
 } []
-
-export type GetTabInfoQueryResponseDto = {
-  tabInfo: TabMapInfo;
-};
 
 export type MoveUpMapInTabRequestDto = {
   mapId: number;

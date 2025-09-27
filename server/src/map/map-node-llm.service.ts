@@ -91,8 +91,8 @@ export class MapNodeLlmService {
 
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.UPDATE_NODE,
-      payload: { node: mapNode },
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { nodes: { update: [mapNode] } },
     });
   }
 }

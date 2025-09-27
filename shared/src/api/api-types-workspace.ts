@@ -1,9 +1,7 @@
 export type CreateWorkspaceResponseDto = {
-  workspaceInfo: {
-    workspaceId: number
-  }
+  workspaceId: number
 }
 
 export type UpdateWorkspaceMapRequestDto = {
-  mapId: number | null
+  mapId: number
 }

@@ -8,7 +8,7 @@ import { AppDispatch } from '../../data/store.ts';
 
 export const MapActions = () => {
   const mapId = useGetMapInfoQuery().data?.id!;
-  const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
+  const sharesWithUser = useGetShareInfoQuery().data?.SharesWithMe;
   const isShared = sharesWithUser?.find(el => el.id === mapId);
   const dispatch = useDispatch<AppDispatch>();
   return (
@@ -27,17 +27,17 @@ export const MapActions = () => {
         <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTab.initiate({ mapName: 'New Map' }))}>
           {'Create'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => mapId && dispatch(api.endpoints.createMapInTabDuplicate.initiate({ mapId }))}>
+        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.createMapInTabDuplicate.initiate({ mapId }))}>
           {'Duplicate'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => mapId && dispatch(api.endpoints.moveUpMapInTab.initiate({ mapId }))}>
+        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate({ mapId }))}>
           {'Move Up'}
         </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={() => mapId && dispatch(api.endpoints.moveDownMapInTab.initiate({ mapId }))}>
+        <DropdownMenu.Item onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate({ mapId }))}>
           {'Move Down'}
         </DropdownMenu.Item>
         {!isShared && (
-          <DropdownMenu.Item onClick={() => mapId && dispatch(api.endpoints.deleteMap.initiate({ mapId }))}>
+          <DropdownMenu.Item onClick={() => dispatch(api.endpoints.deleteMap.initiate({ mapId }))}>
             {'Remove'}
           </DropdownMenu.Item>
         )}

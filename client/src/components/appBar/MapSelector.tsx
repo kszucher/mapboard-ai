@@ -10,8 +10,8 @@ import { MapActions } from './MapActions.tsx';
 export const MapSelector: FC = () => {
   const mapId = useGetMapInfoQuery().data?.id!;
   const mapName = useGetMapInfoQuery().data?.name;
-  const tabMapInfo = useGetTabInfoQuery().data?.tabInfo;
-  const sharesWithUser = useGetShareInfoQuery().data?.shareInfo.SharesWithMe;
+  const tabMapInfo = useGetTabInfoQuery().data ?? [];
+  const sharesWithUser = useGetShareInfoQuery().data?.SharesWithMe;
   const dispatch = useDispatch<AppDispatch>();
   return (
     <div className="fixed left-1/2 -translate-x-1/2 h-[40px] flex flex-row items-center gap-1 align-center">
@@ -48,7 +48,7 @@ export const MapSelector: FC = () => {
       <Button
         variant="solid"
         radius="full"
-        onClick={() => mapId && dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId }))}
+        onClick={() => dispatch(api.endpoints.updateWorkspaceMap.initiate({ mapId }))}
       >
         {mapName}
       </Button>

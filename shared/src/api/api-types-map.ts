@@ -1,18 +1,14 @@
 import { L } from './api-types-map-link';
 import { ControlType, N } from './api-types-map-node';
+import { ShareAccess } from './api-types-share';
 
 export type M = { l: L[], n: N[] };
-
-export type MapInfo = {
-  id: number
-  name: string
-  data: M
-}
 
 export type GetMapInfoQueryResponseDto = {
   id: number,
   name: string,
-  data: M
+  data: M,
+  shareAccess: ShareAccess
 };
 
 export type CreateMapInTabRequestDto = {
@@ -62,7 +58,6 @@ export type MoveNodeRequestDto = {
 
 export type UpdateNodeRequestDto = {
   mapId: number
-  nodeId: number
   node: Partial<N>
 }
 

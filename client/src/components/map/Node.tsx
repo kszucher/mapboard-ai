@@ -95,7 +95,7 @@ export const Node: FC = () => {
                 e.preventDefault();
                 if (didMove) {
                   dispatch(
-                    actions.moveNode({
+                    actions.moveNodeOptimistic({
                       nodeId: ni.id,
                       offsetX: nodeOffsetCoordsRef.current[0],
                       offsetY: nodeOffsetCoordsRef.current[1],

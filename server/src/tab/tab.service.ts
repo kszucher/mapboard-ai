@@ -41,20 +41,12 @@ export class TabService {
     });
   }
 
-  async addMapToTab({ userId, mapId }: { userId: number; mapId: number }) {
-    await this.tabRepository.addMapToTab({ userId, mapId });
-
-    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
-
-    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
-  }
-
   async moveUpMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
     await this.tabRepository.moveUpMapInTab({ userId, mapId });
 
     const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
+    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} });
   }
 
   async moveDownMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
@@ -62,6 +54,6 @@ export class TabService {
 
     const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
+    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} });
   }
 }

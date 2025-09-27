@@ -27,12 +27,11 @@ export const NodeTypeQuestion = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             }}
             value={ni.questionOutputText ?? ''}
             onChange={e => {
-              dispatch(actions.updateNode({ nodeId, node: { questionOutputText: e.target.value } }));
+              dispatch(actions.updateNodeOptimistic({ node: { id: nodeId, questionOutputText: e.target.value } }));
               dispatch(
                 api.endpoints.updateNode.initiate({
                   mapId,
-                  nodeId,
-                  node: { questionOutputText: e.target.value },
+                  node: { id: nodeId, questionOutputText: e.target.value },
                 })
               );
             }}

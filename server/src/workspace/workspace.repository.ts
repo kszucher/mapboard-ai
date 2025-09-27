@@ -5,6 +5,13 @@ import { PrismaClient } from '../generated/client';
 export class WorkspaceRepository {
   constructor(private prisma: PrismaClient) {}
 
+  async createWorkspace({ userId, mapId }: { userId: number; mapId: number }) {
+    return this.prisma.workspace.create({
+      data: { userId, mapId },
+      select: { id: true },
+    });
+  }
+
   async getWorkspaceIdsOfUser({ userId }: { userId: number }) {
     const workspaces = await this.prisma.workspace.findMany({
       where: { User: { id: userId } },
@@ -29,19 +36,19 @@ export class WorkspaceRepository {
     return workspaces.map(el => el.id);
   }
 
+  async addMapToWorkspace({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
+    await this.prisma.workspace.update({
+      where: { id: workspaceId },
+      data: { mapId },
+    });
+  }
+
   async removeMapFromWorkspaces({ mapId }: { mapId: number }): Promise<void> {
     await this.prisma.workspace.updateMany({
       where: { mapId },
       data: {
         mapId: undefined,
       },
-    });
-  }
-
-  async addMapToWorkspace({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
-    await this.prisma.workspace.update({
-      where: { id: workspaceId },
-      data: { mapId },
     });
   }
 
@@ -53,7 +60,7 @@ export class WorkspaceRepository {
     }
   }
 
-  async deleteWorkspaces() {
+  async deleteWorkspacesAll() {
     await this.prisma.workspace.deleteMany();
   }
 }

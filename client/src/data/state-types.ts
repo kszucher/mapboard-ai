@@ -1,4 +1,5 @@
 import { M } from '../../../shared/src/api/api-types-map.ts';
+import { ShareAccess } from '../../../shared/src/api/api-types-share.ts';
 
 export interface State {
   token: string;
@@ -10,7 +11,7 @@ export interface State {
   alertDialogState: AlertDialogState;
   commitList: M[];
   commitIndex: number;
-  serverMap: object;
+  mapShareAccess: ShareAccess;
   nodeOffsetCoords: number[];
   zoomInfo: {
     fromX: number;
@@ -51,15 +52,4 @@ export enum AlertDialogState {
 export enum MidMouseMode {
   SCROLL = 'scroll',
   ZOOM = 'zoom',
-}
-
-export enum AccessType {
-  UNAUTHORIZED = 'UNAUTHORIZED',
-  VIEW = 'VIEW',
-  EDIT = 'EDIT',
-}
-
-export enum StatusType {
-  WAITING = 'WAITING',
-  ACCEPTED = 'ACCEPTED',
 }

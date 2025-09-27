@@ -45,7 +45,7 @@ export const NodeTypeFileUpload = ({ nodeId, ni }: { nodeId: number; ni: N }) =>
             </Button>
           )}
 
-          {mapId && file && !ni.isProcessing && !ni.fileHash && (
+          {file && !ni.isProcessing && !ni.fileHash && (
             <Button
               size="1"
               color="gray"

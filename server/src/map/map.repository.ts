@@ -1,36 +1,31 @@
 import { injectable } from 'tsyringe';
-import { MapInfo } from '../../../shared/src/api/api-types-map';
+import { ControlType, LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
+import { getLastIndexN, getMapSelfH, getMapSelfW } from '../../../shared/src/map/map-getters';
 import { Prisma, PrismaClient } from '../generated/client';
 
 @injectable()
 export class MapRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async getMapinfo({ mapId }: { mapId: number }): Promise<MapInfo> {
-    const map = await this.prisma.map.findUniqueOrThrow({
+  async getMap({ mapId }: { mapId: number }) {
+    return this.prisma.map.findUniqueOrThrow({
       where: { id: mapId },
       select: {
         id: true,
+        userId: true,
         name: true,
-        MapLinks: true,
-        MapNodes: true,
+        MapLinks: {
+          omit: { createdAt: true, updatedAt: true },
+        },
+        MapNodes: {
+          omit: { createdAt: true, updatedAt: true },
+        },
       },
     });
-
-    const [mapNodes, mapLinks] = await Promise.all([
-      this.prisma.mapNode.findMany({ where: { mapId: mapId }, omit: { createdAt: true, updatedAt: true } }),
-      this.prisma.mapLink.findMany({ where: { mapId: mapId }, omit: { createdAt: true, updatedAt: true } }),
-    ]);
-
-    return {
-      id: map.id,
-      name: map.name,
-      data: { n: mapNodes, l: mapLinks },
-    };
   }
 
-  async getLastMapOfUser({ userId }: { userId: number }): Promise<{ id: number }> {
-    return this.prisma.map.findFirstOrThrow({
+  async getLastMapOfUser({ userId }: { userId: number }) {
+    return this.prisma.map.findFirst({
       where: { userId },
       orderBy: {
         updatedAt: 'desc',
@@ -49,6 +44,76 @@ export class MapRepository {
         id: true,
         name: true,
         userId: true,
+      },
+    });
+  }
+
+  async createMapDuplicate({ userId, mapId }: { userId: number; mapId: number }) {
+    const originalMap = await this.prisma.map.findUniqueOrThrow({
+      where: { id: mapId },
+      select: { name: true },
+    });
+
+    const originalMapNodes = await this.prisma.mapNode.findMany({ where: { mapId } });
+    const originalMapLinks = await this.prisma.mapLink.findMany({ where: { mapId } });
+
+    const newMap = await this.prisma.map.create({
+      data: {
+        name: originalMap.name + ' (Copy)',
+        userId,
+      },
+      select: { id: true },
+    });
+
+    const newMapNodes = await this.prisma.mapNode.createManyAndReturn({
+      data: originalMapNodes.map(({ id, mapId, createdAt, updatedAt, ...rest }) => ({
+        ...rest,
+        mapId: newMap.id,
+        ingestionOutputJson: rest.ingestionOutputJson ?? Prisma.JsonNull,
+        dataFrameOutputJson: rest.dataFrameOutputJson ?? Prisma.JsonNull,
+        llmOutputJson: rest.llmOutputJson ?? Prisma.JsonNull,
+      })),
+      select: {
+        id: true,
+      },
+    });
+
+    const idMap = new Map(originalMapNodes.map((n, i) => [n.id, newMapNodes[i].id]));
+
+    await this.prisma.mapLink.createMany({
+      data: originalMapLinks.map(({ id, mapId, fromNodeId, toNodeId, createdAt, updatedAt, ...rest }) => ({
+        ...rest,
+        mapId: newMap.id,
+        fromNodeId: idMap.get(fromNodeId)!,
+        toNodeId: idMap.get(toNodeId)!,
+      })),
+    });
+
+    return newMap;
+  }
+
+  async insertNode({ mapId, controlType }: { mapId: number; controlType: ControlType }) {
+    const [mapNodes, mapLinks] = await Promise.all([
+      this.prisma.mapNode.findMany({
+        where: { mapId },
+        select: { iid: true, controlType: true, offsetW: true, offsetH: true },
+      }),
+      this.prisma.mapLink.findMany({
+        where: { mapId },
+        select: { id: true, fromNodeId: true, toNodeId: true },
+      }),
+    ]);
+
+    const m = { n: mapNodes, l: mapLinks };
+
+    return this.prisma.mapNode.create({
+      data: {
+        mapId,
+        iid: getLastIndexN(m) + 1,
+        controlType,
+        ...(controlType === ControlType.LLM && { llmOutputSchema: LlmOutputSchema.TEXT }),
+        offsetW: getMapSelfW(m),
+        offsetH: getMapSelfH(m),
       },
     });
   }
@@ -105,11 +170,16 @@ export class MapRepository {
       select: { offsetW: true, offsetH: true },
     });
 
-    await this.prisma.mapNode.updateMany({
+    return this.prisma.mapNode.updateManyAndReturn({
       where: { mapId },
       data: {
         offsetW: { decrement: Math.min(...mapNodes.map(node => node.offsetW)) },
         offsetH: { decrement: Math.min(...mapNodes.map(node => node.offsetH)) },
+      },
+      select: {
+        id: true,
+        offsetW: true,
+        offsetH: true,
       },
     });
   }
@@ -121,7 +191,7 @@ export class MapRepository {
     });
   }
 
-  async updateOpenCount({ mapId }: { mapId: number }) {
+  async incrementOpenCount({ mapId }: { mapId: number }) {
     await this.prisma.map.update({
       where: { id: mapId },
       data: {
@@ -132,7 +202,7 @@ export class MapRepository {
     });
   }
 
-  async terminateProcesses() {
+  async clearProcessingAll() {
     await this.prisma.mapNode.updateMany({ data: { isProcessing: false } });
   }
 }

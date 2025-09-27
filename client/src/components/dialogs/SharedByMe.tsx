@@ -4,7 +4,7 @@ import { api, useGetShareInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const SharedByMe = () => {
-  const sharesByUser = useGetShareInfoQuery().data?.shareInfo.SharesByMe;
+  const sharesByUser = useGetShareInfoQuery().data?.SharesByMe;
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Dialog.Content style={{ maxWidth: 800 }}>

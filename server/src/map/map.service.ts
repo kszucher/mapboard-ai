@@ -3,18 +3,19 @@ import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import {
   DeleteLinkRequestDto,
   DeleteNodeRequestDto,
+  GetMapInfoQueryResponseDto,
   InsertLinkRequestDto,
   InsertNodeRequestDto,
-  MapInfo,
   MoveNodeRequestDto,
   UpdateNodeRequestDto,
 } from '../../../shared/src/api/api-types-map';
-import { ControlType, LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
-import { getLastIndexN, getMapSelfH, getMapSelfW, getTopologicalSort } from '../../../shared/src/map/map-getters';
+import { ControlType } from '../../../shared/src/api/api-types-map-node';
+import { ShareAccess } from '../../../shared/src/api/api-types-share';
+import { getTopologicalSort } from '../../../shared/src/map/map-getters';
 import { DistributionService } from '../distribution/distribution.service';
-import { Prisma, PrismaClient } from '../generated/client';
+import { PrismaClient } from '../generated/client';
+import { ShareRepository } from '../share/share.repository';
 import { TabRepository } from '../tab/tab.repository';
-import { TabService } from '../tab/tab.service';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { MapNodeContextService } from './map-node-context.service';
 import { MapNodeDataFrameService } from './map-node-data-frame.service';
@@ -32,7 +33,7 @@ export class MapService {
     private prisma: PrismaClient,
     private mapRepository: MapRepository,
     private tabRepository: TabRepository,
-    private tabService: TabService,
+    private shareRepository: ShareRepository,
     private workspaceRepository: WorkspaceRepository,
     private distributionService: DistributionService,
     private mapNodeFileService: MapNodeFileService,
@@ -51,8 +52,8 @@ export class MapService {
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.UPDATE_NODES,
-      payload: { nodes: [activeNode, ...inactiveNodes] },
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { nodes: { update: [activeNode, ...inactiveNodes] } },
     });
   }
 
@@ -62,8 +63,8 @@ export class MapService {
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.UPDATE_NODES,
-      payload: { nodes: mapNodes },
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { nodes: { update: mapNodes } },
     });
   }
 
@@ -73,16 +74,17 @@ export class MapService {
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.UPDATE_NODES,
-      payload: { nodes: mapNodes },
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { nodes: { update: mapNodes } },
     });
   }
 
-  async getWorkspaceMapInfo({ workspaceId }: { workspaceId: number }): Promise<MapInfo> {
+  async getWorkspaceMapInfo({ workspaceId }: { workspaceId: number }): Promise<GetMapInfoQueryResponseDto> {
     const workspace = await this.prisma.workspace.findUniqueOrThrow({
       where: { id: workspaceId },
       select: {
         mapId: true,
+        userId: true,
       },
     });
 
@@ -90,19 +92,36 @@ export class MapService {
       throw new Error('workspace has no map');
     }
 
-    return await this.mapRepository.getMapinfo({ mapId: workspace.mapId });
+    const map = await this.mapRepository.getMap({ mapId: workspace.mapId });
+
+    await this.mapRepository.incrementOpenCount({ mapId: map.id });
+
+    const shareAccess =
+      workspace.userId === map.userId
+        ? ShareAccess.EDIT
+        : await this.shareRepository.getShareAccess({
+            shareUserId: workspace.userId,
+            mapId: map.id,
+          });
+
+    return {
+      id: map.id,
+      name: map.name,
+      data: { n: map.MapNodes, l: map.MapLinks },
+      shareAccess,
+    };
   }
 
   async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number; workspaceId: number; mapName: string }) {
     const newMap = await this.mapRepository.createMap({ userId, mapName });
 
-    await this.tabService.addMapToTab({ userId, mapId: newMap.id });
+    await this.tabRepository.addMapToTab({ userId, mapId: newMap.id });
+
+    await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
 
     const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
-
-    await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
+    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} });
   }
 
   async createMapInTabDuplicate({
@@ -114,53 +133,15 @@ export class MapService {
     workspaceId: number;
     mapId: number;
   }) {
-    const originalMap = await this.prisma.map.findUniqueOrThrow({
-      where: { id: mapId },
-      select: { name: true },
-    });
+    const newMap = await this.mapRepository.createMapDuplicate({ userId, mapId });
 
-    const originalMapNodes = await this.prisma.mapNode.findMany({ where: { mapId } });
-    const originalMapLinks = await this.prisma.mapLink.findMany({ where: { mapId } });
+    await this.tabRepository.addMapToTab({ userId, mapId: newMap.id });
 
-    const newMap = await this.prisma.map.create({
-      data: {
-        name: originalMap.name + ' (Copy)',
-        userId,
-      },
-      select: { id: true },
-    });
-
-    const newMapNodes = await this.prisma.mapNode.createManyAndReturn({
-      data: originalMapNodes.map(({ id, mapId, createdAt, updatedAt, ...rest }) => ({
-        ...rest,
-        mapId: newMap.id,
-        ingestionOutputJson: rest.ingestionOutputJson ?? Prisma.JsonNull,
-        dataFrameOutputJson: rest.dataFrameOutputJson ?? Prisma.JsonNull,
-        llmOutputJson: rest.llmOutputJson ?? Prisma.JsonNull,
-      })),
-      select: {
-        id: true,
-      },
-    });
-
-    const idMap = new Map(originalMapNodes.map((n, i) => [n.id, newMapNodes[i].id]));
-
-    await this.prisma.mapLink.createMany({
-      data: originalMapLinks.map(({ id, mapId, fromNodeId, toNodeId, createdAt, updatedAt, ...rest }) => ({
-        ...rest,
-        mapId: newMap.id,
-        fromNodeId: idMap.get(fromNodeId)!,
-        toNodeId: idMap.get(toNodeId)!,
-      })),
-    });
-
-    await this.tabService.addMapToTab({ userId, mapId: newMap.id });
+    await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
 
     const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
-
-    await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
+    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} });
   }
 
   async renameMap({ mapId, mapName }: { mapId: number; mapName: string }) {
@@ -169,41 +150,19 @@ export class MapService {
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.RENAME_MAP,
-      payload: { mapId, mapName },
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_TAB,
+      payload: {},
     });
   }
 
   async insertNode({ mapId, controlType }: InsertNodeRequestDto) {
-    const [mapNodes, mapLinks] = await Promise.all([
-      this.prisma.mapNode.findMany({
-        where: { mapId },
-        select: { iid: true, controlType: true, offsetW: true, offsetH: true },
-      }),
-      this.prisma.mapLink.findMany({
-        where: { mapId },
-        select: { id: true, fromNodeId: true, toNodeId: true },
-      }),
-    ]);
-
-    const m = { n: mapNodes, l: mapLinks };
-
-    const mapNode = await this.prisma.mapNode.create({
-      data: {
-        mapId,
-        iid: getLastIndexN(m) + 1,
-        controlType,
-        ...(controlType === ControlType.LLM && { llmOutputSchema: LlmOutputSchema.TEXT }),
-        offsetW: getMapSelfW(m),
-        offsetH: getMapSelfH(m),
-      },
-    });
+    const mapNode = await this.mapRepository.insertNode({ mapId, controlType });
 
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.INSERT_NODE,
-      payload: { node: mapNode },
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { nodes: { insert: [mapNode] } },
     });
   }
 
@@ -215,8 +174,8 @@ export class MapService {
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.INSERT_LINK,
-      payload: { link: mapLink },
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { links: { insert: [mapLink] } },
     });
   }
 
@@ -239,8 +198,8 @@ export class MapService {
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.DELETE_NODE,
-      payload: { nodeId, linkIds: mapLinksToDelete.map(l => l.id) },
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { nodes: { delete: [nodeId] }, links: { delete: mapLinksToDelete.map(l => l.id) } },
     });
   }
 
@@ -252,8 +211,8 @@ export class MapService {
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.DELETE_LINK,
-      payload: { linkId },
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { links: { delete: [linkId] } },
     });
   }
 
@@ -266,22 +225,22 @@ export class MapService {
       },
     });
 
-    await this.mapRepository.align({ mapId });
+    const mapNodes = await this.mapRepository.align({ mapId });
 
     const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
 
     await this.distributionService.publish(
       workspaceIdsOfMap.filter(el => el !== workspaceId),
       {
-        type: SSE_EVENT_TYPE.MOVE_NODE,
-        payload: { nodeId, offsetX, offsetY },
+        type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+        payload: { nodes: { update: mapNodes } },
       }
     );
   }
 
-  async updateNode({ workspaceId, mapId, nodeId, node }: UpdateNodeRequestDto & { workspaceId: number }) {
+  async updateNode({ workspaceId, mapId, node }: UpdateNodeRequestDto & { workspaceId: number }) {
     await this.prisma.mapNode.update({
-      where: { id: nodeId },
+      where: { id: node.id },
       data: node,
     });
 
@@ -290,8 +249,8 @@ export class MapService {
     await this.distributionService.publish(
       workspaceIdsOfMap.filter(el => el !== workspaceId),
       {
-        type: SSE_EVENT_TYPE.UPDATE_NODE,
-        payload: { node },
+        type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+        payload: { nodes: { update: [node] } },
       }
     );
   }
@@ -377,15 +336,11 @@ export class MapService {
   }
 
   async deleteMap({ userId, mapId }: { userId: number; mapId: number }) {
+    const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
+
     await this.workspaceRepository.removeMapFromWorkspaces({ mapId });
 
     await this.tabRepository.removeMapFromTab({ userId, mapId });
-
-    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
-
-    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.UPDATE_TAB, payload: {} });
-
-    const shares = await this.prisma.share.findMany({ where: { mapId }, select: { shareUserId: true } });
 
     await this.prisma.share.deleteMany({ where: { mapId } });
 
@@ -395,13 +350,13 @@ export class MapService {
 
     await this.prisma.map.delete({ where: { id: mapId } });
 
-    const userIds = [userId, ...shares.map(share => share.shareUserId)];
-
-    const workspaceIdsOfUsers = await this.workspaceRepository.getWorkspaceIdsOfUsers({ userIds });
-
-    await this.distributionService.publish(workspaceIdsOfUsers, {
-      type: SSE_EVENT_TYPE.DELETE_MAP,
+    await this.distributionService.publish(workspaceIdsOfMap, {
+      type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE,
       payload: { mapId },
     });
+  }
+
+  async clearProcessingAll() {
+    await this.mapRepository.clearProcessingAll();
   }
 }

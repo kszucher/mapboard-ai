@@ -1,6 +1,7 @@
+import { ShareAccess } from '../../../shared/src/api/api-types-share.ts';
 import { AlertDialogState, DialogState, MidMouseMode, PageState, State } from './state-types.ts';
 
-export const stateDefaults: State = {
+export const state: State = {
   token: '',
   workspaceId: 1,
   isLoading: false,
@@ -10,7 +11,7 @@ export const stateDefaults: State = {
   alertDialogState: AlertDialogState.NONE,
   commitList: [],
   commitIndex: 0,
-  serverMap: {},
+  mapShareAccess: ShareAccess.VIEW,
   nodeOffsetCoords: [],
   zoomInfo: {
     fromX: 0,
@@ -30,4 +31,4 @@ export const stateDefaults: State = {
   },
 };
 
-export const stateDefault = JSON.stringify(stateDefaults);
+export const stateDefault = JSON.stringify(state);

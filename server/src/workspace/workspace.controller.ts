@@ -11,14 +11,14 @@ router.post('/create-workspace', checkJwt, async (req: Request, res: Response) =
     select: { id: true },
   });
   const workspace = await workspaceService.createWorkspace({ userId: user.id });
-  const response: CreateWorkspaceResponseDto = { workspaceInfo: { workspaceId: workspace.id } };
+  const response: CreateWorkspaceResponseDto = { workspaceId: workspace.id };
   res.json(response);
 });
 
 router.post('/update-workspace-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId, userId } = req as any;
+  const { workspaceId } = req as any;
   const { mapId }: UpdateWorkspaceMapRequestDto = req.body;
-  await workspaceService.updateWorkspaceMap({ workspaceId, userId, mapId });
+  await workspaceService.updateWorkspaceMap({ workspaceId, mapId });
   res.json();
 });
 

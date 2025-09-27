@@ -5,14 +5,13 @@ export const ShareStatus = {
 export type ShareStatus = (typeof ShareStatus)[keyof typeof ShareStatus];
 
 export const ShareAccess = {
-  UNAUTHORIZED: 'UNAUTHORIZED',
   VIEW: 'VIEW',
   EDIT: 'EDIT',
 } as const;
 
 export type ShareAccess = (typeof ShareAccess)[keyof typeof ShareAccess];
 
-export interface ShareInfo {
+export type GetShareInfoQueryResponseDto = {
   SharesByMe: {
     id: number
     mapId: number
@@ -38,10 +37,6 @@ export interface ShareInfo {
     }
   }[];
 }
-
-export type GetShareInfoQueryResponseDto = {
-  shareInfo: ShareInfo;
-};
 
 export type CreateShareRequestDto = {
   mapId: number

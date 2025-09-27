@@ -28,8 +28,13 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             }}
             value={ni.llmInstructions ?? ''}
             onChange={e => {
-              dispatch(actions.updateNode({ nodeId, node: { llmInstructions: e.target.value } }));
-              dispatch(api.endpoints.updateNode.initiate({ mapId, nodeId, node: { llmInstructions: e.target.value } }));
+              dispatch(actions.updateNodeOptimistic({ node: { id: nodeId, llmInstructions: e.target.value } }));
+              dispatch(
+                api.endpoints.updateNode.initiate({
+                  mapId,
+                  node: { id: nodeId, llmInstructions: e.target.value },
+                })
+              );
             }}
           />
           <Text size="2">{`Output Schema`}</Text>
@@ -38,8 +43,13 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             value={ni.llmOutputSchema ?? LlmOutputSchema.TEXT}
             defaultValue={LlmOutputSchema.TEXT}
             onValueChange={(value: LlmOutputSchema) => {
-              dispatch(actions.updateNode({ nodeId, node: { llmOutputSchema: value } }));
-              dispatch(api.endpoints.updateNode.initiate({ mapId, nodeId, node: { llmOutputSchema: value } }));
+              dispatch(actions.updateNodeOptimistic({ node: { id: nodeId, llmOutputSchema: value } }));
+              dispatch(
+                api.endpoints.updateNode.initiate({
+                  mapId,
+                  node: { id: nodeId, llmOutputSchema: value },
+                })
+              );
             }}
           >
             <Select.Trigger variant="soft" color="gray" />

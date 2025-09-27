@@ -14,8 +14,7 @@ const router = Router();
 
 router.post('/get-share-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId } = req as any;
-  const shareInfo = await shareService.getShareInfo({ userId });
-  const response: GetShareInfoQueryResponseDto = { shareInfo };
+  const response: GetShareInfoQueryResponseDto = await shareService.getShareInfo({ userId });
   res.json(response);
 });
 

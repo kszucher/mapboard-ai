@@ -1,15 +1,14 @@
 import { Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
+import { ShareAccess } from '../../../../shared/src/api/api-types-share.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
-
-import { AccessType } from '../../data/state-types.ts';
 
 export const MapActionsShare = () => {
   const mapId = useGetMapInfoQuery().data?.id!;
   const [createShare, { error, isUninitialized, isLoading, isSuccess, isError, reset }] = api.useCreateShareMutation();
   const errorMessage = error && (error as { data: { detail: string } }).data.detail;
   const [shareEmail, setShareEmail] = useState('');
-  const [shareAccess, setShareAccess] = useState<AccessType>(AccessType.VIEW);
+  const [shareAccess, setShareAccess] = useState<ShareAccess>(ShareAccess.VIEW);
   return (
     <Dialog.Content style={{ maxWidth: 450 }}>
       <Dialog.Title>{'Share This Map'}</Dialog.Title>
@@ -25,12 +24,12 @@ export const MapActionsShare = () => {
           value={shareAccess}
           onValueChange={value => {
             reset();
-            setShareAccess(value as AccessType);
+            setShareAccess(value as ShareAccess);
           }}
         >
           <Select.Trigger radius="large" />
           <Select.Content>
-            {[AccessType.VIEW, AccessType.EDIT].map((el, index) => (
+            {[ShareAccess.VIEW, ShareAccess.EDIT].map((el, index) => (
               <Select.Item key={index} value={el}>
                 {el}
               </Select.Item>
