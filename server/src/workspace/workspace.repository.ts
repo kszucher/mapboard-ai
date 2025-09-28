@@ -12,6 +12,16 @@ export class WorkspaceRepository {
     });
   }
 
+  async getWorkspaceById({ workspaceId }: { workspaceId: number }) {
+    return this.prisma.workspace.findUniqueOrThrow({
+      where: { id: workspaceId },
+      select: {
+        mapId: true,
+        userId: true,
+      },
+    });
+  }
+  
   async getWorkspaceIdsOfUser({ userId }: { userId: number }) {
     const workspaces = await this.prisma.workspace.findMany({
       where: { User: { id: userId } },

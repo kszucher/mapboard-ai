@@ -80,13 +80,7 @@ export class MapService {
   }
 
   async getWorkspaceMapInfo({ workspaceId }: { workspaceId: number }): Promise<GetMapInfoQueryResponseDto> {
-    const workspace = await this.prisma.workspace.findUniqueOrThrow({
-      where: { id: workspaceId },
-      select: {
-        mapId: true,
-        userId: true,
-      },
-    });
+    const workspace = await this.workspaceRepository.getWorkspaceById({ workspaceId });
 
     if (!workspace.mapId) {
       throw new Error('workspace has no map');
