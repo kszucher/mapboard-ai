@@ -58,11 +58,11 @@ export const getLineCoords = (m: M, l: L) => {
   ];
 };
 
+// Kahn's algorithm
 export const getTopologicalSort = (m: {
   n: Pick<N, 'id'>[],
   l: Pick<L, 'fromNodeId' | 'toNodeId'>[]
 }): number[] | null => {
-  // Kahn's algorithm
   const { n, l } = m;
   const graph = new Map<number, Set<number>>();
   const inDegree = new Map<number, number>();

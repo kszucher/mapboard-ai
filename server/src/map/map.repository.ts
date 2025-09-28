@@ -24,11 +24,26 @@ export class MapRepository {
         id: true,
         userId: true,
         name: true,
+        MapNodes: {
+          omit: { createdAt: true, updatedAt: true },
+        },
         MapLinks: {
           omit: { createdAt: true, updatedAt: true },
         },
+      },
+    });
+  }
+
+  async getMapWithGraphStructure({ mapId }: { mapId: number }) {
+    return this.prisma.map.findUniqueOrThrow({
+      where: { id: mapId },
+      select: {
+        id: true,
         MapNodes: {
-          omit: { createdAt: true, updatedAt: true },
+          select: { id: true, controlType: true },
+        },
+        MapLinks: {
+          select: { id: true, fromNodeId: true, toNodeId: true },
         },
       },
     });

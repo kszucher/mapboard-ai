@@ -2,11 +2,8 @@ import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { injectable } from 'tsyringe';
 import { z } from 'zod';
-import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
-import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
-import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { DataFrameQuerySchema } from './map-node-data-frame.types';
 import { MapNodeRepository } from './map-node.repository';
 
@@ -14,9 +11,7 @@ import { MapNodeRepository } from './map-node.repository';
 export class MapNodeLlmService {
   constructor(
     private prisma: PrismaClient,
-    private mapNodeService: MapNodeRepository,
-    private workspaceRepository: WorkspaceRepository,
-    private distributionService: DistributionService
+    private mapNodeService: MapNodeRepository
   ) {}
 
   async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
@@ -83,17 +78,10 @@ export class MapNodeLlmService {
 
     const llmOutputJson = isText ? { text: result.text } : result.object;
 
-    const mapNode = await this.prisma.mapNode.update({
+    return this.prisma.mapNode.update({
       where: { id: nodeId },
       data: { llmOutputJson },
       select: { id: true, llmOutputJson: true },
     });
-
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [mapNode] } } }
-    );
   }
 }

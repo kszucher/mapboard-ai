@@ -29,56 +29,6 @@ import { MapRepository } from './map.repository';
 
 @injectable()
 export class MapService {
-  constructor(
-    private prisma: PrismaClient,
-    private mapRepository: MapRepository,
-    private tabRepository: TabRepository,
-    private shareRepository: ShareRepository,
-    private workspaceRepository: WorkspaceRepository,
-    private distributionService: DistributionService,
-    private mapNodeFileService: MapNodeFileService,
-    private mapNodeIngestionService: MapNodeIngestionService,
-    private mapNodeContextService: MapNodeContextService,
-    private mapNodeQuestionService: MapNodeQuestionService,
-    private mapNodeVectorDatabaseService: MapNodeVectorDatabaseService,
-    private mapNodeDataFrameService: MapNodeDataFrameService,
-    private mapNodeLlmService: MapNodeLlmService,
-    private mapNodeVisualizerService: MapNodeVisualizerService
-  ) {}
-
-  private async setProcessing({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    const [activeNode, inactiveNodes] = await this.mapRepository.setProcessing({ mapId, nodeId });
-
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [activeNode, ...inactiveNodes] } } }
-    );
-  }
-
-  private async clearProcessing({ mapId }: { mapId: number }) {
-    const mapNodes = await this.mapRepository.clearProcessing({ mapId });
-
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: mapNodes } } }
-    );
-  }
-
-  private async clearResults({ mapId }: { mapId: number }) {
-    const mapNodes = await this.mapRepository.clearResults({ mapId });
-
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: mapNodes } } }
-    );
-  }
-
   async getWorkspaceMapInfo({ workspaceId }: { workspaceId: number }): Promise<GetMapInfoQueryResponseDto> {
     const workspace = await this.workspaceRepository.getWorkspaceById({ workspaceId });
 
@@ -106,12 +56,35 @@ export class MapService {
     };
   }
 
-  async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number; workspaceId: number; mapName: string }) {
-    const newMap = await this.mapRepository.createMap({ userId, mapName });
+  constructor(
+    private prisma: PrismaClient,
+    private mapRepository: MapRepository,
+    private tabRepository: TabRepository,
+    private shareRepository: ShareRepository,
+    private workspaceRepository: WorkspaceRepository,
+    private distributionService: DistributionService,
+    private mapNodeFileService: MapNodeFileService,
+    private mapNodeIngestionService: MapNodeIngestionService,
+    private mapNodeContextService: MapNodeContextService,
+    private mapNodeQuestionService: MapNodeQuestionService,
+    private mapNodeVectorDatabaseService: MapNodeVectorDatabaseService,
+    private mapNodeDataFrameService: MapNodeDataFrameService,
+    private mapNodeLlmService: MapNodeLlmService,
+    private mapNodeVisualizerService: MapNodeVisualizerService
+  ) {}
 
-    await this.tabRepository.addMapToTab({ userId, mapId: newMap.id });
+  private async createMapCommon({
+    userId,
+    workspaceId,
+    mapId,
+  }: {
+    userId: number;
+    workspaceId: number;
+    mapId: number;
+  }) {
+    await this.tabRepository.addMapToTab({ userId, mapId });
 
-    await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
+    await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId });
 
     const workspacesOfUser = await this.workspaceRepository.getWorkspacesOfUser({ userId });
 
@@ -119,6 +92,12 @@ export class MapService {
       workspacesOfUser.map(el => el.id),
       { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} }
     );
+  }
+
+  async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number; workspaceId: number; mapName: string }) {
+    const newMap = await this.mapRepository.createMap({ userId, mapName });
+
+    await this.createMapCommon({ userId, workspaceId, mapId: newMap.id });
   }
 
   async createMapInTabDuplicate({
@@ -132,16 +111,7 @@ export class MapService {
   }) {
     const newMap = await this.mapRepository.createMapDuplicate({ userId, mapId });
 
-    await this.tabRepository.addMapToTab({ userId, mapId: newMap.id });
-
-    await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId: newMap.id });
-
-    const workspacesOfUser = await this.workspaceRepository.getWorkspacesOfUser({ userId });
-
-    await this.distributionService.publish(
-      workspacesOfUser.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} }
-    );
+    await this.createMapCommon({ userId, workspaceId, mapId: newMap.id });
   }
 
   async renameMap({ mapId, mapName }: { mapId: number; mapName: string }) {
@@ -253,37 +223,57 @@ export class MapService {
   }
 
   async executeMapUploadFile({ mapId, nodeId, file }: { mapId: number; nodeId: number; file: Express.Multer.File }) {
-    await this.setProcessing({ mapId, nodeId });
+    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
+
+    const [activeNode, inactiveNodes] = await this.mapRepository.setProcessing({ mapId, nodeId });
+
+    await this.distributionService.publish(
+      workspacesOfMap.map(el => el.id),
+      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [activeNode, ...inactiveNodes] } } }
+    );
 
     const fileHash = await this.mapNodeFileService.upload(file);
 
-    await this.prisma.mapNode.update({
+    const mapNode = await this.prisma.mapNode.update({
       where: { id: nodeId },
-      data: { fileName: file.originalname, fileHash: fileHash ?? '' },
+      data: { fileName: file.originalname, fileHash: fileHash ?? '', isProcessing: false },
+      select: { id: true, isProcessing: true },
     });
 
-    await this.clearProcessing({ mapId });
+    await this.distributionService.publish(
+      workspacesOfMap.map(el => el.id),
+      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [mapNode] } } }
+    );
   }
 
   async executeMap({ mapId }: { mapId: number }) {
-    const [mapNodes, mapLinks] = await Promise.all([
-      this.prisma.mapNode.findMany({ where: { mapId }, select: { id: true, controlType: true } }),
-      this.prisma.mapLink.findMany({ where: { mapId }, select: { fromNodeId: true, toNodeId: true } }),
-    ]);
+    const map = await this.mapRepository.getMapWithGraphStructure({ mapId });
 
-    const m = { n: mapNodes, l: mapLinks };
+    const mapNodes = await this.mapRepository.clearResults({ mapId });
 
-    await this.clearResults({ mapId });
+    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
 
-    const topologicalSort = getTopologicalSort(m);
+    await this.distributionService.publish(
+      workspacesOfMap.map(el => el.id),
+      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: mapNodes } } }
+    );
+
+    const topologicalSort = getTopologicalSort({ n: map.MapNodes, l: map.MapLinks });
     if (!topologicalSort) {
       throw new Error('topological sort error');
     }
 
     for (const nodeId of topologicalSort) {
-      const ni = m.n.find(ni => ni.id === nodeId)!;
+      const ni = map.MapNodes.find(ni => ni.id === nodeId)!;
 
-      await this.setProcessing({ mapId, nodeId });
+      const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
+
+      const [activeNode, inactiveNodes] = await this.mapRepository.setProcessing({ mapId, nodeId });
+
+      await this.distributionService.publish(
+        workspacesOfMap.map(el => el.id),
+        { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [activeNode, ...inactiveNodes] } } }
+      );
 
       try {
         switch (ni.controlType) {
@@ -315,21 +305,37 @@ export class MapService {
             break;
           }
           case ControlType.LLM: {
-            await this.mapNodeLlmService.execute({ mapId, nodeId });
+            const mapNode = await this.mapNodeLlmService.execute({ mapId, nodeId });
+
+            await this.distributionService.publish(
+              workspacesOfMap.map(el => el.id),
+              { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [mapNode] } } }
+            );
             break;
           }
           case ControlType.VISUALIZER: {
-            await this.mapNodeVisualizerService.execute({ mapId, nodeId });
+            const mapNode = await this.mapNodeVisualizerService.execute({ mapId, nodeId });
+
+            await this.distributionService.publish(
+              workspacesOfMap.map(el => el.id),
+              { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [mapNode] } } }
+            );
             break;
           }
         }
       } catch (e) {
         console.error(ni.controlType + 'error', e);
+
+        const mapNodes = await this.mapRepository.clearProcessing({ mapId });
+
+        await this.distributionService.publish(
+          workspacesOfMap.map(el => el.id),
+          { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: mapNodes } } }
+        );
+
         break;
       }
     }
-
-    await this.clearProcessing({ mapId });
   }
 
   async deleteMap({ userId, mapId }: { userId: number; mapId: number }) {
