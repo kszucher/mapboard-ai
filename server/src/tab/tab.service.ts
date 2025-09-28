@@ -33,16 +33,22 @@ export class TabService {
   async moveUpMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
     await this.tabRepository.moveUpMapInTab({ userId, mapId });
 
-    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
+    const workspacesOfUser = await this.workspaceRepository.getWorkspacesOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} });
+    await this.distributionService.publish(
+      workspacesOfUser.map(el => el.id),
+      { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} }
+    );
   }
 
   async moveDownMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
     await this.tabRepository.moveDownMapInTab({ userId, mapId });
 
-    const workspaceIdsOfUser = await this.workspaceRepository.getWorkspaceIdsOfUser({ userId });
+    const workspacesOfUser = await this.workspaceRepository.getWorkspacesOfUser({ userId });
 
-    await this.distributionService.publish(workspaceIdsOfUser, { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} });
+    await this.distributionService.publish(
+      workspacesOfUser.map(el => el.id),
+      { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} }
+    );
   }
 }

@@ -21,29 +21,26 @@ export class WorkspaceRepository {
       },
     });
   }
-  
-  async getWorkspaceIdsOfUser({ userId }: { userId: number }) {
-    const workspaces = await this.prisma.workspace.findMany({
+
+  async getWorkspacesOfUser({ userId }: { userId: number }) {
+    return this.prisma.workspace.findMany({
       where: { User: { id: userId } },
       select: { id: true },
     });
-    return workspaces.map(el => el.id);
   }
 
-  async getWorkspaceIdsOfUsers({ userIds }: { userIds: number[] }) {
-    const workspaces = await this.prisma.workspace.findMany({
+  async getWorkspacesOfUsers({ userIds }: { userIds: number[] }) {
+    return this.prisma.workspace.findMany({
       where: { User: { id: { in: userIds } } },
       select: { id: true },
     });
-    return workspaces.map(el => el.id);
   }
 
-  async getWorkspaceIdsOfMap({ mapId }: { mapId: number }) {
-    const workspaces = await this.prisma.workspace.findMany({
+  async getWorkspacesOfMap({ mapId }: { mapId: number }) {
+    return this.prisma.workspace.findMany({
       where: { Map: { id: mapId } },
       select: { id: true },
     });
-    return workspaces.map(el => el.id);
   }
 
   async addMapToWorkspace({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {

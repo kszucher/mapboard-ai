@@ -35,10 +35,11 @@ export class MapNodeVisualizerService {
       select: { id: true, visualizerOutputText: true },
     });
 
-    const workspaceIdsOfMap = await this.workspaceRepository.getWorkspaceIdsOfMap({ mapId });
-    await this.distributionService.publish(workspaceIdsOfMap, {
-      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-      payload: { nodes: { update: [mapNode] } },
-    });
+    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
+
+    await this.distributionService.publish(
+      workspacesOfMap.map(el => el.id),
+      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [mapNode] } } }
+    );
   }
 }
