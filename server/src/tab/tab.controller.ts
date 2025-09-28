@@ -11,7 +11,7 @@ const router = Router();
 
 router.post('/get-tab-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
   const { userId } = req as any;
-  const response: GetTabInfoQueryResponseDto = await tabService.getMapsOfTab({ userId });
+  const response: GetTabInfoQueryResponseDto = await tabService.getOrderedMapsOfTab({ userId });
   res.json(response);
 });
 

@@ -5,6 +5,15 @@ import { PrismaClient } from '../generated/client';
 export class TabRepository {
   constructor(private prisma: PrismaClient) {}
 
+  async getTabByUser({ userId }: { userId: number }) {
+    return this.prisma.tab.findFirstOrThrow({
+      where: { User: { id: userId } },
+      select: {
+        mapIds: true,
+      },
+    });
+  }
+
   async addMapToTab({ userId, mapId }: { userId: number; mapId: number }) {
     await this.prisma.tab.update({
       where: {

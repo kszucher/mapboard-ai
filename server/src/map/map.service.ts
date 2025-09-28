@@ -92,7 +92,7 @@ export class MapService {
       throw new Error('workspace has no map');
     }
 
-    const map = await this.mapRepository.getMap({ mapId: workspace.mapId });
+    const map = await this.mapRepository.getMapWithGraph({ mapId: workspace.mapId });
 
     await this.mapRepository.incrementOpenCount({ mapId: map.id });
 

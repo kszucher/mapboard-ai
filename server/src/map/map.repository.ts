@@ -7,7 +7,17 @@ import { Prisma, PrismaClient } from '../generated/client';
 export class MapRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async getMap({ mapId }: { mapId: number }) {
+  async getMapsById({ mapIds }: { mapIds: number[] }) {
+    return this.prisma.map.findMany({
+      where: { id: { in: mapIds } },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+  }
+
+  async getMapWithGraph({ mapId }: { mapId: number }) {
     return this.prisma.map.findUniqueOrThrow({
       where: { id: mapId },
       select: {

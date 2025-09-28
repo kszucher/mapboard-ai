@@ -1,34 +1,23 @@
 import { injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
-import { PrismaClient } from '../generated/client';
+import { MapRepository } from '../map/map.repository';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { TabRepository } from './tab.repository';
 
 @injectable()
 export class TabService {
   constructor(
-    private prisma: PrismaClient,
     private tabRepository: TabRepository,
+    private mapRepository: MapRepository,
     private workspaceRepository: WorkspaceRepository,
     private distributionService: DistributionService
   ) {}
 
-  async getMapsOfTab({ userId }: { userId: number }) {
-    const tab = await this.prisma.tab.findFirstOrThrow({
-      where: { User: { id: userId } },
-      select: {
-        mapIds: true,
-      },
-    });
+  async getOrderedMapsOfTab({ userId }: { userId: number }) {
+    const tab = await this.tabRepository.getTabByUser({ userId });
 
-    const maps = await this.prisma.map.findMany({
-      where: { id: { in: tab.mapIds } },
-      select: {
-        id: true,
-        name: true,
-      },
-    });
+    const maps = await this.mapRepository.getMapsById({ mapIds: tab.mapIds });
 
     const idToMap = new Map(maps.map(map => [map.id, map]));
 
