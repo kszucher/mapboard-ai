@@ -220,9 +220,9 @@ export class MapService {
   }
 
   async executeMapUploadFile({ mapId, nodeId, file }: { mapId: number; nodeId: number; file: Express.Multer.File }) {
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
     const [activeNode, inactiveNodes] = await this.mapRepository.setProcessing({ mapId, nodeId });
+
+    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
 
     await this.distributionService.publish(
       workspacesOfMap.map(el => el.id),
