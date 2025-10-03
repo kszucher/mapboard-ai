@@ -76,37 +76,42 @@ export class MapRepository {
   async createMapDuplicate({ userId, mapId }: { userId: number; mapId: number }) {
     const originalMap = await this.prisma.map.findUniqueOrThrow({
       where: { id: mapId },
-      select: { name: true },
+      select: {
+        name: true,
+        MapNodes: {
+          omit: {
+            mapId: true,
+            ingestionOutputJson: true,
+            dataFrameOutputJson: true,
+            llmOutputJson: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        MapLinks: {
+          omit: {
+            mapId: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
     });
 
-    const originalMapNodes = await this.prisma.mapNode.findMany({ where: { mapId } });
-    const originalMapLinks = await this.prisma.mapLink.findMany({ where: { mapId } });
-
     const newMap = await this.prisma.map.create({
-      data: {
-        name: originalMap.name + ' (Copy)',
-        userId,
-      },
+      data: { name: originalMap.name + ' (Copy)', userId },
       select: { id: true },
     });
 
     const newMapNodes = await this.prisma.mapNode.createManyAndReturn({
-      data: originalMapNodes.map(({ id, mapId, createdAt, updatedAt, ...rest }) => ({
-        ...rest,
-        mapId: newMap.id,
-        ingestionOutputJson: rest.ingestionOutputJson ?? Prisma.JsonNull,
-        dataFrameOutputJson: rest.dataFrameOutputJson ?? Prisma.JsonNull,
-        llmOutputJson: rest.llmOutputJson ?? Prisma.JsonNull,
-      })),
-      select: {
-        id: true,
-      },
+      data: originalMap.MapNodes.map(({ id, ...rest }) => ({ ...rest, mapId: newMap.id })),
+      select: { id: true },
     });
 
-    const idMap = new Map(originalMapNodes.map((n, i) => [n.id, newMapNodes[i].id]));
+    const idMap = new Map(originalMap.MapNodes.map((n, i) => [n.id, newMapNodes[i].id]));
 
     await this.prisma.mapLink.createMany({
-      data: originalMapLinks.map(({ id, mapId, fromNodeId, toNodeId, createdAt, updatedAt, ...rest }) => ({
+      data: originalMap.MapLinks.map(({ id, fromNodeId, toNodeId, ...rest }) => ({
         ...rest,
         mapId: newMap.id,
         fromNodeId: idMap.get(fromNodeId)!,
