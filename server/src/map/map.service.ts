@@ -163,7 +163,7 @@ export class MapService {
       where: { id: nodeId },
     });
 
-    await this.mapRepository.align({ mapId });
+    const mapNodes = await this.mapRepository.align({ mapId });
 
     const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
 
@@ -171,7 +171,7 @@ export class MapService {
       workspacesOfMap.map(el => el.id),
       {
         type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-        payload: { nodes: { delete: [nodeId] }, links: { delete: mapLinksToDelete.map(l => l.id) } },
+        payload: { nodes: { update: mapNodes, delete: [nodeId] }, links: { delete: mapLinksToDelete.map(l => l.id) } },
       }
     );
   }
