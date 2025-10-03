@@ -43,8 +43,8 @@ model MapNode {
   mapId                    Int
   Map                      Map              @relation(fields: [mapId], references: [id])
   iid                      Int
-  offsetW                  Int
-  offsetH                  Int
+  offsetX                  Int
+  offsetY                  Int
   controlType              ControlType
   isProcessing             Boolean          @default(false)
   fileHash                 String?

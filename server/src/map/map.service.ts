@@ -192,10 +192,7 @@ export class MapService {
   async moveNode({ workspaceId, mapId, nodeId, offsetX, offsetY }: MoveNodeRequestDto & { workspaceId: number }) {
     await this.prisma.mapNode.update({
       where: { id: nodeId },
-      data: {
-        offsetW: offsetX,
-        offsetH: offsetY,
-      },
+      data: { offsetX, offsetY },
     });
 
     const mapNodes = await this.mapRepository.align({ mapId });

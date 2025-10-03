@@ -121,7 +121,7 @@ export class MapRepository {
     const [mapNodes, mapLinks] = await Promise.all([
       this.prisma.mapNode.findMany({
         where: { mapId },
-        select: { iid: true, controlType: true, offsetW: true, offsetH: true },
+        select: { iid: true, controlType: true, offsetX: true, offsetY: true },
       }),
       this.prisma.mapLink.findMany({
         where: { mapId },
@@ -137,8 +137,8 @@ export class MapRepository {
         iid: getLastIndexN(m) + 1,
         controlType,
         ...(controlType === ControlType.LLM && { llmOutputSchema: LlmOutputSchema.TEXT }),
-        offsetW: getMapSelfW(m),
-        offsetH: getMapSelfH(m),
+        offsetX: getMapSelfW(m),
+        offsetY: getMapSelfH(m),
       },
     });
   }
@@ -192,19 +192,19 @@ export class MapRepository {
   async align({ mapId }: { mapId: number }) {
     const mapNodes = await this.prisma.mapNode.findMany({
       where: { mapId },
-      select: { offsetW: true, offsetH: true },
+      select: { offsetX: true, offsetY: true },
     });
 
     return this.prisma.mapNode.updateManyAndReturn({
       where: { mapId },
       data: {
-        offsetW: { decrement: Math.min(...mapNodes.map(node => node.offsetW)) },
-        offsetH: { decrement: Math.min(...mapNodes.map(node => node.offsetH)) },
+        offsetX: { decrement: Math.min(...mapNodes.map(node => node.offsetX)) },
+        offsetY: { decrement: Math.min(...mapNodes.map(node => node.offsetY)) },
       },
       select: {
         id: true,
-        offsetW: true,
-        offsetH: true,
+        offsetX: true,
+        offsetY: true,
       },
     });
   }

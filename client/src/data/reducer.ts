@@ -84,8 +84,8 @@ export const slice = createSlice({
     moveNodePreviewUpdate(state, action: PayloadAction<{ n: N; e: MouseEvent }>) {
       const { n, e } = action.payload;
       const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
-      const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetW;
-      const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetH;
+      const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetX;
+      const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetY;
       state.nodeOffsetCoords = [toX, toY, getNodeSelfW(n), getNodeSelfH(n)];
     },
     moveNodePreviewEnd(state) {
@@ -103,7 +103,7 @@ export const slice = createSlice({
     ) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const newM = {
-        n: m.n.map(ni => (ni.id === nodeId ? { ...ni, offsetW: offsetX, offsetH: offsetY } : ni)),
+        n: m.n.map(ni => (ni.id === nodeId ? { ...ni, offsetX, offsetY } : ni)),
         l: m.l,
       };
       alignNodes(newM);

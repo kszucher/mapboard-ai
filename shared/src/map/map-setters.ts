@@ -1,10 +1,10 @@
 import { M } from '../api/api-types-map';
 
 export const alignNodes = (m: M) => {
-  const minOffsetW = Math.min(...m.n.map(ni => ni.offsetW));
-  const minOffsetH = Math.min(...m.n.map(ni => ni.offsetH));
+  const minOffsetX = Math.min(...m.n.map(ni => ni.offsetX));
+  const minOffsetY = Math.min(...m.n.map(ni => ni.offsetY));
   m.n.map(ni => {
-    ni.offsetW -= minOffsetW;
-    ni.offsetH -= minOffsetH;
+    ni.offsetX -= minOffsetX;
+    ni.offsetY -= minOffsetY;
   });
 };

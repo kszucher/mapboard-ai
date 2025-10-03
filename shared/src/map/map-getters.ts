@@ -6,21 +6,21 @@ export const getNodeSelfW = (n: Pick<N, 'controlType'>) => controlBaseSizes[n.co
 
 export const getNodeSelfH = (n: Pick<N, 'controlType'>) => controlBaseSizes[n.controlType].h + 2 * N_PADDING;
 
-export const getMapSelfW = (m: { n: Pick<N, 'offsetW' | 'controlType'>[] }) => {
-  const max = Math.max(...m.n.map(ni => ni.offsetW + getNodeSelfW(ni)));
+export const getMapSelfW = (m: { n: Pick<N, 'offsetX' | 'controlType'>[] }) => {
+  const max = Math.max(...m.n.map(ni => ni.offsetX + getNodeSelfW(ni)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getMapSelfH = (m: { n: Pick<N, 'offsetH' | 'controlType'>[] }) => {
-  const max = Math.max(...m.n.map(ni => ni.offsetH + getNodeSelfH(ni)));
+export const getMapSelfH = (m: { n: Pick<N, 'offsetY' | 'controlType'>[] }) => {
+  const max = Math.max(...m.n.map(ni => ni.offsetY + getNodeSelfH(ni)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getNodeLeft = (n: N) => n.offsetW + M_PADDING;
+export const getNodeLeft = (n: N) => n.offsetX + M_PADDING;
 
-export const getNodeRight = (n: N) => n.offsetW + M_PADDING + getNodeSelfW(n);
+export const getNodeRight = (n: N) => n.offsetX + M_PADDING + getNodeSelfW(n);
 
-export const getNodeTop = (n: N) => n.offsetH + M_PADDING;
+export const getNodeTop = (n: N) => n.offsetY + M_PADDING;
 
 export const getLastIndexN = (m: { n: Pick<N, 'iid'>[] }): number => Math.max(-1, ...m.n.map(ni => ni.iid));
 

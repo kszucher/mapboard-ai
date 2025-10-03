@@ -6,8 +6,8 @@ export const N_PADDING = 40;
 export interface N {
   id: number;
   iid: number;
-  offsetW: number;
-  offsetH: number;
+  offsetX: number;
+  offsetY: number;
   controlType: ControlType;
   isProcessing: boolean;
   fileHash: string | null;
