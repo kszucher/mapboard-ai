@@ -8,14 +8,12 @@ import {
   WithdrawShareRequestDto,
 } from '../../../shared/src/api/api-types-share';
 import { DistributionService } from '../distribution/distribution.service';
-import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { ShareRepository } from './share.repository';
 
 @injectable()
 export class ShareService {
   constructor(
     private shareRepository: ShareRepository,
-    private workspaceRepository: WorkspaceRepository,
     private distributionService: DistributionService
   ) {}
 
@@ -26,14 +24,10 @@ export class ShareService {
   async createShare({ userId, mapId, shareEmail, shareAccess }: CreateShareRequestDto & { userId: number }) {
     const share = await this.shareRepository.createShare({ userId, mapId, shareEmail, shareAccess });
 
-    const workspacesOfUsers = await this.workspaceRepository.getWorkspacesOfUsers({
-      userIds: [share.ownerUserId, share.shareUserId],
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_SHARE,
+      payload: { userIds: [share.ownerUserId, share.shareUserId] },
     });
-
-    await this.distributionService.publish(
-      workspacesOfUsers.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_SHARE, payload: {} }
-    );
   }
 
   async acceptShare({ shareId }: AcceptShareRequestDto) {
@@ -41,14 +35,10 @@ export class ShareService {
 
     const share = await this.shareRepository.getShare({ shareId });
 
-    const workspacesOfUsers = await this.workspaceRepository.getWorkspacesOfUsers({
-      userIds: [share.ownerUserId, share.shareUserId],
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_SHARE,
+      payload: { userIds: [share.ownerUserId, share.shareUserId] },
     });
-
-    await this.distributionService.publish(
-      workspacesOfUsers.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_SHARE, payload: {} }
-    );
   }
 
   async modifyShareAccess({ shareId, shareAccess }: ModifyShareAccessRequestDto) {
@@ -56,14 +46,10 @@ export class ShareService {
 
     const share = await this.shareRepository.getShare({ shareId });
 
-    const workspacesOfUsers = await this.workspaceRepository.getWorkspacesOfUsers({
-      userIds: [share.ownerUserId, share.shareUserId],
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_SHARE,
+      payload: { userIds: [share.ownerUserId, share.shareUserId] },
     });
-
-    await this.distributionService.publish(
-      workspacesOfUsers.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_SHARE, payload: {} }
-    );
   }
 
   private async deleteShare({ shareId }: { shareId: number }) {
@@ -71,14 +57,10 @@ export class ShareService {
 
     await this.shareRepository.deleteShare({ shareId });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({
-      mapId: share.mapId,
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE,
+      payload: { mapId: share.mapId },
     });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE, payload: {} }
-    );
   }
 
   async withdrawShare({ shareId }: WithdrawShareRequestDto) {

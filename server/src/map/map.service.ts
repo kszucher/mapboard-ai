@@ -86,12 +86,10 @@ export class MapService {
 
     await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId });
 
-    const workspacesOfUser = await this.workspaceRepository.getWorkspacesOfUser({ userId });
-
-    await this.distributionService.publish(
-      workspacesOfUser.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_TAB,
+      payload: { userId },
+    });
   }
 
   async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number; workspaceId: number; mapName: string }) {
@@ -117,23 +115,19 @@ export class MapService {
   async renameMap({ mapId, mapName }: { mapId: number; mapName: string }) {
     await this.mapRepository.renameMap({ mapId, mapName });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_TAB, payload: {} }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_TAB,
+      payload: { mapId },
+    });
   }
 
   async insertNode({ mapId, controlType }: InsertNodeRequestDto) {
     const mapNode = await this.mapRepository.insertNode({ mapId, controlType });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { insert: [mapNode] } } }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { mapId, nodes: { insert: [mapNode] } },
+    });
   }
 
   async insertLink({ mapId, fromNodeId, toNodeId }: InsertLinkRequestDto) {
@@ -141,12 +135,10 @@ export class MapService {
       data: { mapId, fromNodeId, toNodeId },
     });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { links: { insert: [mapLink] } } }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { mapId, links: { insert: [mapLink] } },
+    });
   }
 
   async deleteNode({ workspaceId, mapId, nodeId }: DeleteNodeRequestDto & { workspaceId: number }) {
@@ -165,15 +157,14 @@ export class MapService {
 
     const mapNodes = await this.mapRepository.align({ workspaceId, mapId });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      {
-        type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-        payload: { nodes: { update: mapNodes, delete: [nodeId] }, links: { delete: mapLinksToDelete.map(l => l.id) } },
-      }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: {
+        mapId,
+        nodes: { update: mapNodes, delete: [nodeId] },
+        links: { delete: mapLinksToDelete.map(l => l.id) },
+      },
+    });
   }
 
   async deleteLink({ mapId, linkId }: DeleteLinkRequestDto) {
@@ -181,12 +172,10 @@ export class MapService {
       where: { id: linkId },
     });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { links: { delete: [linkId] } } }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { mapId, links: { delete: [linkId] } },
+    });
   }
 
   async moveNode({ workspaceId, mapId, nodeId, offsetX, offsetY }: MoveNodeRequestDto & { workspaceId: number }) {
@@ -197,12 +186,10 @@ export class MapService {
 
     const mapNodes = await this.mapRepository.align({ workspaceId, mapId });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: mapNodes } } }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { mapId, nodes: { update: mapNodes } },
+    });
   }
 
   async updateNode({ workspaceId, mapId, node }: UpdateNodeRequestDto & { workspaceId: number }) {
@@ -212,12 +199,10 @@ export class MapService {
       omit: { createdAt: true },
     });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [mapNode] } } }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { mapId, nodes: { update: [mapNode] } },
+    });
   }
 
   async executeMapUploadFile({
@@ -233,12 +218,10 @@ export class MapService {
   }) {
     const [activeNode, inactiveNodes] = await this.mapRepository.setProcessing({ workspaceId, mapId, nodeId });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [activeNode, ...inactiveNodes] } } }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { mapId, nodes: { update: [activeNode, ...inactiveNodes] } },
+    });
 
     const fileHash = await this.mapNodeFileService.upload(file);
 
@@ -248,10 +231,10 @@ export class MapService {
       select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
     });
 
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [mapNode] } } }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { mapId, nodes: { update: [mapNode] } },
+    });
   }
 
   async executeMap({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
@@ -259,12 +242,10 @@ export class MapService {
 
     const mapNodes = await this.mapRepository.clearResults({ workspaceId, mapId });
 
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: mapNodes } } }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+      payload: { mapId, nodes: { update: mapNodes } },
+    });
 
     const topologicalSort = getTopologicalSort({ n: map.MapNodes, l: map.MapLinks });
     if (!topologicalSort) {
@@ -274,14 +255,12 @@ export class MapService {
     for (const nodeId of topologicalSort) {
       const ni = map.MapNodes.find(ni => ni.id === nodeId)!;
 
-      const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
       const [activeNode, inactiveNodes] = await this.mapRepository.setProcessing({ workspaceId, mapId, nodeId });
 
-      await this.distributionService.publish(
-        workspacesOfMap.map(el => el.id),
-        { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [activeNode, ...inactiveNodes] } } }
-      );
+      await this.distributionService.publish({
+        type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+        payload: { mapId, nodes: { update: [activeNode, ...inactiveNodes] } },
+      });
 
       try {
         switch (ni.controlType) {
@@ -315,19 +294,19 @@ export class MapService {
           case ControlType.LLM: {
             const mapNode = await this.mapNodeLlmService.execute({ workspaceId, mapId, nodeId });
 
-            await this.distributionService.publish(
-              workspacesOfMap.map(el => el.id),
-              { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [mapNode] } } }
-            );
+            await this.distributionService.publish({
+              type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+              payload: { mapId, nodes: { update: [mapNode] } },
+            });
             break;
           }
           case ControlType.VISUALIZER: {
             const mapNode = await this.mapNodeVisualizerService.execute({ workspaceId, mapId, nodeId });
 
-            await this.distributionService.publish(
-              workspacesOfMap.map(el => el.id),
-              { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: [mapNode] } } }
-            );
+            await this.distributionService.publish({
+              type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+              payload: { mapId, nodes: { update: [mapNode] } },
+            });
             break;
           }
         }
@@ -336,10 +315,10 @@ export class MapService {
 
         const mapNodes = await this.mapRepository.clearProcessing({ workspaceId, mapId });
 
-        await this.distributionService.publish(
-          workspacesOfMap.map(el => el.id),
-          { type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH, payload: { nodes: { update: mapNodes } } }
-        );
+        await this.distributionService.publish({
+          type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+          payload: { mapId, nodes: { update: mapNodes } },
+        });
 
         break;
       }
@@ -347,8 +326,6 @@ export class MapService {
   }
 
   async deleteMap({ userId, mapId }: { userId: number; mapId: number }) {
-    const workspacesOfMap = await this.workspaceRepository.getWorkspacesOfMap({ mapId });
-
     await this.workspaceRepository.removeMapFromWorkspaces({ mapId });
 
     await this.tabRepository.removeMapFromTab({ userId, mapId });
@@ -361,10 +338,10 @@ export class MapService {
 
     await this.prisma.map.delete({ where: { id: mapId } });
 
-    await this.distributionService.publish(
-      workspacesOfMap.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE, payload: { mapId } }
-    );
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE,
+      payload: {},
+    });
   }
 
   async clearProcessingAll() {

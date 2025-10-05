@@ -1,25 +1,14 @@
-import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import { createClient } from 'redis';
 import { injectable } from 'tsyringe';
-import { SSE_EVENT } from '../../../shared/src/api/api-types-distribution';
+import { SSE_EVENT, SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
-
-export interface RedisEventMessage {
-  workspaceId: number;
-  event: SSE_EVENT;
-}
-
-type ClientInfo = {
-  res: Response;
-  workspaceId: number;
-};
 
 @injectable()
 export class DistributionService {
   private publisher?: any;
   private subscriber?: any;
-  private clients = new Map<string, ClientInfo>();
+  private clients = new Map<string, { res: Response }>();
   private readonly channel = 'workspace_updates';
 
   constructor(private workspaceRepository: WorkspaceRepository) {}
@@ -33,27 +22,20 @@ export class DistributionService {
 
     await this.subscriber.subscribe(this.channel, (message: string) => {
       try {
-        const msg: RedisEventMessage = JSON.parse(message);
-        this.broadcast(msg);
+        const event: SSE_EVENT = JSON.parse(message);
+        this.broadcast(event);
       } catch (err) {
         console.error('Failed to parse Redis message:', err);
       }
     });
   }
 
-  async publish(workspaceIds: number[], event: SSE_EVENT) {
-    if (!this.publisher) {
-      throw new Error('Redis publisher not initialized. Call connectAndSubscribe first.');
-    }
-
-    for (const workspaceId of workspaceIds) {
-      const msg: RedisEventMessage = { workspaceId, event };
-      await this.publisher.publish(this.channel, JSON.stringify(msg));
-    }
+  async publish(message: SSE_EVENT) {
+    await this.publisher.publish(this.channel, JSON.stringify(message));
   }
 
   addClient(req: Request, res: Response, workspaceId: number) {
-    const clientId = randomUUID();
+    const clientId = workspaceId.toString();
 
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
@@ -66,19 +48,46 @@ export class DistributionService {
     res.write(':\n\n');
     res.write('retry: 5000\n\n');
 
-    this.clients.set(clientId, { res, workspaceId });
+    this.clients.set(clientId, { res });
 
     req.on('close', async () => {
       console.log('killing workspace ', workspaceId);
-      await this.workspaceRepository.deleteWorkspace({ workspaceId }); // optional, depends on your logic
+      await this.workspaceRepository.deleteWorkspace({ workspaceId });
       this.clients.delete(clientId);
     });
   }
 
-  private broadcast(message: RedisEventMessage) {
-    for (const { res, workspaceId } of this.clients.values()) {
-      if (workspaceId === message.workspaceId) {
-        res.write(`data: ${JSON.stringify(message.event)}\n\n`);
+  private async broadcast(event: SSE_EVENT) {
+    let workspaces;
+
+    switch (event.type) {
+      case SSE_EVENT_TYPE.INVALIDATE_MAP_TAB: {
+        workspaces = await this.workspaceRepository.getWorkspacesOfMap({ mapId: event.payload.mapId });
+        break;
+      }
+      case SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH: {
+        workspaces = await this.workspaceRepository.getWorkspacesOfMap({ mapId: event.payload.mapId });
+        break;
+      }
+      case SSE_EVENT_TYPE.INVALIDATE_TAB: {
+        workspaces = await this.workspaceRepository.getWorkspacesOfUser({ userId: event.payload.userId });
+        break;
+      }
+      case SSE_EVENT_TYPE.INVALIDATE_SHARE: {
+        workspaces = await this.workspaceRepository.getWorkspacesOfUsers({ userIds: event.payload.userIds });
+        break;
+      }
+      case SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE: {
+        workspaces = await this.workspaceRepository.getWorkspacesWithNoMap();
+        break;
+      }
+    }
+
+    for (const workspace of workspaces) {
+      const client = this.clients.get(workspace.id.toString());
+      if (client) {
+        const message = JSON.stringify(event);
+        client.res.write(`data: ${message}\n\n`);
       }
     }
   }

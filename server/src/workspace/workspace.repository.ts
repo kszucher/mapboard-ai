@@ -43,6 +43,13 @@ export class WorkspaceRepository {
     });
   }
 
+  async getWorkspacesWithNoMap() {
+    return this.prisma.workspace.findMany({
+      where: { Map: null },
+      select: { id: true },
+    });
+  }
+
   async addMapToWorkspace({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
     await this.prisma.workspace.update({
       where: { id: workspaceId },

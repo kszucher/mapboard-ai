@@ -5,6 +5,7 @@ export type UpdateN = Partial<N> & Pick<N, 'workspaceId' | 'updatedAt'>
 export type UpdateL = Partial<L> & Pick<L, 'workspaceId' | 'updatedAt'>
 
 export type UpdateMapGraphEventPayload = {
+  mapId: number,
   nodes?: { insert?: N[]; update?: UpdateN[]; delete?: number[] },
   links?: { insert?: L[]; update?: UpdateL[]; delete?: number[] }
 };
@@ -18,8 +19,8 @@ export enum SSE_EVENT_TYPE {
 }
 
 export type SSE_EVENT =
-  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_MAP_TAB; payload: {} }
+  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_MAP_TAB; payload: { mapId: number } }
   | { type: typeof SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH; payload: UpdateMapGraphEventPayload }
-  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_TAB; payload: {} }
-  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_SHARE; payload: {} }
+  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_TAB; payload: { userId: number } }
+  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_SHARE; payload: { userIds: number[] } }
   | { type: typeof SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE; payload: {} }

@@ -2,7 +2,6 @@ import { injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import { DistributionService } from '../distribution/distribution.service';
 import { MapRepository } from '../map/map.repository';
-import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { TabRepository } from './tab.repository';
 
 @injectable()
@@ -10,7 +9,6 @@ export class TabService {
   constructor(
     private tabRepository: TabRepository,
     private mapRepository: MapRepository,
-    private workspaceRepository: WorkspaceRepository,
     private distributionService: DistributionService
   ) {}
 
@@ -33,22 +31,12 @@ export class TabService {
   async moveUpMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
     await this.tabRepository.moveUpMapInTab({ userId, mapId });
 
-    const workspacesOfUser = await this.workspaceRepository.getWorkspacesOfUser({ userId });
-
-    await this.distributionService.publish(
-      workspacesOfUser.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} }
-    );
+    await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: { userId } });
   }
 
   async moveDownMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
     await this.tabRepository.moveDownMapInTab({ userId, mapId });
 
-    const workspacesOfUser = await this.workspaceRepository.getWorkspacesOfUser({ userId });
-
-    await this.distributionService.publish(
-      workspacesOfUser.map(el => el.id),
-      { type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: {} }
-    );
+    await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: { userId } });
   }
 }
