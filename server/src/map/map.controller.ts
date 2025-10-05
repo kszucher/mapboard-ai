@@ -62,8 +62,9 @@ router.post('/insert-link', checkJwt, getUserIdAndWorkspaceId, async (req: Reque
 });
 
 router.post('/delete-node', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { workspaceId } = req as any;
   const params: DeleteNodeRequestDto = req.body;
-  await mapService.deleteNode(params);
+  await mapService.deleteNode({ workspaceId, ...params });
   res.json();
 });
 
@@ -93,16 +94,18 @@ router.post(
   getUserIdAndWorkspaceId,
   upload.single('file'),
   async (req: Request, res: Response) => {
+    const { workspaceId } = req as any;
     const file = req.file as Express.Multer.File;
     const { mapId, nodeId }: ExecuteMapFileUploadDto = req.body;
-    await mapService.executeMapUploadFile({ mapId: Number(mapId), nodeId: Number(nodeId), file });
+    await mapService.executeMapUploadFile({ workspaceId, mapId: Number(mapId), nodeId: Number(nodeId), file });
     res.json();
   }
 );
 
 router.post('/execute-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
+  const { workspaceId } = req as any;
   const params: ExecuteMapRequestDto = req.body;
-  await mapService.executeMap(params);
+  await mapService.executeMap({ workspaceId, ...params });
   res.json();
 });
 

@@ -25,10 +25,10 @@ export class MapRepository {
         userId: true,
         name: true,
         MapNodes: {
-          omit: { createdAt: true, updatedAt: true },
+          omit: { createdAt: true },
         },
         MapLinks: {
-          omit: { createdAt: true, updatedAt: true },
+          omit: { createdAt: true },
         },
       },
     });
@@ -148,33 +148,34 @@ export class MapRepository {
     });
   }
 
-  async setProcessing({ mapId, nodeId }: { mapId: number; nodeId: number }) {
+  async setProcessing({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     return this.prisma.$transaction([
       this.prisma.mapNode.update({
         where: { id: nodeId },
-        data: { isProcessing: true },
-        select: { id: true, isProcessing: true },
+        data: { workspaceId, isProcessing: true },
+        select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
       }),
       this.prisma.mapNode.updateManyAndReturn({
         where: { id: { not: nodeId }, mapId },
-        data: { isProcessing: false },
-        select: { id: true, isProcessing: true },
+        data: { workspaceId, isProcessing: false },
+        select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
       }),
     ]);
   }
 
-  async clearProcessing({ mapId }: { mapId: number }) {
+  async clearProcessing({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
     return this.prisma.mapNode.updateManyAndReturn({
       where: { mapId },
-      data: { isProcessing: false },
-      select: { id: true, isProcessing: true },
+      data: { workspaceId, isProcessing: false },
+      select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
     });
   }
 
-  async clearResults({ mapId }: { mapId: number }) {
+  async clearResults({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
     return this.prisma.mapNode.updateManyAndReturn({
       where: { mapId },
       data: {
+        workspaceId,
         ingestionOutputJson: Prisma.JsonNull,
         vectorDatabaseId: null,
         vectorDatabaseOutputText: null,
@@ -184,17 +185,19 @@ export class MapRepository {
       },
       select: {
         id: true,
+        workspaceId: true,
         ingestionOutputJson: true,
         vectorDatabaseId: true,
         vectorDatabaseOutputText: true,
         dataFrameOutputJson: true,
         llmOutputJson: true,
         visualizerOutputText: true,
+        updatedAt: true,
       },
     });
   }
 
-  async align({ mapId }: { mapId: number }) {
+  async align({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
     const mapNodes = await this.prisma.mapNode.findMany({
       where: { mapId },
       select: { offsetX: true, offsetY: true },
@@ -203,13 +206,16 @@ export class MapRepository {
     return this.prisma.mapNode.updateManyAndReturn({
       where: { mapId },
       data: {
+        workspaceId,
         offsetX: { decrement: Math.min(...mapNodes.map(node => node.offsetX)) },
         offsetY: { decrement: Math.min(...mapNodes.map(node => node.offsetY)) },
       },
       select: {
         id: true,
+        workspaceId: true,
         offsetX: true,
         offsetY: true,
+        updatedAt: true,
       },
     });
   }
@@ -233,6 +239,6 @@ export class MapRepository {
   }
 
   async clearProcessingAll() {
-    await this.prisma.mapNode.updateMany({ data: { isProcessing: false } });
+    await this.prisma.mapNode.updateMany({ data: { workspaceId: null, isProcessing: false } });
   }
 }

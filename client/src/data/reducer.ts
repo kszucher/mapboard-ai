@@ -1,12 +1,13 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
-import { UpdateMapGraphEventPayload } from '../../../shared/src/api/api-types-distribution.ts';
+import { UpdateL, UpdateMapGraphEventPayload, UpdateN } from '../../../shared/src/api/api-types-distribution.ts';
+import { L } from '../../../shared/src/api/api-types-map-link.ts';
 import { N } from '../../../shared/src/api/api-types-map-node.ts';
 import { getNodeSelfH, getNodeSelfW } from '../../../shared/src/map/map-getters.ts';
 import { alignNodes } from '../../../shared/src/map/map-setters.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
 import { api } from './api.ts';
-import { stateDefault, state } from './state-defaults.ts';
+import { state, stateDefault } from './state-defaults.ts';
 import { AlertDialogState, DialogState, MidMouseMode, PageState, State } from './state-types.ts';
 
 export const slice = createSlice({
@@ -103,7 +104,7 @@ export const slice = createSlice({
     ) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const newM = {
-        n: m.n.map(ni => (ni.id === nodeId ? { ...ni, offsetX, offsetY } : ni)),
+        n: m.n.map(ni => (ni.id === nodeId ? { ...ni, offsetX, offsetY, updatedAt: new Date() } : ni)),
         l: m.l,
       };
       alignNodes(newM);
@@ -112,7 +113,7 @@ export const slice = createSlice({
     updateNodeOptimistic(state, { payload: { node } }: PayloadAction<{ node: Partial<N> }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const newM = {
-        n: m.n.map(ni => (ni.id === node.id ? { ...ni, ...node } : ni)),
+        n: m.n.map(ni => (ni.id === node.id ? { ...ni, ...node, updatedAt: new Date() } : ni)),
         l: m.l,
       };
       state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
@@ -121,12 +122,16 @@ export const slice = createSlice({
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const { insert: nodeInsert = [], update: nodeUpdate = [], delete: nodeDelete = [] } = nodes ?? {};
       const { insert: linkInsert = [], update: linkUpdate = [], delete: linkDelete = [] } = links ?? {};
+      const allowedUpdateN = (s: UpdateN, c: N) => (c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true);
+      const allowedUpdateL = (s: UpdateL, c: L) => (c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true);
       const newM = {
         n: [
           ...m.n
             .filter(ni => !nodeDelete.includes(ni.id))
             .map(ni =>
-              nodeUpdate.some(nj => nj.id === ni.id) ? { ...ni, ...nodeUpdate.find(el => el.id === ni.id) } : ni
+              nodeUpdate.some(nj => nj.id === ni.id && allowedUpdateN(nj, ni))
+                ? { ...ni, ...nodeUpdate.find(nj => nj.id === ni.id && allowedUpdateN(nj, ni)) }
+                : ni
             ),
           ...nodeInsert,
         ],
@@ -134,7 +139,9 @@ export const slice = createSlice({
           ...m.l
             .filter(li => !linkDelete.includes(li.id))
             .map(li =>
-              linkUpdate.some(lj => lj.id === li.id) ? { ...li, ...linkUpdate.find(el => el.id === li.id) } : li
+              linkUpdate.some(lj => lj.id === li.id && allowedUpdateL(lj, li))
+                ? { ...li, ...linkUpdate.find(lj => lj.id === li.id && allowedUpdateL(lj, li)) }
+                : li
             ),
           ...linkInsert,
         ],

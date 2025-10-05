@@ -9,7 +9,7 @@ export class MapNodeIngestionService {
     private mapNodeService: MapNodeRepository
   ) {}
 
-  async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
+  async execute({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     const [inputFileNode, node] = await Promise.all([
       this.mapNodeService.getInputFileNode({ mapId, nodeId }),
       this.mapNodeService.getNode({ mapId, nodeId }),
@@ -35,6 +35,7 @@ export class MapNodeIngestionService {
     await this.prisma.mapNode.update({
       where: { id: nodeId },
       data: {
+        workspaceId,
         ingestionOutputJson: {}, // TODO
       },
     });

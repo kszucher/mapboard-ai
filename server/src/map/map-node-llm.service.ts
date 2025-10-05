@@ -14,7 +14,7 @@ export class MapNodeLlmService {
     private mapNodeService: MapNodeRepository
   ) {}
 
-  async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
+  async execute({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     const [inputLlmNode, inputVectorDatabaseNode, inputDataFrameNode, inputContextNode, inputQuestionNode, node] =
       await Promise.all([
         this.mapNodeService.getInputLlmNode({ mapId, nodeId }),
@@ -80,8 +80,8 @@ export class MapNodeLlmService {
 
     return this.prisma.mapNode.update({
       where: { id: nodeId },
-      data: { llmOutputJson },
-      select: { id: true, llmOutputJson: true },
+      data: { workspaceId, llmOutputJson },
+      select: { id: true, workspaceId: true, llmOutputJson: true, updatedAt: true },
     });
   }
 }

@@ -3,8 +3,9 @@ import { BadgeProps } from '@radix-ui/themes';
 export const M_PADDING = 40;
 export const N_PADDING = 40;
 
-export interface N {
+export type N = {
   id: number;
+  workspaceId: number | null;
   iid: number;
   offsetX: number;
   offsetY: number;
@@ -22,6 +23,7 @@ export interface N {
   llmOutputSchema: LlmOutputSchema | null;
   llmOutputJson: any | null;
   visualizerOutputText: string | null;
+  updatedAt: Date;
 }
 
 export const ControlType = {

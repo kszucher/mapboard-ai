@@ -14,7 +14,7 @@ export class MapNodeDataFrameService {
     private mapNodeFileService: MapNodeFileService
   ) {}
 
-  async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
+  async execute({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     const [inputFileNode, inputLlmNode, node] = await Promise.all([
       this.mapNodeService.getInputFileNode({ mapId, nodeId }),
       this.mapNodeService.getInputLlmNode({ mapId, nodeId }),
@@ -63,7 +63,7 @@ export class MapNodeDataFrameService {
 
     await this.prisma.mapNode.update({
       where: { id: nodeId },
-      data: { dataFrameOutputJson },
+      data: { workspaceId, dataFrameOutputJson },
     });
   }
 

@@ -9,7 +9,7 @@ export class MapNodeVisualizerService {
     private mapNodeService: MapNodeRepository
   ) {}
 
-  async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
+  async execute({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     const [inputLlmNode, inputDataFrameNode, node] = await Promise.all([
       this.mapNodeService.getInputLlmNode({ mapId, nodeId }),
       this.mapNodeService.getInputDataFrameNode({ mapId, nodeId }),
@@ -26,8 +26,8 @@ export class MapNodeVisualizerService {
 
     return this.prisma.mapNode.update({
       where: { id: nodeId },
-      data: { visualizerOutputText },
-      select: { id: true, visualizerOutputText: true },
+      data: { workspaceId, visualizerOutputText },
+      select: { id: true, workspaceId: true, visualizerOutputText: true, updatedAt: true },
     });
   }
 }

@@ -9,7 +9,7 @@ export class MapNodeVectorDatabaseService {
     private mapNodeService: MapNodeRepository
   ) {}
 
-  async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
+  async execute({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     const [inputIngestionNodes, inputContextNode, inputQuestionNode, node] = await Promise.all([
       this.mapNodeService.getInputIngestionNodes({ mapId, nodeId }),
       this.mapNodeService.getInputContextNode({ mapId, nodeId }),
@@ -26,6 +26,7 @@ export class MapNodeVectorDatabaseService {
     await this.prisma.mapNode.update({
       where: { id: nodeId },
       data: {
+        workspaceId,
         vectorDatabaseId: undefined, // TODO
         vectorDatabaseOutputText: undefined, // TODO
       },
