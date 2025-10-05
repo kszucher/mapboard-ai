@@ -8,12 +8,14 @@ import {
   WithdrawShareRequestDto,
 } from '../../../shared/src/api/api-types-share';
 import { DistributionService } from '../distribution/distribution.service';
+import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { ShareRepository } from './share.repository';
 
 @injectable()
 export class ShareService {
   constructor(
     private shareRepository: ShareRepository,
+    private workspaceRepository: WorkspaceRepository,
     private distributionService: DistributionService
   ) {}
 
@@ -55,11 +57,13 @@ export class ShareService {
   private async deleteShare({ shareId }: { shareId: number }) {
     const share = await this.shareRepository.getShare({ shareId });
 
+    await this.workspaceRepository.removeMapFromSharedWorkspaces({ mapId: share.mapId });
+
     await this.shareRepository.deleteShare({ shareId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE,
-      payload: { mapId: share.mapId },
+      payload: {},
     });
   }
 

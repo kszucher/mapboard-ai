@@ -73,6 +73,24 @@ export class WorkspaceRepository {
     });
   }
 
+  async removeMapFromSharedWorkspaces({ mapId }: { mapId: number }): Promise<void> {
+    await this.prisma.workspace.updateMany({
+      where: {
+        mapId,
+        User: {
+          SharesWithMe: {
+            some: {
+              mapId,
+            },
+          },
+        },
+      },
+      data: {
+        mapId: undefined,
+      },
+    });
+  }
+
   async deleteWorkspace({ workspaceId }: { workspaceId: number }) {
     try {
       await this.prisma.workspace.delete({ where: { id: workspaceId } });
