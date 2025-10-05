@@ -11,16 +11,16 @@ export type UpdateMapGraphEventPayload = {
 };
 
 export enum SSE_EVENT_TYPE {
-  INVALIDATE_MAP_TAB = 'INVALIDATE_MAP_TAB',
+  INVALIDATE_MAP = 'INVALIDATE_MAP',
   INVALIDATE_MAP_GRAPH = 'INVALIDATE_MAP_GRAPH',
   INVALIDATE_TAB = 'INVALIDATE_TAB',
   INVALIDATE_SHARE = 'UPDATE_SHARE',
-  INVALIDATE_WORKSPACE_MAP_TAB_SHARE = 'INVALIDATE_WORKSPACE_MAP_TAB_SHARE',
+  INVALIDATE_WORKSPACE = 'INVALIDATE_WORKSPACE',
 }
 
 export type SSE_EVENT =
-  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_MAP_TAB; payload: { mapId: number } }
+  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_MAP; payload: { mapId: number } }
   | { type: typeof SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH; payload: UpdateMapGraphEventPayload }
-  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_TAB; payload: { userId: number } }
-  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_SHARE; payload: { userIds: number[] } }
-  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE; payload: {} }
+  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_TAB; payload: { tabId: number } }
+  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_SHARE; payload: { shareId: number } }
+  | { type: typeof SSE_EVENT_TYPE.INVALIDATE_WORKSPACE; payload: {} }

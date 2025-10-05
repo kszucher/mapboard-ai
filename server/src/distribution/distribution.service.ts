@@ -61,23 +61,23 @@ export class DistributionService {
     let workspaces;
 
     switch (event.type) {
-      case SSE_EVENT_TYPE.INVALIDATE_MAP_TAB: {
+      case SSE_EVENT_TYPE.INVALIDATE_MAP: {
         workspaces = await this.workspaceRepository.getWorkspacesOfMap({ mapId: event.payload.mapId });
         break;
       }
       case SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH: {
-        workspaces = await this.workspaceRepository.getWorkspacesOfMapGraph({ mapId: event.payload.mapId });
+        workspaces = await this.workspaceRepository.getWorkspacesOfMap({ mapId: event.payload.mapId });
         break;
       }
       case SSE_EVENT_TYPE.INVALIDATE_TAB: {
-        workspaces = await this.workspaceRepository.getWorkspacesOfUser({ userId: event.payload.userId });
+        workspaces = await this.workspaceRepository.getWorkspacesOfTab({ tabId: event.payload.tabId });
         break;
       }
       case SSE_EVENT_TYPE.INVALIDATE_SHARE: {
-        workspaces = await this.workspaceRepository.getWorkspacesOfUsers({ userIds: event.payload.userIds });
+        workspaces = await this.workspaceRepository.getWorkspacesOfShare({ shareId: event.payload.shareId });
         break;
       }
-      case SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE: {
+      case SSE_EVENT_TYPE.INVALIDATE_WORKSPACE: {
         workspaces = await this.workspaceRepository.getWorkspacesWithNoMap();
         break;
       }

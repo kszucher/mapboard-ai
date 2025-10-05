@@ -14,8 +14,21 @@ export class TabRepository {
     });
   }
 
+  async getTabsOfMap({ mapId }: { mapId: number }) {
+    return this.prisma.tab.findMany({
+      where: {
+        mapIds: {
+          has: mapId,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+  }
+
   async addMapToTab({ userId, mapId }: { userId: number; mapId: number }) {
-    await this.prisma.tab.update({
+    return this.prisma.tab.update({
       where: {
         userId,
       },
@@ -24,6 +37,7 @@ export class TabRepository {
           push: mapId,
         },
       },
+      select: { id: true },
     });
   }
 
@@ -38,9 +52,10 @@ export class TabRepository {
 
     [mapIds[i], mapIds[i - 1]] = [mapIds[i - 1], mapIds[i]];
 
-    await this.prisma.tab.update({
+    return this.prisma.tab.update({
       where: { id },
       data: { mapIds },
+      select: { id: true },
     });
   }
 
@@ -55,9 +70,10 @@ export class TabRepository {
 
     [mapIds[i], mapIds[i + 1]] = [mapIds[i + 1], mapIds[i]];
 
-    await this.prisma.tab.update({
+    return this.prisma.tab.update({
       where: { id },
       data: { mapIds },
+      select: { id: true },
     });
   }
 
@@ -69,13 +85,14 @@ export class TabRepository {
 
     const updatedMapIds = tab.mapIds.filter(id => id !== mapId);
 
-    await this.prisma.tab.update({
+    return this.prisma.tab.update({
       where: { userId },
       data: {
         mapIds: {
           set: updatedMapIds,
         },
       },
+      select: { id: true },
     });
   }
 }

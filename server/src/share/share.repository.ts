@@ -75,6 +75,13 @@ export class ShareRepository {
     return share.access;
   }
 
+  async getSharesOfMap({ mapId }: { mapId: number }) {
+    return this.prisma.share.findMany({
+      where: { mapId },
+      select: { id: true },
+    });
+  }
+
   async createShare({
     userId,
     mapId,
@@ -112,6 +119,7 @@ export class ShareRepository {
         status: ShareStatus.WAITING,
       },
       select: {
+        id: true,
         ownerUserId: true,
         shareUserId: true,
         OwnerUser: { select: { name: true } },
@@ -136,5 +144,9 @@ export class ShareRepository {
 
   async deleteShare({ shareId }: { shareId: number }) {
     await this.prisma.share.delete({ where: { id: shareId } });
+  }
+
+  async deleteSharesOfMap({ mapId }: { mapId: number }) {
+    await this.prisma.share.deleteMany({ where: { mapId } });
   }
 }

@@ -241,4 +241,10 @@ export class MapRepository {
   async clearProcessingAll() {
     await this.prisma.mapNode.updateMany({ data: { workspaceId: null, isProcessing: false } });
   }
+
+  async deleteMap({ mapId }: { mapId: number }) {
+    await this.prisma.mapLink.deleteMany({ where: { mapId } });
+    await this.prisma.mapNode.deleteMany({ where: { mapId } });
+    await this.prisma.map.delete({ where: { id: mapId } });
+  }
 }

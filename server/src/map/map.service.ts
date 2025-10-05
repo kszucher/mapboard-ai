@@ -82,13 +82,13 @@ export class MapService {
     workspaceId: number;
     mapId: number;
   }) {
-    await this.tabRepository.addMapToTab({ userId, mapId });
+    const tab = await this.tabRepository.addMapToTab({ userId, mapId });
 
     await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_TAB,
-      payload: { userId },
+      payload: { tabId: tab.id },
     });
   }
 
@@ -115,10 +115,28 @@ export class MapService {
   async renameMap({ mapId, mapName }: { mapId: number; mapName: string }) {
     await this.mapRepository.renameMap({ mapId, mapName });
 
+    const tabs = await this.tabRepository.getTabsOfMap({ mapId });
+
+    for (const tab of tabs) {
+      await this.distributionService.publish({
+        type: SSE_EVENT_TYPE.INVALIDATE_TAB,
+        payload: { tabId: tab.id },
+      });
+    }
+
     await this.distributionService.publish({
-      type: SSE_EVENT_TYPE.INVALIDATE_MAP_TAB,
+      type: SSE_EVENT_TYPE.INVALIDATE_MAP,
       payload: { mapId },
     });
+
+    const shares = await this.shareRepository.getSharesOfMap({ mapId });
+
+    for (const share of shares) {
+      await this.distributionService.publish({
+        type: SSE_EVENT_TYPE.INVALIDATE_SHARE,
+        payload: { shareId: share.id },
+      });
+    }
   }
 
   async insertNode({ mapId, controlType }: InsertNodeRequestDto) {
@@ -326,20 +344,30 @@ export class MapService {
   }
 
   async deleteMap({ userId, mapId }: { userId: number; mapId: number }) {
-    await this.workspaceRepository.removeMapFromWorkspaces({ mapId });
+    const shares = await this.shareRepository.getSharesOfMap({ mapId });
 
-    await this.tabRepository.removeMapFromTab({ userId, mapId });
+    for (const share of shares) {
+      await this.distributionService.publish({
+        type: SSE_EVENT_TYPE.INVALIDATE_SHARE,
+        payload: { shareId: share.id },
+      });
+    }
 
-    await this.prisma.share.deleteMany({ where: { mapId } });
+    await this.shareRepository.deleteSharesOfMap({ mapId });
 
-    await this.prisma.mapLink.deleteMany({ where: { mapId } });
-
-    await this.prisma.mapNode.deleteMany({ where: { mapId } });
-
-    await this.prisma.map.delete({ where: { id: mapId } });
+    const tab = await this.tabRepository.removeMapFromTab({ userId, mapId });
 
     await this.distributionService.publish({
-      type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE,
+      type: SSE_EVENT_TYPE.INVALIDATE_TAB,
+      payload: { tabId: tab.id },
+    });
+
+    await this.mapRepository.deleteMap({ mapId });
+
+    await this.workspaceRepository.removeMapFromWorkspaces({ mapId });
+
+    await this.distributionService.publish({
+      type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE,
       payload: {},
     });
   }

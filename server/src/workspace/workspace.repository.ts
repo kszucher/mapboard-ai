@@ -29,21 +29,7 @@ export class WorkspaceRepository {
     });
   }
 
-  async getWorkspacesOfUsers({ userIds }: { userIds: number[] }) {
-    return this.prisma.workspace.findMany({
-      where: { User: { id: { in: userIds } } },
-      select: { id: true },
-    });
-  }
-
   async getWorkspacesOfMap({ mapId }: { mapId: number }) {
-    return this.prisma.workspace.findMany({
-      where: { User: { Tab: { mapIds: { has: mapId } } } },
-      select: { id: true },
-    });
-  }
-
-  async getWorkspacesOfMapGraph({ mapId }: { mapId: number }) {
     return this.prisma.workspace.findMany({
       where: { Map: { id: mapId } },
       select: { id: true },
@@ -57,6 +43,37 @@ export class WorkspaceRepository {
     });
   }
 
+  async getWorkspacesOfTab({ tabId }: { tabId: number }) {
+    return this.prisma.workspace.findMany({
+      where: { User: { Tab: { id: tabId } } },
+      select: { id: true },
+    });
+  }
+
+  async getWorkspacesOfShare({ shareId }: { shareId: number }) {
+    return this.prisma.workspace.findMany({
+      where: {
+        OR: [
+          {
+            User: {
+              SharesByMe: {
+                some: { id: shareId },
+              },
+            },
+          },
+          {
+            User: {
+              SharesWithMe: {
+                some: { id: shareId },
+              },
+            },
+          },
+        ],
+      },
+      select: { id: true },
+    });
+  }
+
   async addMapToWorkspace({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
     await this.prisma.workspace.update({
       where: { id: workspaceId },
@@ -64,29 +81,20 @@ export class WorkspaceRepository {
     });
   }
 
-  async removeMapFromWorkspaces({ mapId }: { mapId: number }): Promise<void> {
+  async removeUserMapFromWorkspaces({ userId, mapId }: { userId: number; mapId: number }): Promise<void> {
     await this.prisma.workspace.updateMany({
-      where: { mapId },
+      where: { userId, mapId },
       data: {
-        mapId: undefined,
+        mapId: null,
       },
     });
   }
 
-  async removeMapFromSharedWorkspaces({ mapId }: { mapId: number }): Promise<void> {
+  async removeMapFromWorkspaces({ mapId }: { mapId: number }): Promise<void> {
     await this.prisma.workspace.updateMany({
-      where: {
-        mapId,
-        User: {
-          SharesWithMe: {
-            some: {
-              mapId,
-            },
-          },
-        },
-      },
+      where: { mapId },
       data: {
-        mapId: undefined,
+        mapId: null,
       },
     });
   }

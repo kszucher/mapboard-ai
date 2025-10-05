@@ -94,23 +94,23 @@ export const Window: FC = () => {
       eventSource.addEventListener('message', e => {
         const { type, payload } = JSON.parse(e.data) as SSE_EVENT;
         switch (type) {
-          case SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH: {
-            dispatch(actions.updateMapGraphSse(payload));
+          case SSE_EVENT_TYPE.INVALIDATE_MAP: {
+            dispatch(api.util.invalidateTags(['MapInfo']));
             break;
           }
-          case SSE_EVENT_TYPE.INVALIDATE_SHARE: {
-            dispatch(api.util.invalidateTags(['ShareInfo']));
+          case SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH: {
+            dispatch(actions.updateMapGraphSse(payload));
             break;
           }
           case SSE_EVENT_TYPE.INVALIDATE_TAB: {
             dispatch(api.util.invalidateTags(['TabInfo']));
             break;
           }
-          case SSE_EVENT_TYPE.INVALIDATE_MAP_TAB: {
-            dispatch(api.util.invalidateTags(['MapInfo', 'TabInfo']));
+          case SSE_EVENT_TYPE.INVALIDATE_SHARE: {
+            dispatch(api.util.invalidateTags(['ShareInfo']));
             break;
           }
-          case SSE_EVENT_TYPE.INVALIDATE_WORKSPACE_MAP_TAB_SHARE: {
+          case SSE_EVENT_TYPE.INVALIDATE_WORKSPACE: {
             dispatch(api.endpoints.createWorkspace.initiate());
             break;
           }

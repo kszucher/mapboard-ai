@@ -29,14 +29,18 @@ export class TabService {
   }
 
   async moveUpMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
-    await this.tabRepository.moveUpMapInTab({ userId, mapId });
+    const tab = await this.tabRepository.moveUpMapInTab({ userId, mapId });
 
-    await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: { userId } });
+    if (!tab) return;
+
+    await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: { tabId: tab.id } });
   }
 
   async moveDownMapInTab({ userId, mapId }: { userId: number; mapId: number }) {
-    await this.tabRepository.moveDownMapInTab({ userId, mapId });
+    const tab = await this.tabRepository.moveDownMapInTab({ userId, mapId });
 
-    await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: { userId } });
+    if (!tab) return;
+
+    await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: { tabId: tab.id } });
   }
 }
