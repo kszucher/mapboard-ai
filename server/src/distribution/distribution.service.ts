@@ -66,7 +66,7 @@ export class DistributionService {
         break;
       }
       case SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH: {
-        workspaces = await this.workspaceRepository.getWorkspacesOfMap({ mapId: event.payload.mapId });
+        workspaces = await this.workspaceRepository.getWorkspacesOfMapGraph({ mapId: event.payload.mapId });
         break;
       }
       case SSE_EVENT_TYPE.INVALIDATE_TAB: {

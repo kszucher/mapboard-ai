@@ -38,6 +38,13 @@ export class WorkspaceRepository {
 
   async getWorkspacesOfMap({ mapId }: { mapId: number }) {
     return this.prisma.workspace.findMany({
+      where: { User: { Tab: { mapIds: { has: mapId } } } },
+      select: { id: true },
+    });
+  }
+
+  async getWorkspacesOfMapGraph({ mapId }: { mapId: number }) {
+    return this.prisma.workspace.findMany({
       where: { Map: { id: mapId } },
       select: { id: true },
     });
