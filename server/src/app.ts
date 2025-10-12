@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { MapBoard } from './mapboard';
 
 async function main() {
