@@ -67,6 +67,33 @@ model MapNode {
   updatedAt                DateTime         @default(now()) @updatedAt
 }
 
+model MapNodeType {
+  id                     Int            @id @default(autoincrement())
+  w                      Int
+  h                      Int
+  type                   String         @unique
+  color                  Color
+  label                  String
+  allowedTargetNodeTypes MapNodeType[]  @relation("TargetRelation")
+  targetOf               MapNodeType[]  @relation("TargetRelation")
+  allowedSourceNodeTypes MapNodeType[]  @relation("SourceRelation")
+  sourceOf               MapNodeType[]  @relation("SourceRelation")
+  mapNodeInputs          MapNodeInput[]
+}
+
+model MapNodeInput {
+  id            Int              @id @default(autoincrement())
+  inputType     MapNodeInputType
+  selectOptions String[]
+  MapNodeType   MapNodeType?     @relation(fields: [mapNodeTypeId], references: [id])
+  mapNodeTypeId Int?
+}
+
+enum MapNodeInputType {
+  TEXT
+  SELECT
+}
+
 model MapLink {
   id          Int      @id @default(autoincrement())
   mapId       Int
@@ -145,4 +172,33 @@ enum LlmOutputSchema {
   TEXT
   VECTOR_DATABASE_QUERY
   DATA_FRAME_QUERY
+}
+
+enum Color {
+  gray
+  gold
+  bronze
+  brown
+  yellow
+  amber
+  orange
+  tomato
+  red
+  ruby
+  crimson
+  pink
+  plum
+  purple
+  violet
+  iris
+  indigo
+  blue
+  cyan
+  teal
+  jade
+  green
+  grass
+  lime
+  mint
+  sky
 }
