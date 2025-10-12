@@ -47,57 +47,59 @@ export const LlmOutputSchema = {
 
 export type LlmOutputSchema = (typeof LlmOutputSchema)[keyof typeof LlmOutputSchema];
 
+const { FILE, INGESTION, CONTEXT, QUESTION, VECTOR_DATABASE, DATA_FRAME, LLM, VISUALIZER } = ControlType;
+
 export const controlBaseSizes: Record<ControlType, { w: number; h: number }> = {
-  [ControlType.FILE]: { w: 160, h: 90 },
-  [ControlType.INGESTION]: { w: 160, h: 90 },
-  [ControlType.CONTEXT]: { w: 200, h: 160 },
-  [ControlType.QUESTION]: { w: 200, h: 200 },
-  [ControlType.VECTOR_DATABASE]: { w: 180, h: 60 },
-  [ControlType.DATA_FRAME]: { w: 200, h: 100 },
-  [ControlType.LLM]: { w: 200, h: 200 },
-  [ControlType.VISUALIZER]: { w: 200, h: 160 },
+  FILE: { w: 160, h: 90 },
+  INGESTION: { w: 160, h: 90 },
+  CONTEXT: { w: 200, h: 160 },
+  QUESTION: { w: 200, h: 200 },
+  VECTOR_DATABASE: { w: 180, h: 60 },
+  DATA_FRAME: { w: 200, h: 100 },
+  LLM: { w: 200, h: 200 },
+  VISUALIZER: { w: 200, h: 160 },
 };
 
 export const controlColors: Record<ControlType, NonNullable<BadgeProps['color']>> = {
-  [ControlType.FILE]: 'yellow',
-  [ControlType.INGESTION]: 'cyan',
-  [ControlType.CONTEXT]: 'violet',
-  [ControlType.QUESTION]: 'lime',
-  [ControlType.VECTOR_DATABASE]: 'brown',
-  [ControlType.DATA_FRAME]: 'crimson',
-  [ControlType.LLM]: 'jade',
-  [ControlType.VISUALIZER]: 'lime',
+  FILE: 'yellow',
+  INGESTION: 'cyan',
+  CONTEXT: 'violet',
+  QUESTION: 'lime',
+  VECTOR_DATABASE: 'brown',
+  DATA_FRAME: 'crimson',
+  LLM: 'jade',
+  VISUALIZER: 'lime',
 };
 
 export const controlTexts: Record<ControlType, string> = {
-  [ControlType.FILE]: 'File Upload',
-  [ControlType.INGESTION]: 'Ingestion',
-  [ControlType.CONTEXT]: 'Context',
-  [ControlType.QUESTION]: 'Question',
-  [ControlType.VECTOR_DATABASE]: 'Vector Database',
-  [ControlType.DATA_FRAME]: 'Data Frame',
-  [ControlType.LLM]: 'LLM',
-  [ControlType.VISUALIZER]: 'Visualizer',
+  FILE: 'File Upload',
+  INGESTION: 'Ingestion',
+  CONTEXT: 'Context',
+  QUESTION: 'Question',
+  VECTOR_DATABASE: 'Vector Database',
+  DATA_FRAME: 'Data Frame',
+  LLM: 'LLM',
+  VISUALIZER: 'Visualizer',
 };
 
 export const allowedTargetControls: Record<ControlType, ControlType[]> = {
-  [ControlType.FILE]: [ControlType.INGESTION, ControlType.DATA_FRAME],
-  [ControlType.INGESTION]: [ControlType.VECTOR_DATABASE],
-  [ControlType.CONTEXT]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
-  [ControlType.QUESTION]: [ControlType.VECTOR_DATABASE, ControlType.LLM],
-  [ControlType.VECTOR_DATABASE]: [ControlType.LLM],
-  [ControlType.DATA_FRAME]: [ControlType.LLM, ControlType.VISUALIZER],
-  [ControlType.LLM]: [ControlType.LLM, ControlType.VECTOR_DATABASE, ControlType.DATA_FRAME, ControlType.VISUALIZER],
-  [ControlType.VISUALIZER]: [],
+  FILE: [INGESTION, DATA_FRAME],
+  INGESTION: [VECTOR_DATABASE],
+  CONTEXT: [VECTOR_DATABASE, LLM],
+  QUESTION: [VECTOR_DATABASE, LLM],
+  VECTOR_DATABASE: [LLM],
+  DATA_FRAME: [LLM, VISUALIZER],
+  LLM: [LLM, VECTOR_DATABASE, DATA_FRAME, VISUALIZER],
+  VISUALIZER: [],
 };
 
 export const allowedSourceControls: Record<ControlType, ControlType[]> = {
-  [ControlType.FILE]: [],
-  [ControlType.INGESTION]: [ControlType.FILE],
-  [ControlType.CONTEXT]: [],
-  [ControlType.QUESTION]: [],
-  [ControlType.VECTOR_DATABASE]: [ControlType.INGESTION, ControlType.CONTEXT, ControlType.LLM],
-  [ControlType.DATA_FRAME]: [ControlType.FILE, ControlType.LLM],
-  [ControlType.LLM]: [ControlType.LLM, ControlType.VECTOR_DATABASE, ControlType.DATA_FRAME, ControlType.CONTEXT, ControlType.QUESTION],
-  [ControlType.VISUALIZER]: [ControlType.LLM, ControlType.DATA_FRAME],
+  FILE: [],
+  INGESTION: [FILE],
+  CONTEXT: [],
+  QUESTION: [],
+  VECTOR_DATABASE: [INGESTION, CONTEXT, LLM],
+  DATA_FRAME: [FILE, LLM],
+  LLM: [LLM, VECTOR_DATABASE, DATA_FRAME, CONTEXT, QUESTION],
+  VISUALIZER: [LLM, DATA_FRAME],
 };
