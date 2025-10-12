@@ -1,19 +1,28 @@
-import { Request, Response, Router } from 'express';
+import { injectable } from 'tsyringe';
+import { Router, Request, Response } from 'express';
+import { UserService } from './user.service';
 import { GetUserInfoQueryResponseDto } from '../../../shared/src/api/api-types-user';
-import { userService } from '../server';
-import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
+import { checkJwt, getWorkspaceId } from '../middleware';
 
-const router = Router();
+@injectable()
+export class UserController {
+  public router: Router;
 
-router.post('/get-user-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = req as any;
-  const user = await userService.getUser({ userId });
-  const response: GetUserInfoQueryResponseDto = { userInfo: user };
-  res.json(response);
-});
+  constructor(private userService: UserService) {
+    this.router = Router();
+    this.initializeRoutes();
+  }
 
-// TODO toggleColorMode
+  private initializeRoutes() {
+    this.router.post('/get-user-info', checkJwt, getWorkspaceId, this.getUserInfo.bind(this));
+    // TODO: toggleColorMode
+    // TODO: deleteAccount
+  }
 
-// TODO deleteAccount
+  private async getUserInfo(req: Request, res: Response) {
+    const user = await this.userService.getUserBySub({ sub: req.auth?.payload.sub ?? '' });
 
-export default router;
+    const response: GetUserInfoQueryResponseDto = { userInfo: user };
+    res.json(response);
+  }
+}

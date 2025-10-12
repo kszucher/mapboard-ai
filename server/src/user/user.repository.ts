@@ -5,17 +5,13 @@ import { PrismaClient } from '../generated/client';
 export class UserRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async getUser({ userId }: { userId: number }) {
-    return this.prisma.user.findUniqueOrThrow({
-      where: { id: userId },
-      select: {
-        id: true,
-        name: true,
-        colorMode: true,
-      },
+  async getUserBySub({ sub }: { sub: string }) {
+    return this.prisma.user.findFirstOrThrow({
+      where: { sub },
+      select: { id: true, name: true, colorMode: true },
     });
   }
-
+  
   async registerUser({ name, sub, email }: { name: string; sub: string; email: string }) {
     await this.prisma.user.create({
       data: {

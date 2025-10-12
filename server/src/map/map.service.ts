@@ -16,6 +16,7 @@ import { DistributionService } from '../distribution/distribution.service';
 import { PrismaClient } from '../generated/client';
 import { ShareRepository } from '../share/share.repository';
 import { TabRepository } from '../tab/tab.repository';
+import { UserRepository } from '../user/user.repository';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { MapNodeContextService } from './map-node-context.service';
 import { MapNodeDataFrameService } from './map-node-data-frame.service';
@@ -58,6 +59,7 @@ export class MapService {
 
   constructor(
     private prisma: PrismaClient,
+    private userRepository: UserRepository,
     private mapRepository: MapRepository,
     private tabRepository: TabRepository,
     private shareRepository: ShareRepository,
@@ -92,24 +94,20 @@ export class MapService {
     });
   }
 
-  async createMapInTabNew({ userId, workspaceId, mapName }: { userId: number; workspaceId: number; mapName: string }) {
-    const newMap = await this.mapRepository.createMap({ userId, mapName });
+  async createMapInTabNew({ sub, workspaceId, mapName }: { sub: string; workspaceId: number; mapName: string }) {
+    const user = await this.userRepository.getUserBySub({ sub });
 
-    await this.createMapCommon({ userId, workspaceId, mapId: newMap.id });
+    const newMap = await this.mapRepository.createMap({ userId: user.id, mapName });
+
+    await this.createMapCommon({ userId: user.id, workspaceId, mapId: newMap.id });
   }
 
-  async createMapInTabDuplicate({
-    userId,
-    workspaceId,
-    mapId,
-  }: {
-    userId: number;
-    workspaceId: number;
-    mapId: number;
-  }) {
-    const newMap = await this.mapRepository.createMapDuplicate({ userId, mapId });
+  async createMapInTabDuplicate({ sub, workspaceId, mapId }: { sub: string; workspaceId: number; mapId: number }) {
+    const user = await this.userRepository.getUserBySub({ sub });
 
-    await this.createMapCommon({ userId, workspaceId, mapId: newMap.id });
+    const newMap = await this.mapRepository.createMapDuplicate({ userId: user.id, mapId });
+
+    await this.createMapCommon({ userId: user.id, workspaceId, mapId: newMap.id });
   }
 
   async renameMap({ mapId, mapName }: { mapId: number; mapName: string }) {
@@ -343,7 +341,9 @@ export class MapService {
     }
   }
 
-  async deleteMap({ userId, mapId }: { userId: number; mapId: number }) {
+  async deleteMap({ sub, mapId }: { sub: string; mapId: number }) {
+    const user = await this.userRepository.getUserBySub({ sub });
+
     const shares = await this.shareRepository.getSharesOfMap({ mapId });
 
     for (const share of shares) {
@@ -355,7 +355,7 @@ export class MapService {
 
     await this.shareRepository.deleteSharesOfMap({ mapId });
 
-    const tab = await this.tabRepository.removeMapFromTab({ userId, mapId });
+    const tab = await this.tabRepository.removeMapFromTab({ userId: user.id, mapId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_TAB,

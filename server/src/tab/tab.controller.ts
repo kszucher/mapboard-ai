@@ -1,32 +1,44 @@
 import { Request, Response, Router } from 'express';
+import { injectable } from 'tsyringe';
 import {
   GetTabInfoQueryResponseDto,
   MoveDownMapInTabRequestDto,
   MoveUpMapInTabRequestDto,
 } from '../../../shared/src/api/api-types-tab';
-import { tabService } from '../server';
-import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
+import { checkJwt, getWorkspaceId } from '../middleware';
+import { TabService } from './tab.service';
 
-const router = Router();
+@injectable()
+export class TabController {
+  public router: Router;
 
-router.post('/get-tab-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = req as any;
-  const response: GetTabInfoQueryResponseDto = await tabService.getOrderedMapsOfTab({ userId });
-  res.json(response);
-});
+  constructor(private tabService: TabService) {
+    this.router = Router();
+    this.initializeRoutes();
+  }
 
-router.post('/move-up-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = req as any;
-  const { mapId }: MoveUpMapInTabRequestDto = req.body;
-  await tabService.moveUpMapInTab({ userId, mapId });
-  res.json();
-});
+  private initializeRoutes() {
+    this.router.post('/get-tab-info', checkJwt, getWorkspaceId, this.getTabInfo.bind(this));
+    this.router.post('/move-up-map-in-tab', checkJwt, getWorkspaceId, this.moveUpMap.bind(this));
+    this.router.post('/move-down-map-in-tab', checkJwt, getWorkspaceId, this.moveDownMap.bind(this));
+  }
 
-router.post('/move-down-map-in-tab', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = req as any;
-  const { mapId }: MoveDownMapInTabRequestDto = req.body;
-  await tabService.moveDownMapInTab({ userId, mapId });
-  res.json();
-});
+  private async getTabInfo(req: Request, res: Response) {
+    const response: GetTabInfoQueryResponseDto = await this.tabService.getOrderedMapsOfTab({
+      sub: req.auth?.payload.sub ?? '',
+    });
+    res.json(response);
+  }
 
-export default router;
+  private async moveUpMap(req: Request, res: Response) {
+    const { mapId }: MoveUpMapInTabRequestDto = req.body;
+    await this.tabService.moveUpMapInTab({ sub: req.auth?.payload.sub ?? '', mapId });
+    res.json();
+  }
+
+  private async moveDownMap(req: Request, res: Response) {
+    const { mapId }: MoveDownMapInTabRequestDto = req.body;
+    await this.tabService.moveDownMapInTab({ sub: req.auth?.payload.sub ?? '', mapId });
+    res.json();
+  }
+}

@@ -1,27 +1,33 @@
 import { Request, Response, Router } from 'express';
+import { injectable } from 'tsyringe';
 import { CreateWorkspaceResponseDto, UpdateWorkspaceMapRequestDto } from '../../../shared/src/api/api-types-workspace';
-import { prismaClient, workspaceService } from '../server';
-import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
+import { checkJwt, getWorkspaceId } from '../middleware';
+import { WorkspaceService } from './workspace.service';
 
-const router = Router();
+@injectable()
+export class WorkspaceController {
+  public router: Router;
 
-router.post('/create-workspace', checkJwt, async (req: Request, res: Response) => {
-  const user = await prismaClient.user.findFirstOrThrow({
-    where: { sub: req.auth?.payload.sub ?? '' },
-    select: { id: true },
-  });
-  const workspace = await workspaceService.createWorkspace({ userId: user.id });
-  const response: CreateWorkspaceResponseDto = { workspaceId: workspace.id };
-  res.json(response);
-});
+  constructor(private workspaceService: WorkspaceService) {
+    this.router = Router();
+    this.initializeRoutes();
+  }
 
-router.post('/update-workspace-map', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { workspaceId } = req as any;
-  const { mapId }: UpdateWorkspaceMapRequestDto = req.body;
-  await workspaceService.updateWorkspaceMap({ workspaceId, mapId });
-  res.json();
-});
+  private initializeRoutes() {
+    this.router.post('/create-workspace', checkJwt, this.createWorkspace.bind(this));
+    this.router.post('/update-workspace-map', checkJwt, getWorkspaceId, this.updateWorkspaceMap.bind(this));
+  }
 
-// TODO deleteWorkspace
+  private async createWorkspace(req: Request, res: Response) {
+    const workspace = await this.workspaceService.createWorkspace({ sub: req.auth?.payload.sub ?? '' });
+    const response: CreateWorkspaceResponseDto = { workspaceId: workspace.id };
+    res.json(response);
+  }
 
-export default router;
+  private async updateWorkspaceMap(req: Request, res: Response) {
+    const { workspaceId } = req as any;
+    const { mapId }: UpdateWorkspaceMapRequestDto = req.body;
+    await this.workspaceService.updateWorkspaceMap({ workspaceId, mapId });
+    res.json();
+  }
+}

@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import { injectable } from 'tsyringe';
 import {
   AcceptShareRequestDto,
   CreateShareRequestDto,
@@ -7,46 +8,66 @@ import {
   RejectShareRequestDto,
   WithdrawShareRequestDto,
 } from '../../../shared/src/api/api-types-share';
-import { shareService } from '../server';
-import { checkJwt, getUserIdAndWorkspaceId } from '../startup';
+import { checkJwt, getWorkspaceId } from '../middleware';
+import { ShareService } from './share.service';
 
-const router = Router();
+@injectable()
+export class ShareController {
+  public router: Router;
 
-router.post('/get-share-info', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = req as any;
-  const response: GetShareInfoQueryResponseDto = await shareService.getShareInfo({ userId });
-  res.json(response);
-});
+  constructor(private shareService: ShareService) {
+    this.router = Router();
+    this.initializeRoutes();
+  }
 
-router.post('/create-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { userId } = req as any;
-  const { mapId, shareEmail, shareAccess }: CreateShareRequestDto = req.body;
-  await shareService.createShare({ userId, mapId, shareEmail, shareAccess });
-  res.json();
-});
+  private initializeRoutes() {
+    this.router.post('/get-share-info', checkJwt, getWorkspaceId, this.getShareInfo.bind(this));
+    this.router.post('/create-share', checkJwt, getWorkspaceId, this.createShare.bind(this));
+    this.router.post('/accept-share', checkJwt, getWorkspaceId, this.acceptShare.bind(this));
+    this.router.post('/withdraw-share', checkJwt, getWorkspaceId, this.withdrawShare.bind(this));
+    this.router.post('/reject-share', checkJwt, getWorkspaceId, this.rejectShare.bind(this));
+    this.router.post('/modify-share-access', checkJwt, getWorkspaceId, this.modifyShareAccess.bind(this));
+  }
 
-router.post('/accept-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { shareId }: AcceptShareRequestDto = req.body;
-  await shareService.acceptShare({ shareId });
-  res.json();
-});
+  private async getShareInfo(req: Request, res: Response) {
+    const response: GetShareInfoQueryResponseDto = await this.shareService.getShareInfo({
+      sub: req.auth?.payload.sub ?? '',
+    });
+    res.json(response);
+  }
 
-router.post('/withdraw-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { shareId }: WithdrawShareRequestDto = req.body;
-  await shareService.withdrawShare({ shareId });
-  res.json();
-});
+  private async createShare(req: Request, res: Response) {
+    const { mapId, shareEmail, shareAccess }: CreateShareRequestDto = req.body;
+    await this.shareService.createShare({
+      sub: req.auth?.payload.sub ?? '',
+      mapId,
+      shareEmail,
+      shareAccess,
+    });
+    res.json();
+  }
 
-router.post('/reject-share', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { shareId }: RejectShareRequestDto = req.body;
-  await shareService.rejectShare({ shareId });
-  res.json();
-});
+  private async acceptShare(req: Request, res: Response) {
+    const { shareId }: AcceptShareRequestDto = req.body;
+    await this.shareService.acceptShare({ shareId });
+    res.json();
+  }
 
-router.post('/modify-share-access', checkJwt, getUserIdAndWorkspaceId, async (req: Request, res: Response) => {
-  const { shareId, shareAccess }: ModifyShareAccessRequestDto = req.body;
-  await shareService.modifyShareAccess({ shareId, shareAccess });
-  res.json();
-});
+  private async withdrawShare(req: Request, res: Response) {
+    const { shareId }: WithdrawShareRequestDto = req.body;
+    await this.shareService.withdrawShare({ shareId });
+    res.json();
+  }
 
-export default router;
+  private async rejectShare(req: Request, res: Response) {
+    const { shareId }: RejectShareRequestDto = req.body;
+    await this.shareService.rejectShare({ shareId });
+    res.json();
+  }
+
+  private async modifyShareAccess(req: Request, res: Response) {
+    const { shareId, shareAccess }: ModifyShareAccessRequestDto = req.body;
+    await this.shareService.modifyShareAccess({ shareId, shareAccess });
+    res.json();
+  }
+}

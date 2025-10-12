@@ -8,6 +8,7 @@ import {
   WithdrawShareRequestDto,
 } from '../../../shared/src/api/api-types-share';
 import { DistributionService } from '../distribution/distribution.service';
+import { UserRepository } from '../user/user.repository';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { ShareRepository } from './share.repository';
 
@@ -15,16 +16,21 @@ import { ShareRepository } from './share.repository';
 export class ShareService {
   constructor(
     private shareRepository: ShareRepository,
+    private userRepository: UserRepository,
     private workspaceRepository: WorkspaceRepository,
     private distributionService: DistributionService
   ) {}
 
-  async getShareInfo({ userId }: { userId: number }) {
-    return this.shareRepository.getShareInfo({ userId });
+  async getShareInfo({ sub }: { sub: string }) {
+    const user = await this.userRepository.getUserBySub({ sub });
+
+    return this.shareRepository.getShareInfo({ userId: user.id });
   }
 
-  async createShare({ userId, mapId, shareEmail, shareAccess }: CreateShareRequestDto & { userId: number }) {
-    const share = await this.shareRepository.createShare({ userId, mapId, shareEmail, shareAccess });
+  async createShare({ sub, mapId, shareEmail, shareAccess }: CreateShareRequestDto & { sub: string }) {
+    const user = await this.userRepository.getUserBySub({ sub });
+
+    const share = await this.shareRepository.createShare({ userId: user.id, mapId, shareEmail, shareAccess });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_SHARE,

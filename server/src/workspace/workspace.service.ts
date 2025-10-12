@@ -13,16 +13,18 @@ export class WorkspaceService {
     private tabRepository: TabRepository
   ) {}
 
-  async createWorkspace({ userId }: { userId: number }) {
-    let map = await this.mapRepository.getLastMapOfUser({ userId });
+  async createWorkspace({ sub }: { sub: string }) {
+    const user = await this.userRepository.getUserBySub({ sub });
+
+    let map = await this.mapRepository.getLastMapOfUser({ userId: user.id });
     if (!map) {
-      map = await this.mapRepository.createMap({ userId, mapName: 'New Map' });
-      await this.tabRepository.addMapToTab({ userId, mapId: map.id });
+      map = await this.mapRepository.createMap({ userId: user.id, mapName: 'New Map' });
+      await this.tabRepository.addMapToTab({ userId: user.id, mapId: map.id });
     }
 
-    await this.userRepository.incrementSignInCount({ userId });
+    await this.userRepository.incrementSignInCount({ userId: user.id });
 
-    return await this.workspaceRepository.createWorkspace({ userId, mapId: map.id });
+    return await this.workspaceRepository.createWorkspace({ userId: user.id, mapId: map.id });
   }
 
   async updateWorkspaceMap({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {

@@ -5,7 +5,7 @@ import { UserRepository } from './user.repository';
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async getUser({ userId }: { userId: number }) {
-    return this.userRepository.getUser({ userId });
+  async getUserBySub({ sub }: { sub: string }) {
+    return this.userRepository.getUserBySub({ sub });
   }
 }

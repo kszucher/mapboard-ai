@@ -1,11 +1,20 @@
+import { injectable } from 'tsyringe';
 import { Request, Response, Router } from 'express';
-import { distributionService } from '../server';
+import { DistributionService } from './distribution.service';
 
-const router = Router();
+@injectable()
+export class DistributionController {
+  public router: Router;
 
-router.get('/workspace_events/:workspaceId', (req: Request, res: Response) => {
-  const workspaceId = Number(req.params.workspaceId);
-  distributionService.addClient(req, res, workspaceId);
-});
+  constructor(private distributionService: DistributionService) {
+    this.router = Router();
+    this.initializeRoutes();
+  }
 
-export default router;
+  private initializeRoutes() {
+    this.router.get('/workspace_events/:workspaceId', (req: Request, res: Response) => {
+      const workspaceId = Number(req.params.workspaceId);
+      this.distributionService.addClient(req, res, workspaceId);
+    });
+  }
+}
