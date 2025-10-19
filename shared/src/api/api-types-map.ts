@@ -1,8 +1,8 @@
-import { L } from './api-types-map-link';
+import { E } from './api-types-map-edge';
 import { ControlType, N } from './api-types-map-node';
 import { ShareAccess } from './api-types-share';
 
-export type M = { l: L[], n: N[] };
+export type M = { e: E[], n: N[] };
 
 export type GetMapInfoQueryResponseDto = {
   id: number,
@@ -33,7 +33,7 @@ export type InsertNodeRequestDto = {
   controlType: ControlType
 }
 
-export type InsertLinkRequestDto = {
+export type InsertEdgeRequestDto = {
   mapId: number
   fromNodeId: number
   toNodeId: number
@@ -44,9 +44,9 @@ export type DeleteNodeRequestDto = {
   nodeId: number
 }
 
-export type DeleteLinkRequestDto = {
+export type DeleteEdgeRequestDto = {
   mapId: number
-  linkId: number
+  edgeId: number
 }
 
 export type MoveNodeRequestDto = {

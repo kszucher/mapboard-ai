@@ -20,7 +20,7 @@ export class MapNodeRepository {
       where: {
         mapId,
         controlType: ControlType.FILE,
-        FromLinks: {
+        FromEdges: {
           some: {
             toNodeId: nodeId,
           },
@@ -39,7 +39,7 @@ export class MapNodeRepository {
       where: {
         mapId,
         controlType: ControlType.INGESTION,
-        FromLinks: {
+        FromEdges: {
           some: {
             toNodeId: nodeId,
           },
@@ -57,7 +57,7 @@ export class MapNodeRepository {
       where: {
         mapId,
         controlType: ControlType.CONTEXT,
-        FromLinks: {
+        FromEdges: {
           some: {
             toNodeId: nodeId,
           },
@@ -75,7 +75,7 @@ export class MapNodeRepository {
       where: {
         mapId,
         controlType: ControlType.QUESTION,
-        FromLinks: {
+        FromEdges: {
           some: {
             toNodeId: nodeId,
           },
@@ -93,7 +93,7 @@ export class MapNodeRepository {
       where: {
         mapId,
         controlType: ControlType.VECTOR_DATABASE,
-        FromLinks: {
+        FromEdges: {
           some: {
             toNodeId: nodeId,
           },
@@ -112,7 +112,7 @@ export class MapNodeRepository {
       where: {
         mapId,
         controlType: ControlType.DATA_FRAME,
-        FromLinks: {
+        FromEdges: {
           some: {
             toNodeId: nodeId,
           },
@@ -130,7 +130,7 @@ export class MapNodeRepository {
       where: {
         mapId,
         controlType: ControlType.LLM,
-        FromLinks: {
+        FromEdges: {
           some: {
             toNodeId: nodeId,
           },

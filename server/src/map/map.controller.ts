@@ -4,13 +4,13 @@ import multer from 'multer';
 import {
   CreateMapInTabDuplicateRequestDto,
   CreateMapInTabRequestDto,
-  DeleteLinkRequestDto,
+  DeleteEdgeRequestDto,
   DeleteMapRequestDto,
   DeleteNodeRequestDto,
   ExecuteMapFileUploadDto,
   ExecuteMapRequestDto,
   GetMapInfoQueryResponseDto,
-  InsertLinkRequestDto,
+  InsertEdgeRequestDto,
   InsertNodeRequestDto,
   MoveNodeRequestDto,
   RenameMapRequestDto,
@@ -37,9 +37,9 @@ export class MapController {
     this.router.post('/create-map-in-tab-duplicate', checkJwt, getWorkspaceId, this.createMapInTabDuplicate.bind(this));
     this.router.post('/rename-map', checkJwt, getWorkspaceId, this.renameMap.bind(this));
     this.router.post('/insert-node', checkJwt, getWorkspaceId, this.insertNode.bind(this));
-    this.router.post('/insert-link', checkJwt, getWorkspaceId, this.insertLink.bind(this));
+    this.router.post('/insert-edge', checkJwt, getWorkspaceId, this.insertEdge.bind(this));
     this.router.post('/delete-node', checkJwt, getWorkspaceId, this.deleteNode.bind(this));
-    this.router.post('/delete-link', checkJwt, getWorkspaceId, this.deleteLink.bind(this));
+    this.router.post('/delete-edge', checkJwt, getWorkspaceId, this.deleteEdge.bind(this));
     this.router.post('/move-node', checkJwt, getWorkspaceId, this.moveNode.bind(this));
     this.router.post('/update-node', checkJwt, getWorkspaceId, this.updateNode.bind(this));
     this.router.post(
@@ -85,9 +85,9 @@ export class MapController {
     res.json();
   }
 
-  private async insertLink(req: Request, res: Response) {
-    const params: InsertLinkRequestDto = req.body;
-    await this.mapService.insertLink(params);
+  private async insertEdge(req: Request, res: Response) {
+    const params: InsertEdgeRequestDto = req.body;
+    await this.mapService.insertEdge(params);
     res.json();
   }
 
@@ -98,9 +98,9 @@ export class MapController {
     res.json();
   }
 
-  private async deleteLink(req: Request, res: Response) {
-    const params: DeleteLinkRequestDto = req.body;
-    await this.mapService.deleteLink(params);
+  private async deleteEdge(req: Request, res: Response) {
+    const params: DeleteEdgeRequestDto = req.body;
+    await this.mapService.deleteEdge(params);
     res.json();
   }
 

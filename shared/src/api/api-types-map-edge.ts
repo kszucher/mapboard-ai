@@ -1,4 +1,4 @@
-export type L = {
+export type E = {
   id: number;
   workspaceId: number | null;
   fromNodeId: number;

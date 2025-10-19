@@ -24,7 +24,7 @@ export interface State {
     originX: number;
     originY: number;
   };
-  linkHelpersVisible: boolean;
+  edgeHelpersVisible: boolean;
   mapFrameVisible: boolean;
   connectionStart: {
     fromNodeId: number | null;

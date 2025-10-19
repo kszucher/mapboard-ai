@@ -8,7 +8,7 @@ export class MapConfigService {
   async getMapConfig() {
     return {
       mapNodeConfigs: await this.mapConfigRepository.getMapNodeConfig(),
-      mapLinkConfigs: await this.mapConfigRepository.getMapLinkConfig(),
+      mapEdgeConfigs: await this.mapConfigRepository.getMapEdgeConfig(),
     };
   }
 
@@ -16,21 +16,21 @@ export class MapConfigService {
     return this.mapConfigRepository.createMapNodeConfig();
   }
 
-  async createMapLinkConfig({
+  async createMapEdgeConfig({
     fromNodeConfigId,
     toNodeConfigId,
   }: {
     fromNodeConfigId: number;
     toNodeConfigId: number;
   }) {
-    return this.mapConfigRepository.createMapLinkConfig({ fromNodeConfigId, toNodeConfigId });
+    return this.mapConfigRepository.createMapEdgeConfig({ fromNodeConfigId, toNodeConfigId });
   }
 
   async removeMapNodeConfig() {
     return this.mapConfigRepository.removeMapNodeConfig();
   }
 
-  async removeMapLinkConfig() {
-    return this.mapConfigRepository.removeMapLinkConfig();
+  async removeMapEdgeConfig() {
+    return this.mapConfigRepository.removeMapEdgeConfig();
   }
 }

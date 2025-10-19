@@ -7,10 +7,10 @@ import { useGetMapConfigInfoQuery, useGetMapInfoQuery, useGetUserInfoQuery } fro
 import { actions } from '../../data/reducer.ts';
 import { MidMouseMode } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { LinkBezier } from './LinkBezier.tsx';
-import { LinkConnectorFrom } from './LinkConnectorFrom.tsx';
-import { LinkConnectorTo } from './LinkConnectorTo.tsx';
-import { LinkDelete } from './LinkDelete.tsx';
+import { EdgeBezier } from './EdgeBezier.tsx';
+import { EdgeConnectorFrom } from './EdgeConnectorFrom.tsx';
+import { EdgeConnectorTo } from './EdgeConnectorTo.tsx';
+import { EdgeDelete } from './EdgeDelete.tsx';
 import { MapBackground } from './MapBackground.tsx';
 import { MapFrame } from './MapFrame.tsx';
 import { Node } from './Node.tsx';
@@ -132,14 +132,14 @@ export const Map: FC = () => {
         <svg width={mapSelfW} height={mapSelfH}>
           <MapBackground />
           <MapFrame />
-          <LinkBezier />
+          <EdgeBezier />
           <NodeSeparator />
           <NodeMovePreview />
-          <LinkConnectorFrom />
-          <LinkConnectorTo />
+          <EdgeConnectorFrom />
+          <EdgeConnectorTo />
         </svg>
         <Node />
-        <LinkDelete />
+        <EdgeDelete />
       </div>
       <div />
       <div />

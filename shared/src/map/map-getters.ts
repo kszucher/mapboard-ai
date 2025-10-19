@@ -1,6 +1,6 @@
 import { M } from '../api/api-types-map';
-import { MapLinkConfig, MapNodeConfig } from '../api/api-types-map-config';
-import { L } from '../api/api-types-map-link';
+import { MapEdgeConfig, MapNodeConfig } from '../api/api-types-map-config';
+import { E } from '../api/api-types-map-edge';
 import { M_PADDING, N, N_PADDING } from '../api/api-types-map-node';
 
 export const getNodeLeft = (offsetX: number) => offsetX + M_PADDING;
@@ -41,40 +41,40 @@ export const getMapBottom = (mapNodeConfigs: Partial<MapNodeConfig>[], m: {
   n: Pick<N, 'offsetY' | 'controlType'>[]
 }) => getMapHeight(mapNodeConfigs, m) - M_PADDING;
 
-export const getAllowedSources = (mapLinkConfigs: Partial<MapLinkConfig>[], type: string) => {
-  return mapLinkConfigs.filter(el => el.ToNodeConfig?.type === type).map(el => el.FromNodeConfig?.type);
+export const getAllowedSources = (mapEdgeConfigs: Partial<MapEdgeConfig>[], type: string) => {
+  return mapEdgeConfigs.filter(el => el.ToNodeConfig?.type === type).map(el => el.FromNodeConfig?.type);
 };
 
-export const getAllowedTargets = (mapLinkConfigs: Partial<MapLinkConfig>[], type: string) => {
-  return mapLinkConfigs.filter(el => el.FromNodeConfig?.type === type).map(el => el.ToNodeConfig?.type);
+export const getAllowedTargets = (mapEdgeConfigs: Partial<MapEdgeConfig>[], type: string) => {
+  return mapEdgeConfigs.filter(el => el.FromNodeConfig?.type === type).map(el => el.ToNodeConfig?.type);
 };
 
 export const getLastIndexN = (m: { n: Pick<N, 'iid'>[] }): number => Math.max(-1, ...m.n.map(ni => ni.iid));
 
-export const isExistingLink = (m: M, fromNodeId: number, toNodeId: number): boolean =>
-  m.l.some(li => li.fromNodeId === fromNodeId && li.toNodeId === toNodeId);
+export const isExistingEdge = (m: M, fromNodeId: number, toNodeId: number): boolean =>
+  m.e.some(ei => ei.fromNodeId === fromNodeId && ei.toNodeId === toNodeId);
 
-export const getInputNodeOfLink = (m: M, l: L): N => {
-  const inputNode = m.n.find(ni => ni.id === l.fromNodeId);
+export const getInputNodeOfEdge = (m: M, e: E): N => {
+  const inputNode = m.n.find(ni => ni.id === e.fromNodeId);
   if (!inputNode) {
-    throw new Error(`Input node with id "${l.fromNodeId}" not found`);
+    throw new Error(`Input node with id "${e.fromNodeId}" not found`);
   }
   return inputNode;
 };
 
-export const getOutputNodeOfLink = (m: M, l: L): N => {
-  const outputNode = m.n.find(ni => ni.id === l.toNodeId);
+export const getOutputNodeOfEdge = (m: M, e: E): N => {
+  const outputNode = m.n.find(ni => ni.id === e.toNodeId);
   if (!outputNode) {
-    throw new Error(`Output node with id "${l.toNodeId}" not found`);
+    throw new Error(`Output node with id "${e.toNodeId}" not found`);
   }
   return outputNode;
 };
 
-export const getLineCoords = (mapNodeConfigs: Partial<MapNodeConfig>[], mapLinkConfigs: Partial<MapLinkConfig>[], m: M, l: L) => {
-  const fromNode = getInputNodeOfLink(m, l);
-  const toNode = getOutputNodeOfLink(m, l);
+export const getLineCoords = (mapNodeConfigs: Partial<MapNodeConfig>[], mapEdgeConfigs: Partial<MapEdgeConfig>[], m: M, e: E) => {
+  const fromNode = getInputNodeOfEdge(m, e);
+  const toNode = getOutputNodeOfEdge(m, e);
 
-  const leftIndex = getAllowedSources(mapLinkConfigs, toNode.controlType).findIndex(controlType => controlType === fromNode.controlType);
+  const leftIndex = getAllowedSources(mapEdgeConfigs, toNode.controlType).findIndex(controlType => controlType === fromNode.controlType);
   const rightIndex = 0;
 
   return [
@@ -88,9 +88,9 @@ export const getLineCoords = (mapNodeConfigs: Partial<MapNodeConfig>[], mapLinkC
 // Kahn's algorithm
 export const getTopologicalSort = (m: {
   n: Pick<N, 'id'>[],
-  l: Pick<L, 'fromNodeId' | 'toNodeId'>[]
+  e: Pick<E, 'fromNodeId' | 'toNodeId'>[]
 }): number[] | null => {
-  const { n, l } = m;
+  const { n, e } = m;
   const graph = new Map<number, Set<number>>();
   const inDegree = new Map<number, number>();
 
@@ -101,8 +101,8 @@ export const getTopologicalSort = (m: {
   }
 
   // Build graph edges and update indegree
-  for (const link of l) {
-    const { fromNodeId: from, toNodeId: to } = link;
+  for (const edge of e) {
+    const { fromNodeId: from, toNodeId: to } = edge;
     graph.get(from)!.add(to);
     inDegree.set(to, (inDegree.get(to) ?? 0) + 1);
   }

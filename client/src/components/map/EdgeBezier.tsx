@@ -1,21 +1,21 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
-import { getLineCoords, getOutputNodeOfLink } from '../../../../shared/src/map/map-getters.ts';
+import { getLineCoords, getOutputNodeOfEdge } from '../../../../shared/src/map/map-getters.ts';
 import { useGetMapConfigInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLinePath, pathCommonProps } from './UtilsSvg.ts';
 
-export const LinkBezier: FC = () => {
-  const { mapNodeConfigs, mapLinkConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+export const EdgeBezier: FC = () => {
+  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   const dashLength = 6;
   const gapLength = 6;
   const dashCycle = dashLength + gapLength;
 
-  return m.l.map(li => {
-    const animated = getOutputNodeOfLink(m, li).isProcessing;
+  return m.e.map(ei => {
+    const animated = getOutputNodeOfEdge(m, ei).isProcessing;
 
     const animationStyle = animated
       ? {
@@ -35,10 +35,10 @@ export const LinkBezier: FC = () => {
     };
 
     return (
-      <g key={li.id}>
+      <g key={ei.id}>
         <style>{`@keyframes dashMove { to { stroke-dashoffset: -${dashCycle} } } `}</style>
         <path
-          d={getBezierLinePath(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapLinkConfigs, m, li)))}
+          d={getBezierLinePath(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapEdgeConfigs, m, ei)))}
           strokeWidth={1}
           stroke="#dddddd"
           fill="none"

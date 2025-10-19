@@ -6,12 +6,12 @@ import { useGetMapConfigInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 import { radixColorMap } from './UtilsSvg.ts';
 
-export const LinkConnectorFrom: FC = () => {
+export const EdgeConnectorFrom: FC = () => {
   const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   return m.n.map(ni => {
-    const isConnected = m.l.some(li => li.fromNodeId === ni.id);
+    const isConnected = m.e.some(ei => ei.fromNodeId === ni.id);
     const color = mapNodeConfigs?.find(el => el.type === ni.controlType)?.color || 'gray';
     return (
       <circle

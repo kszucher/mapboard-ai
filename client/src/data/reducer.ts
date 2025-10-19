@@ -2,7 +2,7 @@ import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs
 import React from 'react';
 import { UpdateL, UpdateMapGraphEventPayload, UpdateN } from '../../../shared/src/api/api-types-distribution.ts';
 import { MapNodeConfig } from '../../../shared/src/api/api-types-map-config.ts';
-import { L } from '../../../shared/src/api/api-types-map-link.ts';
+import { E } from '../../../shared/src/api/api-types-map-edge.ts';
 import { N } from '../../../shared/src/api/api-types-map-node.ts';
 import { getNodeHeight, getNodeWidth } from '../../../shared/src/map/map-getters.ts';
 import { alignNodes } from '../../../shared/src/map/map-setters.ts';
@@ -39,8 +39,8 @@ export const slice = createSlice({
       state.zoomInfo.originX = action.payload.originX;
       state.zoomInfo.originY = action.payload.originY;
     },
-    setLinkHelpersVisible(state, { payload }: PayloadAction<boolean>) {
-      state.linkHelpersVisible = payload;
+    setEdgeHelpersVisible(state, { payload }: PayloadAction<boolean>) {
+      state.edgeHelpersVisible = payload;
     },
     setRootFrameVisible(state, { payload }: PayloadAction<boolean>) {
       state.mapFrameVisible = payload;
@@ -118,7 +118,7 @@ export const slice = createSlice({
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const newM = {
         n: m.n.map(ni => (ni.id === nodeId ? { ...ni, offsetX, offsetY, updatedAt: new Date() } : ni)),
-        l: m.l,
+        e: m.e,
       };
       alignNodes(newM);
       state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
@@ -127,16 +127,16 @@ export const slice = createSlice({
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const newM = {
         n: m.n.map(ni => (ni.id === node.id ? { ...ni, ...node, updatedAt: new Date() } : ni)),
-        l: m.l,
+        e: m.e,
       };
       state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
-    updateMapGraphSse(state, { payload: { nodes, links } }: PayloadAction<UpdateMapGraphEventPayload>) {
+    updateMapGraphSse(state, { payload: { nodes, edges } }: PayloadAction<UpdateMapGraphEventPayload>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const { insert: nodeInsert = [], update: nodeUpdate = [], delete: nodeDelete = [] } = nodes ?? {};
-      const { insert: linkInsert = [], update: linkUpdate = [], delete: linkDelete = [] } = links ?? {};
+      const { insert: edgeInsert = [], update: edgeUpdate = [], delete: edgeDelete = [] } = edges ?? {};
       const allowedUpdateN = (s: UpdateN, c: N) => (c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true);
-      const allowedUpdateL = (s: UpdateL, c: L) => (c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true);
+      const allowedUpdateL = (s: UpdateL, c: E) => (c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true);
       const newM = {
         n: [
           ...m.n
@@ -148,15 +148,15 @@ export const slice = createSlice({
             ),
           ...nodeInsert,
         ],
-        l: [
-          ...m.l
-            .filter(li => !linkDelete.includes(li.id))
-            .map(li =>
-              linkUpdate.some(lj => lj.id === li.id && allowedUpdateL(lj, li))
-                ? { ...li, ...linkUpdate.find(lj => lj.id === li.id && allowedUpdateL(lj, li)) }
-                : li
+        e: [
+          ...m.e
+            .filter(ei => !edgeDelete.includes(ei.id))
+            .map(ei =>
+              edgeUpdate.some(lj => lj.id === ei.id && allowedUpdateL(lj, ei))
+                ? { ...ei, ...edgeUpdate.find(lj => lj.id === ei.id && allowedUpdateL(lj, ei)) }
+                : ei
             ),
-          ...linkInsert,
+          ...edgeInsert,
         ],
       };
 

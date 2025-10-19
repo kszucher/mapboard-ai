@@ -19,8 +19,8 @@ export class MapConfigRepository {
     });
   }
 
-  async getMapLinkConfig() {
-    return this.prisma.mapLinkConfig.findMany({
+  async getMapEdgeConfig() {
+    return this.prisma.mapEdgeConfig.findMany({
       select: {
         id: true,
         FromNodeConfig: {
@@ -41,14 +41,14 @@ export class MapConfigRepository {
 
   async createMapNodeConfig() {}
 
-  async createMapLinkConfig({
+  async createMapEdgeConfig({
     fromNodeConfigId,
     toNodeConfigId,
   }: {
     fromNodeConfigId: number;
     toNodeConfigId: number;
   }) {
-    return this.prisma.mapLinkConfig.create({
+    return this.prisma.mapEdgeConfig.create({
       data: {
         fromNodeConfigId,
         toNodeConfigId,
@@ -58,5 +58,5 @@ export class MapConfigRepository {
 
   async removeMapNodeConfig() {}
 
-  async removeMapLinkConfig() {}
+  async removeMapEdgeConfig() {}
 }

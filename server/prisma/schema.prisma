@@ -32,7 +32,7 @@ model Map {
   User       User        @relation("Maps", fields: [userId], references: [id])
   Shares     Share[]     @relation("Shares")
   Workspaces Workspace[]
-  MapLinks   MapLink[]
+  MapEdges   MapEdge[]
   MapNodes   MapNode[]
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now()) @updatedAt
@@ -61,8 +61,8 @@ model MapNode {
   llmOutputSchema          LlmOutputSchema?
   llmOutputJson            Json?
   visualizerOutputText     String?
-  FromLinks                MapLink[]        @relation("FromLinks")
-  ToLinks                  MapLink[]        @relation("ToLinks")
+  FromEdges                MapEdge[]        @relation("FromEdges")
+  ToEdges                  MapEdge[]        @relation("ToEdges")
   createdAt                DateTime         @default(now())
   updatedAt                DateTime         @default(now()) @updatedAt
 }
@@ -75,8 +75,8 @@ model MapNodeConfig {
   color             Color
   label             String
   mapNodeFields     MapNodeField[]
-  MapLinkConfigFrom MapLinkConfig[] @relation("FromLinkConfigs")
-  MapLinkConfigTo   MapLinkConfig[] @relation("ToLinkConfigs")
+  MapEdgeConfigFrom MapEdgeConfig[] @relation("FromEdgeConfigs")
+  MapEdgeConfigTo   MapEdgeConfig[] @relation("ToEdgeConfigs")
 }
 
 model MapNodeField {
@@ -92,27 +92,27 @@ enum MapNodeInputType {
   SELECT
 }
 
-model MapLink {
+model MapEdge {
   id          Int      @id @default(autoincrement())
   mapId       Int
   Map         Map      @relation(fields: [mapId], references: [id])
   workspaceId Int?
   fromNodeId  Int
-  FromNode    MapNode  @relation("FromLinks", fields: [fromNodeId], references: [id])
+  FromNode    MapNode  @relation("FromEdges", fields: [fromNodeId], references: [id])
   toNodeId    Int
-  ToNode      MapNode  @relation("ToLinks", fields: [toNodeId], references: [id])
+  ToNode      MapNode  @relation("ToEdges", fields: [toNodeId], references: [id])
   lineColor   String   @default("#bbbbbb")
   lineWidth   Int      @default(1)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 }
 
-model MapLinkConfig {
+model MapEdgeConfig {
   id               Int           @id @default(autoincrement())
   fromNodeConfigId Int
-  FromNodeConfig   MapNodeConfig @relation("FromLinkConfigs", fields: [fromNodeConfigId], references: [id])
+  FromNodeConfig   MapNodeConfig @relation("FromEdgeConfigs", fields: [fromNodeConfigId], references: [id])
   toNodeConfigId   Int
-  ToNodeConfig     MapNodeConfig @relation("ToLinkConfigs", fields: [toNodeConfigId], references: [id])
+  ToNodeConfig     MapNodeConfig @relation("ToEdgeConfigs", fields: [toNodeConfigId], references: [id])
 }
 
 model Tab {

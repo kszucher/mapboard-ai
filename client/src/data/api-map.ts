@@ -2,12 +2,12 @@ import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
   CreateMapInTabDuplicateRequestDto,
   CreateMapInTabRequestDto,
-  DeleteLinkRequestDto,
+  DeleteEdgeRequestDto,
   DeleteMapRequestDto,
   DeleteNodeRequestDto,
   ExecuteMapRequestDto,
   GetMapInfoQueryResponseDto,
-  InsertLinkRequestDto,
+  InsertEdgeRequestDto,
   InsertNodeRequestDto,
   MoveNodeRequestDto,
   RenameMapRequestDto,
@@ -45,8 +45,8 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     invalidatesTags: [],
   }),
 
-  insertLink: builder.mutation<void, InsertLinkRequestDto>({
-    query: params => ({ url: 'insert-link', method: 'POST', body: params }),
+  insertEdge: builder.mutation<void, InsertEdgeRequestDto>({
+    query: params => ({ url: 'insert-edge', method: 'POST', body: params }),
     invalidatesTags: [],
   }),
 
@@ -55,8 +55,8 @@ export const apiMap = (builder: EndpointBuilder<BaseQueryFn, string, string>) =>
     invalidatesTags: [],
   }),
 
-  deleteLink: builder.mutation<void, DeleteLinkRequestDto>({
-    query: params => ({ url: 'delete-link', method: 'POST', body: params }),
+  deleteEdge: builder.mutation<void, DeleteEdgeRequestDto>({
+    query: params => ({ url: 'delete-edge', method: 'POST', body: params }),
     invalidatesTags: [],
   }),
 

@@ -53,7 +53,7 @@ export type MapNodeConfig = {
   mapNodeFields: MapNodeField[];
 }
 
-export type MapLinkConfig = {
+export type MapEdgeConfig = {
   id: number;
   fromNodeConfigId: number;
   FromNodeConfig: Partial<MapNodeConfig>;
@@ -63,15 +63,15 @@ export type MapLinkConfig = {
 
 export type GetMapConfigInfoQueryResponseDto = {
   mapNodeConfigs: Partial<MapNodeConfig>[],
-  mapLinkConfigs: Partial<MapLinkConfig>[]
+  mapEdgeConfigs: Partial<MapEdgeConfig>[]
 }
 
-export type CreateMapLinkConfigRequestDto = {
+export type CreateMapEdgeConfigRequestDto = {
   fromNodeConfigId: number;
   toNodeConfigId: number;
 }
 
 export const defaultMapConfig: GetMapConfigInfoQueryResponseDto = {
   mapNodeConfigs: [],
-  mapLinkConfigs: [],
+  mapEdgeConfigs: [],
 };

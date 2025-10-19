@@ -27,7 +27,7 @@ export class MapRepository {
         MapNodes: {
           omit: { createdAt: true },
         },
-        MapLinks: {
+        MapEdges: {
           omit: { createdAt: true },
         },
       },
@@ -42,7 +42,7 @@ export class MapRepository {
         MapNodes: {
           select: { id: true, controlType: true },
         },
-        MapLinks: {
+        MapEdges: {
           select: { id: true, fromNodeId: true, toNodeId: true },
         },
       },
@@ -88,7 +88,7 @@ export class MapRepository {
             updatedAt: true,
           },
         },
-        MapLinks: {
+        MapEdges: {
           omit: {
             mapId: true,
             createdAt: true,
@@ -110,8 +110,8 @@ export class MapRepository {
 
     const idMap = new Map(originalMap.MapNodes.map((n, i) => [n.id, newMapNodes[i].id]));
 
-    await this.prisma.mapLink.createMany({
-      data: originalMap.MapLinks.map(({ id, fromNodeId, toNodeId, ...rest }) => ({
+    await this.prisma.mapEdge.createMany({
+      data: originalMap.MapEdges.map(({ id, fromNodeId, toNodeId, ...rest }) => ({
         ...rest,
         mapId: newMap.id,
         fromNodeId: idMap.get(fromNodeId)!,
@@ -123,18 +123,18 @@ export class MapRepository {
   }
 
   async insertNode({ mapId, controlType }: { mapId: number; controlType: ControlType }) {
-    const [mapNodes, mapLinks] = await Promise.all([
+    const [mapNodes, mapEdges] = await Promise.all([
       this.prisma.mapNode.findMany({
         where: { mapId },
         select: { iid: true, controlType: true, offsetX: true, offsetY: true },
       }),
-      this.prisma.mapLink.findMany({
+      this.prisma.mapEdge.findMany({
         where: { mapId },
         select: { id: true, fromNodeId: true, toNodeId: true },
       }),
     ]);
 
-    const m = { n: mapNodes, l: mapLinks };
+    const m = { n: mapNodes, e: mapEdges };
 
     return this.prisma.mapNode.create({
       data: {
@@ -243,7 +243,7 @@ export class MapRepository {
   }
 
   async deleteMap({ mapId }: { mapId: number }) {
-    await this.prisma.mapLink.deleteMany({ where: { mapId } });
+    await this.prisma.mapEdge.deleteMany({ where: { mapId } });
     await this.prisma.mapNode.deleteMany({ where: { mapId } });
     await this.prisma.map.delete({ where: { id: mapId } });
   }

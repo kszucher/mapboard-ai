@@ -5,13 +5,13 @@ import { Color, defaultMapConfig } from '../../../../shared/src/api/api-types-ma
 import { api, useGetMapConfigInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
-export const MapConfigLink = () => {
-  const { mapNodeConfigs, mapLinkConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
-  const emptyLinkConfig = { fromNodeConfigId: NaN, toNodeConfigId: NaN, schema: '' };
-  const [newLinkConfig, setNewLinkConfig] = useState(emptyLinkConfig);
+export const MapConfigEdge = () => {
+  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+  const emptyEdgeConfig = { fromNodeConfigId: NaN, toNodeConfigId: NaN, schema: '' };
+  const [newEdgeConfig, setNewEdgeConfig] = useState(emptyEdgeConfig);
   const dispatch = useDispatch<AppDispatch>();
 
-  console.log(mapLinkConfigs);
+  console.log(mapEdgeConfigs);
 
   return (
     <Table.Root size={'1'}>
@@ -24,7 +24,7 @@ export const MapConfigLink = () => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {mapLinkConfigs?.map(el => (
+        {mapEdgeConfigs?.map(el => (
           <Table.Row key={el.id}>
             <Table.Cell>
               <Badge color="gray">{el.FromNodeConfig?.type}</Badge>
@@ -44,12 +44,12 @@ export const MapConfigLink = () => {
           <Table.Cell>
             <Select.Root
               size="1"
-              value={newLinkConfig.fromNodeConfigId ? newLinkConfig.fromNodeConfigId.toString() : ''}
-              onValueChange={id => setNewLinkConfig({ ...newLinkConfig, fromNodeConfigId: Number(id) })}
+              value={newEdgeConfig.fromNodeConfigId ? newEdgeConfig.fromNodeConfigId.toString() : ''}
+              onValueChange={id => setNewEdgeConfig({ ...newEdgeConfig, fromNodeConfigId: Number(id) })}
             >
               <Select.Trigger
                 variant="soft"
-                color={mapNodeConfigs?.find(el => el.id === newLinkConfig.fromNodeConfigId)?.color || Color.gray}
+                color={mapNodeConfigs?.find(el => el.id === newEdgeConfig.fromNodeConfigId)?.color || Color.gray}
               />
               <Select.Content>
                 {mapNodeConfigs?.map(el => (
@@ -63,12 +63,12 @@ export const MapConfigLink = () => {
           <Table.Cell>
             <Select.Root
               size="1"
-              value={newLinkConfig.toNodeConfigId ? newLinkConfig.toNodeConfigId.toString() : ''}
-              onValueChange={id => setNewLinkConfig({ ...newLinkConfig, toNodeConfigId: Number(id) })}
+              value={newEdgeConfig.toNodeConfigId ? newEdgeConfig.toNodeConfigId.toString() : ''}
+              onValueChange={id => setNewEdgeConfig({ ...newEdgeConfig, toNodeConfigId: Number(id) })}
             >
               <Select.Trigger
                 variant="soft"
-                color={mapNodeConfigs?.find(el => el.id === newLinkConfig.toNodeConfigId)?.color || Color.gray}
+                color={mapNodeConfigs?.find(el => el.id === newEdgeConfig.toNodeConfigId)?.color || Color.gray}
               />
               <Select.Content>
                 {mapNodeConfigs?.map(el => (
@@ -86,9 +86,9 @@ export const MapConfigLink = () => {
               variant="solid"
               color="gray"
               onClick={() => {
-                console.log(newLinkConfig);
-                if (!isNaN(newLinkConfig.fromNodeConfigId) && !isNaN(newLinkConfig.toNodeConfigId)) {
-                  dispatch(api.endpoints.createMapLinkConfig.initiate(newLinkConfig));
+                console.log(newEdgeConfig);
+                if (!isNaN(newEdgeConfig.fromNodeConfigId) && !isNaN(newEdgeConfig.toNodeConfigId)) {
+                  dispatch(api.endpoints.createMapEdgeConfig.initiate(newEdgeConfig));
                 }
               }}
             >

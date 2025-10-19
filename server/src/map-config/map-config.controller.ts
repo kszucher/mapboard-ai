@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { injectable } from 'tsyringe';
 import {
-  CreateMapLinkConfigRequestDto,
+  CreateMapEdgeConfigRequestDto,
   GetMapConfigInfoQueryResponseDto,
 } from '../../../shared/src/api/api-types-map-config';
 import { checkJwt, getWorkspaceId } from '../middleware';
@@ -18,7 +18,7 @@ export class MapConfigController {
 
   private initializeRoutes() {
     this.router.post('/get-map-config-info', checkJwt, getWorkspaceId, this.getMapConfigInfo.bind(this));
-    this.router.post('/create-map-link-config', checkJwt, getWorkspaceId, this.createLinkConfig.bind(this));
+    this.router.post('/create-map-edge-config', checkJwt, getWorkspaceId, this.createEdgeConfig.bind(this));
   }
 
   private async getMapConfigInfo(req: Request, res: Response) {
@@ -26,10 +26,10 @@ export class MapConfigController {
     res.json(response);
   }
 
-  private async createLinkConfig(req: Request, res: Response) {
+  private async createEdgeConfig(req: Request, res: Response) {
     const { workspaceId } = req as any;
-    const params: CreateMapLinkConfigRequestDto = req.body;
-    await this.mapConfigService.createMapLinkConfig({ ...params });
+    const params: CreateMapEdgeConfigRequestDto = req.body;
+    await this.mapConfigService.createMapEdgeConfig({ ...params });
     res.json();
   }
 }

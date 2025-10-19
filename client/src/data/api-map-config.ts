@@ -1,6 +1,6 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/query';
 import {
-  CreateMapLinkConfigRequestDto,
+  CreateMapEdgeConfigRequestDto,
   GetMapConfigInfoQueryResponseDto,
 } from '../../../shared/src/api/api-types-map-config.ts';
 
@@ -10,8 +10,8 @@ export const apiMapConfig = (builder: EndpointBuilder<BaseQueryFn, string, strin
     providesTags: ['MapConfigInfo'],
   }),
 
-  createMapLinkConfig: builder.mutation<void, CreateMapLinkConfigRequestDto>({
-    query: params => ({ url: 'create-map-link-config', method: 'POST', body: params }),
+  createMapEdgeConfig: builder.mutation<void, CreateMapEdgeConfigRequestDto>({
+    query: params => ({ url: 'create-map-edge-config', method: 'POST', body: params }),
     invalidatesTags: ['MapConfigInfo'],
   }),
 });

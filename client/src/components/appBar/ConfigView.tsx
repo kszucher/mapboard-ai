@@ -5,7 +5,7 @@ import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 
 export const ConfigView = () => {
-  const linkHelpersVisible = useSelector((state: RootState) => state.slice.linkHelpersVisible);
+  const edgeHelpersVisible = useSelector((state: RootState) => state.slice.edgeHelpersVisible);
   const mapFrameVisible = useSelector((state: RootState) => state.slice.mapFrameVisible);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -17,8 +17,8 @@ export const ConfigView = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
-        <DropdownMenu.Item onClick={() => dispatch(actions.setLinkHelpersVisible(!linkHelpersVisible))}>
-          {linkHelpersVisible ? 'Hide Link Helpers' : 'Show Link Helpers'}
+        <DropdownMenu.Item onClick={() => dispatch(actions.setEdgeHelpersVisible(!edgeHelpersVisible))}>
+          {edgeHelpersVisible ? 'Hide Edge Helpers' : 'Show Edge Helpers'}
         </DropdownMenu.Item>
         <DropdownMenu.Item onClick={() => dispatch(actions.setRootFrameVisible(!mapFrameVisible))}>
           {mapFrameVisible ? 'Hide Frame' : 'Show Frame'}

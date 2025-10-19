@@ -8,18 +8,18 @@ import { api, useGetMapConfigInfoQuery, useGetMapInfoQuery } from '../../data/ap
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLineCoordsMid } from './UtilsSvg.ts';
 
-export const LinkDelete: FC = () => {
-  const { mapNodeConfigs, mapLinkConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+export const EdgeDelete: FC = () => {
+  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const mapId = useGetMapInfoQuery().data?.id!;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const linkHelpersVisible = useSelector((state: RootState) => state.slice.linkHelpersVisible);
+  const edgeHelpersVisible = useSelector((state: RootState) => state.slice.edgeHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    linkHelpersVisible &&
-    m.l.map(li => (
+    edgeHelpersVisible &&
+    m.e.map(ei => (
       <IconButton
-        key={`${li.id}_inter_node_bezier_trash`}
+        key={`${ei.id}_inter_node_bezier_trash`}
         variant="solid"
         color="gray"
         size="1"
@@ -27,15 +27,15 @@ export const LinkDelete: FC = () => {
         style={{
           position: 'absolute',
           left:
-            getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapLinkConfigs, m, li))).x - 12,
-          top: getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapLinkConfigs, m, li))).y - 12,
+            getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapEdgeConfigs, m, ei))).x - 12,
+          top: getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapEdgeConfigs, m, ei))).y - 12,
           transition: 'all 0.3s',
           transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
         }}
         onMouseDown={e => {
           e.stopPropagation();
         }}
-        onClick={() => dispatch(api.endpoints.deleteLink.initiate({ mapId, linkId: li.id }))}
+        onClick={() => dispatch(api.endpoints.deleteEdge.initiate({ mapId, edgeId: ei.id }))}
       >
         <Trash />
       </IconButton>

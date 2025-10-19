@@ -1,10 +1,10 @@
 import { injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
 import {
-  DeleteLinkRequestDto,
+  DeleteEdgeRequestDto,
   DeleteNodeRequestDto,
   GetMapInfoQueryResponseDto,
-  InsertLinkRequestDto,
+  InsertEdgeRequestDto,
   InsertNodeRequestDto,
   MoveNodeRequestDto,
   UpdateNodeRequestDto,
@@ -52,7 +52,7 @@ export class MapService {
     return {
       id: map.id,
       name: map.name,
-      data: { n: map.MapNodes, l: map.MapLinks },
+      data: { n: map.MapNodes, e: map.MapEdges },
       shareAccess,
     };
   }
@@ -146,24 +146,24 @@ export class MapService {
     });
   }
 
-  async insertLink({ mapId, fromNodeId, toNodeId }: InsertLinkRequestDto) {
-    const mapLink = await this.prisma.mapLink.create({
+  async insertEdge({ mapId, fromNodeId, toNodeId }: InsertEdgeRequestDto) {
+    const mapEdge = await this.prisma.mapEdge.create({
       data: { mapId, fromNodeId, toNodeId },
     });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-      payload: { mapId, links: { insert: [mapLink] } },
+      payload: { mapId, edges: { insert: [mapEdge] } },
     });
   }
 
   async deleteNode({ workspaceId, mapId, nodeId }: DeleteNodeRequestDto & { workspaceId: number }) {
-    const mapLinksToDelete = await this.prisma.mapLink.findMany({
+    const mapEdgesToDelete = await this.prisma.mapEdge.findMany({
       where: { OR: [{ fromNodeId: nodeId }, { toNodeId: nodeId }] },
       select: { id: true },
     });
 
-    await this.prisma.mapLink.deleteMany({
+    await this.prisma.mapEdge.deleteMany({
       where: { OR: [{ fromNodeId: nodeId }, { toNodeId: nodeId }] },
     });
 
@@ -178,19 +178,19 @@ export class MapService {
       payload: {
         mapId,
         nodes: { update: mapNodes, delete: [nodeId] },
-        links: { delete: mapLinksToDelete.map(l => l.id) },
+        edges: { delete: mapEdgesToDelete.map(e => e.id) },
       },
     });
   }
 
-  async deleteLink({ mapId, linkId }: DeleteLinkRequestDto) {
-    await this.prisma.mapLink.delete({
-      where: { id: linkId },
+  async deleteEdge({ mapId, edgeId }: DeleteEdgeRequestDto) {
+    await this.prisma.mapEdge.delete({
+      where: { id: edgeId },
     });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-      payload: { mapId, links: { delete: [linkId] } },
+      payload: { mapId, edges: { delete: [edgeId] } },
     });
   }
 
@@ -263,7 +263,7 @@ export class MapService {
       payload: { mapId, nodes: { update: mapNodes } },
     });
 
-    const topologicalSort = getTopologicalSort({ n: map.MapNodes, l: map.MapLinks });
+    const topologicalSort = getTopologicalSort({ n: map.MapNodes, e: map.MapEdges });
     if (!topologicalSort) {
       throw new Error('topological sort error');
     }

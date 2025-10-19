@@ -9,7 +9,7 @@ import {
   getNodeLeft,
   getNodeTop,
   getNodeWidth,
-  isExistingLink,
+  isExistingEdge,
 } from '../../../../shared/src/map/map-getters.ts';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
@@ -26,7 +26,7 @@ import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
 import { NodeTypeVisualizer } from './NodeTypeVisualizer.tsx';
 
 export const Node: FC = () => {
-  const { mapNodeConfigs, mapLinkConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const mapId = useGetMapInfoQuery().data?.id!;
   const nodeOffsetCoords = useSelector((state: RootState) => state.slice.nodeOffsetCoords);
   const nodeOffsetCoordsRef = useRef(nodeOffsetCoords);
@@ -140,15 +140,15 @@ export const Node: FC = () => {
                 {m.n
                   .filter(
                     toNi =>
-                      getAllowedTargets(mapLinkConfigs, ni.controlType).includes(toNi.controlType) &&
-                      !isExistingLink(m, ni.id, toNi.id)
+                      getAllowedTargets(mapEdgeConfigs, ni.controlType).includes(toNi.controlType) &&
+                      !isExistingEdge(m, ni.id, toNi.id)
                   )
                   .map(toNi => (
                     <DropdownMenu.Item
                       key={toNi.id}
                       onClick={() => {
                         dispatch(
-                          api.endpoints.insertLink.initiate({
+                          api.endpoints.insertEdge.initiate({
                             mapId,
                             fromNodeId: ni.id,
                             toNodeId: toNi.id,

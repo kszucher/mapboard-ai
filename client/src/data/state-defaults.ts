@@ -24,7 +24,7 @@ export const state: State = {
     originX: 0,
     originY: 0,
   },
-  linkHelpersVisible: false,
+  edgeHelpersVisible: false,
   mapFrameVisible: false,
   connectionStart: {
     fromNodeId: null,
