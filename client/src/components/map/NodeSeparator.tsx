@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
-import { getNodeLeft, getNodeWidth, getNodeTop } from '../../../../shared/src/map/map-getters.ts';
+import { getNodeLeft, getNodeTop, getNodeWidth } from '../../../../shared/src/map/map-getters.ts';
 import { useGetMapConfigInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 import { adjust } from '../../utils/utils.ts';

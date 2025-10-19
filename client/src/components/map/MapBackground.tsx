@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import colors from 'tailwindcss/colors';
 import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
-import { getNodeLeft, getNodeHeight, getNodeWidth, getNodeTop } from '../../../../shared/src/map/map-getters.ts';
+import { getNodeHeight, getNodeLeft, getNodeTop, getNodeWidth } from '../../../../shared/src/map/map-getters.ts';
 import { useGetMapConfigInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 

@@ -2,11 +2,11 @@ import { FC } from 'react';
 import { ConfigMouse } from './ConfigMouse.tsx';
 import { ConfigView } from './ConfigView.tsx';
 import { Logo } from './Logo.tsx';
+import { MapConfig } from './MapConfig.tsx';
 import { MapSelector } from './MapSelector.tsx';
 import { NodeExecute } from './NodeExecute.tsx';
 import { NodeInsert } from './NodeInsert.tsx';
 import { NodeRedo } from './NodeRedo.tsx';
-import { MapConfig } from './MapConfig.tsx';
 import { NodeUndo } from './NodeUndo.tsx';
 import { UserAccount } from './UserAccount.tsx';
 
