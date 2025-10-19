@@ -68,26 +68,27 @@ model MapNode {
 }
 
 model MapNodeConfig {
-  id                Int             @id @default(autoincrement())
+  id                Int                  @id @default(autoincrement())
   w                 Int
   h                 Int
-  type              String          @unique
+  type              String               @unique
   color             Color
   label             String
-  mapNodeFields     MapNodeField[]
-  MapEdgeConfigFrom MapEdgeConfig[] @relation("FromEdgeConfigs")
-  MapEdgeConfigTo   MapEdgeConfig[] @relation("ToEdgeConfigs")
+  mapNodeFields     MapNodeFieldConfig[]
+  MapEdgeConfigFrom MapEdgeConfig[]      @relation("FromEdgeConfigs")
+  MapEdgeConfigTo   MapEdgeConfig[]      @relation("ToEdgeConfigs")
 }
 
-model MapNodeField {
+model MapNodeFieldConfig {
   id            Int              @id @default(autoincrement())
-  inputType     MapNodeInputType
+  type          MapNodeFieldType
+  label         String
   selectOptions String[]
   MapNodeType   MapNodeConfig?   @relation(fields: [mapNodeTypeId], references: [id])
   mapNodeTypeId Int?
 }
 
-enum MapNodeInputType {
+enum MapNodeFieldType {
   TEXT
   SELECT
 }

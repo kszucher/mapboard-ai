@@ -29,16 +29,17 @@ export const Color = {
 
 export type Color = (typeof Color)[keyof typeof Color];
 
-export const MapNodeInputType = {
+export const MapNodeFieldType = {
   TEXT: 'TEXT',
   SELECT: 'SELECT',
 };
 
-export type MapNodeInputType = (typeof MapNodeInputType)[keyof typeof MapNodeInputType];
+export type MapNodeFieldType = (typeof MapNodeFieldType)[keyof typeof MapNodeFieldType];
 
-export type MapNodeField = {
+export type MapNodeFieldConfig = {
   id: number;
-  inputType: MapNodeInputType;
+  type: MapNodeFieldType;
+  label: string;
   selectOptions: string[];
   mapNodeTypeId: number | null;
 }
@@ -50,7 +51,7 @@ export type MapNodeConfig = {
   type: string;
   color: Color;
   label: string;
-  mapNodeFields: MapNodeField[];
+  mapNodeFields: MapNodeFieldConfig[];
 }
 
 export type MapEdgeConfig = {

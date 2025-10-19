@@ -2,12 +2,11 @@ import { Badge, Button, Select, Table } from '@radix-ui/themes';
 import { useState } from 'react';
 import { Color, defaultMapConfig, MapNodeConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import { useGetMapConfigInfoQuery } from '../../data/api.ts';
+import { MapNodeFieldConfig } from '../popovers/MapNodeFieldConfig.tsx';
 
 export const NodeConfig = () => {
   const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
-
   const emptyNodeConfig: Partial<MapNodeConfig> = { type: '', label: '', color: Color.gray, w: 0, h: 0 };
-
   const [newNodeConfig, setNewNodeConfig] = useState(emptyNodeConfig);
 
   return (
@@ -19,6 +18,7 @@ export const NodeConfig = () => {
           <Table.ColumnHeaderCell>{'Color'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Width'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Height'}</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>{'UI'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Action'}</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
@@ -34,6 +34,9 @@ export const NodeConfig = () => {
             </Table.Cell>
             <Table.Cell>{el.w}</Table.Cell>
             <Table.Cell>{el.h}</Table.Cell>
+            <Table.Cell>
+              <MapNodeFieldConfig nodeConfig={el} />
+            </Table.Cell>
             <Table.Cell>
               <Button size="1" variant="solid" onClick={() => {}}>
                 {'Remove'}
@@ -62,6 +65,9 @@ export const NodeConfig = () => {
           </Table.Cell>
           <Table.Cell>{newNodeConfig.w}</Table.Cell>
           <Table.Cell>{newNodeConfig.h}</Table.Cell>
+          <Table.Cell>
+            <MapNodeFieldConfig nodeConfig={newNodeConfig} />
+          </Table.Cell>
           <Table.Cell>
             <Button size="1" variant="solid" color="gray" onClick={() => {}}>
               {'Add'}
