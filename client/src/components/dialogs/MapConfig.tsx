@@ -25,7 +25,7 @@ export const MapConfig = () => {
     >
       <Dialog.Title>{'Map Config'}</Dialog.Title>
       <Dialog.Description>Configure map nodes and edges below.</Dialog.Description>
-      <Tabs.Root defaultValue={dialogMode}>
+      <Tabs.Root defaultValue={dialogMode} mt="4">
         <Tabs.List>
           <Tabs.Trigger value="nodes">Nodes</Tabs.Trigger>
           <Tabs.Trigger value="edges">Edges</Tabs.Trigger>
