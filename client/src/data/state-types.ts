@@ -42,7 +42,6 @@ export enum DialogState {
   MAP_ACTIONS_RENAME,
   MAP_CONFIG,
   MAP_SHARES,
-  SHARED_WITH_ME,
 }
 
 export enum AlertDialogState {
