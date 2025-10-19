@@ -10,7 +10,7 @@ export const MapNodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNode
           Edit Fields
         </Button>
       </Popover.Trigger>
-      <Popover.Content width="600px">
+      <Popover.Content width="800px">
         <Flex direction="column" gap="2" align="start" content="center">
           <Text size="3">{nodeConfig.label + ' Fields'}</Text>
           <NodeFieldConfig nodeConfig={nodeConfig} />
