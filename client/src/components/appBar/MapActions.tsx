@@ -20,7 +20,7 @@ export const MapActions = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
         <Dialog.Trigger>
-          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.MAP_RENAME))}>
+          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.MAP_ACTIONS_RENAME))}>
             {'Rename'}
           </DropdownMenu.Item>
         </Dialog.Trigger>
@@ -43,7 +43,7 @@ export const MapActions = () => {
         )}
         <DropdownMenu.Separator />
         <Dialog.Trigger>
-          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARE_THIS_MAP))}>
+          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.MAP_ACTIONS_SHARE))}>
             {'Share'}
           </DropdownMenu.Item>
         </Dialog.Trigger>

@@ -38,11 +38,11 @@ export enum PageState {
 
 export enum DialogState {
   NONE,
-  SHARED_BY_ME,
+  MAP_ACTIONS_SHARE,
+  MAP_ACTIONS_RENAME,
+  MAP_CONFIG,
+  MAP_SHARES,
   SHARED_WITH_ME,
-  SHARE_THIS_MAP,
-  MAP_RENAME,
-  NODE_CONFIG,
 }
 
 export enum AlertDialogState {

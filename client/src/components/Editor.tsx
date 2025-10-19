@@ -11,8 +11,7 @@ import { AppBar } from './appBar/AppBar.tsx';
 import { MapActionsRename } from './dialogs/MapActionsRename.tsx';
 import { MapActionsShare } from './dialogs/MapActionsShare.tsx';
 import { MapConfig } from './dialogs/MapConfig.tsx';
-import { SharedByMeDialog } from './dialogs/SharedByMeDialog.tsx';
-import { SharedWithMeDialog } from './dialogs/SharedWithMeDialog.tsx';
+import { MapShares } from './dialogs/MapShares.tsx';
 import { Map } from './map/Map.tsx';
 import { Window } from './window/Window.tsx';
 
@@ -44,11 +43,10 @@ export const Editor: FC = () => {
             <Window />
             {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <UserAccountDelete />}
           </AlertDialog.Root>
-          {dialogState === DialogState.MAP_RENAME && <MapActionsRename />}
-          {dialogState === DialogState.SHARE_THIS_MAP && <MapActionsShare />}
-          {dialogState === DialogState.NODE_CONFIG && <MapConfig />}
-          {dialogState === DialogState.SHARED_BY_ME && <SharedByMeDialog />}
-          {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMeDialog />}
+          {dialogState === DialogState.MAP_ACTIONS_RENAME && <MapActionsRename />}
+          {dialogState === DialogState.MAP_ACTIONS_SHARE && <MapActionsShare />}
+          {dialogState === DialogState.MAP_CONFIG && <MapConfig />}
+          {dialogState === DialogState.MAP_SHARES && <MapShares />}
         </Dialog.Root>
       )}
       <div

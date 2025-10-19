@@ -13,7 +13,7 @@ export const MapConfig = () => {
       <IconButton variant="solid" color="gray">
         <TriangleSquareCircle
           onClick={() => {
-            dispatch(actions.setDialogState(DialogState.NODE_CONFIG));
+            dispatch(actions.setDialogState(DialogState.MAP_CONFIG));
           }}
         />
       </IconButton>

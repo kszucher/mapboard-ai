@@ -28,13 +28,8 @@ export const UserAccount = () => {
         <DropdownMenu.Separator />
 
         <Dialog.Trigger>
-          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_BY_ME))}>
-            {'Maps Shared By Me'}
-          </DropdownMenu.Item>
-        </Dialog.Trigger>
-        <Dialog.Trigger>
-          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.SHARED_WITH_ME))}>
-            {'Maps Shared With Me'}
+          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.MAP_SHARES))}>
+            {'Map Shares'}
           </DropdownMenu.Item>
         </Dialog.Trigger>
 
