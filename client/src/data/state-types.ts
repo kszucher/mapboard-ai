@@ -36,13 +36,16 @@ export enum PageState {
   WS,
 }
 
-export enum DialogState {
-  NONE,
-  MAP_ACTIONS_SHARE,
-  MAP_ACTIONS_RENAME,
-  MAP_CONFIG,
-  MAP_SHARES,
-}
+export const DialogState = {
+  NONE: 'NONE',
+  MAP_ACTIONS_SHARE: 'MAP_ACTIONS_SHARE',
+  MAP_ACTIONS_RENAME: 'MAP_ACTIONS_RENAME',
+  NODE_CONFIG: 'NODE_CONFIG',
+  EDGE_CONFIG: 'EDGE_CONFIG',
+  MAP_SHARES: 'MAP_SHARES',
+};
+
+export type DialogState = (typeof DialogState)[keyof typeof DialogState];
 
 export enum AlertDialogState {
   NONE,

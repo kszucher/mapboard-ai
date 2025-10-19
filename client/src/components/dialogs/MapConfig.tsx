@@ -1,8 +1,17 @@
 import { Box, Button, Dialog, Flex, Tabs } from '@radix-ui/themes';
+import { useSelector } from 'react-redux';
+import { DialogState } from '../../data/state-types.ts';
+import { RootState } from '../../data/store.ts';
 import { EdgeConfig } from '../tables/EdgeConfig.tsx';
 import { NodeConfig } from '../tables/NodeConfig.tsx';
 
 export const MapConfig = () => {
+  const dialogState = useSelector((state: RootState) => state.slice.dialogState);
+  const dialogMode = {
+    [DialogState.NODE_CONFIG]: 'nodes',
+    [DialogState.EDGE_CONFIG]: 'edges',
+  }[dialogState];
+
   return (
     <Dialog.Content
       style={{
@@ -11,21 +20,21 @@ export const MapConfig = () => {
         position: 'fixed',
         top: '10%',
         left: '50%',
-        transform: 'translateX(-50%)', // center horizontally only
+        transform: 'translateX(-50%)',
       }}
     >
       <Dialog.Title>{'Map Config'}</Dialog.Title>
       <Dialog.Description>Configure map nodes and edges below.</Dialog.Description>
-      <Tabs.Root defaultValue="nodes">
+      <Tabs.Root defaultValue={dialogMode}>
         <Tabs.List>
           <Tabs.Trigger value="nodes">Nodes</Tabs.Trigger>
           <Tabs.Trigger value="edges">Edges</Tabs.Trigger>
         </Tabs.List>
         <Box pt="3">
-          <Tabs.Content value="nodes">
+          <Tabs.Content value="nodes" style={{ outline: 'none' }}>
             <NodeConfig />
           </Tabs.Content>
-          <Tabs.Content value="edges">
+          <Tabs.Content value="edges" style={{ outline: 'none' }}>
             <EdgeConfig />
           </Tabs.Content>
         </Box>
