@@ -77,7 +77,6 @@ model MapNode {
   id                       Int              @id @default(autoincrement())
   mapId                    Int
   Map                      Map              @relation(fields: [mapId], references: [id])
-  controlType              ControlType // to be deprecated!!!
   mapNodeConfigId          Int
   MapNodeConfig            MapNodeConfig    @relation(fields: [mapNodeConfigId], references: [id])
   workspaceId              Int?

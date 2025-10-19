@@ -1,7 +1,6 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
 import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
-import { ControlType } from '../../../../shared/src/api/api-types-map-node.ts';
 import Plus from '../../../assets/plus.svg?react';
 import { api, useGetMapConfigInfoQuery, useGetMapInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
@@ -22,7 +21,7 @@ export const NodeInsert = () => {
         {mapNodeConfigs.map(el => (
           <DropdownMenu.Item
             key={el.id}
-            onClick={() => dispatch(api.endpoints.insertNode.initiate({ mapId, controlType: el.type as ControlType }))}
+            onClick={() => dispatch(api.endpoints.insertNode.initiate({ mapId, mapNodeConfigId: el.id! }))}
           >
             {el.label}
           </DropdownMenu.Item>

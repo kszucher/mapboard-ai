@@ -1,5 +1,5 @@
 import { E } from './api-types-map-edge';
-import { ControlType, N } from './api-types-map-node';
+import { N } from './api-types-map-node';
 import { ShareAccess } from './api-types-share';
 
 export type M = { e: E[], n: N[] };
@@ -30,7 +30,7 @@ export type DeleteMapRequestDto = {
 
 export type InsertNodeRequestDto = {
   mapId: number
-  controlType: ControlType
+  mapNodeConfigId: number
 }
 
 export type InsertEdgeRequestDto = {

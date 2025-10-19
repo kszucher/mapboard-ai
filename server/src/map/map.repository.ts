@@ -1,6 +1,5 @@
 import { injectable } from 'tsyringe';
-import { ControlType, LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
-import { getLastIndexN, getMapHeight, getMapWidth } from '../../../shared/src/map/map-getters';
+import { getLastIndexN } from '../../../shared/src/map/map-getters';
 import { Prisma, PrismaClient } from '../generated/client';
 
 @injectable()
@@ -25,6 +24,14 @@ export class MapRepository {
         userId: true,
         name: true,
         MapNodes: {
+          include: {
+            MapNodeConfig: {
+              select: {
+                id: true,
+                type: true,
+              },
+            },
+          },
           omit: { createdAt: true },
         },
         MapEdges: {
@@ -40,7 +47,15 @@ export class MapRepository {
       select: {
         id: true,
         MapNodes: {
-          select: { id: true, controlType: true },
+          select: {
+            id: true,
+            MapNodeConfig: {
+              select: {
+                id: true,
+                type: true,
+              },
+            },
+          },
         },
         MapEdges: {
           select: { id: true, fromNodeId: true, toNodeId: true },
@@ -122,11 +137,15 @@ export class MapRepository {
     return newMap;
   }
 
-  async insertNode({ mapId, controlType }: { mapId: number; controlType: ControlType }) {
+  async insertNode({ mapId, mapNodeConfigId }: { mapId: number; mapNodeConfigId: number }) {
     const [mapNodes, mapEdges] = await Promise.all([
       this.prisma.mapNode.findMany({
         where: { mapId },
-        select: { iid: true, controlType: true, offsetX: true, offsetY: true },
+        select: {
+          iid: true,
+          offsetX: true,
+          offsetY: true,
+        },
       }),
       this.prisma.mapEdge.findMany({
         where: { mapId },
@@ -136,24 +155,16 @@ export class MapRepository {
 
     const m = { n: mapNodes, e: mapEdges };
 
-    const mapNodeConfig = await this.prisma.mapNodeConfig.findFirstOrThrow({
-      where: {
-        type: controlType,
-      },
-      select: {
-        id: true,
-      },
-    });
-
     return this.prisma.mapNode.create({
       data: {
         mapId,
-        mapNodeConfigId: mapNodeConfig.id,
+        mapNodeConfigId,
         iid: getLastIndexN(m) + 1,
-        controlType,
-        ...(controlType === ControlType.LLM && { llmOutputSchema: LlmOutputSchema.TEXT }),
-        offsetX: getMapWidth([], m),
-        offsetY: getMapHeight([], m),
+        offsetX: 100, //  getMapWidth([], m),
+        offsetY: 100, // getMapHeight([], m),
+      },
+      include: {
+        MapNodeConfig: { select: { id: true, type: true } },
       },
     });
   }

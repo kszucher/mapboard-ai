@@ -23,8 +23,8 @@ export const NodeTypeVisualizer = ({ nodeId, ni }: { nodeId: number; ni: N }) =>
             variant="soft"
             disabled={true}
             style={{
-              width: getNodeWidth(mapNodeConfigs, ni.controlType) - 40,
-              minHeight: getNodeHeight(mapNodeConfigs, ni.controlType) - 70,
+              width: getNodeWidth(mapNodeConfigs, ni.MapNodeConfig.type) - 40,
+              minHeight: getNodeHeight(mapNodeConfigs, ni.MapNodeConfig.type) - 70,
               outline: 'none',
               pointerEvents: 'auto',
             }}

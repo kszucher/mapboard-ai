@@ -1,5 +1,4 @@
 import { injectable } from 'tsyringe';
-import { ControlType } from '../../../shared/src/api/api-types-map-node';
 import { PrismaClient } from '../generated/client';
 
 @injectable()
@@ -19,7 +18,7 @@ export class MapNodeRepository {
     return this.prisma.mapNode.findFirst({
       where: {
         mapId,
-        controlType: ControlType.FILE,
+        MapNodeConfig: { type: 'FILE' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -38,7 +37,7 @@ export class MapNodeRepository {
     return this.prisma.mapNode.findMany({
       where: {
         mapId,
-        controlType: ControlType.INGESTION,
+        MapNodeConfig: { type: 'INGESTION' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -56,7 +55,7 @@ export class MapNodeRepository {
     return this.prisma.mapNode.findFirst({
       where: {
         mapId,
-        controlType: ControlType.CONTEXT,
+        MapNodeConfig: { type: 'CONTEXT' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -74,7 +73,7 @@ export class MapNodeRepository {
     return this.prisma.mapNode.findFirst({
       where: {
         mapId,
-        controlType: ControlType.QUESTION,
+        MapNodeConfig: { type: 'QUESTION' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -92,7 +91,7 @@ export class MapNodeRepository {
     return this.prisma.mapNode.findFirst({
       where: {
         mapId,
-        controlType: ControlType.VECTOR_DATABASE,
+        MapNodeConfig: { type: 'VECTOR_DATABASE' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -111,7 +110,7 @@ export class MapNodeRepository {
     return this.prisma.mapNode.findFirst({
       where: {
         mapId,
-        controlType: ControlType.DATA_FRAME,
+        MapNodeConfig: { type: 'DATA_FRAME' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -129,7 +128,7 @@ export class MapNodeRepository {
     return this.prisma.mapNode.findFirst({
       where: {
         mapId,
-        controlType: ControlType.LLM,
+        MapNodeConfig: { type: 'LLM' },
         FromEdges: {
           some: {
             toNodeId: nodeId,

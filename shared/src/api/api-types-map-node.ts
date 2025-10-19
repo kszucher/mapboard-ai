@@ -7,7 +7,6 @@ export type N = {
   iid: number;
   offsetX: number;
   offsetY: number;
-  controlType: ControlType;
   isProcessing: boolean;
   fileHash: string | null;
   fileName: string | null;
@@ -21,21 +20,12 @@ export type N = {
   llmOutputSchema: LlmOutputSchema | null;
   llmOutputJson: any | null;
   visualizerOutputText: string | null;
+  MapNodeConfig: {
+    id: number;
+    type: string;
+  };
   updatedAt: Date;
 }
-
-export const ControlType = {
-  FILE: 'FILE',
-  INGESTION: 'INGESTION',
-  CONTEXT: 'CONTEXT',
-  QUESTION: 'QUESTION',
-  VECTOR_DATABASE: 'VECTOR_DATABASE',
-  DATA_FRAME: 'DATA_FRAME',
-  LLM: 'LLM',
-  VISUALIZER: 'VISUALIZER',
-} as const;
-
-export type ControlType = (typeof ControlType)[keyof typeof ControlType];
 
 export const LlmOutputSchema = {
   TEXT: 'TEXT',

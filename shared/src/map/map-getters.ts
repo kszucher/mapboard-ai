@@ -20,25 +20,25 @@ export const getNodeBottom = (mapNodeConfigs: Partial<MapNodeConfig>[], offsetY:
   offsetY + getNodeHeight(mapNodeConfigs, type) + N_PADDING;
 
 export const getMapWidth = (mapNodeConfigs: Partial<MapNodeConfig>[], m: {
-  n: Pick<N, 'offsetX' | 'controlType'>[]
+  n: Pick<N, 'offsetX' | 'MapNodeConfig'>[]
 }) => {
-  const max = Math.max(...m.n.map(ni => getNodeRight(mapNodeConfigs, ni.offsetX, ni.controlType)));
+  const max = Math.max(...m.n.map(ni => getNodeRight(mapNodeConfigs, ni.offsetX, ni.MapNodeConfig.type)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
 export const getMapHeight = (mapNodeConfigs: Partial<MapNodeConfig>[], m: {
-  n: Pick<N, 'offsetY' | 'controlType'>[]
+  n: Pick<N, 'offsetY' | 'MapNodeConfig'>[]
 }) => {
-  const max = Math.max(...m.n.map(ni => getNodeBottom(mapNodeConfigs, ni.offsetY, ni.controlType)));
+  const max = Math.max(...m.n.map(ni => getNodeBottom(mapNodeConfigs, ni.offsetY, ni.MapNodeConfig.type)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
 export const getMapRight = (mapNodeConfigs: Partial<MapNodeConfig>[], m: {
-  n: Pick<N, 'offsetX' | 'controlType'>[]
+  n: Pick<N, 'offsetX' | 'MapNodeConfig'>[]
 }) => getMapWidth(mapNodeConfigs, m) - M_PADDING;
 
 export const getMapBottom = (mapNodeConfigs: Partial<MapNodeConfig>[], m: {
-  n: Pick<N, 'offsetY' | 'controlType'>[]
+  n: Pick<N, 'offsetY' | 'MapNodeConfig'>[]
 }) => getMapHeight(mapNodeConfigs, m) - M_PADDING;
 
 export const getAllowedSources = (mapEdgeConfigs: Partial<MapEdgeConfig>[], type: string) => {
@@ -74,11 +74,11 @@ export const getLineCoords = (mapNodeConfigs: Partial<MapNodeConfig>[], mapEdgeC
   const fromNode = getInputNodeOfEdge(m, e);
   const toNode = getOutputNodeOfEdge(m, e);
 
-  const leftIndex = getAllowedSources(mapEdgeConfigs, toNode.controlType).findIndex(controlType => controlType === fromNode.controlType);
+  const leftIndex = getAllowedSources(mapEdgeConfigs, toNode.MapNodeConfig.type).findIndex(type => type === fromNode.MapNodeConfig.type);
   const rightIndex = 0;
 
   return [
-    getNodeRight(mapNodeConfigs, fromNode.offsetX, fromNode.controlType),
+    getNodeRight(mapNodeConfigs, fromNode.offsetX, fromNode.MapNodeConfig.type),
     getNodeTop(fromNode.offsetY) + 60 + rightIndex * 20,
     getNodeLeft(toNode.offsetX),
     getNodeTop(toNode.offsetY) + 60 + leftIndex * 20,

@@ -22,8 +22,8 @@ export const NodeTypeQuestion = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: getNodeWidth(mapNodeConfigs, ni.controlType) - 40,
-              minHeight: getNodeHeight(mapNodeConfigs, ni.controlType) - 70,
+              width: getNodeWidth(mapNodeConfigs, ni.MapNodeConfig.type) - 40,
+              minHeight: getNodeHeight(mapNodeConfigs, ni.MapNodeConfig.type) - 70,
               outline: 'none',
               pointerEvents: 'auto',
             }}

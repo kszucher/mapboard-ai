@@ -98,8 +98,8 @@ export const slice = createSlice({
       state.nodeOffsetCoords = [
         toX,
         toY,
-        getNodeWidth(mapNodeConfigs, n.controlType),
-        getNodeHeight(mapNodeConfigs, n.controlType),
+        getNodeWidth(mapNodeConfigs, n.MapNodeConfig.type),
+        getNodeHeight(mapNodeConfigs, n.MapNodeConfig.type),
       ];
     },
     moveNodePreviewEnd(state) {

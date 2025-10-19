@@ -16,8 +16,8 @@ export const MapBackground: FC = () => {
       key={`${ni.id}_background`}
       x={getNodeLeft(ni.offsetX) + 0.5}
       y={getNodeTop(ni.offsetY) + 0.5}
-      width={getNodeWidth(mapNodeConfigs, ni.controlType)}
-      height={getNodeHeight(mapNodeConfigs, ni.controlType)}
+      width={getNodeWidth(mapNodeConfigs, ni.MapNodeConfig.type)}
+      height={getNodeHeight(mapNodeConfigs, ni.MapNodeConfig.type)}
       rx={16}
       ry={16}
       fill={colorMode === 'DARK' ? colors.zinc[800] : colors.zinc[50]}

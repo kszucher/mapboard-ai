@@ -23,7 +23,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: getNodeWidth(mapNodeConfigs, ni.controlType) - 40,
+              width: getNodeWidth(mapNodeConfigs, ni.MapNodeConfig.type) - 40,
               minHeight: 120,
               outline: 'none',
               pointerEvents: 'auto',

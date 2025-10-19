@@ -12,7 +12,7 @@ export const EdgeConnectorFrom: FC = () => {
 
   return m.n.map(ni => {
     const isConnected = m.e.some(ei => ei.fromNodeId === ni.id);
-    const color = mapNodeConfigs?.find(el => el.type === ni.controlType)?.color || 'gray';
+    const color = mapNodeConfigs?.find(el => el.type === ni.MapNodeConfig.type)?.color || 'gray';
     return (
       <circle
         key={`${ni.id}_from`}
@@ -20,7 +20,7 @@ export const EdgeConnectorFrom: FC = () => {
         fill={isConnected ? radixColorMap[color] : 'none'}
         stroke={radixColorMap[color]}
         strokeWidth={1.5}
-        transform={`translate(${getNodeRight(mapNodeConfigs, ni.offsetX, ni.controlType)}, ${getNodeTop(ni.offsetY) + 60})`}
+        transform={`translate(${getNodeRight(mapNodeConfigs, ni.offsetX, ni.MapNodeConfig.type)}, ${getNodeTop(ni.offsetY) + 60})`}
         vectorEffect="non-scaling-stroke"
         style={{
           transition: 'all 0.3s',

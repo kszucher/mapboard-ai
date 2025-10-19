@@ -2,7 +2,6 @@ import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/t
 import { FC, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
-import { ControlType } from '../../../../shared/src/api/api-types-map-node.ts';
 import {
   getAllowedTargets,
   getNodeHeight,
@@ -45,8 +44,8 @@ export const Node: FC = () => {
         top: getNodeTop(ni.offsetY),
         transition: 'left 0.3s, top 0.3s',
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-        minWidth: getNodeWidth(mapNodeConfigs, ni.controlType),
-        minHeight: getNodeHeight(mapNodeConfigs, ni.controlType),
+        minWidth: getNodeWidth(mapNodeConfigs, ni.MapNodeConfig.type),
+        minHeight: getNodeHeight(mapNodeConfigs, ni.MapNodeConfig.type),
         margin: 0,
         pointerEvents: 'none',
       }}
@@ -57,8 +56,8 @@ export const Node: FC = () => {
           <Badge color="gray" size="2">
             {'N' + ni.iid}
           </Badge>
-          <Badge color={mapNodeConfigs?.find(el => el.type === ni.controlType)?.color || 'gray'} size="2">
-            {mapNodeConfigs?.find(el => el.type === ni.controlType)?.label || ''}
+          <Badge color={mapNodeConfigs?.find(el => el.type === ni.MapNodeConfig.type)?.color || 'gray'} size="2">
+            {mapNodeConfigs?.find(el => el.type === ni.MapNodeConfig.type)?.label || ''}
           </Badge>
           {ni.isProcessing && <Spinner m="1" />}
         </Flex>
@@ -140,7 +139,7 @@ export const Node: FC = () => {
                 {m.n
                   .filter(
                     toNi =>
-                      getAllowedTargets(mapEdgeConfigs, ni.controlType).includes(toNi.controlType) &&
+                      getAllowedTargets(mapEdgeConfigs, ni.MapNodeConfig.type).includes(toNi.MapNodeConfig.type) &&
                       !isExistingEdge(m, ni.id, toNi.id)
                   )
                   .map(toNi => (
@@ -156,7 +155,7 @@ export const Node: FC = () => {
                         );
                       }}
                     >
-                      {toNi.controlType + ' N' + toNi.iid}
+                      {toNi.MapNodeConfig.type + ' N' + toNi.iid}
                     </DropdownMenu.Item>
                   ))}
               </DropdownMenu.SubContent>
@@ -165,14 +164,14 @@ export const Node: FC = () => {
         </DropdownMenu.Root>
       </Box>
 
-      {ni.controlType === ControlType.FILE && <NodeTypeFileUpload ni={ni} nodeId={ni.id} />}
-      {ni.controlType === ControlType.INGESTION && <NodeTypeIngestion ni={ni} nodeId={ni.id} />}
-      {ni.controlType === ControlType.CONTEXT && <NodeTypeContext ni={ni} nodeId={ni.id} />}
-      {ni.controlType === ControlType.QUESTION && <NodeTypeQuestion ni={ni} nodeId={ni.id} />}
-      {ni.controlType === ControlType.VECTOR_DATABASE && <NodeTypeVectorDatabase ni={ni} nodeId={ni.id} />}
-      {ni.controlType === ControlType.DATA_FRAME && <NodeTypeDataFrame ni={ni} nodeId={ni.id} />}
-      {ni.controlType === ControlType.LLM && <NodeTypeLlm ni={ni} nodeId={ni.id} />}
-      {ni.controlType === ControlType.VISUALIZER && <NodeTypeVisualizer ni={ni} nodeId={ni.id} />}
+      {ni.MapNodeConfig.type === 'FILE' && <NodeTypeFileUpload ni={ni} nodeId={ni.id} />}
+      {ni.MapNodeConfig.type === 'INGESTION' && <NodeTypeIngestion ni={ni} nodeId={ni.id} />}
+      {ni.MapNodeConfig.type === 'CONTEXT' && <NodeTypeContext ni={ni} nodeId={ni.id} />}
+      {ni.MapNodeConfig.type === 'QUESTION' && <NodeTypeQuestion ni={ni} nodeId={ni.id} />}
+      {ni.MapNodeConfig.type === 'VECTOR_DATABASE' && <NodeTypeVectorDatabase ni={ni} nodeId={ni.id} />}
+      {ni.MapNodeConfig.type === 'DATA_FRAME' && <NodeTypeDataFrame ni={ni} nodeId={ni.id} />}
+      {ni.MapNodeConfig.type === 'LLM' && <NodeTypeLlm ni={ni} nodeId={ni.id} />}
+      {ni.MapNodeConfig.type === 'VISUALIZER' && <NodeTypeVisualizer ni={ni} nodeId={ni.id} />}
     </div>
   ));
 };

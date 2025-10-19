@@ -7,9 +7,8 @@ import {
   InsertEdgeRequestDto,
   InsertNodeRequestDto,
   MoveNodeRequestDto,
-  UpdateNodeRequestDto,
 } from '../../../shared/src/api/api-types-map';
-import { ControlType } from '../../../shared/src/api/api-types-map-node';
+import { N } from '../../../shared/src/api/api-types-map-node';
 import { ShareAccess } from '../../../shared/src/api/api-types-share';
 import { getTopologicalSort } from '../../../shared/src/map/map-getters';
 import { DistributionService } from '../distribution/distribution.service';
@@ -137,8 +136,8 @@ export class MapService {
     }
   }
 
-  async insertNode({ mapId, controlType }: InsertNodeRequestDto) {
-    const mapNode = await this.mapRepository.insertNode({ mapId, controlType });
+  async insertNode({ mapId, mapNodeConfigId }: InsertNodeRequestDto) {
+    const mapNode = await this.mapRepository.insertNode({ mapId, mapNodeConfigId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
@@ -226,7 +225,15 @@ export class MapService {
     });
   }
 
-  async updateNode({ workspaceId, mapId, node }: UpdateNodeRequestDto & { workspaceId: number }) {
+  async updateNode({
+    workspaceId,
+    mapId,
+    node,
+  }: {
+    workspaceId: number;
+    mapId: number;
+    node: Omit<Partial<N>, 'MapNodeConfig'>;
+  }) {
     const mapNode = await this.prisma.mapNode.update({
       where: { id: node.id },
       data: { ...node, workspaceId },
@@ -297,35 +304,35 @@ export class MapService {
       });
 
       try {
-        switch (ni.controlType) {
-          case ControlType.FILE: {
+        switch (ni.MapNodeConfig.type) {
+          case 'FILE': {
             await new Promise(el => setTimeout(el, 2000));
             await this.mapNodeFileService.execute({ mapId, nodeId });
             break;
           }
-          case ControlType.INGESTION: {
+          case 'INGESTION': {
             await this.mapNodeIngestionService.execute({ workspaceId, mapId, nodeId });
             break;
           }
-          case ControlType.CONTEXT: {
+          case 'CONTEXT': {
             await new Promise(el => setTimeout(el, 2000));
             await this.mapNodeContextService.execute({ mapId, nodeId });
             break;
           }
-          case ControlType.QUESTION: {
+          case 'QUESTION': {
             await new Promise(el => setTimeout(el, 2000));
             await this.mapNodeQuestionService.execute({ mapId, nodeId });
             break;
           }
-          case ControlType.VECTOR_DATABASE: {
+          case 'VECTOR_DATABASE': {
             await this.mapNodeVectorDatabaseService.execute({ workspaceId, mapId, nodeId });
             break;
           }
-          case ControlType.DATA_FRAME: {
+          case 'DATA_FRAME': {
             await this.mapNodeDataFrameService.execute({ workspaceId, mapId, nodeId });
             break;
           }
-          case ControlType.LLM: {
+          case 'LLM': {
             const mapNode = await this.mapNodeLlmService.execute({ workspaceId, mapId, nodeId });
 
             await this.distributionService.publish({
@@ -334,7 +341,7 @@ export class MapService {
             });
             break;
           }
-          case ControlType.VISUALIZER: {
+          case 'VISUALIZER': {
             const mapNode = await this.mapNodeVisualizerService.execute({ workspaceId, mapId, nodeId });
 
             await this.distributionService.publish({
@@ -345,7 +352,7 @@ export class MapService {
           }
         }
       } catch (e) {
-        console.error(ni.controlType + 'error', e);
+        console.error(ni.MapNodeConfig.type + 'error', e);
 
         const mapNodes = await this.mapRepository.clearProcessing({ workspaceId, mapId });
 

@@ -16,7 +16,7 @@ export const NodeSeparator: FC = () => {
       key={`${ni.id}_separator`}
       d={getLinearLinePath({
         x1: adjust(getNodeLeft(ni.offsetX)),
-        x2: adjust(getNodeLeft(ni.offsetX) + getNodeWidth(mapNodeConfigs, ni.controlType)),
+        x2: adjust(getNodeLeft(ni.offsetX) + getNodeWidth(mapNodeConfigs, ni.MapNodeConfig.type)),
         y1: adjust(getNodeTop(ni.offsetY) + 40),
         y2: adjust(getNodeTop(ni.offsetY) + 40),
       })}

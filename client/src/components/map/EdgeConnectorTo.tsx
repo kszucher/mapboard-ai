@@ -11,9 +11,9 @@ export const EdgeConnectorTo: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   return m.n.flatMap(ni =>
-    getAllowedSources(mapEdgeConfigs, ni.controlType).map((sourceType, idx) => {
+    getAllowedSources(mapEdgeConfigs, ni.MapNodeConfig.type).map((sourceType, idx) => {
       const isConnected = m.e.some(
-        ei => ei.toNodeId === ni.id && m.n.find(nj => nj.id === ei.fromNodeId)?.controlType === sourceType
+        ei => ei.toNodeId === ni.id && m.n.find(nj => nj.id === ei.fromNodeId)?.MapNodeConfig.type === sourceType
       );
       const color = mapNodeConfigs?.find(el => el.type === sourceType)?.color || 'gray';
       return (
