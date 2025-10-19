@@ -7,12 +7,12 @@ export const MapNodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNode
     <Popover.Root>
       <Popover.Trigger>
         <Button size={'1'} variant="soft">
-          Edit UI
+          Edit Fields
         </Button>
       </Popover.Trigger>
       <Popover.Content width="600px">
         <Flex direction="column" gap="2" align="start" content="center">
-          <Text size="3">{nodeConfig.label + ' UI'}</Text>
+          <Text size="3">{nodeConfig.label + ' Fields'}</Text>
           <NodeFieldConfig nodeConfig={nodeConfig} />
         </Flex>
         <Flex gap="3" mt="4" justify="end">

@@ -18,7 +18,7 @@ export const NodeConfig = () => {
           <Table.ColumnHeaderCell>{'Color'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Width'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Height'}</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>{'UI'}</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>{'Fields'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Action'}</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>

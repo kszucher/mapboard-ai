@@ -16,7 +16,7 @@ export const NodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNodeCon
         <Table.Row>
           <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Label</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Config</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>Options</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Action</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
