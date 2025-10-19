@@ -5,7 +5,7 @@ import { Color, defaultMapConfig } from '../../../../shared/src/api/api-types-ma
 import { api, useGetMapConfigInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
-export const MapConfigEdge = () => {
+export const EdgeConfig = () => {
   const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const emptyEdgeConfig = { fromNodeConfigId: NaN, toNodeConfigId: NaN, schema: '' };
   const [newEdgeConfig, setNewEdgeConfig] = useState(emptyEdgeConfig);

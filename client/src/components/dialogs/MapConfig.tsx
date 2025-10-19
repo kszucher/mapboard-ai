@@ -1,6 +1,6 @@
 import { Box, Button, Dialog, Flex, Tabs } from '@radix-ui/themes';
-import { MapConfigEdge } from './MapConfigEdge.tsx';
-import { MapConfigNode } from './MapConfigNode.tsx';
+import { EdgeConfig } from '../tables/EdgeConfig.tsx';
+import { NodeConfig } from '../tables/NodeConfig.tsx';
 
 export const MapConfig = () => {
   return (
@@ -23,10 +23,10 @@ export const MapConfig = () => {
         </Tabs.List>
         <Box pt="3">
           <Tabs.Content value="nodes">
-            <MapConfigNode />
+            <NodeConfig />
           </Tabs.Content>
           <Tabs.Content value="edges">
-            <MapConfigEdge />
+            <EdgeConfig />
           </Tabs.Content>
         </Box>
       </Tabs.Root>

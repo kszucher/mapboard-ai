@@ -11,8 +11,8 @@ import { AppBar } from './appBar/AppBar.tsx';
 import { MapActionsRename } from './dialogs/MapActionsRename.tsx';
 import { MapActionsShare } from './dialogs/MapActionsShare.tsx';
 import { MapConfig } from './dialogs/MapConfig.tsx';
-import { SharedByMe } from './dialogs/SharedByMe.tsx';
-import { SharedWithMe } from './dialogs/SharedWithMe.tsx';
+import { SharedByMeDialog } from './dialogs/SharedByMeDialog.tsx';
+import { SharedWithMeDialog } from './dialogs/SharedWithMeDialog.tsx';
 import { Map } from './map/Map.tsx';
 import { Window } from './window/Window.tsx';
 
@@ -47,8 +47,8 @@ export const Editor: FC = () => {
           {dialogState === DialogState.MAP_RENAME && <MapActionsRename />}
           {dialogState === DialogState.SHARE_THIS_MAP && <MapActionsShare />}
           {dialogState === DialogState.NODE_CONFIG && <MapConfig />}
-          {dialogState === DialogState.SHARED_BY_ME && <SharedByMe />}
-          {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMe />}
+          {dialogState === DialogState.SHARED_BY_ME && <SharedByMeDialog />}
+          {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMeDialog />}
         </Dialog.Root>
       )}
       <div

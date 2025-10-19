@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Color, defaultMapConfig, MapNodeConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import { useGetMapConfigInfoQuery } from '../../data/api.ts';
 
-export const MapConfigNode = () => {
+export const NodeConfig = () => {
   const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
 
   const emptyNodeConfig: Partial<MapNodeConfig> = { type: '', label: '', color: Color.gray, w: 0, h: 0 };
