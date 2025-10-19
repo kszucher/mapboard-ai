@@ -1,26 +1,53 @@
 import { M } from '../api/api-types-map';
+import { MapLinkConfig, MapNodeConfig } from '../api/api-types-map-config';
 import { L } from '../api/api-types-map-link';
-import { allowedSourceControls, controlBaseSizes, M_PADDING, N, N_PADDING } from '../api/api-types-map-node';
+import { M_PADDING, N, N_PADDING } from '../api/api-types-map-node';
 
-export const getNodeSelfW = (n: Pick<N, 'controlType'>) => controlBaseSizes[n.controlType].w + 2 * N_PADDING;
+export const getNodeLeft = (offsetX: number) => offsetX + M_PADDING;
 
-export const getNodeSelfH = (n: Pick<N, 'controlType'>) => controlBaseSizes[n.controlType].h + 2 * N_PADDING;
+export const getNodeTop = (offsetY: number) => offsetY + M_PADDING;
 
-export const getMapSelfW = (m: { n: Pick<N, 'offsetX' | 'controlType'>[] }) => {
-  const max = Math.max(...m.n.map(ni => ni.offsetX + getNodeSelfW(ni)));
+export const getNodeWidth = (mapNodeConfigs: Partial<MapNodeConfig>[], type: string) =>
+  mapNodeConfigs?.find(el => el.type === type)?.w || 0;
+
+export const getNodeHeight = (mapNodeConfigs: Partial<MapNodeConfig>[], type: string) =>
+  mapNodeConfigs?.find(el => el.type === type)?.h || 0;
+
+export const getNodeRight = (mapNodeConfigs: Partial<MapNodeConfig>[], offsetX: number, type: string) =>
+  offsetX + getNodeWidth(mapNodeConfigs, type) + N_PADDING;
+
+export const getNodeBottom = (mapNodeConfigs: Partial<MapNodeConfig>[], offsetY: number, type: string) =>
+  offsetY + getNodeHeight(mapNodeConfigs, type) + N_PADDING;
+
+export const getMapWidth = (mapNodeConfigs: Partial<MapNodeConfig>[], m: {
+  n: Pick<N, 'offsetX' | 'controlType'>[]
+}) => {
+  const max = Math.max(...m.n.map(ni => getNodeRight(mapNodeConfigs, ni.offsetX, ni.controlType)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getMapSelfH = (m: { n: Pick<N, 'offsetY' | 'controlType'>[] }) => {
-  const max = Math.max(...m.n.map(ni => ni.offsetY + getNodeSelfH(ni)));
+export const getMapHeight = (mapNodeConfigs: Partial<MapNodeConfig>[], m: {
+  n: Pick<N, 'offsetY' | 'controlType'>[]
+}) => {
+  const max = Math.max(...m.n.map(ni => getNodeBottom(mapNodeConfigs, ni.offsetY, ni.controlType)));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getNodeLeft = (n: N) => n.offsetX + M_PADDING;
+export const getMapRight = (mapNodeConfigs: Partial<MapNodeConfig>[], m: {
+  n: Pick<N, 'offsetX' | 'controlType'>[]
+}) => getMapWidth(mapNodeConfigs, m) - M_PADDING;
 
-export const getNodeRight = (n: N) => n.offsetX + M_PADDING + getNodeSelfW(n);
+export const getMapBottom = (mapNodeConfigs: Partial<MapNodeConfig>[], m: {
+  n: Pick<N, 'offsetY' | 'controlType'>[]
+}) => getMapHeight(mapNodeConfigs, m) - M_PADDING;
 
-export const getNodeTop = (n: N) => n.offsetY + M_PADDING;
+export const getAllowedSources = (mapLinkConfigs: Partial<MapLinkConfig>[], type: string) => {
+  return mapLinkConfigs.filter(el => el.ToNodeConfig?.type === type).map(el => el.FromNodeConfig?.type);
+};
+
+export const getAllowedTargets = (mapLinkConfigs: Partial<MapLinkConfig>[], type: string) => {
+  return mapLinkConfigs.filter(el => el.FromNodeConfig?.type === type).map(el => el.ToNodeConfig?.type);
+};
 
 export const getLastIndexN = (m: { n: Pick<N, 'iid'>[] }): number => Math.max(-1, ...m.n.map(ni => ni.iid));
 
@@ -43,18 +70,18 @@ export const getOutputNodeOfLink = (m: M, l: L): N => {
   return outputNode;
 };
 
-export const getLineCoords = (m: M, l: L) => {
+export const getLineCoords = (mapNodeConfigs: Partial<MapNodeConfig>[], mapLinkConfigs: Partial<MapLinkConfig>[], m: M, l: L) => {
   const fromNode = getInputNodeOfLink(m, l);
   const toNode = getOutputNodeOfLink(m, l);
 
-  const leftIndex = allowedSourceControls[toNode.controlType].findIndex(controlType => controlType === fromNode.controlType);
+  const leftIndex = getAllowedSources(mapLinkConfigs, toNode.controlType).findIndex(controlType => controlType === fromNode.controlType);
   const rightIndex = 0;
 
   return [
-    getNodeRight(m.n.find(ni => ni.id === l.fromNodeId)!),
-    getNodeTop(m.n.find(ni => ni.id === l.fromNodeId)!) + 60 + rightIndex * 20,
-    getNodeLeft(m.n.find(ni => ni.id === l.toNodeId)!),
-    getNodeTop(m.n.find(ni => ni.id === l.toNodeId)!) + 60 + leftIndex * 20,
+    getNodeRight(mapNodeConfigs, fromNode.offsetX, fromNode.controlType),
+    getNodeTop(fromNode.offsetY) + 60 + rightIndex * 20,
+    getNodeLeft(toNode.offsetX),
+    getNodeTop(toNode.offsetY) + 60 + leftIndex * 20,
   ];
 };
 

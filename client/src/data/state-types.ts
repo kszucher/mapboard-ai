@@ -41,7 +41,8 @@ export enum DialogState {
   SHARED_BY_ME,
   SHARED_WITH_ME,
   SHARE_THIS_MAP,
-  RENAME_MAP,
+  MAP_RENAME,
+  NODE_CONFIG,
 }
 
 export enum AlertDialogState {

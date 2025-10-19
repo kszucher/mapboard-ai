@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
 import { ControlType, LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
-import { getLastIndexN, getMapSelfH, getMapSelfW } from '../../../shared/src/map/map-getters';
+import { getLastIndexN, getMapHeight, getMapWidth } from '../../../shared/src/map/map-getters';
 import { Prisma, PrismaClient } from '../generated/client';
 
 @injectable()
@@ -142,8 +142,8 @@ export class MapRepository {
         iid: getLastIndexN(m) + 1,
         controlType,
         ...(controlType === ControlType.LLM && { llmOutputSchema: LlmOutputSchema.TEXT }),
-        offsetX: getMapSelfW(m),
-        offsetY: getMapSelfH(m),
+        offsetX: getMapWidth([], m),
+        offsetY: getMapHeight([], m),
       },
     });
   }

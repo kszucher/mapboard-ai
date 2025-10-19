@@ -5,13 +5,15 @@ import { container } from 'tsyringe';
 import { DistributionController } from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
 import { PrismaClient } from './generated/client';
+import { MapConfigController } from './map-config/map-config.controller';
+import { MapConfigRepository } from './map-config/map-config.repository';
+import { MapConfigService } from './map-config/map-config.service';
 import { MapNodeContextService } from './map/map-node-context.service';
 import { MapNodeDataFrameService } from './map/map-node-data-frame.service';
 import { MapNodeFileService } from './map/map-node-file.service';
 import { MapNodeIngestionService } from './map/map-node-ingestion.service';
 import { MapNodeLlmService } from './map/map-node-llm.service';
 import { MapNodeQuestionService } from './map/map-node-question.service';
-import { MapNodeTypeService } from './map/map-node-type.service';
 import { MapNodeVectorDatabaseService } from './map/map-node-vector-database.service';
 import { MapNodeVisualizerService } from './map/map-node-visualizer.service';
 import { MapNodeRepository } from './map/map-node.repository';
@@ -42,7 +44,7 @@ export class MapBoard {
 
   public userService: UserService;
   public mapService: MapService;
-  public mapNodeTypeService: MapNodeTypeService;
+  public mapConfigService: MapConfigService;
   public tabService: TabService;
   public shareService: ShareService;
   public workspaceService: WorkspaceService;
@@ -73,7 +75,9 @@ export class MapBoard {
     container.registerSingleton(MapNodeDataFrameService);
     container.registerSingleton(MapNodeLlmService);
     container.registerSingleton(MapNodeVisualizerService);
-    container.registerSingleton(MapNodeTypeService);
+    container.registerSingleton(MapConfigService);
+    container.registerSingleton(MapConfigRepository);
+    container.registerSingleton(MapConfigController);
     container.registerSingleton(TabService);
     container.registerSingleton(TabRepository);
     container.registerSingleton(TabController);
@@ -88,7 +92,7 @@ export class MapBoard {
 
     this.userService = container.resolve(UserService);
     this.mapService = container.resolve(MapService);
-    this.mapNodeTypeService = container.resolve(MapNodeTypeService);
+    this.mapConfigService = container.resolve(MapConfigService);
     this.tabService = container.resolve(TabService);
     this.shareService = container.resolve(ShareService);
     this.workspaceService = container.resolve(WorkspaceService);
@@ -96,6 +100,7 @@ export class MapBoard {
 
     const userController = container.resolve(UserController);
     const mapController = container.resolve(MapController);
+    const mapConfigController = container.resolve(MapConfigController);
     const tabController = container.resolve(TabController);
     const shareController = container.resolve(ShareController);
     const workspaceController = container.resolve(WorkspaceController);
@@ -106,6 +111,7 @@ export class MapBoard {
     this.app.use(express.json());
     this.app.use(userController.router);
     this.app.use(mapController.router);
+    this.app.use(mapConfigController.router);
     this.app.use(tabController.router);
     this.app.use(shareController.router);
     this.app.use(workspaceController.router);
@@ -113,7 +119,6 @@ export class MapBoard {
   }
 
   public async run() {
-    await this.mapNodeTypeService.seed();
     await this.workspaceService.deleteWorkspaces();
     await this.mapService.clearProcessingAll();
     await this.distributionService.connectAndSubscribe();

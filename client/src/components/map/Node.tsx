@@ -1,22 +1,19 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/themes';
 import { FC, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
+import { ControlType } from '../../../../shared/src/api/api-types-map-node.ts';
 import {
+  getAllowedTargets,
+  getNodeHeight,
   getNodeLeft,
-  getNodeSelfH,
-  getNodeSelfW,
   getNodeTop,
+  getNodeWidth,
   isExistingLink,
 } from '../../../../shared/src/map/map-getters.ts';
-import {
-  allowedTargetControls,
-  controlColors,
-  controlTexts,
-  ControlType,
-} from '../../../../shared/src/api/api-types-map-node.ts';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
-import { api, useGetMapInfoQuery } from '../../data/api.ts';
+import { api, useGetMapConfigInfoQuery, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { NodeTypeContext } from './NodeTypeContext.tsx';
@@ -29,6 +26,7 @@ import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
 import { NodeTypeVisualizer } from './NodeTypeVisualizer.tsx';
 
 export const Node: FC = () => {
+  const { mapNodeConfigs, mapLinkConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const mapId = useGetMapInfoQuery().data?.id!;
   const nodeOffsetCoords = useSelector((state: RootState) => state.slice.nodeOffsetCoords);
   const nodeOffsetCoordsRef = useRef(nodeOffsetCoords);
@@ -43,12 +41,12 @@ export const Node: FC = () => {
       ref={ref => ref && ref.focus()}
       style={{
         position: 'absolute',
-        left: getNodeLeft(ni),
-        top: getNodeTop(ni),
+        left: getNodeLeft(ni.offsetX),
+        top: getNodeTop(ni.offsetY),
         transition: 'left 0.3s, top 0.3s',
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-        minWidth: getNodeSelfW(ni),
-        minHeight: getNodeSelfH(ni),
+        minWidth: getNodeWidth(mapNodeConfigs, ni.controlType),
+        minHeight: getNodeHeight(mapNodeConfigs, ni.controlType),
         margin: 0,
         pointerEvents: 'none',
       }}
@@ -59,8 +57,8 @@ export const Node: FC = () => {
           <Badge color="gray" size="2">
             {'N' + ni.iid}
           </Badge>
-          <Badge color={controlColors[ni.controlType]} size="2">
-            {controlTexts[ni.controlType]}
+          <Badge color={mapNodeConfigs?.find(el => el.type === ni.controlType)?.color || 'gray'} size="2">
+            {mapNodeConfigs?.find(el => el.type === ni.controlType)?.label || ''}
           </Badge>
           {ni.isProcessing && <Spinner m="1" />}
         </Flex>
@@ -84,7 +82,7 @@ export const Node: FC = () => {
               e => {
                 e.preventDefault();
                 didMove = true;
-                dispatch(actions.moveNodePreviewUpdate({ n: ni, e }));
+                dispatch(actions.moveNodePreviewUpdate({ mapNodeConfigs, n: ni, e }));
               },
               { signal }
             );
@@ -142,7 +140,7 @@ export const Node: FC = () => {
                 {m.n
                   .filter(
                     toNi =>
-                      allowedTargetControls[ni.controlType].includes(toNi.controlType) &&
+                      getAllowedTargets(mapLinkConfigs, ni.controlType).includes(toNi.controlType) &&
                       !isExistingLink(m, ni.id, toNi.id)
                   )
                   .map(toNi => (

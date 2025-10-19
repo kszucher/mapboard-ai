@@ -10,6 +10,7 @@ import { UserAccountDelete } from './alertDialogs/UserAccountDelete.tsx';
 import { AppBar } from './appBar/AppBar.tsx';
 import { MapActionsRename } from './dialogs/MapActionsRename.tsx';
 import { MapActionsShare } from './dialogs/MapActionsShare.tsx';
+import { MapConfig } from './dialogs/MapConfig.tsx';
 import { SharedByMe } from './dialogs/SharedByMe.tsx';
 import { SharedWithMe } from './dialogs/SharedWithMe.tsx';
 import { Map } from './map/Map.tsx';
@@ -43,8 +44,9 @@ export const Editor: FC = () => {
             <Window />
             {alertDialogState === AlertDialogState.DELETE_ACCOUNT && <UserAccountDelete />}
           </AlertDialog.Root>
-          {dialogState === DialogState.RENAME_MAP && <MapActionsRename />}
+          {dialogState === DialogState.MAP_RENAME && <MapActionsRename />}
           {dialogState === DialogState.SHARE_THIS_MAP && <MapActionsShare />}
+          {dialogState === DialogState.NODE_CONFIG && <MapConfig />}
           {dialogState === DialogState.SHARED_BY_ME && <SharedByMe />}
           {dialogState === DialogState.SHARED_WITH_ME && <SharedWithMe />}
         </Dialog.Root>

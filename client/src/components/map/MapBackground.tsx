@@ -1,20 +1,23 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import colors from 'tailwindcss/colors';
-import { getNodeLeft, getNodeSelfH, getNodeSelfW, getNodeTop } from '../../../../shared/src/map/map-getters.ts';
-import { useGetUserInfoQuery } from '../../data/api.ts';
+import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
+import { getNodeLeft, getNodeHeight, getNodeWidth, getNodeTop } from '../../../../shared/src/map/map-getters.ts';
+import { useGetMapConfigInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 
 export const MapBackground: FC = () => {
+  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
+
   return m.n.map(ni => (
     <rect
       key={`${ni.id}_background`}
-      x={getNodeLeft(ni) + 0.5}
-      y={getNodeTop(ni) + 0.5}
-      width={getNodeSelfW(ni)}
-      height={getNodeSelfH(ni)}
+      x={getNodeLeft(ni.offsetX) + 0.5}
+      y={getNodeTop(ni.offsetY) + 0.5}
+      width={getNodeWidth(mapNodeConfigs, ni.controlType)}
+      height={getNodeHeight(mapNodeConfigs, ni.controlType)}
       rx={16}
       ry={16}
       fill={colorMode === 'DARK' ? colors.zinc[800] : colors.zinc[50]}

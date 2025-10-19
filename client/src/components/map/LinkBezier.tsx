@@ -1,10 +1,13 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import { getLineCoords, getOutputNodeOfLink } from '../../../../shared/src/map/map-getters.ts';
+import { useGetMapConfigInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLinePath, pathCommonProps } from './UtilsSvg.ts';
 
 export const LinkBezier: FC = () => {
+  const { mapNodeConfigs, mapLinkConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   const dashLength = 6;
@@ -35,7 +38,7 @@ export const LinkBezier: FC = () => {
       <g key={li.id}>
         <style>{`@keyframes dashMove { to { stroke-dashoffset: -${dashCycle} } } `}</style>
         <path
-          d={getBezierLinePath(getBezierLineCoords(getLineCoords(m, li)))}
+          d={getBezierLinePath(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapLinkConfigs, m, li)))}
           strokeWidth={1}
           stroke="#dddddd"
           fill="none"

@@ -1,5 +1,61 @@
-import { brown, crimson, cyan, gold, jade, lime, violet, yellow } from '@radix-ui/colors';
+import {
+  amber,
+  blue,
+  bronze,
+  brown,
+  crimson,
+  cyan,
+  gold,
+  grass,
+  gray,
+  green,
+  indigo,
+  iris,
+  jade,
+  lime,
+  mint,
+  orange,
+  pink,
+  plum,
+  purple,
+  red,
+  ruby,
+  sky,
+  teal,
+  tomato,
+  violet,
+  yellow,
+} from '@radix-ui/colors';
 import { BadgeProps } from '@radix-ui/themes';
+
+export const radixColorMap: Partial<Record<NonNullable<BadgeProps['color']>, string>> = {
+  amber: amber.amber9,
+  blue: blue.blue9,
+  bronze: bronze.bronze9,
+  brown: brown.brown9,
+  crimson: crimson.crimson9,
+  cyan: cyan.cyan9,
+  gold: gold.gold9,
+  grass: grass.grass9,
+  gray: gray.gray9,
+  green: green.green9,
+  indigo: indigo.indigo9,
+  iris: iris.iris9,
+  jade: jade.jade9,
+  lime: lime.lime9,
+  mint: mint.mint9,
+  orange: orange.orange9,
+  pink: pink.pink9,
+  plum: plum.plum9,
+  purple: purple.purple9,
+  red: red.red9,
+  ruby: ruby.ruby9,
+  sky: sky.sky9,
+  teal: teal.teal9,
+  tomato: tomato.tomato9,
+  violet: violet.violet9,
+  yellow: yellow.yellow9,
+};
 
 export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -8,17 +64,6 @@ export const pathCommonProps = {
     transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
     transitionProperty: 'd, fill, stroke-width',
   },
-};
-
-export const radixColorMap: Partial<Record<NonNullable<BadgeProps['color']>, string>> = {
-  yellow: yellow.yellow5,
-  cyan: cyan.cyan9,
-  violet: violet.violet9,
-  lime: lime.lime9,
-  brown: brown.brown9,
-  jade: jade.jade9,
-  crimson: crimson.crimson9,
-  gold: gold.gold9,
 };
 
 export const getLinearLinePath = ({ x1, x2, y1, y2 }: { x1: number; x2: number; y1: number; y2: number }) =>

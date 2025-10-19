@@ -1,29 +1,31 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import { ColorMode } from '../../../../shared/src/api/api-types-user.ts';
-import { getMapSelfH, getMapSelfW } from '../../../../shared/src/map/map-getters.ts';
-import { useGetMapInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
+import { getMapHeight, getMapWidth } from '../../../../shared/src/map/map-getters.ts';
+import { useGetMapConfigInfoQuery, useGetMapInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { MidMouseMode } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { LinkBezier } from './LinkBezier.tsx';
-import { LinkConnectorTo } from './LinkConnectorTo.tsx';
 import { LinkConnectorFrom } from './LinkConnectorFrom.tsx';
+import { LinkConnectorTo } from './LinkConnectorTo.tsx';
 import { LinkDelete } from './LinkDelete.tsx';
-import { Node } from './Node.tsx';
 import { MapBackground } from './MapBackground.tsx';
 import { MapFrame } from './MapFrame.tsx';
+import { Node } from './Node.tsx';
 import { NodeMovePreview } from './NodeMovePreview.tsx';
 import { NodeSeparator } from './NodeSeparator.tsx';
 
 export const Map: FC = () => {
+  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const zoomInfo = useSelector((state: RootState) => state.slice.zoomInfo);
   const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
   const mapId = useGetMapInfoQuery().data?.id!;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const mapSelfW = getMapSelfW(m);
-  const mapSelfH = getMapSelfH(m);
+  const mapSelfW = getMapWidth(mapNodeConfigs, m);
+  const mapSelfH = getMapHeight(mapNodeConfigs, m);
 
   const dispatch = useDispatch<AppDispatch>();
 

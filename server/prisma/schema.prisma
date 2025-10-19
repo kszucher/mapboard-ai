@@ -67,25 +67,23 @@ model MapNode {
   updatedAt                DateTime         @default(now()) @updatedAt
 }
 
-model MapNodeType {
-  id                     Int            @id @default(autoincrement())
-  w                      Int
-  h                      Int
-  type                   String         @unique
-  color                  Color
-  label                  String
-  allowedTargetNodeTypes MapNodeType[]  @relation("TargetRelation")
-  targetOf               MapNodeType[]  @relation("TargetRelation")
-  allowedSourceNodeTypes MapNodeType[]  @relation("SourceRelation")
-  sourceOf               MapNodeType[]  @relation("SourceRelation")
-  mapNodeInputs          MapNodeInput[]
+model MapNodeConfig {
+  id                Int             @id @default(autoincrement())
+  w                 Int
+  h                 Int
+  type              String          @unique
+  color             Color
+  label             String
+  mapNodeFields     MapNodeField[]
+  MapLinkConfigFrom MapLinkConfig[] @relation("FromLinkConfigs")
+  MapLinkConfigTo   MapLinkConfig[] @relation("ToLinkConfigs")
 }
 
-model MapNodeInput {
+model MapNodeField {
   id            Int              @id @default(autoincrement())
   inputType     MapNodeInputType
   selectOptions String[]
-  MapNodeType   MapNodeType?     @relation(fields: [mapNodeTypeId], references: [id])
+  MapNodeType   MapNodeConfig?   @relation(fields: [mapNodeTypeId], references: [id])
   mapNodeTypeId Int?
 }
 
@@ -107,6 +105,14 @@ model MapLink {
   lineWidth   Int      @default(1)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model MapLinkConfig {
+  id               Int           @id @default(autoincrement())
+  fromNodeConfigId Int
+  FromNodeConfig   MapNodeConfig @relation("FromLinkConfigs", fields: [fromNodeConfigId], references: [id])
+  toNodeConfigId   Int
+  ToNodeConfig     MapNodeConfig @relation("ToLinkConfigs", fields: [toNodeConfigId], references: [id])
 }
 
 model Tab {

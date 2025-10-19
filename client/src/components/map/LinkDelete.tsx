@@ -1,17 +1,20 @@
 import { IconButton } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import { getLineCoords } from '../../../../shared/src/map/map-getters.ts';
 import Trash from '../../../assets/trash.svg?react';
-import { api, useGetMapInfoQuery } from '../../data/api.ts';
+import { api, useGetMapConfigInfoQuery, useGetMapInfoQuery } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLineCoordsMid } from './UtilsSvg.ts';
 
 export const LinkDelete: FC = () => {
+  const { mapNodeConfigs, mapLinkConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const mapId = useGetMapInfoQuery().data?.id!;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const linkHelpersVisible = useSelector((state: RootState) => state.slice.linkHelpersVisible);
   const dispatch = useDispatch<AppDispatch>();
+
   return (
     linkHelpersVisible &&
     m.l.map(li => (
@@ -23,8 +26,9 @@ export const LinkDelete: FC = () => {
         radius="medium"
         style={{
           position: 'absolute',
-          left: getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(m, li))).x - 12,
-          top: getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(m, li))).y - 12,
+          left:
+            getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapLinkConfigs, m, li))).x - 12,
+          top: getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapLinkConfigs, m, li))).y - 12,
           transition: 'all 0.3s',
           transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
         }}

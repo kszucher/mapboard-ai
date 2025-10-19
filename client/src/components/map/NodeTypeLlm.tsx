@@ -1,13 +1,15 @@
 import { Box, Flex, Select, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { getNodeSelfW } from '../../../../shared/src/map/map-getters.ts';
+import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
+import { getNodeWidth } from '../../../../shared/src/map/map-getters.ts';
 import { LlmOutputSchema, N } from '../../../../shared/src/api/api-types-map-node.ts';
-import { api, useGetMapInfoQuery } from '../../data/api.ts';
+import { api, useGetMapConfigInfoQuery, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
+  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const mapId = useGetMapInfoQuery().data?.id!;
   const dispatch = useDispatch<AppDispatch>();
 
@@ -21,7 +23,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: getNodeSelfW(ni) - 40,
+              width: getNodeWidth(mapNodeConfigs, ni.controlType) - 40,
               minHeight: 120,
               outline: 'none',
               pointerEvents: 'auto',

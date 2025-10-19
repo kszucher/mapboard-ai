@@ -1,11 +1,13 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
-import { controlTexts, ControlType } from '../../../../shared/src/api/api-types-map-node.ts';
+import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
+import { ControlType } from '../../../../shared/src/api/api-types-map-node.ts';
 import Plus from '../../../assets/plus.svg?react';
-import { api, useGetMapInfoQuery } from '../../data/api.ts';
+import { api, useGetMapConfigInfoQuery, useGetMapInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeInsert = () => {
+  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const mapId = useGetMapInfoQuery().data?.id!;
   const dispatch = useDispatch<AppDispatch>();
 
@@ -17,12 +19,12 @@ export const NodeInsert = () => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
-        {Object.values(ControlType).map(controlType => (
+        {mapNodeConfigs.map(el => (
           <DropdownMenu.Item
-            key={controlType}
-            onClick={() => dispatch(api.endpoints.insertNode.initiate({ mapId, controlType }))}
+            key={el.id}
+            onClick={() => dispatch(api.endpoints.insertNode.initiate({ mapId, controlType: el.type as ControlType }))}
           >
-            {controlTexts[controlType]}
+            {el.label}
           </DropdownMenu.Item>
         ))}
       </DropdownMenu.Content>

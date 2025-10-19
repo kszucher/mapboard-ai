@@ -1,9 +1,10 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { UpdateL, UpdateMapGraphEventPayload, UpdateN } from '../../../shared/src/api/api-types-distribution.ts';
+import { MapNodeConfig } from '../../../shared/src/api/api-types-map-config.ts';
 import { L } from '../../../shared/src/api/api-types-map-link.ts';
 import { N } from '../../../shared/src/api/api-types-map-node.ts';
-import { getNodeSelfH, getNodeSelfW } from '../../../shared/src/map/map-getters.ts';
+import { getNodeHeight, getNodeWidth } from '../../../shared/src/map/map-getters.ts';
 import { alignNodes } from '../../../shared/src/map/map-setters.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
 import { api } from './api.ts';
@@ -82,12 +83,24 @@ export const slice = createSlice({
       state.zoomInfo.fromX = originX + (getMapX(e) - prevMapX) / scale;
       state.zoomInfo.fromY = originY + (getMapY(e) - prevMapY) / scale;
     },
-    moveNodePreviewUpdate(state, action: PayloadAction<{ n: N; e: MouseEvent }>) {
-      const { n, e } = action.payload;
+    moveNodePreviewUpdate(
+      state,
+      action: PayloadAction<{
+        mapNodeConfigs: Partial<MapNodeConfig>[];
+        n: N;
+        e: MouseEvent;
+      }>
+    ) {
+      const { mapNodeConfigs, n, e } = action.payload;
       const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
       const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetX;
       const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetY;
-      state.nodeOffsetCoords = [toX, toY, getNodeSelfW(n), getNodeSelfH(n)];
+      state.nodeOffsetCoords = [
+        toX,
+        toY,
+        getNodeWidth(mapNodeConfigs, n.controlType),
+        getNodeHeight(mapNodeConfigs, n.controlType),
+      ];
     },
     moveNodePreviewEnd(state) {
       state.nodeOffsetCoords = [];

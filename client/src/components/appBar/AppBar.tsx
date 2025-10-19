@@ -6,6 +6,7 @@ import { MapSelector } from './MapSelector.tsx';
 import { NodeExecute } from './NodeExecute.tsx';
 import { NodeInsert } from './NodeInsert.tsx';
 import { NodeRedo } from './NodeRedo.tsx';
+import { MapConfig } from './MapConfig.tsx';
 import { NodeUndo } from './NodeUndo.tsx';
 import { UserAccount } from './UserAccount.tsx';
 
@@ -16,6 +17,7 @@ export const AppBar: FC = () => {
       <MapSelector />
       <div className="fixed flex right-1 gap-6 h-[40px]">
         <div className="flex items-center gap-1">
+          <MapConfig />
           <NodeInsert />
           <NodeExecute />
         </div>

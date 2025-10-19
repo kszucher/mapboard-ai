@@ -20,7 +20,7 @@ export const MapActions = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
         <Dialog.Trigger>
-          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.RENAME_MAP))}>
+          <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.MAP_RENAME))}>
             {'Rename'}
           </DropdownMenu.Item>
         </Dialog.Trigger>
