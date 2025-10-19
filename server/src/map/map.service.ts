@@ -147,8 +147,26 @@ export class MapService {
   }
 
   async insertEdge({ mapId, fromNodeId, toNodeId }: InsertEdgeRequestDto) {
+    const mapNodeFrom = await this.prisma.mapNode.findFirstOrThrow({
+      where: { id: fromNodeId },
+      select: { MapNodeConfig: { select: { id: true } } },
+    });
+
+    const mapNodeTo = await this.prisma.mapNode.findFirstOrThrow({
+      where: { id: toNodeId },
+      select: { MapNodeConfig: { select: { id: true } } },
+    });
+
+    const mapEdgeConfig = await this.prisma.mapEdgeConfig.findFirstOrThrow({
+      where: {
+        fromNodeConfigId: mapNodeFrom.MapNodeConfig.id,
+        toNodeConfigId: mapNodeTo.MapNodeConfig.id,
+      },
+      select: { id: true },
+    });
+
     const mapEdge = await this.prisma.mapEdge.create({
-      data: { mapId, fromNodeId, toNodeId },
+      data: { mapId, fromNodeId, toNodeId, mapEdgeConfigId: mapEdgeConfig.id },
     });
 
     await this.distributionService.publish({

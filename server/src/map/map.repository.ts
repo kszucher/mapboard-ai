@@ -136,9 +136,19 @@ export class MapRepository {
 
     const m = { n: mapNodes, e: mapEdges };
 
+    const mapNodeConfig = await this.prisma.mapNodeConfig.findFirstOrThrow({
+      where: {
+        type: controlType,
+      },
+      select: {
+        id: true,
+      },
+    });
+
     return this.prisma.mapNode.create({
       data: {
         mapId,
+        mapNodeConfigId: mapNodeConfig.id,
         iid: getLastIndexN(m) + 1,
         controlType,
         ...(controlType === ControlType.LLM && { llmOutputSchema: LlmOutputSchema.TEXT }),
