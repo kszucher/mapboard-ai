@@ -122,12 +122,12 @@ model Edge {
 }
 
 model EdgeType {
-  id               Int      @id @default(autoincrement())
-  fromNodeConfigId Int
-  FromNodeConfig   NodeType @relation("FromEdgeConfigs", fields: [fromNodeConfigId], references: [id])
-  toNodeConfigId   Int
-  ToNodeConfig     NodeType @relation("ToEdgeConfigs", fields: [toNodeConfigId], references: [id])
-  Edge             Edge[]
+  id             Int      @id @default(autoincrement())
+  fromNodeTypeId Int
+  FromNodeType   NodeType @relation("FromEdgeConfigs", fields: [fromNodeTypeId], references: [id])
+  toNodeTypeId   Int
+  ToNodeType     NodeType @relation("ToEdgeConfigs", fields: [toNodeTypeId], references: [id])
+  Edge           Edge[]
 }
 
 model Tab {

@@ -9,8 +9,8 @@ export class EdgeTypeService {
     return this.edgeTypeRepository.getEdgeType();
   }
 
-  async createEdgeType({ fromNodeConfigId, toNodeConfigId }: { fromNodeConfigId: number; toNodeConfigId: number }) {
-    return this.edgeTypeRepository.createEdgeType({ fromNodeConfigId, toNodeConfigId });
+  async createEdgeType({ fromNodeTypeId, toNodeTypeId }: { fromNodeTypeId: number; toNodeTypeId: number }) {
+    return this.edgeTypeRepository.createEdgeType({ fromNodeTypeId, toNodeTypeId });
   }
 
   async removeEdgeType() {

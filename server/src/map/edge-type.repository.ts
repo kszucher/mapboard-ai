@@ -9,13 +9,13 @@ export class EdgeTypeRepository {
     return this.prisma.edgeType.findMany({
       select: {
         id: true,
-        FromNodeConfig: {
+        FromNodeType: {
           select: {
             id: true,
             type: true,
           },
         },
-        ToNodeConfig: {
+        ToNodeType: {
           select: {
             id: true,
             type: true,
@@ -25,22 +25,16 @@ export class EdgeTypeRepository {
     });
   }
 
-  async getEdgeTypeFromNodeTypes({
-    fromNodeConfigId,
-    toNodeConfigId,
-  }: {
-    fromNodeConfigId: number;
-    toNodeConfigId: number;
-  }) {
+  async getEdgeTypeFromNodeTypes({ fromNodeTypeId, toNodeTypeId }: { fromNodeTypeId: number; toNodeTypeId: number }) {
     return this.prisma.edgeType.findFirstOrThrow({
-      where: { fromNodeConfigId, toNodeConfigId },
+      where: { fromNodeTypeId, toNodeTypeId },
       select: { id: true },
     });
   }
 
-  async createEdgeType({ fromNodeConfigId, toNodeConfigId }: { fromNodeConfigId: number; toNodeConfigId: number }) {
+  async createEdgeType({ fromNodeTypeId, toNodeTypeId }: { fromNodeTypeId: number; toNodeTypeId: number }) {
     return this.prisma.edgeType.create({
-      data: { fromNodeConfigId, toNodeConfigId },
+      data: { fromNodeTypeId, toNodeTypeId },
     });
   }
 

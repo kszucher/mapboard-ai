@@ -9,13 +9,13 @@ export const EdgeConnectorTo: FC = () => {
 
   return m.n.flatMap(ni =>
     ni.NodeType.MapEdgeConfigTo.map((eci, idx) => {
-      const isConnected = m.e.some(ei => ei.ToNode.id === ni.id && ei.FromNode.NodeType.id === eci.FromNodeConfig.id);
+      const isConnected = m.e.some(ei => ei.ToNode.id === ni.id && ei.FromNode.NodeType.id === eci.FromNodeType.id);
       return (
         <circle
           key={`${ni.id}_${idx}`}
           r={3}
-          fill={isConnected ? radixColorMap[eci.FromNodeConfig.color] : 'none'}
-          stroke={radixColorMap[eci.FromNodeConfig.color]}
+          fill={isConnected ? radixColorMap[eci.FromNodeType.color] : 'none'}
+          stroke={radixColorMap[eci.FromNodeType.color]}
           strokeWidth={1.5}
           transform={`translate(${getNodeLeft(ni)}, ${getNodeTop(ni) + 60 + idx * 20})`}
           vectorEffect="non-scaling-stroke"

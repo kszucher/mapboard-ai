@@ -45,13 +45,13 @@ export type N = {
     h: number;
     color: Color;
     MapEdgeConfigFrom: {
-      ToNodeConfig: {
+      ToNodeType: {
         id: number;
         color: Color
       }
     }[];
     MapEdgeConfigTo: {
-      FromNodeConfig: {
+      FromNodeType: {
         id: number;
         color: Color
       }

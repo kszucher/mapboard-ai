@@ -8,7 +8,7 @@ import { AppDispatch } from '../../data/store.ts';
 export const EdgeEdit = () => {
   const nodeTypes = useGetNodeTypeInfoQuery().data || [];
   const edgeTypes = useGetEdgeTypeInfoQuery().data || [];
-  const emptyEdgeType = { fromNodeConfigId: NaN, toNodeConfigId: NaN, schema: '' };
+  const emptyEdgeType = { fromNodeTypeId: NaN, toNodeTypeId: NaN, schema: '' };
   const [newEdgeType, setNewEdgeType] = useState(emptyEdgeType);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -26,10 +26,10 @@ export const EdgeEdit = () => {
         {edgeTypes?.map(el => (
           <Table.Row key={el.id}>
             <Table.Cell>
-              <Badge color="gray">{el.FromNodeConfig?.type}</Badge>
+              <Badge color="gray">{el.FromNodeType?.type}</Badge>
             </Table.Cell>
             <Table.Cell>
-              <Badge color="gray">{el.ToNodeConfig?.type}</Badge>
+              <Badge color="gray">{el.ToNodeType?.type}</Badge>
             </Table.Cell>
             <Table.Cell>{'schema'}</Table.Cell>
             <Table.Cell>
@@ -43,12 +43,12 @@ export const EdgeEdit = () => {
           <Table.Cell>
             <Select.Root
               size="1"
-              value={newEdgeType.fromNodeConfigId ? newEdgeType.fromNodeConfigId.toString() : ''}
-              onValueChange={id => setNewEdgeType({ ...newEdgeType, fromNodeConfigId: Number(id) })}
+              value={newEdgeType.fromNodeTypeId ? newEdgeType.fromNodeTypeId.toString() : ''}
+              onValueChange={id => setNewEdgeType({ ...newEdgeType, fromNodeTypeId: Number(id) })}
             >
               <Select.Trigger
                 variant="soft"
-                color={nodeTypes?.find(el => el.id === newEdgeType.fromNodeConfigId)?.color || Color.gray}
+                color={nodeTypes?.find(el => el.id === newEdgeType.fromNodeTypeId)?.color || Color.gray}
               />
               <Select.Content>
                 {nodeTypes?.map(el => (
@@ -62,12 +62,12 @@ export const EdgeEdit = () => {
           <Table.Cell>
             <Select.Root
               size="1"
-              value={newEdgeType.toNodeConfigId ? newEdgeType.toNodeConfigId.toString() : ''}
-              onValueChange={id => setNewEdgeType({ ...newEdgeType, toNodeConfigId: Number(id) })}
+              value={newEdgeType.toNodeTypeId ? newEdgeType.toNodeTypeId.toString() : ''}
+              onValueChange={id => setNewEdgeType({ ...newEdgeType, toNodeTypeId: Number(id) })}
             >
               <Select.Trigger
                 variant="soft"
-                color={nodeTypes?.find(el => el.id === newEdgeType.toNodeConfigId)?.color || Color.gray}
+                color={nodeTypes?.find(el => el.id === newEdgeType.toNodeTypeId)?.color || Color.gray}
               />
               <Select.Content>
                 {nodeTypes?.map(el => (
@@ -86,7 +86,7 @@ export const EdgeEdit = () => {
               color="gray"
               onClick={() => {
                 console.log(newEdgeType);
-                if (!isNaN(newEdgeType.fromNodeConfigId) && !isNaN(newEdgeType.toNodeConfigId)) {
+                if (!isNaN(newEdgeType.fromNodeTypeId) && !isNaN(newEdgeType.toNodeTypeId)) {
                   dispatch(api.endpoints.createEdgeType.initiate(newEdgeType));
                 }
               }}

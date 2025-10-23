@@ -167,8 +167,8 @@ export class MapService {
     const nodeTo = await this.nodeRepository.getNodeMapConfig({ nodeId: toNodeId });
 
     const edgeType = await this.edgeTypeRepository.getEdgeTypeFromNodeTypes({
-      fromNodeConfigId: nodeFrom.NodeType.id,
-      toNodeConfigId: nodeTo.NodeType.id,
+      fromNodeTypeId: nodeFrom.NodeType.id,
+      toNodeTypeId: nodeTo.NodeType.id,
     });
 
     const edge = await this.edgeRepository.createEdge({

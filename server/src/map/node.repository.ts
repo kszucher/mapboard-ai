@@ -11,8 +11,8 @@ export class NodeRepository {
     ToEdges: { select: { FromNode: { select: { NodeType: { select: { id: true, color: true } } } } } },
     NodeType: {
       include: {
-        MapEdgeConfigFrom: { select: { ToNodeConfig: { select: { id: true, color: true } } } },
-        MapEdgeConfigTo: { select: { FromNodeConfig: { select: { id: true, color: true } } } },
+        MapEdgeConfigFrom: { select: { ToNodeType: { select: { id: true, color: true } } } },
+        MapEdgeConfigTo: { select: { FromNodeType: { select: { id: true, color: true } } } },
       },
     },
   });
