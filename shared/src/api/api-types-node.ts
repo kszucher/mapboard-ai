@@ -44,13 +44,13 @@ export type N = {
     w: number;
     h: number;
     color: Color;
-    InEdgeTypes: {
+    OutEdgeTypes: {
       ToNodeType: {
         id: number;
         color: Color
       }
     }[];
-    OutEdgeTypes: {
+    InEdgeTypes: {
       FromNodeType: {
         id: number;
         color: Color

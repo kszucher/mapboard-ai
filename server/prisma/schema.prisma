@@ -77,8 +77,8 @@ model NodeType {
   color           Color
   label           String
   NodeConfigTypes NodeConfigType[]
-  InEdgeTypes     EdgeType[]       @relation("InEdgeTypes")
   OutEdgeTypes    EdgeType[]       @relation("OutEdgeTypes")
+  InEdgeTypes     EdgeType[]       @relation("InEdgeTypes")
   Node            Node[]
 }
 
@@ -124,9 +124,9 @@ model Edge {
 model EdgeType {
   id             Int      @id @default(autoincrement())
   fromNodeTypeId Int
-  FromNodeType   NodeType @relation("InEdgeTypes", fields: [fromNodeTypeId], references: [id])
+  FromNodeType   NodeType @relation("OutEdgeTypes", fields: [fromNodeTypeId], references: [id])
   toNodeTypeId   Int
-  ToNodeType     NodeType @relation("OutEdgeTypes", fields: [toNodeTypeId], references: [id])
+  ToNodeType     NodeType @relation("InEdgeTypes", fields: [toNodeTypeId], references: [id])
   Edge           Edge[]
 }
 

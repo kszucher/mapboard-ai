@@ -143,7 +143,7 @@ export const Node: FC = () => {
                   .filter(
                     toNi =>
                       ni.id !== toNi.id && // TODO: also does NOT create a loop
-                      toNi.NodeType.OutEdgeTypes.some(eci => eci.FromNodeType.id === ni.NodeType.id) &&
+                      toNi.NodeType.InEdgeTypes.some(eci => eci.FromNodeType.id === ni.NodeType.id) &&
                       !isExistingEdge(m, ni.id, toNi.id)
                   )
                   .map(toNi => (

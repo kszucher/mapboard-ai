@@ -11,8 +11,8 @@ export class NodeRepository {
     ToEdges: { select: { FromNode: { select: { NodeType: { select: { id: true, color: true } } } } } },
     NodeType: {
       include: {
-        InEdgeTypes: { select: { ToNodeType: { select: { id: true, color: true } } } },
-        OutEdgeTypes: { select: { FromNodeType: { select: { id: true, color: true } } } },
+        OutEdgeTypes: { select: { ToNodeType: { select: { id: true, color: true } } } },
+        InEdgeTypes: { select: { FromNodeType: { select: { id: true, color: true } } } },
       },
     },
   });
