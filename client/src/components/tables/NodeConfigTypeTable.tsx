@@ -2,7 +2,7 @@ import { Button, Flex, Select, Table, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
 import { NodeType, NodeConfigType, NodeConfigTypeLabel } from '../../../../shared/src/api/api-types-node-type.ts';
 
-export const NodeConfigType = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
+export const NodeConfigTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
   const emptyNodeConfigType: Partial<NodeConfigType> = { type: '', label: '', selectOptions: [] };
   const [nodeConfigType, setNodeConfigType] = useState(emptyNodeConfigType ?? nodeType);
   const [selectOption, setSelectOption] = useState('');
