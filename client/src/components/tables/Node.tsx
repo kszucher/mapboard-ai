@@ -4,7 +4,7 @@ import { Color, NodeType } from '../../../../shared/src/api/api-types-node-type.
 import { useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { NodeConfigType } from '../popovers/NodeConfigType.tsx';
 
-export const EditNode = () => {
+export const Node = () => {
   const nodeTypes = useGetNodeTypeInfoQuery().data || [];
   const emptyNodeType: Partial<NodeType> = { type: '', label: '', color: Color.gray, w: 0, h: 0 };
   const [newNodeType, setNewNodeType] = useState(emptyNodeType);
