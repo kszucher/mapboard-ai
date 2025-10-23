@@ -4,6 +4,8 @@ import express from 'express';
 import { container } from 'tsyringe';
 import { DistributionController } from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
+import { EdgeController } from './edge/edge.controller';
+import { EdgeService } from './edge/edge.service';
 import { PrismaClient } from './generated/client';
 import { EdgeTypeController } from './edge-type/edge-type.controller';
 import { EdgeTypeRepository } from './edge-type/edge-type.repository';
@@ -15,7 +17,9 @@ import { MapService } from './map/map.service';
 import { NodeTypeController } from './node-type/node-type.controller';
 import { NodeTypeRepository } from './node-type/node-type.repository';
 import { NodeTypeService } from './node-type/node-type.service';
+import { NodeController } from './node/node.controller';
 import { NodeRepository } from './node/node.repository';
+import { NodeService } from './node/node.service';
 import { ShareController } from './share/share.controller';
 import { ShareRepository } from './share/share.repository';
 import { ShareService } from './share/share.service';
@@ -40,6 +44,7 @@ export class MapBoard {
 
   public userService: UserService;
   public mapService: MapService;
+  public nodeService: NodeService;
   public tabService: TabService;
   public shareService: ShareService;
   public workspaceService: WorkspaceService;
@@ -63,13 +68,17 @@ export class MapBoard {
     container.registerSingleton(MapRepository);
     container.registerSingleton(MapController);
 
+    container.registerSingleton(NodeService);
     container.registerSingleton(NodeRepository);
+    container.registerSingleton(NodeController);
 
     container.registerSingleton(NodeTypeService);
     container.registerSingleton(NodeTypeRepository);
     container.registerSingleton(NodeTypeController);
 
+    container.registerSingleton(EdgeService);
     container.registerSingleton(EdgeRepository);
+    container.registerSingleton(EdgeController);
 
     container.registerSingleton(EdgeTypeService);
     container.registerSingleton(EdgeTypeRepository);
@@ -92,6 +101,7 @@ export class MapBoard {
 
     this.userService = container.resolve(UserService);
     this.mapService = container.resolve(MapService);
+    this.nodeService = container.resolve(NodeService);
     this.tabService = container.resolve(TabService);
     this.shareService = container.resolve(ShareService);
     this.workspaceService = container.resolve(WorkspaceService);
@@ -99,7 +109,9 @@ export class MapBoard {
 
     const userController = container.resolve(UserController);
     const mapController = container.resolve(MapController);
+    const nodeController = container.resolve(NodeController);
     const nodeTypeController = container.resolve(NodeTypeController);
+    const edgeController = container.resolve(EdgeController);
     const edgeTypeController = container.resolve(EdgeTypeController);
     const tabController = container.resolve(TabController);
     const shareController = container.resolve(ShareController);
@@ -111,7 +123,9 @@ export class MapBoard {
     this.app.use(express.json());
     this.app.use(userController.router);
     this.app.use(mapController.router);
+    this.app.use(nodeController.router);
     this.app.use(nodeTypeController.router);
+    this.app.use(edgeController.router);
     this.app.use(edgeTypeController.router);
     this.app.use(tabController.router);
     this.app.use(shareController.router);
@@ -121,7 +135,7 @@ export class MapBoard {
 
   public async run() {
     await this.workspaceService.deleteWorkspaces();
-    await this.mapService.clearProcessingAll();
+    await this.nodeService.clearProcessingAll();
     await this.distributionService.connectAndSubscribe();
 
     const port = this.config.port || Number(process.env.PORT) || 8083;

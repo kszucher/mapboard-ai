@@ -1,8 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { backendUrl } from '../urls/Urls.ts';
 import { apiEdgeType } from './api-edge-type.ts';
+import { apiEdge } from './api-edge.ts';
 import { apiNodeType } from './api-node-type.ts';
 import { apiMap } from './api-map.ts';
+import { apiNode } from './api-node.ts';
 import { apiShare } from './api-share.ts';
 import { apiTab } from './api-tab.ts';
 import { apiUser } from './api-user.ts';
@@ -26,7 +28,9 @@ export const api = createApi({
   endpoints: builder => ({
     ...apiUser(builder),
     ...apiMap(builder),
+    ...apiNode(builder),
     ...apiNodeType(builder),
+    ...apiEdge(builder),
     ...apiEdgeType(builder),
     ...apiTab(builder),
     ...apiShare(builder),
