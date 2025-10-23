@@ -1,5 +1,5 @@
 import { injectable } from 'tsyringe';
-import { Prisma, PrismaClient } from '../generated/client';
+import { Prisma, PrismaClient } from 'prisma-client-6fdbe46ec273ecc1c71dc3adefa9f5de2d6423216469e46986ca6034cc2c56f0';
 import { JsonValue } from '@prisma/client/runtime/library';
 
 @injectable()

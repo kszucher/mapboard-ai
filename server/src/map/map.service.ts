@@ -9,9 +9,9 @@ import { ShareRepository } from '../share/share.repository';
 import { TabRepository } from '../tab/tab.repository';
 import { UserRepository } from '../user/user.repository';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
-import { EdgeTypeRepository } from './edge-type.repository';
-import { EdgeRepository } from './edge.repository';
-import { NodeRepository } from './node.repository';
+import { EdgeTypeRepository } from '../edge-type/edge-type.repository';
+import { EdgeRepository } from '../edge/edge.repository';
+import { NodeRepository } from '../node/node.repository';
 import { MapRepository } from './map.repository';
 
 @injectable()
