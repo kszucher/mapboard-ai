@@ -2,27 +2,27 @@ import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { injectable } from 'tsyringe';
 import { z } from 'zod';
-import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
+import { LlmOutputSchema } from '../../../shared/src/api/api-types-node';
+import { DataFrameQuerySchema } from './execute-data-frame.types';
+import { NodeRepository } from '../map/node.repository';
 import { PrismaClient } from '../generated/client';
-import { DataFrameQuerySchema } from './map-node-data-frame.types';
-import { MapNodeRepository } from './map-node.repository';
 
 @injectable()
-export class MapNodeLlmService {
+export class ExecuteLlmService {
   constructor(
     private prisma: PrismaClient,
-    private mapNodeService: MapNodeRepository
+    private nodeRepository: NodeRepository
   ) {}
 
   async execute({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     const [inputLlmNode, inputVectorDatabaseNode, inputDataFrameNode, inputContextNode, inputQuestionNode, node] =
       await Promise.all([
-        this.mapNodeService.getInputLlmNode({ mapId, nodeId }),
-        this.mapNodeService.getInputVectorDatabaseNode({ mapId, nodeId }),
-        this.mapNodeService.getInputDataFrameNode({ mapId, nodeId }),
-        this.mapNodeService.getInputContextNode({ mapId, nodeId }),
-        this.mapNodeService.getInputQuestionNode({ mapId, nodeId }),
-        this.mapNodeService.getNode({ mapId, nodeId }),
+        this.nodeRepository.getInputLlmNode({ mapId, nodeId }),
+        this.nodeRepository.getInputVectorDatabaseNode({ mapId, nodeId }),
+        this.nodeRepository.getInputDataFrameNode({ mapId, nodeId }),
+        this.nodeRepository.getInputContextNode({ mapId, nodeId }),
+        this.nodeRepository.getInputQuestionNode({ mapId, nodeId }),
+        this.nodeRepository.getNode({ mapId, nodeId }),
       ]);
 
     if (!node.llmInstructions) {
@@ -78,7 +78,7 @@ export class MapNodeLlmService {
 
     const llmOutputJson = isText ? { text: result.text } : result.object;
 
-    return this.prisma.mapNode.update({
+    return this.prisma.node.update({
       where: { id: nodeId },
       data: { workspaceId, llmOutputJson },
       select: { id: true, workspaceId: true, llmOutputJson: true, updatedAt: true },

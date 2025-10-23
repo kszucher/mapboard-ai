@@ -1,14 +1,10 @@
 import { Button, Flex, Select, Table, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
-import {
-  MapNodeConfig,
-  MapNodeFieldConfig,
-  MapNodeFieldType,
-} from '../../../../shared/src/api/api-types-map-config.ts';
+import { NodeType, NodeConfigType, NodeConfigTypeLabel } from '../../../../shared/src/api/api-types-node-type.ts';
 
-export const NodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNodeConfig> }) => {
-  const emptyFieldConfig: Partial<MapNodeFieldConfig> = { type: '', label: '', selectOptions: [] };
-  const [fieldConfig, setFieldConfig] = useState(emptyFieldConfig ?? nodeConfig);
+export const NodeConfigTypeEdit = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
+  const emptyNodeConfigType: Partial<NodeConfigType> = { type: '', label: '', selectOptions: [] };
+  const [nodeConfigType, setNodeConfigType] = useState(emptyNodeConfigType ?? nodeType);
   const [selectOption, setSelectOption] = useState('');
 
   return (
@@ -38,16 +34,16 @@ export const NodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNodeCon
           <Table.RowHeaderCell>
             <Select.Root
               size="1"
-              value={fieldConfig.type}
-              onValueChange={(value: MapNodeFieldType) => {
-                setFieldConfig({ ...fieldConfig, type: value });
+              value={nodeConfigType.type}
+              onValueChange={(value: NodeConfigTypeLabel) => {
+                setNodeConfigType({ ...nodeConfigType, type: value });
               }}
             >
               <Select.Trigger variant="soft" color="gray" />
               <Select.Content>
-                {Object.values(MapNodeFieldType).map(mapNodeInputType => (
-                  <Select.Item key={mapNodeInputType} value={mapNodeInputType}>
-                    {mapNodeInputType}
+                {Object.values(NodeConfigTypeLabel).map(label => (
+                  <Select.Item key={label} value={label}>
+                    {label}
                   </Select.Item>
                 ))}
               </Select.Content>
@@ -59,13 +55,13 @@ export const NodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNodeCon
               variant={'soft'}
               placeholder="label"
               radius={'large'}
-              onChange={e => setFieldConfig({ ...fieldConfig, label: e.target.value })}
+              onChange={e => setNodeConfigType({ ...nodeConfigType, label: e.target.value })}
             ></TextField.Root>
           </Table.Cell>
           <Table.Cell>
-            {fieldConfig.type === MapNodeFieldType.SELECT && (
+            {nodeConfigType.type === NodeConfigTypeLabel.SELECT && (
               <Flex direction="column" gap="2" align="start" content="center">
-                {fieldConfig.selectOptions?.map((el, i) => (
+                {nodeConfigType.selectOptions?.map((el, i) => (
                   <Flex key={i} gap="2" align="start" content="center">
                     <Text as="div" size="2" mb="1">
                       {el}
@@ -75,9 +71,9 @@ export const NodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNodeCon
                       variant="solid"
                       color="gray"
                       onClick={() => {
-                        setFieldConfig({
-                          ...fieldConfig,
-                          selectOptions: fieldConfig.selectOptions?.filter((_, si) => si !== i),
+                        setNodeConfigType({
+                          ...nodeConfigType,
+                          selectOptions: nodeConfigType.selectOptions?.filter((_, si) => si !== i),
                         });
                       }}
                     >
@@ -98,9 +94,9 @@ export const NodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNodeCon
                   variant="solid"
                   color="gray"
                   onClick={() => {
-                    setFieldConfig({
-                      ...fieldConfig,
-                      selectOptions: [...(fieldConfig.selectOptions ?? []), selectOption],
+                    setNodeConfigType({
+                      ...nodeConfigType,
+                      selectOptions: [...(nodeConfigType.selectOptions ?? []), selectOption],
                     });
                     setSelectOption('');
                   }}
@@ -113,10 +109,10 @@ export const NodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNodeCon
           <Table.Cell>
             <Button
               disabled={
-                !fieldConfig.type ||
-                !fieldConfig.label ||
-                (fieldConfig.type === MapNodeFieldType.SELECT &&
-                  (!fieldConfig.selectOptions || fieldConfig.selectOptions.length === 0))
+                !nodeConfigType.type ||
+                !nodeConfigType.label ||
+                (nodeConfigType.type === NodeConfigTypeLabel.SELECT &&
+                  (!nodeConfigType.selectOptions || nodeConfigType.selectOptions.length === 0))
               }
               size="1"
               variant="solid"

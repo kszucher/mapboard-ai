@@ -2,16 +2,16 @@ import { injectable } from 'tsyringe';
 import { Prisma, PrismaClient } from '../generated/client';
 
 @injectable()
-export class MapEdgeRepository {
+export class EdgeRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private mapEdgeInclude = (<T extends Prisma.MapEdgeInclude>(obj: T) => obj)({
+  private edgeInclude = (<T extends Prisma.EdgeInclude>(obj: T) => obj)({
     FromNode: {
       select: {
         id: true,
         offsetX: true,
         offsetY: true,
-        MapNodeConfig: {
+        NodeType: {
           select: {
             id: true,
           },
@@ -23,7 +23,7 @@ export class MapEdgeRepository {
         id: true,
         offsetX: true,
         offsetY: true,
-        MapNodeConfig: {
+        NodeType: {
           select: {
             id: true,
           },
@@ -33,29 +33,29 @@ export class MapEdgeRepository {
   });
 
   async getEdges({ mapId }: { mapId: number }) {
-    return this.prisma.mapEdge.findMany({
+    return this.prisma.edge.findMany({
       where: { mapId },
-      include: this.mapEdgeInclude,
+      include: this.edgeInclude,
       omit: { createdAt: true },
     });
   }
 
   async getEdgesForSorting({ mapId }: { mapId: number }) {
-    return this.prisma.mapEdge.findMany({
+    return this.prisma.edge.findMany({
       where: { mapId },
       select: { fromNodeId: true, toNodeId: true },
     });
   }
 
   async getEdgesOfNode({ nodeId }: { nodeId: number }) {
-    return this.prisma.mapEdge.findMany({
+    return this.prisma.edge.findMany({
       where: { OR: [{ fromNodeId: nodeId }, { toNodeId: nodeId }] },
       select: { id: true, workspaceId: true, updatedAt: true },
     });
   }
 
   async copyEdges({ mapId }: { mapId: number }) {
-    return this.prisma.mapEdge.findMany({
+    return this.prisma.edge.findMany({
       where: { mapId },
       omit: {
         mapId: true,
@@ -69,45 +69,40 @@ export class MapEdgeRepository {
     mapId,
     fromNodeId,
     toNodeId,
-    mapEdgeConfigId,
+    edgeTypeId,
   }: {
     mapId: number;
     fromNodeId: number;
     toNodeId: number;
-    mapEdgeConfigId: number;
+    edgeTypeId: number;
   }) {
-    return this.prisma.mapEdge.create({
-      data: { mapId, fromNodeId, toNodeId, mapEdgeConfigId },
-      include: this.mapEdgeInclude,
+    return this.prisma.edge.create({
+      data: { mapId, fromNodeId, toNodeId, edgeTypeId },
+      include: this.edgeInclude,
       omit: { createdAt: true },
     });
   }
 
-  async createEdges({ mapId, edges }: { mapId: number; edges: Prisma.MapEdgeUncheckedCreateInput[] }) {
-    return this.prisma.mapEdge.createManyAndReturn({
-      data: edges.map(e => ({
-        ...e,
-        mapId,
-      })),
+  async createEdges({ mapId, edges }: { mapId: number; edges: Prisma.EdgeUncheckedCreateInput[] }) {
+    return this.prisma.edge.createManyAndReturn({
+      data: edges.map(e => ({ ...e, mapId })),
       select: { id: true },
     });
   }
 
   async deleteEdge({ edgeId }: { edgeId: number }) {
-    await this.prisma.mapEdge.delete({
+    await this.prisma.edge.delete({
       where: { id: edgeId },
     });
   }
 
   async deleteEdges({ edgeIds }: { edgeIds: number[] }) {
-    await this.prisma.mapEdge.deleteMany({
-      where: {
-        id: { in: edgeIds },
-      },
+    await this.prisma.edge.deleteMany({
+      where: { id: { in: edgeIds } },
     });
   }
 
-  async deleteMapEdges({ mapId }: { mapId: number }) {
-    await this.prisma.mapEdge.deleteMany({ where: { mapId } });
+  async deleteEdgesOfMap({ mapId }: { mapId: number }) {
+    await this.prisma.edge.deleteMany({ where: { mapId } });
   }
 }

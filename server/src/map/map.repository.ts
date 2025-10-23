@@ -1,5 +1,5 @@
 import { injectable } from 'tsyringe';
-import { Prisma, PrismaClient } from '../generated/client';
+import { PrismaClient } from '../generated/client';
 
 @injectable()
 export class MapRepository {

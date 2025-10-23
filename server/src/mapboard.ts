@@ -4,25 +4,26 @@ import express from 'express';
 import { container } from 'tsyringe';
 import { DistributionController } from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
+import { ExecuteContextService } from './execute/execute-context.service';
+import { ExecuteDataFrameService } from './execute/execute-data-frame.service';
+import { ExecuteFileService } from './execute/execute-file.service';
+import { ExecuteIngestionService } from './execute/execute-ingestion.service';
+import { ExecuteLlmService } from './execute/execute-llm.service';
+import { ExecuteQuestionService } from './execute/execute-question.service';
+import { ExecuteVectorDatabaseService } from './execute/execute-vector-database.service';
+import { ExecuteVisualizerService } from './execute/execute-visualizer.service';
 import { PrismaClient } from './generated/client';
-import { MapConfigController } from './map-config/map-config.controller';
-import { MapConfigRepository } from './map-config/map-config.repository';
-import { MapConfigService } from './map-config/map-config.service';
-import { MapEdgeConfigRepository } from './map/map-edge-config.repository';
-import { MapEdgeRepository } from './map/map-edge.repository';
-import { MapNodeConfigRepository } from './map/map-node-config.repository';
-import { MapNodeContextService } from './map/map-node-context.service';
-import { MapNodeDataFrameService } from './map/map-node-data-frame.service';
-import { MapNodeFileService } from './map/map-node-file.service';
-import { MapNodeIngestionService } from './map/map-node-ingestion.service';
-import { MapNodeLlmService } from './map/map-node-llm.service';
-import { MapNodeQuestionService } from './map/map-node-question.service';
-import { MapNodeVectorDatabaseService } from './map/map-node-vector-database.service';
-import { MapNodeVisualizerService } from './map/map-node-visualizer.service';
-import { MapNodeRepository } from './map/map-node.repository';
+import { EdgeTypeController } from './map/edge-type.controller';
+import { EdgeTypeRepository } from './map/edge-type.repository';
+import { EdgeTypeService } from './map/edge-type.service';
+import { EdgeRepository } from './map/edge.repository';
 import { MapController } from './map/map.controller';
 import { MapRepository } from './map/map.repository';
 import { MapService } from './map/map.service';
+import { NodeTypeController } from './map/node-type.controller';
+import { NodeTypeRepository } from './map/node-type.repository';
+import { NodeTypeService } from './map/node-type.service';
+import { NodeRepository } from './map/node.repository';
 import { ShareController } from './share/share.controller';
 import { ShareRepository } from './share/share.repository';
 import { ShareService } from './share/share.service';
@@ -47,7 +48,6 @@ export class MapBoard {
 
   public userService: UserService;
   public mapService: MapService;
-  public mapConfigService: MapConfigService;
   public tabService: TabService;
   public shareService: ShareService;
   public workspaceService: WorkspaceService;
@@ -66,39 +66,49 @@ export class MapBoard {
     container.registerSingleton(UserService);
     container.registerSingleton(UserRepository);
     container.registerSingleton(UserController);
+
     container.registerSingleton(MapService);
     container.registerSingleton(MapRepository);
     container.registerSingleton(MapController);
-    container.registerSingleton(MapNodeRepository);
-    container.registerSingleton(MapNodeConfigRepository);
-    container.registerSingleton(MapEdgeRepository);
-    container.registerSingleton(MapEdgeConfigRepository);
-    container.registerSingleton(MapNodeFileService);
-    container.registerSingleton(MapNodeIngestionService);
-    container.registerSingleton(MapNodeContextService);
-    container.registerSingleton(MapNodeQuestionService);
-    container.registerSingleton(MapNodeVectorDatabaseService);
-    container.registerSingleton(MapNodeDataFrameService);
-    container.registerSingleton(MapNodeLlmService);
-    container.registerSingleton(MapNodeVisualizerService);
-    container.registerSingleton(MapConfigService);
-    container.registerSingleton(MapConfigRepository);
-    container.registerSingleton(MapConfigController);
+
+    container.registerSingleton(NodeRepository);
+
+    container.registerSingleton(NodeTypeService);
+    container.registerSingleton(NodeTypeRepository);
+    container.registerSingleton(NodeTypeController);
+
+    container.registerSingleton(EdgeRepository);
+
+    container.registerSingleton(EdgeTypeService);
+    container.registerSingleton(EdgeTypeRepository);
+    container.registerSingleton(EdgeTypeController);
+
+    container.registerSingleton(ExecuteFileService);
+    container.registerSingleton(ExecuteIngestionService);
+    container.registerSingleton(ExecuteContextService);
+    container.registerSingleton(ExecuteQuestionService);
+    container.registerSingleton(ExecuteVectorDatabaseService);
+    container.registerSingleton(ExecuteDataFrameService);
+    container.registerSingleton(ExecuteLlmService);
+    container.registerSingleton(ExecuteVisualizerService);
+
     container.registerSingleton(TabService);
     container.registerSingleton(TabRepository);
     container.registerSingleton(TabController);
+
     container.registerSingleton(ShareService);
     container.registerSingleton(ShareRepository);
     container.registerSingleton(ShareController);
+
     container.registerSingleton(WorkspaceService);
     container.registerSingleton(WorkspaceRepository);
     container.registerSingleton(WorkspaceController);
+
     container.registerSingleton(DistributionService);
     container.registerSingleton(DistributionController);
 
     this.userService = container.resolve(UserService);
     this.mapService = container.resolve(MapService);
-    this.mapConfigService = container.resolve(MapConfigService);
     this.tabService = container.resolve(TabService);
     this.shareService = container.resolve(ShareService);
     this.workspaceService = container.resolve(WorkspaceService);
@@ -106,7 +116,8 @@ export class MapBoard {
 
     const userController = container.resolve(UserController);
     const mapController = container.resolve(MapController);
-    const mapConfigController = container.resolve(MapConfigController);
+    const nodeTypeController = container.resolve(NodeTypeController);
+    const edgeTypeController = container.resolve(EdgeTypeController);
     const tabController = container.resolve(TabController);
     const shareController = container.resolve(ShareController);
     const workspaceController = container.resolve(WorkspaceController);
@@ -117,7 +128,8 @@ export class MapBoard {
     this.app.use(express.json());
     this.app.use(userController.router);
     this.app.use(mapController.router);
-    this.app.use(mapConfigController.router);
+    this.app.use(nodeTypeController.router);
+    this.app.use(edgeTypeController.router);
     this.app.use(tabController.router);
     this.app.use(shareController.router);
     this.app.use(workspaceController.router);

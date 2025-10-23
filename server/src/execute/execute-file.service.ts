@@ -1,12 +1,12 @@
 import { injectable } from 'tsyringe';
-import { MapNodeRepository } from './map-node.repository';
+import { NodeRepository } from '../map/node.repository';
 
 @injectable()
-export class MapNodeFileService {
+export class ExecuteFileService {
   private readonly pinataApiKey: string;
   private readonly pinataSecretKey: string;
 
-  constructor(private mapNodeService: MapNodeRepository) {
+  constructor(private nodeRepository: NodeRepository) {
     this.pinataApiKey = process.env.PINATA_API_KEY!;
     this.pinataSecretKey = process.env.PINATA_SECRET_API_KEY!;
   }
@@ -67,7 +67,7 @@ export class MapNodeFileService {
   }
 
   async execute({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    const node = await this.mapNodeService.getNode({ mapId, nodeId });
+    const node = await this.nodeRepository.getNode({ mapId, nodeId });
 
     if (!node.fileName || !node.fileHash) {
       throw new Error('no file name or hash');

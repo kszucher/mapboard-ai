@@ -1,24 +1,24 @@
 import * as pl from 'nodejs-polars';
 import { injectable } from 'tsyringe';
-import { LlmOutputSchema } from '../../../shared/src/api/api-types-map-node';
+import { LlmOutputSchema } from '../../../shared/src/api/api-types-node';
 import { PrismaClient } from '../generated/client';
-import { DataFrameQuerySchemaType } from './map-node-data-frame.types';
-import { MapNodeFileService } from './map-node-file.service';
-import { MapNodeRepository } from './map-node.repository';
+import { DataFrameQuerySchemaType } from './execute-data-frame.types';
+import { ExecuteFileService } from './execute-file.service';
+import { NodeRepository } from '../map/node.repository';
 
 @injectable()
-export class MapNodeDataFrameService {
+export class ExecuteDataFrameService {
   constructor(
     private prisma: PrismaClient,
-    private mapNodeService: MapNodeRepository,
-    private mapNodeFileService: MapNodeFileService
+    private nodeRepository: NodeRepository,
+    private executeFileService: ExecuteFileService
   ) {}
 
   async execute({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     const [inputFileNode, inputLlmNode, node] = await Promise.all([
-      this.mapNodeService.getInputFileNode({ mapId, nodeId }),
-      this.mapNodeService.getInputLlmNode({ mapId, nodeId }),
-      this.mapNodeService.getNode({ mapId, nodeId }),
+      this.nodeRepository.getInputFileNode({ mapId, nodeId }),
+      this.nodeRepository.getInputLlmNode({ mapId, nodeId }),
+      this.nodeRepository.getNode({ mapId, nodeId }),
     ]);
 
     if (!inputLlmNode) {
@@ -41,7 +41,7 @@ export class MapNodeDataFrameService {
       throw new Error('no input file hash');
     }
 
-    const buffer = await this.mapNodeFileService.download(inputFileNode.fileHash);
+    const buffer = await this.executeFileService.download(inputFileNode.fileHash);
 
     if (!buffer) {
       throw new Error('Failed to download file');
@@ -61,7 +61,7 @@ export class MapNodeDataFrameService {
       result: JSON.parse(JSON.stringify(result.toObject(), (_, v) => (typeof v === 'bigint' ? v.toString() : v))),
     };
 
-    await this.prisma.mapNode.update({
+    await this.prisma.node.update({
       where: { id: nodeId },
       data: { workspaceId, dataFrameOutputJson },
     });

@@ -2,8 +2,8 @@ import { Box, Button, Dialog, Flex, Tabs } from '@radix-ui/themes';
 import { useSelector } from 'react-redux';
 import { DialogState } from '../../data/state-types.ts';
 import { RootState } from '../../data/store.ts';
-import { EdgeConfig } from '../tables/EdgeConfig.tsx';
-import { NodeConfig } from '../tables/NodeConfig.tsx';
+import { EdgeEdit } from '../tables/EdgeEdit.tsx';
+import { NodeEdit } from '../tables/NodeEdit.tsx';
 
 export const MapConfig = () => {
   const dialogState = useSelector((state: RootState) => state.slice.dialogState);
@@ -32,10 +32,10 @@ export const MapConfig = () => {
         </Tabs.List>
         <Box pt="3">
           <Tabs.Content value="nodes" style={{ outline: 'none' }}>
-            <NodeConfig />
+            <NodeEdit />
           </Tabs.Content>
           <Tabs.Content value="edges" style={{ outline: 'none' }}>
-            <EdgeConfig />
+            <EdgeEdit />
           </Tabs.Content>
         </Box>
       </Tabs.Root>

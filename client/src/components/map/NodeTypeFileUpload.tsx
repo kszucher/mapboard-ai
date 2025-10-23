@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text } from '@radix-ui/themes';
 import React, { useEffect, useRef, useState } from 'react';
-import { N } from '../../../../shared/src/api/api-types-map-node.ts';
+import { N } from '../../../../shared/src/api/api-types-node.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { shrinkString } from '../../utils/utils.ts';
 

@@ -1,7 +1,7 @@
 import { Box, Flex, Select, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { LlmOutputSchema, N } from '../../../../shared/src/api/api-types-map-node.ts';
+import { LlmOutputSchema, N } from '../../../../shared/src/api/api-types-node.ts';
 import { getNodeWidth } from '../../../../shared/src/map/map-getters.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
@@ -33,7 +33,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
                 api.endpoints.updateNode.initiate({
                   mapId,
                   nodeId,
-                  node: { llmInstructions: e.target.value },
+                  nodeData: { llmInstructions: e.target.value },
                 })
               );
             }}
@@ -49,7 +49,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
                 api.endpoints.updateNode.initiate({
                   mapId,
                   nodeId,
-                  node: { llmOutputSchema: value },
+                  nodeData: { llmOutputSchema: value },
                 })
               );
             }}

@@ -1,8 +1,8 @@
 import { Button, Flex, Popover, Text } from '@radix-ui/themes';
-import { MapNodeConfig } from '../../../../shared/src/api/api-types-map-config.ts';
-import { NodeFieldConfig } from '../tables/NodeFieldConfig.tsx';
+import { NodeType } from '../../../../shared/src/api/api-types-node-type.ts';
+import { NodeConfigTypeEdit } from '../tables/NodeConfigTypeEdit.tsx';
 
-export const MapNodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNodeConfig> }) => {
+export const NodeConfigType = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -12,8 +12,8 @@ export const MapNodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNode
       </Popover.Trigger>
       <Popover.Content width="800px">
         <Flex direction="column" gap="2" align="start" content="center">
-          <Text size="3">{nodeConfig.label + ' Fields'}</Text>
-          <NodeFieldConfig nodeConfig={nodeConfig} />
+          <Text size="3">{nodeType.label + ' Fields'}</Text>
+          <NodeConfigTypeEdit nodeType={nodeType} />
         </Flex>
         <Flex gap="3" mt="4" justify="end">
           <Popover.Close>

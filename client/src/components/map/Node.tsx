@@ -1,7 +1,6 @@
 import { Badge, Box, DropdownMenu, Flex, IconButton, Spinner } from '@radix-ui/themes';
 import { FC, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import {
   getNodeHeight,
   getNodeLeft,
@@ -11,7 +10,7 @@ import {
 } from '../../../../shared/src/map/map-getters.ts';
 import Dots from '../../../assets/dots.svg?react';
 import GripVertical from '../../../assets/grip-vertical.svg?react';
-import { api, useGetMapConfigInfoQuery, useGetMapInfoQuery } from '../../data/api.ts';
+import { api, useGetMapInfoQuery, useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { NodeTypeContext } from './NodeTypeContext.tsx';
@@ -24,13 +23,18 @@ import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
 import { NodeTypeVisualizer } from './NodeTypeVisualizer.tsx';
 
 export const Node: FC = () => {
-  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+  const nodeTypes = useGetNodeTypeInfoQuery().data || [];
   const mapId = useGetMapInfoQuery().data?.id!;
   const nodeOffsetCoords = useSelector((state: RootState) => state.slice.nodeOffsetCoords);
   const nodeOffsetCoordsRef = useRef(nodeOffsetCoords);
   nodeOffsetCoordsRef.current = nodeOffsetCoords;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
+
   const dispatch = useDispatch<AppDispatch>();
+
+  if (!nodeTypes) {
+    return;
+  }
 
   return m.n.map(ni => (
     <div
@@ -55,8 +59,8 @@ export const Node: FC = () => {
           <Badge color="gray" size="2">
             {'N' + ni.iid}
           </Badge>
-          <Badge color={ni.MapNodeConfig.color} size="2">
-            {mapNodeConfigs?.find(el => el.type === ni.MapNodeConfig.type)?.label || ''}
+          <Badge color={ni.NodeType.color} size="2">
+            {nodeTypes.find(el => el.type === ni.NodeType.type)?.label || ''}
           </Badge>
           {ni.isProcessing && <Spinner m="1" />}
         </Flex>
@@ -139,7 +143,7 @@ export const Node: FC = () => {
                   .filter(
                     toNi =>
                       ni.id !== toNi.id && // TODO: also does NOT create a loop
-                      toNi.MapNodeConfig.MapEdgeConfigTo.some(eci => eci.FromNodeConfig.id === ni.MapNodeConfig.id) &&
+                      toNi.NodeType.MapEdgeConfigTo.some(eci => eci.FromNodeConfig.id === ni.NodeType.id) &&
                       !isExistingEdge(m, ni.id, toNi.id)
                   )
                   .map(toNi => (
@@ -155,7 +159,7 @@ export const Node: FC = () => {
                         );
                       }}
                     >
-                      {toNi.MapNodeConfig.type + ' N' + toNi.iid}
+                      {toNi.NodeType.type + ' N' + toNi.iid}
                     </DropdownMenu.Item>
                   ))}
               </DropdownMenu.SubContent>
@@ -164,14 +168,14 @@ export const Node: FC = () => {
         </DropdownMenu.Root>
       </Box>
 
-      {ni.MapNodeConfig.type === 'FILE' && <NodeTypeFileUpload ni={ni} nodeId={ni.id} />}
-      {ni.MapNodeConfig.type === 'INGESTION' && <NodeTypeIngestion ni={ni} nodeId={ni.id} />}
-      {ni.MapNodeConfig.type === 'CONTEXT' && <NodeTypeContext ni={ni} nodeId={ni.id} />}
-      {ni.MapNodeConfig.type === 'QUESTION' && <NodeTypeQuestion ni={ni} nodeId={ni.id} />}
-      {ni.MapNodeConfig.type === 'VECTOR_DATABASE' && <NodeTypeVectorDatabase ni={ni} nodeId={ni.id} />}
-      {ni.MapNodeConfig.type === 'DATA_FRAME' && <NodeTypeDataFrame ni={ni} nodeId={ni.id} />}
-      {ni.MapNodeConfig.type === 'LLM' && <NodeTypeLlm ni={ni} nodeId={ni.id} />}
-      {ni.MapNodeConfig.type === 'VISUALIZER' && <NodeTypeVisualizer ni={ni} nodeId={ni.id} />}
+      {ni.NodeType.type === 'FILE' && <NodeTypeFileUpload ni={ni} nodeId={ni.id} />}
+      {ni.NodeType.type === 'INGESTION' && <NodeTypeIngestion ni={ni} nodeId={ni.id} />}
+      {ni.NodeType.type === 'CONTEXT' && <NodeTypeContext ni={ni} nodeId={ni.id} />}
+      {ni.NodeType.type === 'QUESTION' && <NodeTypeQuestion ni={ni} nodeId={ni.id} />}
+      {ni.NodeType.type === 'VECTOR_DATABASE' && <NodeTypeVectorDatabase ni={ni} nodeId={ni.id} />}
+      {ni.NodeType.type === 'DATA_FRAME' && <NodeTypeDataFrame ni={ni} nodeId={ni.id} />}
+      {ni.NodeType.type === 'LLM' && <NodeTypeLlm ni={ni} nodeId={ni.id} />}
+      {ni.NodeType.type === 'VISUALIZER' && <NodeTypeVisualizer ni={ni} nodeId={ni.id} />}
     </div>
   ));
 };

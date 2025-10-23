@@ -1,9 +1,13 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import { ColorMode } from '../../../../shared/src/api/api-types-user.ts';
 import { getMapHeight, getMapWidth } from '../../../../shared/src/map/map-getters.ts';
-import { useGetMapConfigInfoQuery, useGetMapInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
+import {
+  useGetMapInfoQuery,
+  useGetUserInfoQuery,
+  useGetNodeTypeInfoQuery,
+  useGetEdgeTypeInfoQuery,
+} from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { MidMouseMode } from '../../data/state-types.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
@@ -18,7 +22,8 @@ import { NodeMovePreview } from './NodeMovePreview.tsx';
 import { NodeSeparator } from './NodeSeparator.tsx';
 
 export const Map: FC = () => {
-  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+  const nodeTypes = useGetNodeTypeInfoQuery().data || [];
+  const edgeTypes = useGetEdgeTypeInfoQuery().data || [];
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const zoomInfo = useSelector((state: RootState) => state.slice.zoomInfo);
   const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
@@ -69,8 +74,8 @@ export const Map: FC = () => {
   }, [mapId]);
 
   return (
-    mapNodeConfigs &&
-    mapEdgeConfigs &&
+    nodeTypes.length &&
+    edgeTypes.length &&
     m && (
       <div
         style={{

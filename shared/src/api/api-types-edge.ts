@@ -9,7 +9,7 @@ export type E = {
     id: number;
     offsetX: number;
     offsetY: number;
-    MapNodeConfig: {
+    NodeType: {
       id: number;
     }
   },
@@ -17,7 +17,7 @@ export type E = {
     id: number;
     offsetX: number;
     offsetY: number;
-    MapNodeConfig: {
+    NodeType: {
       id: number;
     }
   }

@@ -32,53 +32,18 @@ model Map {
   User       User        @relation("Maps", fields: [userId], references: [id])
   Shares     Share[]     @relation("Shares")
   Workspaces Workspace[]
-  MapEdges   MapEdge[]
-  MapNodes   MapNode[]
+  MapEdges   Edge[]
+  MapNodes   Node[]
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now()) @updatedAt
 }
 
-enum MapNodeFieldType {
-  TEXT
-  SELECT
-}
-
-model MapNodeFieldConfig {
-  id            Int              @id @default(autoincrement())
-  type          MapNodeFieldType
-  label         String
-  selectOptions String[]
-  MapNodeType   MapNodeConfig?   @relation(fields: [mapNodeTypeId], references: [id])
-  mapNodeTypeId Int?
-}
-
-model MapNodeConfig {
-  id                Int                  @id @default(autoincrement())
-  w                 Int
-  h                 Int
-  type              String               @unique
-  color             Color
-  label             String
-  mapNodeFields     MapNodeFieldConfig[]
-  MapEdgeConfigFrom MapEdgeConfig[]      @relation("FromEdgeConfigs")
-  MapEdgeConfigTo   MapEdgeConfig[]      @relation("ToEdgeConfigs")
-  MapNode           MapNode[]
-}
-
-model MapNodeField {
-  id                   Int     @id @default(autoincrement())
-  mapNodeId            Int
-  MapNode              MapNode @relation(fields: [mapNodeId], references: [id])
-  mapNodeFieldConfigId Int
-  value                String?
-}
-
-model MapNode {
+model Node {
   id                       Int              @id @default(autoincrement())
   mapId                    Int
   Map                      Map              @relation(fields: [mapId], references: [id])
-  mapNodeConfigId          Int
-  MapNodeConfig            MapNodeConfig    @relation(fields: [mapNodeConfigId], references: [id])
+  nodeTypeId               Int
+  NodeType                 NodeType         @relation(fields: [nodeTypeId], references: [id])
   workspaceId              Int?
   iid                      Int
   offsetX                  Int
@@ -97,37 +62,72 @@ model MapNode {
   llmOutputSchema          LlmOutputSchema?
   llmOutputJson            Json?
   visualizerOutputText     String?
-  FromEdges                MapEdge[]        @relation("FromEdges")
-  ToEdges                  MapEdge[]        @relation("ToEdges")
-  MapNodeFields            MapNodeField[]
+  FromEdges                Edge[]           @relation("FromEdges")
+  ToEdges                  Edge[]           @relation("ToEdges")
+  NodeConfigs              NodeConfig[]
   createdAt                DateTime         @default(now())
   updatedAt                DateTime         @default(now()) @updatedAt
 }
 
-model MapEdgeConfig {
-  id               Int           @id @default(autoincrement())
-  fromNodeConfigId Int
-  FromNodeConfig   MapNodeConfig @relation("FromEdgeConfigs", fields: [fromNodeConfigId], references: [id])
-  toNodeConfigId   Int
-  ToNodeConfig     MapNodeConfig @relation("ToEdgeConfigs", fields: [toNodeConfigId], references: [id])
-  MapEdge          MapEdge[]
+model NodeType {
+  id                Int              @id @default(autoincrement())
+  w                 Int
+  h                 Int
+  type              String           @unique
+  color             Color
+  label             String
+  NodeConfigTypes   NodeConfigType[]
+  MapEdgeConfigFrom EdgeType[]       @relation("FromEdgeConfigs")
+  MapEdgeConfigTo   EdgeType[]       @relation("ToEdgeConfigs")
+  Node              Node[]
 }
 
-model MapEdge {
-  id              Int           @id @default(autoincrement())
-  mapId           Int
-  Map             Map           @relation(fields: [mapId], references: [id])
-  mapEdgeConfigId Int
-  MapEdgeConfig   MapEdgeConfig @relation(fields: [mapEdgeConfigId], references: [id])
-  workspaceId     Int?
-  fromNodeId      Int
-  FromNode        MapNode       @relation("FromEdges", fields: [fromNodeId], references: [id])
-  toNodeId        Int
-  ToNode          MapNode       @relation("ToEdges", fields: [toNodeId], references: [id])
-  lineColor       String        @default("#bbbbbb")
-  lineWidth       Int           @default(1)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @default(now()) @updatedAt
+model NodeConfig {
+  id                Int     @id @default(autoincrement())
+  mapNodeId         Int
+  Node              Node    @relation(fields: [mapNodeId], references: [id])
+  nodeFieldConfigId Int
+  value             String?
+}
+
+model NodeConfigType {
+  id            Int                 @id @default(autoincrement())
+  type          NodeConfigTypeLabel
+  label         String
+  selectOptions String[]
+  nodeTypeId    Int?
+  NodeType      NodeType?           @relation(fields: [nodeTypeId], references: [id])
+}
+
+enum NodeConfigTypeLabel {
+  TEXT
+  SELECT
+}
+
+model Edge {
+  id          Int      @id @default(autoincrement())
+  mapId       Int
+  Map         Map      @relation(fields: [mapId], references: [id])
+  edgeTypeId  Int
+  EdgeType    EdgeType @relation(fields: [edgeTypeId], references: [id])
+  workspaceId Int?
+  fromNodeId  Int
+  FromNode    Node     @relation("FromEdges", fields: [fromNodeId], references: [id])
+  toNodeId    Int
+  ToNode      Node     @relation("ToEdges", fields: [toNodeId], references: [id])
+  lineColor   String   @default("#bbbbbb")
+  lineWidth   Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model EdgeType {
+  id               Int      @id @default(autoincrement())
+  fromNodeConfigId Int
+  FromNodeConfig   NodeType @relation("FromEdgeConfigs", fields: [fromNodeConfigId], references: [id])
+  toNodeConfigId   Int
+  ToNodeConfig     NodeType @relation("ToEdgeConfigs", fields: [toNodeConfigId], references: [id])
+  Edge             Edge[]
 }
 
 model Tab {

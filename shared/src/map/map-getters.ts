@@ -1,25 +1,25 @@
+import { EdgeType } from '../api/api-types-edge-type';
 import { M } from '../api/api-types-map';
-import { MapEdgeConfig } from '../api/api-types-map-config';
-import { E } from '../api/api-types-map-edge';
-import { M_PADDING, N, N_PADDING } from '../api/api-types-map-node';
+import { E } from '../api/api-types-edge';
+import { M_PADDING, N, N_PADDING } from '../api/api-types-node';
 
 export const getNodeLeft = (n: N) => n.offsetX + M_PADDING;
 
 export const getNodeTop = (n: N) => n.offsetY + M_PADDING;
 
-export const getNodeWidth = (n: N) => n.MapNodeConfig.w;
+export const getNodeWidth = (n: N) => n.NodeType.w;
 
-export const getNodeHeight = (n: N) => n.MapNodeConfig.h;
+export const getNodeHeight = (n: N) => n.NodeType.h;
 
-export const getNodeRight = (n: N) => n.offsetX + n.MapNodeConfig.w + N_PADDING;
+export const getNodeRight = (n: N) => n.offsetX + n.NodeType.w + N_PADDING;
 
 export const getMapWidth = (m: M) => {
-  const max = Math.max(...m.n.map(ni => ni.offsetX + ni.MapNodeConfig.w + N_PADDING));
+  const max = Math.max(...m.n.map(ni => ni.offsetX + ni.NodeType.w + N_PADDING));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
 export const getMapHeight = (m: M) => {
-  const max = Math.max(...m.n.map(ni => ni.offsetY + ni.MapNodeConfig.h + N_PADDING));
+  const max = Math.max(...m.n.map(ni => ni.offsetY + ni.NodeType.h + N_PADDING));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
@@ -30,13 +30,13 @@ export const getInputNodeOfEdge = (m: M, e: E): N => m.n.find(ni => ni.id === e.
 
 export const getOutputNodeOfEdge = (m: M, e: E): N => m.n.find(ni => ni.id === e.toNodeId)!;
 
-export const getLineCoords = (mapEdgeConfigs: Partial<MapEdgeConfig>[], m: M, e: E) => {
+export const getLineCoords = (edgeTypes: Partial<EdgeType>[], m: M, e: E) => {
   const fromNode = getInputNodeOfEdge(m, e);
   const toNode = getOutputNodeOfEdge(m, e);
-  const leftIndex = mapEdgeConfigs
-    .filter(el => el.ToNodeConfig?.type === toNode.MapNodeConfig.type)
+  const leftIndex = edgeTypes
+    .filter(el => el.ToNodeConfig?.type === toNode.NodeType.type)
     .map(el => el.FromNodeConfig?.type)
-    .findIndex(type => type === fromNode.MapNodeConfig.type);
+    .findIndex(type => type === fromNode.NodeType.type);
 
   return [
     getNodeRight(fromNode),

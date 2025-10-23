@@ -1,15 +1,15 @@
 import { injectable } from 'tsyringe';
-import { NodeUpdateUp } from '../../../shared/src/api/api-types-map-node';
+import { NodeUpdateUp } from '../../../shared/src/api/api-types-node';
 import { Prisma, PrismaClient } from '../generated/client';
 
 @injectable()
-export class MapNodeRepository {
+export class NodeRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private mapNodeInclude = (<T extends Prisma.MapNodeInclude>(obj: T) => obj)({
-    FromEdges: { select: { ToNode: { select: { MapNodeConfig: { select: { id: true, color: true } } } } } },
-    ToEdges: { select: { FromNode: { select: { MapNodeConfig: { select: { id: true, color: true } } } } } },
-    MapNodeConfig: {
+  private nodeInclude = (<T extends Prisma.NodeInclude>(obj: T) => obj)({
+    FromEdges: { select: { ToNode: { select: { NodeType: { select: { id: true, color: true } } } } } },
+    ToEdges: { select: { FromNode: { select: { NodeType: { select: { id: true, color: true } } } } } },
+    NodeType: {
       include: {
         MapEdgeConfigFrom: { select: { ToNodeConfig: { select: { id: true, color: true } } } },
         MapEdgeConfigTo: { select: { FromNodeConfig: { select: { id: true, color: true } } } },
@@ -18,7 +18,7 @@ export class MapNodeRepository {
   });
 
   async getNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.mapNode.findFirstOrThrow({
+    return this.prisma.node.findFirstOrThrow({
       where: {
         mapId,
         id: nodeId,
@@ -27,18 +27,18 @@ export class MapNodeRepository {
   }
 
   async getNodes({ mapId }: { mapId: number }) {
-    return this.prisma.mapNode.findMany({
+    return this.prisma.node.findMany({
       where: { mapId },
-      include: this.mapNodeInclude,
+      include: this.nodeInclude,
       omit: { createdAt: true },
     });
   }
 
   async getNodesForSorting({ mapId }: { mapId: number }) {
-    return this.prisma.mapNode.findMany({
+    return this.prisma.node.findMany({
       where: { mapId },
       include: {
-        MapNodeConfig: {
+        NodeType: {
           select: {
             id: true,
             type: true,
@@ -49,14 +49,14 @@ export class MapNodeRepository {
   }
 
   async getNodeMapConfig({ nodeId }: { nodeId: number }) {
-    return this.prisma.mapNode.findFirstOrThrow({
+    return this.prisma.node.findFirstOrThrow({
       where: { id: nodeId },
-      select: { MapNodeConfig: { select: { id: true } } },
+      select: { NodeType: { select: { id: true } } },
     });
   }
 
   async copyNodes({ mapId }: { mapId: number }) {
-    return this.prisma.mapNode.findMany({
+    return this.prisma.node.findMany({
       where: { mapId },
       omit: {
         mapId: true,
@@ -70,7 +70,7 @@ export class MapNodeRepository {
   }
 
   async updateNode({ nodeId, workspaceId, params }: { nodeId: number; workspaceId: number; params: NodeUpdateUp }) {
-    return this.prisma.mapNode.update({
+    return this.prisma.node.update({
       where: { id: nodeId },
       data: { ...params, workspaceId },
     });
@@ -78,12 +78,12 @@ export class MapNodeRepository {
 
   async setProcessing({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     return this.prisma.$transaction([
-      this.prisma.mapNode.update({
+      this.prisma.node.update({
         where: { id: nodeId },
         data: { workspaceId, isProcessing: true },
         select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
       }),
-      this.prisma.mapNode.updateManyAndReturn({
+      this.prisma.node.updateManyAndReturn({
         where: { id: { not: nodeId }, mapId },
         data: { workspaceId, isProcessing: false },
         select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
@@ -92,7 +92,7 @@ export class MapNodeRepository {
   }
 
   async clearProcessing({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
-    return this.prisma.mapNode.updateManyAndReturn({
+    return this.prisma.node.updateManyAndReturn({
       where: { mapId },
       data: { workspaceId, isProcessing: false },
       select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
@@ -100,11 +100,11 @@ export class MapNodeRepository {
   }
 
   async clearProcessingAll() {
-    await this.prisma.mapNode.updateMany({ data: { workspaceId: null, isProcessing: false } });
+    await this.prisma.node.updateMany({ data: { workspaceId: null, isProcessing: false } });
   }
 
   async clearResults({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
-    return this.prisma.mapNode.updateManyAndReturn({
+    return this.prisma.node.updateManyAndReturn({
       where: { mapId },
       data: {
         workspaceId,
@@ -130,17 +130,17 @@ export class MapNodeRepository {
   }
 
   async align({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
-    const mapNodes = await this.prisma.mapNode.findMany({
+    const nodes = await this.prisma.node.findMany({
       where: { mapId },
       select: { offsetX: true, offsetY: true },
     });
 
-    return this.prisma.mapNode.updateManyAndReturn({
+    return this.prisma.node.updateManyAndReturn({
       where: { mapId },
       data: {
         workspaceId,
-        offsetX: { decrement: Math.min(...mapNodes.map(node => node.offsetX)) },
-        offsetY: { decrement: Math.min(...mapNodes.map(node => node.offsetY)) },
+        offsetX: { decrement: Math.min(...nodes.map(node => node.offsetX)) },
+        offsetY: { decrement: Math.min(...nodes.map(node => node.offsetY)) },
       },
       select: {
         id: true,
@@ -152,8 +152,8 @@ export class MapNodeRepository {
     });
   }
 
-  async createNode({ mapId, mapNodeConfigId }: { mapId: number; mapNodeConfigId: number }) {
-    const result = await this.prisma.mapNode.aggregate({
+  async createNode({ mapId, nodeTypeId }: { mapId: number; nodeTypeId: number }) {
+    const result = await this.prisma.node.aggregate({
       where: { mapId },
       _max: {
         iid: true,
@@ -162,21 +162,21 @@ export class MapNodeRepository {
       },
     });
 
-    return this.prisma.mapNode.create({
+    return this.prisma.node.create({
       data: {
         mapId,
-        mapNodeConfigId,
+        nodeTypeId,
         iid: (result._max.iid || 0) + 1,
         offsetX: (result._max.offsetX || 0) + 200,
         offsetY: (result._max.offsetY || 0) + 200,
       },
-      include: this.mapNodeInclude,
+      include: this.nodeInclude,
       omit: { createdAt: true },
     });
   }
 
-  async createNodes({ mapId, nodes }: { mapId: number; nodes: Prisma.MapNodeUncheckedCreateInput[] }) {
-    return this.prisma.mapNode.createManyAndReturn({
+  async createNodes({ mapId, nodes }: { mapId: number; nodes: Prisma.NodeUncheckedCreateInput[] }) {
+    return this.prisma.node.createManyAndReturn({
       data: nodes.map(n => ({
         ...n,
         mapId,
@@ -186,21 +186,21 @@ export class MapNodeRepository {
   }
 
   async deleteNode({ nodeId }: { nodeId: number }) {
-    await this.prisma.mapNode.delete({
+    await this.prisma.node.delete({
       where: { id: nodeId },
     });
   }
 
-  async deleteMapNodes({ mapId }: { mapId: number }) {
-    await this.prisma.mapNode.deleteMany({ where: { mapId } });
+  async deleteNodesOfMap({ mapId }: { mapId: number }) {
+    await this.prisma.node.deleteMany({ where: { mapId } });
   }
 
   // the following will be deprecated!!!
   async getInputFileNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.mapNode.findFirst({
+    return this.prisma.node.findFirst({
       where: {
         mapId,
-        MapNodeConfig: { type: 'FILE' },
+        NodeType: { type: 'FILE' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -216,10 +216,10 @@ export class MapNodeRepository {
   }
 
   async getInputIngestionNodes({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.mapNode.findMany({
+    return this.prisma.node.findMany({
       where: {
         mapId,
-        MapNodeConfig: { type: 'INGESTION' },
+        NodeType: { type: 'INGESTION' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -234,10 +234,10 @@ export class MapNodeRepository {
   }
 
   async getInputContextNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.mapNode.findFirst({
+    return this.prisma.node.findFirst({
       where: {
         mapId,
-        MapNodeConfig: { type: 'CONTEXT' },
+        NodeType: { type: 'CONTEXT' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -252,10 +252,10 @@ export class MapNodeRepository {
   }
 
   async getInputQuestionNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.mapNode.findFirst({
+    return this.prisma.node.findFirst({
       where: {
         mapId,
-        MapNodeConfig: { type: 'QUESTION' },
+        NodeType: { type: 'QUESTION' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -270,10 +270,10 @@ export class MapNodeRepository {
   }
 
   async getInputVectorDatabaseNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.mapNode.findFirst({
+    return this.prisma.node.findFirst({
       where: {
         mapId,
-        MapNodeConfig: { type: 'VECTOR_DATABASE' },
+        NodeType: { type: 'VECTOR_DATABASE' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -289,10 +289,10 @@ export class MapNodeRepository {
   }
 
   async getInputDataFrameNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.mapNode.findFirst({
+    return this.prisma.node.findFirst({
       where: {
         mapId,
-        MapNodeConfig: { type: 'DATA_FRAME' },
+        NodeType: { type: 'DATA_FRAME' },
         FromEdges: {
           some: {
             toNodeId: nodeId,
@@ -307,10 +307,10 @@ export class MapNodeRepository {
   }
 
   async getInputLlmNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.mapNode.findFirst({
+    return this.prisma.node.findFirst({
       where: {
         mapId,
-        MapNodeConfig: { type: 'LLM' },
+        NodeType: { type: 'LLM' },
         FromEdges: {
           some: {
             toNodeId: nodeId,

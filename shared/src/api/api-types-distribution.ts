@@ -1,5 +1,5 @@
-import { E, EdgeUpdateDown } from './api-types-map-edge';
-import { N, NodeUpdateDown } from './api-types-map-node';
+import { E, EdgeUpdateDown } from './api-types-edge';
+import { N, NodeUpdateDown } from './api-types-node';
 
 export type UpdateMapGraphEventPayload = {
   mapId: number,

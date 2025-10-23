@@ -1,7 +1,7 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { N } from '../../../../shared/src/api/api-types-map-node.ts';
+import { N } from '../../../../shared/src/api/api-types-node.ts';
 import { getNodeHeight, getNodeWidth } from '../../../../shared/src/map/map-getters.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
@@ -36,7 +36,7 @@ export const NodeTypeContext = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
                 api.endpoints.updateNode.initiate({
                   mapId,
                   nodeId,
-                  node: { contextOutputText: e.target.value },
+                  nodeData: { contextOutputText: e.target.value },
                 })
               );
             }}

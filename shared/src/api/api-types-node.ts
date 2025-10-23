@@ -1,4 +1,4 @@
-import { Color } from './api-types-map-config';
+import { Color } from './api-types-node-type';
 
 export const M_PADDING = 40;
 export const N_PADDING = 40;
@@ -24,7 +24,7 @@ export type N = {
   visualizerOutputText: string | null;
   FromEdges: {
     ToNode: {
-      MapNodeConfig: {
+      NodeType: {
         id: number;
         color: Color
       }
@@ -32,13 +32,13 @@ export type N = {
   }[];
   ToEdges: {
     FromNode: {
-      MapNodeConfig: {
+      NodeType: {
         id: number;
         color: Color
       }
     }
   }[];
-  MapNodeConfig: {
+  NodeType: {
     id: number;
     type: string;
     w: number;
@@ -60,7 +60,7 @@ export type N = {
   updatedAt: Date;
 };
 
-export type NodeUpdateUp = Partial<Omit<N, 'id' | 'mapId' | 'FromEdges' | 'ToEdges' | 'MapNodeConfig' | 'workspaceId' | 'updatedAt' | 'createdAt'>>
+export type NodeUpdateUp = Partial<Omit<N, 'id' | 'mapId' | 'FromEdges' | 'ToEdges' | 'NodeType' | 'workspaceId' | 'updatedAt' | 'createdAt'>>
 
 export type NodeUpdateDown = Required<Pick<N, 'id' | 'workspaceId' | 'updatedAt'>>;
 

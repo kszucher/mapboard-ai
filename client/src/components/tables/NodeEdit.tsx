@@ -1,13 +1,13 @@
 import { Badge, Button, Select, Table } from '@radix-ui/themes';
 import { useState } from 'react';
-import { Color, defaultMapConfig, MapNodeConfig } from '../../../../shared/src/api/api-types-map-config.ts';
-import { useGetMapConfigInfoQuery } from '../../data/api.ts';
-import { MapNodeFieldConfig } from '../popovers/MapNodeFieldConfig.tsx';
+import { Color, NodeType } from '../../../../shared/src/api/api-types-node-type.ts';
+import { useGetNodeTypeInfoQuery } from '../../data/api.ts';
+import { NodeConfigType } from '../popovers/NodeConfigType.tsx';
 
-export const NodeConfig = () => {
-  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
-  const emptyNodeConfig: Partial<MapNodeConfig> = { type: '', label: '', color: Color.gray, w: 0, h: 0 };
-  const [newNodeConfig, setNewNodeConfig] = useState(emptyNodeConfig);
+export const NodeEdit = () => {
+  const nodeTypes = useGetNodeTypeInfoQuery().data || [];
+  const emptyNodeType: Partial<NodeType> = { type: '', label: '', color: Color.gray, w: 0, h: 0 };
+  const [newNodeType, setNewNodeType] = useState(emptyNodeType);
 
   return (
     <Table.Root size={'1'}>
@@ -23,7 +23,7 @@ export const NodeConfig = () => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {mapNodeConfigs?.map(el => (
+        {nodeTypes?.map(el => (
           <Table.Row key={el.id}>
             <Table.Cell>{el.type}</Table.Cell>
             <Table.Cell>{el.label}</Table.Cell>
@@ -35,7 +35,7 @@ export const NodeConfig = () => {
             <Table.Cell>{el.w}</Table.Cell>
             <Table.Cell>{el.h}</Table.Cell>
             <Table.Cell>
-              <MapNodeFieldConfig nodeConfig={el} />
+              <NodeConfigType nodeType={el} />
             </Table.Cell>
             <Table.Cell>
               <Button size="1" variant="solid" onClick={() => {}}>
@@ -45,15 +45,15 @@ export const NodeConfig = () => {
           </Table.Row>
         ))}
         <Table.Row key={'add'}>
-          <Table.Cell>{newNodeConfig.type}</Table.Cell>
-          <Table.Cell>{newNodeConfig.label}</Table.Cell>
+          <Table.Cell>{newNodeType.type}</Table.Cell>
+          <Table.Cell>{newNodeType.label}</Table.Cell>
           <Table.Cell>
             <Select.Root
               size="1"
-              value={newNodeConfig.color}
-              onValueChange={(value: Color) => setNewNodeConfig({ ...newNodeConfig, color: value })}
+              value={newNodeType.color}
+              onValueChange={(value: Color) => setNewNodeType({ ...newNodeType, color: value })}
             >
-              <Select.Trigger variant="soft" color={newNodeConfig.color} />
+              <Select.Trigger variant="soft" color={newNodeType.color} />
               <Select.Content>
                 {Object.values(Color).map(color => (
                   <Select.Item key={color} value={color}>
@@ -63,10 +63,10 @@ export const NodeConfig = () => {
               </Select.Content>
             </Select.Root>
           </Table.Cell>
-          <Table.Cell>{newNodeConfig.w}</Table.Cell>
-          <Table.Cell>{newNodeConfig.h}</Table.Cell>
+          <Table.Cell>{newNodeType.w}</Table.Cell>
+          <Table.Cell>{newNodeType.h}</Table.Cell>
           <Table.Cell>
-            <MapNodeFieldConfig nodeConfig={newNodeConfig} />
+            <NodeConfigType nodeType={newNodeType} />
           </Table.Cell>
           <Table.Cell>
             <Button size="1" variant="solid" color="gray" onClick={() => {}}>

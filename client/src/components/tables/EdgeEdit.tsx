@@ -1,14 +1,15 @@
 import { Badge, Button, Select, Table } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Color, defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
-import { api, useGetMapConfigInfoQuery } from '../../data/api.ts';
+import { Color } from '../../../../shared/src/api/api-types-node-type.ts';
+import { api, useGetEdgeTypeInfoQuery, useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
-export const EdgeConfig = () => {
-  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
-  const emptyEdgeConfig = { fromNodeConfigId: NaN, toNodeConfigId: NaN, schema: '' };
-  const [newEdgeConfig, setNewEdgeConfig] = useState(emptyEdgeConfig);
+export const EdgeEdit = () => {
+  const nodeTypes = useGetNodeTypeInfoQuery().data || [];
+  const edgeTypes = useGetEdgeTypeInfoQuery().data || [];
+  const emptyEdgeType = { fromNodeConfigId: NaN, toNodeConfigId: NaN, schema: '' };
+  const [newEdgeType, setNewEdgeType] = useState(emptyEdgeType);
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -22,7 +23,7 @@ export const EdgeConfig = () => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {mapEdgeConfigs?.map(el => (
+        {edgeTypes?.map(el => (
           <Table.Row key={el.id}>
             <Table.Cell>
               <Badge color="gray">{el.FromNodeConfig?.type}</Badge>
@@ -42,15 +43,15 @@ export const EdgeConfig = () => {
           <Table.Cell>
             <Select.Root
               size="1"
-              value={newEdgeConfig.fromNodeConfigId ? newEdgeConfig.fromNodeConfigId.toString() : ''}
-              onValueChange={id => setNewEdgeConfig({ ...newEdgeConfig, fromNodeConfigId: Number(id) })}
+              value={newEdgeType.fromNodeConfigId ? newEdgeType.fromNodeConfigId.toString() : ''}
+              onValueChange={id => setNewEdgeType({ ...newEdgeType, fromNodeConfigId: Number(id) })}
             >
               <Select.Trigger
                 variant="soft"
-                color={mapNodeConfigs?.find(el => el.id === newEdgeConfig.fromNodeConfigId)?.color || Color.gray}
+                color={nodeTypes?.find(el => el.id === newEdgeType.fromNodeConfigId)?.color || Color.gray}
               />
               <Select.Content>
-                {mapNodeConfigs?.map(el => (
+                {nodeTypes?.map(el => (
                   <Select.Item key={el.id} value={el.id?.toString() || ''}>
                     {el.type}
                   </Select.Item>
@@ -61,15 +62,15 @@ export const EdgeConfig = () => {
           <Table.Cell>
             <Select.Root
               size="1"
-              value={newEdgeConfig.toNodeConfigId ? newEdgeConfig.toNodeConfigId.toString() : ''}
-              onValueChange={id => setNewEdgeConfig({ ...newEdgeConfig, toNodeConfigId: Number(id) })}
+              value={newEdgeType.toNodeConfigId ? newEdgeType.toNodeConfigId.toString() : ''}
+              onValueChange={id => setNewEdgeType({ ...newEdgeType, toNodeConfigId: Number(id) })}
             >
               <Select.Trigger
                 variant="soft"
-                color={mapNodeConfigs?.find(el => el.id === newEdgeConfig.toNodeConfigId)?.color || Color.gray}
+                color={nodeTypes?.find(el => el.id === newEdgeType.toNodeConfigId)?.color || Color.gray}
               />
               <Select.Content>
-                {mapNodeConfigs?.map(el => (
+                {nodeTypes?.map(el => (
                   <Select.Item key={el.id} value={el.id?.toString() || ''}>
                     {el.type}
                   </Select.Item>
@@ -84,9 +85,9 @@ export const EdgeConfig = () => {
               variant="solid"
               color="gray"
               onClick={() => {
-                console.log(newEdgeConfig);
-                if (!isNaN(newEdgeConfig.fromNodeConfigId) && !isNaN(newEdgeConfig.toNodeConfigId)) {
-                  dispatch(api.endpoints.createMapEdgeConfig.initiate(newEdgeConfig));
+                console.log(newEdgeType);
+                if (!isNaN(newEdgeType.fromNodeConfigId) && !isNaN(newEdgeType.toNodeConfigId)) {
+                  dispatch(api.endpoints.createEdgeType.initiate(newEdgeType));
                 }
               }}
             >

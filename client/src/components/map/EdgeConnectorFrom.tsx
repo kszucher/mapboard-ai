@@ -13,8 +13,8 @@ export const EdgeConnectorFrom: FC = () => {
       <circle
         key={`${ni.id}_from`}
         r={3}
-        fill={isConnected ? radixColorMap[ni.MapNodeConfig.color] : 'none'}
-        stroke={radixColorMap[ni.MapNodeConfig.color]}
+        fill={isConnected ? radixColorMap[ni.NodeType.color] : 'none'}
+        stroke={radixColorMap[ni.NodeType.color]}
         strokeWidth={1.5}
         transform={`translate(${getNodeRight(ni)}, ${getNodeTop(ni) + 60})`}
         vectorEffect="non-scaling-stroke"

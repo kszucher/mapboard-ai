@@ -8,10 +8,8 @@ export const EdgeConnectorTo: FC = () => {
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   return m.n.flatMap(ni =>
-    ni.MapNodeConfig.MapEdgeConfigTo.map((eci, idx) => {
-      const isConnected = m.e.some(
-        ei => ei.ToNode.id === ni.id && ei.FromNode.MapNodeConfig.id === eci.FromNodeConfig.id
-      );
+    ni.NodeType.MapEdgeConfigTo.map((eci, idx) => {
+      const isConnected = m.e.some(ei => ei.ToNode.id === ni.id && ei.FromNode.NodeType.id === eci.FromNodeConfig.id);
       return (
         <circle
           key={`${ni.id}_${idx}`}

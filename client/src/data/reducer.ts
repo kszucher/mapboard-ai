@@ -1,8 +1,8 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { UpdateMapGraphEventPayload } from '../../../shared/src/api/api-types-distribution.ts';
-import { E, EdgeUpdateDown } from '../../../shared/src/api/api-types-map-edge.ts';
-import { N, NodeUpdateDown } from '../../../shared/src/api/api-types-map-node.ts';
+import { E, EdgeUpdateDown } from '../../../shared/src/api/api-types-edge.ts';
+import { N, NodeUpdateDown } from '../../../shared/src/api/api-types-node.ts';
 import { getNodeHeight, getNodeWidth } from '../../../shared/src/map/map-getters.ts';
 import { alignNodes } from '../../../shared/src/map/map-setters.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';

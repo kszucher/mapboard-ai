@@ -1,18 +1,18 @@
 import { injectable } from 'tsyringe';
 import { PrismaClient } from '../generated/client';
-import { MapNodeRepository } from './map-node.repository';
+import { NodeRepository } from '../map/node.repository';
 
 @injectable()
-export class MapNodeIngestionService {
+export class ExecuteIngestionService {
   constructor(
     private prisma: PrismaClient,
-    private mapNodeService: MapNodeRepository
+    private nodeRepository: NodeRepository
   ) {}
 
   async execute({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
     const [inputFileNode, node] = await Promise.all([
-      this.mapNodeService.getInputFileNode({ mapId, nodeId }),
-      this.mapNodeService.getNode({ mapId, nodeId }),
+      this.nodeRepository.getInputFileNode({ mapId, nodeId }),
+      this.nodeRepository.getNode({ mapId, nodeId }),
     ]);
 
     if (node.ingestionOutputJson) {
@@ -32,7 +32,7 @@ export class MapNodeIngestionService {
       throw new Error('failed to ingest file');
     }
 
-    await this.prisma.mapNode.update({
+    await this.prisma.node.update({
       where: { id: nodeId },
       data: {
         workspaceId,

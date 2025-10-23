@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text } from '@radix-ui/themes';
 import React from 'react';
-import { N } from '../../../../shared/src/api/api-types-map-node.ts';
+import { N } from '../../../../shared/src/api/api-types-node.ts';
 
 export const NodeTypeDataFrame = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
   const x = { nodeId, ni };
