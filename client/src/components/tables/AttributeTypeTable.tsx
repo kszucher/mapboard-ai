@@ -107,11 +107,13 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
                   variant="solid"
                   color="gray"
                   onClick={() => {
-                    setAttributeType({
-                      ...AttributeType,
-                      defaultEnum: [...(AttributeType.defaultEnum ?? []), selectOption],
-                    });
-                    setSelectOption('');
+                    if (selectOption) {
+                      setAttributeType({
+                        ...AttributeType,
+                        defaultEnum: [...(AttributeType.defaultEnum ?? []), selectOption],
+                      });
+                      setSelectOption('');
+                    }
                   }}
                 >
                   +
