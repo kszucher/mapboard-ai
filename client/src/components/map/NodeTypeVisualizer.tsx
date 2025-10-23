@@ -1,13 +1,9 @@
 import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
-import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import { N } from '../../../../shared/src/api/api-types-map-node.ts';
 import { getNodeHeight, getNodeWidth } from '../../../../shared/src/map/map-getters.ts';
-import { useGetMapConfigInfoQuery } from '../../data/api.ts';
 
 export const NodeTypeVisualizer = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
-  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
-
   const x = { nodeId, ni };
   if (!x) {
     window.alert('missing props');
@@ -23,8 +19,8 @@ export const NodeTypeVisualizer = ({ nodeId, ni }: { nodeId: number; ni: N }) =>
             variant="soft"
             disabled={true}
             style={{
-              width: getNodeWidth(mapNodeConfigs, ni.MapNodeConfig.type) - 40,
-              minHeight: getNodeHeight(mapNodeConfigs, ni.MapNodeConfig.type) - 70,
+              width: getNodeWidth(ni) - 40,
+              minHeight: getNodeHeight(ni) - 70,
               outline: 'none',
               pointerEvents: 'auto',
             }}

@@ -1,22 +1,16 @@
 import { injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
-import {
-  DeleteEdgeRequestDto,
-  DeleteNodeRequestDto,
-  GetMapInfoQueryResponseDto,
-  InsertEdgeRequestDto,
-  InsertNodeRequestDto,
-  MoveNodeRequestDto,
-} from '../../../shared/src/api/api-types-map';
-import { N } from '../../../shared/src/api/api-types-map-node';
+import { M } from '../../../shared/src/api/api-types-map';
+import { NodeUpdateUp } from '../../../shared/src/api/api-types-map-node';
 import { ShareAccess } from '../../../shared/src/api/api-types-share';
 import { getTopologicalSort } from '../../../shared/src/map/map-getters';
 import { DistributionService } from '../distribution/distribution.service';
-import { PrismaClient } from '../generated/client';
 import { ShareRepository } from '../share/share.repository';
 import { TabRepository } from '../tab/tab.repository';
 import { UserRepository } from '../user/user.repository';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
+import { MapEdgeConfigRepository } from './map-edge-config.repository';
+import { MapEdgeRepository } from './map-edge.repository';
 import { MapNodeContextService } from './map-node-context.service';
 import { MapNodeDataFrameService } from './map-node-data-frame.service';
 import { MapNodeFileService } from './map-node-file.service';
@@ -25,18 +19,24 @@ import { MapNodeLlmService } from './map-node-llm.service';
 import { MapNodeQuestionService } from './map-node-question.service';
 import { MapNodeVectorDatabaseService } from './map-node-vector-database.service';
 import { MapNodeVisualizerService } from './map-node-visualizer.service';
+import { MapNodeRepository } from './map-node.repository';
 import { MapRepository } from './map.repository';
 
 @injectable()
 export class MapService {
-  async getWorkspaceMapInfo({ workspaceId }: { workspaceId: number }): Promise<GetMapInfoQueryResponseDto> {
+  async getWorkspaceMapInfo({ workspaceId }: { workspaceId: number }): Promise<{
+    id: number;
+    name: string;
+    data: M;
+    shareAccess: ShareAccess;
+  }> {
     const workspace = await this.workspaceRepository.getWorkspaceById({ workspaceId });
 
-    if (!workspace.mapId) {
-      throw new Error('workspace has no map');
-    }
+    const map = await this.mapRepository.getMap({ mapId: workspace.mapId! });
 
-    const map = await this.mapRepository.getMapWithGraph({ mapId: workspace.mapId });
+    const nodes = await this.mapNodeRepository.getNodes({ mapId: workspace.mapId! });
+
+    const edges = await this.mapEdgeRepository.getEdges({ mapId: workspace.mapId! });
 
     await this.mapRepository.incrementOpenCount({ mapId: map.id });
 
@@ -51,15 +51,17 @@ export class MapService {
     return {
       id: map.id,
       name: map.name,
-      data: { n: map.MapNodes, e: map.MapEdges },
+      data: { n: nodes, e: edges },
       shareAccess,
     };
   }
 
   constructor(
-    private prisma: PrismaClient,
     private userRepository: UserRepository,
     private mapRepository: MapRepository,
+    private mapNodeRepository: MapNodeRepository,
+    private mapEdgeRepository: MapEdgeRepository,
+    private mapEdgeConfigRepository: MapEdgeConfigRepository,
     private tabRepository: TabRepository,
     private shareRepository: ShareRepository,
     private workspaceRepository: WorkspaceRepository,
@@ -87,10 +89,7 @@ export class MapService {
 
     await this.workspaceRepository.addMapToWorkspace({ workspaceId, mapId });
 
-    await this.distributionService.publish({
-      type: SSE_EVENT_TYPE.INVALIDATE_TAB,
-      payload: { tabId: tab.id },
-    });
+    await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: { tabId: tab.id } });
   }
 
   async createMapInTabNew({ sub, workspaceId, mapName }: { sub: string; workspaceId: number; mapName: string }) {
@@ -104,7 +103,30 @@ export class MapService {
   async createMapInTabDuplicate({ sub, workspaceId, mapId }: { sub: string; workspaceId: number; mapId: number }) {
     const user = await this.userRepository.getUserBySub({ sub });
 
-    const newMap = await this.mapRepository.createMapDuplicate({ userId: user.id, mapId });
+    const originalMap = await this.mapRepository.getMapName({ mapId });
+
+    const copyNodes = await this.mapNodeRepository.copyNodes({ mapId });
+
+    const copyEdges = await this.mapEdgeRepository.copyEdges({ mapId });
+
+    const newMap = await this.mapRepository.createMap({ userId: user.id, mapName: originalMap.name + ' (Copy)' });
+
+    const newNodes = await this.mapNodeRepository.createNodes({
+      mapId: newMap.id,
+      nodes: copyNodes.map(({ id, ...rest }) => ({ ...rest, mapId: newMap.id })),
+    });
+
+    const nodeIdMap = new Map(copyNodes.map((n, i) => [n.id, newNodes[i].id]));
+
+    await this.mapEdgeRepository.createEdges({
+      mapId: newMap.id,
+      edges: copyEdges.map(({ id, fromNodeId, toNodeId, ...rest }) => ({
+        ...rest,
+        mapId: newMap.id,
+        fromNodeId: nodeIdMap.get(fromNodeId)!,
+        toNodeId: nodeIdMap.get(toNodeId)!,
+      })),
+    });
 
     await this.createMapCommon({ userId: user.id, workspaceId, mapId: newMap.id });
   }
@@ -115,16 +137,10 @@ export class MapService {
     const tabs = await this.tabRepository.getTabsOfMap({ mapId });
 
     for (const tab of tabs) {
-      await this.distributionService.publish({
-        type: SSE_EVENT_TYPE.INVALIDATE_TAB,
-        payload: { tabId: tab.id },
-      });
+      await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_TAB, payload: { tabId: tab.id } });
     }
 
-    await this.distributionService.publish({
-      type: SSE_EVENT_TYPE.INVALIDATE_MAP,
-      payload: { mapId },
-    });
+    await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_MAP, payload: { mapId } });
 
     const shares = await this.shareRepository.getSharesOfMap({ mapId });
 
@@ -136,8 +152,8 @@ export class MapService {
     }
   }
 
-  async insertNode({ mapId, mapNodeConfigId }: InsertNodeRequestDto) {
-    const mapNode = await this.mapRepository.insertNode({ mapId, mapNodeConfigId });
+  async insertNode({ mapId, mapNodeConfigId }: { mapId: number; mapNodeConfigId: number }) {
+    const mapNode = await this.mapNodeRepository.createNode({ mapId, mapNodeConfigId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
@@ -145,27 +161,21 @@ export class MapService {
     });
   }
 
-  async insertEdge({ mapId, fromNodeId, toNodeId }: InsertEdgeRequestDto) {
-    const mapNodeFrom = await this.prisma.mapNode.findFirstOrThrow({
-      where: { id: fromNodeId },
-      select: { MapNodeConfig: { select: { id: true } } },
+  async insertEdge({ mapId, fromNodeId, toNodeId }: { mapId: number; fromNodeId: number; toNodeId: number }) {
+    const mapNodeFrom = await this.mapNodeRepository.getNodeMapConfig({ nodeId: fromNodeId });
+
+    const mapNodeTo = await this.mapNodeRepository.getNodeMapConfig({ nodeId: toNodeId });
+
+    const mapEdgeConfig = await this.mapEdgeConfigRepository.getEdgeConfigFromNodeConfigs({
+      fromNodeConfigId: mapNodeFrom.MapNodeConfig.id,
+      toNodeConfigId: mapNodeTo.MapNodeConfig.id,
     });
 
-    const mapNodeTo = await this.prisma.mapNode.findFirstOrThrow({
-      where: { id: toNodeId },
-      select: { MapNodeConfig: { select: { id: true } } },
-    });
-
-    const mapEdgeConfig = await this.prisma.mapEdgeConfig.findFirstOrThrow({
-      where: {
-        fromNodeConfigId: mapNodeFrom.MapNodeConfig.id,
-        toNodeConfigId: mapNodeTo.MapNodeConfig.id,
-      },
-      select: { id: true },
-    });
-
-    const mapEdge = await this.prisma.mapEdge.create({
-      data: { mapId, fromNodeId, toNodeId, mapEdgeConfigId: mapEdgeConfig.id },
+    const mapEdge = await this.mapEdgeRepository.createEdge({
+      mapId,
+      fromNodeId,
+      toNodeId,
+      mapEdgeConfigId: mapEdgeConfig.id,
     });
 
     await this.distributionService.publish({
@@ -174,36 +184,27 @@ export class MapService {
     });
   }
 
-  async deleteNode({ workspaceId, mapId, nodeId }: DeleteNodeRequestDto & { workspaceId: number }) {
-    const mapEdgesToDelete = await this.prisma.mapEdge.findMany({
-      where: { OR: [{ fromNodeId: nodeId }, { toNodeId: nodeId }] },
-      select: { id: true },
-    });
+  async deleteNode({ workspaceId, mapId, nodeId }: { mapId: number; nodeId: number; workspaceId: number }) {
+    const edgesOfNode = await this.mapEdgeRepository.getEdgesOfNode({ nodeId });
 
-    await this.prisma.mapEdge.deleteMany({
-      where: { OR: [{ fromNodeId: nodeId }, { toNodeId: nodeId }] },
-    });
+    await this.mapEdgeRepository.deleteEdges({ edgeIds: edgesOfNode.map(e => e.id) });
 
-    await this.prisma.mapNode.delete({
-      where: { id: nodeId },
-    });
+    await this.mapNodeRepository.deleteNode({ nodeId });
 
-    const mapNodes = await this.mapRepository.align({ workspaceId, mapId });
+    const mapNodes = await this.mapNodeRepository.align({ workspaceId, mapId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
       payload: {
         mapId,
         nodes: { update: mapNodes, delete: [nodeId] },
-        edges: { delete: mapEdgesToDelete.map(e => e.id) },
+        edges: { delete: edgesOfNode.map(e => e.id) },
       },
     });
   }
 
-  async deleteEdge({ mapId, edgeId }: DeleteEdgeRequestDto) {
-    await this.prisma.mapEdge.delete({
-      where: { id: edgeId },
-    });
+  async deleteEdge({ mapId, edgeId }: { mapId: number; edgeId: number }) {
+    await this.mapEdgeRepository.deleteEdge({ edgeId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
@@ -211,13 +212,26 @@ export class MapService {
     });
   }
 
-  async moveNode({ workspaceId, mapId, nodeId, offsetX, offsetY }: MoveNodeRequestDto & { workspaceId: number }) {
-    await this.prisma.mapNode.update({
-      where: { id: nodeId },
-      data: { workspaceId, offsetX, offsetY },
+  async moveNode({
+    workspaceId,
+    mapId,
+    nodeId,
+    offsetX,
+    offsetY,
+  }: {
+    mapId: number;
+    nodeId: number;
+    offsetX: number;
+    offsetY: number;
+    workspaceId: number;
+  }) {
+    await this.mapNodeRepository.updateNode({
+      nodeId,
+      workspaceId,
+      params: { offsetX, offsetY },
     });
 
-    const mapNodes = await this.mapRepository.align({ workspaceId, mapId });
+    const mapNodes = await this.mapNodeRepository.align({ workspaceId, mapId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
@@ -228,16 +242,18 @@ export class MapService {
   async updateNode({
     workspaceId,
     mapId,
+    nodeId,
     node,
   }: {
     workspaceId: number;
     mapId: number;
-    node: Omit<Partial<N>, 'MapNodeConfig'>;
+    nodeId: number;
+    node: NodeUpdateUp;
   }) {
-    const mapNode = await this.prisma.mapNode.update({
-      where: { id: node.id },
-      data: { ...node, workspaceId },
-      omit: { createdAt: true },
+    const mapNode = await this.mapNodeRepository.updateNode({
+      nodeId,
+      workspaceId,
+      params: { ...node },
     });
 
     await this.distributionService.publish({
@@ -257,7 +273,7 @@ export class MapService {
     nodeId: number;
     file: Express.Multer.File;
   }) {
-    const [activeNode, inactiveNodes] = await this.mapRepository.setProcessing({ workspaceId, mapId, nodeId });
+    const [activeNode, inactiveNodes] = await this.mapNodeRepository.setProcessing({ workspaceId, mapId, nodeId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
@@ -266,10 +282,10 @@ export class MapService {
 
     const fileHash = await this.mapNodeFileService.upload(file);
 
-    const mapNode = await this.prisma.mapNode.update({
-      where: { id: nodeId },
-      data: { workspaceId, fileName: file.originalname, fileHash: fileHash ?? '', isProcessing: false },
-      select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
+    const mapNode = await this.mapNodeRepository.updateNode({
+      nodeId,
+      workspaceId,
+      params: { fileName: file.originalname, fileHash: fileHash ?? '', isProcessing: false },
     });
 
     await this.distributionService.publish({
@@ -279,24 +295,26 @@ export class MapService {
   }
 
   async executeMap({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
-    const map = await this.mapRepository.getMapWithGraphStructure({ mapId });
+    const nodesForSorting = await this.mapNodeRepository.getNodesForSorting({ mapId });
 
-    const mapNodes = await this.mapRepository.clearResults({ workspaceId, mapId });
+    const edgesForSorting = await this.mapEdgeRepository.getEdgesForSorting({ mapId });
+
+    const topologicalSort = getTopologicalSort({ n: nodesForSorting, e: edgesForSorting });
+    if (!topologicalSort) {
+      throw new Error('topological sort error');
+    }
+
+    const mapNodes = await this.mapNodeRepository.clearResults({ workspaceId, mapId });
 
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
       payload: { mapId, nodes: { update: mapNodes } },
     });
 
-    const topologicalSort = getTopologicalSort({ n: map.MapNodes, e: map.MapEdges });
-    if (!topologicalSort) {
-      throw new Error('topological sort error');
-    }
-
     for (const nodeId of topologicalSort) {
-      const ni = map.MapNodes.find(ni => ni.id === nodeId)!;
+      const ni = nodesForSorting.find(ni => ni.id === nodeId)!;
 
-      const [activeNode, inactiveNodes] = await this.mapRepository.setProcessing({ workspaceId, mapId, nodeId });
+      const [activeNode, inactiveNodes] = await this.mapNodeRepository.setProcessing({ workspaceId, mapId, nodeId });
 
       await this.distributionService.publish({
         type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
@@ -354,7 +372,7 @@ export class MapService {
       } catch (e) {
         console.error(ni.MapNodeConfig.type + 'error', e);
 
-        const mapNodes = await this.mapRepository.clearProcessing({ workspaceId, mapId });
+        const mapNodes = await this.mapNodeRepository.clearProcessing({ workspaceId, mapId });
 
         await this.distributionService.publish({
           type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
@@ -387,17 +405,18 @@ export class MapService {
       payload: { tabId: tab.id },
     });
 
+    await this.mapEdgeRepository.deleteMapEdges({ mapId });
+
+    await this.mapNodeRepository.deleteMapNodes({ mapId });
+
     await this.mapRepository.deleteMap({ mapId });
 
     await this.workspaceRepository.removeMapFromWorkspaces({ mapId });
 
-    await this.distributionService.publish({
-      type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE,
-      payload: {},
-    });
+    await this.distributionService.publish({ type: SSE_EVENT_TYPE.INVALIDATE_WORKSPACE, payload: {} });
   }
 
   async clearProcessingAll() {
-    await this.mapRepository.clearProcessingAll();
+    await this.mapNodeRepository.clearProcessingAll();
   }
 }

@@ -7,7 +7,7 @@ export const MapNodeFieldConfig = ({ nodeConfig }: { nodeConfig: Partial<MapNode
     <Popover.Root>
       <Popover.Trigger>
         <Button size={'1'} variant="soft">
-          Edit Fields
+          Edit Inner Schema
         </Button>
       </Popover.Trigger>
       <Popover.Content width="800px">

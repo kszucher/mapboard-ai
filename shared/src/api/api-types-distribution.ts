@@ -1,13 +1,18 @@
-import { E } from './api-types-map-edge';
-import { N } from './api-types-map-node';
-
-export type UpdateN = Partial<N> & Pick<N, 'workspaceId' | 'updatedAt'>
-export type UpdateL = Partial<E> & Pick<E, 'workspaceId' | 'updatedAt'>
+import { E, EdgeUpdateDown } from './api-types-map-edge';
+import { N, NodeUpdateDown } from './api-types-map-node';
 
 export type UpdateMapGraphEventPayload = {
   mapId: number,
-  nodes?: { insert?: N[]; update?: UpdateN[]; delete?: number[] },
-  edges?: { insert?: E[]; update?: UpdateL[]; delete?: number[] }
+  nodes?: {
+    insert?: N[];
+    update?: NodeUpdateDown[];
+    delete?: number[]
+  },
+  edges?: {
+    insert?: E[];
+    update?: EdgeUpdateDown[];
+    delete?: number[]
+  }
 };
 
 export enum SSE_EVENT_TYPE {

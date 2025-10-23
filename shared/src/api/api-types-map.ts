@@ -1,5 +1,5 @@
 import { E } from './api-types-map-edge';
-import { N } from './api-types-map-node';
+import { N, NodeUpdateUp } from './api-types-map-node';
 import { ShareAccess } from './api-types-share';
 
 export type M = { e: E[], n: N[] };
@@ -58,7 +58,8 @@ export type MoveNodeRequestDto = {
 
 export type UpdateNodeRequestDto = {
   mapId: number
-  node: Partial<N>
+  nodeId: number
+  node: NodeUpdateUp
 }
 
 export type ExecuteMapFileUploadDto = {

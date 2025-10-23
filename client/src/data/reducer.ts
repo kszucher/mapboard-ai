@@ -1,9 +1,8 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
-import { UpdateL, UpdateMapGraphEventPayload, UpdateN } from '../../../shared/src/api/api-types-distribution.ts';
-import { MapNodeConfig } from '../../../shared/src/api/api-types-map-config.ts';
-import { E } from '../../../shared/src/api/api-types-map-edge.ts';
-import { N } from '../../../shared/src/api/api-types-map-node.ts';
+import { UpdateMapGraphEventPayload } from '../../../shared/src/api/api-types-distribution.ts';
+import { E, EdgeUpdateDown } from '../../../shared/src/api/api-types-map-edge.ts';
+import { N, NodeUpdateDown } from '../../../shared/src/api/api-types-map-node.ts';
 import { getNodeHeight, getNodeWidth } from '../../../shared/src/map/map-getters.ts';
 import { alignNodes } from '../../../shared/src/map/map-setters.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
@@ -83,24 +82,12 @@ export const slice = createSlice({
       state.zoomInfo.fromX = originX + (getMapX(e) - prevMapX) / scale;
       state.zoomInfo.fromY = originY + (getMapY(e) - prevMapY) / scale;
     },
-    moveNodePreviewUpdate(
-      state,
-      action: PayloadAction<{
-        mapNodeConfigs: Partial<MapNodeConfig>[];
-        n: N;
-        e: MouseEvent;
-      }>
-    ) {
-      const { mapNodeConfigs, n, e } = action.payload;
+    moveNodePreviewUpdate(state, action: PayloadAction<{ n: N; e: MouseEvent }>) {
+      const { n, e } = action.payload;
       const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
       const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetX;
       const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetY;
-      state.nodeOffsetCoords = [
-        toX,
-        toY,
-        getNodeWidth(mapNodeConfigs, n.MapNodeConfig.type),
-        getNodeHeight(mapNodeConfigs, n.MapNodeConfig.type),
-      ];
+      state.nodeOffsetCoords = [toX, toY, getNodeWidth(n), getNodeHeight(n)];
     },
     moveNodePreviewEnd(state) {
       state.nodeOffsetCoords = [];
@@ -135,15 +122,17 @@ export const slice = createSlice({
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const { insert: nodeInsert = [], update: nodeUpdate = [], delete: nodeDelete = [] } = nodes ?? {};
       const { insert: edgeInsert = [], update: edgeUpdate = [], delete: edgeDelete = [] } = edges ?? {};
-      const allowedUpdateN = (s: UpdateN, c: N) => (c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true);
-      const allowedUpdateL = (s: UpdateL, c: E) => (c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true);
+      const allowedNodeUpdate = (s: NodeUpdateDown, c: N) =>
+        c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true;
+      const allowedEdgeUpdate = (s: EdgeUpdateDown, c: E) =>
+        c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true;
       const newM = {
         n: [
           ...m.n
             .filter(ni => !nodeDelete.includes(ni.id))
             .map(ni =>
-              nodeUpdate.some(nj => nj.id === ni.id && allowedUpdateN(nj, ni))
-                ? { ...ni, ...nodeUpdate.find(nj => nj.id === ni.id && allowedUpdateN(nj, ni)) }
+              nodeUpdate.some(nj => nj.id === ni.id && allowedNodeUpdate(nj, ni))
+                ? { ...ni, ...nodeUpdate.find(nj => nj.id === ni.id && allowedNodeUpdate(nj, ni)) }
                 : ni
             ),
           ...nodeInsert,
@@ -152,8 +141,8 @@ export const slice = createSlice({
           ...m.e
             .filter(ei => !edgeDelete.includes(ei.id))
             .map(ei =>
-              edgeUpdate.some(lj => lj.id === ei.id && allowedUpdateL(lj, ei))
-                ? { ...ei, ...edgeUpdate.find(lj => lj.id === ei.id && allowedUpdateL(lj, ei)) }
+              edgeUpdate.some(ej => ej.id === ei.id && allowedEdgeUpdate(ej, ei))
+                ? { ...ei, ...edgeUpdate.find(ej => ej.id === ei.id && allowedEdgeUpdate(ej, ei)) }
                 : ei
             ),
           ...edgeInsert,

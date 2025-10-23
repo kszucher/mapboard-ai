@@ -3,7 +3,6 @@ import { FC, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import {
-  getAllowedTargets,
   getNodeHeight,
   getNodeLeft,
   getNodeTop,
@@ -25,7 +24,7 @@ import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
 import { NodeTypeVisualizer } from './NodeTypeVisualizer.tsx';
 
 export const Node: FC = () => {
-  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const mapId = useGetMapInfoQuery().data?.id!;
   const nodeOffsetCoords = useSelector((state: RootState) => state.slice.nodeOffsetCoords);
   const nodeOffsetCoordsRef = useRef(nodeOffsetCoords);
@@ -40,12 +39,12 @@ export const Node: FC = () => {
       ref={ref => ref && ref.focus()}
       style={{
         position: 'absolute',
-        left: getNodeLeft(ni.offsetX),
-        top: getNodeTop(ni.offsetY),
+        left: getNodeLeft(ni),
+        top: getNodeTop(ni),
         transition: 'left 0.3s, top 0.3s',
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-        minWidth: getNodeWidth(mapNodeConfigs, ni.MapNodeConfig.type),
-        minHeight: getNodeHeight(mapNodeConfigs, ni.MapNodeConfig.type),
+        minWidth: getNodeWidth(ni),
+        minHeight: getNodeHeight(ni),
         margin: 0,
         pointerEvents: 'none',
       }}
@@ -56,7 +55,7 @@ export const Node: FC = () => {
           <Badge color="gray" size="2">
             {'N' + ni.iid}
           </Badge>
-          <Badge color={mapNodeConfigs?.find(el => el.type === ni.MapNodeConfig.type)?.color || 'gray'} size="2">
+          <Badge color={ni.MapNodeConfig.color} size="2">
             {mapNodeConfigs?.find(el => el.type === ni.MapNodeConfig.type)?.label || ''}
           </Badge>
           {ni.isProcessing && <Spinner m="1" />}
@@ -81,7 +80,7 @@ export const Node: FC = () => {
               e => {
                 e.preventDefault();
                 didMove = true;
-                dispatch(actions.moveNodePreviewUpdate({ mapNodeConfigs, n: ni, e }));
+                dispatch(actions.moveNodePreviewUpdate({ n: ni, e }));
               },
               { signal }
             );
@@ -139,7 +138,8 @@ export const Node: FC = () => {
                 {m.n
                   .filter(
                     toNi =>
-                      getAllowedTargets(mapEdgeConfigs, ni.MapNodeConfig.type).includes(toNi.MapNodeConfig.type) &&
+                      ni.id !== toNi.id && // TODO: also does NOT create a loop
+                      toNi.MapNodeConfig.MapEdgeConfigTo.some(eci => eci.FromNodeConfig.id === ni.MapNodeConfig.id) &&
                       !isExistingEdge(m, ni.id, toNi.id)
                   )
                   .map(toNi => (

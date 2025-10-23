@@ -18,14 +18,14 @@ import { NodeMovePreview } from './NodeMovePreview.tsx';
 import { NodeSeparator } from './NodeSeparator.tsx';
 
 export const Map: FC = () => {
-  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const midMouseMode = useSelector((state: RootState) => state.slice.midMouseMode);
   const zoomInfo = useSelector((state: RootState) => state.slice.zoomInfo);
   const colorMode = useGetUserInfoQuery().data?.userInfo.colorMode;
   const mapId = useGetMapInfoQuery().data?.id!;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
-  const mapSelfW = getMapWidth(mapNodeConfigs, m);
-  const mapSelfH = getMapHeight(mapNodeConfigs, m);
+  const mapSelfW = getMapWidth(m);
+  const mapSelfH = getMapHeight(m);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -69,81 +69,85 @@ export const Map: FC = () => {
   }, [mapId]);
 
   return (
-    <div
-      style={{
-        overflow: 'auto',
-        display: 'grid',
-        backgroundColor: colorMode === ColorMode.DARK ? '#404040' : '#dddddd',
-        gridTemplateRows: `100vh ${mapSelfH}px 100vh`,
-        gridTemplateColumns: `100vw ${mapSelfW}px 100vw`,
-        outline: 'none',
-      }}
-      ref={mainMapDiv}
-      id={'mainMapDiv'}
-      onMouseDown={e => {
-        if (e.button === 1 && e.buttons === 4) {
-          e.preventDefault();
-        }
-        const abortController = new AbortController();
-        const { signal } = abortController;
-        window.addEventListener(
-          'mousemove',
-          e => {
-            e.preventDefault();
-            if (e.button === 0 && e.buttons === 1) {
-              setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX);
-              setScrollTop(document.documentElement.scrollTop - e.movementY);
-            }
-          },
-          { signal }
-        );
-        window.addEventListener(
-          'mouseup',
-          e => {
-            e.preventDefault();
-            abortController.abort();
-          },
-          { signal }
-        );
-      }}
-      onDoubleClick={() => {
-        if (mainMapDiv.current) {
-          resetView();
-        }
-      }}
-      onWheel={e => {
-        if (midMouseMode === MidMouseMode.ZOOM) {
-          dispatch(actions.saveView({ e }));
-        }
-      }}
-    >
-      <div />
-      <div />
-      <div />
-      <div />
+    mapNodeConfigs &&
+    mapEdgeConfigs &&
+    m && (
       <div
         style={{
-          position: 'relative',
-          display: 'flex',
-          transform: `scale(${zoomInfo.scale}) translate(${zoomInfo.translateX}px, ${zoomInfo.translateY}px)`,
-          transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`,
+          overflow: 'auto',
+          display: 'grid',
+          backgroundColor: colorMode === ColorMode.DARK ? '#404040' : '#dddddd',
+          gridTemplateRows: `100vh ${mapSelfH}px 100vh`,
+          gridTemplateColumns: `100vw ${mapSelfW}px 100vw`,
+          outline: 'none',
+        }}
+        ref={mainMapDiv}
+        id={'mainMapDiv'}
+        onMouseDown={e => {
+          if (e.button === 1 && e.buttons === 4) {
+            e.preventDefault();
+          }
+          const abortController = new AbortController();
+          const { signal } = abortController;
+          window.addEventListener(
+            'mousemove',
+            e => {
+              e.preventDefault();
+              if (e.button === 0 && e.buttons === 1) {
+                setScrollLeft(mainMapDiv.current!.scrollLeft - e.movementX);
+                setScrollTop(document.documentElement.scrollTop - e.movementY);
+              }
+            },
+            { signal }
+          );
+          window.addEventListener(
+            'mouseup',
+            e => {
+              e.preventDefault();
+              abortController.abort();
+            },
+            { signal }
+          );
+        }}
+        onDoubleClick={() => {
+          if (mainMapDiv.current) {
+            resetView();
+          }
+        }}
+        onWheel={e => {
+          if (midMouseMode === MidMouseMode.ZOOM) {
+            dispatch(actions.saveView({ e }));
+          }
         }}
       >
-        <svg width={mapSelfW} height={mapSelfH}>
-          <MapBackground />
-          <MapFrame />
-          <EdgeBezier />
-          <NodeSeparator />
-          <NodeMovePreview />
-          <EdgeConnectorFrom />
-          <EdgeConnectorTo />
-        </svg>
-        <Node />
-        <EdgeDelete />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div
+          style={{
+            position: 'relative',
+            display: 'flex',
+            transform: `scale(${zoomInfo.scale}) translate(${zoomInfo.translateX}px, ${zoomInfo.translateY}px)`,
+            transformOrigin: `${zoomInfo.originX}px ${zoomInfo.originY}px`,
+          }}
+        >
+          <svg width={mapSelfW} height={mapSelfH}>
+            <MapBackground />
+            <MapFrame />
+            <EdgeBezier />
+            <NodeSeparator />
+            <NodeMovePreview />
+            <EdgeConnectorFrom />
+            <EdgeConnectorTo />
+          </svg>
+          <Node />
+          <EdgeDelete />
+        </div>
+        <div />
+        <div />
+        <div />
       </div>
-      <div />
-      <div />
-      <div />
-    </div>
+    )
   );
 };

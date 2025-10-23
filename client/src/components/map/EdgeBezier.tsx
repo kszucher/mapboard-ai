@@ -7,12 +7,16 @@ import { RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLinePath, pathCommonProps } from './UtilsSvg.ts';
 
 export const EdgeBezier: FC = () => {
-  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+  const mapConfigQuery = useGetMapConfigInfoQuery();
+  const { mapEdgeConfigs } = mapConfigQuery.data || defaultMapConfig;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   const dashLength = 6;
   const gapLength = 6;
   const dashCycle = dashLength + gapLength;
+
+  if (mapConfigQuery.isLoading) return null;
+  if (mapConfigQuery.isError || !m) return null;
 
   return m.e.map(ei => {
     const animated = getOutputNodeOfEdge(m, ei).isProcessing;
@@ -38,7 +42,7 @@ export const EdgeBezier: FC = () => {
       <g key={ei.id}>
         <style>{`@keyframes dashMove { to { stroke-dashoffset: -${dashCycle} } } `}</style>
         <path
-          d={getBezierLinePath(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapEdgeConfigs, m, ei)))}
+          d={getBezierLinePath(getBezierLineCoords(getLineCoords(mapEdgeConfigs, m, ei)))}
           strokeWidth={1}
           stroke="#dddddd"
           fill="none"

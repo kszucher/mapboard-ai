@@ -1,15 +1,13 @@
 import { Box, Flex, Select, Text, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { defaultMapConfig } from '../../../../shared/src/api/api-types-map-config.ts';
 import { LlmOutputSchema, N } from '../../../../shared/src/api/api-types-map-node.ts';
 import { getNodeWidth } from '../../../../shared/src/map/map-getters.ts';
-import { api, useGetMapConfigInfoQuery, useGetMapInfoQuery } from '../../data/api.ts';
+import { api, useGetMapInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
-  const { mapNodeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const mapId = useGetMapInfoQuery().data?.id!;
   const dispatch = useDispatch<AppDispatch>();
 
@@ -23,7 +21,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: getNodeWidth(mapNodeConfigs, ni.MapNodeConfig.type) - 40,
+              width: getNodeWidth(ni) - 40,
               minHeight: 120,
               outline: 'none',
               pointerEvents: 'auto',
@@ -34,7 +32,8 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
               dispatch(
                 api.endpoints.updateNode.initiate({
                   mapId,
-                  node: { id: nodeId, llmInstructions: e.target.value },
+                  nodeId,
+                  node: { llmInstructions: e.target.value },
                 })
               );
             }}
@@ -49,7 +48,8 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
               dispatch(
                 api.endpoints.updateNode.initiate({
                   mapId,
-                  node: { id: nodeId, llmOutputSchema: value },
+                  nodeId,
+                  node: { llmOutputSchema: value },
                 })
               );
             }}

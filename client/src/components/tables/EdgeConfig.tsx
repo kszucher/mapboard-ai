@@ -11,8 +11,6 @@ export const EdgeConfig = () => {
   const [newEdgeConfig, setNewEdgeConfig] = useState(emptyEdgeConfig);
   const dispatch = useDispatch<AppDispatch>();
 
-  console.log(mapEdgeConfigs);
-
   return (
     <Table.Root size={'1'}>
       <Table.Header>

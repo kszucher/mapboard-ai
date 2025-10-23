@@ -1,10 +1,20 @@
 import { injectable } from 'tsyringe';
-import { getLastIndexN } from '../../../shared/src/map/map-getters';
 import { Prisma, PrismaClient } from '../generated/client';
 
 @injectable()
 export class MapRepository {
   constructor(private prisma: PrismaClient) {}
+
+  async getMap({ mapId }: { mapId: number }) {
+    return this.prisma.map.findUniqueOrThrow({
+      where: { id: mapId },
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+      },
+    });
+  }
 
   async getMapsById({ mapIds }: { mapIds: number[] }) {
     return this.prisma.map.findMany({
@@ -12,54 +22,6 @@ export class MapRepository {
       select: {
         id: true,
         name: true,
-      },
-    });
-  }
-
-  async getMapWithGraph({ mapId }: { mapId: number }) {
-    return this.prisma.map.findUniqueOrThrow({
-      where: { id: mapId },
-      select: {
-        id: true,
-        userId: true,
-        name: true,
-        MapNodes: {
-          include: {
-            MapNodeConfig: {
-              select: {
-                id: true,
-                type: true,
-              },
-            },
-          },
-          omit: { createdAt: true },
-        },
-        MapEdges: {
-          omit: { createdAt: true },
-        },
-      },
-    });
-  }
-
-  async getMapWithGraphStructure({ mapId }: { mapId: number }) {
-    return this.prisma.map.findUniqueOrThrow({
-      where: { id: mapId },
-      select: {
-        id: true,
-        MapNodes: {
-          select: {
-            id: true,
-            MapNodeConfig: {
-              select: {
-                id: true,
-                type: true,
-              },
-            },
-          },
-        },
-        MapEdges: {
-          select: { id: true, fromNodeId: true, toNodeId: true },
-        },
       },
     });
   }
@@ -74,6 +36,13 @@ export class MapRepository {
     });
   }
 
+  async getMapName({ mapId }: { mapId: number }) {
+    return this.prisma.map.findUniqueOrThrow({
+      where: { id: mapId },
+      select: { name: true },
+    });
+  }
+
   async createMap({ userId, mapName }: { userId: number; mapName: string }) {
     return this.prisma.map.create({
       data: {
@@ -84,159 +53,6 @@ export class MapRepository {
         id: true,
         name: true,
         userId: true,
-      },
-    });
-  }
-
-  async createMapDuplicate({ userId, mapId }: { userId: number; mapId: number }) {
-    const originalMap = await this.prisma.map.findUniqueOrThrow({
-      where: { id: mapId },
-      select: {
-        name: true,
-        MapNodes: {
-          omit: {
-            mapId: true,
-            ingestionOutputJson: true,
-            dataFrameOutputJson: true,
-            llmOutputJson: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        MapEdges: {
-          omit: {
-            mapId: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-      },
-    });
-
-    const newMap = await this.prisma.map.create({
-      data: { name: originalMap.name + ' (Copy)', userId },
-      select: { id: true },
-    });
-
-    const newMapNodes = await this.prisma.mapNode.createManyAndReturn({
-      data: originalMap.MapNodes.map(({ id, ...rest }) => ({ ...rest, mapId: newMap.id })),
-      select: { id: true },
-    });
-
-    const idMap = new Map(originalMap.MapNodes.map((n, i) => [n.id, newMapNodes[i].id]));
-
-    await this.prisma.mapEdge.createMany({
-      data: originalMap.MapEdges.map(({ id, fromNodeId, toNodeId, ...rest }) => ({
-        ...rest,
-        mapId: newMap.id,
-        fromNodeId: idMap.get(fromNodeId)!,
-        toNodeId: idMap.get(toNodeId)!,
-      })),
-    });
-
-    return newMap;
-  }
-
-  async insertNode({ mapId, mapNodeConfigId }: { mapId: number; mapNodeConfigId: number }) {
-    const [mapNodes, mapEdges] = await Promise.all([
-      this.prisma.mapNode.findMany({
-        where: { mapId },
-        select: {
-          iid: true,
-          offsetX: true,
-          offsetY: true,
-        },
-      }),
-      this.prisma.mapEdge.findMany({
-        where: { mapId },
-        select: { id: true, fromNodeId: true, toNodeId: true },
-      }),
-    ]);
-
-    const m = { n: mapNodes, e: mapEdges };
-
-    return this.prisma.mapNode.create({
-      data: {
-        mapId,
-        mapNodeConfigId,
-        iid: getLastIndexN(m) + 1,
-        offsetX: 100, //  getMapWidth([], m),
-        offsetY: 100, // getMapHeight([], m),
-      },
-      include: {
-        MapNodeConfig: { select: { id: true, type: true } },
-      },
-    });
-  }
-
-  async setProcessing({ workspaceId, mapId, nodeId }: { workspaceId: number; mapId: number; nodeId: number }) {
-    return this.prisma.$transaction([
-      this.prisma.mapNode.update({
-        where: { id: nodeId },
-        data: { workspaceId, isProcessing: true },
-        select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
-      }),
-      this.prisma.mapNode.updateManyAndReturn({
-        where: { id: { not: nodeId }, mapId },
-        data: { workspaceId, isProcessing: false },
-        select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
-      }),
-    ]);
-  }
-
-  async clearProcessing({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
-    return this.prisma.mapNode.updateManyAndReturn({
-      where: { mapId },
-      data: { workspaceId, isProcessing: false },
-      select: { id: true, workspaceId: true, isProcessing: true, updatedAt: true },
-    });
-  }
-
-  async clearResults({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
-    return this.prisma.mapNode.updateManyAndReturn({
-      where: { mapId },
-      data: {
-        workspaceId,
-        ingestionOutputJson: Prisma.JsonNull,
-        vectorDatabaseId: null,
-        vectorDatabaseOutputText: null,
-        dataFrameOutputJson: Prisma.JsonNull,
-        llmOutputJson: Prisma.JsonNull,
-        visualizerOutputText: null,
-      },
-      select: {
-        id: true,
-        workspaceId: true,
-        ingestionOutputJson: true,
-        vectorDatabaseId: true,
-        vectorDatabaseOutputText: true,
-        dataFrameOutputJson: true,
-        llmOutputJson: true,
-        visualizerOutputText: true,
-        updatedAt: true,
-      },
-    });
-  }
-
-  async align({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
-    const mapNodes = await this.prisma.mapNode.findMany({
-      where: { mapId },
-      select: { offsetX: true, offsetY: true },
-    });
-
-    return this.prisma.mapNode.updateManyAndReturn({
-      where: { mapId },
-      data: {
-        workspaceId,
-        offsetX: { decrement: Math.min(...mapNodes.map(node => node.offsetX)) },
-        offsetY: { decrement: Math.min(...mapNodes.map(node => node.offsetY)) },
-      },
-      select: {
-        id: true,
-        workspaceId: true,
-        offsetX: true,
-        offsetY: true,
-        updatedAt: true,
       },
     });
   }
@@ -259,13 +75,7 @@ export class MapRepository {
     });
   }
 
-  async clearProcessingAll() {
-    await this.prisma.mapNode.updateMany({ data: { workspaceId: null, isProcessing: false } });
-  }
-
   async deleteMap({ mapId }: { mapId: number }) {
-    await this.prisma.mapEdge.deleteMany({ where: { mapId } });
-    await this.prisma.mapNode.deleteMany({ where: { mapId } });
     await this.prisma.map.delete({ where: { id: mapId } });
   }
 }

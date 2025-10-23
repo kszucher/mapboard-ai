@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLineCoordsMid } from './UtilsSvg.ts';
 
 export const EdgeDelete: FC = () => {
-  const { mapNodeConfigs, mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
+  const { mapEdgeConfigs } = useGetMapConfigInfoQuery().data || defaultMapConfig;
   const mapId = useGetMapInfoQuery().data?.id!;
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
   const edgeHelpersVisible = useSelector((state: RootState) => state.slice.edgeHelpersVisible);
@@ -26,9 +26,8 @@ export const EdgeDelete: FC = () => {
         radius="medium"
         style={{
           position: 'absolute',
-          left:
-            getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapEdgeConfigs, m, ei))).x - 12,
-          top: getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapNodeConfigs, mapEdgeConfigs, m, ei))).y - 12,
+          left: getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapEdgeConfigs, m, ei))).x - 12,
+          top: getBezierLineCoordsMid(getBezierLineCoords(getLineCoords(mapEdgeConfigs, m, ei))).y - 12,
           transition: 'all 0.3s',
           transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
         }}

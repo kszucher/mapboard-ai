@@ -14,7 +14,7 @@ export class WorkspaceRepository {
 
   async getWorkspaceById({ workspaceId }: { workspaceId: number }) {
     return this.prisma.workspace.findUniqueOrThrow({
-      where: { id: workspaceId },
+      where: { id: workspaceId, mapId: { not: null } },
       select: {
         mapId: true,
         userId: true,
