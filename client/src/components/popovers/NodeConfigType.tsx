@@ -7,7 +7,7 @@ export const NodeConfigType = ({ nodeType }: { nodeType: Partial<NodeType> }) =>
     <Popover.Root>
       <Popover.Trigger>
         <Button size={'1'} variant="soft">
-          Edit Inner Schema
+          Edit Node Config
         </Button>
       </Popover.Trigger>
       <Popover.Content width="800px">

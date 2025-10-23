@@ -23,13 +23,13 @@ export const EdgeEdit = () => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {edgeTypes?.map(el => (
-          <Table.Row key={el.id}>
+        {edgeTypes?.map(eti => (
+          <Table.Row key={eti.id}>
             <Table.Cell>
-              <Badge color="gray">{el.FromNodeType?.type}</Badge>
+              <Badge color="gray">{nodeTypes.find(nti => nti.id === eti.fromNodeTypeId)?.type || ''}</Badge>
             </Table.Cell>
             <Table.Cell>
-              <Badge color="gray">{el.ToNodeType?.type}</Badge>
+              <Badge color="gray">{nodeTypes.find(nti => nti.id === eti.toNodeTypeId)?.type || ''}</Badge>
             </Table.Cell>
             <Table.Cell>{'schema'}</Table.Cell>
             <Table.Cell>
