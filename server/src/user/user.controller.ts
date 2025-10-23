@@ -1,8 +1,8 @@
+import { Request, Response, Router } from 'express';
 import { injectable } from 'tsyringe';
-import { Router, Request, Response } from 'express';
-import { UserService } from './user.service';
 import { GetUserInfoQueryResponseDto } from '../../../shared/src/api/api-types-user';
 import { checkJwt, getWorkspaceId } from '../middleware';
+import { UserService } from './user.service';
 
 @injectable()
 export class UserController {

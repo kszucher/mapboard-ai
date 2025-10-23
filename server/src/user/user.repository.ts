@@ -11,7 +11,7 @@ export class UserRepository {
       select: { id: true, name: true, colorMode: true },
     });
   }
-  
+
   async registerUser({ name, sub, email }: { name: string; sub: string; email: string }) {
     await this.prisma.user.create({
       data: {

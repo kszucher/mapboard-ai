@@ -1,5 +1,5 @@
-import { injectable } from 'tsyringe';
 import { Request, Response, Router } from 'express';
+import { injectable } from 'tsyringe';
 import { DistributionService } from './distribution.service';
 
 @injectable()
