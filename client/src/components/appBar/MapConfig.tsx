@@ -18,12 +18,12 @@ export const MapConfig = () => {
       <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
         <Dialog.Trigger>
           <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.NODE_CONFIG))}>
-            {'Edit Nodes'}
+            {'Config Nodes'}
           </DropdownMenu.Item>
         </Dialog.Trigger>
         <Dialog.Trigger>
           <DropdownMenu.Item onClick={() => dispatch(actions.setDialogState(DialogState.EDGE_CONFIG))}>
-            {'Edit Edges'}
+            {'Config Edges'}
           </DropdownMenu.Item>
         </Dialog.Trigger>
       </DropdownMenu.Content>
