@@ -9,18 +9,8 @@ export class EdgeTypeRepository {
     return this.prisma.edgeType.findMany({
       select: {
         id: true,
-        FromNodeType: {
-          select: {
-            id: true,
-            type: true,
-          },
-        },
-        ToNodeType: {
-          select: {
-            id: true,
-            type: true,
-          },
-        },
+        fromNodeTypeId: true,
+        toNodeTypeId: true,
       },
     });
   }

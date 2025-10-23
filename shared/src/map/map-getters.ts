@@ -34,9 +34,9 @@ export const getLineCoords = (edgeTypes: Partial<EdgeType>[], m: M, e: E) => {
   const fromNode = getInputNodeOfEdge(m, e);
   const toNode = getOutputNodeOfEdge(m, e);
   const leftIndex = edgeTypes
-    .filter(el => el.ToNodeType?.type === toNode.NodeType.type)
-    .map(el => el.FromNodeType?.type)
-    .findIndex(type => type === fromNode.NodeType.type);
+    .filter(el => el.toNodeTypeId === toNode.NodeType.id)
+    .map(el => el.fromNodeTypeId)
+    .findIndex(type => type === fromNode.NodeType.id);
 
   return [
     getNodeRight(fromNode),
