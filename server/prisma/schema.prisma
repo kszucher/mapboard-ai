@@ -39,67 +39,55 @@ model Map {
 }
 
 model Node {
-  id                       Int              @id @default(autoincrement())
-  mapId                    Int
-  Map                      Map              @relation(fields: [mapId], references: [id])
-  nodeTypeId               Int
-  NodeType                 NodeType         @relation(fields: [nodeTypeId], references: [id])
-  workspaceId              Int?
-  iid                      Int
-  offsetX                  Int
-  offsetY                  Int
-  isProcessing             Boolean          @default(false)
-  fileHash                 String?
-  fileName                 String?
-  ingestionModel           String?
-  ingestionOutputJson      Json?
-  vectorDatabaseId         String?
-  vectorDatabaseOutputText String?
-  dataFrameOutputJson      Json?
-  contextOutputText        String?
-  questionOutputText       String?
-  llmInstructions          String?
-  llmOutputSchema          LlmOutputSchema?
-  llmOutputJson            Json?
-  visualizerOutputText     String?
-  FromEdges                Edge[]           @relation("FromEdges")
-  ToEdges                  Edge[]           @relation("ToEdges")
-  NodeConfigs              NodeConfig[]
-  createdAt                DateTime         @default(now())
-  updatedAt                DateTime         @default(now()) @updatedAt
+  id           Int         @id @default(autoincrement())
+  mapId        Int
+  Map          Map         @relation(fields: [mapId], references: [id])
+  nodeTypeId   Int
+  NodeType     NodeType    @relation(fields: [nodeTypeId], references: [id])
+  workspaceId  Int?
+  iid          Int
+  offsetX      Int
+  offsetY      Int
+  isProcessing Boolean     @default(false)
+  FromEdges    Edge[]      @relation("FromEdges")
+  ToEdges      Edge[]      @relation("ToEdges")
+  Attributes   Attribute[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now()) @updatedAt
 }
 
 model NodeType {
-  id              Int              @id @default(autoincrement())
-  w               Int
-  h               Int
-  type            String           @unique
-  color           Color
-  label           String
-  NodeConfigTypes NodeConfigType[]
-  OutEdgeTypes    EdgeType[]       @relation("OutEdgeTypes")
-  InEdgeTypes     EdgeType[]       @relation("InEdgeTypes")
-  Node            Node[]
+  id             Int             @id @default(autoincrement())
+  w              Int
+  h              Int
+  color          Color
+  label          String
+  AttributeTypes AttributeType[]
+  OutEdgeTypes   EdgeType[]      @relation("OutEdgeTypes")
+  InEdgeTypes    EdgeType[]      @relation("InEdgeTypes")
+  Node           Node[]
 }
 
-model NodeConfig {
-  id                Int     @id @default(autoincrement())
-  mapTypeId         Int
-  Node              Node    @relation(fields: [mapTypeId], references: [id])
-  nodeFieldConfigId Int
-  value             String?
+model Attribute {
+  id              Int           @id @default(autoincrement())
+  nodeId          Int
+  Node            Node          @relation(fields: [nodeId], references: [id])
+  attributeTypeId Int
+  AttributeType   AttributeType @relation(fields: [attributeTypeId], references: [id])
+  value           String?
 }
 
-model NodeConfigType {
-  id            Int                 @id @default(autoincrement())
-  type          NodeConfigTypeLabel
+model AttributeType {
+  id            Int                @id @default(autoincrement())
+  type          AttributeTypeLabel
   label         String
   selectOptions String[]
   nodeTypeId    Int?
-  NodeType      NodeType?           @relation(fields: [nodeTypeId], references: [id])
+  NodeType      NodeType?          @relation(fields: [nodeTypeId], references: [id])
+  Attribute     Attribute[]
 }
 
-enum NodeConfigTypeLabel {
+enum AttributeTypeLabel {
   TEXT
   SELECT
 }
@@ -117,6 +105,7 @@ model Edge {
   ToNode      Node     @relation("ToEdges", fields: [toNodeId], references: [id])
   lineColor   String   @default("#bbbbbb")
   lineWidth   Int      @default(1)
+  schema      Json?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 }

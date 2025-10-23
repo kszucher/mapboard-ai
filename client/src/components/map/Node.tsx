@@ -16,14 +16,7 @@ import GripVertical from '../../../assets/grip-vertical.svg?react';
 import { api, useGetEdgeTypeInfoQuery, useGetMapInfoQuery, useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
-import { NodeTypeContext } from './NodeTypeContext.tsx';
-import { NodeTypeDataFrame } from './NodeTypeDataFrame.tsx';
-import { NodeTypeFileUpload } from './NodeTypeFileUpload.tsx';
-import { NodeTypeIngestion } from './NodeTypeIngestion.tsx';
-import { NodeTypeLlm } from './NodeTypeLlm.tsx';
-import { NodeTypeQuestion } from './NodeTypeQuestion.tsx';
-import { NodeTypeVectorDatabase } from './NodeTypeVectorDatabase.tsx';
-import { NodeTypeVisualizer } from './NodeTypeVisualizer.tsx';
+import { NodeType } from './NodeType.tsx';
 
 export const Node: FC = () => {
   const edgeTypes = useGetEdgeTypeInfoQuery().data || [];
@@ -169,14 +162,7 @@ export const Node: FC = () => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </Box>
-      {getNodeLabel(nodeTypes, ni) === 'File Upload' && <NodeTypeFileUpload ni={ni} nodeId={ni.id} />}
-      {getNodeLabel(nodeTypes, ni) === 'Ingestion' && <NodeTypeIngestion ni={ni} nodeId={ni.id} />}
-      {getNodeLabel(nodeTypes, ni) === 'Context' && <NodeTypeContext ni={ni} nodeId={ni.id} />}
-      {getNodeLabel(nodeTypes, ni) === 'Question' && <NodeTypeQuestion ni={ni} nodeId={ni.id} />}
-      {getNodeLabel(nodeTypes, ni) === 'Vector Database' && <NodeTypeVectorDatabase ni={ni} nodeId={ni.id} />}
-      {getNodeLabel(nodeTypes, ni) === 'Data Frame' && <NodeTypeDataFrame ni={ni} nodeId={ni.id} />}
-      {getNodeLabel(nodeTypes, ni) === 'LLM' && <NodeTypeLlm ni={ni} nodeId={ni.id} />}
-      {getNodeLabel(nodeTypes, ni) === 'Visualizer' && <NodeTypeVisualizer ni={ni} nodeId={ni.id} />}
+      <NodeType ni={ni} nodeId={ni.id} />
     </div>
   ));
 };

@@ -2,7 +2,7 @@ import { Badge, Button, Select, Table } from '@radix-ui/themes';
 import { useState } from 'react';
 import { Color, NodeType } from '../../../../shared/src/api/api-types-node-type.ts';
 import { useGetNodeTypeInfoQuery } from '../../data/api.ts';
-import { NodeConfigType } from '../popovers/NodeConfigType.tsx';
+import { AttributeType } from '../popovers/AttributeType.tsx';
 
 export const NodeTable = () => {
   const nodeTypes = useGetNodeTypeInfoQuery().data || [];
@@ -13,19 +13,17 @@ export const NodeTable = () => {
     <Table.Root size={'1'}>
       <Table.Header>
         <Table.Row>
-          <Table.ColumnHeaderCell>{'Type'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Label'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Color'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Width'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Height'}</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>{'Configs Action'}</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>{'Attributes'}</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{'Action'}</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
         {nodeTypes?.map(el => (
           <Table.Row key={el.id}>
-            <Table.Cell>{el.type}</Table.Cell>
             <Table.Cell>{el.label}</Table.Cell>
             <Table.Cell>
               <Badge color={el.color} size="1">
@@ -35,7 +33,7 @@ export const NodeTable = () => {
             <Table.Cell>{el.w}</Table.Cell>
             <Table.Cell>{el.h}</Table.Cell>
             <Table.Cell>
-              <NodeConfigType nodeType={el} />
+              <AttributeType nodeType={el} />
             </Table.Cell>
             <Table.Cell>
               <Button size="1" variant="solid" onClick={() => {}}>
@@ -45,7 +43,6 @@ export const NodeTable = () => {
           </Table.Row>
         ))}
         <Table.Row key={'add'}>
-          <Table.Cell>{newNodeType.type}</Table.Cell>
           <Table.Cell>{newNodeType.label}</Table.Cell>
           <Table.Cell>
             <Select.Root
@@ -66,7 +63,7 @@ export const NodeTable = () => {
           <Table.Cell>{newNodeType.w}</Table.Cell>
           <Table.Cell>{newNodeType.h}</Table.Cell>
           <Table.Cell>
-            <NodeConfigType nodeType={newNodeType} />
+            <AttributeType nodeType={newNodeType} />
           </Table.Cell>
           <Table.Cell>
             <Button size="1" variant="solid" color="gray" onClick={() => {}}>

@@ -11,10 +11,16 @@ export class NodeTypeRepository {
         id: true,
         w: true,
         h: true,
-        type: true,
         color: true,
         label: true,
-        NodeConfigTypes: true,
+        AttributeTypes: {
+          select: {
+            id: true,
+            type: true,
+            label: true,
+            selectOptions: true,
+          },
+        },
       },
     });
   }

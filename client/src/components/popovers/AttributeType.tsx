@@ -1,8 +1,8 @@
 import { Button, Flex, Popover, Text } from '@radix-ui/themes';
 import { NodeType } from '../../../../shared/src/api/api-types-node-type.ts';
-import { NodeConfigTypeTable } from '../tables/NodeConfigTypeTable.tsx';
+import { AttributeTypeTable } from '../tables/AttributeTypeTable.tsx';
 
-export const NodeConfigType = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
+export const AttributeType = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -12,8 +12,8 @@ export const NodeConfigType = ({ nodeType }: { nodeType: Partial<NodeType> }) =>
       </Popover.Trigger>
       <Popover.Content width="800px">
         <Flex direction="column" gap="2" align="start" content="center">
-          <Text size="3">{nodeType.label + ' Configs'}</Text>
-          <NodeConfigTypeTable nodeType={nodeType} />
+          <Text size="3">{nodeType.label + ' Attributes'}</Text>
+          <AttributeTypeTable nodeType={nodeType} />
         </Flex>
         <Flex gap="3" mt="4" justify="end">
           <Popover.Close>

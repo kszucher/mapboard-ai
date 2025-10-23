@@ -6,11 +6,6 @@ import { Prisma, PrismaClient } from '../generated/client';
 export class NodeRepository {
   constructor(private prisma: PrismaClient) {}
 
-  private nodeInclude = (<T extends Prisma.NodeInclude>(obj: T) => obj)({
-    FromEdges: { select: { ToNode: { select: { NodeType: { select: { id: true, color: true } } } } } },
-    ToEdges: { select: { FromNode: { select: { NodeType: { select: { id: true, color: true } } } } } },
-  });
-
   async getNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
     return this.prisma.node.findFirstOrThrow({
       where: {
@@ -23,7 +18,6 @@ export class NodeRepository {
   async getNodes({ mapId }: { mapId: number }) {
     return this.prisma.node.findMany({
       where: { mapId },
-      include: this.nodeInclude,
       omit: { createdAt: true },
     });
   }
@@ -35,7 +29,6 @@ export class NodeRepository {
         NodeType: {
           select: {
             id: true,
-            type: true,
           },
         },
       },
@@ -54,9 +47,6 @@ export class NodeRepository {
       where: { mapId },
       omit: {
         mapId: true,
-        ingestionOutputJson: true,
-        dataFrameOutputJson: true,
-        llmOutputJson: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -102,22 +92,10 @@ export class NodeRepository {
       where: { mapId },
       data: {
         workspaceId,
-        ingestionOutputJson: Prisma.JsonNull,
-        vectorDatabaseId: null,
-        vectorDatabaseOutputText: null,
-        dataFrameOutputJson: Prisma.JsonNull,
-        llmOutputJson: Prisma.JsonNull,
-        visualizerOutputText: null,
       },
       select: {
         id: true,
         workspaceId: true,
-        ingestionOutputJson: true,
-        vectorDatabaseId: true,
-        vectorDatabaseOutputText: true,
-        dataFrameOutputJson: true,
-        llmOutputJson: true,
-        visualizerOutputText: true,
         updatedAt: true,
       },
     });
@@ -164,7 +142,6 @@ export class NodeRepository {
         offsetX: (result._max.offsetX || 0) + 200,
         offsetY: (result._max.offsetY || 0) + 200,
       },
-      include: this.nodeInclude,
       omit: { createdAt: true },
     });
   }
@@ -187,136 +164,5 @@ export class NodeRepository {
 
   async deleteNodesOfMap({ mapId }: { mapId: number }) {
     await this.prisma.node.deleteMany({ where: { mapId } });
-  }
-
-  // the following will be deprecated!!!
-  async getInputFileNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.node.findFirst({
-      where: {
-        mapId,
-        NodeType: { type: 'FILE' },
-        FromEdges: {
-          some: {
-            toNodeId: nodeId,
-          },
-        },
-      },
-      select: {
-        iid: true,
-        fileHash: true,
-        fileName: true,
-      },
-    });
-  }
-
-  async getInputIngestionNodes({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.node.findMany({
-      where: {
-        mapId,
-        NodeType: { type: 'INGESTION' },
-        FromEdges: {
-          some: {
-            toNodeId: nodeId,
-          },
-        },
-      },
-      select: {
-        iid: true,
-        ingestionOutputJson: true,
-      },
-    });
-  }
-
-  async getInputContextNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.node.findFirst({
-      where: {
-        mapId,
-        NodeType: { type: 'CONTEXT' },
-        FromEdges: {
-          some: {
-            toNodeId: nodeId,
-          },
-        },
-      },
-      select: {
-        iid: true,
-        contextOutputText: true,
-      },
-    });
-  }
-
-  async getInputQuestionNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.node.findFirst({
-      where: {
-        mapId,
-        NodeType: { type: 'QUESTION' },
-        FromEdges: {
-          some: {
-            toNodeId: nodeId,
-          },
-        },
-      },
-      select: {
-        iid: true,
-        questionOutputText: true,
-      },
-    });
-  }
-
-  async getInputVectorDatabaseNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.node.findFirst({
-      where: {
-        mapId,
-        NodeType: { type: 'VECTOR_DATABASE' },
-        FromEdges: {
-          some: {
-            toNodeId: nodeId,
-          },
-        },
-      },
-      select: {
-        iid: true,
-        vectorDatabaseId: true,
-        vectorDatabaseOutputText: true,
-      },
-    });
-  }
-
-  async getInputDataFrameNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.node.findFirst({
-      where: {
-        mapId,
-        NodeType: { type: 'DATA_FRAME' },
-        FromEdges: {
-          some: {
-            toNodeId: nodeId,
-          },
-        },
-      },
-      select: {
-        iid: true,
-        dataFrameOutputJson: true,
-      },
-    });
-  }
-
-  async getInputLlmNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
-    return this.prisma.node.findFirst({
-      where: {
-        mapId,
-        NodeType: { type: 'LLM' },
-        FromEdges: {
-          some: {
-            toNodeId: nodeId,
-          },
-        },
-      },
-      select: {
-        iid: true,
-        llmInstructions: true,
-        llmOutputSchema: true,
-        llmOutputJson: true,
-      },
-    });
   }
 }

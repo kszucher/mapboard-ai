@@ -11,14 +11,6 @@ import { UserRepository } from '../user/user.repository';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { EdgeTypeRepository } from './edge-type.repository';
 import { EdgeRepository } from './edge.repository';
-import { ExecuteContextService } from '../execute/execute-context.service';
-import { ExecuteDataFrameService } from '../execute/execute-data-frame.service';
-import { ExecuteFileService } from '../execute/execute-file.service';
-import { ExecuteIngestionService } from '../execute/execute-ingestion.service';
-import { ExecuteLlmService } from '../execute/execute-llm.service';
-import { ExecuteQuestionService } from '../execute/execute-question.service';
-import { ExecuteVectorDatabaseService } from '../execute/execute-vector-database.service';
-import { ExecuteVisualizerService } from '../execute/execute-visualizer.service';
 import { NodeRepository } from './node.repository';
 import { MapRepository } from './map.repository';
 
@@ -65,15 +57,7 @@ export class MapService {
     private tabRepository: TabRepository,
     private shareRepository: ShareRepository,
     private workspaceRepository: WorkspaceRepository,
-    private distributionService: DistributionService,
-    private executeFileService: ExecuteFileService,
-    private executeIngestionService: ExecuteIngestionService,
-    private executeContextService: ExecuteContextService,
-    private executeQuestionService: ExecuteQuestionService,
-    private executeVectorDatabaseService: ExecuteVectorDatabaseService,
-    private executeDataFrameService: ExecuteDataFrameService,
-    private executeLlmService: ExecuteLlmService,
-    private executeVisualizerService: ExecuteVisualizerService
+    private distributionService: DistributionService
   ) {}
 
   private async createMapCommon({
@@ -120,7 +104,7 @@ export class MapService {
 
     await this.edgeRepository.createEdges({
       mapId: newMap.id,
-      edges: copyEdges.map(({ id, fromNodeId, toNodeId, ...rest }) => ({
+      edges: copyEdges.map(({ id, fromNodeId, toNodeId, schema, ...rest }) => ({
         ...rest,
         mapId: newMap.id,
         fromNodeId: nodeIdMap.get(fromNodeId)!,
@@ -275,23 +259,23 @@ export class MapService {
   }) {
     const [activeNode, inactiveNodes] = await this.nodeRepository.setProcessing({ workspaceId, mapId, nodeId });
 
-    await this.distributionService.publish({
-      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-      payload: { mapId, nodes: { update: [activeNode, ...inactiveNodes] } },
-    });
-
-    const fileHash = await this.executeFileService.upload(file);
-
-    const node = await this.nodeRepository.updateNode({
-      nodeId,
-      workspaceId,
-      params: { fileName: file.originalname, fileHash: fileHash ?? '', isProcessing: false },
-    });
-
-    await this.distributionService.publish({
-      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-      payload: { mapId, nodes: { update: [node] } },
-    });
+    // await this.distributionService.publish({
+    //   type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+    //   payload: { mapId, nodes: { update: [activeNode, ...inactiveNodes] } },
+    // });
+    //
+    // const fileHash = await this.executeFileService.upload(file);
+    //
+    // const node = await this.nodeRepository.updateNode({
+    //   nodeId,
+    //   workspaceId,
+    //   params: { fileName: file.originalname, fileHash: fileHash ?? '', isProcessing: false },
+    // });
+    //
+    // await this.distributionService.publish({
+    //   type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+    //   payload: { mapId, nodes: { update: [node] } },
+    // });
   }
 
   async executeMap({ workspaceId, mapId }: { workspaceId: number; mapId: number }) {
@@ -322,55 +306,55 @@ export class MapService {
       });
 
       try {
-        switch (ni.NodeType.type) {
-          case 'FILE': {
-            await new Promise(el => setTimeout(el, 2000));
-            await this.executeFileService.execute({ mapId, nodeId });
-            break;
-          }
-          case 'INGESTION': {
-            await this.executeIngestionService.execute({ workspaceId, mapId, nodeId });
-            break;
-          }
-          case 'CONTEXT': {
-            await new Promise(el => setTimeout(el, 2000));
-            await this.executeContextService.execute({ mapId, nodeId });
-            break;
-          }
-          case 'QUESTION': {
-            await new Promise(el => setTimeout(el, 2000));
-            await this.executeQuestionService.execute({ mapId, nodeId });
-            break;
-          }
-          case 'VECTOR_DATABASE': {
-            await this.executeVectorDatabaseService.execute({ workspaceId, mapId, nodeId });
-            break;
-          }
-          case 'DATA_FRAME': {
-            await this.executeDataFrameService.execute({ workspaceId, mapId, nodeId });
-            break;
-          }
-          case 'LLM': {
-            const node = await this.executeLlmService.execute({ workspaceId, mapId, nodeId });
-
-            await this.distributionService.publish({
-              type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-              payload: { mapId, nodes: { update: [node] } },
-            });
-            break;
-          }
-          case 'VISUALIZER': {
-            const node = await this.executeVisualizerService.execute({ workspaceId, mapId, nodeId });
-
-            await this.distributionService.publish({
-              type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-              payload: { mapId, nodes: { update: [node] } },
-            });
-            break;
-          }
-        }
+        // switch (ni.NodeType.type) {
+        //   case 'FILE': {
+        //     await new Promise(el => setTimeout(el, 2000));
+        //     await this.executeFileService.execute({ mapId, nodeId });
+        //     break;
+        //   }
+        //   case 'INGESTION': {
+        //     await this.executeIngestionService.execute({ workspaceId, mapId, nodeId });
+        //     break;
+        //   }
+        //   case 'CONTEXT': {
+        //     await new Promise(el => setTimeout(el, 2000));
+        //     await this.executeContextService.execute({ mapId, nodeId });
+        //     break;
+        //   }
+        //   case 'QUESTION': {
+        //     await new Promise(el => setTimeout(el, 2000));
+        //     await this.executeQuestionService.execute({ mapId, nodeId });
+        //     break;
+        //   }
+        //   case 'VECTOR_DATABASE': {
+        //     await this.executeVectorDatabaseService.execute({ workspaceId, mapId, nodeId });
+        //     break;
+        //   }
+        //   case 'DATA_FRAME': {
+        //     await this.executeDataFrameService.execute({ workspaceId, mapId, nodeId });
+        //     break;
+        //   }
+        //   case 'LLM': {
+        //     const node = await this.executeLlmService.execute({ workspaceId, mapId, nodeId });
+        //
+        //     await this.distributionService.publish({
+        //       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+        //       payload: { mapId, nodes: { update: [node] } },
+        //     });
+        //     break;
+        //   }
+        //   case 'VISUALIZER': {
+        //     const node = await this.executeVisualizerService.execute({ workspaceId, mapId, nodeId });
+        //
+        //     await this.distributionService.publish({
+        //       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
+        //       payload: { mapId, nodes: { update: [node] } },
+        //     });
+        //     break;
+        //   }
+        // }
       } catch (e) {
-        console.error(ni.NodeType.type + 'error', e);
+        // console.error(ni.NodeType.type + 'error', e);
 
         const nodes = await this.nodeRepository.clearProcessing({ workspaceId, mapId });
 

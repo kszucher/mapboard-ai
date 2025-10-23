@@ -5,23 +5,22 @@ export type NodeType = {
   type: string;
   color: Color;
   label: string;
-  NodeConfigTypes: NodeConfigType[];
 }
 
-export type NodeConfigType = {
+export type AttributeType = {
   id: number;
-  type: NodeConfigTypeLabel;
+  type: AttributeTypeLabel;
   label: string;
   selectOptions: string[];
   nodeTypeId: number | null;
 }
 
-export const NodeConfigTypeLabel = {
+export const AttributeTypeLabel = {
   TEXT: 'TEXT',
   SELECT: 'SELECT',
 };
 
-export type NodeConfigTypeLabel = (typeof NodeConfigTypeLabel)[keyof typeof NodeConfigTypeLabel];
+export type AttributeTypeLabel = (typeof AttributeTypeLabel)[keyof typeof AttributeTypeLabel];
 
 export const Color = {
   gray: 'gray',

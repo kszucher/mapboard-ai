@@ -26,10 +26,10 @@ export const EdgeTable = () => {
         {edgeTypes?.map(eti => (
           <Table.Row key={eti.id}>
             <Table.Cell>
-              <Badge color="gray">{nodeTypes.find(nti => nti.id === eti.fromNodeTypeId)?.type || ''}</Badge>
+              <Badge color="gray">{nodeTypes.find(nti => nti.id === eti.fromNodeTypeId)?.label || ''}</Badge>
             </Table.Cell>
             <Table.Cell>
-              <Badge color="gray">{nodeTypes.find(nti => nti.id === eti.toNodeTypeId)?.type || ''}</Badge>
+              <Badge color="gray">{nodeTypes.find(nti => nti.id === eti.toNodeTypeId)?.label || ''}</Badge>
             </Table.Cell>
             <Table.Cell>{'schema'}</Table.Cell>
             <Table.Cell>

@@ -4,14 +4,6 @@ import express from 'express';
 import { container } from 'tsyringe';
 import { DistributionController } from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
-import { ExecuteContextService } from './execute/execute-context.service';
-import { ExecuteDataFrameService } from './execute/execute-data-frame.service';
-import { ExecuteFileService } from './execute/execute-file.service';
-import { ExecuteIngestionService } from './execute/execute-ingestion.service';
-import { ExecuteLlmService } from './execute/execute-llm.service';
-import { ExecuteQuestionService } from './execute/execute-question.service';
-import { ExecuteVectorDatabaseService } from './execute/execute-vector-database.service';
-import { ExecuteVisualizerService } from './execute/execute-visualizer.service';
 import { PrismaClient } from './generated/client';
 import { EdgeTypeController } from './map/edge-type.controller';
 import { EdgeTypeRepository } from './map/edge-type.repository';
@@ -82,15 +74,6 @@ export class MapBoard {
     container.registerSingleton(EdgeTypeService);
     container.registerSingleton(EdgeTypeRepository);
     container.registerSingleton(EdgeTypeController);
-
-    container.registerSingleton(ExecuteFileService);
-    container.registerSingleton(ExecuteIngestionService);
-    container.registerSingleton(ExecuteContextService);
-    container.registerSingleton(ExecuteQuestionService);
-    container.registerSingleton(ExecuteVectorDatabaseService);
-    container.registerSingleton(ExecuteDataFrameService);
-    container.registerSingleton(ExecuteLlmService);
-    container.registerSingleton(ExecuteVisualizerService);
 
     container.registerSingleton(TabService);
     container.registerSingleton(TabRepository);

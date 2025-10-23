@@ -1,10 +1,10 @@
 import { Button, Flex, Select, Table, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
-import { NodeType, NodeConfigType, NodeConfigTypeLabel } from '../../../../shared/src/api/api-types-node-type.ts';
+import { NodeType, AttributeType, AttributeTypeLabel } from '../../../../shared/src/api/api-types-node-type.ts';
 
-export const NodeConfigTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
-  const emptyNodeConfigType: Partial<NodeConfigType> = { type: '', label: '', selectOptions: [] };
-  const [nodeConfigType, setNodeConfigType] = useState(emptyNodeConfigType ?? nodeType);
+export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
+  const emptyAttributeType: Partial<AttributeType> = { type: '', label: '', selectOptions: [] };
+  const [AttributeType, setAttributeType] = useState(emptyAttributeType ?? nodeType);
   const [selectOption, setSelectOption] = useState('');
 
   return (
@@ -34,14 +34,14 @@ export const NodeConfigTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> 
           <Table.RowHeaderCell>
             <Select.Root
               size="1"
-              value={nodeConfigType.type}
-              onValueChange={(value: NodeConfigTypeLabel) => {
-                setNodeConfigType({ ...nodeConfigType, type: value });
+              value={AttributeType.type}
+              onValueChange={(value: AttributeTypeLabel) => {
+                setAttributeType({ ...AttributeType, type: value });
               }}
             >
               <Select.Trigger variant="soft" color="gray" />
               <Select.Content>
-                {Object.values(NodeConfigTypeLabel).map(label => (
+                {Object.values(AttributeTypeLabel).map(label => (
                   <Select.Item key={label} value={label}>
                     {label}
                   </Select.Item>
@@ -55,13 +55,13 @@ export const NodeConfigTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> 
               variant={'soft'}
               placeholder="label"
               radius={'large'}
-              onChange={e => setNodeConfigType({ ...nodeConfigType, label: e.target.value })}
+              onChange={e => setAttributeType({ ...AttributeType, label: e.target.value })}
             ></TextField.Root>
           </Table.Cell>
           <Table.Cell>
-            {nodeConfigType.type === NodeConfigTypeLabel.SELECT && (
+            {AttributeType.type === AttributeTypeLabel.SELECT && (
               <Flex direction="column" gap="2" align="start" content="center">
-                {nodeConfigType.selectOptions?.map((el, i) => (
+                {AttributeType.selectOptions?.map((el, i) => (
                   <Flex key={i} gap="2" align="start" content="center">
                     <Text as="div" size="2" mb="1">
                       {el}
@@ -71,9 +71,9 @@ export const NodeConfigTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> 
                       variant="solid"
                       color="gray"
                       onClick={() => {
-                        setNodeConfigType({
-                          ...nodeConfigType,
-                          selectOptions: nodeConfigType.selectOptions?.filter((_, si) => si !== i),
+                        setAttributeType({
+                          ...AttributeType,
+                          selectOptions: AttributeType.selectOptions?.filter((_, si) => si !== i),
                         });
                       }}
                     >
@@ -94,9 +94,9 @@ export const NodeConfigTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> 
                   variant="solid"
                   color="gray"
                   onClick={() => {
-                    setNodeConfigType({
-                      ...nodeConfigType,
-                      selectOptions: [...(nodeConfigType.selectOptions ?? []), selectOption],
+                    setAttributeType({
+                      ...AttributeType,
+                      selectOptions: [...(AttributeType.selectOptions ?? []), selectOption],
                     });
                     setSelectOption('');
                   }}
@@ -109,10 +109,10 @@ export const NodeConfigTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> 
           <Table.Cell>
             <Button
               disabled={
-                !nodeConfigType.type ||
-                !nodeConfigType.label ||
-                (nodeConfigType.type === NodeConfigTypeLabel.SELECT &&
-                  (!nodeConfigType.selectOptions || nodeConfigType.selectOptions.length === 0))
+                !AttributeType.type ||
+                !AttributeType.label ||
+                (AttributeType.type === AttributeTypeLabel.SELECT &&
+                  (!AttributeType.selectOptions || AttributeType.selectOptions.length === 0))
               }
               size="1"
               variant="solid"

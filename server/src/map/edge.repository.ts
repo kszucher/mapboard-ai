@@ -1,5 +1,6 @@
 import { injectable } from 'tsyringe';
 import { Prisma, PrismaClient } from '../generated/client';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 @injectable()
 export class EdgeRepository {
@@ -85,7 +86,10 @@ export class EdgeRepository {
 
   async createEdges({ mapId, edges }: { mapId: number; edges: Prisma.EdgeUncheckedCreateInput[] }) {
     return this.prisma.edge.createManyAndReturn({
-      data: edges.map(e => ({ ...e, mapId })),
+      data: edges.map(e => ({
+        ...e,
+        mapId,
+      })),
       select: { id: true },
     });
   }
