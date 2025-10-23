@@ -5,7 +5,7 @@ import { Color } from '../../../../shared/src/api/api-types-node-type.ts';
 import { api, useGetEdgeTypeInfoQuery, useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
-export const EdgeEdit = () => {
+export const EditEdge = () => {
   const nodeTypes = useGetNodeTypeInfoQuery().data || [];
   const edgeTypes = useGetEdgeTypeInfoQuery().data || [];
   const emptyEdgeType = { fromNodeTypeId: NaN, toNodeTypeId: NaN, schema: '' };
