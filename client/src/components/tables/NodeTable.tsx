@@ -6,8 +6,12 @@ import { AttributeType } from '../popovers/AttributeType.tsx';
 
 export const NodeTable = () => {
   const nodeTypes = useGetNodeTypeInfoQuery().data || [];
-  const emptyNodeType: Partial<NodeType> = { type: '', label: '', color: Color.gray, w: 0, h: 0 };
+  const emptyNodeType: Partial<NodeType> = { label: '', color: Color.gray, w: 0, h: 0 };
   const [newNodeType, setNewNodeType] = useState(emptyNodeType);
+
+  if (!nodeTypes.length) {
+    return null;
+  }
 
   return (
     <Table.Root size={'1'}>
@@ -22,26 +26,28 @@ export const NodeTable = () => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {nodeTypes?.map(el => (
-          <Table.Row key={el.id}>
-            <Table.Cell>{el.label}</Table.Cell>
-            <Table.Cell>
-              <Badge color={el.color} size="1">
-                {el.color}
-              </Badge>
-            </Table.Cell>
-            <Table.Cell>{el.w}</Table.Cell>
-            <Table.Cell>{el.h}</Table.Cell>
-            <Table.Cell>
-              <AttributeType nodeType={el} />
-            </Table.Cell>
-            <Table.Cell>
-              <Button size="1" variant="solid" onClick={() => {}}>
-                {'Remove'}
-              </Button>
-            </Table.Cell>
-          </Table.Row>
-        ))}
+        {[...nodeTypes]
+          .sort((a, b) => a.label!.localeCompare(b.label!))
+          .map(el => (
+            <Table.Row key={el.id}>
+              <Table.Cell>{el.label}</Table.Cell>
+              <Table.Cell>
+                <Badge color={el.color} size="1">
+                  {el.color}
+                </Badge>
+              </Table.Cell>
+              <Table.Cell>{el.w}</Table.Cell>
+              <Table.Cell>{el.h}</Table.Cell>
+              <Table.Cell>
+                <AttributeType nodeType={el} />
+              </Table.Cell>
+              <Table.Cell>
+                <Button size="1" variant="solid" onClick={() => {}}>
+                  {'Remove'}
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          ))}
         <Table.Row key={'add'}>
           <Table.Cell>{newNodeType.label}</Table.Cell>
           <Table.Cell>

@@ -12,6 +12,10 @@ export const EdgeTable = () => {
   const [newEdgeType, setNewEdgeType] = useState(emptyEdgeType);
   const dispatch = useDispatch<AppDispatch>();
 
+  if (!nodeTypes.length || !edgeTypes.length) {
+    return null;
+  }
+
   return (
     <Table.Root size={'1'}>
       <Table.Header>
@@ -23,22 +27,28 @@ export const EdgeTable = () => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {edgeTypes?.map(eti => (
-          <Table.Row key={eti.id}>
-            <Table.Cell>
-              <Badge color="gray">{nodeTypes.find(nti => nti.id === eti.fromNodeTypeId)?.label || ''}</Badge>
-            </Table.Cell>
-            <Table.Cell>
-              <Badge color="gray">{nodeTypes.find(nti => nti.id === eti.toNodeTypeId)?.label || ''}</Badge>
-            </Table.Cell>
-            <Table.Cell>{'schema'}</Table.Cell>
-            <Table.Cell>
-              <Button size="1" variant="solid" onClick={() => {}}>
-                {'Remove'}
-              </Button>
-            </Table.Cell>
-          </Table.Row>
-        ))}
+        {edgeTypes
+          .map(eti => ({
+            fromNodeType: nodeTypes.find(nti => nti.id === eti.fromNodeTypeId)!,
+            toNodeType: nodeTypes.find(nti => nti.id === eti.toNodeTypeId)!,
+          }))
+          .sort((a, b) => a.fromNodeType.label!.localeCompare(b.fromNodeType.label!))
+          .map(({ fromNodeType, toNodeType }, index) => (
+            <Table.Row key={index}>
+              <Table.Cell>
+                <Badge color={fromNodeType.color}>{fromNodeType.label}</Badge>
+              </Table.Cell>
+              <Table.Cell>
+                <Badge color={toNodeType.color}>{toNodeType.label}</Badge>
+              </Table.Cell>
+              <Table.Cell>{'schema'}</Table.Cell>
+              <Table.Cell>
+                <Button size="1" variant="solid" onClick={() => {}}>
+                  {'Remove'}
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          ))}
         <Table.Row key={'add'}>
           <Table.Cell>
             <Select.Root
@@ -48,12 +58,12 @@ export const EdgeTable = () => {
             >
               <Select.Trigger
                 variant="soft"
-                color={nodeTypes?.find(el => el.id === newEdgeType.fromNodeTypeId)?.color || Color.gray}
+                color={nodeTypes.find(el => el.id === newEdgeType.fromNodeTypeId)?.color || Color.gray}
               />
               <Select.Content>
-                {nodeTypes?.map(el => (
+                {nodeTypes.map(el => (
                   <Select.Item key={el.id} value={el.id?.toString() || ''}>
-                    {el.type}
+                    {el.label}
                   </Select.Item>
                 ))}
               </Select.Content>
@@ -67,12 +77,12 @@ export const EdgeTable = () => {
             >
               <Select.Trigger
                 variant="soft"
-                color={nodeTypes?.find(el => el.id === newEdgeType.toNodeTypeId)?.color || Color.gray}
+                color={nodeTypes.find(el => el.id === newEdgeType.toNodeTypeId)?.color || Color.gray}
               />
               <Select.Content>
-                {nodeTypes?.map(el => (
+                {nodeTypes.map(el => (
                   <Select.Item key={el.id} value={el.id?.toString() || ''}>
-                    {el.type}
+                    {el.label}
                   </Select.Item>
                 ))}
               </Select.Content>

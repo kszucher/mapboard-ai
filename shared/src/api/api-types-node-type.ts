@@ -2,7 +2,6 @@ export type NodeType = {
   id: number;
   w: number;
   h: number;
-  type: string;
   color: Color;
   label: string;
 }
