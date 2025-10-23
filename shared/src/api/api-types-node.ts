@@ -44,13 +44,13 @@ export type N = {
     w: number;
     h: number;
     color: Color;
-    MapEdgeConfigFrom: {
+    InEdgeTypes: {
       ToNodeType: {
         id: number;
         color: Color
       }
     }[];
-    MapEdgeConfigTo: {
+    OutEdgeTypes: {
       FromNodeType: {
         id: number;
         color: Color
