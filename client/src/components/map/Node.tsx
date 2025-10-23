@@ -129,13 +129,6 @@ export const Node: FC = () => {
             </IconButton>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content onCloseAutoFocus={e => e.preventDefault()}>
-            <DropdownMenu.Item
-              onClick={() => {
-                dispatch(api.endpoints.deleteNode.initiate({ mapId, nodeId: ni.id }));
-              }}
-            >
-              {'Delete'}
-            </DropdownMenu.Item>
             <DropdownMenu.Sub>
               <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">{'Connect To...'}</DropdownMenu.SubTrigger>
               <DropdownMenu.SubContent>
@@ -164,6 +157,13 @@ export const Node: FC = () => {
                   ))}
               </DropdownMenu.SubContent>
             </DropdownMenu.Sub>
+            <DropdownMenu.Item
+              onClick={() => {
+                dispatch(api.endpoints.deleteNode.initiate({ mapId, nodeId: ni.id }));
+              }}
+            >
+              {'Delete'}
+            </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </Box>
