@@ -3,11 +3,12 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { LlmOutputSchema, N } from '../../../../shared/src/api/api-types-node.ts';
 import { getNodeWidth } from '../../../../shared/src/map/map-getters.ts';
-import { api, useGetMapInfoQuery } from '../../data/api.ts';
+import { api, useGetMapInfoQuery, useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
+  const nodeTypes = useGetNodeTypeInfoQuery().data || [];
   const mapId = useGetMapInfoQuery().data?.id!;
   const dispatch = useDispatch<AppDispatch>();
 
@@ -21,7 +22,7 @@ export const NodeTypeLlm = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
             color="gray"
             variant="soft"
             style={{
-              width: getNodeWidth(ni) - 40,
+              width: getNodeWidth(nodeTypes, ni) - 40,
               minHeight: 120,
               outline: 'none',
               pointerEvents: 'auto',

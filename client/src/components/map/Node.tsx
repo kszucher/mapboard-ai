@@ -47,8 +47,8 @@ export const Node: FC = () => {
         top: getNodeTop(ni),
         transition: 'left 0.3s, top 0.3s',
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-        minWidth: getNodeWidth(ni),
-        minHeight: getNodeHeight(ni),
+        minWidth: getNodeWidth(nodeTypes, ni),
+        minHeight: getNodeHeight(nodeTypes, ni),
         margin: 0,
         pointerEvents: 'none',
       }}
@@ -84,7 +84,7 @@ export const Node: FC = () => {
               e => {
                 e.preventDefault();
                 didMove = true;
-                dispatch(actions.moveNodePreviewUpdate({ n: ni, e }));
+                dispatch(actions.moveNodePreviewUpdate({ nodeTypes, n: ni, e }));
               },
               { signal }
             );

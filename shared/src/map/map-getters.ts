@@ -4,17 +4,15 @@ import { M } from '../api/api-types-map';
 import { M_PADDING, N, N_PADDING } from '../api/api-types-node';
 import { NodeType } from '../api/api-types-node-type';
 
-export const getNodeType = (nodeTypes: Partial<NodeType>[], n: N) => {
-  return nodeTypes.find(nt => nt.id === n.nodeTypeId)!;
-};
+export const getNodeType = (nodeTypes: Partial<NodeType>[], n: N) => nodeTypes.find(nt => nt.id === n.nodeTypeId);
 
 export const getNodeLeft = (n: N) => n.offsetX + M_PADDING;
 
 export const getNodeTop = (n: N) => n.offsetY + M_PADDING;
 
-export const getNodeWidth = (n: N) => n.NodeType.w; // TODO pass nodeTypes, and call getNodeType... this is the only way
+export const getNodeWidth = (nodeTypes: Partial<NodeType>[], n: N) => getNodeType(nodeTypes, n)?.w || 0;
 
-export const getNodeHeight = (n: N) => n.NodeType.h;
+export const getNodeHeight = (nodeTypes: Partial<NodeType>[], n: N) => getNodeType(nodeTypes, n)?.h || 0;
 
 export const getNodeRight = (n: N) => n.offsetX + n.NodeType.w + N_PADDING;
 

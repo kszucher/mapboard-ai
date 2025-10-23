@@ -2,6 +2,7 @@ import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs
 import React from 'react';
 import { UpdateMapGraphEventPayload } from '../../../shared/src/api/api-types-distribution.ts';
 import { E, EdgeUpdateDown } from '../../../shared/src/api/api-types-edge.ts';
+import { NodeType } from '../../../shared/src/api/api-types-node-type.ts';
 import { N, NodeUpdateDown } from '../../../shared/src/api/api-types-node.ts';
 import { getNodeHeight, getNodeWidth } from '../../../shared/src/map/map-getters.ts';
 import { alignNodes } from '../../../shared/src/map/map-setters.ts';
@@ -82,12 +83,12 @@ export const slice = createSlice({
       state.zoomInfo.fromX = originX + (getMapX(e) - prevMapX) / scale;
       state.zoomInfo.fromY = originY + (getMapY(e) - prevMapY) / scale;
     },
-    moveNodePreviewUpdate(state, action: PayloadAction<{ n: N; e: MouseEvent }>) {
-      const { n, e } = action.payload;
+    moveNodePreviewUpdate(state, action: PayloadAction<{ nodeTypes: Partial<NodeType>[]; n: N; e: MouseEvent }>) {
+      const { nodeTypes, n, e } = action.payload;
       const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
       const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetX;
       const toY = originY + (getMapY(e) - prevMapY) / scale - fromY + n.offsetY;
-      state.nodeOffsetCoords = [toX, toY, getNodeWidth(n), getNodeHeight(n)];
+      state.nodeOffsetCoords = [toX, toY, getNodeWidth(nodeTypes, n), getNodeHeight(nodeTypes, n)];
     },
     moveNodePreviewEnd(state) {
       state.nodeOffsetCoords = [];

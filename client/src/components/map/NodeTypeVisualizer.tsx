@@ -2,8 +2,11 @@ import { Box, Flex, TextArea } from '@radix-ui/themes';
 import React from 'react';
 import { N } from '../../../../shared/src/api/api-types-node.ts';
 import { getNodeHeight, getNodeWidth } from '../../../../shared/src/map/map-getters.ts';
+import { useGetNodeTypeInfoQuery } from '../../data/api.ts';
 
 export const NodeTypeVisualizer = ({ nodeId, ni }: { nodeId: number; ni: N }) => {
+  const nodeTypes = useGetNodeTypeInfoQuery().data || [];
+
   const x = { nodeId, ni };
   if (!x) {
     window.alert('missing props');
@@ -19,8 +22,8 @@ export const NodeTypeVisualizer = ({ nodeId, ni }: { nodeId: number; ni: N }) =>
             variant="soft"
             disabled={true}
             style={{
-              width: getNodeWidth(ni) - 40,
-              minHeight: getNodeHeight(ni) - 70,
+              width: getNodeWidth(nodeTypes, ni) - 40,
+              minHeight: getNodeHeight(nodeTypes, ni) - 70,
               outline: 'none',
               pointerEvents: 'auto',
             }}
