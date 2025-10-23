@@ -79,17 +79,21 @@ model Attribute {
 
 model AttributeType {
   id            Int                @id @default(autoincrement())
-  type          AttributeTypeLabel
-  label         String
-  selectOptions String[]
+  label         AttributeTypeLabel
+  defaultString String?
+  defaultNumber Int?
+  defaultEnum   String[]
   nodeTypeId    Int?
   NodeType      NodeType?          @relation(fields: [nodeTypeId], references: [id])
   Attribute     Attribute[]
 }
 
 enum AttributeTypeLabel {
-  TEXT
-  SELECT
+  INPUT_STRING
+  INPUT_NUMBER
+  INPUT_ENUM
+  OUTPUT_STRING
+  OUTPUT_NUMBER
 }
 
 model Edge {

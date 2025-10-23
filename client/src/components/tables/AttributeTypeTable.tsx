@@ -3,7 +3,12 @@ import { useState } from 'react';
 import { AttributeType, AttributeTypeLabel, NodeType } from '../../../../shared/src/api/api-types-node-type.ts';
 
 export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
-  const emptyAttributeType: Partial<AttributeType> = { type: '', label: '', selectOptions: [] };
+  const emptyAttributeType: Partial<AttributeType> & Required<Pick<AttributeType, 'label'>> = {
+    label: AttributeTypeLabel.INPUT_STRING,
+    defaultString: null,
+    defaultNumber: null,
+    defaultEnum: [],
+  };
   const [AttributeType, setAttributeType] = useState(emptyAttributeType ?? nodeType);
   const [selectOption, setSelectOption] = useState('');
 
@@ -34,9 +39,17 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
           <Table.RowHeaderCell>
             <Select.Root
               size="1"
-              value={AttributeType.type}
+              value={
+                {
+                  [AttributeTypeLabel.INPUT_STRING]: 'a',
+                  [AttributeTypeLabel.INPUT_NUMBER]: 'b',
+                  [AttributeTypeLabel.INPUT_ENUM]: 'c',
+                  [AttributeTypeLabel.OUTPUT_STRING]: 'd',
+                  [AttributeTypeLabel.OUTPUT_NUMBER]: 'e',
+                }[AttributeType.label]
+              }
               onValueChange={(value: AttributeTypeLabel) => {
-                setAttributeType({ ...AttributeType, type: value });
+                setAttributeType({ ...AttributeType, label: value });
               }}
             >
               <Select.Trigger variant="soft" color="gray" />
@@ -59,9 +72,9 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
             ></TextField.Root>
           </Table.Cell>
           <Table.Cell>
-            {AttributeType.type === AttributeTypeLabel.SELECT && (
+            {AttributeType.label === AttributeTypeLabel.INPUT_ENUM && (
               <Flex direction="column" gap="2" align="start" content="center">
-                {AttributeType.selectOptions?.map((el, i) => (
+                {AttributeType.defaultEnum?.map((el, i) => (
                   <Flex key={i} gap="2" align="start" content="center">
                     <Text as="div" size="2" mb="1">
                       {el}
@@ -73,7 +86,7 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
                       onClick={() => {
                         setAttributeType({
                           ...AttributeType,
-                          selectOptions: AttributeType.selectOptions?.filter((_, si) => si !== i),
+                          defaultEnum: AttributeType.defaultEnum?.filter((_, si) => si !== i),
                         });
                       }}
                     >
@@ -96,7 +109,7 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
                   onClick={() => {
                     setAttributeType({
                       ...AttributeType,
-                      selectOptions: [...(AttributeType.selectOptions ?? []), selectOption],
+                      defaultEnum: [...(AttributeType.defaultEnum ?? []), selectOption],
                     });
                     setSelectOption('');
                   }}
@@ -109,10 +122,9 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
           <Table.Cell>
             <Button
               disabled={
-                !AttributeType.type ||
                 !AttributeType.label ||
-                (AttributeType.type === AttributeTypeLabel.SELECT &&
-                  (!AttributeType.selectOptions || AttributeType.selectOptions.length === 0))
+                (AttributeType.label === AttributeTypeLabel.INPUT_ENUM &&
+                  (!AttributeType.defaultEnum || AttributeType.defaultEnum.length === 0))
               }
               size="1"
               variant="solid"

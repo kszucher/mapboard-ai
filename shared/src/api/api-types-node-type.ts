@@ -8,15 +8,19 @@ export type NodeType = {
 
 export type AttributeType = {
   id: number;
-  type: AttributeTypeLabel;
-  label: string;
-  selectOptions: string[];
+  label: AttributeTypeLabel;
+  defaultString: string | null;
+  defaultNumber: number | null;
+  defaultEnum: string[] | null;
   nodeTypeId: number | null;
 }
 
 export const AttributeTypeLabel = {
-  TEXT: 'TEXT',
-  SELECT: 'SELECT',
+  INPUT_STRING: 'INPUT_STRING',
+  INPUT_NUMBER: 'INPUT_NUMBER',
+  INPUT_ENUM: 'INPUT_ENUM',
+  OUTPUT_STRING: 'OUTPUT_STRING',
+  OUTPUT_NUMBER: 'OUTPUT_NUMBER',
 };
 
 export type AttributeTypeLabel = (typeof AttributeTypeLabel)[keyof typeof AttributeTypeLabel];

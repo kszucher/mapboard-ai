@@ -16,9 +16,10 @@ export class NodeTypeRepository {
         AttributeTypes: {
           select: {
             id: true,
-            type: true,
             label: true,
-            selectOptions: true,
+            defaultString: true,
+            defaultNumber: true,
+            defaultEnum: true,
           },
         },
       },
