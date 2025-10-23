@@ -38,6 +38,7 @@ export type N = {
       }
     }
   }[];
+  nodeTypeId: number;
   NodeType: {
     id: number;
     type: string;

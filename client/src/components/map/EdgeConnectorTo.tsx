@@ -13,9 +13,9 @@ export const EdgeConnectorTo: FC = () => {
 
   return m.n.flatMap(ni =>
     edgeTypes
-      .filter(eti => eti.toNodeTypeId === ni.NodeType.id)
+      .filter(eti => eti.toNodeTypeId === ni.nodeTypeId)
       .map((eci, idx) => {
-        const isConnected = m.e.some(ei => ei.ToNode.id === ni.id && ei.FromNode.NodeType.id === eci.fromNodeTypeId);
+        const isConnected = m.e.some(ei => ei.toNodeId === ni.id && ei.FromNode.NodeType.id === eci.fromNodeTypeId);
         const color = nodeTypes.find(el => el.id == eci.fromNodeTypeId)?.color || Color.gray;
         return (
           <circle

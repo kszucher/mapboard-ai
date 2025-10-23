@@ -51,7 +51,7 @@ export class NodeRepository {
   async getNodeMapConfig({ nodeId }: { nodeId: number }) {
     return this.prisma.node.findFirstOrThrow({
       where: { id: nodeId },
-      select: { NodeType: { select: { id: true } } },
+      select: { nodeTypeId: true },
     });
   }
 
