@@ -23,8 +23,8 @@ export const MapConfig = () => {
         transform: 'translateX(-50%)',
       }}
     >
-      <Dialog.Title>{'Map Config'}</Dialog.Title>
-      <Dialog.Description>Configure map nodes and edges below.</Dialog.Description>
+      <Dialog.Title>{'Edit Map'}</Dialog.Title>
+      <Dialog.Description>Edit map nodes and edges below.</Dialog.Description>
       <Tabs.Root defaultValue={dialogMode} mt="4">
         <Tabs.List>
           <Tabs.Trigger value="nodes">Nodes</Tabs.Trigger>

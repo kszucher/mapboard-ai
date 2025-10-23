@@ -7,12 +7,12 @@ export const NodeConfigType = ({ nodeType }: { nodeType: Partial<NodeType> }) =>
     <Popover.Root>
       <Popover.Trigger>
         <Button size={'1'} variant="soft">
-          Edit Node Config
+          Edit
         </Button>
       </Popover.Trigger>
       <Popover.Content width="800px">
         <Flex direction="column" gap="2" align="start" content="center">
-          <Text size="3">{nodeType.label + ' Fields'}</Text>
+          <Text size="3">{nodeType.label + ' Configs'}</Text>
           <NodeConfigTypeEdit nodeType={nodeType} />
         </Flex>
         <Flex gap="3" mt="4" justify="end">

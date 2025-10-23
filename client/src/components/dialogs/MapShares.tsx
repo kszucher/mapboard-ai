@@ -15,7 +15,7 @@ export const MapShares = () => {
       }}
     >
       <Dialog.Title>{'Map Shares'}</Dialog.Title>
-      <Dialog.Description>Configure map shares below.</Dialog.Description>
+      <Dialog.Description>Edit map shares below.</Dialog.Description>
       <Tabs.Root defaultValue="byMe" mt="4">
         <Tabs.List>
           <Tabs.Trigger value="byMe">Shared By Me</Tabs.Trigger>
