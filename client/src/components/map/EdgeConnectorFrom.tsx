@@ -1,10 +1,12 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { getNodeRight, getNodeTop } from '../../../../shared/src/map/map-getters.ts';
+import { getNodeColor, getNodeRight, getNodeTop } from '../../../../shared/src/map/map-getters.ts';
+import { useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { RootState } from '../../data/store.ts';
 import { radixColorMap } from './UtilsSvg.ts';
 
 export const EdgeConnectorFrom: FC = () => {
+  const nodeTypes = useGetNodeTypeInfoQuery().data || [];
   const m = useSelector((state: RootState) => state.slice.commitList[state.slice.commitIndex]);
 
   return m.n.map(ni => {
@@ -13,10 +15,10 @@ export const EdgeConnectorFrom: FC = () => {
       <circle
         key={`${ni.id}_from`}
         r={3}
-        fill={isConnected ? radixColorMap[ni.NodeType.color] : 'none'}
-        stroke={radixColorMap[ni.NodeType.color]}
+        fill={isConnected ? radixColorMap[getNodeColor(nodeTypes, ni)] : 'none'}
+        stroke={radixColorMap[getNodeColor(nodeTypes, ni)]}
         strokeWidth={1.5}
-        transform={`translate(${getNodeRight(ni)}, ${getNodeTop(ni) + 60})`}
+        transform={`translate(${getNodeRight(nodeTypes, ni)}, ${getNodeTop(ni) + 60})`}
         vectorEffect="non-scaling-stroke"
         style={{
           transition: 'all 0.3s',

@@ -39,25 +39,6 @@ export type N = {
     }
   }[];
   nodeTypeId: number;
-  NodeType: {
-    id: number;
-    type: string;
-    w: number;
-    h: number;
-    color: Color;
-    OutEdgeTypes: {
-      ToNodeType: {
-        id: number;
-        color: Color
-      }
-    }[];
-    InEdgeTypes: {
-      FromNodeType: {
-        id: number;
-        color: Color
-      }
-    }[];
-  };
   updatedAt: Date;
 };
 

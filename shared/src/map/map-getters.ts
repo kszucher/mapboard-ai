@@ -2,9 +2,13 @@ import { E } from '../api/api-types-edge';
 import { EdgeType } from '../api/api-types-edge-type';
 import { M } from '../api/api-types-map';
 import { M_PADDING, N, N_PADDING } from '../api/api-types-node';
-import { NodeType } from '../api/api-types-node-type';
+import { Color, NodeType } from '../api/api-types-node-type';
 
 export const getNodeType = (nodeTypes: Partial<NodeType>[], n: N) => nodeTypes.find(nt => nt.id === n.nodeTypeId);
+
+export const getNodeLabel = (nodeTypes: Partial<NodeType>[], n: N) => getNodeType(nodeTypes, n)?.label || '';
+
+export const getNodeColor = (nodeTypes: Partial<NodeType>[], n: N) => getNodeType(nodeTypes, n)?.color || Color.gray;
 
 export const getNodeLeft = (n: N) => n.offsetX + M_PADDING;
 
@@ -14,16 +18,20 @@ export const getNodeWidth = (nodeTypes: Partial<NodeType>[], n: N) => getNodeTyp
 
 export const getNodeHeight = (nodeTypes: Partial<NodeType>[], n: N) => getNodeType(nodeTypes, n)?.h || 0;
 
-export const getNodeRight = (n: N) => n.offsetX + n.NodeType.w + N_PADDING;
+export const getNodeRight = (nodeTypes: Partial<NodeType>[], n: N) => n.offsetX + getNodeWidth(nodeTypes, n) + N_PADDING;
 
-export const getMapWidth = (m: M) => {
-  const max = Math.max(...m.n.map(ni => ni.offsetX + ni.NodeType.w + N_PADDING));
+export const getMapWidth = (nodeTypes: Partial<NodeType>[], m: M) => {
+  const max = Math.max(...m.n.map(ni => ni.offsetX + getNodeWidth(nodeTypes, ni) + N_PADDING));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getMapHeight = (m: M) => {
-  const max = Math.max(...m.n.map(ni => ni.offsetY + ni.NodeType.h + N_PADDING));
+export const getMapHeight = (nodeTypes: Partial<NodeType>[], m: M) => {
+  const max = Math.max(...m.n.map(ni => ni.offsetY + getNodeHeight(nodeTypes, ni) + N_PADDING));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
+};
+
+export const getAllowedTargetNodeTypes = (edgeTypes: Partial<EdgeType>[], n: N) => {
+  return edgeTypes.filter(eti => eti.fromNodeTypeId === n.nodeTypeId).map(eti => eti.toNodeTypeId);
 };
 
 export const isExistingEdge = (m: M, fromNodeId: number, toNodeId: number): boolean =>
@@ -33,7 +41,7 @@ export const getInputNodeOfEdge = (m: M, e: E): N => m.n.find(ni => ni.id === e.
 
 export const getOutputNodeOfEdge = (m: M, e: E): N => m.n.find(ni => ni.id === e.toNodeId)!;
 
-export const getLineCoords = (edgeTypes: Partial<EdgeType>[], m: M, e: E) => {
+export const getLineCoords = (nodeTypes: Partial<NodeType>[], edgeTypes: Partial<EdgeType>[], m: M, e: E) => {
   const fromNode = getInputNodeOfEdge(m, e);
   const toNode = getOutputNodeOfEdge(m, e);
   const leftIndex = edgeTypes
@@ -42,7 +50,7 @@ export const getLineCoords = (edgeTypes: Partial<EdgeType>[], m: M, e: E) => {
     .findIndex(type => type === fromNode.nodeTypeId);
 
   return [
-    getNodeRight(fromNode),
+    getNodeRight(nodeTypes, fromNode),
     getNodeTop(fromNode) + 60,
     getNodeLeft(toNode),
     getNodeTop(toNode) + 60 + leftIndex * 20,

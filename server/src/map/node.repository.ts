@@ -9,12 +9,6 @@ export class NodeRepository {
   private nodeInclude = (<T extends Prisma.NodeInclude>(obj: T) => obj)({
     FromEdges: { select: { ToNode: { select: { NodeType: { select: { id: true, color: true } } } } } },
     ToEdges: { select: { FromNode: { select: { NodeType: { select: { id: true, color: true } } } } } },
-    NodeType: {
-      include: {
-        OutEdgeTypes: { select: { ToNodeType: { select: { id: true, color: true } } } },
-        InEdgeTypes: { select: { FromNodeType: { select: { id: true, color: true } } } },
-      },
-    },
   });
 
   async getNode({ mapId, nodeId }: { mapId: number; nodeId: number }) {
