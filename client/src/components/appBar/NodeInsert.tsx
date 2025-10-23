@@ -1,7 +1,7 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
 import Plus from '../../../assets/plus.svg?react';
-import { api, useGetNodeTypeInfoQuery, useGetMapInfoQuery } from '../../data/api.ts';
+import { api, useGetMapInfoQuery, useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const NodeInsert = () => {

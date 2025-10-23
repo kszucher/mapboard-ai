@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLineCoords } from '../../../../shared/src/map/map-getters.ts';
 import Trash from '../../../assets/trash.svg?react';
-import { api, useGetMapInfoQuery, useGetEdgeTypeInfoQuery, useGetNodeTypeInfoQuery } from '../../data/api.ts';
+import { api, useGetEdgeTypeInfoQuery, useGetMapInfoQuery, useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { AppDispatch, RootState } from '../../data/store.ts';
 import { getBezierLineCoords, getBezierLineCoordsMid } from './UtilsSvg.ts';
 

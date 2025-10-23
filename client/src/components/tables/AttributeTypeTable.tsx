@@ -1,6 +1,6 @@
 import { Button, Flex, Select, Table, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
-import { NodeType, AttributeType, AttributeTypeLabel } from '../../../../shared/src/api/api-types-node-type.ts';
+import { AttributeType, AttributeTypeLabel, NodeType } from '../../../../shared/src/api/api-types-node-type.ts';
 
 export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
   const emptyAttributeType: Partial<AttributeType> = { type: '', label: '', selectOptions: [] };
