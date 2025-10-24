@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import { injectable } from 'tsyringe';
 import {
   DeleteAttributeTypeRequestDto,
+  GetAttributeTypeInfoQueryResponseDto,
   InsertAttributeTypeRequestDto,
 } from '../../../shared/src/api/api-types-attribute-type';
 import { checkJwt, getWorkspaceId } from '../middleware';
@@ -17,8 +18,14 @@ export class AttributeTypeController {
   }
 
   private initializeRoutes() {
+    this.router.post('/get-attribute-type-info', checkJwt, getWorkspaceId, this.getAttributeTypeInfo.bind(this));
     this.router.post('/insert-attribute-type', checkJwt, getWorkspaceId, this.insertAttributeType.bind(this));
     this.router.post('/delete-attribute-type', checkJwt, getWorkspaceId, this.deleteAttributeType.bind(this));
+  }
+
+  private async getAttributeTypeInfo(req: Request, res: Response) {
+    const response: GetAttributeTypeInfoQueryResponseDto = await this.attributeTypeService.getAttributeTypeInfo();
+    res.json(response);
   }
 
   private async insertAttributeType(req: Request, res: Response) {

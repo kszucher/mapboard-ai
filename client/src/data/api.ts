@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { backendUrl } from '../urls/Urls.ts';
+import { apiAttributeType } from './api-attribute-type.ts';
+import { apiAttribute } from './api-attribute.ts';
 import { apiEdgeType } from './api-edge-type.ts';
 import { apiEdge } from './api-edge.ts';
 import { apiMap } from './api-map.ts';
@@ -24,12 +26,23 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['UserInfo', 'MapInfo', 'NodeTypeInfo', 'EdgeTypeInfo', 'TabInfo', 'ShareInfo'],
+  tagTypes: [
+    'UserInfo',
+    'MapInfo',
+    'NodeTypeInfo',
+    'AttributeInfo',
+    'AttributeTypeInfo',
+    'EdgeTypeInfo',
+    'TabInfo',
+    'ShareInfo',
+  ],
   endpoints: builder => ({
     ...apiUser(builder),
     ...apiMap(builder),
     ...apiNode(builder),
     ...apiNodeType(builder),
+    ...apiAttribute(builder),
+    ...apiAttributeType(builder),
     ...apiEdge(builder),
     ...apiEdgeType(builder),
     ...apiTab(builder),
@@ -42,6 +55,8 @@ export const {
   useGetUserInfoQuery,
   useGetMapInfoQuery,
   useGetNodeTypeInfoQuery,
+  useGetAttributeInfoQuery,
+  useGetAttributeTypeInfoQuery,
   useGetEdgeTypeInfoQuery,
   useGetTabInfoQuery,
   useGetShareInfoQuery,

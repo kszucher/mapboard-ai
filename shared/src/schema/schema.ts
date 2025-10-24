@@ -22,7 +22,10 @@ export type NodeType = {
   label: string;
 }
 
-export type Attribute = {}
+export type Attribute = {
+  id: number;
+  value: string | null;
+}
 
 export type AttributeType = {
   id: number;

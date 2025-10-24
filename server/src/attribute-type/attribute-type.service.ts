@@ -5,6 +5,10 @@ import { AttributeTypeRepository } from './attribute-type.repository';
 export class AttributeTypeService {
   constructor(private attributeTypeRepository: AttributeTypeRepository) {}
 
+  async getAttributeTypeInfo() {
+    return this.attributeTypeRepository.getAttributeTypes();
+  }
+
   async insertAttributeType({ nodeId }: { nodeId: number }) {}
 
   async deleteAttributeType({ attributeTypeId }: { attributeTypeId: number }) {}
