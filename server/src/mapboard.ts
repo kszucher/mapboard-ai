@@ -1,7 +1,13 @@
 import 'reflect-metadata';
+
 import cors from 'cors';
 import express from 'express';
 import { container } from 'tsyringe';
+import { AttributeTypeController } from './attribute-type/attribute-type.controller';
+import { AttributeTypeRepository } from './attribute-type/attribute-type.repository';
+import { AttributeTypeService } from './attribute-type/attribute-type.service';
+import { AttributeController } from './attribute/attribute.controller';
+import { AttributeRepository } from './attribute/attribute.repository';
 import { DistributionController } from './distribution/distribution.controller';
 import { DistributionService } from './distribution/distribution.service';
 import { EdgeTypeController } from './edge-type/edge-type.controller';
@@ -32,6 +38,7 @@ import { UserService } from './user/user.service';
 import { WorkspaceController } from './workspace/workspace.controller';
 import { WorkspaceRepository } from './workspace/workspace.repository';
 import { WorkspaceService } from './workspace/workspace.service';
+import { AttributeService } from './attribute/attribute.service';
 
 export interface MapBoardConfig {
   port?: number;
@@ -76,6 +83,14 @@ export class MapBoard {
     container.registerSingleton(NodeTypeRepository);
     container.registerSingleton(NodeTypeController);
 
+    container.registerSingleton(AttributeService);
+    container.registerSingleton(AttributeRepository);
+    container.registerSingleton(AttributeController);
+
+    container.registerSingleton(AttributeTypeService);
+    container.registerSingleton(AttributeTypeRepository);
+    container.registerSingleton(AttributeTypeController);
+
     container.registerSingleton(EdgeService);
     container.registerSingleton(EdgeRepository);
     container.registerSingleton(EdgeController);
@@ -111,6 +126,8 @@ export class MapBoard {
     const mapController = container.resolve(MapController);
     const nodeController = container.resolve(NodeController);
     const nodeTypeController = container.resolve(NodeTypeController);
+    const attributeController = container.resolve(AttributeController);
+    const attributeTypeController = container.resolve(AttributeTypeController);
     const edgeController = container.resolve(EdgeController);
     const edgeTypeController = container.resolve(EdgeTypeController);
     const tabController = container.resolve(TabController);
@@ -125,6 +142,8 @@ export class MapBoard {
     this.app.use(mapController.router);
     this.app.use(nodeController.router);
     this.app.use(nodeTypeController.router);
+    this.app.use(attributeController.router);
+    this.app.use(attributeTypeController.router);
     this.app.use(edgeController.router);
     this.app.use(edgeTypeController.router);
     this.app.use(tabController.router);

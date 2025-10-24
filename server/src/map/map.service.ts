@@ -96,7 +96,7 @@ export class MapService {
       nodes: copyNodes.map(({ id, ...rest }) => ({ ...rest, mapId: newMap.id })),
     });
 
-    const nodeIdMap = new M(copyNodes.map((n, i) => [n.id, newNodes[i].id]));
+    const nodeIdMap = new Map(copyNodes.map((n, i) => [n.id, newNodes[i].id]));
 
     await this.edgeRepository.createEdges({
       mapId: newMap.id,
