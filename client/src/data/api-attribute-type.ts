@@ -7,7 +7,7 @@ import {
 
 export const apiAttributeType = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   getAttributeTypeInfo: builder.query<GetAttributeTypeInfoQueryResponseDto, void>({
-    query: () => ({ url: 'get-attribute-info', method: 'POST', body: {} }),
+    query: () => ({ url: 'get-attribute-type-info', method: 'POST', body: {} }),
     providesTags: ['AttributeTypeInfo'],
   }),
 

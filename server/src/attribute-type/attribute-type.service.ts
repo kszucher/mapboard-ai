@@ -11,8 +11,7 @@ export class AttributeTypeService {
   }
 
   async insertAttributeType(attributeType: Prisma.AttributeTypeUncheckedCreateInput) {
-    console.log('to create:');
-    console.log(attributeType);
+    return this.attributeTypeRepository.insertAttributeType(attributeType);
   }
 
   async deleteAttributeType({ attributeTypeId }: { attributeTypeId: number }) {}

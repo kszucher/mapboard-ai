@@ -11,8 +11,6 @@ export const NodeType = ({ nodeId, ni }: { nodeId: number; ni: Node }) => {
   // const mapId = useGetMapInfoQuery().data?.id!;
   // const dispatch = useDispatch<AppDispatch>();
 
-  console.log(nodeId, ni);
-
   return (
     <React.Fragment>
       <Box position="absolute" top="7" mt="2" ml="3" pt="2" pl="2" className="pointer-events-auto">

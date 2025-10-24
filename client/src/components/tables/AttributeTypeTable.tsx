@@ -2,10 +2,15 @@ import { Button, Flex, Select, Table, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AttributeTypeUncheckedUpdateInput } from '../../../../shared/src/schema/schema.ts';
-import { api } from '../../data/api.ts';
+import { api, useGetAttributeTypeInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
 export const AttributeTypeTable = ({ nodeTypeId }: { nodeTypeId: number }) => {
+  const attributeTypes = useGetAttributeTypeInfoQuery().data || [];
+  const attributeTypesOfNode = attributeTypes.filter(ati => ati.nodeTypeId === nodeTypeId);
+
+  console.log(attributeTypes, attributeTypesOfNode);
+
   const UI_DIRECTIONS = ['Input', 'Output'];
   const UI_TYPES = ['String', 'Number', 'Enum'];
 
@@ -33,11 +38,7 @@ export const AttributeTypeTable = ({ nodeTypeId }: { nodeTypeId: number }) => {
 
   const isAttributeTypeIncomplete = (attributeType: AttributeTypeUncheckedUpdateInput) => {
     return (
-      !attributeType.label ||
-      (attributeType.isInput &&
-        ((attributeType.isString && !attributeType.defaultString) ||
-          (attributeType.isNumber && !attributeType.defaultNumber) ||
-          (attributeType.isEnum && !attributeType.defaultEnum?.length)))
+      !attributeType.label || (attributeType.isInput && attributeType.isEnum && !attributeType.defaultEnum?.length)
     );
   };
 
@@ -91,6 +92,7 @@ export const AttributeTypeTable = ({ nodeTypeId }: { nodeTypeId: number }) => {
               variant={'soft'}
               placeholder="label"
               radius={'large'}
+              value={newAttributeType.label}
               onChange={e => setNewAttributeType({ ...newAttributeType, label: e.target.value })}
             />
           </Table.Cell>
@@ -204,6 +206,8 @@ export const AttributeTypeTable = ({ nodeTypeId }: { nodeTypeId: number }) => {
               color="gray"
               onClick={() => {
                 dispatch(api.endpoints.insertAttributeType.initiate(newAttributeType));
+                setNewAttributeType(emptyAttributeType);
+                setDefaultEnumElement('');
               }}
             >
               {'Create'}
