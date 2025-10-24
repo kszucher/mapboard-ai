@@ -11,12 +11,12 @@ export const apiAttributeType = (builder: EndpointBuilder<BaseQueryFn, string, s
     providesTags: ['AttributeTypeInfo'],
   }),
 
-  insertEdge: builder.mutation<void, InsertAttributeTypeRequestDto>({
+  insertAttributeType: builder.mutation<void, InsertAttributeTypeRequestDto>({
     query: params => ({ url: 'insert-attribute-type', method: 'POST', body: params }),
     invalidatesTags: ['AttributeTypeInfo'],
   }),
 
-  deleteEdge: builder.mutation<void, DeleteAttributeTypeRequestDto>({
+  deleteAttributeType: builder.mutation<void, DeleteAttributeTypeRequestDto>({
     query: params => ({ url: 'delete-attribute-type', method: 'POST', body: params }),
     invalidatesTags: ['AttributeTypeInfo'],
   }),

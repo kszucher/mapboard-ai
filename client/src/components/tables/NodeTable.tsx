@@ -68,9 +68,7 @@ export const NodeTable = () => {
           </Table.Cell>
           <Table.Cell>{newNodeType.w}</Table.Cell>
           <Table.Cell>{newNodeType.h}</Table.Cell>
-          <Table.Cell>
-            <AttributeType nodeType={newNodeType} />
-          </Table.Cell>
+          <Table.Cell>TBD</Table.Cell>
           <Table.Cell>
             <Button size="1" variant="solid" color="gray" onClick={() => {}}>
               {'Add'}

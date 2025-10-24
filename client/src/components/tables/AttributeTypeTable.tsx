@@ -1,8 +1,11 @@
 import { Button, Flex, Select, Table, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
-import { AttributeTypeUncheckedUpdateInput, NodeType } from '../../../../shared/src/schema/schema.ts';
+import { useDispatch } from 'react-redux';
+import { AttributeTypeUncheckedUpdateInput } from '../../../../shared/src/schema/schema.ts';
+import { api } from '../../data/api.ts';
+import { AppDispatch } from '../../data/store.ts';
 
-export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
+export const AttributeTypeTable = ({ nodeTypeId }: { nodeTypeId: number }) => {
   const UI_DIRECTIONS = ['Input', 'Output'];
   const UI_TYPES = ['String', 'Number', 'Enum'];
 
@@ -40,6 +43,7 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
 
   const emptyAttributeType: AttributeTypeUncheckedUpdateInput = {
     label: '',
+    nodeTypeId: nodeTypeId,
     isInput: true,
     isString: true,
     isNumber: false,
@@ -51,6 +55,8 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
 
   const [newAttributeType, setNewAttributeType] = useState(emptyAttributeType);
   const [defaultEnumElement, setDefaultEnumElement] = useState('');
+
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <Table.Root>
@@ -196,7 +202,9 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
               size="1"
               variant="solid"
               color="gray"
-              onClick={() => {}}
+              onClick={() => {
+                dispatch(api.endpoints.insertAttributeType.initiate(newAttributeType));
+              }}
             >
               {'Create'}
             </Button>

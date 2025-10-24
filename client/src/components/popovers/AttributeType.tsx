@@ -3,7 +3,7 @@ import { Button, Flex, Popover, Text } from '@radix-ui/themes';
 import { NodeType } from '../../../../shared/src/schema/schema.ts';
 import { AttributeTypeTable } from '../tables/AttributeTypeTable.tsx';
 
-export const AttributeType = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
+export const AttributeType = ({ nodeType }: { nodeType: Required<Pick<NodeType, 'id' | 'label'>> }) => {
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -14,7 +14,7 @@ export const AttributeType = ({ nodeType }: { nodeType: Partial<NodeType> }) => 
       <Popover.Content width="800px">
         <Flex direction="column" gap="2" align="start" content="center">
           <Text size="3">{nodeType.label + ' Attributes'}</Text>
-          <AttributeTypeTable nodeType={nodeType} />
+          <AttributeTypeTable nodeTypeId={nodeType.id} />
         </Flex>
         <Flex gap="3" mt="4" justify="end">
           <Popover.Close>
