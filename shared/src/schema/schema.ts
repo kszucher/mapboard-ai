@@ -28,6 +28,7 @@ export type AttributeType = {
   id: number;
   nodeTypeId: number | null;
   label: string;
+  isInput: boolean;
   isString: boolean;
   isNumber: boolean;
   isEnum: boolean;
@@ -37,7 +38,7 @@ export type AttributeType = {
 }
 
 export type AttributeTypeUncheckedUpdateInput = Pick<AttributeType,
-  'label' | 'isString' | 'isNumber' | 'isEnum' | 'defaultString' | 'defaultNumber' | 'defaultEnum'>
+  'label' | 'isInput' | 'isString' | 'isNumber' | 'isEnum' | 'defaultString' | 'defaultNumber' | 'defaultEnum'>
 
 export type Edge = {
   id: number;

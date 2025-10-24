@@ -82,7 +82,7 @@ model AttributeType {
   nodeTypeId    Int?
   NodeType      NodeType?   @relation(fields: [nodeTypeId], references: [id])
   label         String
-  isInput       Boolean     @default(false)
+  isInput       Boolean     @default(true)
   isString      Boolean     @default(false)
   isNumber      Boolean     @default(false)
   isEnum        Boolean     @default(false)

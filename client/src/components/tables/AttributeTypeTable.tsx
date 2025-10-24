@@ -3,7 +3,18 @@ import { useState } from 'react';
 import { AttributeTypeUncheckedUpdateInput, NodeType } from '../../../../shared/src/schema/schema.ts';
 
 export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }) => {
+  const UI_DIRECTIONS = ['Input', 'Output'];
   const UI_TYPES = ['String', 'Number', 'Enum'];
+
+  const getDirectionParam = (attributeType: AttributeTypeUncheckedUpdateInput) => {
+    if (attributeType.isInput) return 'Input';
+    else return 'Output';
+  };
+
+  const setDirectionParam = (uiDirection: string) => {
+    if (uiDirection === 'Input') return { isInput: true };
+    else return { isInput: false };
+  };
 
   const getTypeParam = (attributeType: AttributeTypeUncheckedUpdateInput) => {
     if (attributeType.isString) return 'String';
@@ -16,9 +27,10 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
     else if (uiType === 'Number') return { isString: false, isNumber: true, isEnum: false };
     else if (uiType === 'Enum') return { isString: false, isNumber: false, isEnum: true };
   };
-
+  
   const emptyAttributeType: AttributeTypeUncheckedUpdateInput = {
     label: '',
+    isInput: true,
     isString: true,
     isNumber: false,
     isEnum: false,
@@ -67,7 +79,27 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
             />
           </Table.Cell>
           {/* Direction */}
-          <Table.Cell>{'Direction'}</Table.Cell>
+          <Table.Cell>
+            <Select.Root
+              size="1"
+              value={getDirectionParam(newAttributeType)}
+              onValueChange={value => {
+                setNewAttributeType({
+                  ...newAttributeType,
+                  ...setDirectionParam(value),
+                });
+              }}
+            >
+              <Select.Trigger variant="soft" color="gray" />
+              <Select.Content>
+                {UI_DIRECTIONS.map((direction, i) => (
+                  <Select.Item key={i} value={direction}>
+                    {direction}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select.Root>
+          </Table.Cell>
           {/* Type */}
           <Table.Cell>
             <Select.Root
