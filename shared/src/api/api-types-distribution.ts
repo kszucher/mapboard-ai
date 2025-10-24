@@ -1,5 +1,4 @@
-import { Edge } from './api-types-edge';
-import { Node } from './api-types-node';
+import { Edge, Node } from '../schema/schema';
 
 export type NodeUpdateDown = Required<Pick<Node, 'id' | 'workspaceId' | 'updatedAt'>>;
 export type EdgeUpdateDown = Required<Pick<Edge, 'id' | 'workspaceId' | 'updatedAt'>>;

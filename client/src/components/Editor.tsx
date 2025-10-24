@@ -1,7 +1,8 @@
 import { AlertDialog, Dialog, Spinner, Theme } from '@radix-ui/themes';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ColorMode } from '../../../shared/src/api/api-types-user.ts';
+
+import { ColorMode } from '../../../shared/src/schema/schema.ts';
 import { useGetMapInfoQuery, useGetUserInfoQuery } from '../data/api.ts';
 import { actions } from '../data/reducer.ts';
 import { AlertDialogState, DialogState } from '../data/state-types.ts';

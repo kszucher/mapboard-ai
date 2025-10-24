@@ -1,8 +1,7 @@
 import { injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
-import { M } from '../../../shared/src/api/api-types-map';
-import { ShareAccess } from '../../../shared/src/api/api-types-share';
 import { getTopologicalSort } from '../../../shared/src/map/map-getters';
+import { Map, ShareAccess } from '../../../shared/src/schema/schema';
 import { DistributionService } from '../distribution/distribution.service';
 import { EdgeRepository } from '../edge/edge.repository';
 import { NodeRepository } from '../node/node.repository';
@@ -28,7 +27,7 @@ export class MapService {
   async getWorkspaceMapInfo({ workspaceId }: { workspaceId: number }): Promise<{
     id: number;
     name: string;
-    data: M;
+    data: Map;
     shareAccess: ShareAccess;
   }> {
     const workspace = await this.workspaceRepository.getWorkspaceById({ workspaceId });

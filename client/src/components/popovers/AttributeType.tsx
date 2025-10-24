@@ -1,5 +1,6 @@
 import { Button, Flex, Popover, Text } from '@radix-ui/themes';
-import { NodeType } from '../../../../shared/src/api/api-types-node-type.ts';
+
+import { NodeType } from '../../../../shared/src/schema/schema.ts';
 import { AttributeTypeTable } from '../tables/AttributeTypeTable.tsx';
 
 export const AttributeType = ({ nodeType }: { nodeType: Partial<NodeType> }) => {

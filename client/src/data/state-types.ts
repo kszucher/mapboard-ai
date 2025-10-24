@@ -1,5 +1,4 @@
-import { M } from '../../../shared/src/api/api-types-map.ts';
-import { ShareAccess } from '../../../shared/src/api/api-types-share.ts';
+import { Map, ShareAccess } from '../../../shared/src/schema/schema.ts';
 
 export interface State {
   token: string;
@@ -9,7 +8,7 @@ export interface State {
   pageState: PageState;
   dialogState: DialogState;
   alertDialogState: AlertDialogState;
-  commitList: M[];
+  commitList: Map[];
   commitIndex: number;
   mapShareAccess: ShareAccess;
   nodeOffsetCoords: number[];

@@ -1,9 +1,4 @@
-export const ColorMode = {
-  DARK: 'DARK',
-  LIGHT: 'LIGHT',
-} as const;
-
-export type ColorMode = (typeof ColorMode)[keyof typeof ColorMode];
+import { ColorMode } from '../schema/schema';
 
 export type UserInfo = {
   id: number

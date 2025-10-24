@@ -1,7 +1,8 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SSE_EVENT, SSE_EVENT_TYPE } from '../../../../shared/src/api/api-types-distribution.ts';
-import { ShareAccess } from '../../../../shared/src/api/api-types-share.ts';
+
+import { ShareAccess } from '../../../../shared/src/schema/schema.ts';
 import { api, useGetMapInfoQuery, useGetShareInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { AlertDialogState, DialogState, MidMouseMode, PageState } from '../../data/state-types.ts';

@@ -1,4 +1,4 @@
-import { ShareAccess } from '../../../shared/src/api/api-types-share.ts';
+import { ShareAccess } from '../../../shared/src/schema/schema.ts';
 import { AlertDialogState, DialogState, MidMouseMode, PageState, State } from './state-types.ts';
 
 export const state: State = {

@@ -5,11 +5,9 @@ import {
   NodeUpdateDown,
   UpdateMapGraphEventPayload,
 } from '../../../shared/src/api/api-types-distribution.ts';
-import { Edge } from '../../../shared/src/api/api-types-edge.ts';
-import { NodeType } from '../../../shared/src/api/api-types-node-type.ts';
-import { Node } from '../../../shared/src/api/api-types-node.ts';
 import { getNodeHeight, getNodeWidth } from '../../../shared/src/map/map-getters.ts';
 import { alignNodes } from '../../../shared/src/map/map-setters.ts';
+import { Edge, Node, NodeType } from '../../../shared/src/schema/schema.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
 import { api } from './api.ts';
 import { state, stateDefault } from './state-defaults.ts';

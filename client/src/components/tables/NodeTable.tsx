@@ -1,6 +1,6 @@
 import { Badge, Button, Select, Table } from '@radix-ui/themes';
 import { useState } from 'react';
-import { Color, NodeType } from '../../../../shared/src/api/api-types-node-type.ts';
+import { Color, NodeType } from '../../../../shared/src/schema/schema.ts';
 import { useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { AttributeType } from '../popovers/AttributeType.tsx';
 

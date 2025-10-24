@@ -1,15 +1,4 @@
-export const ShareStatus = {
-  WAITING: 'WAITING',
-  ACCEPTED: 'ACCEPTED',
-} as const;
-export type ShareStatus = (typeof ShareStatus)[keyof typeof ShareStatus];
-
-export const ShareAccess = {
-  VIEW: 'VIEW',
-  EDIT: 'EDIT',
-} as const;
-
-export type ShareAccess = (typeof ShareAccess)[keyof typeof ShareAccess];
+import { ShareAccess } from '../schema/schema';
 
 export type GetShareInfoQueryResponseDto = {
   SharesByMe: {

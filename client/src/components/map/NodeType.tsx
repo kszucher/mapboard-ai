@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from '@radix-ui/themes';
 import React from 'react';
-import { Node } from '../../../../shared/src/api/api-types-node.ts';
+
+import { Node } from '../../../../shared/src/schema/schema.ts';
 
 export const NodeType = ({ nodeId, ni }: { nodeId: number; ni: Node }) => {
   // TODO: more services:

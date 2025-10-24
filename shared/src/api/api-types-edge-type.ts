@@ -1,8 +1,4 @@
-export type EdgeType = {
-  id: number;
-  fromNodeTypeId: number;
-  toNodeTypeId: number;
-}
+import { EdgeType } from '../schema/schema';
 
 export type GetEdgeTypeQueryResponseDto = Partial<EdgeType>[]
 

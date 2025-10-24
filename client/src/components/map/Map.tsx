@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ColorMode } from '../../../../shared/src/api/api-types-user.ts';
 import { getMapHeight, getMapWidth } from '../../../../shared/src/map/map-getters.ts';
+import { ColorMode } from '../../../../shared/src/schema/schema.ts';
 import { useGetMapInfoQuery, useGetNodeTypeInfoQuery, useGetUserInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
 import { MidMouseMode } from '../../data/state-types.ts';

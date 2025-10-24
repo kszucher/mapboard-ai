@@ -1,6 +1,7 @@
 import { Button, Dialog, Flex, Grid, Select, Spinner, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
-import { ShareAccess } from '../../../../shared/src/api/api-types-share.ts';
+
+import { ShareAccess } from '../../../../shared/src/schema/schema.ts';
 import { api, useGetMapInfoQuery } from '../../data/api.ts';
 
 export const MapActionsShare = () => {

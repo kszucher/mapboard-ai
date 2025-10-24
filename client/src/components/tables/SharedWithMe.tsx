@@ -1,6 +1,7 @@
 import { Button, Table } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
-import { ShareStatus } from '../../../../shared/src/api/api-types-share.ts';
+
+import { ShareStatus } from '../../../../shared/src/schema/schema.ts';
 import { api, useGetShareInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 

@@ -1,13 +1,9 @@
-import { Edge } from './api-types-edge';
-import { Node } from './api-types-node';
-import { ShareAccess } from './api-types-share';
-
-export type M = { e: Edge[], n: Node[] };
+import { Map, ShareAccess } from '../schema/schema';
 
 export type GetMapInfoQueryResponseDto = {
   id: number,
   name: string,
-  data: M,
+  data: Map,
   shareAccess: ShareAccess
 };
 

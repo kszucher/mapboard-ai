@@ -152,22 +152,6 @@ model Workspace {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-enum ColorMode {
-  DARK
-  LIGHT
-}
-
-enum ControlType {
-  FILE
-  INGESTION
-  CONTEXT
-  QUESTION
-  VECTOR_DATABASE
-  DATA_FRAME
-  LLM
-  VISUALIZER
-}
-
 enum ShareStatus {
   WAITING
   ACCEPTED
@@ -178,10 +162,9 @@ enum ShareAccess {
   EDIT
 }
 
-enum LlmOutputSchema {
-  TEXT
-  VECTOR_DATABASE_QUERY
-  DATA_FRAME_QUERY
+enum ColorMode {
+  DARK
+  LIGHT
 }
 
 enum Color {

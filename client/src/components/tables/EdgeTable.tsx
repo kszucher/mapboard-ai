@@ -1,7 +1,8 @@
 import { Badge, Button, Select, Table } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Color } from '../../../../shared/src/api/api-types-node-type.ts';
+
+import { Color } from '../../../../shared/src/schema/schema.ts';
 import { api, useGetEdgeTypeInfoQuery, useGetNodeTypeInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 

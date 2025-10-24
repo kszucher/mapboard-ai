@@ -1,9 +1,5 @@
-import { Edge } from '../api/api-types-edge';
-import { EdgeType } from '../api/api-types-edge-type';
-import { M } from '../api/api-types-map';
-import { Node } from '../api/api-types-node';
-import { Color, NodeType } from '../api/api-types-node-type';
 import { M_PADDING, N_PADDING } from '../consts/consts';
+import { Color, Edge, EdgeType, Map, Node, NodeType } from '../schema/schema';
 
 export const getNodeType = (nodeTypes: Partial<NodeType>[], n: Node) => nodeTypes.find(nt => nt.id === n.nodeTypeId);
 
@@ -21,12 +17,12 @@ export const getNodeHeight = (nodeTypes: Partial<NodeType>[], n: Node) => getNod
 
 export const getNodeRight = (nodeTypes: Partial<NodeType>[], n: Node) => n.offsetX + getNodeWidth(nodeTypes, n) + N_PADDING;
 
-export const getMapWidth = (nodeTypes: Partial<NodeType>[], m: M) => {
+export const getMapWidth = (nodeTypes: Partial<NodeType>[], m: Map) => {
   const max = Math.max(...m.n.map(ni => ni.offsetX + getNodeWidth(nodeTypes, ni) + N_PADDING));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getMapHeight = (nodeTypes: Partial<NodeType>[], m: M) => {
+export const getMapHeight = (nodeTypes: Partial<NodeType>[], m: Map) => {
   const max = Math.max(...m.n.map(ni => ni.offsetY + getNodeHeight(nodeTypes, ni) + N_PADDING));
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
@@ -35,14 +31,14 @@ export const getAllowedTargetNodeTypes = (edgeTypes: Partial<EdgeType>[], n: Nod
   return edgeTypes.filter(eti => eti.fromNodeTypeId === n.nodeTypeId).map(eti => eti.toNodeTypeId);
 };
 
-export const isExistingEdge = (m: M, fromNodeId: number, toNodeId: number): boolean =>
+export const isExistingEdge = (m: Map, fromNodeId: number, toNodeId: number): boolean =>
   m.e.some(ei => ei.fromNodeId === fromNodeId && ei.toNodeId === toNodeId);
 
-export const getInputNodeOfEdge = (m: M, e: Edge): Node => m.n.find(ni => ni.id === e.fromNodeId)!;
+export const getInputNodeOfEdge = (m: Map, e: Edge): Node => m.n.find(ni => ni.id === e.fromNodeId)!;
 
-export const getOutputNodeOfEdge = (m: M, e: Edge): Node => m.n.find(ni => ni.id === e.toNodeId)!;
+export const getOutputNodeOfEdge = (m: Map, e: Edge): Node => m.n.find(ni => ni.id === e.toNodeId)!;
 
-export const getLineCoords = (nodeTypes: Partial<NodeType>[], edgeTypes: Partial<EdgeType>[], m: M, e: Edge) => {
+export const getLineCoords = (nodeTypes: Partial<NodeType>[], edgeTypes: Partial<EdgeType>[], m: Map, e: Edge) => {
   const fromNode = getInputNodeOfEdge(m, e);
   const toNode = getOutputNodeOfEdge(m, e);
   const leftIndex = edgeTypes

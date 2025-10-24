@@ -1,7 +1,8 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { AlertDialog, Dialog, DropdownMenu, IconButton } from '@radix-ui/themes';
 import { useDispatch } from 'react-redux';
-import { ColorMode } from '../../../../shared/src/api/api-types-user.ts';
+
+import { ColorMode } from '../../../../shared/src/schema/schema.ts';
 import User from '../../../assets/user.svg?react';
 import { api, useGetUserInfoQuery } from '../../data/api.ts';
 import { actions } from '../../data/reducer.ts';
