@@ -1,30 +1,8 @@
-import { ShareAccess } from '../schema/schema';
+import { Share, ShareAccess } from '../schema/schema';
 
 export type GetShareInfoQueryResponseDto = {
-  SharesByMe: {
-    id: number
-    mapId: number
-    access: string
-    status: string
-    Map: {
-      name: string
-    }
-    ShareUser: {
-      email: string
-    }
-  }[];
-  SharesWithMe: {
-    id: number
-    mapId: number
-    access: string
-    status: string
-    Map: {
-      name: string
-    }
-    OwnerUser: {
-      email: string
-    }
-  }[];
+  SharesByMe: Required<Pick<Share, 'id' | 'mapId' | 'access' | 'status' | 'Map' | 'ShareUser'>>[]
+  SharesWithMe: Required<Pick<Share, 'id' | 'mapId' | 'access' | 'status' | 'Map' | 'OwnerUser'>>[]
 }
 
 export type CreateShareRequestDto = {
@@ -49,4 +27,3 @@ export type ModifyShareAccessRequestDto = {
   shareId: number
   shareAccess: ShareAccess
 }
-

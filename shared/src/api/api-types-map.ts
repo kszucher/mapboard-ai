@@ -1,9 +1,9 @@
-import { Map, ShareAccess } from '../schema/schema';
+import { M, ShareAccess } from '../schema/schema';
 
 export type GetMapInfoQueryResponseDto = {
   id: number,
   name: string,
-  data: Map,
+  data: M,
   shareAccess: ShareAccess
 };
 
@@ -20,38 +20,11 @@ export type RenameMapRequestDto = {
   mapName: string
 }
 
+export type ExecuteMapRequestDto = {
+  mapId: number
+}
+
 export type DeleteMapRequestDto = {
   mapId: number
 }
 
-export type InsertNodeRequestDto = {
-  mapId: number
-  nodeTypeId: number
-}
-
-export type InsertEdgeRequestDto = {
-  mapId: number
-  fromNodeId: number
-  toNodeId: number
-}
-
-export type DeleteNodeRequestDto = {
-  mapId: number
-  nodeId: number
-}
-
-export type DeleteEdgeRequestDto = {
-  mapId: number
-  edgeId: number
-}
-
-export type MoveNodeRequestDto = {
-  mapId: number
-  nodeId: number
-  offsetX: number
-  offsetY: number
-}
-
-export type ExecuteMapRequestDto = {
-  mapId: number
-}

@@ -79,6 +79,8 @@ model Attribute {
 
 model AttributeType {
   id            Int         @id @default(autoincrement())
+  nodeTypeId    Int?
+  NodeType      NodeType?   @relation(fields: [nodeTypeId], references: [id])
   label         String
   isInput       Boolean     @default(false)
   isString      Boolean     @default(false)
@@ -87,8 +89,6 @@ model AttributeType {
   defaultString String?
   defaultNumber Int?
   defaultEnum   String[]
-  nodeTypeId    Int?
-  NodeType      NodeType?   @relation(fields: [nodeTypeId], references: [id])
   Attribute     Attribute[]
 }
 

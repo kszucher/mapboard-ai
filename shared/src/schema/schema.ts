@@ -1,4 +1,4 @@
-export type Map = {
+export type M = {
   n: Node[]
   e: Edge[],
 };
@@ -26,22 +26,18 @@ export type Attribute = {}
 
 export type AttributeType = {
   id: number;
-  label: AttributeTypeLabel;
+  nodeTypeId: number | null;
+  label: string;
+  isString: boolean;
+  isNumber: boolean;
+  isEnum: boolean;
   defaultString: string | null;
   defaultNumber: number | null;
   defaultEnum: string[] | null;
-  nodeTypeId: number | null;
 }
 
-export const AttributeTypeLabel = {
-  INPUT_STRING: 'INPUT_STRING',
-  INPUT_NUMBER: 'INPUT_NUMBER',
-  INPUT_ENUM: 'INPUT_ENUM',
-  OUTPUT_STRING: 'OUTPUT_STRING',
-  OUTPUT_NUMBER: 'OUTPUT_NUMBER',
-};
-
-export type AttributeTypeLabel = (typeof AttributeTypeLabel)[keyof typeof AttributeTypeLabel];
+export type AttributeTypeUncheckedUpdateInput = Pick<AttributeType,
+  'label' | 'isString' | 'isNumber' | 'isEnum' | 'defaultString' | 'defaultNumber' | 'defaultEnum'>
 
 export type Edge = {
   id: number;
@@ -73,6 +69,22 @@ export type EdgeType = {
   id: number;
   fromNodeTypeId: number;
   toNodeTypeId: number;
+}
+
+export type Share = {
+  id: number
+  mapId: number
+  access: string
+  status: string
+  Map: {
+    name: string
+  }
+  ShareUser: {
+    email: string
+  }
+  OwnerUser: {
+    email: string
+  }
 }
 
 export const ShareStatus = {

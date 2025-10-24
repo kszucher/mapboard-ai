@@ -1,4 +1,4 @@
-import { Map, ShareAccess } from '../../../shared/src/schema/schema.ts';
+import { M, ShareAccess } from '../../../shared/src/schema/schema.ts';
 
 export interface State {
   token: string;
@@ -8,7 +8,7 @@ export interface State {
   pageState: PageState;
   dialogState: DialogState;
   alertDialogState: AlertDialogState;
-  commitList: Map[];
+  commitList: M[];
   commitIndex: number;
   mapShareAccess: ShareAccess;
   nodeOffsetCoords: number[];

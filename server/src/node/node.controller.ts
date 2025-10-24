@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { injectable } from 'tsyringe';
-import { DeleteNodeRequestDto, InsertNodeRequestDto, MoveNodeRequestDto } from '../../../shared/src/api/api-types-map';
+import { DeleteNodeRequestDto, InsertNodeRequestDto, MoveNodeRequestDto } from '../../../shared/src/api/api-types-node';
 import { checkJwt, getWorkspaceId } from '../middleware';
 import { NodeService } from './node.service';
 

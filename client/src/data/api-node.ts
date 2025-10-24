@@ -3,7 +3,7 @@ import {
   DeleteNodeRequestDto,
   InsertNodeRequestDto,
   MoveNodeRequestDto,
-} from '../../../shared/src/api/api-types-map.ts';
+} from '../../../shared/src/api/api-types-node.ts';
 
 export const apiNode = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
   insertNode: builder.mutation<void, InsertNodeRequestDto>({

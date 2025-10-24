@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { injectable } from 'tsyringe';
-import { DeleteEdgeRequestDto, InsertEdgeRequestDto } from '../../../shared/src/api/api-types-map';
+import { DeleteEdgeRequestDto, InsertEdgeRequestDto } from '../../../shared/src/api/api-types-edge';
 import { checkJwt, getWorkspaceId } from '../middleware';
 import { EdgeService } from './edge.service';
 
