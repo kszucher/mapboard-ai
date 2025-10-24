@@ -1,5 +1,4 @@
 import { injectable } from 'tsyringe';
-import { NodeUpdateUp } from '../../../shared/src/api/api-types-node';
 import { Prisma, PrismaClient } from '../generated/client';
 
 @injectable()
@@ -53,7 +52,15 @@ export class NodeRepository {
     });
   }
 
-  async updateNode({ nodeId, workspaceId, params }: { nodeId: number; workspaceId: number; params: NodeUpdateUp }) {
+  async updateNode({
+    nodeId,
+    workspaceId,
+    params,
+  }: {
+    nodeId: number;
+    workspaceId: number;
+    params: Prisma.NodeUncheckedUpdateInput;
+  }) {
     return this.prisma.node.update({
       where: { id: nodeId },
       data: { ...params, workspaceId },

@@ -1,7 +1,4 @@
-export const M_PADDING = 40;
-export const N_PADDING = 40;
-
-export type N = {
+export type Node = {
   id: number;
   workspaceId: number | null;
   iid: number;
@@ -12,6 +9,3 @@ export type N = {
   updatedAt: Date;
 };
 
-export type NodeUpdateUp = Partial<Omit<N, 'id' | 'mapId' | 'NodeType' | 'workspaceId' | 'updatedAt' | 'createdAt'>>
-
-export type NodeUpdateDown = Required<Pick<N, 'id' | 'workspaceId' | 'updatedAt'>>;

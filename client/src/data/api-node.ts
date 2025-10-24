@@ -3,7 +3,6 @@ import {
   DeleteNodeRequestDto,
   InsertNodeRequestDto,
   MoveNodeRequestDto,
-  UpdateNodeRequestDto,
 } from '../../../shared/src/api/api-types-map.ts';
 
 export const apiNode = (builder: EndpointBuilder<BaseQueryFn, string, string>) => ({
@@ -19,11 +18,6 @@ export const apiNode = (builder: EndpointBuilder<BaseQueryFn, string, string>) =
 
   moveNode: builder.mutation<void, MoveNodeRequestDto>({
     query: params => ({ url: 'move-node', method: 'POST', body: params }),
-    invalidatesTags: [],
-  }),
-
-  updateNode: builder.mutation<void, UpdateNodeRequestDto>({
-    query: params => ({ url: 'update-node', method: 'POST', body: params }),
     invalidatesTags: [],
   }),
 });

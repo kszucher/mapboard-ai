@@ -1,8 +1,8 @@
-import { E } from './api-types-edge';
-import { N, NodeUpdateUp } from './api-types-node';
+import { Edge } from './api-types-edge';
+import { Node } from './api-types-node';
 import { ShareAccess } from './api-types-share';
 
-export type M = { e: E[], n: N[] };
+export type M = { e: Edge[], n: Node[] };
 
 export type GetMapInfoQueryResponseDto = {
   id: number,
@@ -54,17 +54,6 @@ export type MoveNodeRequestDto = {
   nodeId: number
   offsetX: number
   offsetY: number
-}
-
-export type UpdateNodeRequestDto = {
-  mapId: number
-  nodeId: number
-  nodeData: NodeUpdateUp
-}
-
-export type ExecuteMapFileUploadDto = {
-  mapId: number
-  nodeId: number
 }
 
 export type ExecuteMapRequestDto = {

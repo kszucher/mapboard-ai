@@ -1,4 +1,4 @@
-export type E = {
+export type Edge = {
   id: number;
   workspaceId: number | null;
   fromNodeId: number;
@@ -23,7 +23,3 @@ export type E = {
   }
   updatedAt: Date;
 }
-
-export type EdgeUpdateUp = Partial<Omit<E, 'id' | 'mapId' | 'FromNode' | 'ToNode' | 'workspaceId' | 'updatedAt' | 'createdAt'>>
-
-export type EdgeUpdateDown = Required<Pick<E, 'id' | 'workspaceId' | 'updatedAt'>>;

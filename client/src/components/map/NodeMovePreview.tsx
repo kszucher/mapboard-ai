@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { N_PADDING } from '../../../../shared/src/api/api-types-node.ts';
+
+import { N_PADDING } from '../../../../shared/src/consts/consts.ts';
 import { RootState } from '../../data/store.ts';
 
 export const NodeMovePreview: FC = () => {

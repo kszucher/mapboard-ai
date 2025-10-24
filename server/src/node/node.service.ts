@@ -1,6 +1,5 @@
 import { injectable } from 'tsyringe';
 import { SSE_EVENT_TYPE } from '../../../shared/src/api/api-types-distribution';
-import { NodeUpdateUp } from '../../../shared/src/api/api-types-node';
 import { DistributionService } from '../distribution/distribution.service';
 import { EdgeRepository } from '../edge/edge.repository';
 import { NodeRepository } from './node.repository';
@@ -46,29 +45,6 @@ export class NodeService {
     await this.distributionService.publish({
       type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
       payload: { mapId, nodes: { update: nodes } },
-    });
-  }
-
-  async updateNode({
-    workspaceId,
-    mapId,
-    nodeId,
-    nodeData,
-  }: {
-    workspaceId: number;
-    mapId: number;
-    nodeId: number;
-    nodeData: NodeUpdateUp;
-  }) {
-    const node = await this.nodeRepository.updateNode({
-      nodeId,
-      workspaceId,
-      params: { ...nodeData },
-    });
-
-    await this.distributionService.publish({
-      type: SSE_EVENT_TYPE.INVALIDATE_MAP_GRAPH,
-      payload: { mapId, nodes: { update: [node] } },
     });
   }
 

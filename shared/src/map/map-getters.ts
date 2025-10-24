@@ -1,24 +1,25 @@
-import { E } from '../api/api-types-edge';
+import { Edge } from '../api/api-types-edge';
 import { EdgeType } from '../api/api-types-edge-type';
 import { M } from '../api/api-types-map';
-import { M_PADDING, N, N_PADDING } from '../api/api-types-node';
+import { Node } from '../api/api-types-node';
 import { Color, NodeType } from '../api/api-types-node-type';
+import { M_PADDING, N_PADDING } from '../consts/consts';
 
-export const getNodeType = (nodeTypes: Partial<NodeType>[], n: N) => nodeTypes.find(nt => nt.id === n.nodeTypeId);
+export const getNodeType = (nodeTypes: Partial<NodeType>[], n: Node) => nodeTypes.find(nt => nt.id === n.nodeTypeId);
 
-export const getNodeLabel = (nodeTypes: Partial<NodeType>[], n: N) => getNodeType(nodeTypes, n)?.label || '';
+export const getNodeLabel = (nodeTypes: Partial<NodeType>[], n: Node) => getNodeType(nodeTypes, n)?.label || '';
 
-export const getNodeColor = (nodeTypes: Partial<NodeType>[], n: N) => getNodeType(nodeTypes, n)?.color || Color.gray;
+export const getNodeColor = (nodeTypes: Partial<NodeType>[], n: Node) => getNodeType(nodeTypes, n)?.color || Color.gray;
 
-export const getNodeLeft = (n: N) => n.offsetX + M_PADDING;
+export const getNodeLeft = (n: Node) => n.offsetX + M_PADDING;
 
-export const getNodeTop = (n: N) => n.offsetY + M_PADDING;
+export const getNodeTop = (n: Node) => n.offsetY + M_PADDING;
 
-export const getNodeWidth = (nodeTypes: Partial<NodeType>[], n: N) => getNodeType(nodeTypes, n)?.w || 0;
+export const getNodeWidth = (nodeTypes: Partial<NodeType>[], n: Node) => getNodeType(nodeTypes, n)?.w || 0;
 
-export const getNodeHeight = (nodeTypes: Partial<NodeType>[], n: N) => getNodeType(nodeTypes, n)?.h || 0;
+export const getNodeHeight = (nodeTypes: Partial<NodeType>[], n: Node) => getNodeType(nodeTypes, n)?.h || 0;
 
-export const getNodeRight = (nodeTypes: Partial<NodeType>[], n: N) => n.offsetX + getNodeWidth(nodeTypes, n) + N_PADDING;
+export const getNodeRight = (nodeTypes: Partial<NodeType>[], n: Node) => n.offsetX + getNodeWidth(nodeTypes, n) + N_PADDING;
 
 export const getMapWidth = (nodeTypes: Partial<NodeType>[], m: M) => {
   const max = Math.max(...m.n.map(ni => ni.offsetX + getNodeWidth(nodeTypes, ni) + N_PADDING));
@@ -30,18 +31,18 @@ export const getMapHeight = (nodeTypes: Partial<NodeType>[], m: M) => {
   return Number.isFinite(max) ? max + 2 * M_PADDING : 0;
 };
 
-export const getAllowedTargetNodeTypes = (edgeTypes: Partial<EdgeType>[], n: N) => {
+export const getAllowedTargetNodeTypes = (edgeTypes: Partial<EdgeType>[], n: Node) => {
   return edgeTypes.filter(eti => eti.fromNodeTypeId === n.nodeTypeId).map(eti => eti.toNodeTypeId);
 };
 
 export const isExistingEdge = (m: M, fromNodeId: number, toNodeId: number): boolean =>
   m.e.some(ei => ei.fromNodeId === fromNodeId && ei.toNodeId === toNodeId);
 
-export const getInputNodeOfEdge = (m: M, e: E): N => m.n.find(ni => ni.id === e.fromNodeId)!;
+export const getInputNodeOfEdge = (m: M, e: Edge): Node => m.n.find(ni => ni.id === e.fromNodeId)!;
 
-export const getOutputNodeOfEdge = (m: M, e: E): N => m.n.find(ni => ni.id === e.toNodeId)!;
+export const getOutputNodeOfEdge = (m: M, e: Edge): Node => m.n.find(ni => ni.id === e.toNodeId)!;
 
-export const getLineCoords = (nodeTypes: Partial<NodeType>[], edgeTypes: Partial<EdgeType>[], m: M, e: E) => {
+export const getLineCoords = (nodeTypes: Partial<NodeType>[], edgeTypes: Partial<EdgeType>[], m: M, e: Edge) => {
   const fromNode = getInputNodeOfEdge(m, e);
   const toNode = getOutputNodeOfEdge(m, e);
   const leftIndex = edgeTypes
@@ -59,8 +60,8 @@ export const getLineCoords = (nodeTypes: Partial<NodeType>[], edgeTypes: Partial
 
 // Kahn's algorithm
 export const getTopologicalSort = (m: {
-  n: Pick<N, 'id'>[],
-  e: Pick<E, 'fromNodeId' | 'toNodeId'>[]
+  n: Pick<Node, 'id'>[],
+  e: Pick<Edge, 'fromNodeId' | 'toNodeId'>[]
 }): number[] | null => {
   const { n, e } = m;
   const graph = new Map<number, Set<number>>();

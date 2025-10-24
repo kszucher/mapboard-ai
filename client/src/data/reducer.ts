@@ -1,9 +1,13 @@
 import { createSlice, current, isAction, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
-import { UpdateMapGraphEventPayload } from '../../../shared/src/api/api-types-distribution.ts';
-import { E, EdgeUpdateDown } from '../../../shared/src/api/api-types-edge.ts';
+import {
+  EdgeUpdateDown,
+  NodeUpdateDown,
+  UpdateMapGraphEventPayload,
+} from '../../../shared/src/api/api-types-distribution.ts';
+import { Edge } from '../../../shared/src/api/api-types-edge.ts';
 import { NodeType } from '../../../shared/src/api/api-types-node-type.ts';
-import { N, NodeUpdateDown } from '../../../shared/src/api/api-types-node.ts';
+import { Node } from '../../../shared/src/api/api-types-node.ts';
 import { getNodeHeight, getNodeWidth } from '../../../shared/src/map/map-getters.ts';
 import { alignNodes } from '../../../shared/src/map/map-setters.ts';
 import { getMapX, getMapY } from '../components/map/UtilsDiv.ts';
@@ -83,7 +87,7 @@ export const slice = createSlice({
       state.zoomInfo.fromX = originX + (getMapX(e) - prevMapX) / scale;
       state.zoomInfo.fromY = originY + (getMapY(e) - prevMapY) / scale;
     },
-    moveNodePreviewUpdate(state, action: PayloadAction<{ nodeTypes: Partial<NodeType>[]; n: N; e: MouseEvent }>) {
+    moveNodePreviewUpdate(state, action: PayloadAction<{ nodeTypes: Partial<NodeType>[]; n: Node; e: MouseEvent }>) {
       const { nodeTypes, n, e } = action.payload;
       const { fromX, fromY, scale, prevMapX, prevMapY, originX, originY } = state.zoomInfo;
       const toX = originX + (getMapX(e) - prevMapX) / scale - fromX + n.offsetX;
@@ -111,7 +115,7 @@ export const slice = createSlice({
       alignNodes(newM);
       state.commitList = [...state.commitList.slice(0, state.commitIndex), newM];
     },
-    updateNodeOptimistic(state, { payload: { node } }: PayloadAction<{ node: Partial<N> }>) {
+    updateNodeOptimistic(state, { payload: { node } }: PayloadAction<{ node: Partial<Node> }>) {
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const newM = {
         n: m.n.map(ni => (ni.id === node.id ? { ...ni, ...node, updatedAt: new Date() } : ni)),
@@ -123,9 +127,9 @@ export const slice = createSlice({
       const m = structuredClone(current(state.commitList[state.commitIndex]));
       const { insert: nodeInsert = [], update: nodeUpdate = [], delete: nodeDelete = [] } = nodes ?? {};
       const { insert: edgeInsert = [], update: edgeUpdate = [], delete: edgeDelete = [] } = edges ?? {};
-      const allowedNodeUpdate = (s: NodeUpdateDown, c: N) =>
+      const allowedNodeUpdate = (s: NodeUpdateDown, c: Node) =>
         c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true;
-      const allowedEdgeUpdate = (s: EdgeUpdateDown, c: E) =>
+      const allowedEdgeUpdate = (s: EdgeUpdateDown, c: Edge) =>
         c.workspaceId === s.workspaceId ? s.updatedAt > c.updatedAt : true;
       const newM = {
         n: [

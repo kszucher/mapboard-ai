@@ -78,22 +78,18 @@ model Attribute {
 }
 
 model AttributeType {
-  id            Int                @id @default(autoincrement())
-  label         AttributeTypeLabel
+  id            Int         @id @default(autoincrement())
+  label         String
+  isInput       Boolean     @default(false)
+  isString      Boolean     @default(false)
+  isNumber      Boolean     @default(false)
+  isEnum        Boolean     @default(false)
   defaultString String?
   defaultNumber Int?
   defaultEnum   String[]
   nodeTypeId    Int?
-  NodeType      NodeType?          @relation(fields: [nodeTypeId], references: [id])
+  NodeType      NodeType?   @relation(fields: [nodeTypeId], references: [id])
   Attribute     Attribute[]
-}
-
-enum AttributeTypeLabel {
-  INPUT_STRING
-  INPUT_NUMBER
-  INPUT_ENUM
-  OUTPUT_STRING
-  OUTPUT_NUMBER
 }
 
 model Edge {
