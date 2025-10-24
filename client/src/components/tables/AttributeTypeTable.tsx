@@ -1,7 +1,7 @@
 import { Button, Flex, Select, Table, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { AttributeTypeUncheckedUpdateInput } from '../../../../shared/src/schema/schema.ts';
+import { AttributeTypeUpdate } from '../../../../shared/src/schema/schema.ts';
 import { api, useGetAttributeTypeInfoQuery } from '../../data/api.ts';
 import { AppDispatch } from '../../data/store.ts';
 
@@ -9,12 +9,10 @@ export const AttributeTypeTable = ({ nodeTypeId }: { nodeTypeId: number }) => {
   const attributeTypes = useGetAttributeTypeInfoQuery().data || [];
   const attributeTypesOfNode = attributeTypes.filter(ati => ati.nodeTypeId === nodeTypeId);
 
-  console.log(attributeTypes, attributeTypesOfNode);
-
   const UI_DIRECTIONS = ['Input', 'Output'];
   const UI_TYPES = ['String', 'Number', 'Enum'];
 
-  const getDirectionParam = (attributeType: AttributeTypeUncheckedUpdateInput) => {
+  const getDirectionParam = (attributeType: AttributeTypeUpdate) => {
     if (attributeType.isInput) return 'Input';
     else return 'Output';
   };
@@ -24,7 +22,7 @@ export const AttributeTypeTable = ({ nodeTypeId }: { nodeTypeId: number }) => {
     else return { isInput: false };
   };
 
-  const getTypeParam = (attributeType: AttributeTypeUncheckedUpdateInput) => {
+  const getTypeParam = (attributeType: AttributeTypeUpdate) => {
     if (attributeType.isString) return 'String';
     else if (attributeType.isNumber) return 'Number';
     else if (attributeType.isEnum) return 'Enum';
@@ -36,13 +34,19 @@ export const AttributeTypeTable = ({ nodeTypeId }: { nodeTypeId: number }) => {
     else if (uiType === 'Enum') return { isString: false, isNumber: false, isEnum: true };
   };
 
-  const isAttributeTypeIncomplete = (attributeType: AttributeTypeUncheckedUpdateInput) => {
+  const getDefaultParam = (attributeType: AttributeTypeUpdate) => {
+    if (attributeType.defaultString) return attributeType.defaultString;
+    else if (attributeType.defaultNumber) return attributeType.defaultNumber.toString();
+    else if (attributeType.isEnum) return attributeType.defaultEnum.join(', ');
+  };
+
+  const isAttributeTypeIncomplete = (attributeType: AttributeTypeUpdate) => {
     return (
       !attributeType.label || (attributeType.isInput && attributeType.isEnum && !attributeType.defaultEnum?.length)
     );
   };
 
-  const emptyAttributeType: AttributeTypeUncheckedUpdateInput = {
+  const emptyAttributeType: AttributeTypeUpdate = {
     label: '',
     nodeTypeId: nodeTypeId,
     isInput: true,
@@ -72,17 +76,20 @@ export const AttributeTypeTable = ({ nodeTypeId }: { nodeTypeId: number }) => {
       </Table.Header>
       <Table.Body>
         {/* EXISTING ROWS */}
-        <Table.Row>
-          <Table.Cell>{'Label'}</Table.Cell>
-          <Table.Cell>{'Direction'}</Table.Cell>
-          <Table.Cell>{'Type'}</Table.Cell>
-          <Table.Cell>{'Defaults(s)'}</Table.Cell>
-          <Table.Cell>
-            <Button size="1" variant="solid" onClick={() => {}}>
-              {'Remove'}
-            </Button>
-          </Table.Cell>
-        </Table.Row>
+        {attributeTypesOfNode.map((el, i) => (
+          <Table.Row key={i}>
+            <Table.Cell>{el.label}</Table.Cell>
+            <Table.Cell>{getDirectionParam(el)}</Table.Cell>
+            <Table.Cell>{getTypeParam(el)}</Table.Cell>
+            <Table.Cell>{getDefaultParam(el)}</Table.Cell>
+            <Table.Cell>
+              <Button size="1" variant="solid" onClick={() => {}}>
+                {'Remove'}
+              </Button>
+            </Table.Cell>
+          </Table.Row>
+        ))}
+
         {/* NEW ROW */}
         <Table.Row>
           {/* Label */}

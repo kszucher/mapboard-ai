@@ -27,7 +27,7 @@ export type Attribute = {
   value: string | null;
 }
 
-export type AttributeUncheckedCreateInput = Pick<Attribute,
+export type AttributeCreate = Pick<Attribute,
   'value'>
 
 export type AttributeType = {
@@ -43,8 +43,7 @@ export type AttributeType = {
   defaultEnum: string[];
 }
 
-export type AttributeTypeUncheckedUpdateInput = Pick<AttributeType,
-  'nodeTypeId' | 'label' | 'isInput' | 'isString' | 'isNumber' | 'isEnum' | 'defaultString' | 'defaultNumber' | 'defaultEnum'>
+export type AttributeTypeUpdate = Required<Omit<AttributeType, 'id'>>
 
 export type Edge = {
   id: number;
