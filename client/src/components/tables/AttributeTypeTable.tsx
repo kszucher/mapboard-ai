@@ -9,8 +9,16 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
     defaultNumber: null,
     defaultEnum: [],
   };
-  const [AttributeType, setAttributeType] = useState(emptyAttributeType ?? nodeType);
-  const [selectOption, setSelectOption] = useState('');
+  const [newAttributeType, setNewAttributeType] = useState(emptyAttributeType ?? nodeType);
+  const [defaultEnumElement, setDefaultEnumElement] = useState('');
+
+  const UI_LABELS: Record<AttributeTypeLabel, string> = {
+    INPUT_STRING: 'Input String',
+    INPUT_NUMBER: 'Input Number',
+    INPUT_ENUM: 'Input Enum',
+    OUTPUT_STRING: 'Output String',
+    OUTPUT_NUMBER: 'Output Number',
+  };
 
   return (
     <Table.Root>
@@ -39,23 +47,15 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
           <Table.RowHeaderCell>
             <Select.Root
               size="1"
-              value={
-                {
-                  [AttributeTypeLabel.INPUT_STRING]: 'a',
-                  [AttributeTypeLabel.INPUT_NUMBER]: 'b',
-                  [AttributeTypeLabel.INPUT_ENUM]: 'c',
-                  [AttributeTypeLabel.OUTPUT_STRING]: 'd',
-                  [AttributeTypeLabel.OUTPUT_NUMBER]: 'e',
-                }[AttributeType.label]
-              }
-              onValueChange={(value: AttributeTypeLabel) => {
-                setAttributeType({ ...AttributeType, label: value });
-              }}
+              value={newAttributeType.label}
+              onValueChange={value => setNewAttributeType({ ...newAttributeType, label: value })}
             >
-              <Select.Trigger variant="soft" color="gray" />
+              <Select.Trigger variant="soft" color="gray">
+                {UI_LABELS[newAttributeType.label]}
+              </Select.Trigger>
               <Select.Content>
-                {Object.values(AttributeTypeLabel).map(label => (
-                  <Select.Item key={label} value={label}>
+                {Object.entries(UI_LABELS).map(([key, label]) => (
+                  <Select.Item key={key} value={key}>
                     {label}
                   </Select.Item>
                 ))}
@@ -68,13 +68,13 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
               variant={'soft'}
               placeholder="label"
               radius={'large'}
-              onChange={e => setAttributeType({ ...AttributeType, label: e.target.value })}
+              onChange={e => setNewAttributeType({ ...newAttributeType, label: e.target.value })}
             ></TextField.Root>
           </Table.Cell>
           <Table.Cell>
-            {AttributeType.label === AttributeTypeLabel.INPUT_ENUM && (
+            {newAttributeType.label === AttributeTypeLabel.INPUT_ENUM && (
               <Flex direction="column" gap="2" align="start" content="center">
-                {AttributeType.defaultEnum?.map((el, i) => (
+                {newAttributeType.defaultEnum?.map((el, i) => (
                   <Flex key={i} gap="2" align="start" content="center">
                     <Text as="div" size="2" mb="1">
                       {el}
@@ -84,9 +84,9 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
                       variant="solid"
                       color="gray"
                       onClick={() => {
-                        setAttributeType({
-                          ...AttributeType,
-                          defaultEnum: AttributeType.defaultEnum?.filter((_, si) => si !== i),
+                        setNewAttributeType({
+                          ...newAttributeType,
+                          defaultEnum: newAttributeType.defaultEnum?.filter((_, si) => si !== i),
                         });
                       }}
                     >
@@ -99,20 +99,20 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
                   variant={'soft'}
                   placeholder="option"
                   radius={'large'}
-                  value={selectOption}
-                  onChange={e => setSelectOption(e.target.value)}
+                  value={defaultEnumElement}
+                  onChange={e => setDefaultEnumElement(e.target.value)}
                 />
                 <Button
                   size="1"
                   variant="solid"
                   color="gray"
                   onClick={() => {
-                    if (selectOption) {
-                      setAttributeType({
-                        ...AttributeType,
-                        defaultEnum: [...(AttributeType.defaultEnum ?? []), selectOption],
+                    if (defaultEnumElement) {
+                      setNewAttributeType({
+                        ...newAttributeType,
+                        defaultEnum: [...(newAttributeType.defaultEnum ?? []), defaultEnumElement],
                       });
-                      setSelectOption('');
+                      setDefaultEnumElement('');
                     }
                   }}
                 >
@@ -124,9 +124,9 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
           <Table.Cell>
             <Button
               disabled={
-                !AttributeType.label ||
-                (AttributeType.label === AttributeTypeLabel.INPUT_ENUM &&
-                  (!AttributeType.defaultEnum || AttributeType.defaultEnum.length === 0))
+                !newAttributeType.label ||
+                (newAttributeType.label === AttributeTypeLabel.INPUT_ENUM &&
+                  (!newAttributeType.defaultEnum || newAttributeType.defaultEnum.length === 0))
               }
               size="1"
               variant="solid"
