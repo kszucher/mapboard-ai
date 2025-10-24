@@ -27,7 +27,17 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
     else if (uiType === 'Number') return { isString: false, isNumber: true, isEnum: false };
     else if (uiType === 'Enum') return { isString: false, isNumber: false, isEnum: true };
   };
-  
+
+  const isAttributeTypeIncomplete = (attributeType: AttributeTypeUncheckedUpdateInput) => {
+    return (
+      !attributeType.label ||
+      (attributeType.isInput &&
+        ((attributeType.isString && !attributeType.defaultString) ||
+          (attributeType.isNumber && !attributeType.defaultNumber) ||
+          (attributeType.isEnum && !attributeType.defaultEnum?.length)))
+    );
+  };
+
   const emptyAttributeType: AttributeTypeUncheckedUpdateInput = {
     label: '',
     isInput: true,
@@ -87,6 +97,9 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
                 setNewAttributeType({
                   ...newAttributeType,
                   ...setDirectionParam(value),
+                  defaultString: null,
+                  defaultNumber: null,
+                  defaultEnum: [],
                 });
               }}
             >
@@ -110,8 +123,8 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
                   ...newAttributeType,
                   ...setTypeParam(value),
                   defaultString: null,
-                  defaultEnum: null,
                   defaultNumber: null,
+                  defaultEnum: [],
                 });
               }}
             >
@@ -179,11 +192,7 @@ export const AttributeTypeTable = ({ nodeType }: { nodeType: Partial<NodeType> }
           {/* Action */}
           <Table.Cell>
             <Button
-              // disabled={
-              //   !newAttributeType.label ||
-              //   (newAttributeType.label === AttributeTypeLabel.INPUT_ENUM &&
-              //     (!newAttributeType.defaultEnum || newAttributeType.defaultEnum.length === 0))
-              // }
+              disabled={isAttributeTypeIncomplete(newAttributeType)}
               size="1"
               variant="solid"
               color="gray"
